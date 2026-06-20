@@ -7,7 +7,7 @@ interface SimulatorRoomProps {
 }
 
 const SimulatorRoom: React.FC<SimulatorRoomProps> = ({ isMini = false, onExit }) => {
-  const EXTERNAL_URL = "https://simulatoroom.vercel.app/";
+  const EXTERNAL_URL = "https://pilotrecognition.com";
   const [showExit, setShowExit] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
 

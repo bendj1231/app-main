@@ -1,6 +1,33 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function DataControllerAgreementPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const signup = searchParams.get('signup');
+  const returnTo = searchParams.get('return_to') || '/become-member?setup=1';
+  const [agreed, setAgreed] = useState(false);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+
+  const isSignupFlow = !!signup;
+
+  useEffect(() => {
+    // Auto-agree if coming back with setup=1 (already agreed in sessionStorage)
+    const dcaAgreed = sessionStorage.getItem('dca_agreed');
+    if (dcaAgreed === 'true' && searchParams.get('setup') === '1') {
+      // Already agreed, proceed to setup
+      return;
+    }
+  }, [searchParams]);
+
+  const handleAgree = () => {
+    sessionStorage.setItem('dca_agreed', 'true');
+    sessionStorage.setItem('dca_agreed_at', new Date().toISOString());
+    router.push(returnTo);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
         {/* Coded by Benjamin Bowler */}
@@ -384,13 +411,39 @@ export default function DataControllerAgreementPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-10 text-center">
-          <p className="text-xs text-slate-400">
+        <div className="mt-10">
+          <p className="text-xs text-slate-400 text-center">
             PR-DCA-001 v1.8 — 02 June 2026 — Aviation Pathways Ltd
           </p>
-          <p className="text-xs text-slate-400 mt-1">
-            By creating an account the Registrant confirms acceptance of this instrument in its entirety.
-          </p>
+          {!isSignupFlow && (
+            <p className="text-xs text-slate-400 mt-1 text-center">
+              By creating an account the Registrant confirms acceptance of this instrument in its entirety.
+            </p>
+          )}
+
+          {isSignupFlow && (
+            <div className="mt-6 bg-white border border-slate-200 rounded-2xl p-6">
+              <label className={`flex items-start gap-3 cursor-pointer group transition-opacity duration-300 ${!hasScrolledToBottom ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={e => setAgreed(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 border-slate-300 bg-white accent-red-600 cursor-pointer"
+                />
+                <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
+                  I agree to the Terms and Conditions. I acknowledge that I am the Pilot in Command (PIC) of my data, and I explicitly authorize the platform to secure, host, and route my encrypted records based on the pathways I select.
+                </span>
+              </label>
+
+              <button
+                onClick={handleAgree}
+                disabled={!agreed}
+                className="w-full mt-4 py-3 font-bold text-sm tracking-wide transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-red-200 hover:shadow-lg rounded-lg"
+              >
+                ACCEPT Terms and Conditions
+              </button>
+            </div>
+          )}
         </div>
 
       </div>

@@ -17,6 +17,7 @@ import {
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useVaultProfile } from '@/src/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
 import { WalletPageWithSidebar } from './wallet/WalletPageWithSidebar';
@@ -179,6 +180,16 @@ const HomeTab: React.FC<{
 
   const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
   const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
+
+  // ── Pilot Career Status (pilotshortage.org compliant) ──
+  const [obEmploymentStatus, setObEmploymentStatus] = React.useState<'employed' | 'unemployed' | 'transitioning' | 'graduate' | ''>(profile?.employment_status ?? '');
+  const [obUnemployedDuration, setObUnemployedDuration] = React.useState(profile?.unemployed_duration ?? '');
+  const [obCurrentJob, setObCurrentJob] = React.useState(profile?.current_job ?? '');
+  const [obCareerGoal, setObCareerGoal] = React.useState(profile?.career_goal ?? '');
+
+  // ── Pilot Training Stage (edit profile) ──
+  const [obPilotStage, setObPilotStage] = React.useState<string>(profile?.pilot_stage ?? '');
+
   const obCadetTrack = React.useMemo(() => {
     const STUDENT_OCC = ['Student Pilot', 'Cadet'];
     const isStudent = STUDENT_OCC.includes(obLicenseType);
@@ -881,6 +892,236 @@ const HomeTab: React.FC<{
                       )}
                     </div>
 
+                    {/* ── Pilot Career Status (pilotshortage.org compliant) ── */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9', background: '#fafafa' }}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[9px] font-medium" style={{ color: '#cc0000' }}>Current Employment Status</span>
+                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe' }}>pilotshortage.org</span>
+                      </div>
+                      <select
+                        value={obEmploymentStatus}
+                        onChange={e => setObEmploymentStatus(e.target.value as any)}
+                        className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                        style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                      >
+                        <option value="">Select your current status...</option>
+                        <option value="employed">I am currently employed as a pilot</option>
+                        <option value="unemployed">I am unemployed / between jobs</option>
+                        <option value="transitioning">I am a flight instructor looking to move forward</option>
+                        <option value="graduate">I am a graduate looking for opportunities</option>
+                      </select>
+
+                      {/* If unemployed — duration */}
+                      {obEmploymentStatus === 'unemployed' && (
+                        <div className="mt-2">
+                          <span className="text-[9px] text-gray-500 block mb-1">How long have you been unemployed?</span>
+                          <select
+                            value={obUnemployedDuration}
+                            onChange={e => setObUnemployedDuration(e.target.value)}
+                            className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                            style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          >
+                            <option value="">Select duration...</option>
+                            <option value="<1m">Less than 1 month</option>
+                            <option value="1-3m">1–3 months</option>
+                            <option value="3-6m">3–6 months</option>
+                            <option value="6-12m">6–12 months</option>
+                            <option value=">1y">Over 1 year</option>
+                          </select>
+                        </div>
+                      )}
+
+                      {/* If employed — current role with aviation vs non-aviation split */}
+                      {obEmploymentStatus === 'employed' && (
+                        <div className="mt-2 space-y-2">
+                          <span className="text-[9px] text-gray-500 block mb-1">What is your current role?</span>
+                          <select
+                            value={obCurrentJob}
+                            onChange={e => setObCurrentJob(e.target.value)}
+                            className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                            style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          >
+                            <option value="">Select current role...</option>
+                            <optgroup label="✈️ Still in Aviation">
+                              <option value="airline_fo">Airline First Officer</option>
+                              <option value="airline_captain">Airline Captain</option>
+                              <option value="corporate_pilot">Corporate / VIP Pilot</option>
+                              <option value="cargo_pilot">Cargo Pilot</option>
+                              <option value="flight_instructor">Flight Instructor (CFI/CFII)</option>
+                              <option value="ato_instructor">ATO Ground Instructor</option>
+                              <option value="sim_instructor">Simulator Instructor</option>
+                              <option value="charter_pilot">Charter Pilot</option>
+                              <option value="agricultural_pilot">Agricultural Pilot</option>
+                              <option value="helicopter_pilot">Helicopter Pilot</option>
+                              <option value="aviation_management">Aviation Management / Operations</option>
+                              <option value="aviation_other">Other Aviation Role</option>
+                            </optgroup>
+                            <optgroup label="😔 Left Aviation — Surviving">
+                              <option value="uber_delivery">Uber / Delivery Driver</option>
+                              <option value="construction">Construction / Manual Labor</option>
+                              <option value="baggage_handler">Baggage Handler / Ground Crew</option>
+                              <option value="retail_hospitality">Retail / Hospitality</option>
+                              <option value="sales">Sales / Real Estate</option>
+                              <option value="it_tech">IT / Tech Industry</option>
+                              <option value="finance">Finance / Banking</option>
+                              <option value="military">Military / Armed Forces</option>
+                              <option value="student">Full-Time Student (Career Change)</option>
+                              <option value="unemployed_seeking">Unemployed — Actively Seeking</option>
+                              <option value="non_aviation_other">Other Non-Aviation Role</option>
+                            </optgroup>
+                          </select>
+
+                          {/* Harsh truth banner for non-aviation roles — downed pilots seeking recognition */}
+                          {obCurrentJob && !obCurrentJob.startsWith('airline') && !obCurrentJob.startsWith('corporate') && !obCurrentJob.startsWith('cargo') && !obCurrentJob.startsWith('flight') && !obCurrentJob.startsWith('ato') && !obCurrentJob.startsWith('sim') && !obCurrentJob.startsWith('charter') && !obCurrentJob.startsWith('agricultural') && !obCurrentJob.startsWith('helicopter') && !obCurrentJob.startsWith('aviation') && (
+                            <div className="px-4 py-4 rounded-lg space-y-3" style={{ background: '#fef2f2', border: '1px solid #fecaca' }}>
+                              <p className="text-[8px] font-black text-red-800 uppercase tracking-wide mb-1">Downed Pilot — You Are Not Forgotten</p>
+                              <p className="text-[8px] text-red-700 leading-relaxed">
+                                You hold a valid pilot license. You logged the hours. You passed the checkrides. And now you're driving Uber, working construction, or handling bags — not because you failed, but because the industry failed <strong>you</strong>. The pipeline is clogged. Airlines say there's a shortage, yet licensed pilots like you can't get a call back.
+                              </p>
+                              <div className="px-3 py-2.5 rounded" style={{ background: 'white', border: '1px solid #fecaca' }}>
+                                <p className="text-[8px] font-bold text-red-800 mb-1">Here's what we can do for you right now:</p>
+                                <ul className="space-y-1">
+                                  <li className="flex items-start gap-1.5">
+                                    <span className="text-[8px] text-red-500 mt-0.5">▸</span>
+                                    <span className="text-[8px] text-red-700">Verify your credentials and logged hours through international attestation standards</span>
+                                  </li>
+                                  <li className="flex items-start gap-1.5">
+                                    <span className="text-[8px] text-red-500 mt-0.5">▸</span>
+                                    <span className="text-[8px] text-red-700">Submit your pathway interest to our partner operators — get placed as a <strong>recommended pilot</strong></span>
+                                  </li>
+                                  <li className="flex items-start gap-1.5">
+                                    <span className="text-[8px] text-red-500 mt-0.5">▸</span>
+                                    <span className="text-[8px] text-red-700">Share your story at <strong>pilotshortage.org</strong> — your voice matters in fixing this broken pipeline</span>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p className="text-[8px] text-red-700 leading-relaxed">
+                                We call this the <strong>Downed Pilot Program</strong> — supporting pilots in times of despair. Your license is valid. Your hours count. You deserve recognition for the work you've done. Create your account, verify your credentials, and we will place you where operators are actively pulling from our verified pool.
+                              </p>
+                              <div className="flex gap-2">
+                                <a
+                                  href="https://pilotshortage.org/share-your-story"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex-1 py-2 text-center text-[8px] font-bold text-red-700 rounded transition-all hover:bg-red-100"
+                                  style={{ background: 'white', border: '1px solid #fecaca', textDecoration: 'none' }}
+                                >
+                                  Share Your Story →
+                                </a>
+                                <span
+                                  className="flex-1 py-2 text-center text-[8px] font-bold text-white rounded cursor-pointer transition-all hover:bg-red-700"
+                                  style={{ background: '#dc2626', border: '1px solid #dc2626' }}
+                                  onClick={() => setObConsent1(true)}
+                                >
+                                  Verify & Get Recognized →
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* If unemployed — capture what they were doing */}
+                      {obEmploymentStatus === 'unemployed' && (
+                        <div className="mt-2 space-y-2">
+                          <span className="text-[9px] text-gray-500 block mb-1">What were you doing before?</span>
+                          <select
+                            value={obCurrentJob}
+                            onChange={e => setObCurrentJob(e.target.value)}
+                            className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                            style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          >
+                            <option value="">Select last role...</option>
+                            <optgroup label="✈️ Aviation">
+                              <option value="airline_fo">Airline First Officer</option>
+                              <option value="airline_captain">Airline Captain</option>
+                              <option value="flight_instructor">Flight Instructor</option>
+                              <option value="corporate_pilot">Corporate Pilot</option>
+                              <option value="cargo_pilot">Cargo Pilot</option>
+                              <option value="charter_pilot">Charter Pilot</option>
+                            </optgroup>
+                            <optgroup label="😔 Non-Aviation Survival">
+                              <option value="uber_delivery">Uber / Delivery</option>
+                              <option value="construction">Construction</option>
+                              <option value="baggage_handler">Baggage Handler</option>
+                              <option value="retail_hospitality">Retail / Hospitality</option>
+                              <option value="sales">Sales</option>
+                              <option value="student">Student</option>
+                              <option value="non_aviation_other">Other</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      )}
+
+                      {/* If transitioning or graduate — pilot stage + career goal */}
+                      {(obEmploymentStatus === 'transitioning' || obEmploymentStatus === 'graduate') && (
+                        <div className="mt-2 space-y-2">
+                          {obEmploymentStatus === 'graduate' && (
+                            <div className="space-y-2">
+                              <span className="text-[9px] text-gray-500 block mb-1">What stage are you at?</span>
+                              <select
+                                value={obPilotStage}
+                                onChange={e => setObPilotStage(e.target.value)}
+                                className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                                style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                              >
+                                <option value="">Select your pilot stage...</option>
+                                <option value="bachelor_degree">Graduated with Bachelor of Commercial Flying</option>
+                                <option value="fast_track">Completed Fast-Track Pilot Course</option>
+                                <option value="licensed_no_hours">Licensed but low/no hours (CPL/PPL)</option>
+                                <option value="current_training">Currently in flight training</option>
+                                <option value="student_no_license">Student Pilot — no license yet</option>
+                                <option value="ground_school">Ground School only — no flight hours</option>
+                                <option value="aspirant">Interested in aviation — no pilot qualifications</option>
+                              </select>
+                            </div>
+                          )}
+
+                          <span className="text-[9px] text-gray-500 block mb-1">
+                            {obEmploymentStatus === 'transitioning'
+                              ? 'What are you looking to transition into?'
+                              : 'What opportunities are you looking for?'}
+                          </span>
+                          <select
+                            value={obCareerGoal}
+                            onChange={e => setObCareerGoal(e.target.value)}
+                            className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                            style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          >
+                            <option value="">Select target pathway...</option>
+                            <option value="airline_fo">Airline First Officer</option>
+                            <option value="airline_captain">Airline Captain</option>
+                            <option value="corporate">Corporate / VIP Aviation</option>
+                            <option value="cargo">Cargo Operations</option>
+                            <option value="instructor">Flight Instructor</option>
+                            <option value="charter">Charter Pilot</option>
+                            <option value="helicopter">Helicopter Operations</option>
+                            <option value="agricultural">Agricultural Aviation</option>
+                            <option value="private">Private Aviation</option>
+                            <option value="military">Military Aviation</option>
+                            <option value="other">Other / Undecided</option>
+                          </select>
+
+                          {obEmploymentStatus === 'graduate' && (
+                            <div className="px-3 py-2.5 rounded-lg" style={{ background: '#fffbeb', border: '1px solid #fcd34d' }}>
+                              <p className="text-[8px] font-black text-amber-800 uppercase tracking-wide mb-1">The Pipeline is Real</p>
+                              <p className="text-[8px] text-amber-700 leading-relaxed">
+                                Graduates with 200 hours face a 2-3 year wait for instructor positions. Airlines want 1,500+ hours. The gap kills careers. We built Pathways to show you exactly what's missing and how to close it — before you end up driving Uber like the batch of 2015.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Disclaimer block */}
+                      <div className="mt-3 px-3 py-2.5 rounded-lg" style={{ background: '#f0f9ff', border: '1px solid #bae6fd' }}>
+                        <p className="text-[8px] font-black text-sky-800 uppercase tracking-wide mb-1">Important Notice</p>
+                        <p className="text-[8px] text-sky-700 leading-relaxed">
+                          <strong>PilotRecognition is not a job board.</strong> We are a networking, verification, and career pathway platform supported by an association of pilots at <strong>pilotshortage.org</strong>, aimed at solving the pilot shortage and reducing the loss of pilot careers. <strong>PilotCareerPathways.com</strong> is not a job site but a pathway platform tailored and powered by PilotRecognition.com, with industry partners participating in pilotshortage.org.
+                        </p>
+                      </div>
+                    </div>
+
                     {/* Civil Aviation Authority — dropdown */}
                     <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
                       <span className="text-[9px] font-medium block mb-1.5" style={{ color: '#cc0000' }}>Jurisdictional Civil Aviation Authority</span>
@@ -1286,21 +1527,33 @@ const HomeTab: React.FC<{
                   <button
                     disabled={!obConsent1 || !obConsent2 || !obConsent3}
                     onClick={async () => {
-                      if (obLogbookProvider === 'PilotRecognition Secure Logbook' && obHoursHashed && profile?.id) {
-                        await supabase.from('profiles').update({
-                          logbook_hash: obHoursHash,
-                          logbook_hash_updated_at: new Date().toISOString(),
-                          logbook_total_hours_band: obHoursBand,
-                          logbook_provider: obLogbookProvider,
-                        }).eq('id', profile.id);
-                      }
-                      setOnboardingStep(2);
-                    }}
-                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-35 hover:bg-gray-800"
-                    style={{ background: '#111827', border: 'none', borderRadius: '10px' }}
-                  >
-                    I AGREE, SIGN CONSENT &amp; CONTINUE →
-                  </button>
+                        if (profile?.id) {
+                          const updatePayload: Record<string, unknown> = {
+                            current_occupation: obLicenseType,
+                            employment_status: obEmploymentStatus,
+                            unemployed_duration: obUnemployedDuration,
+                            current_job: obCurrentJob,
+                            career_goal: obCareerGoal,
+                            pilot_stage: obPilotStage || null,
+                            caa_region: obCAA,
+                            ato_name: obATOs[0] || null,
+                            logbook_provider: obLogbookProvider,
+                            date_of_birth: obDob,
+                          };
+                          if (obLogbookProvider === 'PilotRecognition Secure Logbook' && obHoursHashed) {
+                            updatePayload.logbook_hash = obHoursHash;
+                            updatePayload.logbook_hash_updated_at = new Date().toISOString();
+                            updatePayload.logbook_total_hours_band = obHoursBand;
+                          }
+                          await supabase.from('profiles').update(updatePayload).eq('id', profile.id);
+                        }
+                        setOnboardingStep(2);
+                      }}
+                      className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-35 hover:bg-gray-800"
+                      style={{ background: '#111827', border: 'none', borderRadius: '10px' }}
+                    >
+                      I AGREE, SIGN CONSENT &amp; CONTINUE →
+                    </button>
                 </>
               )}
 
@@ -1882,6 +2135,16 @@ const CockpitTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = 
           <p className="text-sm text-white/40 mt-0.5">Your score, verification status and career readiness — in one place.</p>
         </div>
       </div>
+
+      {/* Visitor Account Banner */}
+      {profile?.role === 'visitor' && (
+        <div className="px-4 py-3 rounded-lg" style={{ background: '#f0f9ff', border: '1px solid #bae6fd' }}>
+          <p className="text-[10px] font-black text-sky-800 uppercase tracking-wide mb-1">Visitor Account — Limited Access</p>
+          <p className="text-[9px] text-sky-700 leading-relaxed">
+            You're browsing as a <strong>Visitor</strong>. You can explore pathways and resources, but pilot verification, pathway submissions, and operator matching require a licensed pilot profile. When you earn your pilot license, update your stage in Settings to unlock full access.
+          </p>
+        </div>
+      )}
 
       {/* Score Optimization Guide */}
       <div>
@@ -4665,6 +4928,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       if (avatarInputRef.current) avatarInputRef.current.value = '';
     }
   };
+  const { callBatch } = useWorkerAuth();
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [resendingSent, setResendingSent] = useState(false);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
@@ -4697,26 +4961,266 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     if (t && t !== activeTab) setActiveTab(t);
   }, []); // eslint-disable-line
 
-  // Live unread notification count + pending credential requests
+  // ── IndexedDB cache helper for dashboard batch ──
+  const dbName = 'pr-dashboard-cache';
+  const storeName = 'batch';
+  const dbPromise = React.useMemo(() => {
+    return new Promise<IDBDatabase>((resolve, reject) => {
+      const req = indexedDB.open(dbName, 1);
+      req.onerror = () => reject(req.error);
+      req.onsuccess = () => resolve(req.result);
+      req.onupgradeneeded = () => {
+        req.result.createObjectStore(storeName);
+      };
+    });
+  }, []);
+
+  const cacheBatch = async (key: string, payload: Record<string, unknown>) => {
+    const db = await dbPromise;
+    const tx = db.transaction(storeName, 'readwrite');
+    tx.objectStore(storeName).put({ payload, cachedAt: Date.now() }, key);
+  };
+
+  const readCachedBatch = async (key: string): Promise<Record<string, unknown> | null> => {
+    try {
+      const db = await dbPromise;
+      const tx = db.transaction(storeName, 'readonly');
+      const record = await new Promise<{ payload: Record<string, unknown>; cachedAt: number } | undefined>((resolve, reject) => {
+        const req = tx.objectStore(storeName).get(key);
+        req.onsuccess = () => resolve(req.result as any);
+        req.onerror = () => reject(req.error);
+      });
+      return record?.payload ?? null;
+    } catch {
+      return null;
+    }
+  };
+
+  const clearDashboardCache = async () => {
+    try {
+      const db = await dbPromise;
+      const tx = db.transaction(storeName, 'readwrite');
+      tx.objectStore(storeName).clear();
+    } catch {
+      /* no-op */
+    }
+  };
+
+  const [dataWarnings, setDataWarnings] = useState<string[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // ── Local stale-data scanner (zero API calls) ──
+  const scanCachedData = async (): Promise<string[]> => {
+    const warnings: string[] = [];
+    const cached = await readCachedBatch(`dashboard:${profileData?.id}`);
+    if (!cached) return warnings;
+
+    const now = Date.now();
+    const DAY = 86400000;
+
+    const profile = profileData as Record<string, unknown> | null;
+    const licensure = cached.result_0 as Record<string, unknown> | null;
+    const receipts = cached.result_1 as Array<Record<string, unknown>> | null;
+    const verifStatus = cached.result_3 as Record<string, unknown> | null;
+
+    // ── 1. Role check ──
+    if (!profile?.role || profile.role === 'undefined' || profile.role === '') {
+      warnings.push('Role not assigned — complete onboarding');
+    }
+
+    // ── 2. Individual license validity from verification receipts ──
+    // Required credentials: pilot license, medical, ELP, radio
+    const requiredTypes = ['license', 'medical', 'elp', 'radio'];
+    const foundTypes = new Set<string>();
+
+    if (receipts) {
+      for (const r of receipts) {
+        const type = (r.credential_type as string)?.toLowerCase();
+        const status = (r.status as string)?.toLowerCase();
+        const expiresAt = r.expires_at ? new Date(r.expires_at as string).getTime() : null;
+        const nearExpiry = r.near_expiry as boolean;
+
+        foundTypes.add(type);
+
+        if (status === 'expired') {
+          warnings.push(`${type} expired — re-verification required`);
+        } else if (nearExpiry && expiresAt && expiresAt > now) {
+          const daysLeft = Math.ceil((expiresAt - now) / DAY);
+          warnings.push(`${type} expires in ${daysLeft} day${daysLeft > 1 ? 's' : ''}`);
+        } else if (status !== 'verified' && status !== 'valid') {
+          warnings.push(`${type} status: ${status}`);
+        }
+      }
+    }
+
+    for (const req of requiredTypes) {
+      if (!foundTypes.has(req)) {
+        warnings.push(`${req} not verified — add to wallet`);
+      }
+    }
+
+    // ── 3. CAAP Currency: 90-day rule ──
+    // Must have 3 takeoffs/landings in same category/class/type within 90 days
+    const lastFlown = profile?.last_flown as string | undefined;
+    if (lastFlown) {
+      const daysSinceLastFlown = Math.floor((now - new Date(lastFlown).getTime()) / DAY);
+      if (daysSinceLastFlown > 90) {
+        warnings.push(`Currency expired — last flown ${daysSinceLastFlown} days ago (CAAP: 90 days)`);
+      } else if (daysSinceLastFlown > 75) {
+        warnings.push(`Currency warning — last flown ${daysSinceLastFlown} days ago (expires at 90)`);
+      }
+    } else {
+      warnings.push('Last flown date missing — log flight to check currency');
+    }
+
+    // ── 4. Verified vs claimed hours ──
+    // Pilots fly daily — gap between verified (snapshot) and claimed (live) is NORMAL
+    const claimedHours = (profile?.total_flight_hours as number) ?? 0;
+    const verifiedHours = (licensure?.verified_total_hours as number) ?? 0;
+    const lastVerifiedAt = licensure?.hours_verified_at ? new Date(licensure.hours_verified_at as string).getTime() : null;
+    const unverifiedHours = Math.max(0, claimedHours - verifiedHours);
+
+    if (claimedHours > 0 && verifiedHours === 0) {
+      warnings.push(`${claimedHours} hours claimed but never verified — submit logbook`);
+    } else if (unverifiedHours > 200) {
+      // Flag if >200 unverified hours accumulated (roughly 2-3 months of flying)
+      warnings.push(`${unverifiedHours} unverified hours since last check — re-verify logbook`);
+    } else if (lastVerifiedAt && (now - lastVerifiedAt) / DAY > 180 && unverifiedHours > 50) {
+      // If last verification was >6 months ago and they logged >50h since
+      warnings.push(`Logbook stale — last verified ${Math.floor((now - lastVerifiedAt) / DAY)} days ago`);
+    }
+
+    // ── 5. License type consistency ──
+    const licenseType = licensure?.license_type as string | undefined;
+    const currentOccupation = profile?.current_occupation as string | undefined;
+    if (licenseType && currentOccupation) {
+      const occLower = currentOccupation.toLowerCase();
+      const licLower = licenseType.toLowerCase();
+      if (occLower.includes('commercial') && !licLower.includes('cpl') && !licLower.includes('atpl')) {
+        warnings.push('Occupation claims commercial but license does not match');
+      }
+      if (occLower.includes('airline') && !licLower.includes('atpl')) {
+        warnings.push('Occupation claims airline but no ATPL');
+      }
+    }
+
+    // ── 6. Overall verification status ──
+    if (verifStatus?.overall_status === 'pending') {
+      warnings.push('Verification still pending');
+    }
+    if (verifStatus?.overall_status === 'unverified') {
+      warnings.push('Profile unverified — start verification');
+    }
+
+    return warnings;
+  };
+
+  // ── Manual refresh: bust cache and re-fetch ──
+  const refreshDashboard = async () => {
+    setIsRefreshing(true);
+    try {
+      await clearDashboardCache();
+      const profileId = profileData?.id;
+      if (!profileId) return;
+
+      const batch = await callBatch([
+        { action: 'getLicensure', params: { user_id: profileId } },
+        { action: 'getVerificationReceipts', params: { user_id: profileId } },
+        { action: 'queryTable', params: { table: 'pilot_notifications', operation: 'count', where: { pilot_id: profileId, is_read: false } } },
+        { action: 'getVerificationStatus', params: { user_id: profileId } },
+      ]);
+
+      await cacheBatch(`dashboard:${profileId}`, batch);
+
+      const licensure = batch.result_0 as Record<string, unknown> | null;
+      const receipts = batch.result_1 as Array<Record<string, unknown>> | null;
+      const notifCountRaw = batch.result_2 as { count: number } | null;
+      const verifStatus = batch.result_3 as Record<string, unknown> | null;
+
+      if (licensure) setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
+      if (receipts) setWalletChecks(receipts);
+      setNotifCount(notifCountRaw?.count ?? 0);
+      if (verifStatus) setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
+
+      const freshWarnings = await scanCachedData();
+      setDataWarnings(freshWarnings);
+    } catch (err) {
+      console.error('[dashboard] manual refresh failed:', err);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Dashboard batch load — once per session, cached in IndexedDB
   useEffect(() => {
-    // pilot_notifications.pilot_id and credential_requests.pilot_id are UUID columns.
-    // Auth0 currentUser.id is a string sub — never use it here, it causes a 400 type error.
     const profileId = profileData?.id;
     if (!profileId) return;
-    const fetchNotifs = async () => {
-      const [{ count }, { data: reqs }] = await Promise.all([
-        supabase.from('pilot_notifications').select('id', { count: 'exact', head: true }).eq('pilot_id', profileId).eq('is_read', false),
-        supabase.from('credential_requests').select('id, enterprise_account_id, requested_fields, request_message, requested_at, enterprise_accounts(name)').eq('pilot_id', profileId).eq('status', 'pending'),
-      ]);
-      setNotifCount(count ?? 0);
-      setPendingRequests(reqs ?? []);
-    };
-    fetchNotifs();
-    const interval = setInterval(fetchNotifs, 60000);
-    return () => clearInterval(interval);
-  }, [profileData?.id]);
 
-  // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id then email lookup
+    const cacheKey = `dashboard:${profileId}`;
+
+    const loadDashboard = async () => {
+      try {
+        const batch = await callBatch([
+          { action: 'getLicensure', params: { user_id: profileId } },
+          { action: 'getVerificationReceipts', params: { user_id: profileId } },
+          { action: 'queryTable', params: { table: 'pilot_notifications', operation: 'count', where: { pilot_id: profileId, is_read: false } } },
+          { action: 'getVerificationStatus', params: { user_id: profileId } },
+        ]);
+
+        await cacheBatch(cacheKey, batch);
+
+        const licensure = batch.result_0 as Record<string, unknown> | null;
+        const receipts = batch.result_1 as Array<Record<string, unknown>> | null;
+        const notifCountRaw = batch.result_2 as { count: number } | null;
+        const verifStatus = batch.result_3 as Record<string, unknown> | null;
+
+        if (licensure) {
+          setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
+        }
+        if (receipts) {
+          setWalletChecks(receipts);
+        }
+        setNotifCount(notifCountRaw?.count ?? 0);
+        if (verifStatus) {
+          setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
+        }
+
+        const warnings = await scanCachedData();
+        setDataWarnings(warnings);
+      } catch (err) {
+        console.error('[dashboard] batch load failed:', err);
+      }
+    };
+
+    // 1. Try IndexedDB first — immediate UI paint
+    (async () => {
+      const cached = await readCachedBatch(cacheKey);
+      if (cached) {
+        const licensure = cached.result_0 as Record<string, unknown> | null;
+        const receipts = cached.result_1 as Array<Record<string, unknown>> | null;
+        const notifCountRaw = cached.result_2 as { count: number } | null;
+        const verifStatus = cached.result_3 as Record<string, unknown> | null;
+
+        if (licensure) {
+          setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
+        }
+        if (receipts) {
+          setWalletChecks(receipts);
+        }
+        setNotifCount(notifCountRaw?.count ?? 0);
+        if (verifStatus) {
+          setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
+        }
+
+        const warnings = await scanCachedData();
+        setDataWarnings(warnings);
+      }
+      // 2. Fetch fresh from Worker in background (one time per session)
+      await loadDashboard();
+    })();
+  }, [profileData?.id, callBatch]);
+
+  // Keep profileData in sync — prefer AuthContext userProfile, fall back to auth0_id then email lookup
   useEffect(() => {
     if (userProfile) {
       setProfileData(userProfile);
@@ -4753,27 +5257,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   }, [userProfile, auth0User?.sub, auth0User?.email, currentUser?.email]);
 
-  // Fetch wallet checks — works for both Supabase and Auth0-only users
-  useEffect(() => {
-    const profileId = profileData?.id;
-    if (!profileId) return;
-    supabase
-      .from('pilot_credentials')
-      .select('*')
-      .eq('profile_id', profileId)
-      .then(({ data }: { data: any[] | null }) => { if (data) setWalletChecks(data); });
-  }, [profileData?.id]);
-
-  // Fetch airlines
-  useEffect(() => {
-    supabase
-      .from('airlines')
-      .select('id, name, image, region, flight_hours, fleet')
-      .limit(50)
-      .then(({ data }: { data: any[] | null }) => { if (data) setAirlines(data); });
-  }, []);
-
   const handleLogout = useCallback(async () => {
+    await clearDashboardCache();
     await logout();
     onNavigate('home');
   }, [logout, onNavigate]);

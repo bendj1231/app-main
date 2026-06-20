@@ -92,8 +92,12 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
         scope: 'openid profile email',
       }}
       onRedirectCallback={(appState) => {
+        console.log('[Auth0] onRedirectCallback called, appState:', appState);
         if (appState?.returnTo) {
           sessionStorage.setItem('auth0_return_to', appState.returnTo);
+          console.log('[Auth0] Stored auth0_return_to:', appState.returnTo);
+        } else {
+          console.warn('[Auth0] No appState.returnTo found');
         }
         navigate('/auth/callback', { replace: true });
       }}

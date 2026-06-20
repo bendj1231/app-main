@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '../../../src/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface CollapsibleSectionProps {
     title: string;
@@ -40,15 +40,16 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
     const searchParams = new URLSearchParams(location.search);
     const signupMethod = searchParams.get('signup');
 
+    const { isAuthenticated } = useAuth0();
+
     const handleAgreeAndContinue = async () => {
-        sessionStorage.setItem('dca_consent_timestamp', Date.now().toString());
+        sessionStorage.setItem('dca_agreed', 'true');
+        sessionStorage.setItem('dca_agreed_at', new Date().toISOString());
 
         if (signupMethod === 'google') {
-            const redirectTo = `${window.location.origin}/become-member?setup=1`;
-            await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo },
-            });
+            // User is already authenticated from the first Google sign-in on BecomeMemberPage.
+            // Just redirect to setup — no need to trigger auth again.
+            navigate('/become-member?setup=1');
             return;
         }
 

@@ -75,7 +75,7 @@ export async function api(
 
 export async function apiBatch(
   accessToken: string,
-  requests: Array<{ action: string; params?: unknown }>
+  requests: Array<{ action: string; params?: unknown; cache?: number }>
 ): Promise<Record<string, unknown>> {
   return fetchAPI(accessToken, '/api', {
     method: 'POST',

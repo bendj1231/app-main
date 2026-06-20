@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { supabase } from '../../../src/lib/supabase';
 
 interface WalletFirstCredentialFlowProps {
   auth0Id: string;
@@ -113,15 +112,6 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
 
       setCredentialUrl(credentialOfferUrl);
       setStep('ready');
-
-      // Only store minimal metadata - NOT the credential data
-      await supabase
-        .from('profiles')
-        .update({ 
-          wallet_connected: true,
-          credential_issued_at: new Date().toISOString()
-        })
-        .eq('auth0_id', auth0Id);
 
     } catch (err) {
       console.error('Failed to issue credential:', err);

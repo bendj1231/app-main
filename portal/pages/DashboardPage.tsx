@@ -3001,7 +3001,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Main Website */}
                 <a
-                  href="https://wmpilotnetwork.vercel.app"
+                  href="https://pilotrecognition.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -3021,7 +3021,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 >
                   <div>
                     <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>Website</h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>wmpilotnetwork.vercel.app</p>
+                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>pilotrecognition.com</p>
                   </div>
                 </a>
               </div>

@@ -29,7 +29,7 @@ export function useWorkerAuth() {
   );
 
   const callBatch = useCallback(
-    async (requests: Array<{ action: string; params?: Record<string, unknown> }>): Promise<Record<string, unknown>> => {
+    async (requests: Array<{ action: string; params?: Record<string, unknown>; cache?: number }>): Promise<Record<string, unknown>> => {
       const token = await getToken();
       return apiBatch(token, requests);
     },

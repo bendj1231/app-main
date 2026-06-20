@@ -297,7 +297,10 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   try {
     auth = await verifyAuth0Token(request, env);
   } catch (err) {
-    if (err instanceof Response) return err;
+    if (err instanceof Response) {
+      const body = await err.text();
+      return new Response(body, { status: err.status, headers: { ...Object.fromEntries(err.headers.entries()), ...corsHeaders(origin) } });
+    }
     return jsonResponse({ error: 'Unauthorized' }, 401, origin);
   }
 
@@ -384,9 +387,14 @@ async function handleAction(
       return ensureProfile(db, auth.sub, params.email as string, params.name as string, originJurisdiction);
     }
     case 'updateProfile': {
-      const id = params.id as string;
+      let id = params.id as string;
       if (!id) throw new Error('Missing id');
-      const existing = await getProfileById(db, id);
+      let existing = await getProfileById(db, id);
+      // If not found by UUID, try auth0_id (for partial saves during onboarding)
+      if (!existing) {
+        existing = await getProfileByAuth0Id(db, id);
+        if (existing) id = existing['id'] as string;
+      }
       if (!existing) throw new Error('Not found');
       if (existing['auth0_id'] !== auth.sub) {
         const me = await getProfileByAuth0Id(db, auth.sub);
@@ -400,6 +408,11 @@ async function handleAction(
         'current_occupation', 'license_id', 'country_of_license', 'ratings',
         'is_enrolled_in_foundational', 'subscription_status',
         'wallet_id', 'wallet_email', 'wallet_did', 'referral_code',
+        // Onboarding fields (2026-06-20)
+        'employment_status', 'unemployed_duration', 'current_job', 'career_goal',
+        'pilot_stage', 'elp_level', 'aircraft_types', 'aircraft_rated_on',
+        'license_types', 'type_ratings', 'license_issuing_authority',
+        'origin_jurisdiction', 'role',
       ]);
       for (const key of Object.keys(params)) {
         if (key.startsWith('_')) continue;
@@ -418,6 +431,68 @@ async function handleAction(
       values.push(id);
       await db.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
       return getProfileById(db, id);
+    }
+    case 'upsertProfile': {
+      // Full onboarding batch — creates or updates profile with all onboarding fields
+      const required = ['email', 'display_name', 'full_name', 'current_occupation'];
+      const missing = validateRequiredFields(params, required);
+      if (missing) throw new Error(missing);
+
+      const auth0Id = auth.sub;
+      const email = params.email as string;
+      let profile = await getProfileByAuth0Id(db, auth0Id);
+      const now = new Date().toISOString();
+
+      // All onboarding fields that can be set
+      const onboardingFields = [
+        'display_name', 'full_name', 'current_occupation', 'date_of_birth',
+        'total_flight_hours', 'aircraft_types', 'aircraft_rated_on', 'nationality',
+        'license_issuing_authority', 'country_of_license', 'origin_jurisdiction',
+        'ratings', 'license_types', 'employment_status', 'unemployed_duration',
+        'current_job', 'career_goal', 'pilot_stage', 'elp_level', 'type_ratings', 'role',
+        'dca_agreed', 'dca_agreed_at',
+      ];
+
+      if (!profile) {
+        // Generate pilot_id in PR0001 format
+        const countRow = await db.prepare('SELECT COUNT(*) as cnt FROM profiles').first() as { cnt: number } | null;
+        const count = (countRow?.cnt ?? 0) + 1;
+        const pilotId = `PR${String(count).padStart(4, '0')}`;
+        const id = crypto.randomUUID();
+
+        const values: unknown[] = [id, auth0Id, email];
+        const columns = ['id', 'auth0_id', 'email'];
+
+        for (const key of onboardingFields) {
+          if (key in params) {
+            columns.push(key);
+            values.push(params[key]);
+          }
+        }
+        columns.push('pilot_id', 'role', 'status', 'subscription_tier', 'created_at', 'updated_at');
+        values.push(pilotId, params.role || 'mentee', 'active', 'free', now, now);
+
+        const placeholders = values.map(() => '?').join(', ');
+        await db.prepare(`INSERT INTO profiles (${columns.join(', ')}) VALUES (${placeholders})`).bind(...values).run();
+        profile = await getProfileById(db, id);
+      } else {
+        // Update existing profile
+        const sets: string[] = [];
+        const values: unknown[] = [];
+        for (const key of onboardingFields) {
+          if (key in params) {
+            sets.push(`${key} = ?`);
+            values.push(params[key]);
+          }
+        }
+        if (sets.length === 0) throw new Error('No fields to update');
+        sets.push("updated_at = datetime('now')");
+        values.push(profile['id']);
+        await db.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
+        profile = await getProfileById(db, profile['id'] as string);
+      }
+
+      return { success: true, pilot_id: profile?.['pilot_id'], profile_id: profile?.['id'], profile };
     }
     case 'deleteProfile': {
       const id = params.id as string;
@@ -615,6 +690,23 @@ async function handleAction(
       if (!userId) throw new Error('Missing user_id');
       const { results } = await db.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(userId).all();
       return results || [];
+    }
+
+    // ── Verification Receipts ──
+    case 'getVerificationReceipts': {
+      const userId = params.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const { results } = await db.prepare(`
+        SELECT id, provider, credential_type, status, expires_at, near_expiry, verified_at, flags, updated_at
+        FROM verification_receipts
+        WHERE user_id = ?
+        ORDER BY verified_at DESC
+      `).bind(userId).all();
+      return (results || []).map((row: unknown) => ({
+        ...(row as Record<string, unknown>),
+        near_expiry: Boolean((row as Record<string, unknown>).near_expiry),
+        flags: (row as Record<string, unknown>).flags ? JSON.parse((row as Record<string, unknown>).flags as string) : [],
+      }));
     }
 
     // ── Enterprise ──

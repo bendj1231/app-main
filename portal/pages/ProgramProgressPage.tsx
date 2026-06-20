@@ -424,7 +424,7 @@ export const ProgramProgressPage: React.FC<ProgramProgressPageProps> = ({
               </div>
             </div>
             <button
-              onClick={() => window.open('https://w1000.vercel.app', '_blank', 'noopener,noreferrer')}
+              onClick={() => window.open('https://pilotrecognition.com', '_blank', 'noopener,noreferrer')}
               style={{
                 background: '#2563eb',
                 color: '#fff',

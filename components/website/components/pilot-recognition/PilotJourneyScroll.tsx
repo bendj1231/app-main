@@ -609,11 +609,11 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             {/* Navigation */}
             <nav className="flex-1 p-3 space-y-2">
               {[
-                { id: 'dashboard', label: 'Dashboard', desc: 'Flight logs, training records, and documents', icon: '□', active: true, image: 'https://pilotnetwork.vercel.app/Captain-Paperwork-Medium.jpg' },
-                { id: 'programs', label: 'Programs', desc: 'Foundational and Transition mentorship programs', icon: '○', image: 'https://pilotnetwork.vercel.app/Gemini_Generated_Image_7awns87awns87awn.png' },
-                { id: 'pathways', label: 'Pathways', desc: 'Structured career roadmaps and training tracks', icon: '○', image: 'https://pilotnetwork.vercel.app/shutterstock_1698112222.jpg' },
-                { id: 'recognition', label: 'Pilot Recognition', desc: 'Awards, flight hours, and certifications', icon: '○', image: 'https://pilotnetwork.vercel.app/Gemini_Generated_Image_tka3njtka3njtka3.png' },
-                { id: 'network', label: 'WingMentor Network', desc: 'Recognition hub, knowledge bank, and aviation community', icon: '○', image: 'https://pilotnetwork.vercel.app/Networking.jpg' },
+                { id: 'dashboard', label: 'Dashboard', desc: 'Flight logs, training records, and documents', icon: '□', active: true, image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1781926532/content/captain-paperwork.jpg' },
+                { id: 'programs', label: 'Programs', desc: 'Foundational and Transition mentorship programs', icon: '○', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1781926556/content/pilot-programs.png' },
+                { id: 'pathways', label: 'Pathways', desc: 'Structured career roadmaps and training tracks', icon: '○', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1781926557/content/shutterstock-pathways.jpg' },
+                { id: 'recognition', label: 'Pilot Recognition', desc: 'Awards, flight hours, and certifications', icon: '○', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1781926558/content/pilot-recognition.png' },
+                { id: 'network', label: 'WingMentor Network', desc: 'Recognition hub, knowledge bank, and aviation community', icon: '○', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1781926559/content/networking.jpg' },
                 { id: 'news', label: 'News & Updates', desc: 'Latest announcements and industry insights', icon: '○', image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80' },
               ].map((item) => (
                 <div 
@@ -778,7 +778,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                   <div className="bg-slate-800 rounded-lg p-2 text-white flex flex-col h-full">
                     <div className="flex items-start gap-2 mb-2">
                       <img 
-                        src="https://pilotnetwork.vercel.app/examinationterminalapp.png" 
+                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1781926560/content/exam-terminal.png" 
                         alt="Examination Terminal" 
                         className="w-6 h-6 rounded object-cover"
                       />

@@ -9,7 +9,7 @@ export default function DomainSwitcher() {
 
   useEffect(() => {
     // Check if we're in development
-    setIsDev(window.location.hostname === 'localhost' || window.location.hostname.includes('vercel.app'));
+    setIsDev(window.location.hostname === 'localhost' || window.location.hostname.includes('pages.dev'));
 
     // Get current brand from localStorage
     const stored = localStorage.getItem('brand_override') as DomainBrand | null;

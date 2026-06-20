@@ -9,7 +9,7 @@ interface ProgramHandbookProps {
 }
 
 const ProgramHandbook: React.FC<ProgramHandbookProps> = ({ isMini = false, onExit }) => {
-  const EXTERNAL_URL = "https://programhandbook.vercel.app/";
+  const EXTERNAL_URL = "https://pilotrecognition.com";
   const [showExit, setShowExit] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
 

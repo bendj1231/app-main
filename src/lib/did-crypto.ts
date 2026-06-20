@@ -1,7 +1,7 @@
 /**
  * did-crypto.ts
  * Client-side DID cryptography using native browser Web Crypto API.
- * Zero cost, zero npm packages, runs on Vercel.
+ * Zero cost, zero npm packages, runs anywhere (Cloudflare Pages, Vercel, etc).
  *
  * Implements:
  * - JWS (JSON Web Signature) — pilot signs their own data

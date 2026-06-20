@@ -10,7 +10,7 @@ interface ExamTerminalProps {
 }
 
 const ExamTerminal: React.FC<ExamTerminalProps> = ({ isMini = false, onExit }) => {
-  const EXAM_URL = "https://examinationterminal.vercel.app/";
+  const EXAM_URL = "https://pilotrecognition.com";
   const [showExit, setShowExit] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
 

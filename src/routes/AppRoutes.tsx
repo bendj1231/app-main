@@ -254,7 +254,7 @@ const PilotRecognitionPage = lazy(() =>
   }))
 );
 const PilotRecognitionProfilePage = lazy(() =>
-  import('@/components/website/components/pilot-recognition/PilotRecognitionProfilePage').then(
+  import('@/components/website/pages/PilotRecognitionProfilePage').then(
     (m) => ({ default: m.PilotRecognitionProfilePage })
   )
 );
@@ -1207,9 +1207,7 @@ export const AppRoutes = () => {
         <Route path="/recognition-plus-comparison" element={<RecognitionPlusComparisonPage />} />
         <Route
           path="/pilot-recognition-profile"
-          element={
-            <PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
+          element={<PilotRecognitionProfilePage />}
         />
         <Route
           path="/pilot-licensure-experience"

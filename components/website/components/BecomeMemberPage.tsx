@@ -6,10 +6,8 @@ import { MeshGradient } from '@paper-design/shaders-react';
 // TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
-import { supabase } from '../../../src/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
-import { issueAndStoreCredential, issueAndStoreCredentialSelfHosted } from '../../../src/lib/wallet';
-import { getRegionalSupabaseClient, getJurisdictionCode } from '../../../lib/regionalRouter';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -176,6 +174,7 @@ const LICENSE_ACCESS_MATRIX: Record<string, {
 };
 
 const OCCUPATIONS = [
+    'None / No Licence',
     'Student Pilot',
     'Private Pilot (PPL)',
     'Commercial Pilot (CPL)',
@@ -190,18 +189,16 @@ const OCCUPATIONS = [
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
+    const { user: auth0User, getAccessTokenSilently, loginWithRedirect } = useAuth0();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
     const setupInitRef = React.useRef(false);
-    // Supabase session for Google-OAuth users (not Auth0)
-    const [supabaseUser, setSupabaseUser] = useState<{ id: string; email: string; name: string } | null>(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showEmailForm, setShowEmailForm] = useState(false);
     const [authError, setAuthError] = useState('');
     const [authLoading, setAuthLoading] = useState(false);
-    const [supabaseSessionLoading, setSupabaseSessionLoading] = useState(isSetup);
 
     // Run once on mount — clear flags that would block session restoration on OAuth redirect
     useEffect(() => {
@@ -229,17 +226,30 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [typeRatings, setTypeRatings] = useState<string[]>([]);
     const [typeRatingInput, setTypeRatingInput] = useState('');
     const [elpLevel, setElpLevel] = useState('');
+    const [medicalClass, setMedicalClass] = useState('');
+    const [otherLicence, setOtherLicence] = useState('');
     const [showMoreClasses, setShowMoreClasses] = useState(false);
     const [showMoreCategories, setShowMoreCategories] = useState(false);
     const [showAircraftSection, setShowAircraftSection] = useState(false);
     const [showRatingsSection, setShowRatingsSection] = useState(false);
     const [saving, setSaving] = useState(false);
+
+    // ── Pilot Career Status (pilotshortage.org compliant) ──
+    const [employmentStatus, setEmploymentStatus] = useState<'employed' | 'instructor' | 'transitioning' | 'graduate' | 'unemployed' | 'shifted_career' | 'exploring' | ''>('');
+    const [unemployedDuration, setUnemployedDuration] = useState('');
+    const [currentJob, setCurrentJob] = useState('');
+    const [careerGoal, setCareerGoal] = useState('');
+    const [pilotStage, setPilotStage] = useState('');
+    const [showRedirect, setShowRedirect] = useState(false);
+    const NON_PILOT_STAGES = ['aspirant', 'student_no_license', 'ground_school'];
+    const isVisitor = occupation === 'None / No Licence';
     const [saveError, setSaveError] = useState('');
     const [showLogbookModal, setShowLogbookModal] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
     const [providerConnected, setProviderConnected] = useState(false);
     const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
     const [showWalletSelector, setShowWalletSelector] = useState(false);
+    const [showResourceSelector, setShowResourceSelector] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
     const [walletConnected, setWalletConnected] = useState(false);
     const [showPasskeyCancelled, setShowPasskeyCancelled] = useState(false);
@@ -266,23 +276,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setEnableShader(shouldEnable3DEffects());
     }, []);
 
-    // ── Detect Supabase session (for Google OAuth users who bypass Auth0) ──
+    // ── Detect Auth0 user and pre-populate display name ──
     useEffect(() => {
-        if (!isSetup) return;
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            if (session?.user) {
-                const sbUser = {
-                    id: session.user.id,
-                    email: session.user.email || '',
-                    name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || '',
-                };
-                setSupabaseUser(sbUser);
-                // Pre-populate display name from Supabase user metadata
-                setDisplayName(sbUser.name);
-            }
-            setSupabaseSessionLoading(false);
-        });
-    }, [isSetup]);
+        if (isSetup && auth0User) {
+            const name = auth0User.name || auth0User.email?.split('@')[0] || '';
+            setDisplayName(name);
+        }
+    }, [isSetup, auth0User]);
 
     useEffect(() => {
         const ref = new URLSearchParams(window.location.search).get('ref');
@@ -291,31 +291,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, []);
 
-    useEffect(() => {
-        if (isSetup && supabaseUser) {
-            setDisplayName(supabaseUser.name || supabaseUser.email?.split('@')[0] || '');
-        }
-    }, [isSetup, supabaseUser]);
-
     // ── Check profile existence after authentication and redirect accordingly ──
     const [profileCheckComplete, setProfileCheckComplete] = useState(false);
     const [profileExists, setProfileExists] = useState<boolean | null>(null);
 
-    // Check profile for Supabase users
+    // Check profile for Auth0 users
     useEffect(() => {
-        if (!isSetup || !supabaseUser || profileCheckComplete) return;
+        if (!isSetup || !auth0User?.sub || profileCheckComplete) return;
 
         const checkProfile = async () => {
-            const userId = supabaseUser.id;
-            console.log('[DEBUG][BecomeMember] Checking profile for Supabase user:', userId);
-            const exists = await checkUserProfileExists(userId);
+            const auth0Id = auth0User.sub;
+            console.log('[DEBUG][BecomeMember] Checking profile for Auth0 user:', auth0Id);
+            const exists = await checkUserProfileExists(auth0Id);
             console.log('[DEBUG][BecomeMember] Profile exists:', exists);
             setProfileExists(exists);
             setProfileCheckComplete(true);
         };
 
         checkProfile();
-    }, [isSetup, supabaseUser, profileCheckComplete]);
+    }, [isSetup, auth0User, profileCheckComplete]);
 
     // Redirect based on profile existence
     useEffect(() => {
@@ -426,7 +420,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
-        const sbUserId = supabaseUser?.id;
+        const sbUserId = auth0User?.sub;
 
         // Restore wallet state only if it belongs to the current user
         const savedWallet = sessionStorage.getItem('wallet_claimed_provider');
@@ -442,7 +436,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedWallet(savedWallet);
             // Unlock Commit card if we have logbook + wallet
             if (logbookSynced || sessionStorage.getItem('mfb_total_hours')) {
-                setSetupStage(3);
+                setSetupStage(5);
             }
         }
 
@@ -455,7 +449,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
             // If returning from logbook OAuth, land on Stage 3 (Hours + PIC)
             if (logbookSynced) {
-                setSetupStage(3);
+                setSetupStage(5);
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
@@ -470,17 +464,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     // Silent partial save — called after each step confirm so data is never lost even if user drops off
     const savePartialProfile = async (fields: Record<string, any>) => {
         try {
-            const { data: { session } } = await supabase.auth.getSession();
-            const sbUserId = session?.user?.id;
-            if (!sbUserId) return;
-            await supabase.from('profiles').update(fields).eq('id', sbUserId);
+            if (!auth0User?.sub) return;
+            await callWorker('updateProfile', { id: auth0User.sub, ...fields });
         } catch (e) {
             console.warn('[BecomeMember] partial save failed (non-blocking):', e);
         }
     };
 
     const handleSaveProfile = async () => {
-        const { data: { session: dbgSession } } = await supabase.auth.getSession();
+        if (!auth0User?.sub) { setSaveError('Authentication error. Please sign in again.'); return; }
         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
@@ -488,159 +480,61 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (!cleanLast || cleanLast.length < 1) { setSaveError('Last name is required.'); return; }
         if (!cleanName || cleanName.length < 2) { setSaveError('Callsign is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
-        if (!issuingAuthority || issuingAuthority.trim() === '') { setSaveError('License issuing authority is required to determine your data residency region.'); return; }
+        if (!issuingAuthority || issuingAuthority.trim() === '') { setSaveError('License issuing authority is required.'); return; }
         const wholeHrs = parseInt(hoursWhole);
         const mins = parseInt(hoursMinutes || '0');
         if (hoursWhole && (isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999)) { setSaveError('Please enter valid flight hours.'); return; }
         if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
         const hours = wholeHrs + mins / 60;
-        const sbUserId = dbgSession?.user?.id || supabaseUser?.id;
-        if (!sbUserId) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
-            // Determine region based on license issuing authority
-            const regionalSupabase = getRegionalSupabaseClient(issuingAuthority);
-            const jurisdictionCode = getJurisdictionCode(issuingAuthority);
+            const dcaAgreed = sessionStorage.getItem('dca_agreed') === 'true';
+            const dcaAgreedAt = sessionStorage.getItem('dca_agreed_at') || null;
 
-            const payload = {
+            const workerPayload = {
+                email: auth0User.email || '',
+                role: isVisitor ? 'visitor' : 'pilot',
+                is_visitor: isVisitor,
+                name: `${cleanFirst} ${cleanLast}`.trim(),
                 display_name: cleanName,
-                full_name: `${cleanFirst} ${cleanLast}`.trim(),
+                first_name: cleanFirst,
+                last_name: cleanLast,
                 current_occupation: occupation,
+                other_licence: otherLicence || null,
                 date_of_birth: dob || null,
+                nationality: nationality || null,
                 total_flight_hours: hours || null,
+                hours_whole: hoursWhole || null,
+                hours_minutes: hoursMinutes || null,
                 aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null,
                 aircraft_rated_on: aircraftTypes.length > 0 ? aircraftTypes.join(', ') : null,
-                nationality: nationality || null,
+                aircraft_category: aircraftCategory || null,
                 license_issuing_authority: issuingAuthority || null,
                 country_of_license: issuingAuthority || null,
-                origin_jurisdiction: jurisdictionCode,
+                origin_jurisdiction: issuingAuthority || null,
                 ratings: ratings.length > 0 ? ratings : null,
                 license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
+                type_rating_input: typeRatingInput || null,
+                elp_level: elpLevel || null,
+                medical_class: medicalClass || null,
+                employment_status: employmentStatus || null,
+                unemployed_duration: unemployedDuration || null,
+                current_job: currentJob || null,
+                career_goal: careerGoal || null,
+                pilot_stage: pilotStage || null,
+                show_aircraft_section: showAircraftSection,
+                show_ratings_section: showRatingsSection,
+                show_more_classes: showMoreClasses,
+                show_more_categories: showMoreCategories,
+                dca_agreed: dcaAgreed ? 1 : 0,
+                dca_agreed_at: dcaAgreedAt,
             };
+            console.log('[DEBUG][Worker] Full profile save payload:', JSON.stringify(workerPayload, null, 2));
 
-            // Upsert profile by Supabase user id
-            const { data: existing } = await regionalSupabase
-                .from('profiles')
-                .select('id')
-                .eq('id', sbUserId)
-                .maybeSingle();
-            if (existing) {
-                const { error: fbError } = await regionalSupabase
-                    .from('profiles')
-                    .update(payload)
-                    .eq('id', sbUserId);
-                if (fbError) { console.error('🔴 [handleSaveProfile] update error:', fbError); throw fbError; }
-            } else {
-                const userEmail = dbgSession?.user?.email || supabaseUser?.email || '';
-                const { count } = await regionalSupabase
-                    .from('profiles')
-                    .select('id', { count: 'exact', head: true });
-                const nextNum = (count ?? 2) + 1;
-                const autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
-                const { error: insertError } = await regionalSupabase
-                    .from('profiles')
-                    .insert({
-                        id: sbUserId,
-                        email: userEmail,
-                        role: 'mentee',
-                        status: 'active',
-                        pilot_id: autoPilotId,
-                        enrolled_programs: [],
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
-                        ...payload,
-                    });
-                if (insertError) { console.error('🔴 [handleSaveProfile] insert error:', insertError); throw insertError; }
-            }
-
-            // Issue self-hosted Verifiable Credential (Mauritius Data Controller framework)
-            try {
-                // Get profile ID for credential issuance
-                const { data: profileData } = await supabase
-                    .from('profiles')
-                    .select('id, license_id, license_type, license_expiry, country_of_license')
-                    .eq('id', sbUserId)
-                    .single();
-
-                if (profileData?.id) {
-                    const licenseNum = profileData.license_id || `TEMP-${sbUserId.slice(-8)}`;
-                    const licenseType = profileData.license_type || occupation || 'Pilot';
-                    const licenseExpiry = profileData.license_expiry || null;
-                    const issuingAuth = profileData.country_of_license || nationality || 'CAAP';
-
-                    const vcResult = await issueAndStoreCredentialSelfHosted(
-                        sbUserId,
-                        profileData.id,
-                        licenseNum,
-                        licenseType,
-                        issuingAuth,
-                        licenseExpiry,
-                        hours || 0
-                    );
-                    
-                    if (vcResult.success) {
-                    } else {
-                        console.warn('🟡 [VC] Self-hosted credential issuance failed:', vcResult.error);
-                    }
-                }
-            } catch (vcErr) {
-                console.error('🔴 [VC] Error during credential issuance:', vcErr);
-                // Non-blocking — profile is already saved
-            }
-
-            // Passkey registration
-            if (window.PublicKeyCredential) {
-                try {
-                    const { data: { session: sbSession } } = await supabase.auth.getSession();
-                    const userId = sbSession?.user?.id || sbUserId;
-                    const userEmail = sbSession?.user?.email || supabaseUser?.email || sbUserId;
-                    const challengeBytes = new Uint8Array(32);
-                    crypto.getRandomValues(challengeBytes);
-                    const userIdBytes = new TextEncoder().encode(userId);
-                    const rpId = window.location.hostname === 'localhost'
-                        ? 'localhost'
-                        : window.location.hostname.replace('www.', '');
-                    const result = await navigator.credentials.create({
-                        publicKey: {
-                            challenge: challengeBytes.buffer,
-                            rp: { name: 'PilotRecognition', id: rpId },
-                            user: { id: userIdBytes.buffer, name: userEmail, displayName: cleanName },
-                            pubKeyCredParams: [
-                                { type: 'public-key', alg: -7 },
-                                { type: 'public-key', alg: -257 },
-                            ],
-                            authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
-                            timeout: 60000,
-                        },
-                    }) as PublicKeyCredential | null;
-                    if (result) {
-                        const attestation = result.response as AuthenticatorAttestationResponse;
-                        const pubKeyBuf = attestation.getPublicKey?.();
-                        // Persist credential ID to localStorage so login modal can use it
-                        localStorage.setItem('pr_passkey_registered', 'true');
-                        localStorage.setItem('pr_passkey_credential_id', result.id);
-                        // Persist public key to Supabase pilot_passkeys for server-side verify
-                        const ua = navigator.userAgent;
-                        const deviceName = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Unknown';
-                        await supabase.from('pilot_passkeys').upsert({
-                            user_id: userId,
-                            credential_id: result.id,
-                            public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
-                            sign_count: 0,
-                            device_name: deviceName,
-                            transports: (result as any).response?.getTransports?.() ?? [],
-                        }, { onConflict: 'credential_id' });
-                    } else {
-                    }
-                } catch (passkeyErr: any) {
-                    console.error('🔴 [Passkey] credentials.create FAILED:', passkeyErr?.name, passkeyErr?.message, passkeyErr);
-                }
-            } else {
-                console.warn('🟡 [Passkey] PublicKeyCredential not available — WebAuthn not supported');
-            }
-
-            onNavigate('platform');
+            const result = await callWorker('upsertProfile', workerPayload);
+            console.log('[BecomeMember] Profile saved:', result);
+            setShowResourceSelector(true);
         } catch (err) {
             console.error('🔴 [handleSaveProfile] outer catch:', err);
             setSaveError('Failed to save. Please try again.');
@@ -658,10 +552,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     };
 
     const handleGoogleOAuth = async () => {
-        const redirectTo = `${window.location.origin}/become-member?setup=1`;
-        await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: { redirectTo },
+        await loginWithRedirect({
+            authorizationParams: {
+                connection: 'google-oauth2',
+            },
+            appState: {
+                returnTo: '/data-controller-agreement?signup=google',
+            },
         });
     };
 
@@ -669,30 +566,36 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         onNavigate('data-controller-agreement?signup=apple');
     };
 
-    // Check if user has an existing profile in the database
-    const checkUserProfileExists = async (userId: string): Promise<boolean> => {
+    // Worker API helper
+    const WORKER_URL = 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+    const callWorker = async (action: string, params: Record<string, unknown>) => {
+        const token = await getAccessTokenSilently();
+        const res = await fetch(`${WORKER_URL}/api`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ action, params }),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({ error: 'Worker request failed' }));
+            throw new Error((err as any).error || `Worker error: ${res.status}`);
+        }
+        return res.json();
+    };
+
+    // Check if user has an existing profile via Worker
+    const checkUserProfileExists = async (auth0Id: string): Promise<boolean> => {
         try {
-            const regionalSupabase = getRegionalSupabaseClient('CAAP');
-            const { data, error } = await regionalSupabase
-                .from('profiles')
-                .select('id')
-                .eq('id', userId)
-                .maybeSingle();
-            if (error) {
-                console.error('Error checking profile:', error);
-                return false;
-            }
-            return !!data;
-        } catch (err) {
-            console.error('Error checking profile:', err);
+            const result = await callWorker('getProfile', { auth0_id: auth0Id });
+            return !!result;
+        } catch {
             return false;
         }
     };
 
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
-    // ── While session rehydrates (skip wait if returning from logbook sync) ─
-    if (isSetup && supabaseSessionLoading && !logbookSynced) {
+    // ── While Auth0 session loads (skip wait if returning from logbook sync) ─
+    if (isSetup && !auth0User && !logbookSynced) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -702,7 +605,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }
 
     // ── While checking profile existence ─-
-    if (isSetup && !profileCheckComplete && supabaseUser) {
+    if (isSetup && !profileCheckComplete && auth0User) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -711,8 +614,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         );
     }
 
-    // ── Profile setup step (redirected here after Auth0 signup, Supabase OAuth, or logbook sync) ──
-    if (isSetup && (!!supabaseUser || logbookSynced)) {
+    // ── Profile setup step (redirected here after Auth0 signup or logbook sync) ──
+    if (isSetup && (!!auth0User || logbookSynced)) {
         return (
             <>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
@@ -792,7 +695,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             }
                             .fic-title-red { color: #dc2626 !important; }
                             .step-card-done .fic-title { color: #ffffff !important; }
-                            .fic-input, .fic-select {
+                            .fic-input {
                                 width: 100%;
                                 background: #f8fafc;
                                 border: 1px solid #e2e8f0;
@@ -805,12 +708,58 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 transition: border-color 0.2s, box-shadow 0.2s;
                                 box-sizing: border-box;
                             }
-                            .fic-input:focus, .fic-select:focus {
+                            .fic-input:focus {
                                 border-color: #334155;
                                 box-shadow: 0 0 0 3px rgba(51,65,85,0.08);
                                 background: #ffffff;
                             }
                             .fic-input::placeholder { color: #94a3b8; }
+                            .fic-select {
+                                width: 100%;
+                                appearance: none;
+                                -webkit-appearance: none;
+                                background: rgba(255,255,255,0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 16px center;
+                                border: 1px solid rgba(255,255,255,0.8);
+                                border-radius: 14px;
+                                padding: 13px 44px 13px 18px;
+                                color: #0f172a;
+                                font-size: 14px;
+                                font-weight: 500;
+                                letter-spacing: -0.01em;
+                                outline: none;
+                                cursor: pointer;
+                                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                                box-sizing: border-box;
+                                backdrop-filter: blur(20px) saturate(180%);
+                                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);
+                            }
+                            .fic-select:hover {
+                                background: rgba(255,255,255,0.85);
+                                border-color: rgba(200,210,230,0.8);
+                                box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+                                transform: translateY(-1px);
+                            }
+                            .fic-select:focus {
+                                border-color: rgba(100,120,160,0.5);
+                                box-shadow: 0 0 0 4px rgba(100,120,160,0.08), 0 4px 20px rgba(0,0,0,0.08);
+                                background: rgba(255,255,255,0.9);
+                            }
+                            .fic-select option {
+                                font-size: 14px;
+                                font-weight: 500;
+                                color: #0f172a;
+                                background: #ffffff;
+                                padding: 10px 14px;
+                            }
+                            .fic-select optgroup {
+                                font-size: 11px;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                                letter-spacing: 0.08em;
+                                color: #94a3b8;
+                                background: #f8fafc;
+                            }
                             .fic-subtext {
                                 font-size: 12px;
                                 color: #94a3b8;
@@ -838,14 +787,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {/* Stage indicator */}
                                 <div className="mb-6">
                                     <div className="flex gap-2 mb-3">
-                                        {[1, 2, 3, 4].map(s => (
+                                        {[1, 2, 3, 4, 5, 6].map(s => (
                                             <div key={s} className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${setupStage >= s ? 'bg-red-500' : 'bg-slate-200'}`} />
                                         ))}
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 4</span>
+                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 6</span>
                                         <span className="text-xs font-medium text-slate-400">
-                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Flight Hours' : 'Create Profile'}
+                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Licensure and Type Ratings' : setupStage === 4 ? 'Pilot Status' : setupStage === 5 ? 'Flight Hours' : 'Create Profile'}
                                         </span>
                                     </div>
                                 </div>
@@ -859,20 +808,29 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <input className="fic-input" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First name" />
                                         <input className="fic-input" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last name" />
                                     </div>
-                                    <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Callsign / nickname" />
                                     <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                            Date of Birth
-                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#dc2626', border: '1px solid #b91c1c', borderRadius: '4px', padding: '1px 5px', fontSize: '9px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛃 Verified under Article 11</span>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                                            Callsign / Nickname
                                         </div>
-                                        <input type="date" value={dob} onChange={e => setDob(e.target.value)} max={new Date().toISOString().split('T')[0]} style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: `1px solid ${dob && (new Date().getFullYear() - new Date(dob).getFullYear() - (new Date() < new Date(new Date(dob).setFullYear(new Date(dob).getFullYear() + (new Date().getFullYear() - new Date(dob).getFullYear()))) ? 1 : 0)) < 18 ? '#fca5a5' : '#cbd5e1'}`, borderRadius: '8px', fontSize: '13px', color: '#0f172a', colorScheme: 'light', boxSizing: 'border-box' }} />
+                                        <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="e.g. Skyhawk" />
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                                            Date of Birth
+                                        </div>
+                                        <input type="text" value={dob} onChange={e => { const raw = e.target.value.replace(/\D/g, '').slice(0, 8); let fmt = raw; if (raw.length >= 4) fmt = raw.slice(0, 2) + '/' + raw.slice(2, 4) + '/' + raw.slice(4); else if (raw.length >= 2) fmt = raw.slice(0, 2) + '/' + raw.slice(2); setDob(fmt); }} placeholder="DD/MM/YYYY" style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: `1px solid ${dob && (() => { const parts = dob.split('/'); if (parts.length !== 3) return false; const d = parseInt(parts[0]), m = parseInt(parts[1]), y = parseInt(parts[2]); if (isNaN(d) || isNaN(m) || isNaN(y)) return false; const birth = new Date(y, m - 1, d); const today = new Date(); let age = today.getFullYear() - birth.getFullYear(); const mo = today.getMonth() - birth.getMonth(); if (mo < 0 || (mo === 0 && today.getDate() < birth.getDate())) age--; return age < 18; })() ? '#fca5a5' : '#cbd5e1'}`, borderRadius: '8px', fontSize: '13px', color: '#0f172a', boxSizing: 'border-box' }} />
                                         {(() => {
                                             if (!dob) return null;
+                                            const parts = dob.split('/');
+                                            if (parts.length !== 3) return null;
+                                            const d = parseInt(parts[0]), m = parseInt(parts[1]), y = parseInt(parts[2]);
+                                            if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
+                                            const birth = new Date(y, m - 1, d);
+                                            if (isNaN(birth.getTime())) return null;
                                             const today = new Date();
-                                            const birth = new Date(dob);
                                             let age = today.getFullYear() - birth.getFullYear();
-                                            const m = today.getMonth() - birth.getMonth();
-                                            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                                            const mo = today.getMonth() - birth.getMonth();
+                                            if (mo < 0 || (mo === 0 && today.getDate() < birth.getDate())) age--;
                                             if (age >= 18) return null;
                                             return (
                                                 <p style={{ margin: '6px 0 0 0', fontSize: '11px', color: '#dc2626', fontWeight: 600, lineHeight: 1.5 }}>
@@ -898,10 +856,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
                                             <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Real name, date of birth, and nationality are <strong>client-side encrypted</strong> and fully hidden under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                         </div>
+                                        <div style={{ fontSize: '10px', color: '#94a3b8', lineHeight: 1.4, marginTop: '2px', paddingLeft: '18px' }}>
+                                            Notice: account information will be displayed across pilotrecognition.com, pilotcareerpathways.com, pilotshortage.org
+                                        </div>
+                                        <div style={{ fontSize: '10px', color: '#3b82f6', lineHeight: 1.4, marginTop: '4px', paddingLeft: '18px' }}>
+                                            <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>📄 Data Controller Agreement</a>
+                                        </div>
                                     </div>
                                 </div>{/* end Section 1 */}
                                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSetupStage(2)}
+                                        disabled={!firstName.trim() || !lastName.trim() || !dob || !nationality}
+                                        className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-slate-900"
+                                    >Next →</button>
                                 </div>
                                 </>
                                 )}
@@ -920,26 +889,65 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Current Pilot Licence</div>
                                         <select
                                             className="fic-select"
-                                            value={occupation}
+                                            value={occupation === 'None / No Licence' ? '' : occupation}
                                             onChange={e => setOccupation(e.target.value)}
-                                            
-                                            style={{ colorScheme: 'light' }}
+                                            disabled={occupation === 'None / No Licence'}
+                                            style={{ opacity: occupation === 'None / No Licence' ? 0.5 : 1, cursor: occupation === 'None / No Licence' ? 'not-allowed' : 'pointer' }}
                                         >
-                                            <option value="" disabled>Select current licence tier...</option>
-                                            {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                                            <option value="" disabled>Select pilot licence...</option>
+                                            {OCCUPATIONS.filter(o => o !== 'None / No Licence').map(o => <option key={o} value={o}>{o}</option>)}
                                         </select>
+                                        {occupation === 'Other' && (
+                                            <div style={{ marginTop: '8px' }}>
+                                                <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Specify licence</div>
+                                                <input className="fic-input" type="text" value={otherLicence} onChange={e => setOtherLicence(e.target.value)} placeholder="e.g. Sport Pilot, Recreational Pilot" />
+                                            </div>
+                                        )}
+                                        {/* None required checkbox */}
+                                        {(() => {
+                                            const isNone = occupation === 'None / No Licence';
+                                            return (
+                                                <button key="none" type="button"
+                                                    onClick={() => { setOccupation(isNone ? '' : 'None / No Licence'); setPilotStage(''); }}
+                                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', marginTop: '10px', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                        {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                    </span>
+                                                    <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I don't hold a pilot licence</span>
+                                                </button>
+                                            );
+                                        })()}
                                         {(occupation === 'Student Pilot' || occupation === 'Cadet') && (
-                                            <div style={{ marginTop: '8px', padding: '10px 12px', background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '8px' }}>
-                                                <p style={{ margin: '0 0 4px 0', fontSize: '11px', fontWeight: 700, color: '#9a3412', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                                    <span style={{ background: '#dc2626', color: '#fff', borderRadius: '3px', padding: '1px 5px', fontSize: '9px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛃 Cadet Track Active</span>
-                                                </p>
-                                                <p style={{ margin: 0, fontSize: '11px', color: '#7c2d12', lineHeight: 1.55 }}>
+                                            <div style={{ marginTop: '10px', padding: '14px 16px', background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: '14px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                                                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', background: 'rgba(15,23,42,0.85)', borderRadius: '5px', color: '#fff', fontSize: '10px', fontWeight: 700 }}>✓</span>
+                                                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a', letterSpacing: '0.04em' }}>Cadet Track Active</span>
+                                                </div>
+                                                <p style={{ margin: 0, fontSize: '11px', color: '#475569', lineHeight: 1.55 }}>
                                                     Your profile is optimised for Terminal 2 regional operators, flight instructors, and flight school pathways. Premium Terminal 3 gates will remain locked until CPL/ATPL milestones are claimed.
                                                 </p>
                                             </div>
                                         )}
                                     </div>
                                     {/* Pilot licence upload slot */}
+
+                                    {/* ── PILOT GATE ── */}
+                                    {occupation && occupation !== 'None / No Licence' && (
+                                    <>
+                                    <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9', marginTop: '4px' }}>Training Stage</div>
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>What stage are you at?</div>
+                                        <select className="fic-select" value={pilotStage} onChange={e => { const val = e.target.value; setPilotStage(val); setShowRedirect(NON_PILOT_STAGES.includes(val)); }}>
+                                            <option value="" disabled>Select your current career stage...</option>
+                                            <optgroup label="✈️ Licensed Pilots">
+                                                <option value="bachelor_degree">Graduated with Bachelor of Commercial Flying</option>
+                                                <option value="fast_track">Completed Fast-Track Pilot Course</option>
+                                                <option value="licensed_no_hours">Licensed but low/no hours (CPL/PPL)</option>
+                                                <option value="current_training">Currently in flight training</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
                                     {/* Issuing Authority */}
                                     <div>
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Issuing Authority / State of Issue</div>
@@ -947,16 +955,57 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             className="fic-select"
                                             value={issuingAuthority}
                                             onChange={e => setIssuingAuthority(e.target.value)}
-                                            
-                                            style={{ colorScheme: 'light' }}
                                         >
                                             <option value="" disabled>Select issuing authority...</option>
                                             {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
                                         </select>
                                         {/* Medical certificate upload slot */}
                                     </div>
+                                    </>
+                                    )}
+
+                                    {occupation === 'None / No Licence' && (
+                                    <>
+                                    <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9', marginTop: '4px' }}>Training Stage</div>
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>What stage are you at?</div>
+                                        <select className="fic-select" value={pilotStage} onChange={e => { const val = e.target.value; setPilotStage(val); setShowRedirect(NON_PILOT_STAGES.includes(val)); }}>
+                                            <option value="" disabled>Select your current career stage...</option>
+                                            <optgroup label="🎓 Pre-Licensed / Aspirants">
+                                                <option value="student_no_license">Student Pilot — no license yet</option>
+                                                <option value="ground_school">Ground School only — no flight hours</option>
+                                                <option value="aspirant">Interested in aviation — no pilot qualifications</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
+                                    </>
+                                    )}
+
+                                </div>
+                                {/* Mission strip — glassmorphism */}
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '12px 14px', background: 'rgba(255,255,255,0.55)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                    <div style={{ fontSize: '11px', color: '#1e293b', lineHeight: 1.6 }}>
+                                        <strong>Verified pilots deserve recognition.</strong> We're connecting qualified pilots to operators through trust, transparency, and career-aligned pathways — not stacks of resumes.{' '}
+                                        <a href="/pilot-recognition-profile" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 700, textDecoration: 'underline', whiteSpace: 'nowrap' }}>Learn more →</a>
+                                    </div>
+                                </div>
+                                </div>{/* end Section 2 */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(1)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(occupation && occupation !== 'None / No Licence' ? 3 : 4)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                )}
+
+                                {setupStage === 3 && (
+                                <>
+                                {/* ── SECTION 3: Licensure and Type Ratings ── */}
+                                <div className="border-b border-slate-200 pb-6 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Licensure and Type Ratings</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     {/* ── AIRCRAFT & PRIVILEGES — progressive disclosure ── */}
-                                    {occupation && issuingAuthority && (
+                                    {occupation !== 'None / No Licence' && (
                                         <>
                                         <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9', marginTop: '4px' }}>Aircraft &amp; Privileges</div>
 
@@ -965,42 +1014,51 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             const PRIMARY = ['Single Engine Land (SEL)', 'Multi-Engine Land (MEL)', 'Rotorcraft — Helicopter', 'Multi-Engine Sea (MES)'];
                                             const EXTENDED = ['Single Engine Sea (SES)', 'Rotorcraft — Gyroplane', 'Glider', 'Powered Lift', 'Light Sport (LSA)', 'eVTOL / Powered Lift', 'Lighter-Than-Air', 'UAS / Drone', 'Turboprop', 'Experimental / Homebuilt'];
                                             const visible = showMoreClasses ? [...PRIMARY, ...EXTENDED] : PRIMARY;
+                                            const selectedCount = aircraftTypes.filter(t => t !== '__none__').length;
                                             return (
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aircraft Class / Type <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(select all that apply)</span></div>
-                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                                        {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
-                                                            const isNone = aircraftTypes.includes('__none__');
-                                                            return (
-                                                                <button key="none" type="button"
-                                                                    onClick={() => setAircraftTypes(isNone ? [] : ['__none__'])}
-                                                                    style={{ padding: '5px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                                                    None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
-                                                                </button>
-                                                            );
-                                                        })()}
-                                                        {!aircraftTypes.includes('__none__') && visible.map(cls => {
-                                                            const isSel = aircraftTypes.includes(cls);
-                                                            return (
-                                                                <button key={cls} type="button"
-                                                                    onClick={() => setAircraftTypes(prev => isSel ? prev.filter(t => t !== cls) : [...prev, cls])}
-                                                                    style={{ padding: '5px 12px', background: isSel ? '#0f172a' : '#f8fafc', border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                                                    {cls}{isSel && <span style={{ opacity: 0.5, marginLeft: '2px' }}>×</span>}
-                                                                </button>
-                                                            );
-                                                        })}
-                                                        {!aircraftTypes.includes('__none__') && (
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '14px', background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: '16px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aircraft Class / Type</div>
+                                                        {selectedCount > 0 && <span style={{ fontSize: '10px', color: '#0f172a', fontWeight: 700, background: 'rgba(15,23,42,0.08)', padding: '2px 8px', borderRadius: '10px' }}>{selectedCount} selected</span>}
+                                                    </div>
+                                                    {/* None required checkbox */}
+                                                    {occupation !== 'None / No Licence' && (() => {
+                                                        const isNone = aircraftTypes.includes('__none__');
+                                                        return (
+                                                            <button key="none" type="button"
+                                                                onClick={() => setAircraftTypes(isNone ? [] : ['__none__'])}
+                                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                    {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                                </span>
+                                                                <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I'm not yet operating aircraft</span>
+                                                            </button>
+                                                        );
+                                                    })()}
+                                                    {/* Pill grid */}
+                                                    {!aircraftTypes.includes('__none__') && (
+                                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                            {visible.map(cls => {
+                                                                const isSel = aircraftTypes.includes(cls);
+                                                                return (
+                                                                    <button key={cls} type="button"
+                                                                        onClick={() => setAircraftTypes(prev => isSel ? prev.filter(t => t !== cls) : [...prev, cls])}
+                                                                        style={{ padding: '6px 14px', background: isSel ? 'rgba(15,23,42,0.85)' : 'rgba(255,255,255,0.6)', border: `1px solid ${isSel ? 'rgba(15,23,42,0.9)' : 'rgba(255,255,255,0.7)'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s cubic-bezier(0.4,0,0.2,1)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px', boxShadow: isSel ? '0 2px 8px rgba(0,0,0,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }}>
+                                                                        {isSel && <span style={{ fontSize: '10px', opacity: 0.9 }}>✓</span>}{cls}
+                                                                    </button>
+                                                                );
+                                                            })}
                                                             <button type="button" onClick={() => setShowMoreClasses(p => !p)}
-                                                                style={{ padding: '5px 12px', background: 'transparent', border: '1px dashed #cbd5e1', borderRadius: '20px', color: '#94a3b8', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                                                                style={{ padding: '6px 14px', background: 'rgba(255,255,255,0.3)', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '20px', color: '#94a3b8', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
                                                                 {showMoreClasses ? '↑ Less' : `+ ${EXTENDED.length} more`}
                                                             </button>
-                                                        )}
-                                                    </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             );
                                         })()}
 
-                                        {/* Operational Ratings — always visible, expanded list */}
+                                        {/* Operational Ratings — Apple checklist style */}
                                         {(() => {
                                             const OPS_RATINGS = [
                                                 'Instrument Rating (IR)', 'Night Rating', 'Multi-Engine Rating (ME)',
@@ -1008,44 +1066,68 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 'Flight Instructor (CFI)', 'Check Airman', 'ATPL Frozen',
                                                 'EBT Qualified', 'Type Rating Instructor (TRI)', 'Type Rating Examiner (TRE)',
                                             ];
-                                            const hasRatings = ratings.filter(r => r !== '__none__').length > 0;
+                                            const selectedCount = ratings.filter(r => r !== '__none__').length;
                                             return (
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '14px', background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: '16px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operational Ratings <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(select all that apply)</span></div>
-                                                        {hasRatings && <span style={{ fontSize: '10px', color: '#ef4444', fontWeight: 700 }}>{ratings.filter(r => r !== '__none__').length} selected</span>}
+                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operational Ratings</div>
+                                                        {selectedCount > 0 && <span style={{ fontSize: '10px', color: '#0f172a', fontWeight: 700, background: 'rgba(15,23,42,0.08)', padding: '2px 8px', borderRadius: '10px' }}>{selectedCount} selected</span>}
                                                     </div>
-                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                                        {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
-                                                            const isNone = ratings.includes('__none__');
-                                                            return (
-                                                                <button key="none" type="button"
-                                                                    onClick={() => setRatings(isNone ? [] : ['__none__'])}
-                                                                    style={{ padding: '5px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                                                    None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
-                                                                </button>
-                                                            );
-                                                        })()}
-                                                        {!ratings.includes('__none__') && OPS_RATINGS.map(rating => {
-                                                            const isSel = ratings.includes(rating);
-                                                            return (
-                                                                <button key={rating} type="button"
-                                                                    onClick={() => setRatings(prev => isSel ? prev.filter(r => r !== rating) : [...prev, rating])}
-                                                                    style={{ padding: '5px 12px', background: isSel ? '#dc2626' : '#f8fafc', border: `1px solid ${isSel ? '#dc2626' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                                                    {rating}{isSel && <span style={{ opacity: 0.5, marginLeft: '2px' }}>×</span>}
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                    {/* None required checkbox */}
+                                                    {occupation !== 'None / No Licence' && (() => {
+                                                        const isNone = ratings.includes('__none__');
+                                                        return (
+                                                            <button key="none" type="button"
+                                                                onClick={() => setRatings(isNone ? [] : ['__none__'])}
+                                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                    {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                                </span>
+                                                                <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I don't hold any ratings yet</span>
+                                                            </button>
+                                                        );
+                                                    })()}
+                                                    {/* Pill grid */}
+                                                    {!ratings.includes('__none__') && (
+                                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                            {OPS_RATINGS.map(rating => {
+                                                                const isSel = ratings.includes(rating);
+                                                                return (
+                                                                    <button key={rating} type="button"
+                                                                        onClick={() => setRatings(prev => isSel ? prev.filter(r => r !== rating) : [...prev, rating])}
+                                                                        style={{ padding: '6px 14px', background: isSel ? 'rgba(15,23,42,0.85)' : 'rgba(255,255,255,0.6)', border: `1px solid ${isSel ? 'rgba(15,23,42,0.9)' : 'rgba(255,255,255,0.7)'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s cubic-bezier(0.4,0,0.2,1)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px', boxShadow: isSel ? '0 2px 8px rgba(0,0,0,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }}>
+                                                                        {isSel && <span style={{ fontSize: '10px', opacity: 0.9 }}>✓</span>}{rating}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             );
                                         })()}
-                                        {/* Type Ratings — conditional for CPL/ATPL, inside progressive disclosure */}
-                                        {['Commercial Pilot (CPL)', 'Airline Pilot (ATPL)', 'First Officer', 'Captain', 'Flight Instructor (CFI)'].includes(occupation) && (
-                                        <div>
-                                            <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
-                                                Type Ratings Held <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span>
+                                        {/* Type Ratings — conditional for licensed pilots, inside progressive disclosure */}
+                                        {['Private Pilot (PPL)', 'Commercial Pilot (CPL)', 'Airline Pilot (ATPL)', 'First Officer', 'Captain', 'Flight Instructor (CFI)'].includes(occupation) && (
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '14px', background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: '16px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Type Ratings Held <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                                {typeRatings.filter(r => r !== '__none__').length > 0 && <span style={{ fontSize: '10px', color: '#0f172a', fontWeight: 700, background: 'rgba(15,23,42,0.08)', padding: '2px 8px', borderRadius: '10px' }}>{typeRatings.filter(r => r !== '__none__').length} selected</span>}
                                             </div>
+                                            {/* None required checkbox */}
+                                            {occupation !== 'None / No Licence' && (() => {
+                                                const isNone = typeRatings.includes('__none__');
+                                                return (
+                                                    <button key="none" type="button"
+                                                        onClick={() => setTypeRatings(isNone ? [] : ['__none__'])}
+                                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                            {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                        </span>
+                                                        <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I don't hold any type ratings</span>
+                                                    </button>
+                                                );
+                                            })()}
+                                            {!typeRatings.includes('__none__') && (
+                                            <>
                                             {/* Popular type quick-select */}
                                             <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '6px' }}>
                                                 {['A320', 'B737', 'A350', 'B777', 'ATR72', 'E190', 'B787', 'A330', 'DHC-8', 'CRJ900'].map(t => {
@@ -1059,9 +1141,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     );
                                                 })}
                                             </div>
-                                            {typeRatings.length > 0 && (
+                                            {typeRatings.filter(r => r !== '__none__').length > 0 && (
                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '6px' }}>
-                                                    {typeRatings.map(tr => (
+                                                    {typeRatings.filter(r => r !== '__none__').map(tr => (
                                                         <span key={tr} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#0f172a', color: '#fff', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 600 }}>
                                                             {tr}
                                                             <button type="button" onClick={() => setTypeRatings(prev => prev.filter(r => r !== tr))} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', padding: '0', fontSize: '12px', lineHeight: 1 }}>×</button>
@@ -1097,14 +1179,36 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     style={{ padding: '8px 12px', background: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: 600, cursor: typeRatingInput.trim() ? 'pointer' : 'not-allowed', opacity: typeRatingInput.trim() ? 1 : 0.4 }}
                                                 >+ Add</button>
                                             </div>
+                                            </>
+                                            )}
                                         </div>
                                     )}
                                         </>
                                     )}
                                 </div>
+                                {occupation && occupation !== 'None / No Licence' && (
+                                <>
                                 {/* ELP Level */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>English Language Proficiency <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '14px', background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: '16px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>English Language Proficiency <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                        {elpLevel && elpLevel !== '__none__' && <span style={{ fontSize: '10px', color: '#0f172a', fontWeight: 700, background: 'rgba(15,23,42,0.08)', padding: '2px 8px', borderRadius: '10px' }}>Selected</span>}
+                                    </div>
+                                    {/* None required checkbox */}
+                                    {occupation !== 'None / No Licence' && (() => {
+                                        const isNone = elpLevel === '__none__';
+                                        return (
+                                            <button key="none" type="button"
+                                                onClick={() => setElpLevel(isNone ? '' : '__none__')}
+                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                    {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                </span>
+                                                <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I don't hold an ELP certification</span>
+                                            </button>
+                                        );
+                                    })()}
+                                    {elpLevel !== '__none__' && (
                                     <select
                                         value={elpLevel}
                                         onChange={e => setElpLevel(e.target.value)}
@@ -1116,30 +1220,166 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <option value="ELP Level 5">Level 5 — Extended (above standard; handles complex ATC exchanges, non-routine)</option>
                                         <option value="ELP Level 6">Level 6 — Expert (native/near-native; no retest required, lifetime validity)</option>
                                     </select>
+                                    )}
+                                </div>
+                                {/* Aeromedical Class */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '14px', background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: '16px', boxShadow: '0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aeromedical Class <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                        {medicalClass && medicalClass !== '__none__' && <span style={{ fontSize: '10px', color: '#0f172a', fontWeight: 700, background: 'rgba(15,23,42,0.08)', padding: '2px 8px', borderRadius: '10px' }}>Selected</span>}
+                                    </div>
+                                    {/* None required checkbox */}
+                                    {occupation !== 'None / No Licence' && (() => {
+                                        const isNone = medicalClass === '__none__';
+                                        return (
+                                            <button key="none" type="button"
+                                                onClick={() => setMedicalClass(isNone ? '' : '__none__')}
+                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(15,23,42,0.06)' : 'transparent', border: `1px solid ${isNone ? 'rgba(15,23,42,0.15)' : 'rgba(226,232,240,0.6)'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#0f172a' : '#cbd5e1'}`, background: isNone ? '#0f172a' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                    {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                </span>
+                                                <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#0f172a' : '#64748b', transition: 'all 0.15s' }}>None required — I don't hold a medical certificate</span>
+                                            </button>
+                                        );
+                                    })()}
+                                    {medicalClass !== '__none__' && (
+                                    <select
+                                        value={medicalClass}
+                                        onChange={e => setMedicalClass(e.target.value)}
+                                        style={{ width: '100%', padding: '9px 10px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '12px', color: medicalClass ? '#0f172a' : '#94a3b8', background: '#fff', appearance: 'auto' }}
+                                    >
+                                        <option value="">Select aeromedical class...</option>
+                                        <option value="Class 1">Class 1 — Airline Transport Pilots (ATPs). Most stringent standards: comprehensive vision, cardiovascular, and neurological evaluations. Valid 12 months (6 months if age 40+).</option>
+                                        <option value="Class 2">Class 2 — Commercial pilots, flight engineers, navigators. Thorough physical exam for commercial duties. Valid 12 months.</option>
+                                        <option value="Class 3">Class 3 — Student, recreational, and private pilots. Basic medical standard for safe flight. Valid 60 months under 40; 24 months if 40+.</option>
+                                    </select>
+                                    )}
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
                                 {/* Single eligibility notice */}
-                                <div style={{ padding: '10px 12px', background: '#fafafa', border: '1px solid #f1f5f9', borderRadius: '8px', textAlign: 'center' }}>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>Unlock document verification with <span style={{ color: '#ef4444' }}>Recognition+</span></p>
-                                    <p style={{ fontSize: '10px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-                                        Complete your free profile first — then upgrade to <strong style={{ color: '#0f172a' }}>Recognition+</strong> to upload your licence documents for verification. Operators and airlines will see a <strong style={{ color: '#16a34a' }}>✓ Verified</strong> badge on your profile, confirming your credentials are current and authentic.
-                                    </p>
+                                {occupation === 'None / No Licence' ? (
+                                    <div style={{ padding: '12px 14px', background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '8px', textAlign: 'center' }}>
+                                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#0c4a6e', margin: '0 0 4px 0' }}>Discover pathways into aviation</p>
+                                        <p style={{ fontSize: '10px', color: '#0369a1', margin: 0, lineHeight: 1.6 }}>
+                                            Not a pilot yet? Visit <a href="https://pilotshortage.org" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 700, textDecoration: 'underline' }}>pilotshortage.org</a> to learn about the global demand for pilots, training routes, and how you can build a career in aviation. Your journey starts with understanding the industry.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div style={{ padding: '10px 12px', background: '#fafafa', border: '1px solid #f1f5f9', borderRadius: '8px', textAlign: 'center' }}>
+                                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>Unlock document verification with <span style={{ color: '#ef4444' }}>Recognition+</span></p>
+                                        <p style={{ fontSize: '10px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                                            Complete your free profile first — then upgrade to <strong style={{ color: '#0f172a' }}>Recognition+</strong> to upload your licence documents for verification. Operators and airlines will see a <strong style={{ color: '#16a34a' }}>✓ Verified</strong> badge on your profile, confirming your credentials are current and authentic.
+                                        </p>
+                                    </div>
+                                )}
+                                </>)}
                                 </div>
-                                {/* Confirm button */}
-                                {/* Security stamp */}
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '12px 14px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-                                    <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
-                                    <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Licence tier and operational capabilities are <strong>client-side encrypted</strong> before cloud routing under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
-                                </div>
-                                </div>{/* end Section 2 */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <button type="button" onClick={() => setSetupStage(1)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
                                 </div>
                                 </>
                                 )}
 
-                                {setupStage === 3 && (
+                                
+                                {setupStage === 4 && (
+                                <>
+                                {occupation === 'None / No Licence' ? (
+                                <>
+                                <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">PilotCareerPathways.com</h3>
+                                    <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.6, margin: 0 }}>
+                                        Your first step into aviation starts with knowing the path. PilotCareerPathways.com is a dedicated resource that breaks down exactly how to become a pilot — from zero experience to airline ready. Explore training routes, understand ATO requirements, compare costs across regions, and build a realistic timeline for your career.
+                                    </p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', backdropFilter: 'blur(10px)' }}>
+                                        <div style={{ height: '180px', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                                            <div style={{ textAlign: 'center' }}>
+                                                <div style={{ fontSize: '16px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em', marginBottom: '6px' }}>pilotcareerpathways.com</div>
+                                                <div style={{ fontSize: '10px', color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Homepage Preview</div>
+                                            </div>
+                                            <div style={{ position: 'absolute', top: '10px', right: '12px', width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }} />
+                                        </div>
+                                        <div style={{ padding: '16px' }}>
+                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>Discover how to become a pilot</p>
+                                            <p style={{ fontSize: '11px', color: '#64748b', lineHeight: '1.55', margin: 0 }}>Training routes, ATOs, costs, and timelines — everything you need to plan your aviation career.</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.5)', borderRadius: '12px', backdropFilter: 'blur(10px)' }}>
+                                        <p style={{ fontSize: '11px', color: '#475569', lineHeight: 1.55, margin: 0 }}>
+                                            <strong>Why this matters:</strong> Before you invest $50,000+ in flight training, understand what the industry actually expects. This resource shows you the real requirements, not the marketing pitch.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(5)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                ) : (
+                                <>
+                                <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">Pilot Status &amp; Interests</h3>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Aviation Industry Occupation</div>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Are you currently in the aviation industry?</div>
+                                    <select className="fic-select" value={employmentStatus} onChange={e => setEmploymentStatus(e.target.value as any)}>
+                                        <option value="">Select your current status...</option>
+                                        <option value="employed">Actively flying — employed as a pilot</option>
+                                        <option value="instructor">Flight instructor — building hours</option>
+                                        <option value="transitioning">Looking to transition — ready for next role</option>
+                                        <option value="graduate">Recent graduate — seeking first airline opportunity</option>
+                                        <option value="unemployed">Between roles — open to new opportunities</option>
+                                        <option value="shifted_career">Shifted career due to industry uncertainty — your story matters</option>
+                                        <option value="exploring">Exploring pathways — not sure what's next</option>
+                                    </select>
+                                    <div style={{ marginTop: '8px', padding: '10px 12px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px' }}>
+                                        <p style={{ margin: 0, fontSize: '11px', color: '#166534', lineHeight: 1.5 }}>
+                                            <strong>In compliance with pilotshortage.org</strong> — Every pilot's journey is unique. Whether you're actively flying, instructing, or navigating a career shift, your experience contributes to the broader aviation story. We make sure pilots get heard and receive the recognition they deserve.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(5)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                )}
+                                </>
+                                )}
+
+                                {setupStage === 5 && (
+                                <>
+                                {occupation === 'None / No Licence' ? (
+                                <>
+                                <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">PilotShortage.org</h3>
+                                    <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.6, margin: 0 }}>
+                                        The aviation industry is facing a critical shortage of qualified pilots worldwide. PilotShortage.org explains why this gap exists, what it means for your career prospects, and how you can position yourself to meet the demand. Understanding the industry landscape before you train gives you a strategic advantage.
+                                    </p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', backdropFilter: 'blur(10px)' }}>
+                                        <div style={{ height: '180px', background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                                            <div style={{ textAlign: 'center' }}>
+                                                <div style={{ fontSize: '16px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em', marginBottom: '6px' }}>pilotshortage.org</div>
+                                                <div style={{ fontSize: '10px', color: '#a5b4fc', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Homepage Preview</div>
+                                            </div>
+                                            <div style={{ position: 'absolute', top: '10px', right: '12px', width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }} />
+                                        </div>
+                                        <div style={{ padding: '16px' }}>
+                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>Understand the global pilot shortage</p>
+                                            <p style={{ fontSize: '11px', color: '#64748b', lineHeight: '1.55', margin: 0 }}>Industry gap analysis, pipeline breakdown, and why qualified pilots are the key to solving aviation's biggest challenge.</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.5)', borderRadius: '12px', backdropFilter: 'blur(10px)' }}>
+                                        <p style={{ fontSize: '11px', color: '#475569', lineHeight: 1.55, margin: 0 }}>
+                                            <strong>Why this matters:</strong> The pilot shortage isn't just a headline — it's your opportunity. Airlines are hiring aggressively, and the demand for trained pilots will outstrip supply for decades. Train smart, and you'll enter a seller's market.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(6)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                ) : (
                                 <>
                                 {/* ── SECTION 3: Flight Hours & Logbook ── */}
                                 <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -1168,152 +1408,152 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <button
                                         type="button"
                                         onClick={() => setShowLogbookModal(true)}
-
                                         style={{ width: '100%', padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
                                         {providerConnected ? '✓ Logbook Connected' : 'Connect Digital Logbook'}
                                     </button>
-                                    {/* Confirm — hours are optional, user can skip */}
                                 </div>
-                                </div>{/* end Section 3 */}
+                                </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                    <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(6)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
                                 </div>
                                 </>
                                 )}
+                                </>
+                                )}
 
-                                {setupStage === 4 && (
+                                {setupStage === 6 && (
                                 <>
-                                {/* ── SECTION 4: Create Pilot Recognition Profile ── */}
                                 <div className="pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                    <h3 className="text-lg font-bold text-slate-900 mb-0">Create Pilot Recognition Profile</h3>
-                                <div style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.6 }}>
-                                    We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
-                                </div>
-
-                                {/* Passkey warning */}
-                                <div style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(226,232,240,0.8)', borderRadius: '12px', padding: '16px', marginBottom: '14px', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                                    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '12px' }}>
-                                        <span style={{ fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>🔐</span>
-                                        <div>
-                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626', margin: '0 0 6px' }}>Your browser will prompt you to save a passkey</p>
-                                            <p style={{ fontSize: '11px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>
-                                                Without this key you will lose access to your profile credentials. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
-                                            </p>
+                                    {occupation === 'None / No Licence' ? (
+                                    <>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-0">Create Visitor Account</h3>
+                                    <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.6, margin: 0 }}>
+                                        You're registering as a <strong>Future Pilot Visitor</strong>. Explore career pathways, training routes, and industry requirements. Upgrade to a full profile once you earn your licence.
+                                    </p>
+                                    <div style={{ padding: '14px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '10px' }}>
+                                        <p style={{ fontSize: '12px', color: '#92400e', margin: 0, lineHeight: 1.5 }}>
+                                            <strong>What's included:</strong> Public career pathways, ATO directory, and pilot shortage insights. Full operator access requires a verified licence.
+                                        </p>
+                                    </div>
+                                    </>
+                                    ) : (
+                                    <>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-0">Create Your Profile</h3>
+                                    <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.6, margin: 0 }}>
+                                        Confirm your details to activate your verified pilot profile. Operators and airlines can then discover your credentials instantly.
+                                    </p>
+                                    <div style={{ padding: '14px', background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '10px' }}>
+                                        <p style={{ fontSize: '12px', color: '#0369a1', margin: 0, lineHeight: 1.5 }}>
+                                            <strong>Secure digital ID:</strong> Your profile includes a passkey-secured credential wallet. Save it to your device when prompted — this is your login key.
+                                        </p>
+                                    </div>
+                                    {/* Passkey warning */}
+                                    <div style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(226,232,240,0.8)', borderRadius: '12px', padding: '16px', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '12px' }}>
+                                            <span style={{ fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>🔐</span>
+                                            <div>
+                                                <p style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626', margin: '0 0 6px' }}>Your browser will prompt you to save a passkey</p>
+                                                <p style={{ fontSize: '11px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>
+                                                    Without this key you will lose access to your profile credentials. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                                            <img src="/PASS.png" alt="Safari passkey prompt" style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }} />
+                                            <img src="/CHROME.png" alt="Chrome passkey prompt" style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }} />
                                         </div>
                                     </div>
-                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                        <img
-                                            src="/PASS.png"
-                                            alt="Safari passkey prompt"
-                                            style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
-                                        />
-                                        <img
-                                            src="/CHROME.png"
-                                            alt="Chrome passkey prompt"
-                                            style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
-                                        />
-                                    </div>
-                                </div>
+                                    </>
+                                    )}
 
-                                <button
-                                    type="button"
-                                    disabled={walletCreating === 'generating' || walletCreating === 'syncing'}
-                                    onClick={async () => {
-                                        if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
-                                        const { data: { session } } = await supabase.auth.getSession();
-                                        const sbUserId = session?.user?.id || supabaseUser?.id || null;
-                                        console.log('[DEBUG][Wallet] sbUserId:', sbUserId, 'session?.user?.id:', session?.user?.id, 'supabaseUser?.id:', supabaseUser?.id);
-                                        if (!sbUserId) {
-                                            setSaveError('Authentication error. Please sign in again.');
-                                            console.error('[DEBUG][Wallet] No sbUserId found');
-                                            return;
-                                        }
-                                        const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
-                                        const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
-                                        const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
-                                        const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
-                                        try {
-                                            setWalletCreating('generating');
-                                            setSaveError('');
-                                            await new Promise(r => setTimeout(r, 900));
-                                            setWalletCreating('syncing');
-                                            setSaving(true);
-
-                                            const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
-                                            const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
-                                            console.log('[DEBUG][Wallet] SUPABASE_URL:', SUPABASE_URL ? 'defined' : 'MISSING', 'ANON_KEY:', ANON_KEY ? 'defined' : 'MISSING');
-                                            const requestToken = btoa(`${sbUserId}:ts:${Date.now()}`);
-
-                                            console.log('[DEBUG][Wallet] Calling create-wallet with userId:', sbUserId, 'email:', session?.user?.email || supabaseUser?.email || '');
-                                            const res = await fetch(`${SUPABASE_URL}/functions/v1/create-wallet`, {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
-                                                body: JSON.stringify({
-                                                    userId: sbUserId,
-                                                    email: session?.user?.email || supabaseUser?.email || '',
-                                                    displayName: cleanName,
-                                                    firstName: cleanFirst,
-                                                    lastName: cleanLast,
-                                                    occupation,
-                                                    dob: dob || null,
-                                                    totalHours: hrs,
-                                                    aircraftTypes,
-                                                    issuingAuthority: issuingAuthority || null,
-                                                    licenseTypes: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
-                                                    ratings: ratings.filter(r => r !== '__none__').length > 0 ? ratings.filter(r => r !== '__none__') : null,
-                                                    elpLevel: elpLevel || null,
-                                                    storageBackend: walletStorageChoice || 'supabase',
-                                                    requestToken,
-                                                }),
-                                            });
-                                            const walletData = await res.json();
-                                            console.log('[DEBUG][Wallet] create-wallet response:', res.status, walletData);
-                                            if (!res.ok || !walletData.success) {
-                                                console.error('[DEBUG][Wallet] create-wallet failed:', walletData);
-                                                throw new Error(walletData.error || `Wallet creation failed (HTTP ${res.status})`);
+                                    <button
+                                        type="button"
+                                        disabled={walletCreating === 'generating' || walletCreating === 'syncing'}
+                                        onClick={async () => {
+                                            if (walletConnected && !showPasskeyCancelled) { setShowResourceSelector(true); return; }
+                                            const sbUserId = auth0User?.sub || null;
+                                            if (!sbUserId) { setSaveError('Authentication error. Please sign in again.'); return; }
+                                            const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
+                                            const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+                                            const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+                                            const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
+                                            const walletPayload = {
+                                                userId: sbUserId,
+                                                email: auth0User?.email || '',
+                                                displayName: cleanName,
+                                                firstName: cleanFirst,
+                                                lastName: cleanLast,
+                                                occupation,
+                                                otherLicence: otherLicence || null,
+                                                dob: dob || null,
+                                                nationality: nationality || null,
+                                                totalHours: hrs,
+                                                hoursWhole: hoursWhole || null,
+                                                hoursMinutes: hoursMinutes || null,
+                                                aircraftTypes: aircraftTypes.length > 0 ? aircraftTypes : null,
+                                                aircraftCategory: aircraftCategory || null,
+                                                issuingAuthority: issuingAuthority || null,
+                                                licenseTypes: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
+                                                typeRatingInput: typeRatingInput || null,
+                                                ratings: ratings.filter(r => r !== '__none__').length > 0 ? ratings.filter(r => r !== '__none__') : null,
+                                                elpLevel: elpLevel || null,
+                                                medicalClass: medicalClass || null,
+                                                employmentStatus: employmentStatus || null,
+                                                unemployedDuration: unemployedDuration || null,
+                                                currentJob: currentJob || null,
+                                                careerGoal: careerGoal || null,
+                                                pilotStage: pilotStage || null,
+                                                role: isVisitor ? 'visitor' : 'pilot',
+                                                is_visitor: isVisitor,
+                                                showAircraftSection,
+                                                showRatingsSection,
+                                                showMoreClasses,
+                                                showMoreCategories,
+                                                walletStorageChoice: walletStorageChoice || 'supabase',
+                                                requestToken: (() => { const s = `${sbUserId}:ts:${Date.now()}`; const b = new Uint8Array([...s].map(c => c.charCodeAt(0))); let bin = ''; b.forEach(byte => bin += String.fromCharCode(byte)); return window.btoa(bin); })(),
+                                            };
+                                            console.log('[DEBUG][Worker] Full account creation payload:', JSON.stringify(walletPayload, null, 2));
+                                            try {
+                                                setWalletCreating('generating');
+                                                setSaveError('');
+                                                await new Promise(r => setTimeout(r, 900));
+                                                setWalletCreating('syncing');
+                                                setSaving(true);
+                                                const result = await callWorker('upsertProfile', walletPayload);
+                                                console.log('[DEBUG][Worker] Profile saved:', result);
+                                                sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition');
+                                                sessionStorage.setItem('pr_user_id', sbUserId);
+                                                setWalletCreating('active');
+                                                setSelectedWallet('Pilot Wallet');
+                                                setWalletConnected(true);
+                                                setSaving(false);
+                                                setTimeout(() => setShowResourceSelector(true), 1200);
+                                            } catch (e) {
+                                                console.error('[DEBUG][Worker] Profile creation error:', e);
+                                                setWalletCreating('idle');
+                                                setSaving(false);
+                                                setSaveError('Failed to create profile. Please try again.');
                                             }
-                                            sessionStorage.setItem('wallet_did', walletData.did || '');
-                                            sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition Wallet');
-                                            sessionStorage.setItem('pr_user_id', sbUserId);
-
-                                            setWalletCreating('active');
-                                            setSelectedWallet('Pilot Wallet');
-                                            setWalletConnected(true);
-                                            setSaving(false);
-                                            console.log('[DEBUG][Wallet] Success — walletCreated, redirecting to platform in 1.2s');
-                                            setTimeout(() => {
-                                                onNavigate('platform');
-                                            }, 1200);
-                                        } catch (e) {
-                                            console.error('[DEBUG][Wallet] Wallet creation error:', e);
-                                            setWalletCreating('idle');
-                                            setSaving(false);
-                                            setSaveError('Failed to create profile. Please try again.');
-                                        }
-                                    }}
-                                    style={{
-                                        width: '100%', padding: '14px 16px', borderRadius: '10px',
-                                        fontSize: '14px', fontWeight: 600, cursor: walletCreating === 'generating' || walletCreating === 'syncing' ? 'wait' : 'pointer',
-                                        textAlign: 'left', transition: 'all 0.3s',
-                                        background: walletCreating === 'active' || walletConnected ? '#f0fdf4' : walletCreating === 'generating' ? '#eff6ff' : walletCreating === 'syncing' ? '#f0f9ff' : '#f8fafc',
-                                        border: `1px solid ${walletCreating === 'active' || walletConnected ? '#86efac' : walletCreating === 'generating' ? '#bfdbfe' : walletCreating === 'syncing' ? '#bae6fd' : '#e2e8f0'}`,
-                                        color: walletCreating === 'active' || walletConnected ? '#16a34a' : walletCreating === 'generating' ? '#1d4ed8' : walletCreating === 'syncing' ? '#0369a1' : '#475569',
-                                    }}
-                                >
-                                    {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
-                                    {walletCreating === 'syncing' && '🔄 Registering Account & Issuing Credential...'}
-                                    {(walletCreating === 'active' || walletConnected) && '🎉 Profile Created — Entering Platform...'}
-                                    {walletCreating === 'idle' && '🔐 Create Recognition Profile →'}
-                                </button>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '8px' }}>
-                                    <span style={{ fontSize: '10px', color: '#94a3b8' }}>Decentralised identity</span>
-                                    <span style={{ fontSize: '10px', color: '#cbd5e1' }}>·</span>
-                                    <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>PilotRecognition PIC</span>
+                                        }}
+                                        className="w-full px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
+                                        {walletCreating === 'syncing' && '🔄 Registering Account...'}
+                                        {(walletCreating === 'active' || walletConnected) && '🎉 Profile Created — Entering...'}
+                                        {walletCreating === 'idle' && (occupation === 'None / No Licence' ? 'Create Visitor Account →' : 'Create Profile →')}
+                                    </button>
                                 </div>
-                                </div>{/* end Section 4 */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(5)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button
+                                        type="button"
+                                        onClick={handleSaveProfile}
+                                        disabled={saving}
+                                        className="px-6 py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold rounded-lg text-sm transition-colors"
+                                    >
+                                        {saving ? 'Creating...' : (occupation === 'None / No Licence' ? 'Create Visitor Account →' : 'Create Profile →')}
+                                    </button>
                                 </div>
                                 </>
                                 )}
@@ -1328,7 +1568,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
-                                <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Supabase</span>
+                                <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Cloudflare</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
                                 <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 600 }}>PIC by PilotRecognition</span>
                             </div>
@@ -1461,27 +1701,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setShowWalletSelector(false);
                                             sessionStorage.setItem('wallet_claimed_provider', w.name);
                                             
-                                            // For Pilot Wallet, issue + store in Supabase (hashed) — no external redirect
+                                            // For Pilot Wallet — VC issuance is post-verification (Dodo + Veremark pipeline)
                                             if (w.id === 'pilot') {
-                                                const { data: { session: wSess } } = await supabase.auth.getSession();
-                                                const pilotUserId = wSess?.user?.id || supabaseUser?.id;
-                                                const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
-                                                if (pilotUserId && hrs > 0) {
-                                                    const { data: profile } = await supabase
-                                                        .from('profiles')
-                                                        .select('id')
-                                                        .eq('id', pilotUserId)
-                                                        .maybeSingle();
-                                                    const result = await issueAndStoreCredential(
-                                                        pilotUserId,
-                                                        profile?.id || pilotUserId,
-                                                        hrs,
-                                                        walletStorageChoice as 'supabase' | 'firebase' | 'both'
-                                                    );
-                                                    if (result.success) {
-                                                        sessionStorage.setItem('vc_credential_hash', result.credential!.credentialHash);
-                                                    }
-                                                }
                                                 setWalletConnected(true);
                                                 return;
                                             }
@@ -1648,7 +1869,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                             {/* Google signup */}
                             <button
-                                onClick={handleGoogleSignup}
+                                onClick={handleGoogleOAuth}
                                 className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-3 shadow-sm"
                             >
                                 <GoogleIcon />
@@ -1759,12 +1980,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             
                             <div className="p-6">
                                 <WalletFirstCredentialFlow
-                                    auth0Id={supabaseUser?.id || ''}
+                                    auth0Id={auth0User?.sub || ''}
                                     onCredentialClaimed={(credentialUrl) => {
                                         setVcCredentialUrl(credentialUrl);
                                         setWalletConnected(true);
                                         setSelectedWallet('pilot');
-                                        setSetupStage(3);
+                                        setSetupStage(5);
                                         setShowWalletFirst(false);
                                     }}
                                 />
@@ -1936,6 +2157,53 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     </div>
                 </div>
             , document.body)}
+
+            {/* Resource Selector — shown after profile creation */}
+            {showResourceSelector && (
+                <div style={{ position: 'fixed', inset: 0, background: '#fff', zIndex: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+                    <div style={{ maxWidth: '560px', width: '100%', textAlign: 'center' }}>
+                        <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>Welcome aboard</h2>
+                        <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '32px', lineHeight: 1.5 }}>Your profile is ready. Where would you like to go next?</p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <button
+                                type="button"
+                                onClick={() => window.open('https://pilotcareerpathways.com', '_blank')}
+                                style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', width: '100%' }}
+                            >
+                                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #0f172a, #334155)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <span style={{ fontSize: '20px' }}>🛫</span>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', marginBottom: '2px' }}>PilotCareerPathways.com</div>
+                                    <div style={{ fontSize: '12px', color: '#64748b' }}>Training routes, ATOs, costs, and timelines</div>
+                                </div>
+                                <span style={{ marginLeft: 'auto', fontSize: '18px', color: '#94a3b8' }}>→</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => window.open('https://pilotshortage.org', '_blank')}
+                                style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', width: '100%' }}
+                            >
+                                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #1e1b4b, #4338ca)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <span style={{ fontSize: '20px' }}>📊</span>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', marginBottom: '2px' }}>PilotShortage.org</div>
+                                    <div style={{ fontSize: '12px', color: '#64748b' }}>Global shortage data and industry insights</div>
+                                </div>
+                                <span style={{ marginLeft: 'auto', fontSize: '18px', color: '#94a3b8' }}>→</span>
+                            </button>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => onNavigate('platform')}
+                            style={{ marginTop: '24px', fontSize: '13px', color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                        >
+                            Skip and enter platform →
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

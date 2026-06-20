@@ -1,0 +1,9 @@
+{
+  "name": "pilotrecognition-api",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240614.0",
+    "wrangler": "^3.60.0"
+  }
+}

@@ -295,7 +295,7 @@ export const EnrolledFoundationalPage: React.FC<EnrolledFoundationalPageProps> =
 
       {/* W1000 Directory */}
       <a
-        href="https://w1000.vercel.app"
+        href="https://pilotrecognition.com"
         target="_blank"
         rel="noopener noreferrer"
         style={{

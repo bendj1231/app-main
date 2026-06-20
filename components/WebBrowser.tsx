@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { RotateCw, ExternalLink, ArrowLeft, ArrowRight, ShieldAlert, Globe } from 'lucide-react';
 
 const WebBrowser: React.FC = () => {
-  const DEFAULT_URL = 'https://wingmentorapp.vercel.app/';
+  const DEFAULT_URL = 'https://pilotrecognition.com';
   const [url, setUrl] = useState(DEFAULT_URL);
   const [currentSrc, setCurrentSrc] = useState(DEFAULT_URL);
 

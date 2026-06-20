@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '@/src/lib/d1-api';
+import { api, getProfile } from '@/src/lib/d1-api';
 
 /** Cache profile data in sessionStorage to reduce API calls */
 function getCachedProfile(auth0Id: string): { display_name?: string | null; id?: string } | null {
@@ -26,7 +26,7 @@ function setCachedProfile(auth0Id: string, data: unknown): void {
 }
 
 export const OAuthCallback = () => {
-  const { isLoading, isAuthenticated, user, error } = useAuth0();
+  const { isLoading, isAuthenticated, user, error, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
   const [profileCreated, setProfileCreated] = useState(false);
 
@@ -54,59 +54,22 @@ export const OAuthCallback = () => {
           window.location.hostname.includes('careerpathways') ||
           (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
 
-        // ─── STEP 1: Check cached profile ───
-        let existing = getCachedProfile(user.sub);
-
-        if (!existing) {
-          // ─── STEP 2: Query profile via Worker API ───
-          try {
-            const accessToken = sessionStorage.getItem('access_token') || '';
-            const rows = await api(accessToken, 'queryTable', {
-              table: 'profiles',
-              operation: 'select',
-              where: { auth0_id: user.sub },
-              limit: 1,
-            }) as Record<string, unknown>[];
-            existing = rows?.[0] ?? null;
-            if (existing) {
-              setCachedProfile(user.sub, existing);
-              console.log('[OAuthCallback] Profile found via Worker API');
-            } else {
-              console.log('[OAuthCallback] Profile NOT found — new user');
-            }
-          } catch (err) {
-            console.warn('[OAuthCallback] Worker API profile lookup failed:', err);
-            existing = null;
-          }
-        }
-
-        // ─── STEP 3: Determine redirect ───
+        // ─── STEP 1: Determine redirect from returnTo or default ───
         const returnTo = sessionStorage.getItem('auth0_return_to');
+        console.log('[OAuthCallback] returnTo from sessionStorage:', returnTo);
         if (returnTo) {
           sessionStorage.removeItem('auth0_return_to');
           setProfileCreated(true);
+          console.log('[OAuthCallback] Redirecting to returnTo:', returnTo);
           navigate(returnTo, { replace: true });
           return;
         }
 
-        if (!existing) {
-          // New user — AuthContext will handle profile creation
-          setProfileCreated(true);
-          const target = isPilotTerminal ? '/' : '/become-member?setup=1';
-          navigate(target, { replace: true });
-        } else if (!existing.display_name) {
-          // Profile exists but incomplete
-          setProfileCreated(true);
-          const target = isPilotTerminal ? '/' : '/become-member?setup=1';
-          console.debug('[OAuthCallback] profile incomplete; redirecting to', target);
-          navigate(target, { replace: true });
-        } else {
-          // Existing complete profile
-          setProfileCreated(true);
-          const target = isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform';
-          console.debug('[OAuthCallback] existing profile; redirecting to', target);
-          navigate(target, { replace: true });
-        }
+        // Default redirect for new users
+        setProfileCreated(true);
+        const target = isPilotTerminal ? '/' : '/become-member?setup=1';
+        console.log('[OAuthCallback] No returnTo, default redirect to:', target);
+        navigate(target, { replace: true });
       } catch (err) {
         console.error('Unexpected OAuth callback error:', err);
         navigate('/');
