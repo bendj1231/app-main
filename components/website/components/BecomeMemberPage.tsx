@@ -568,9 +568,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         onNavigate('data-controller-agreement?signup=apple');
     };
 
-    // Worker API helper
+    // Worker API helper with request counting
     const WORKER_URL = 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+    const workerRequestCountRef = React.useRef(0);
     const callWorker = async (action: string, params: Record<string, unknown>) => {
+        workerRequestCountRef.current += 1;
+        const count = workerRequestCountRef.current;
+        console.log(`[DEBUG][Worker] Request #${count}: action="${action}"`);
         const token = await getAccessTokenSilently();
         const res = await fetch(`${WORKER_URL}/api`, {
             method: 'POST',
@@ -581,7 +585,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             const err = await res.json().catch(() => ({ error: 'Worker request failed' }));
             throw new Error((err as any).error || `Worker error: ${res.status}`);
         }
-        return res.json();
+        const data = await res.json();
+        console.log(`[DEBUG][Worker] Request #${count} complete: action="${action}"`);
+        return data;
     };
 
     // Check if user has an existing profile via Worker
