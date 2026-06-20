@@ -5152,7 +5152,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   };
 
-  // Unified dashboard load — one request gets profile + flight hours + badges + receipts
+  // Unified dashboard load — one request per browser session, cached in sessionStorage
   useEffect(() => {
     if (sessionInitiatedRef.current) return;
     sessionInitiatedRef.current = true;
@@ -5161,6 +5161,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       try {
         const auth0Id = auth0User?.sub;
         if (!auth0Id) return;
+
+        // Check sessionStorage cache first
+        const cacheKey = `pr_dashboard_${auth0Id}`;
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          try {
+            const data = JSON.parse(cached);
+            setProfileData(data.profileData || null);
+            setWalletChecks(data.walletChecks || []);
+            setNotifCount(data.notifCount || 0);
+            console.log('[dashboard] loaded from sessionStorage cache');
+            return;
+          } catch { /* invalid cache, fetch fresh */ }
+        }
+
+        // Fetch fresh from Worker
         const data = await callApi('getDashboardData', { auth0_id: auth0Id }) as Record<string, unknown>;
         if (!data?.profile) {
           console.warn('[dashboard] no profile found for auth0_id:', auth0Id);
@@ -5170,9 +5186,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         const flightHours = data.flight_hours as Record<string, unknown> | null;
         const receipts = data.verification_receipts as Array<Record<string, unknown>> | null;
 
-        setProfileData({ ...profile, ...flightHours });
+        const profileDataState = { ...profile, ...flightHours };
+        setProfileData(profileDataState);
         if (receipts) setWalletChecks(receipts);
-        setNotifCount(0); // TODO: add notifications to Worker schema if needed
+        setNotifCount(0);
+
+        // Cache in sessionStorage for this browser session
+        sessionStorage.setItem(cacheKey, JSON.stringify({
+          profileData: profileDataState,
+          walletChecks: receipts || [],
+          notifCount: 0,
+          cachedAt: Date.now(),
+        }));
+        console.log('[dashboard] fetched from Worker and cached');
       } catch (err) {
         console.error('[dashboard] unified load failed:', err);
       }
