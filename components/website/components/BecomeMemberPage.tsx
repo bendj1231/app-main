@@ -534,7 +534,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
             const result = await callWorker('upsertProfile', workerPayload);
             console.log('[BecomeMember] Profile saved:', result);
-            setShowResourceSelector(true);
+            onNavigate('platform');
         } catch (err) {
             console.error('🔴 [handleSaveProfile] outer catch:', err);
             setSaveError('Failed to save. Please try again.');
@@ -1528,7 +1528,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 setSelectedWallet('Pilot Wallet');
                                                 setWalletConnected(true);
                                                 setSaving(false);
-                                                setTimeout(() => setShowResourceSelector(true), 1200);
+                                                onNavigate('platform');
                                             } catch (e) {
                                                 console.error('[DEBUG][Worker] Profile creation error:', e);
                                                 setWalletCreating('idle');
