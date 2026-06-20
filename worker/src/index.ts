@@ -99,6 +99,7 @@ async function handleApiAction(request: Request, env: Env): Promise<Response> {
           `).bind(cacheKey, JSON.stringify(result)).run();
         }
       } catch (err: any) {
+        console.error(`[Worker batch] action=${req.action} error:`, err.message, 'params:', req.params);
         results[`error_${i}`] = err.message;
       }
     }
@@ -110,6 +111,7 @@ async function handleApiAction(request: Request, env: Env): Promise<Response> {
     const result = await executeAction(env, action, params);
     return jsonResponse(result);
   } catch (err: any) {
+    console.error(`[Worker single] action=${action} error:`, err.message, 'params:', params);
     return jsonResponse({ error: err.message }, 500);
   }
 }
