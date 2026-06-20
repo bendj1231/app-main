@@ -127,18 +127,15 @@ export function useAuth() {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const isEnterprise =
-    location.pathname.startsWith('/enterprise') || window.location.hostname.includes('enterprise');
-  const auth0Context = useAuth0();
   const {
     isAuthenticated: auth0IsAuthenticated,
     user: auth0User,
     isLoading: auth0Loading,
     getIdTokenClaims,
     getAccessTokenSilently,
-  } = isEnterprise
-    ? auth0Context
-    : { isAuthenticated: false, user: null, isLoading: false, getIdTokenClaims: () => null, getAccessTokenSilently: () => Promise.resolve('') };
+    loginWithRedirect,
+    logout: auth0Logout,
+  } = useAuth0();
   const { callApi } = useWorkerAuth();
   const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
   const currentUserRef = React.useRef<SupabaseUser | null>(null);
@@ -475,7 +472,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const token = await getAccessTokenSilently();
         if (!token) {
-          await auth0Context.loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
+          await loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
           return;
         }
         userId = auth0User?.sub || '';
@@ -984,17 +981,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   async function login(_email: string, _password: string) {
     // Auth0 handles authentication — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+    await loginWithRedirect();
   }
 
   async function sendOtp(_email: string, _redirectTo?: string) {
     // Auth0 handles OTP — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+    await loginWithRedirect();
   }
 
   async function verifyOtp(_email: string, _token: string) {
     // Auth0 handles verification — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+    await loginWithRedirect();
   }
 
   async function logout() {
@@ -1023,7 +1020,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     sessionStorage.removeItem('auth0_user_id');
 
     try {
-      await auth0Context.logout({ logoutParams: { returnTo: window.location.origin } });
+      await auth0Logout({ logoutParams: { returnTo: window.location.origin } });
     } catch (error) {
       console.error('❌ Auth0 logout error:', error);
     }
@@ -1031,7 +1028,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   async function resetPassword(_email: string) {
     // Auth0 handles password reset
-    await auth0Context.loginWithRedirect({ authorizationParams: { screen_hint: 'reset_password' } });
+    await loginWithRedirect({ authorizationParams: { screen_hint: 'reset_password' } });
   }
 
   // Refresh user profile from Worker API

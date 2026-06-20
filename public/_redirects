@@ -1,3 +1,4 @@
-# Cloudflare Pages redirects — replaces vercel.json rewrites
-# SPA fallback: all non-file routes → index.html
+# Cloudflare Pages redirects — SPA fallback
+# Existing files (JS, CSS, images) are served as-is
+# All other routes → index.html for client-side routing
 /* /index.html 200
