@@ -181,19 +181,49 @@ A single page load makes **1 request** for returning pilots, **2 requests** for 
 
 ---
 
-## 10. KEY METRICS
+## 10. CAN WE HANDLE 100,000 USERS PER DAY?
+
+### The Short Answer
+**Yes, but only if each user visits once.** The free tier gives us 100,000 Worker API requests per day.
+
+### The Math
+| Scenario | Requests per User | 100K Users = |
+|----------|-------------------|-------------|
+| New signup | 2 requests | 200,000 requests ❌ |
+| Returning pilot (no cache) | 1 per page load | 100,000+ ❌ |
+| Returning pilot (with sessionStorage cache) | 1 per browser session | 100,000 ✅ |
+
+### What I Added Today
+- **sessionStorage cache** — Dashboard data is cached in the browser for the session
+- If a pilot refreshes the page, it loads from cache (0 Worker requests)
+- If they close and reopen the browser, it fetches fresh (1 request)
+
+### To Scale Beyond 100K
+We have options:
+1. **Cloudflare Workers Paid** — $5/month for 10 million requests (100x more)
+2. **localStorage with TTL** — Cache for 24 hours, not just the session
+3. **Service Worker cache** — Offline-first, cache for days
+
+### Bottom Line
+- **Free tier:** 100K users/day if cached, ~50K if uncached
+- **Paid tier ($5/month):** 10M users/day — effectively unlimited
+- **Pages static hosting:** Unlimited (never counts toward the limit)
+
+---
+
+## 11. KEY METRICS
 
 | Metric | Before | After |
 |--------|--------|-------|
 | Signup success rate | 0% (crashed) | ~100% (pending testing) |
-| Requests per page load | 10+ | 1 |
+| Requests per page load | 10+ | 1 (0 if cached) |
 | API calls per signup | 5+ | 2 |
 | Database systems | 2 (Supabase + D1) | 1 (D1 only) |
 | Auth providers | 2 (Auth0 + Supabase) | 1 (Auth0 only) |
 
 ---
 
-## 11. HOW TO TEST
+## 12. HOW TO TEST
 
 ### For Karl/Keiv/Daniel:
 1. Go to https://pilotrecognition.com
@@ -210,7 +240,7 @@ A single page load makes **1 request** for returning pilots, **2 requests** for 
 
 ---
 
-## 12. THE BIG PICTURE
+## 13. THE BIG PICTURE
 
 ### What's Changed Architecturally
 We moved from a **dual-database hybrid** (Supabase + Cloudflare) to a **single unified system** (Cloudflare only).
@@ -229,7 +259,7 @@ We moved from a **dual-database hybrid** (Supabase + Cloudflare) to a **single u
 
 ---
 
-## 13. FILES CHANGED TODAY
+## 14. FILES CHANGED TODAY
 
 ### Worker (Backend)
 - `worker/src/index.ts` — Added `upsertProfile`, `getDashboardData`, `batch` actions
