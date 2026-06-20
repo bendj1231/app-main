@@ -5160,7 +5160,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     const loadDashboard = async () => {
       try {
         const auth0Id = auth0User?.sub;
-        if (!auth0Id) return;
+        console.log('[UnifiedPilotPlatform] loadDashboard() called, auth0Id:', auth0Id);
+        if (!auth0Id) {
+          console.warn('[UnifiedPilotPlatform] loadDashboard: no auth0Id — user not authenticated yet');
+          return;
+        }
 
         // Check IndexedDB cache first (survives browser restarts)
         const cacheKey = `dashboard:${auth0Id}`;
@@ -5182,9 +5186,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         }
 
         // Fetch fresh from Worker
+        console.log('[UnifiedPilotPlatform] Calling getDashboardData with auth0_id:', auth0Id);
         const data = await callApi('getDashboardData', { auth0_id: auth0Id }) as Record<string, unknown>;
+        console.log('[UnifiedPilotPlatform] getDashboardData response:', { hasProfile: !!data?.profile, keys: Object.keys(data || {}) });
         if (!data?.profile) {
-          console.warn('[dashboard] no profile found for auth0_id:', auth0Id);
+          console.warn('[dashboard] no profile found for auth0_id:', auth0Id, 'data:', data);
           return;
         }
         const profile = data.profile as Record<string, unknown>;

@@ -932,50 +932,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.scrollTo(0, 0);
 
     try {
-      console.log('[AuthContext] Querying profiles for id:', user.id);
-      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'profiles',
-        operation: 'select',
-        where: { id: user.id },
-        limit: 1,
+      console.log('[AuthContext] Fetching profile via Worker getProfile for auth0_id:', user.id);
+      const profileData = await callApi<Record<string, unknown>>('getProfile', {
+        auth0_id: user.id,
       });
-      const profileData = profileRows?.[0];
-      console.log('[AuthContext] profiles query:', { hasData: !!profileData });
+      console.log('[AuthContext] getProfile result:', { hasData: !!profileData, id: (profileData as any)?.id });
 
-      if (profileData) {
+      if (profileData && (profileData as any)?.id) {
         await decryptAndSetUserProfile(profileData as UserProfile);
+        console.log('[AuthContext] Profile loaded successfully:', (profileData as any).id);
       } else {
-        console.log('[AuthContext] Querying pilot_licensure_experience...');
-        const pilotRows = await callApi<Record<string, unknown>[]>('queryTable', {
-          table: 'pilot_licensure_experience',
-          operation: 'select',
-          where: { user_id: user.id },
-          limit: 1,
+        console.warn('[AuthContext] getProfile returned empty — profile may not exist in D1 yet');
+        // Set minimal profile so UI doesn't think user is logged out
+        setUserProfile({
+          id: user.id,
+          user_id: user.id,
+          email: emailAddress,
+          role: 'pilot',
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
         });
-        const pilotData = pilotRows?.[0];
-        console.log('[AuthContext] pilot_licensure_experience query:', { hasData: !!pilotData });
-
-        if (pilotData) {
-          await decryptAndSetUserProfile(pilotData as UserProfile);
-        } else {
-          // Preserve admin role from fallback login when profiles table is unreachable
-          let fallbackRole: string | undefined = undefined;
-          try {
-            const fallback = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
-            fallbackRole = fallback.role;
-          } catch { /* ignore */ }
-          setUserProfile({
-            id: user.id,
-            user_id: user.id,
-            email: emailAddress,
-            role: fallbackRole,
-            created_at: new Date().toISOString(),
-            last_login: new Date().toISOString(),
-          });
-        }
       }
     } catch (profileError) {
       console.error('[AuthContext] Error fetching user profile from Worker API:', profileError);
+      // Set minimal profile so UI doesn't think user is logged out
+      setUserProfile({
+        id: user.id,
+        user_id: user.id,
+        email: emailAddress,
+        role: 'pilot',
+        created_at: new Date().toISOString(),
+        last_login: new Date().toISOString(),
+      });
     }
   }
 

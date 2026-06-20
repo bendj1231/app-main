@@ -318,9 +318,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (!profileCheckComplete || !isSetup) return;
 
         if (profileExists) {
-            console.log('[DEBUG][BecomeMember] Profile exists, redirecting to unified platform');
-            // Redirect to unified platform
-            window.location.href = 'https://platform.pilotrecognition.com/';
+            console.log('[DEBUG][BecomeMember] Profile exists, redirecting to /platform');
+            window.location.href = '/platform';
         }
         // If profile doesn't exist, stay on the page to complete onboarding
     }, [profileCheckComplete, profileExists, isSetup]);
@@ -586,7 +585,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             throw new Error((err as any).error || `Worker error: ${res.status}`);
         }
         const data = await res.json();
-        console.log(`[DEBUG][Worker] Request #${count} complete: action="${action}"`);
+        console.log(`[DEBUG][Worker] Request #${count} complete: action="${action}"`, { hasError: !!data?.error, hasId: !!data?.id, keys: Object.keys(data || {}) });
         return data;
     };
 
@@ -594,8 +593,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const checkUserProfileExists = async (auth0Id: string): Promise<boolean> => {
         try {
             const result = await callWorker('getProfile', { auth0_id: auth0Id });
-            return !!result;
-        } catch {
+            console.log('[DEBUG][BecomeMember] checkUserProfileExists result:', { hasId: !!(result as any)?.id, id: (result as any)?.id });
+            return !!(result as any)?.id;
+        } catch (err: any) {
+            console.warn('[DEBUG][BecomeMember] checkUserProfileExists error:', err.message);
             return false;
         }
     };
