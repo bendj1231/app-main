@@ -541,7 +541,7 @@ const HomeTab: React.FC<{
         </div>
 
         {/* ── THREE CARDS ROW ── */}
-        <div className="grid grid-cols-3 gap-4" style={{ height: '160px' }}>
+        <div className="grid grid-cols-3 gap-4" style={{ height: '240px' }}>
 
           {/* TYPE RATING SEARCH */}
           <div
