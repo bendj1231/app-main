@@ -515,7 +515,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 country_of_license: issuingAuthority || null,
                 origin_jurisdiction: issuingAuthority || null,
                 ratings: ratings.length > 0 ? ratings : null,
-                license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
+                type_ratings: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
                 type_rating_input: typeRatingInput || null,
                 elp_level: elpLevel || null,
                 medical_class: medicalClass || null,
