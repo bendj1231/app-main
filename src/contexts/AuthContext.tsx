@@ -4,15 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '../hooks/useWorkerAuth';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
 import { PostOAuthWelcomeScreen } from '@/components/website/components/PostOAuthWelcomeScreen';
-import {
-  getVaultKey,
-  getVaultKeyFromAuth0Token,
-  clearVaultKey,
-  encryptFields,
-  decryptFields,
-  PROFILE_SENSITIVE_FIELDS,
-  PILOT_LICENSURE_SENSITIVE_FIELDS,
-} from '../../lib/vault';
+import { clearVaultKey } from '../../lib/vault';
 
 interface SupabaseUser {
   id: string;
@@ -146,54 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-  const decryptAndSetUserProfile = async (data: UserProfile | null, auth0Sub?: string) => {
-    if (!data) {
-      setUserProfile(null);
-      return;
-    }
-    try {
-      const sub = auth0Sub || auth0User?.sub;
-      if (sub) {
-        // Prefer Auth0 ID token path — matches how data was encrypted
-        try {
-          const claims = await getIdTokenClaims?.();
-          const idToken = claims?.__raw;
-          if (idToken) {
-            const key = await getVaultKeyFromAuth0Token(sub, idToken);
-            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-            const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
-            setUserProfile(decrypted);
-            return;
-          }
-        } catch (err: unknown) {
-          console.warn(
-            '[AuthContext] Auth0 ID token vault decryption failed:',
-            err instanceof Error ? err.message : err
-          );
-        }
-        // Fallback: server-pepper path
-        try {
-          const token = await getAccessTokenSilently();
-          if (token) {
-            const key = await getVaultKey(sub, token);
-            const decrypted = await decryptFields(
-              data,
-              PROFILE_SENSITIVE_FIELDS as unknown as string[],
-              key
-            );
-            setUserProfile(decrypted);
-            return;
-          }
-        } catch (tokenErr: unknown) {
-          console.warn('[AuthContext] Auth0 token fallback failed:', tokenErr);
-        }
-      }
-    } catch (err: unknown) {
-      console.warn(
-        '[AuthContext] Profile decryption failed:',
-        err instanceof Error ? err.message : err
-      );
-    }
+  const setUserProfileData = (data: UserProfile | null) => {
     setUserProfile(data);
   };
 
@@ -342,64 +287,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Persist auth0 user ID in sessionStorage for MFB logbook sync callback
       // sessionStorage is cleared on tab close, reducing XSS persistence vs localStorage
       if (auth0User.sub) sessionStorage.setItem('auth0_user_id', auth0User.sub);
-      // Initialise vault key then background re-encrypt any plaintext legacy records
-      if (auth0User.sub) {
-        getAccessTokenSilently().then(async (token) => {
-          if (!token) return;
-          try {
-            const key = await getVaultKeyFromAuth0Token(auth0User.sub!, token);
-
-            const auth0Id = auth0User.sub!;
-            const email = auth0User.email || '';
-            const VAULT_PREFIX = '{"iv":"';
-            const isPlain = (v: unknown) =>
-              v !== null &&
-              v !== undefined &&
-              v !== '' &&
-              !(typeof v === 'string' && v.startsWith(VAULT_PREFIX));
-            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-            const needsReEncrypt = (rec: Record<string, any>, fields: readonly string[]) =>
-              fields.some((f) => isPlain(rec[f]));
-
-            // Re-encrypt profiles table if any sensitive field is plaintext
-            // Legacy profiles are keyed by email in auth0_id; use email as the lookup key
-            const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
-              table: 'profiles',
-              operation: 'select',
-              where: { email },
-              limit: 1,
-            });
-            const profile = profileRows?.[0];
-            const profileId = profile?.id as string | undefined;
-            if (profile && needsReEncrypt(profile as Record<string, unknown>, PROFILE_SENSITIVE_FIELDS)) {
-              /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              const enc = await encryptFields(profile as any, PROFILE_SENSITIVE_FIELDS as any, key);
-              await callApi('queryTable', { table: 'profiles', operation: 'update', id: profileId, data: enc });
-            }
-
-            // Re-encrypt pilot_licensure_experience if any sensitive field is plaintext
-            if (profileId) {
-              const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-                table: 'pilot_licensure_experience',
-                operation: 'select',
-                where: { user_id: profileId },
-                limit: 1,
-              });
-              const lic = licRows?.[0];
-              if (lic && needsReEncrypt(lic as Record<string, unknown>, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
-                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-                const enc = await encryptFields(lic as any, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
-                await callApi('queryTable', { table: 'pilot_licensure_experience', operation: 'update', id: (lic as { id: string }).id, data: enc });
-              }
-            }
-          } catch (err: unknown) {
-            console.warn(
-              '[vault] Init/re-encrypt failed (non-critical):',
-              err instanceof Error ? err.message : err
-            );
-          }
-        }).catch(() => {});
-      }
       // Set fresh login flag so passkey prompt knows this is a real sign-in
       const wasAlreadyAuthenticated = prevAuth0AuthenticatedRef.current === true;
       if (!wasAlreadyAuthenticated && auth0User.sub?.startsWith('google-oauth2|')) {
@@ -489,21 +376,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Authentication failed. Please try again.');
       }
 
-      // Acquire vault key for this session (non-blocking, falls back gracefully)
-      let vaultKey: CryptoKey | null = null;
-      try {
-        const token = await getAccessTokenSilently();
-        const sub = auth0User?.sub || userId;
-        if (token && sub) {
-          vaultKey = await getVaultKey(sub, token);
-        }
-      } catch (vaultErr: unknown) {
-        console.warn(
-          '[vault] Key unavailable during signup, writing plaintext:',
-          vaultErr instanceof Error ? vaultErr.message : vaultErr
-        );
-      }
-
       // Step 2: Create or update portal profile in profiles table
       try {
         // First check if profile already exists
@@ -546,11 +418,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             last_flown: userData.lastFlown || null,
             professional_experiences: userData.jobExperiences || [],
           };
-          const updatePayload = vaultKey
-            ? /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              await encryptFields(rawUpdatePayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
-            : rawUpdatePayload;
-          await callApi('queryTable', { table: 'profiles', operation: 'update', id: userId, data: updatePayload });
+          await callApi('queryTable', { table: 'profiles', operation: 'update', id: userId, data: rawUpdatePayload });
         } else {
           // Profile doesn't exist, create it
           const _experienceLevel = (() => {
@@ -612,14 +480,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             last_flown: userData.lastFlown || null,
             professional_experiences: userData.jobExperiences || [],
           };
-          const insertPayload = vaultKey
-            ? /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              await encryptFields(rawInsertPayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
-            : rawInsertPayload;
           await callApi('queryTable', {
             table: 'profiles',
             operation: 'insert',
-            data: { id: userId, ...insertPayload },
+            data: { id: userId, ...rawInsertPayload },
           });
 
           // Provision Pilot Wallet in background (non-blocking)
@@ -868,18 +732,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
-        const licensurePayload = vaultKey
-          ?  
-            await encryptFields(
-              rawLicensurePayload,
-              PILOT_LICENSURE_SENSITIVE_FIELDS as any,
-              vaultKey
-            )
-          : rawLicensurePayload;
         await callApi('queryTable', {
           table: 'pilot_licensure_experience',
           operation: 'insert',
-          data: { user_id: userId, ...licensurePayload },
+          data: { user_id: userId, ...rawLicensurePayload },
         });
       } catch (pilotTableError) {
         console.error('Failed to sync to pilot table:', pilotTableError);
@@ -945,7 +801,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('[AuthContext] getProfile result:', { hasData: !!profileData, id: (profileData as any)?.id });
 
       if (profileData && (profileData as any)?.id) {
-        await decryptAndSetUserProfile(profileData as UserProfile);
+        setUserProfileData(profileData as UserProfile);
         console.log('[AuthContext] Profile loaded successfully:', (profileData as any).id);
       } else {
         console.warn('[AuthContext] getProfile returned empty — profile may not exist in D1 yet');
@@ -1037,7 +893,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const licData = licRows?.[0];
       if (licData) {
-        await decryptAndSetUserProfile(licData as UserProfile);
+        setUserProfileData(licData as UserProfile);
         logProfileUpdate(currentUser.id, {
           action: 'Profile refreshed after enrollment',
           timestamp: new Date().toISOString(),
@@ -1052,7 +908,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const profileData = profileRows?.[0];
       if (profileData) {
-        await decryptAndSetUserProfile(profileData as UserProfile);
+        setUserProfileData(profileData as UserProfile);
         logProfileUpdate(currentUser.id, {
           action: 'Profile refreshed from profiles table',
           timestamp: new Date().toISOString(),
@@ -1225,7 +1081,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
             const licData = licRows?.[0];
             if (licData) {
-              await decryptAndSetUserProfile(licData as UserProfile);
+              setUserProfileData(licData as UserProfile);
             } else {
               setUserProfile(null);
             }
