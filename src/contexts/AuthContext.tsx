@@ -932,9 +932,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.scrollTo(0, 0);
 
     try {
-      console.log('[AuthContext] Fetching profile via Worker getProfile for auth0_id:', user.id);
+      console.log('[AuthContext] Fetching profile via Worker getProfile for auth0_id:', user.id, 'email:', emailAddress);
       const profileData = await callApi<Record<string, unknown>>('getProfile', {
         auth0_id: user.id,
+        email: emailAddress,
       });
       console.log('[AuthContext] getProfile result:', { hasData: !!profileData, id: (profileData as any)?.id });
 

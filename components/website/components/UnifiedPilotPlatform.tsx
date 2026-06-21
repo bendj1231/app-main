@@ -5160,7 +5160,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     const loadDashboard = async () => {
       try {
         const auth0Id = auth0User?.sub;
-        console.log('[UnifiedPilotPlatform] loadDashboard() called, auth0Id:', auth0Id);
+        const email = auth0User?.email;
+        console.log('[UnifiedPilotPlatform] loadDashboard() called, auth0Id:', auth0Id, 'email:', email);
         if (!auth0Id) {
           console.warn('[UnifiedPilotPlatform] loadDashboard: no auth0Id — user not authenticated yet');
           return;
@@ -5186,8 +5187,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         }
 
         // Fetch fresh from Worker
-        console.log('[UnifiedPilotPlatform] Calling getDashboardData with auth0_id:', auth0Id);
-        const data = await callApi('getDashboardData', { auth0_id: auth0Id }) as Record<string, unknown>;
+        console.log('[UnifiedPilotPlatform] Calling getDashboardData with auth0_id:', auth0Id, 'email:', email);
+        const data = await callApi('getDashboardData', { auth0_id: auth0Id, email }) as Record<string, unknown>;
         console.log('[UnifiedPilotPlatform] getDashboardData response:', { hasProfile: !!data?.profile, keys: Object.keys(data || {}) });
         if (!data?.profile) {
           console.warn('[dashboard] no profile found for auth0_id:', auth0Id, 'data:', data);

@@ -8,4 +8,4 @@ database_name = "pilotrecognition-profiles"
 database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
 
 [vars]
-AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_DOMAIN = "auth.pilotrecognition.com"

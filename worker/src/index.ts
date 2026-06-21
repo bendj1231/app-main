@@ -122,10 +122,19 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
   switch (action) {
     // ── Profiles ────────────────────────────────────────
     case 'getProfile': {
-      const { auth0_id, id, me } = params || {};
+      const { auth0_id, id, me, email } = params || {};
       if (auth0_id) {
         const { results } = await db.prepare('SELECT * FROM profiles WHERE auth0_id = ?').bind(auth0_id).all();
-        return results?.[0] || null;
+        if (results?.[0]) return results[0];
+        // Fallback: some legacy profiles use email as auth0_id
+        if (email) {
+          const { results: emailResults } = await db.prepare('SELECT * FROM profiles WHERE auth0_id = ? OR email = ?').bind(auth0_id, email).all();
+          if (emailResults?.[0]) return emailResults[0];
+        }
+      }
+      if (email) {
+        const { results } = await db.prepare('SELECT * FROM profiles WHERE email = ?').bind(email).all();
+        if (results?.[0]) return results[0];
       }
       if (id) {
         const { results } = await db.prepare('SELECT * FROM profiles WHERE id = ?').bind(id).all();
@@ -366,18 +375,26 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
     // ── Unified dashboard load — one request, all data ─────
     case 'getDashboardData': {
-      const { user_id, auth0_id } = params || {};
+      const { user_id, auth0_id, email } = params || {};
       if (!user_id && !auth0_id) throw new Error('user_id or auth0_id required');
 
       const id = user_id || auth0_id;
       const isAuth0 = !user_id && !!auth0_id;
 
-      const profileQuery = isAuth0
-        ? db.prepare('SELECT * FROM profiles WHERE auth0_id = ?').bind(id)
-        : db.prepare('SELECT * FROM profiles WHERE id = ?').bind(id);
+      let profile = null;
+      if (isAuth0) {
+        const { results: auth0Results } = await db.prepare('SELECT * FROM profiles WHERE auth0_id = ?').bind(id).all();
+        profile = auth0Results?.[0] || null;
+        // Fallback: some legacy profiles use email as auth0_id
+        if (!profile && email) {
+          const { results: emailResults } = await db.prepare('SELECT * FROM profiles WHERE auth0_id = ? OR email = ?').bind(id, email).all();
+          profile = emailResults?.[0] || null;
+        }
+      } else {
+        const { results: idResults } = await db.prepare('SELECT * FROM profiles WHERE id = ?').bind(id).all();
+        profile = idResults?.[0] || null;
+      }
 
-      const { results: profileResults } = await profileQuery.all();
-      const profile = profileResults?.[0] || null;
       if (!profile) return { profile: null, flight_hours: null, badges: [], verification_receipts: [] };
 
       const profileId = profile.id;
