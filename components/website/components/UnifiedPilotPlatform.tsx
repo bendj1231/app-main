@@ -38,6 +38,7 @@ import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
+import { GettingStartedBar } from './GettingStartedBar';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -460,13 +461,16 @@ const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex gap-4 px-4 pt-12 pb-4 items-stretch mx-auto" style={{ height: 'fit-content', maxWidth: '1500px' }}
+      className="flex flex-col gap-4 px-4 pt-12 pb-4 mx-auto" style={{ height: 'fit-content', maxWidth: '1500px' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* ── LEFT COLUMN ── */}
-      <div className="flex-1 flex flex-col gap-4 min-w-0">
+      <GettingStartedBar steps={steps} onStepClick={(tab) => setTab(tab as TabId)} />
+
+      <div className="flex gap-4 items-stretch">
+        {/* ── LEFT COLUMN ── */}
+        <div className="flex-1 flex flex-col gap-4 min-w-0">
 
         {/* ── DISCOVER PATHWAYS (wide banner) ── */}
         <div
@@ -705,22 +709,6 @@ const HomeTab: React.FC<{
               <p className="text-[8px] font-mono text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge</p>
             </div>
 
-            {/* Onboarding steps */}
-            <div className="px-4 mb-4">
-              <p className="text-[9px] font-black tracking-[0.2em] uppercase text-white/25 mb-2">Getting Started</p>
-              <div className="flex flex-col gap-1.5">
-                {steps.slice(0, 5).map(s => (
-                  <button key={s.step} onClick={() => setTab(s.tab)} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all hover:brightness-110" style={{ background: s.done ? 'rgba(16,185,129,0.1)' : s.highlight ? 'rgba(251,146,60,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${s.done ? 'rgba(16,185,129,0.2)' : s.highlight ? 'rgba(251,146,60,0.25)' : 'rgba(255,255,255,0.06)'}` }}>
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${s.done ? 'bg-emerald-500' : 'bg-white/10'}`}>
-                      {s.done ? <CheckCircle size={9} className="text-white" /> : <s.icon size={8} className="text-white/30" />}
-                    </div>
-                    <span className={`text-[10px] font-bold truncate flex-1 ${s.done ? 'text-emerald-300' : 'text-white/50'}`}>{s.label}</span>
-                    {s.done && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* CTA buttons */}
             <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
               <button onClick={() => onNavigate('pilot-recognition-profile')} className="w-full py-2.5 text-xs font-black tracking-wider text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.75)', border: '1px solid rgba(96,165,250,0.3)' }}>
@@ -766,6 +754,7 @@ const HomeTab: React.FC<{
           </div>
         )}
 
+      </div>
       </div>
 
       {/* ════════════════════════════════════════════════════════════
