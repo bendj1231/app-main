@@ -164,8 +164,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category,
           license_types, type_ratings, type_rating_input, elp_level, medical_class,
           employment_status, current_job, career_goal, other_licence, is_visitor,
+          hours_whole, hours_minutes, origin_jurisdiction,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         id,
         data.auth0_id || '',
@@ -215,6 +216,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.career_goal || null,
         data.other_licence || null,
         data.is_visitor ? 1 : 0,
+        data.hours_whole || null,
+        data.hours_minutes || null,
+        data.origin_jurisdiction || null,
         now,
         now
       ).run();
@@ -245,7 +249,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         elp_level: 'elp_level', medical_class: 'medical_class',
         employment_status: 'employment_status', current_job: 'current_job',
         career_goal: 'career_goal', other_licence: 'other_licence',
-        is_visitor: 'is_visitor',
+        is_visitor: 'is_visitor', hours_whole: 'hours_whole',
+        hours_minutes: 'hours_minutes', origin_jurisdiction: 'origin_jurisdiction',
       };
       // Build onboarding metadata from fields not in fieldMap
       const onboardingMeta: Record<string, any> = {};
@@ -282,8 +287,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       // Create
       const newId = crypto.randomUUID();
       await db.prepare(`
-        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, is_visitor, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, app_access, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
@@ -310,6 +315,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.career_goal || null,
         data.other_licence || null,
         data.is_visitor ? 1 : 0,
+        data.hours_whole || null,
+        data.hours_minutes || null,
+        data.origin_jurisdiction || null,
         Object.keys(onboardingMeta).length > 0 ? JSON.stringify(onboardingMeta) : null,
         now, now
       ).run();
@@ -336,6 +344,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         'aircraft_category', 'license_types', 'type_ratings', 'type_rating_input',
         'elp_level', 'medical_class', 'employment_status', 'current_job',
         'career_goal', 'other_licence', 'is_visitor',
+        'hours_whole', 'hours_minutes', 'origin_jurisdiction',
       ];
 
       for (const field of allowedFields) {
