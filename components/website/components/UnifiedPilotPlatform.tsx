@@ -39,6 +39,7 @@ import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
 import { GettingStartedBar } from './GettingStartedBar';
+import { CareerPathwaysCarousel } from './CareerPathwaysCarousel';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -472,73 +473,12 @@ const HomeTab: React.FC<{
         {/* ── LEFT COLUMN ── */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
 
-        {/* ── DISCOVER PATHWAYS (wide banner) ── */}
-        <div
-          className="relative w-full overflow-hidden rounded-none cursor-pointer group"
-          style={{ height: '420px', flexShrink: 0, borderRadius: 0 }}
-          onClick={() => setTab('pathways')}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&q=90')" }}
-          />
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/70 to-slate-800/30" />
-          
-          {/* Glassmorphism panel */}
-          <div className="absolute inset-0 flex items-stretch">
-            <div className="relative w-[60%] h-full flex flex-col justify-center px-8 py-8">
-              {/* Backdrop blur */}
-              <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-xl" />
-              
-              {/* Faux-specular border */}
-              <div className="absolute inset-0 border-r border-white/20" />
-              <div className="absolute inset-0 border border-white/10 pointer-events-none" />
-              
-              {/* Content */}
-              <div className="relative z-10">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <span className="text-cyan-400 text-xs">&#8811;</span>
-                  <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight leading-tight mb-3">
-                  <span className="text-white">Career </span>
-                  <span className="text-red-500">Pathways</span>
-                </h2>
-                <div className="w-8 h-[2px] bg-cyan-400 mb-4" />
-                <p className="text-sm text-slate-300 max-w-sm leading-relaxed mb-6">
-                  Stay up to date with PilotRecognition &amp; PilotShortage.org news.
-                </p>
-                
-                {/* CTAs */}
-                <div className="flex items-center gap-3">
-                  <button className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25">
-                    Stay updated
-                  </button>
-                  <span className="text-xs text-slate-400">{airlines.length}+ Airlines</span>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          
-          {/* Coming Soon overlay on the image (right side) */}
-          <div className="absolute top-0 bottom-0 flex items-center justify-center" style={{ left: '60%', width: '40%' }}>
-            <div className="absolute inset-0 backdrop-blur-md bg-white/5" />
-            <div className="relative z-10 flex flex-col items-center justify-center">
-              <span className="text-xs font-black tracking-[0.25em] uppercase text-white/60 mb-2">Pilot Platform</span>
-              <span className="text-2xl font-extrabold text-white/90 uppercase tracking-wider">Coming Soon</span>
-            </div>
-          </div>
-          
-          {/* Top accent line */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-400 to-blue-600 z-20" />
-          
-          {/* Open button */}
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white transition-all group-hover:brightness-110 border border-white/30 hover:border-white/50 hover:bg-white/5" style={{ borderRadius: 0 }}>
-            Open <ArrowRight size={12} />
-          </div>
-        </div>
+        {/* ── DISCOVER PATHWAYS (auto-rotating carousel) ── */}
+        <CareerPathwaysCarousel
+          airlinesCount={airlines.length}
+          setTab={(tab) => setTab(tab)}
+          safeRedirect={safeRedirect}
+        />
 
         {/* ── THREE CARDS ROW ── */}
         <div className="grid grid-cols-3 gap-4" style={{ height: '240px' }}>
