@@ -14,11 +14,41 @@ interface Step {
 interface GettingStartedBarProps {
   steps: Step[];
   onStepClick: (tab: string) => void;
+  isGuest?: boolean;
+  onGuestCta?: () => void;
 }
 
-export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onStepClick }) => {
+export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onStepClick, isGuest, onGuestCta }) => {
   const completedCount = steps.filter(s => s.done).length;
   const total = steps.length;
+
+  if (isGuest) {
+    return (
+      <div className="w-full rounded-2xl bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-100/80 overflow-hidden">
+        <div className="px-5 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center">
+              <span className="text-white text-[10px] font-black">0/{total}</span>
+            </div>
+            <div>
+              <p className="text-[11px] font-black tracking-[0.12em] uppercase text-slate-900">
+                Getting Started
+              </p>
+              <p className="text-[10px] text-slate-500 font-medium">
+                Sign in to track your onboarding progress
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onGuestCta}
+            className="px-4 py-2 text-[10px] font-black tracking-wider uppercase text-white bg-red-500 rounded-lg hover:bg-red-600 transition-all"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-2xl bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-100/80 overflow-hidden">

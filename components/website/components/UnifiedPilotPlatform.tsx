@@ -467,7 +467,12 @@ const HomeTab: React.FC<{
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <GettingStartedBar steps={steps} onStepClick={(tab) => setTab(tab as TabId)} />
+      <GettingStartedBar
+        steps={steps}
+        onStepClick={(tab) => setTab(tab as TabId)}
+        isGuest={!isAuthenticated}
+        onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+      />
 
       <div className="flex gap-4 items-stretch">
         {/* ── LEFT COLUMN ── */}
@@ -659,36 +664,36 @@ const HomeTab: React.FC<{
             </div>
           </div>
         ) : (
-          <div className="flex flex-col flex-1 items-center justify-center px-5 gap-4">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <User size={28} className="text-white/30" />
+          <div className="flex flex-col flex-1 items-center justify-center px-6 gap-5">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <User size={28} className="text-white/25" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-black text-white mb-1">{isAuthenticatedWithoutProfile ? `Welcome, ${name}` : 'Welcome Aboard'}</p>
-              <p className="text-[10px] text-white/30 leading-snug">
+              <p className="text-[15px] font-black text-white tracking-tight mb-1">{isAuthenticatedWithoutProfile ? `Welcome, ${name}` : 'Welcome Aboard'}</p>
+              <p className="text-[10px] text-white/30 leading-snug max-w-[200px]">
                 {isAuthenticatedWithoutProfile
                   ? 'You are signed in. Complete your pilot profile to activate your account.'
                   : 'Sign in to activate your pilot profile.'}
               </p>
             </div>
             {isAuthenticatedWithoutProfile ? (
-              <>
-                <button onClick={() => setTab('profile')} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#2563eb' }}>
+              <div className="w-full flex flex-col gap-2">
+                <button onClick={() => setTab('profile')} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
                   Complete Profile
                 </button>
-                <button onClick={() => setTab('settings' as TabId)} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                <button onClick={() => setTab('settings' as TabId)} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   Account Settings
                 </button>
-              </>
+              </div>
             ) : (
-              <>
-                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
+              <div className="w-full flex flex-col gap-2">
+                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600" style={{ background: 'rgba(220,38,38,0.85)' }}>
                   Get Recognition Free
                 </button>
-                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
                   Pilot Sign In
                 </button>
-              </>
+              </div>
             )}
           </div>
         )}

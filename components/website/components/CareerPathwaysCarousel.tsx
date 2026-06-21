@@ -63,7 +63,7 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
         window.open(url, '_blank', 'noopener,noreferrer');
       },
       rightLabel: 'Airline Database',
-      rightText: `${airlinesCount}+ Operators`,
+      rightText: airlinesCount > 0 ? `${airlinesCount}+ Operators` : 'Coming Soon',
       image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=1920&q=90',
       accent: '#06b6d4',
     },
