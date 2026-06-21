@@ -288,7 +288,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       const newId = crypto.randomUUID();
       await db.prepare(`
         INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
