@@ -12,6 +12,21 @@ import {
   getScoreTier,
 } from '../../lib/pilot-recognition-score';
 
+export interface RecognitionScoreBreakdown {
+  totalHours: number;
+  picHours: number;
+  ifrHours: number;
+  nightHours: number;
+  experienceYears: number;
+  achievementsCount: number;
+  licensesCount: number;
+  programCompletion: number;
+  performanceScore: number;
+  mentorshipHours: number;
+  mentorshipObservations: number;
+  mentorshipCases: number;
+}
+
 export interface RecognitionScoreRecord {
   id: string;
   user_id: string;
@@ -21,7 +36,7 @@ export interface RecognitionScoreRecord {
   assessment_score: number;
   mentorship_score: number;
   score_tier: string;
-  breakdown: unknown;
+  breakdown: RecognitionScoreBreakdown;
   recommendations: string[];
   last_calculated_at: string;
   created_at: string;

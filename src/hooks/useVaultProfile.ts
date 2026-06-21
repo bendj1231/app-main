@@ -40,21 +40,36 @@ export function useVaultProfile() {
    * Write (insert) a new profile row.
    */
   const writeProfile = useCallback(async (userId: string, profileData: Record<string, unknown>) => {
-    return callApi('createProfile', { id: userId, ...profileData });
+    try {
+      const data = await callApi('createProfile', { id: userId, ...profileData });
+      return { data, error: null };
+    } catch (err: unknown) {
+      return { data: null, error: err instanceof Error ? err : new Error(String(err)) };
+    }
   }, [callApi]);
 
   /**
    * Update an existing profile row.
    */
   const updateProfile = useCallback(async (userId: string, updates: Record<string, unknown>) => {
-    return callApi('updateProfile', { id: userId, ...updates });
+    try {
+      const data = await callApi('updateProfile', { id: userId, ...updates });
+      return { data, error: null };
+    } catch (err: unknown) {
+      return { data: null, error: err instanceof Error ? err : new Error(String(err)) };
+    }
   }, [callApi]);
 
   /**
    * Write (upsert) pilot_licensure_experience.
    */
   const writeLicensure = useCallback(async (userId: string, data: Record<string, unknown>) => {
-    return callApi('saveLicensure', { user_id: userId, ...data });
+    try {
+      const result = await callApi('saveLicensure', { user_id: userId, ...data });
+      return { data: result, error: null };
+    } catch (err: unknown) {
+      return { data: null, error: err instanceof Error ? err : new Error(String(err)) };
+    }
   }, [callApi]);
 
   /**

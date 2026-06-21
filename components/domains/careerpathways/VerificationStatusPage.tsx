@@ -6,11 +6,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../src/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet, getWalletCredentials } from '../../../src/lib/wallet';
-import { generateEnclaveKey, getEnclaveStatus } from '../../../lib/wallet/enclave';
+import { generateEnclaveKey } from '../../../lib/wallet/enclave';
 import { ShieldCheck, Plane, Briefcase, Award, Share2, CheckCircle, AlertCircle } from 'lucide-react';
 import { CookieConsent } from '../../../components/CookieConsent';
+import { useWorkerAuth } from '../../../src/hooks/useWorkerAuth';
 
 interface PathwaysWalletPageProps {
   auth0Id: string;
@@ -27,6 +28,8 @@ interface PathwayMatch {
 }
 
 export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id, profileId }) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [walletState, setWalletState] = useState<'loading' | 'no-wallet' | 'ready'>('loading');
   const [did, setDid] = useState<string | null>(null);
   const [credentials, setCredentials] = useState<any[]>([]);
@@ -51,14 +54,10 @@ export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth
 
   const initWallet = async () => {
     try {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('wallet_id, wallet_did')
-        .eq('id', profileId)
-        .single();
+      const profile = await callApi<Record<string, unknown> | null>('getProfile', { id: profileId });
 
       if (profile?.wallet_id) {
-        setDid(profile.wallet_did);
+        setDid(profile.wallet_did as string | null);
         setWalletState('ready');
         loadCredentials();
         loadPathways();
@@ -71,19 +70,21 @@ export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth
   };
 
   const loadCredentials = async () => {
-    const creds = await getWalletCredentials(profileId);
+    const accessToken = await getAccessTokenSilently();
+    const creds = await getWalletCredentials(accessToken, profileId);
     setCredentials(creds);
   };
 
   const loadPathways = async () => {
     // Load matching pathways based on credentials
-    const { data } = await supabase
-      .from('pathway_matches')
-      .select('*')
-      .eq('profile_id', profileId)
-      .order('match_score', { ascending: false })
-      .limit(5);
-    
+    const data = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pathway_matches',
+      operation: 'select',
+      where: { profile_id: profileId },
+      orderBy: 'match_score DESC',
+      limit: 5,
+    });
+
     if (data) {
       setPathways(data.map((m: any) => ({
         id: m.pathway_id,
@@ -101,7 +102,7 @@ export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth
 
     // Log DCA consent for audit trail
     try {
-      await supabase.from('user_activity_log').insert({
+      await callApi('logActivity', {
         user_id: profileId,
         action: 'dca_consent_accepted',
         details: {
@@ -115,28 +116,12 @@ export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth
       console.warn('Consent log failed (non-fatal):', logErr);
     }
 
-    // Set origin_jurisdiction via edge function if not already set
+    // Set origin_jurisdiction via Worker if not already set
     try {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('origin_jurisdiction')
-        .eq('id', profileId)
-        .single();
-
-      if (!profile?.origin_jurisdiction || profile.origin_jurisdiction === 'XX') {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.access_token) {
-          await fetch(
-            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/auth-signup`,
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${session.access_token}`,
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-        }
+      const profile = await callApi<Record<string, unknown> | null>('getProfile', { id: profileId });
+      const originJurisdiction = profile?.origin_jurisdiction as string | undefined;
+      if (!originJurisdiction || originJurisdiction === 'XX') {
+        await callApi('setOriginJurisdiction', { user_id: profileId });
       }
     } catch (geoErr) {
       console.warn('Origin jurisdiction set failed (non-fatal):', geoErr);
@@ -146,12 +131,14 @@ export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth
     await generateEnclaveKey();
 
     // Create wallet
-    const { did: newDid } = await getOrCreateClientWallet(profileId, auth0Id);
+    const accessToken = await getAccessTokenSilently();
+    const { did: newDid } = await getOrCreateClientWallet(accessToken, profileId, auth0Id);
     setDid(newDid);
 
     // Issue credentials based on setup data
     if (licenseData.number) {
       await issueAndStoreCredentialSelfHosted(
+        accessToken,
         auth0Id,
         profileId,
         licenseData.number,

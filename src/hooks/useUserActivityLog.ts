@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useWorkerAuth } from './useWorkerAuth';
 
 export type ActivityType =

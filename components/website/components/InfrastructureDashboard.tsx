@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 interface InfraStats {
-  // Supabase (auth + DB)
+  // Platform DB (D1)
   totalPilots: number;
   pilotsToday: number;
   pilotsWeek: number;
@@ -72,6 +72,8 @@ interface InfraStats {
   pilotDocuments: number;
   payoutsPending: number;
   atoPendingCommissions: number;
+  helioTokensTotal: number;
+  paymentSplitsTotal: number;
   atoVerificationRequests: number;
   recognitionScores: number;
   atlasResumes: number;
@@ -284,6 +286,8 @@ export const InfrastructureDashboard: React.FC = () => {
         pilotDocuments: pilotDocsRes.count ?? 0,
         payoutsPending: payoutsPendingRes.count ?? 0,
         atoPendingCommissions: atoCommRes.count ?? 0,
+        helioTokensTotal: 0,
+        paymentSplitsTotal: 0,
         atoVerificationRequests: atoVerifRes.count ?? 0,
         recognitionScores: recScoreRes.count ?? 0,
         atlasResumes: atlasRes.count ?? 0,

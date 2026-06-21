@@ -154,7 +154,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       await db.prepare(`
         INSERT INTO profiles (
           id, auth0_id, email, full_name, display_name, first_name, last_name,
-          role, status, avatar_url, phone, address, date_of_birth, nationality,
+          role, status, avatar_url, profile_image_url, profile_image_public_id,
+          phone, address, date_of_birth, nationality,
           current_flight_hours, total_flight_hours, mentorship_hours,
           foundation_progress, overall_recognition_score, current_level,
           current_occupation, license_id, country_of_license, ratings, pilot_id,
@@ -163,10 +164,11 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           data_controller_agreement_accepted, data_controller_agreement_accepted_at,
           license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category,
           license_types, type_ratings, type_rating_input, elp_level, medical_class,
-          employment_status, current_job, career_goal, other_licence, is_visitor,
+          employment_status, current_job, career_goal, other_licence, bio,
+          linkedin_url, instagram_url, domicile, is_visitor,
           hours_whole, hours_minutes, origin_jurisdiction,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         id,
         data.auth0_id || '',
@@ -178,6 +180,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.role || 'pilot',
         data.status || 'active',
         data.avatar_url || null,
+        data.profile_image_url || null,
+        data.profile_image_public_id || null,
         data.phone || null,
         data.address || null,
         data.date_of_birth || null,
@@ -215,6 +219,10 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.current_job || null,
         data.career_goal || null,
         data.other_licence || null,
+        data.bio || null,
+        data.linkedin_url || null,
+        data.instagram_url || null,
+        data.domicile || null,
         data.is_visitor ? 1 : 0,
         data.hours_whole || null,
         data.hours_minutes || null,
@@ -237,7 +245,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         current_flight_hours: 'current_flight_hours', ratings: 'ratings',
         license_id: 'license_id', country_of_license: 'country_of_license',
         recognition_tier: 'recognition_tier', subscription_tier: 'subscription_tier',
-        avatar_url: 'avatar_url', phone: 'phone', address: 'address',
+        avatar_url: 'avatar_url', profile_image_url: 'profile_image_url', profile_image_public_id: 'profile_image_public_id',
+        phone: 'phone', address: 'address',
         status: 'status', current_level: 'current_level',
         terms_accepted_at: 'terms_accepted_at',
         data_controller_agreement_accepted: 'data_controller_agreement_accepted',
@@ -249,6 +258,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         elp_level: 'elp_level', medical_class: 'medical_class',
         employment_status: 'employment_status', current_job: 'current_job',
         career_goal: 'career_goal', other_licence: 'other_licence',
+        bio: 'bio', linkedin_url: 'linkedin_url', instagram_url: 'instagram_url', domicile: 'domicile',
         is_visitor: 'is_visitor', hours_whole: 'hours_whole',
         hours_minutes: 'hours_minutes', origin_jurisdiction: 'origin_jurisdiction',
       };
@@ -287,11 +297,12 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       // Create
       const newId = crypto.randomUUID();
       await db.prepare(`
-        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, profile_image_url, profile_image_public_id, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, bio, linkedin_url, instagram_url, domicile, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, app_access, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
+        data.profile_image_url || null, data.profile_image_public_id || null,
         data.date_of_birth || null, data.nationality || null, data.current_occupation || null,
         data.total_flight_hours || 0, data.current_flight_hours || 0,
         data.ratings ? JSON.stringify(data.ratings) : null,
@@ -314,6 +325,10 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.current_job || null,
         data.career_goal || null,
         data.other_licence || null,
+        data.bio || null,
+        data.linkedin_url || null,
+        data.instagram_url || null,
+        data.domicile || null,
         data.is_visitor ? 1 : 0,
         data.hours_whole || null,
         data.hours_minutes || null,
@@ -333,7 +348,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
       const allowedFields = [
         'full_name', 'display_name', 'first_name', 'last_name', 'role', 'status',
-        'avatar_url', 'phone', 'address', 'date_of_birth', 'nationality',
+        'avatar_url', 'profile_image_url', 'profile_image_public_id', 'phone', 'address', 'date_of_birth', 'nationality',
         'current_flight_hours', 'total_flight_hours', 'mentorship_hours',
         'foundation_progress', 'overall_recognition_score', 'current_level',
         'current_occupation', 'license_id', 'country_of_license', 'ratings',
@@ -343,7 +358,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         'license_type', 'pilot_stage', 'license_issuing_authority', 'aircraft_types',
         'aircraft_category', 'license_types', 'type_ratings', 'type_rating_input',
         'elp_level', 'medical_class', 'employment_status', 'current_job',
-        'career_goal', 'other_licence', 'is_visitor',
+        'career_goal', 'other_licence', 'bio', 'linkedin_url', 'instagram_url', 'domicile', 'is_visitor',
         'hours_whole', 'hours_minutes', 'origin_jurisdiction',
       ];
 

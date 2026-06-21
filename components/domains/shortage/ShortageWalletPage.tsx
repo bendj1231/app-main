@@ -6,10 +6,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../src/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet } from '../../../src/lib/wallet';
 import { generateEnclaveKey, getEnclaveStatus } from '../../../lib/wallet/enclave';
 import { Shield, Wallet, CheckCircle, AlertTriangle, Mic, FileText } from 'lucide-react';
+import { useWorkerAuth } from '../../../src/hooks/useWorkerAuth';
 
 interface ShortageWalletPageProps {
   auth0Id: string;
@@ -17,6 +18,8 @@ interface ShortageWalletPageProps {
 }
 
 export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id, profileId }) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [walletState, setWalletState] = useState<'loading' | 'no-wallet' | 'ready' | 'error'>('loading');
   const [did, setDid] = useState<string | null>(null);
   const [credentials, setCredentials] = useState<any[]>([]);
@@ -31,14 +34,10 @@ export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id,
   const initWallet = async () => {
     try {
       // Check if wallet exists
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('wallet_id, wallet_did')
-        .eq('id', profileId)
-        .single();
+      const profile = await callApi<Record<string, unknown> | null>('getProfile', { id: profileId });
 
       if (profile?.wallet_id) {
-        setDid(profile.wallet_did);
+        setDid(profile.wallet_did as string | null);
         setWalletState('ready');
         loadCredentials();
       } else {
@@ -50,12 +49,12 @@ export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id,
   };
 
   const loadCredentials = async () => {
-    const { data } = await supabase
-      .from('pilot_credentials')
-      .select('*')
-      .eq('profile_id', profileId)
-      .eq('status', 'active')
-      .order('issued_at', { ascending: false });
+    const data = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_credentials',
+      operation: 'select',
+      where: { profile_id: profileId, status: 'active' },
+      orderBy: 'issued_at DESC',
+    });
     setCredentials(data || []);
   };
 
@@ -65,13 +64,15 @@ export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id,
       // Generate enclave key
       await generateEnclaveKey();
       const status = await getEnclaveStatus();
-      
+
       // Create client wallet
-      const { did: newDid } = await getOrCreateClientWallet(profileId, auth0Id);
-      
+      const accessToken = await getAccessTokenSilently();
+      const { did: newDid } = await getOrCreateClientWallet(accessToken, profileId, auth0Id);
+
       // Issue anonymous verification credential
       if (licenseNumber) {
         await issueAndStoreCredentialSelfHosted(
+          accessToken,
           auth0Id,
           profileId,
           licenseNumber,

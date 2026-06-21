@@ -12,7 +12,7 @@ interface FlightDeckLoginPageProps {
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
-  const { sendOtp, verifyOtp, currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
+  const { currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
 
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -24,10 +24,12 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [error, setError] = useState('');
 
-  // Helper: check if a profile row exists for a given user id
+  // Helper: check if a profile row exists for a given user id (Auth0 sub)
   const profileExists = async (userId: string): Promise<boolean> => {
-    const { data } = await supabase.from('profiles').select('id').eq('id', userId).maybeSingle();
-    return !!data;
+    const { data: byId } = await supabase.from('profiles').select('id').eq('id', userId).maybeSingle();
+    if (byId) return true;
+    const { data: byAuth0Id } = await supabase.from('profiles').select('id').eq('auth0_id', userId).maybeSingle();
+    return !!byAuth0Id;
   };
 
   // Watch currentUser and verify they have a valid profile row in the database.
@@ -47,8 +49,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
       if (hasProfile) {
         setCheckingOAuth(false);
-        console.log('[FlightDeckLogin] Profile found — AuthContext will show welcome screen');
-        // AuthContext handles the welcome screen + redirect to /platform
+        console.log('[FlightDeckLogin] Profile found — redirecting to /platform');
+        navigate('/platform', { replace: true });
         return;
       } else {
         console.log('[FlightDeckLogin] No profile found — redirecting to /become-member?setup=1 for onboarding');
@@ -69,8 +71,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     const handleOAuthResult = async () => {
       if (oauthAccountCheck.hasAccount) {
-        // Welcome screen + redirect is handled by AuthContext
-        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=true — AuthContext will show welcome screen');
+        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=true — redirecting to /platform');
+        navigate('/platform', { replace: true });
         return;
       } else {
         console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=false — redirecting to /become-member?setup=1 for onboarding');
@@ -99,7 +101,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     setError('');
 
     try {
-      await sendOtp(email.trim());
+      // Auth0 handles the email/passwordless flow; the callback routes to platform or onboarding.
+      await loginWithRedirect();
       setOtpSent(true);
       startResendTimer();
     } catch (err: unknown) {
@@ -117,21 +120,10 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     setError('');
 
     try {
-      await verifyOtp(email.trim(), otp.trim());
-
-      // After verifyOtp, currentUser is set by AuthContext.
-      // Check if profile exists — if not, send to become-member.
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('email', email.trim().toLowerCase())
-        .maybeSingle();
-
-      if (profile) {
-        navigate('/platform');
-      } else {
-        onNavigate('become-member');
-      }
+      // Auth0 handles verification; the callback routes to platform or onboarding.
+      await loginWithRedirect();
+      setOtpSent(true);
+      startResendTimer();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Invalid code. Please try again.');
     } finally {

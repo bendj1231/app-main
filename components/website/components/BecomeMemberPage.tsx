@@ -7,6 +7,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 
 const COUNTRIES = [
@@ -190,6 +191,7 @@ const OCCUPATIONS = [
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     const { user: auth0User, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+    const { callApi } = useWorkerAuth();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
     const setupInitRef = React.useRef(false);
@@ -2087,14 +2089,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             const pubKeyBuf = attestation.getPublicKey?.();
                                             const ua = navigator.userAgent;
                                             const deviceName = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Unknown';
-                                            await supabase.from('pilot_passkeys').upsert({
+                                            await callApi('registerPasskey', {
                                                 user_id: pkUserId,
                                                 credential_id: result.id,
                                                 public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
                                                 sign_count: 0,
                                                 device_name: deviceName,
                                                 transports: (result as any).response?.getTransports?.() ?? [],
-                                            }, { onConflict: 'credential_id' });
+                                            });
                                         }
                                     } catch (pe: any) {
                                         console.warn('⚠️ [Passkey] skipped:', pe?.name, pe?.message);

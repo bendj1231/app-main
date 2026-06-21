@@ -5,7 +5,7 @@ import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus } from 'lucide-react';
 
 type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
-import { supabase } from '../../../../src/lib/supabase';
+import { useWorkerAuth } from '../../../../src/hooks/useWorkerAuth';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
@@ -75,7 +75,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
     const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
-    const { readProfile } = useVaultProfile();
+    const { readProfile, updateProfile } = useVaultProfile();
+    const { callApi } = useWorkerAuth();
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const [isPremium, setIsPremium] = useState(false);
     const [showWalletGate, setShowWalletGate] = useState(false);
@@ -163,39 +164,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     // MSFS 2024 Style Sidebar Navigation
     const [activeSection, setActiveSection] = useState<ProfileSection>('overview');
 
-    // Check subscription status — resolve Supabase UUID from email (Auth0 sub is not a UUID)
+    // Check subscription status from Worker profile (subscription_tier)
     useEffect(() => {
         if (!currentUser?.email) return;
 
         let cancelled = false;
         const checkSubscription = async () => {
             try {
-                // Auth0 currentUser.id is a string sub (e.g. google-oauth2|...), not a UUID.
-                // Look up the Supabase profile UUID by email first.
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('id')
-                    .eq('email', currentUser.email)
-                    .single();
-
+                const profile = (await callApi('getProfile', { email: currentUser.email })) as any;
                 if (cancelled) return;
-                if (!profile?.id) return;
-
-                const { data: subscriptions, error } = await supabase
-                    .from('subscriptions')
-                    .select('*')
-                    .eq('user_id', profile.id)
-                    .eq('status', 'active');
-                
-                if (cancelled) return;
-                
-                if (error) {
-                    console.error('[DEBUG] Subscription query error:', error);
-                    return;
-                }
-                
-                const hasActiveSubscription = subscriptions && subscriptions.length > 0;
-                setIsPremium(hasActiveSubscription);
+                const tier = profile?.subscription_tier || 'free';
+                setIsPremium(tier !== 'free' && tier !== 'bronze');
             } catch (error) {
                 console.error('[DEBUG] Error in checkSubscription:', error);
             }
@@ -203,7 +182,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         checkSubscription();
 
         return () => { cancelled = true; };
-    }, [currentUser?.email]);
+    }, [currentUser?.email, callApi]);
 
     // Debug isPremium changes
     useEffect(() => {
@@ -526,7 +505,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     useEffect(() => {
         fetchProfileData();
-    }, []);
+    }, [currentUser?.uid, currentUser?.email, injectedProfile, callApi]);
 
     // Profile image upload using Cloudinary (free tier)
     // Zero edge function invocations - client-side upload directly to Cloudinary
@@ -546,14 +525,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 throw new Error(result.error || 'Upload failed');
             }
 
-            // Update profile with new image URL
-            const { error: updateError } = await supabase
-                .from('profiles')
-                .update({ 
-                    profile_image_url: result.url,
-                    profile_image_public_id: result.publicId,
-                })
-                .eq('id', profileData.user_id);
+            // Update profile with new image URL via Worker
+            const { error: updateError } = await updateProfile(profileData.user_id, {
+                profile_image_url: result.url,
+                profile_image_public_id: result.publicId,
+            });
 
             if (updateError) throw updateError;
 
@@ -589,11 +565,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     const saveTileEdit = async (label: string, value: string) => {
         const field = TILE_FIELD_MAP[label];
-        if (!field) return;
+        if (!field || !profileData?.user_id) return;
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-            await supabase.from('profiles').update({ [field]: value }).eq('id', user.id);
+            await updateProfile(profileData.user_id, { [field]: value });
             setProfileData((prev: any) => ({
                 ...prev,
                 english_proficiency_level: label === 'English Level' ? value : prev?.english_proficiency_level,
@@ -686,54 +660,28 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 return;
             }
 
-            // Fetch user's profile data directly from Supabase
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            
-            if (userError || !user) {
-                console.warn('[PROFILE] No Supabase session — waiting for injected profile');
+            // Fetch profile data via Worker (single source of truth)
+            const userId = currentUser?.uid || currentUser?.id;
+            const userEmail = currentUser?.email;
+            if (!userId && !userEmail) {
+                console.warn('[PROFILE] No authenticated user — waiting for injected profile');
                 setLoading(false);
                 return;
             }
-            
-            
-            // Fetch profile data from pilot_recognition_matches table
-            const { data: profileData, error: profileError } = await supabase
-                .from('pilot_recognition_matches')
-                .select('*')
-                .eq('user_id', user.id)
-                .maybeSingle();
-            
-            // Fetch profile image and basic user data from profiles table (with vault decryption)
-            const { data: profileImage, error: imageError } = await supabase
-                .from('profiles')
-                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, license_issuing_authority, ratings, license_types, current_occupation, profile_token, profile_token_generated_at, auth0_id, elp_level')
-                .eq('id', user.id)
-                .maybeSingle();
-            
-            // Decrypt profile data using vault
-            let decryptedProfileImage = profileImage;
-            if (profileImage) {
-                try {
-                    const { data: vaultData } = await readProfile(user.id);
-                    if (vaultData) {
-                        decryptedProfileImage = { ...profileImage, ...vaultData };
-                    }
-                } catch (vaultErr) {
-                    console.warn('[PROFILE] Vault decryption failed for profile fetch:', vaultErr);
-                }
+
+            const profileParams: any = {};
+            if (userId) profileParams.auth0_id = userId;
+            if (userEmail) profileParams.email = userEmail;
+
+            const sourceProfile = (await callApi('getProfile', profileParams)) as any;
+
+            if (!sourceProfile) {
+                console.warn('[PROFILE] No Worker profile found');
+                setLoading(false);
+                return;
             }
-            
-            
-            if (profileError) {
-                console.error('[ERROR] Profile fetch error:', profileError);
-                // Don't throw error, continue with profiles data
-            }
-            
-            // Provide default values if no profile exists, and merge with profiles table data
-            // Use decrypted profile data if available
-            const sourceProfile = decryptedProfileImage || profileImage;
-            
-            // Prefer display_name (always plain text) over full_name (may be AES-encrypted)
+
+            // Prefer display_name (always plain text) over full_name
             const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
             let resolvedFullName = '';
             if (sourceProfile?.display_name && !isCiphertext(sourceProfile.display_name)) {
@@ -743,10 +691,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             } else {
                 resolvedFullName = 'Pilot';
             }
-            
+
+            const licenseTypes = sourceProfile.license_types || sourceProfile.license_type || sourceProfile.current_occupation;
+            const licenseTypeStr = Array.isArray(licenseTypes) ? licenseTypes.join(', ') : licenseTypes;
+
             const finalProfileData = {
                 ...{
-                    user_id: user.id,
+                    user_id: sourceProfile.id,
                     total_hours: 0,
                     recent_flight_experience: 'N/A',
                     overall_recognition_score: 0,
@@ -757,86 +708,37 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     certifications: [],
                     type_ratings: [],
                     profile_image_url: '',
+                    profile_image_public_id: '',
                     first_name: '',
                     last_name: '',
                     full_name: '',
                     email: '',
                     current_occupation: ''
                 },
-                ...profileData,
-                // Override with profiles table data if pilot_recognition_matches is empty
-                ...(sourceProfile && !profileData ? {
-                    full_name: resolvedFullName,
-                    first_name: resolvedFullName.split(' ')[0] || '',
-                    last_name: resolvedFullName.split(' ').slice(1).join(' ') || '',
-                    email: sourceProfile.email || user.email || '',
-                    total_hours: sourceProfile.current_flight_hours || 0,
-                    overall_recognition_score: sourceProfile.overall_recognition_score || 0,
-                    current_occupation: sourceProfile.current_occupation || 'STUDENT PILOT',
-                    license_type: (sourceProfile.license_types?.length > 0 ? sourceProfile.license_types.join(', ') : null) || sourceProfile.current_occupation || 'None',
-                    license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
-                    license_id: sourceProfile.license_id || '',
-                    country_of_license: sourceProfile.country_of_license || '',
-                    type_ratings: sourceProfile.ratings || []
-                } : {}),
-                // Always include profile image, name and license data from profiles table
-                ...(sourceProfile ? {
-                    full_name: resolvedFullName,
-                    profile_image_url: sourceProfile.profile_image_url || '',
-                    profile_image_public_id: sourceProfile.profile_image_public_id || '',
-                    license_type: (sourceProfile.license_types?.length > 0 ? sourceProfile.license_types.join(', ') : null) || sourceProfile.current_occupation || 'None',
-                    license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
-                    license_id: sourceProfile.license_id || '',
-                    country_of_license: sourceProfile.country_of_license || '',
-                    type_ratings: sourceProfile.ratings || [],
-                    english_proficiency_level: sourceProfile.elp_level || ''
-                } : {})
+                ...sourceProfile,
+                full_name: resolvedFullName,
+                first_name: resolvedFullName.split(' ')[0] || sourceProfile.first_name || '',
+                last_name: resolvedFullName.split(' ').slice(1).join(' ') || sourceProfile.last_name || '',
+                email: sourceProfile.email || userEmail || '',
+                total_hours: sourceProfile.current_flight_hours || sourceProfile.total_flight_hours || 0,
+                overall_recognition_score: sourceProfile.overall_recognition_score || sourceProfile.recognition_score || 0,
+                recognition_score: sourceProfile.overall_recognition_score || sourceProfile.recognition_score || 0,
+                current_occupation: sourceProfile.current_occupation || 'STUDENT PILOT',
+                license_type: licenseTypeStr || 'None',
+                license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
+                license_id: sourceProfile.license_id || '',
+                country_of_license: sourceProfile.country_of_license || '',
+                type_ratings: sourceProfile.ratings || sourceProfile.type_ratings || [],
+                english_proficiency_level: sourceProfile.elp_level || sourceProfile.language_proficiency || ''
             };
-            
-            
-            setProfileData(finalProfileData);
-            // Use decrypted profile image from profiles table first, then fall back to pilot_recognition_matches
-            // Call Supabase Edge Function to calculate pathway matches
-            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-            const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string;
-            const edgeFunctionUrl = `${supabaseUrl}/functions/v1/calculate-pathway-matches`;
-            
-            
-            const { data: { session } } = await supabase.auth.getSession();
-            const accessToken = session?.access_token;
-            
-            
-            const edgeFunctionResponse = await fetch(edgeFunctionUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken || ''}`,
-                },
-                body: JSON.stringify({ profileData: finalProfileData }),
-            });
-            
-            
-            if (!edgeFunctionResponse.ok) {
-                const errorText = await edgeFunctionResponse.text();
-                console.error('[ERROR] Edge Function error response:', errorText);
-                throw new Error(`Edge Function returned ${edgeFunctionResponse.status}: ${errorText}`);
-            }
-            
-            const pathwaysData = await edgeFunctionResponse.json();
-            
-            if (pathwaysData.pathways) {
-                setRecommendedPathways(pathwaysData.pathways);
-            } else {
-                console.error('[ERROR] No pathways in response:', pathwaysData);
-            }
 
-            // Extract recognition score from Edge Function response
-            if (pathwaysData.recognitionProfile) {
-                setRecognitionScore({
-                    totalRecognition: pathwaysData.recognitionProfile.recognition_score || pathwaysData.recognitionProfile.overall_recognition_score || 0,
-                    breakdown: pathwaysData.recognitionProfile.breakdown
-                });
-            }
+            setProfileData(finalProfileData);
+            // Pathway matching deferred — will be moved to a Worker action later
+            setRecommendedPathways([]);
+            setRecognitionScore({
+                totalRecognition: finalProfileData.overall_recognition_score,
+                breakdown: null
+            });
         } catch (error: any) {
             console.error('[ERROR] Error in fetchProfileData:', error);
             console.error('[ERROR] Error name:', error?.name);
@@ -3379,10 +3281,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             placeholder={f.placeholder}
                                             onBlur={async (e) => {
                                                 const val = e.target.value.trim();
-                                                if (!val) return;
-                                                const { data: { user } } = await supabase.auth.getUser();
-                                                if (!user) return;
-                                                await supabase.from('profiles').update({ [f.field]: val }).eq('id', user.id);
+                                                if (!val || !profileData?.user_id) return;
+                                                await updateProfile(profileData.user_id, { [f.field]: val });
                                                 setProfileData((prev: any) => ({ ...prev, [f.field]: val }));
                                             }}
                                             style={{ width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '8px 12px', color: '#e2e8f0', fontSize: '0.82rem', outline: 'none', boxSizing: 'border-box' }}
@@ -3399,9 +3299,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     rows={4}
                                     onBlur={async (e) => {
                                         const val = e.target.value.trim();
-                                        const { data: { user } } = await supabase.auth.getUser();
-                                        if (!user) return;
-                                        await supabase.from('profiles').update({ bio: val }).eq('id', user.id);
+                                        if (!profileData?.user_id) return;
+                                        await updateProfile(profileData.user_id, { bio: val });
                                         setProfileData((prev: any) => ({ ...prev, bio: val }));
                                     }}
                                     style={{ width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 12px', color: '#e2e8f0', fontSize: '0.82rem', outline: 'none', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.6 }}

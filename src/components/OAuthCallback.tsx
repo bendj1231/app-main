@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import { api, getProfile } from '@/src/lib/d1-api';
+import { api } from '@/src/lib/d1-api';
 
 /** Cache profile data in sessionStorage to reduce API calls */
 function getCachedProfile(auth0Id: string): { display_name?: string | null; id?: string } | null {
@@ -50,9 +50,6 @@ export const OAuthCallback = () => {
         } catch {}
 
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
-        const isCareerPathways = window.location.hostname.includes('pilotcareerpathways') || 
-          window.location.hostname.includes('careerpathways') ||
-          (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
 
         // ─── STEP 1: Determine redirect from returnTo or default ───
         const returnTo = sessionStorage.getItem('auth0_return_to');
@@ -65,10 +62,33 @@ export const OAuthCallback = () => {
           return;
         }
 
-        // Default redirect for new users
+        // ─── STEP 2: If no returnTo, route based on profile existence ───
         setProfileCreated(true);
-        const target = isPilotTerminal ? '/' : '/become-member?setup=1';
-        console.log('[OAuthCallback] No returnTo, default redirect to:', target);
+        let target = '/become-member?setup=1';
+        try {
+          const token = await getAccessTokenSilently();
+          if (token && user?.sub) {
+            const cached = getCachedProfile(user.sub);
+            if (cached?.id) {
+              target = '/platform';
+              console.log('[OAuthCallback] Cached profile found — redirecting to /platform');
+            } else {
+              const profile = await api(token, 'getProfile', { auth0_id: user.sub, email: user.email });
+              if (profile && (profile as any)?.id) {
+                setCachedProfile(user.sub, profile);
+                target = '/platform';
+                console.log('[OAuthCallback] Profile found — redirecting to /platform');
+              }
+            }
+          }
+        } catch (profileErr) {
+          console.warn('[OAuthCallback] Could not check profile, defaulting to onboarding:', profileErr);
+        }
+
+        if (isPilotTerminal && target !== '/platform') {
+          target = '/';
+        }
+        console.log('[OAuthCallback] No returnTo, redirect to:', target);
         navigate(target, { replace: true });
       } catch (err) {
         console.error('Unexpected OAuth callback error:', err);

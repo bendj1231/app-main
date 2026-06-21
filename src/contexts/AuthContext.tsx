@@ -78,7 +78,7 @@ interface AuthContextType {
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   sendOtp: (email: string, redirectTo?: string) => Promise<void>;
-  verifyOtp: (email: string, token: string) => Promise<void>;
+  verifyOtp: (email: string, token: string, redirectTo?: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: (userId: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
@@ -834,14 +834,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await loginWithRedirect();
   }
 
-  async function sendOtp(_email: string, _redirectTo?: string) {
+  async function sendOtp(_email: string, redirectTo?: string) {
     // Auth0 handles OTP — redirect to Auth0 login
-    await loginWithRedirect();
+    await loginWithRedirect({
+      appState: redirectTo ? { returnTo: redirectTo } : undefined,
+    });
   }
 
-  async function verifyOtp(_email: string, _token: string) {
+  async function verifyOtp(_email: string, _token: string, redirectTo?: string) {
     // Auth0 handles verification — redirect to Auth0 login
-    await loginWithRedirect();
+    await loginWithRedirect({
+      appState: redirectTo ? { returnTo: redirectTo } : undefined,
+    });
   }
 
   async function logout() {

@@ -66,7 +66,7 @@ export const useMentorMatching = (menteeId: string | null, isPremium: boolean = 
       const menteeData = await callApi<Record<string, unknown>>('getProfile', { id: menteeId });
       if (!menteeData) throw new Error('Mentee not found');
 
-      const mentee: MenteeProfile = menteeData as MenteeProfile;
+      const mentee: MenteeProfile = menteeData as unknown as MenteeProfile;
 
       // Get available mentors (role = 'mentor')
       const mentorsData = await callApi<Record<string, unknown>[]>('queryProfiles', { role: 'mentor', status: 'active' });

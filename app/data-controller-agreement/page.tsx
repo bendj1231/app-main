@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 export default function DataControllerAgreementPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const signup = searchParams.get('signup');
   const returnTo = searchParams.get('return_to') || '/become-member?setup=1';
   const [agreed, setAgreed] = useState(false);
@@ -25,7 +25,7 @@ export default function DataControllerAgreementPage() {
   const handleAgree = () => {
     sessionStorage.setItem('dca_agreed', 'true');
     sessionStorage.setItem('dca_agreed_at', new Date().toISOString());
-    router.push(returnTo);
+    navigate(returnTo);
   };
 
   return (

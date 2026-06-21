@@ -23,12 +23,14 @@ interface CareerPathwaysCarouselProps {
   airlinesCount: number;
   setTab: (tab: TabId) => void;
   safeRedirect: (path: string) => void;
+  className?: string;
 }
 
 export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
   airlinesCount,
   setTab,
   safeRedirect,
+  className = '',
 }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -94,8 +96,8 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-none cursor-pointer group"
-      style={{ height: '420px', flexShrink: 0, borderRadius: 0 }}
+      className={`relative w-full overflow-hidden rounded-none cursor-pointer group ${className}`}
+      style={{ height: '100%', flexShrink: 0, borderRadius: 0 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -115,28 +117,28 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/70 to-slate-800/30" />
 
           <div className="absolute inset-0 flex items-stretch">
-            <div className="relative w-[60%] h-full flex flex-col justify-center px-8 py-8">
+            <div className="relative w-[60%] h-full flex flex-col justify-center px-6 py-5 lg:px-8 lg:py-6">
               <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-xl" />
               <div className="absolute inset-0 border-r border-white/20" />
               <div className="absolute inset-0 border border-white/10 pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex items-center gap-1.5 mb-3">
+                <div className="flex items-center gap-1.5 mb-2 lg:mb-3">
                   <span className="text-cyan-400 text-xs">&#8811;</span>
                   <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">{slide.eyebrow}</p>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight leading-tight mb-3">
+                <h2 className="text-xl lg:text-3xl font-extrabold uppercase tracking-tight leading-tight mb-2 lg:mb-3">
                   <span className="text-white">{slide.titleWhite} </span>
                   <span className="text-red-500">{slide.titleAccent}</span>
                 </h2>
-                <div className="w-8 h-[2px] mb-4" style={{ background: slide.accent }} />
-                <p className="text-sm text-slate-300 max-w-sm leading-relaxed mb-6">
+                <div className="w-8 h-[2px] mb-3 lg:mb-4" style={{ background: slide.accent }} />
+                <p className="text-xs lg:text-sm text-slate-300 max-w-sm leading-relaxed mb-4 lg:mb-6">
                   {slide.description}
                 </p>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={(e) => { e.stopPropagation(); slide.ctaAction(); }}
-                    className="px-5 py-2.5 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg hover:brightness-110"
+                    className="px-4 py-2 lg:px-5 lg:py-2.5 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg hover:brightness-110"
                     style={{ background: slide.accent, boxShadow: `0 10px 24px ${slide.accent}40` }}
                   >
                     {slide.cta}
@@ -151,7 +153,7 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
             <div className="absolute inset-0 backdrop-blur-md bg-white/5" />
             <div className="relative z-10 flex flex-col items-center justify-center">
               <span className="text-xs font-black tracking-[0.25em] uppercase text-white/60 mb-2">{slide.eyebrow}</span>
-              <span className="text-2xl font-extrabold text-white/90 uppercase tracking-wider">{slide.rightText}</span>
+              <span className="text-xl lg:text-2xl font-extrabold text-white/90 uppercase tracking-wider">{slide.rightText}</span>
             </div>
           </div>
         </motion.div>
