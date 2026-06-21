@@ -475,7 +475,7 @@ const HomeTab: React.FC<{
         {/* ── DISCOVER PATHWAYS (wide banner) ── */}
         <div
           className="relative w-full overflow-hidden rounded-none cursor-pointer group"
-          style={{ height: '500px', flexShrink: 0, borderRadius: 0 }}
+          style={{ height: '420px', flexShrink: 0, borderRadius: 0 }}
           onClick={() => setTab('pathways')}
         >
           <div
