@@ -75,7 +75,7 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
                     {s.done ? (
                       <CheckCircle size={13} className="text-white" strokeWidth={2.5} />
                     ) : (
-                      <Icon size={13} className={isHighlight ? 'text-white' : 'text-slate-600'} strokeWidth={2} />
+                      <Icon size={13} className={isHighlight ? 'text-white' : 'text-slate-600'} />
                     )}
                   </div>
                   {s.done && (

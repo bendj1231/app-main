@@ -615,11 +615,10 @@ const HomeTab: React.FC<{
         {/* ── PROFILE CARD HEADER ── */}
         <div className="relative px-5 pt-5 pb-4 flex-shrink-0 border-b border-white/10">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
-            <p className="text-[10px] text-[#00b4d8] font-bold uppercase tracking-[0.15em]">Pilot Platform</p>
+          <div className="flex items-center gap-2 mb-1">
+            <p className="text-[10px] font-black tracking-[0.15em] uppercase text-[#00b4d8]">Pilot Platform</p>
           </div>
-          <h2 className="text-base font-black text-white tracking-tight">Profile Card</h2>
+          <h2 className="text-[15px] font-black text-white tracking-tight">Profile Card</h2>
         </div>
 
         {profile ? (
@@ -633,8 +632,8 @@ const HomeTab: React.FC<{
                   {avatarUploading ? <div className="w-4 h-4 border-2 border-white/60 border-t-white rounded-full animate-spin" /> : <Camera size={14} className="text-white" />}
                 </div>
               </div>
-              <p className="text-sm font-black text-white text-center truncate w-full">{name}</p>
-              <p className="text-[9px] text-white/25 text-center truncate w-full mt-0.5 flex items-center justify-center gap-1 cursor-pointer" onClick={() => !avatarUploading && avatarInputRef?.current?.click()}>
+              <p className="text-[15px] font-black text-white text-center truncate w-full tracking-tight">{name}</p>
+              <p className="text-[10px] text-white/30 text-center truncate w-full mt-1 flex items-center justify-center gap-1 cursor-pointer hover:text-white/50 transition-colors" onClick={() => !avatarUploading && avatarInputRef?.current?.click()}>
                 <Camera size={9} /> Upload Photo
               </p>
               <p className="text-[10px] text-white/40 text-center truncate w-full mt-0.5">{profile?.email || '—'}</p>
@@ -644,47 +643,47 @@ const HomeTab: React.FC<{
                 const status = hasVerified ? 'Verified' : hasPending ? 'Pending' : 'Unverified';
                 const color = hasVerified ? '#10b981' : hasPending ? '#f59e0b' : '#ef4444';
                 return (
-                  <div className="flex items-center justify-center gap-1 mt-1">
+                  <div className="flex items-center justify-center gap-1.5 mt-2 px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }}>
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
-                    <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color }}>{status}</span>
+                    <span className="text-[9px] font-black uppercase tracking-wider" style={{ color }}>{status}</span>
                   </div>
                 );
               })()}
-              <p className="text-[10px] font-semibold uppercase tracking-wide mt-1" style={{ color: '#f97316' }}>{level}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wide mt-2 text-white/60">{level}</p>
             </div>
 
             {/* Quick info row */}
-            <div className="flex items-center justify-center gap-4 px-4 mb-3">
+            <div className="flex items-center justify-center gap-6 px-4 mb-3">
               <div className="text-center">
-                <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Total Hours</p>
-                <p className="text-sm font-black text-white">{hours || '—'}</p>
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-0.5">Total Hours</p>
+                <p className="text-base font-black text-white tracking-tight">{hours || '—'}</p>
               </div>
-              <div className="w-px h-6 bg-white/10" />
+              <div className="w-px h-8 bg-white/10" />
               <div className="text-center">
-                <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Last Flown</p>
-                <p className="text-sm font-black text-white">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</p>
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-0.5">Last Flown</p>
+                <p className="text-base font-black text-white tracking-tight">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</p>
               </div>
             </div>
 
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-2 px-4 mb-4">
               {[
-                { label: 'HOURS', value: hours || '—', color: 'text-white', onClick: undefined },
-                { label: 'SCORE', value: score || '—', color: 'text-sky-300', onClick: () => setTab('score' as TabId) },
-                { label: 'CREDS', value: walletChecks.filter(c => c.status === 'verified').length || '—', color: 'text-emerald-400', onClick: () => setTab('wallet') },
-                { label: 'PATHS', value: `${airlines.length}+`, color: 'text-blue-300', onClick: () => setTab('pathways') },
+                { label: 'Hours', value: hours || '—', onClick: undefined },
+                { label: 'Score', value: score || '—', onClick: () => setTab('score' as TabId) },
+                { label: 'Creds', value: walletChecks.filter(c => c.status === 'verified').length || '—', onClick: () => setTab('wallet') },
+                { label: 'Paths', value: `${airlines.length}+`, onClick: () => setTab('pathways') },
               ].map(s => (
-                <div key={s.label} className="text-center py-2.5 rounded-xl cursor-pointer transition-all hover:brightness-125" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }} onClick={s.onClick}>
-                  <p className={`text-base font-black ${s.color}`}>{s.value}</p>
-                  <p className="text-[8px] text-white/35 uppercase tracking-widest">{s.label}</p>
+                <div key={s.label} className="text-center py-3 rounded-xl cursor-pointer transition-all hover:bg-white/[0.07]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }} onClick={s.onClick}>
+                  <p className="text-base font-black text-white tracking-tight">{s.value}</p>
+                  <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mt-0.5">{s.label}</p>
                 </div>
               ))}
             </div>
 
             {/* Profile readiness bar */}
             <div className="px-4 mb-4">
-              <div className="flex justify-between text-[9px] mb-1.5">
-                <span className="text-white/30 uppercase tracking-wider font-bold">Profile Readiness</span>
+              <div className="flex justify-between text-[9px] mb-2">
+                <span className="text-white/30 uppercase tracking-wider font-black">Profile Readiness</span>
                 <span className="font-black" style={{ color: matchPct >= 80 ? '#10b981' : matchPct >= 40 ? '#f59e0b' : '#ef4444' }}>{matchPct}%</span>
               </div>
               <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
@@ -704,17 +703,17 @@ const HomeTab: React.FC<{
             )}
 
             {/* Zero-knowledge badge */}
-            <div className="mx-4 mb-4 flex items-center gap-1.5 px-3 py-2 rounded-xl" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(16,185,129,0.15)' }}>
-              <Lock size={8} className="text-emerald-400/60 flex-shrink-0" />
-              <p className="text-[8px] font-mono text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge</p>
+            <div className="mx-4 mb-4 flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: 'rgba(0,0,0,0.24)', border: '1px solid rgba(16,185,129,0.12)' }}>
+              <Lock size={10} className="text-emerald-400/50 flex-shrink-0" />
+              <p className="text-[9px] font-black text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge</p>
             </div>
 
             {/* CTA buttons */}
             <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
-              <button onClick={() => onNavigate('pilot-recognition-profile')} className="w-full py-2.5 text-xs font-black tracking-wider text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.75)', border: '1px solid rgba(96,165,250,0.3)' }}>
+              <button onClick={() => onNavigate('pilot-recognition-profile')} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
                 VIEW FULL PROFILE →
               </button>
-              <button onClick={() => setTab('settings' as TabId)} className="w-full py-2 text-[10px] font-black tracking-widest text-slate-900 rounded-xl transition-all hover:brightness-110" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
+              <button onClick={() => setTab('settings' as TabId)} className="w-full py-3 text-[11px] font-black tracking-wider text-slate-900 rounded-xl transition-all hover:brightness-110" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
                 RECOGNITION+ — $99/YR
               </button>
             </div>
