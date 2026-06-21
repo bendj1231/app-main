@@ -1,0 +1,22 @@
+-- Migration: Add claim/profile columns for Become a Member onboarding flow
+ALTER TABLE profiles ADD COLUMN terms_accepted_at TEXT;
+ALTER TABLE profiles ADD COLUMN data_controller_agreement_accepted INTEGER DEFAULT 0;
+ALTER TABLE profiles ADD COLUMN data_controller_agreement_accepted_at TEXT;
+ALTER TABLE profiles ADD COLUMN license_type TEXT;
+ALTER TABLE profiles ADD COLUMN pilot_stage TEXT;
+ALTER TABLE profiles ADD COLUMN license_issuing_authority TEXT;
+ALTER TABLE profiles ADD COLUMN aircraft_types TEXT;
+ALTER TABLE profiles ADD COLUMN aircraft_category TEXT;
+ALTER TABLE profiles ADD COLUMN license_types TEXT;
+ALTER TABLE profiles ADD COLUMN type_ratings TEXT;
+ALTER TABLE profiles ADD COLUMN type_rating_input TEXT;
+ALTER TABLE profiles ADD COLUMN elp_level TEXT;
+ALTER TABLE profiles ADD COLUMN medical_class TEXT;
+ALTER TABLE profiles ADD COLUMN employment_status TEXT;
+ALTER TABLE profiles ADD COLUMN current_job TEXT;
+ALTER TABLE profiles ADD COLUMN career_goal TEXT;
+ALTER TABLE profiles ADD COLUMN other_licence TEXT;
+ALTER TABLE profiles ADD COLUMN is_visitor INTEGER DEFAULT 0;
+ALTER TABLE profiles ADD COLUMN hours_whole TEXT;
+ALTER TABLE profiles ADD COLUMN hours_minutes TEXT;
+ALTER TABLE profiles ADD COLUMN origin_jurisdiction TEXT;
