@@ -161,8 +161,11 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           enrolled_programs, app_access, is_enrolled_in_foundational,
           recognition_tier, subscription_tier, terms_accepted_at,
           data_controller_agreement_accepted, data_controller_agreement_accepted_at,
+          license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category,
+          license_types, type_ratings, type_rating_input, elp_level, medical_class,
+          employment_status, current_job, career_goal, other_licence, is_visitor,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         id,
         data.auth0_id || '',
@@ -197,6 +200,21 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.terms_accepted_at || null,
         data.data_controller_agreement_accepted ? 1 : 0,
         data.data_controller_agreement_accepted_at || null,
+        data.license_type || null,
+        data.pilot_stage || null,
+        data.license_issuing_authority || null,
+        data.aircraft_types ? JSON.stringify(data.aircraft_types) : null,
+        data.aircraft_category || null,
+        data.license_types ? JSON.stringify(data.license_types) : null,
+        data.type_ratings ? JSON.stringify(data.type_ratings) : null,
+        data.type_rating_input || null,
+        data.elp_level || null,
+        data.medical_class || null,
+        data.employment_status || null,
+        data.current_job || null,
+        data.career_goal || null,
+        data.other_licence || null,
+        data.is_visitor ? 1 : 0,
         now,
         now
       ).run();
@@ -220,6 +238,14 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         terms_accepted_at: 'terms_accepted_at',
         data_controller_agreement_accepted: 'data_controller_agreement_accepted',
         data_controller_agreement_accepted_at: 'data_controller_agreement_accepted_at',
+        license_type: 'license_type', pilot_stage: 'pilot_stage',
+        license_issuing_authority: 'license_issuing_authority', aircraft_types: 'aircraft_types',
+        aircraft_category: 'aircraft_category', license_types: 'license_types',
+        type_ratings: 'type_ratings', type_rating_input: 'type_rating_input',
+        elp_level: 'elp_level', medical_class: 'medical_class',
+        employment_status: 'employment_status', current_job: 'current_job',
+        career_goal: 'career_goal', other_licence: 'other_licence',
+        is_visitor: 'is_visitor',
       };
       // Build onboarding metadata from fields not in fieldMap
       const onboardingMeta: Record<string, any> = {};
@@ -256,8 +282,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       // Create
       const newId = crypto.randomUUID();
       await db.prepare(`
-        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, is_visitor, app_access, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
@@ -269,6 +295,21 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.terms_accepted_at || null,
         data.data_controller_agreement_accepted ? 1 : 0,
         data.data_controller_agreement_accepted_at || null,
+        data.license_type || null,
+        data.pilot_stage || null,
+        data.license_issuing_authority || null,
+        data.aircraft_types ? JSON.stringify(data.aircraft_types) : null,
+        data.aircraft_category || null,
+        data.license_types ? JSON.stringify(data.license_types) : null,
+        data.type_ratings ? JSON.stringify(data.type_ratings) : null,
+        data.type_rating_input || null,
+        data.elp_level || null,
+        data.medical_class || null,
+        data.employment_status || null,
+        data.current_job || null,
+        data.career_goal || null,
+        data.other_licence || null,
+        data.is_visitor ? 1 : 0,
         Object.keys(onboardingMeta).length > 0 ? JSON.stringify(onboardingMeta) : null,
         now, now
       ).run();
@@ -291,6 +332,10 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         'pilot_id', 'enrolled_programs', 'app_access', 'is_enrolled_in_foundational',
         'recognition_tier', 'subscription_tier', 'terms_accepted_at',
         'data_controller_agreement_accepted', 'data_controller_agreement_accepted_at',
+        'license_type', 'pilot_stage', 'license_issuing_authority', 'aircraft_types',
+        'aircraft_category', 'license_types', 'type_ratings', 'type_rating_input',
+        'elp_level', 'medical_class', 'employment_status', 'current_job',
+        'career_goal', 'other_licence', 'is_visitor',
       ];
 
       for (const field of allowedFields) {
