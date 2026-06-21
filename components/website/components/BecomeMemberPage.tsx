@@ -863,7 +863,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
                                             <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
-                                            <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Real name, date of birth, and nationality are stored as the data controller record to verify your identity, prevent fraudulent pilot licensure, and protect flight-hour integrity across <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
+                                            <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Real name, date of birth, and nationality are stored under your full sovereign control as the data controller record on pilotrecognition.com, used solely for verification, and can be deleted or exported at any time under our GDPR-compliant process. <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                         </div>
                                         <div style={{ fontSize: '10px', color: '#94a3b8', lineHeight: 1.4, marginTop: '2px', paddingLeft: '18px' }}>
                                             Notice: account information will be displayed across pilotrecognition.com, pilotcareerpathways.com, pilotshortage.org
