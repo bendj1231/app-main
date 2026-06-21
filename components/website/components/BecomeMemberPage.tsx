@@ -872,7 +872,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>📄 Data Controller Agreement</a>
                                         </div>
                                         <div style={{ fontSize: '10px', color: '#94a3b8', lineHeight: 1.4, marginTop: '4px', paddingLeft: '18px' }}>
-                                            Aviation Pathways Ltd will not sell, transfer, or process this information outside the agreed jurisdiction.
+                                            Aviation Pathways Ltd will not sell or transfer this information outside the agreed jurisdiction, except as required for verification with approved providers under the Data Controller Agreement.
                                         </div>
                                     </div>
                                 </div>{/* end Section 1 */}
