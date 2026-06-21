@@ -349,7 +349,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           try {
             const key = await getVaultKeyFromAuth0Token(auth0User.sub!, token);
 
-            const userId = auth0User.sub!;
+            const auth0Id = auth0User.sub!;
+            const email = auth0User.email || '';
             const VAULT_PREFIX = '{"iv":"';
             const isPlain = (v: unknown) =>
               v !== null &&
@@ -361,31 +362,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               fields.some((f) => isPlain(rec[f]));
 
             // Re-encrypt profiles table if any sensitive field is plaintext
+            // Legacy profiles are keyed by email in auth0_id; use email as the lookup key
             const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
               table: 'profiles',
               operation: 'select',
-              where: { id: userId },
+              where: { email },
               limit: 1,
             });
             const profile = profileRows?.[0];
+            const profileId = profile?.id as string | undefined;
             if (profile && needsReEncrypt(profile as Record<string, unknown>, PROFILE_SENSITIVE_FIELDS)) {
               /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
               const enc = await encryptFields(profile as any, PROFILE_SENSITIVE_FIELDS as any, key);
-              await callApi('queryTable', { table: 'profiles', operation: 'update', id: userId, data: enc });
+              await callApi('queryTable', { table: 'profiles', operation: 'update', id: profileId, data: enc });
             }
 
             // Re-encrypt pilot_licensure_experience if any sensitive field is plaintext
-            const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-              table: 'pilot_licensure_experience',
-              operation: 'select',
-              where: { user_id: userId },
-              limit: 1,
-            });
-            const lic = licRows?.[0];
-            if (lic && needsReEncrypt(lic as Record<string, unknown>, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
-              /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              const enc = await encryptFields(lic as any, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
-              await callApi('queryTable', { table: 'pilot_licensure_experience', operation: 'update', id: (lic as { id: string }).id, data: enc });
+            if (profileId) {
+              const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
+                table: 'pilot_licensure_experience',
+                operation: 'select',
+                where: { user_id: profileId },
+                limit: 1,
+              });
+              const lic = licRows?.[0];
+              if (lic && needsReEncrypt(lic as Record<string, unknown>, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
+                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                const enc = await encryptFields(lic as any, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
+                await callApi('queryTable', { table: 'pilot_licensure_experience', operation: 'update', id: (lic as { id: string }).id, data: enc });
+              }
             }
           } catch (err: unknown) {
             console.warn(
