@@ -159,8 +159,10 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           foundation_progress, overall_recognition_score, current_level,
           current_occupation, license_id, country_of_license, ratings, pilot_id,
           enrolled_programs, app_access, is_enrolled_in_foundational,
-          recognition_tier, subscription_tier, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          recognition_tier, subscription_tier, terms_accepted_at,
+          data_controller_agreement_accepted, data_controller_agreement_accepted_at,
+          created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         id,
         data.auth0_id || '',
@@ -192,6 +194,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.is_enrolled_in_foundational ? 1 : 0,
         data.recognition_tier || 'Bronze',
         data.subscription_tier || 'free',
+        data.terms_accepted_at || null,
+        data.data_controller_agreement_accepted ? 1 : 0,
+        data.data_controller_agreement_accepted_at || null,
         now,
         now
       ).run();
@@ -212,6 +217,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         recognition_tier: 'recognition_tier', subscription_tier: 'subscription_tier',
         avatar_url: 'avatar_url', phone: 'phone', address: 'address',
         status: 'status', current_level: 'current_level',
+        terms_accepted_at: 'terms_accepted_at',
+        data_controller_agreement_accepted: 'data_controller_agreement_accepted',
+        data_controller_agreement_accepted_at: 'data_controller_agreement_accepted_at',
       };
       // Build onboarding metadata from fields not in fieldMap
       const onboardingMeta: Record<string, any> = {};
@@ -248,8 +256,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       // Create
       const newId = crypto.randomUUID();
       await db.prepare(`
-        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, app_access, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
@@ -258,6 +266,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.ratings ? JSON.stringify(data.ratings) : null,
         data.license_id || null, data.country_of_license || null,
         data.recognition_tier || 'Bronze', data.subscription_tier || 'free',
+        data.terms_accepted_at || null,
+        data.data_controller_agreement_accepted ? 1 : 0,
+        data.data_controller_agreement_accepted_at || null,
         Object.keys(onboardingMeta).length > 0 ? JSON.stringify(onboardingMeta) : null,
         now, now
       ).run();
@@ -278,7 +289,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         'foundation_progress', 'overall_recognition_score', 'current_level',
         'current_occupation', 'license_id', 'country_of_license', 'ratings',
         'pilot_id', 'enrolled_programs', 'app_access', 'is_enrolled_in_foundational',
-        'recognition_tier', 'subscription_tier',
+        'recognition_tier', 'subscription_tier', 'terms_accepted_at',
+        'data_controller_agreement_accepted', 'data_controller_agreement_accepted_at',
       ];
 
       for (const field of allowedFields) {
