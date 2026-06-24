@@ -335,6 +335,30 @@ CREATE INDEX idx_delete_tokens_user ON delete_intent_tokens(user_id);
 CREATE INDEX idx_delete_tokens_status ON delete_intent_tokens(status);
 
 -- ============================================================
+-- REFERRAL TRACKING (manual payout — referrer contacts admin)
+-- ============================================================
+
+CREATE TABLE referral_uses (
+  id              TEXT PRIMARY KEY,
+  referral_code   TEXT NOT NULL,                          -- the code that was used
+  referrer_id     TEXT NOT NULL,                          -- who owns the code
+  referred_id     TEXT NOT NULL UNIQUE,                   -- who signed up
+  referred_email  TEXT,
+  status          TEXT DEFAULT 'pending',                -- 'pending', 'claimed', 'paid', 'credited'
+  reward_amount   INTEGER DEFAULT 2000,                   -- cents ($20.00 default)
+  reward_type     TEXT DEFAULT 'credit',                  -- 'credit', 'cash', 'discount'
+  notes           TEXT,                                    -- admin notes
+  created_at      TEXT DEFAULT (datetime('now')),
+  updated_at      TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (referrer_id) REFERENCES profiles(id) ON DELETE CASCADE,
+  FOREIGN KEY (referred_id) REFERENCES profiles(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_referral_code ON referral_uses(referral_code);
+CREATE INDEX idx_referral_referrer ON referral_uses(referrer_id);
+CREATE INDEX idx_referral_status ON referral_uses(status);
+
+-- ============================================================
 -- VIEWS (SQLite supports simple views)
 -- ============================================================
 

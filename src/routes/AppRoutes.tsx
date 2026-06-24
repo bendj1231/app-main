@@ -180,6 +180,8 @@ const BackgroundCheckPage = lazy(() => import('@/app/background-check/page'));
 const PilotInsurancePage = lazy(() => import('@/app/pilot-insurance/page'));
 const BankingFinancePage = lazy(() => import('@/app/banking-finance/page'));
 const CareerToolsPage = lazy(() => import('@/app/career-tools/page'));
+const GetStartedPage = lazy(() => import('@/app/get-started/page'));
+const VerifyApcPage = lazy(() => import('@/app/get-started/verify-apc/page'));
 const EnrolledFoundationalPage = lazy(() =>
   import('@/components/website/components/programs/EnrolledFoundationalPage').then((m) => ({
     default: m.EnrolledFoundationalPage,
@@ -478,6 +480,11 @@ const UnifiedPilotPlatform = lazy(() =>
 const WalletRouter = lazy(() =>
   import('@/components/website/components/wallet/WalletRouter').then((m) => ({
     default: m.WalletRouter,
+  }))
+);
+const CareerProgressDashboard = lazy(() =>
+  import('@/components/website/components/unified-platform/CareerProgressDashboard').then((m) => ({
+    default: m.CareerProgressDashboard,
   }))
 );
 const ExaminationPortal = lazy(
@@ -1556,6 +1563,7 @@ export const AppRoutes = () => {
           path="/access-portal-2"
           element={<AccessPortal2Page onNavigate={handleNavigate} />}
         />
+        <Route path="/platform/career-progress" element={<CareerProgressDashboard />} />
         <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
         <Route
           path="/flight-deck-login"
@@ -1601,6 +1609,8 @@ export const AppRoutes = () => {
         <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
         <Route path="/banking-finance" element={<BankingFinancePage />} />
         <Route path="/career-tools" element={<CareerToolsPage />} />
+        <Route path="/get-started" element={<GetStartedPage />} />
+        <Route path="/get-started/verify-apc" element={<VerifyApcPage />} />
 
         {/* Blog & Store */}
         <Route path="/blog" element={<BlogPage />} />

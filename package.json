@@ -31,6 +31,7 @@
     "cloudinary": "^2.10.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.6",
+    "deno": "^2.8.3",
     "dompurify": "^3.4.1",
     "express": "^5.2.1",
     "firebase": "^12.12.1",

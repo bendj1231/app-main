@@ -5,14 +5,34 @@ import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from './components/AdminSidebar';
 import AdminNotificationBell from './components/AdminNotificationBell';
 import { cachedFetch, invalidateCache } from './lib/cache';
+import { MeshGradient } from '@paper-design/shaders-react';
+import { shouldEnable3DEffects } from '@/src/lib/device-detection';
 
-const Background = ({ children }: { children: React.ReactNode }) => (
-  <div
-    style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', background: '#f8f9fa' }}
-  >
-    <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
-  </div>
-);
+const Background = ({ children }: { children: React.ReactNode }) => {
+  const [enableShader, setEnableShader] = useState(false);
+  useEffect(() => {
+    setEnableShader(shouldEnable3DEffects());
+  }, []);
+  return (
+    <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', background: '#0f172a' }}>
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        {enableShader ? (
+          <MeshGradient
+            className="w-full h-full"
+            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+            speed={0.22}
+          />
+        ) : (
+          <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+        <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+      </div>
+      <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
+    </div>
+  );
+};
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
@@ -428,12 +448,12 @@ export default function AdminDashboardPage() {
         >
           <div style={{ width: '100%', maxWidth: 380 }}>
             {/* Header */}
-            <div style={{ textAlign: 'center', marginBottom: 32 }}>
-              <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>
-                <span style={{ color: '#ef4444' }}>Admin</span>
-                <span style={{ color: '#1a1a1a' }}> Portal</span>
+            <div style={{ textAlign: 'center', marginBottom: 36 }}>
+              <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 10 }}>
+                <span style={{ color: '#ef4444', fontWeight: 800 }}>Admin</span>
+                <span style={{ color: '#ffffff', fontWeight: 800 }}> Portal</span>
               </div>
-              <p style={{ color: '#6b7280', fontSize: 13, margin: 0 }}>
+              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>
                 Restricted access — authorized personnel only
               </p>
             </div>
@@ -441,11 +461,12 @@ export default function AdminDashboardPage() {
             {/* Card */}
             <div
               style={{
-                background: '#ffffff',
+                background: 'rgba(255,255,255,0.04)',
                 borderRadius: 16,
                 padding: '28px 24px',
-                border: '1px solid #e5e7eb',
-                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)',
+                backdropFilter: 'blur(16px)',
               }}
             >
               <style>{`
@@ -458,12 +479,12 @@ export default function AdminDashboardPage() {
               {error && (
                 <div
                   style={{
-                    background: '#fef2f2',
-                    border: '1px solid #fecaca',
+                    background: 'rgba(220,38,38,0.12)',
+                    border: '1px solid rgba(248,113,113,0.3)',
                     borderRadius: 6,
                     padding: '10px 14px',
                     marginBottom: 16,
-                    color: '#dc2626',
+                    color: '#fca5a5',
                     fontSize: 13,
                   }}
                 >
@@ -480,7 +501,7 @@ export default function AdminDashboardPage() {
                         display: 'block',
                         fontSize: 13,
                         fontWeight: 600,
-                        color: 'rgba(0,0,0,0.85)',
+                        color: 'rgba(255,255,255,0.75)',
                         marginBottom: 6,
                       }}
                     >
@@ -498,12 +519,12 @@ export default function AdminDashboardPage() {
                       }}
                       style={{
                         width: '100%',
-                        padding: '10px 12px',
-                        border: '1px solid #d1d5db',
+                        padding: '10px 16px',
+                        border: '1px solid rgba(255,255,255,0.15)',
                         borderRadius: 6,
                         fontSize: 14,
-                        color: '#1a1a1a',
-                        background: '#ffffff',
+                        color: '#ffffff',
+                        background: 'rgba(0,0,0,0.2)',
                         outline: 'none',
                         boxSizing: 'border-box',
                       }}
@@ -520,7 +541,7 @@ export default function AdminDashboardPage() {
                       width: '100%',
                       padding: '11px',
                       background: !email.trim() ? '#fca5a5' : '#dc2626',
-                      color: '#fff',
+                      color: !email.trim() ? '#7f1d1d' : '#fff',
                       border: 'none',
                       borderRadius: 6,
                       fontSize: 14,
@@ -550,7 +571,7 @@ export default function AdminDashboardPage() {
                         display: 'block',
                         fontSize: 13,
                         fontWeight: 600,
-                        color: 'rgba(0,0,0,0.85)',
+                        color: 'rgba(255,255,255,0.75)',
                         marginBottom: 6,
                       }}
                     >
@@ -566,12 +587,12 @@ export default function AdminDashboardPage() {
                       autoFocus
                       style={{
                         width: '100%',
-                        padding: '10px 12px',
-                        border: '1px solid #d1d5db',
+                        padding: '10px 16px',
+                        border: '1px solid rgba(255,255,255,0.15)',
                         borderRadius: 6,
                         fontSize: 14,
-                        color: '#1a1a1a',
-                        background: '#ffffff',
+                        color: '#ffffff',
+                        background: 'rgba(0,0,0,0.2)',
                         outline: 'none',
                         boxSizing: 'border-box',
                       }}
@@ -585,7 +606,7 @@ export default function AdminDashboardPage() {
                       width: '100%',
                       padding: '11px',
                       background: pwLoading || !password ? '#fca5a5' : '#dc2626',
-                      color: '#fff',
+                      color: pwLoading || !password ? '#7f1d1d' : '#fff',
                       border: 'none',
                       borderRadius: 6,
                       fontSize: 14,
@@ -607,7 +628,7 @@ export default function AdminDashboardPage() {
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: 'rgba(0,0,0,0.4)',
+                      color: 'rgba(255,255,255,0.45)',
                       fontSize: 12,
                       cursor: 'pointer',
                       padding: 0,
@@ -624,11 +645,11 @@ export default function AdminDashboardPage() {
             <button
               onClick={() => navigate('/')}
               style={{
-                marginTop: 24,
+                marginTop: 28,
                 background: 'none',
                 border: 'none',
-                color: '#9ca3af',
-                fontSize: 13,
+                color: 'rgba(255,255,255,0.65)',
+                fontSize: 14,
                 cursor: 'pointer',
                 display: 'block',
                 width: '100%',

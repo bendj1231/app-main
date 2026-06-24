@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import {
-  User, Shield, Map, Settings, LogOut, Bell, MessageSquare, Menu, ChevronRight
+  User, Shield, ShieldCheck, Map, Settings, LogOut, Bell, MessageSquare, Menu, ChevronRight,
+  CreditCard, BookMarked, RefreshCw, Clock, Eye, Linkedin, Instagram, Youtube, Facebook, Twitter, Globe, ExternalLink,
+  CheckCircle2, ArrowRight, ChevronLeft
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useVaultProfile } from '@/src/hooks/useVaultProfile';
@@ -33,8 +35,10 @@ import { AtlasCVTab } from './unified-platform/tabs/AtlasCVTab';
 import { EventsTab } from './unified-platform/tabs/EventsTab';
 import { NewsroomTab } from './unified-platform/tabs/NewsroomTab';
 import { SettingsTab } from './unified-platform/tabs/SettingsTab';
+import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatusTab';
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
 import { CockpitTab } from './unified-platform/tabs/CockpitTab';
+import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
 
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
@@ -45,6 +49,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabId>(() => (searchParams.get('tab') as TabId) ?? 'home');
   const [walletChecks, setWalletChecks] = useState<any[]>([]);
+  const [credentials, setCredentials] = useState<any[]>([]);
   const [airlines, setAirlines] = useState<any[]>([]);
   const [notifCount, setNotifCount] = useState(0);
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
@@ -55,6 +60,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [avatarError, setAvatarError] = useState('');
   const [bellOpen, setBellOpen] = useState(false);
   const [profileDropOpen, setProfileDropOpen] = useState(false);
+  const [profileModalView, setProfileModalView] = useState<'menu' | 'recognition-profile'>('menu');
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -327,12 +333,13 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
       await cacheBatch(`dashboard:${profileId}`, batch);
 
-      const licensure = batch.result_0 as Record<string, unknown> | null;
+      const rawLicensure = batch.result_0 as Record<string, unknown> | null;
+      const parsedLicensure = rawLicensure?.license_data ? JSON.parse(rawLicensure.license_data as string) : rawLicensure;
       const receipts = batch.result_1 as Array<Record<string, unknown>> | null;
       const notifCountRaw = batch.result_2 as { count: number } | null;
       const verifStatus = batch.result_3 as Record<string, unknown> | null;
 
-      if (licensure) setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
+      if (parsedLicensure) setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...parsedLicensure }));
       if (receipts) setWalletChecks(receipts);
       setNotifCount(notifCountRaw?.count ?? 0);
       if (verifStatus) setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
@@ -370,6 +377,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               const payload = (cached as any).payload || cached;
               setProfileData(payload.profileData || null);
               setWalletChecks(payload.walletChecks || []);
+              setCredentials(payload.credentials || []);
               setNotifCount(payload.notifCount || 0);
               console.log('[dashboard] loaded from IndexedDB cache');
               return;
@@ -388,16 +396,20 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         const profile = data.profile as Record<string, unknown>;
         const flightHours = data.flight_hours as Record<string, unknown> | null;
         const receipts = data.verification_receipts as Array<Record<string, unknown>> | null;
+        const credentialList = data.credentials as Array<Record<string, unknown>> | null;
+        const licensure = data.licensure as Record<string, unknown> | null;
 
-        const profileDataState = { ...profile, ...flightHours };
+        const profileDataState = { ...profile, ...flightHours, ...(licensure || {}) };
         setProfileData(profileDataState);
         if (receipts) setWalletChecks(receipts);
+        if (credentialList) setCredentials(credentialList);
         setNotifCount(0);
 
         // Cache in IndexedDB (persists across browser sessions)
         await cacheBatch(cacheKey, {
           profileData: profileDataState,
           walletChecks: receipts || [],
+          credentials: credentialList || [],
           notifCount: 0,
           cachedAt: Date.now(),
         });
@@ -444,6 +456,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const displayName = (rawDisplayName && !isCiphertext(rawDisplayName)) ? rawDisplayName : (auth0User?.nickname || auth0User?.name || auth0User?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Pilot');
   const initials = displayName.charAt(0).toUpperCase();
 
+  const updateProfileImage = (url: string, publicId?: string) => {
+    setProfileData((prev: any) => ({ ...prev, profile_image_url: url, profile_image_public_id: publicId }));
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} currentUser={currentUser} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
@@ -463,6 +479,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
       case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; if (t) return t; throw new Error('no id token'); } catch { const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} onAuth0Logout={() => { localStorage.clear(); sessionStorage.clear(); auth0Logout({ logoutParams: { returnTo: window.location.origin } }); }} />;
+      case 'verification':  return <VerificationStatusTab profile={profileData} walletChecks={walletChecks} credentials={credentials} setTab={setTab} onNavigate={onNavigate} onProfileImageUpdate={updateProfileImage} />;
+      case 'advanced-profile': return <AdvancedProfileTab setTab={setTab} profile={profileData} />;
       default:              return null;
     }
   };
@@ -473,7 +491,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const showPasskeyPrompt = shouldShowPasskeyPrompt && !passkeyPromptDismissed && !!(auth0User?.sub || currentUser?.id);
 
   useEffect(() => {
-    const close = () => { setBellOpen(false); setProfileDropOpen(false); setHamburgerOpen(false); };
+    const close = () => { setBellOpen(false); setProfileDropOpen(false); setProfileModalView('menu'); setHamburgerOpen(false); };
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, []);
@@ -518,10 +536,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         {/* Centre — primary nav links */}
         <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
           {[
-            { id: 'home',     label: 'Home' },
-            { id: 'profile',  label: 'Profile' },
-            { id: 'pathways', label: 'Pathways' },
-            { id: 'programs', label: 'Programs' },
+            { id: 'home',         label: 'Home' },
+            { id: 'profile',      label: 'Profile' },
+            { id: 'pathways',     label: 'Pathways' },
+            { id: 'programs',     label: 'Programs' },
+            { id: 'verification', label: 'Verification' },
           ].map(({ id, label }) => (
             <button
               key={id}
@@ -589,7 +608,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                         <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
                         <p className="text-sm font-black text-white">Notifications</p>
                       </div>
-                      <NotificationsFeedPanel profileId={profileData?.id} />
+                      <NotificationsFeedPanel profileId={profileData?.id} profile={profileData} />
                       <button onClick={() => { setBellOpen(false); setTab('notifications' as TabId); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
                         VIEW ALL NOTIFICATIONS →
                       </button>
@@ -615,7 +634,34 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   <Settings size={20} className="text-white" strokeWidth={2} />
                 </button>
 
-                {/* Avatar tile + dropdown */}
+                {/* Verification status tile */}
+                {(() => {
+                  const hasVerified = walletChecks.some(c => c.status === 'verified');
+                  const hasPending = walletChecks.some(c => c.status === 'pending' || c.status === 'in_review');
+                  const vStatus = hasVerified ? 'verified' : hasPending ? 'pending' : 'none';
+                  const vColor = vStatus === 'verified' ? '#10b981' : vStatus === 'pending' ? '#f59e0b' : '#ef4444';
+                  const vTitle = vStatus === 'verified' ? 'Verified' : vStatus === 'pending' ? 'Verification in Progress' : 'Verification Not Started';
+                  return (
+                    <button
+                      onClick={() => setTab('verification')}
+                      title={vTitle}
+                      className="relative transition-all duration-150"
+                      style={{
+                        width: 44, height: 44,
+                        background: activeTab === 'verification' ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                        border: activeTab === 'verification' ? '2px solid rgba(255,255,255,0.8)' : `2px solid ${vStatus === 'none' ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.12)'}`,
+                        borderRadius: 10,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}
+                      onMouseEnter={e => { if (activeTab !== 'verification') { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                      onMouseLeave={e => { if (activeTab !== 'verification') { (e.currentTarget as HTMLElement).style.borderColor = vStatus === 'none' ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                    >
+                      <ShieldCheck size={20} style={{ color: vColor }} strokeWidth={2} />
+                    </button>
+                  );
+                })()}
+
+                {/* Avatar tile + modal */}
                 <div className="relative" onMouseDown={e => e.stopPropagation()}>
                   <button
                     onClick={() => { setProfileDropOpen(v => !v); setBellOpen(false); setHamburgerOpen(false); }}
@@ -641,37 +687,351 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     </div>
                     <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
                   </button>
-                  {profileDropOpen && (
-                    <div className="absolute right-0 top-10 w-64 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
-                      <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
-                        <p className="text-sm font-black text-white truncate">{displayName}</p>
-                        <p className="text-[10px] text-white/40 truncate">{profileData?.email ?? auth0User?.email}</p>
-                      </div>
-                      <div className="py-1">
-                        {[
-                          { label: 'Edit Profile', tab: 'profile' as TabId, icon: User },
-                          { label: 'My Vault', tab: 'wallet' as TabId, icon: Shield },
-                          { label: 'Pathways', tab: 'pathways' as TabId, icon: Map },
-                          { label: 'Settings', tab: 'settings' as TabId, icon: Settings },
-                        ].map(({ label, tab, icon: Icon }) => (
-                          <button key={tab} onClick={() => { setTab(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
-                            <div className="flex items-center gap-3">
-                              <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
-                              <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
+                  <AnimatePresence>
+                    {profileDropOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <motion.div
+                          className="fixed inset-0 z-[100]"
+                          style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          onClick={() => { setProfileDropOpen(false); setProfileModalView('menu'); }}
+                        />
+                        {/* Modal */}
+                        <motion.div
+                          className="fixed inset-0 z-[101] flex items-center justify-center p-4"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          onClick={() => { setProfileDropOpen(false); setProfileModalView('menu'); }}
+                        >
+                          <motion.div
+                            className="w-full max-w-md max-h-[90vh] overflow-y-auto flex flex-col relative"
+                            style={{
+                              background: 'linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.95))',
+                              border: '1px solid rgba(255,255,255,0.15)',
+                              boxShadow: '0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
+                              borderRadius: 18,
+                              backdropFilter: 'blur(24px)',
+                              WebkitBackdropFilter: 'blur(24px)',
+                            }}
+                            initial={{ opacity: 0, scale: 0.82, y: 30, filter: 'blur(20px)' }}
+                            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20, filter: 'blur(14px)' }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                            onClick={e => e.stopPropagation()}
+                          >
+                            {/* Shimmer overlay */}
+                            <div className="absolute inset-0 pointer-events-none rounded-[18px] overflow-hidden">
+                              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 20% 0%, rgba(56,189,248,0.12), transparent 40%), radial-gradient(circle at 80% 100%, rgba(99,102,241,0.1), transparent 45%)' }} />
                             </div>
-                            <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
-                          </button>
-                        ))}
-                      </div>
-                      <div className="border-t border-white/5 py-1">
-                        <button onClick={() => { setProfileDropOpen(false); logout(); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
-                          <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
-                          <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
+
+                            {profileModalView === 'recognition-profile' ? (
+                              <>
+                                {/* Back header */}
+                                <div className="relative px-6 pt-6 pb-2 flex items-center gap-3">
+                                  <button
+                                    onClick={() => setProfileModalView('menu')}
+                                    className="flex items-center gap-1.5 text-[10px] font-black text-white/60 hover:text-white transition-colors"
+                                  >
+                                    <ChevronLeft size={14} />
+                                    BACK TO MENU
+                                  </button>
+                                </div>
+
+                                {/* Profile identity */}
+                                <div className="relative flex flex-col items-center px-6 pb-6">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden mb-3" style={{ border: '2px solid rgba(255,255,255,0.25)', boxShadow: '0 0 24px rgba(56,189,248,0.25)' }}>
+                                    <ProfileImage
+                                      url={profileData?.profile_image_url}
+                                      publicId={profileData?.profile_image_public_id}
+                                      name={displayName}
+                                      size={80}
+                                      className="w-full h-full"
+                                      fallbackClassName="rounded-full text-xl bg-blue-500 text-white"
+                                    />
+                                  </div>
+                                  <p className="text-lg font-black text-white tracking-tight text-center">{displayName}</p>
+                                  <p className="text-[10px] text-white/40 text-center mt-0.5">{profileData?.email ?? auth0User?.email}</p>
+                                </div>
+
+                                {/* Recognition Profile - Advance Account Setup checklist */}
+                                <div className="relative px-4 pb-4">
+                                  {(() => {
+                                    const setupSteps = [
+                                      { label: 'Complete Profile', done: !!profileData?.full_name && !!profileData?.current_occupation },
+                                      { label: 'Upload Flight Logbook', done: !!profileData?.logbook_sync_valid },
+                                      { label: 'Verify Credentials', done: walletChecks.some((c: any) => c.status === 'verified') },
+                                      { label: 'Connect Social Accounts', done: !!profileData?.linkedin_url || !!profileData?.instagram_url || !!profileData?.youtube_url },
+                                      { label: 'Upgrade to Recognition+', done: profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise' },
+                                    ];
+                                    const completedSteps = setupSteps.filter(s => s.done).length;
+                                    return (
+                                      <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                        <div className="flex items-center justify-between mb-3">
+                                          <div className="flex items-center gap-2">
+                                            <Settings size={16} className="text-white/60" />
+                                            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Advance Account Setup</span>
+                                          </div>
+                                          <span className="text-[10px] font-black text-white/40">{completedSteps}/{setupSteps.length} completed</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                          {setupSteps.map(({ label, done }) => (
+                                            <button
+                                              key={label}
+                                              onClick={() => {
+                                                setProfileDropOpen(false);
+                                                setProfileModalView('menu');
+                                                if (label === 'Upgrade to Recognition+') safeRedirect('/recognition-plus');
+                                                else if (label === 'Complete Profile') setTab('advanced-profile' as TabId);
+                                                else if (label === 'Upload Flight Logbook') setTab('logbook' as TabId);
+                                                else if (label === 'Verify Credentials') setTab('wallet' as TabId);
+                                                else if (label === 'Connect Social Accounts') setTab('profile' as TabId);
+                                              }}
+                                              className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                                              style={{ background: done ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}` }}
+                                              onMouseEnter={e => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(37,99,235,0.85)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)'; }}}
+                                              onMouseLeave={e => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}}
+                                            >
+                                              <div className="flex items-center gap-3">
+                                                {done ? <CheckCircle2 size={14} className="text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full" style={{ border: '1.5px solid rgba(255,255,255,0.25)' }} />}
+                                                <span className={`text-[11px] font-bold tracking-wide ${done ? 'text-white/60' : 'text-white group-hover:text-white'}`}>{label.toUpperCase()}</span>
+                                              </div>
+                                              {!done && <ArrowRight size={14} className="text-white/30 group-hover:text-white" />}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    );
+                                  })()}
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                {/* Header label */}
+                                <div className="relative px-6 pt-6 pb-2">
+                                  <p className="text-[10px] text-white/80 tracking-[0.25em] uppercase" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontWeight: 400 }}>MY SETTINGS</p>
+                                </div>
+
+                                {/* Profile identity */}
+                                <div className="relative flex flex-col items-center px-6 pb-6">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden mb-3" style={{ border: '2px solid rgba(255,255,255,0.25)', boxShadow: '0 0 24px rgba(56,189,248,0.25)' }}>
+                                    <ProfileImage
+                                      url={profileData?.profile_image_url}
+                                      publicId={profileData?.profile_image_public_id}
+                                      name={displayName}
+                                      size={80}
+                                      className="w-full h-full"
+                                      fallbackClassName="rounded-full text-xl bg-blue-500 text-white"
+                                    />
+                                  </div>
+                                  <p className="text-lg font-black text-white tracking-tight text-center">{displayName}</p>
+                                  <p className="text-[10px] text-white/40 text-center mt-0.5">{profileData?.email ?? auth0User?.email}</p>
+                                </div>
+
+                                {/* Menu rows */}
+                                <div className="relative px-4 pb-4 space-y-2">
+                              {/* Recognition+ subscription row */}
+                              {(() => {
+                                const isSubscribed = profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise';
+                                return (
+                                  <button
+                                    onClick={() => { setProfileDropOpen(false); safeRedirect('/recognition-plus'); }}
+                                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                                    style={{ background: isSubscribed ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.08)', border: `1.5px solid ${isSubscribed ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)'}`, backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+                                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = isSubscribed ? 'rgba(239,68,68,0.85)' : 'rgba(37,99,235,0.85)'; (e.currentTarget as HTMLElement).style.borderColor = isSubscribed ? 'rgba(248,113,113,0.5)' : 'rgba(96,165,250,0.5)'; }}
+                                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = isSubscribed ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = isSubscribed ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)'; }}
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <CreditCard size={16} className={isSubscribed ? 'text-red-400 group-hover:text-white' : 'text-white/70 group-hover:text-white'} />
+                                      <div className="text-left">
+                                        <p className="text-[11px] font-black text-white tracking-wide">{isSubscribed ? 'MANAGE RECOGNITION+' : 'GET RECOGNITION+'}</p>
+                                        <p className="text-[9px] text-white/40 group-hover:text-white/60">{isSubscribed ? 'Subscription & billing' : 'Upgrade for verification & tools'}</p>
+                                      </div>
+                                    </div>
+                                    <ChevronRight size={14} className="text-white/30 group-hover:text-white" />
+                                  </button>
+                                );
+                              })()}
+
+                              {/* Standard rows */}
+                              {[
+                                { label: 'My Pathway Bookmarks', sub: 'Saved opportunities', icon: BookMarked, onClick: () => { setProfileDropOpen(false); setTab('pathways' as TabId); } },
+                                { label: 'Who Saw My Profile?', sub: 'Profile visibility log', icon: Eye, onClick: () => { setProfileDropOpen(false); safeRedirect('/profile-views'); } },
+                                { label: 'Edit Profile', sub: 'Update pilot details', icon: User, onClick: () => { setProfileDropOpen(false); setTab('profile' as TabId); } },
+                                { label: 'My Recognition Profile', sub: 'Advanced licensure & experience', icon: ShieldCheck, onClick: () => setProfileModalView('recognition-profile') },
+                                { label: 'My Vault', sub: 'Credentials & wallet', icon: Shield, onClick: () => { setProfileDropOpen(false); setTab('wallet' as TabId); } },
+                                { label: 'Settings', sub: 'Account preferences', icon: Settings, onClick: () => { setProfileDropOpen(false); setTab('settings' as TabId); } },
+                              ].map(({ label, sub, icon: Icon, onClick }) => (
+                                <button
+                                  key={label}
+                                  onClick={onClick}
+                                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+                                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,99,235,0.85)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)'; }}
+                                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <Icon size={16} className="text-white/60 group-hover:text-white" />
+                                    <div className="text-left">
+                                      <p className="text-[11px] font-black text-white/80 group-hover:text-white tracking-wide">{label.toUpperCase()}</p>
+                                      <p className="text-[9px] text-white/35 group-hover:text-white/60">{sub}</p>
+                                    </div>
+                                  </div>
+                                  <ChevronRight size={14} className="text-white/25 group-hover:text-white" />
+                                </button>
+                              ))}
+
+                              {/* Sync Digital Logbook — black rectangle */}
+                              <button
+                                onClick={() => { setProfileDropOpen(false); setTab('logbook' as TabId); }}
+                                className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                                style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.12)' }}
+                                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.75)'; }}
+                                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)'; }}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <RefreshCw size={16} className="text-white" />
+                                  <div className="text-left">
+                                    <p className="text-[11px] font-black text-white tracking-wide">SYNC DIGITAL LOGBOOK</p>
+                                    <p className="text-[9px] text-white/40">Import flight hours</p>
+                                  </div>
+                                </div>
+                                <ChevronRight size={14} className="text-white/30" />
+                              </button>
+
+                              {/* Advance Account Setup */}
+                              {(() => {
+                                const setupSteps = [
+                                  { label: 'Complete Profile', done: !!profileData?.full_name && !!profileData?.current_occupation },
+                                  { label: 'Upload Flight Logbook', done: !!profileData?.logbook_sync_valid },
+                                  { label: 'Verify Credentials', done: walletChecks.some((c: any) => c.status === 'verified') },
+                                  { label: 'Connect Social Accounts', done: !!profileData?.linkedin_url || !!profileData?.instagram_url || !!profileData?.youtube_url },
+                                  { label: 'Upgrade to Recognition+', done: profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise' },
+                                ];
+                                const completedSteps = setupSteps.filter(s => s.done).length;
+                                return (
+                                  <div className="rounded-2xl p-4 mt-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                    <div className="flex items-center justify-between mb-3">
+                                      <div className="flex items-center gap-2">
+                                        <Settings size={16} className="text-white/60" />
+                                        <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Advance Account Setup</span>
+                                      </div>
+                                      <span className="text-[10px] font-black text-white/40">{completedSteps}/{setupSteps.length} completed</span>
+                                    </div>
+                                    <div className="space-y-2">
+                                      {setupSteps.map(({ label, done }) => (
+                                        <button
+                                          key={label}
+                                          onClick={() => {
+                                            setProfileDropOpen(false);
+                                            if (label === 'Upgrade to Recognition+') safeRedirect('/recognition-plus');
+                                            else if (label === 'Complete Profile') setTab('advanced-profile' as TabId);
+                                            else if (label === 'Upload Flight Logbook') setTab('logbook' as TabId);
+                                            else if (label === 'Verify Credentials') setTab('wallet' as TabId);
+                                            else if (label === 'Connect Social Accounts') setTab('profile' as TabId);
+                                          }}
+                                          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                                          style={{ background: done ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}` }}
+                                          onMouseEnter={e => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(37,99,235,0.85)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)'; }}}
+                                          onMouseLeave={e => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}}
+                                        >
+                                          <div className="flex items-center gap-3">
+                                            {done ? <CheckCircle2 size={14} className="text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full" style={{ border: '1.5px solid rgba(255,255,255,0.25)' }} />}
+                                            <span className={`text-[11px] font-bold tracking-wide ${done ? 'text-white/60' : 'text-white group-hover:text-white'}`}>{label.toUpperCase()}</span>
+                                          </div>
+                                          {!done && <ArrowRight size={14} className="text-white/30 group-hover:text-white" />}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+
+                            {/* Connected accounts */}
+                            <div className="relative px-4 pb-4">
+                              <p className="text-[9px] font-black text-white/30 tracking-wider uppercase mb-2 px-1">Connected Accounts</p>
+                              <div className="grid grid-cols-5 gap-2">
+                                {[
+                                  { icon: Linkedin, label: 'LinkedIn', field: 'linkedin_url' },
+                                  { icon: Instagram, label: 'Instagram', field: 'instagram_url' },
+                                  { icon: Youtube, label: 'YouTube', field: 'youtube_url' },
+                                  { icon: Facebook, label: 'Facebook', field: 'facebook_url' },
+                                  { icon: Twitter, label: 'X', field: 'twitter_url' },
+                                ].map(({ icon: Icon, label, field }) => {
+                                  const connected = !!(profileData as any)?.[field];
+                                  const url = (profileData as any)?.[field];
+                                  return (
+                                    <button
+                                      key={label}
+                                      title={label}
+                                      className="relative flex items-center justify-center rounded-xl transition-all aspect-square w-full"
+                                      style={{ background: connected ? 'rgba(37,99,235,0.2)' : 'rgba(255,255,255,0.05)', border: `1px solid ${connected ? 'rgba(96,165,250,0.4)' : 'rgba(255,255,255,0.1)'}` }}
+                                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
+                                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = connected ? 'rgba(37,99,235,0.2)' : 'rgba(255,255,255,0.05)'; }}
+                                      onClick={() => { setProfileDropOpen(false); if (connected && url) { window.open(url, '_blank', 'noopener,noreferrer'); } else { setTab('profile' as TabId); } }}
+                                    >
+                                      <Icon size={18} className={connected ? 'text-white' : 'text-white/50'} />
+                                      {connected && (
+                                        <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style={{ background: '#34d399' }} />
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Branding + domain quick access */}
+                            <div className="relative px-6 py-5 border-t border-white/10">
+                              <div className="flex items-center justify-center gap-4 mb-4 text-[11px] font-black tracking-wide">
+                                <span className="text-white">Pilot</span>
+                                <span className="text-red-500">Recognition</span>
+                                <span className="text-white">.com</span>
+                              </div>
+                              <div className="flex items-center justify-center gap-3 flex-wrap">
+                                {[
+                                  { label: 'PilotShortage.org', url: 'https://pilotshortage.org' },
+                                  { label: 'pilotcareerpathways.com', url: 'https://pilotcareerpathways.com' },
+                                  { label: 'PilotTerminal.com', url: 'https://pilotterminal.com' },
+                                ].map(({ label, url }) => (
+                                  <a
+                                    key={label}
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1 text-[9px] text-white/50 hover:text-white transition-colors"
+                                  >
+                                    {label} <ExternalLink size={10} />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Sign out */}
+                            <div className="relative px-4 pb-6 pt-2">
+                              <button
+                                onClick={() => { setProfileDropOpen(false); logout(); }}
+                                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl transition-all"
+                                style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)' }}
+                                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.22)'; }}
+                                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.12)'; }}
+                              >
+                                <LogOut size={14} className="text-red-400" />
+                                <span className="text-[11px] font-black text-red-400 tracking-wide">SIGN OUT</span>
+                              </button>
+                            </div>
+                          </>
+                        )}
+                        </motion.div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </>
@@ -742,11 +1102,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
       {/* ── MAIN CONTENT (no sidebar) ── */}
       <main className="flex-1 h-screen overflow-y-auto pt-[68px]">
-        <div className="max-w-[1400px] mx-auto p-5 lg:p-7 h-full" style={{ position: 'relative' }}>
+        <div className="max-w-[1400px] mx-auto p-5 lg:p-7" style={{ position: 'relative' }}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={activeTab}
-              className="h-full"
               initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}

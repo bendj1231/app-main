@@ -40,6 +40,3 @@ functions/.env
 
 aeron-analysis/
 gcp-oauth.keys.json
-
-# Local wrangler / D1 dev state
-worker/.wrangler/state/

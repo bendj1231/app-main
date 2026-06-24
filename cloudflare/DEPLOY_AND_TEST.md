@@ -53,7 +53,7 @@ Edit `cloudflare/wrangler.toml`:
 [vars]
 AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
 AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
-DODO_PRODUCT_ID_RECOGNITION_PLUS = "your_actual_dodo_product_id"
+DODO_PRODUCT_ID_RECOGNITION_PLUS = "pdt_0NhgDLaiGjWD45S1gJmng"
 ```
 
 ## Step 5: Deploy

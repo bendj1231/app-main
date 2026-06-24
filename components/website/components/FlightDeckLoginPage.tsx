@@ -269,7 +269,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)',
+            background: 'radial-gradient(ellipse at 30% 20%, transparent 40%, rgba(0,0,0,0.5) 100%)',
           }}
         />
       </div>
@@ -440,9 +440,9 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         </form>
 
         {/* Divider */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '20px 0 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '18px 0 18px' }}>
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>or</span>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1, position: 'relative', top: 0 }}>or</span>
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
         </div>
 
@@ -498,16 +498,16 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           Continue with Google
         </button>
 
-        {/* Sign up + Forgot password links */}
+        {/* Sign up link */}
         <div style={{ marginTop: 20, textAlign: 'center' }}>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', margin: '0 0 8px' }}>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', margin: 0 }}>
             Don't have an account?{' '}
             <button
               onClick={() => onNavigate('become-member')}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#ef4444',
+                color: '#ffffff',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: 0,
@@ -517,19 +517,22 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
               Sign up
             </button>
           </p>
+        </div>
+
+        {/* Legal links */}
+        <div style={{ marginTop: 18, textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
           <button
-            onClick={() => onNavigate('forgot-password')}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'rgba(255,255,255,0.35)',
-              fontWeight: 400,
-              cursor: 'pointer',
-              padding: 0,
-              fontSize: 12,
-            }}
+            onClick={() => onNavigate('terms')}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', fontSize: 12, cursor: 'pointer', padding: 0 }}
           >
-            Forgot password?
+            Terms of Service
+          </button>
+          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12 }}>|</span>
+          <button
+            onClick={() => onNavigate('privacy')}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', fontSize: 12, cursor: 'pointer', padding: 0 }}
+          >
+            Privacy Policy
           </button>
         </div>
       </div>
@@ -538,11 +541,11 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       <button
         onClick={() => navigate('/')}
         style={{
-          marginTop: 24,
+          marginTop: 28,
           background: 'none',
           border: 'none',
-          color: 'rgba(255,255,255,0.4)',
-          fontSize: 13,
+          color: 'rgba(255,255,255,0.75)',
+          fontSize: 14,
           cursor: 'pointer',
           zIndex: 1,
           position: 'relative',
@@ -555,19 +558,19 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       <button
         onClick={() => navigate('/admin')}
         style={{
-          marginTop: 8,
+          marginTop: 10,
           background: 'none',
           border: 'none',
-          color: 'rgba(255,255,255,0.25)',
-          fontSize: 11,
+          color: 'rgba(255,255,255,0.55)',
+          fontSize: 12,
           cursor: 'pointer',
           zIndex: 1,
           position: 'relative',
           letterSpacing: '0.05em',
           textTransform: 'uppercase',
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.25)'; }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.55)'; }}
       >
         Admin Portal
       </button>

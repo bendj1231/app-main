@@ -8,7 +8,8 @@ import {
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
-  CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
+  CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
+  Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase
 } from 'lucide-react';
 import { supabase } from '@/shared/lib/supabase';
 import { safeRedirect } from '@/src/lib/url-validator';
@@ -147,6 +148,21 @@ export const HomeTab: React.FC<{
   React.useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
   const score   = profile?.recognition_score ?? 0;
   const hours   = profile?.total_flight_hours ?? 0;
+  const [logbookEntries, setLogbookEntries] = React.useState<any[]>([]);
+  const [logbookLoaded, setLogbookLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    const id = profile?.id;
+    if (!id) return;
+    let active = true;
+    supabase.from('pilot_flight_logs').select('*').eq('user_id', id).order('date', { ascending: false }).limit(50).then(({ data }) => {
+      if (!active) return;
+      setLogbookEntries(data ?? []);
+      setLogbookLoaded(true);
+    });
+    return () => { active = false; };
+  }, [profile?.id]);
+
   const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
   const rawName = profile?.display_name || profile?.full_name || profile?.first_name;
   const auth0Name = auth0User?.name || auth0User?.nickname || auth0User?.email?.split('@')[0];
@@ -154,9 +170,42 @@ export const HomeTab: React.FC<{
   const name    = (rawName && !isCiphertext(rawName)) ? rawName : (auth0Name || currentUserName || 'Pilot');
   const rawLevel = profile?.current_occupation;
   const level   = (rawLevel && !isCiphertext(rawLevel)) ? rawLevel : 'Student Pilot';
+  const pilotTierLines = (() => {
+    const fields = [
+      profile?.pilot_stage,
+      profile?.license_type,
+      profile?.current_level,
+      profile?.current_occupation,
+      Array.isArray(profile?.license_types) ? profile.license_types.join(' ') : profile?.license_types,
+      Array.isArray(profile?.ratings) ? profile.ratings.join(' ') : profile?.ratings,
+    ].filter(Boolean).join(' ').toLowerCase();
+    if (fields.includes('atpl') || fields.includes('airline transport') || fields.includes('flight instructor') || fields.includes('cfi') || fields.includes('fi')) return 4;
+    if (fields.includes('cpl') || fields.includes('commercial')) return 3;
+    if (fields.includes('ppl') || fields.includes('private')) return 2;
+    if (fields.includes('spl') || fields.includes('student') || fields.includes('cadet')) return 1;
+    return 1;
+  })();
   const initials = name.charAt(0).toUpperCase();
   const certifications = profile?.certifications || profile?.licenses || profile?.ratings || [];
   const certCount = Array.isArray(certifications) ? certifications.length : 0;
+
+  const airportCodes = React.useMemo(() => {
+    const codes = new Set<string>();
+    logbookEntries.forEach((e: any) => {
+      const route = String(e.route || '');
+      const matches = route.match(/\b[A-Z]{3,4}\b/g);
+      matches?.forEach(c => codes.add(c));
+    });
+    return Array.from(codes).slice(0, 12);
+  }, [logbookEntries]);
+
+  const airportTags = [
+    { code: 'VNLK', name: 'Lukla', difficulty: 'Expert', classes: ['Class G'] },
+    { code: 'KJFK', name: 'JFK', difficulty: 'Advanced', classes: ['Class B'] },
+    { code: 'EGLL', name: 'Heathrow', difficulty: 'Advanced', classes: ['Class A'] },
+    { code: 'TNCM', name: 'St. Maarten', difficulty: 'Advanced', classes: ['Class D'] },
+    { code: 'KGCN', name: 'Grand Canyon', difficulty: 'Intermediate', classes: ['Class E'] },
+  ].filter(t => airportCodes.includes(t.code));
   const hoursForNext = 50;
   const progressPct = Math.min((hours / hoursForNext) * 100, 100);
   const expiredChecks = walletChecks.filter(c => c.status === 'expired');
@@ -349,158 +398,220 @@ export const HomeTab: React.FC<{
     ],
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(10px)' },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: 'blur(0px)',
+      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+    },
+  };
+
   return (
     <motion.div
-      className="flex flex-col gap-4 px-4 pt-8 pb-4 lg:pt-12 mx-auto h-auto lg:h-full lg:overflow-hidden" style={{ maxWidth: '1500px' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+      className="flex flex-col gap-4 px-4 pt-12 pb-4 mx-auto" style={{ height: 'fit-content', maxWidth: '1500px', zoom: 0.85 }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <div className="flex-shrink-0">
+      <motion.div variants={itemVariants}>
         <GettingStartedBar
           steps={steps}
           onStepClick={(tab) => setTab(tab as TabId)}
           isGuest={!isAuthenticated}
           onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
         />
-      </div>
+      </motion.div>
 
-      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4">
+      <div className="flex gap-4 items-stretch">
         {/* ── LEFT COLUMN ── */}
-        <div className="flex-1 min-h-0 flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4 min-w-0">
 
         {/* ── DISCOVER PATHWAYS (auto-rotating carousel) ── */}
-        <div className="h-[240px] sm:h-[300px] lg:flex-[1.7] lg:min-h-0 lg:h-auto">
+        <motion.div variants={itemVariants}>
           <CareerPathwaysCarousel
             airlinesCount={airlines.length}
             setTab={(tab) => setTab(tab)}
             safeRedirect={safeRedirect}
-            className="h-full"
           />
-        </div>
+        </motion.div>
 
         {/* ── THREE CARDS ROW ── */}
-        <div className="grid grid-cols-3 gap-4 h-[140px] sm:h-[180px] lg:flex-1 lg:min-h-0">
+        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4" style={{ height: '240px' }}>
 
           {/* ACCESS PROFILE */}
           <div
-            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
             onClick={() => setTab('profile' as TabId)}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')" }} />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
-            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#6366f1' }} />
-            <div className="absolute bottom-0 left-0 right-0 px-3 py-3 lg:px-4 lg:py-4">
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(165,180,252,0.7)' }}>Profile</p>
-              <h3 className="text-xs sm:text-sm lg:text-base font-black text-white tracking-tight leading-tight">ACCESS<br/>PROFILE</h3>
-            </div>
-            <div className="absolute top-3 right-3 w-6 h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.3)', border: '1px solid rgba(165,180,252,0.3)' }}>
-              <Plane size={12} className="text-indigo-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
+            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#6366f1' }} />
+
+            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(165,180,252,0.85)' }}>Profile</p>
+              <h3 className="text-lg font-black text-white tracking-tight leading-tight">ACCESS<br/>PROFILE</h3>
             </div>
           </div>
 
           {/* DISCOVER PROGRAMS */}
           <div
-            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
             onClick={() => safeRedirect('/programs')}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80')" }} />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
-            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#06b6d4' }} />
-            <div className="absolute bottom-0 left-0 right-0 px-3 py-3 lg:px-4 lg:py-4">
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(103,232,249,0.7)' }}>Programs</p>
-              <h3 className="text-xs sm:text-sm lg:text-base font-black text-white tracking-tight leading-tight">DISCOVER<br/>PROGRAMS</h3>
-            </div>
-            <div className="absolute top-3 right-3 w-6 h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(6,182,212,0.3)', border: '1px solid rgba(103,232,249,0.3)' }}>
-              <Globe size={12} className="text-cyan-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
+            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#06b6d4' }} />
+
+            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(103,232,249,0.85)' }}>Programs</p>
+              <h3 className="text-lg font-black text-white tracking-tight leading-tight">DISCOVER<br/>PROGRAMS</h3>
             </div>
           </div>
 
           {/* GET RECOGNITION+ */}
           <div
-            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
             onClick={() => safeRedirect('/recognition-plus')}
           >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80')" }} />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
-            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#10b981' }} />
-            <div className="absolute bottom-0 left-0 right-0 px-3 py-3 lg:px-4 lg:py-4">
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(52,211,153,0.7)' }}>Upgrade</p>
-              <h3 className="text-xs sm:text-sm lg:text-base font-black text-white tracking-tight leading-tight">GET<br/>RECOGNITION+</h3>
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
+            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#10b981' }} />
+
+            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(52,211,153,0.85)' }}>Upgrade</p>
+              <h3 className="text-lg font-black text-white tracking-tight leading-tight">GET<br/>RECOGNITION+</h3>
             </div>
-            <div className="absolute top-3 right-3 w-6 h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.3)', border: '1px solid rgba(52,211,153,0.3)' }}>
-              <Shield size={12} className="text-emerald-300" />
-            </div>
+
             {walletChecks.some(c => c.status === 'verified') && (
-              <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.85)' }}>
-                <div className="w-1.5 h-1.5 rounded-full bg-white" />
+              <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-0.5" style={{ background: 'rgba(16,185,129,0.85)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <div className="w-1.5 h-1.5 bg-white" />
                 <span className="text-[8px] font-black text-white">VERIFIED</span>
               </div>
             )}
           </div>
 
-        </div>
+        </motion.div>
+      </div>
 
       {/* ── RIGHT PROFILE CARD ── */}
-      <div className="w-full lg:w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)] h-auto lg:h-full min-h-0" style={{ background: 'rgba(15,22,35,0.97)' }}>
+      <motion.div variants={itemVariants} className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)] relative" style={{ background: 'rgba(15,22,35,0.97)', height: '676px' }}>
+        {/* Premium dark-blue metallic shimmer background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(56,189,248,0.18), transparent 45%), radial-gradient(circle at 70% 80%, rgba(99,102,241,0.14), transparent 45%), radial-gradient(circle at 50% 50%, rgba(15,23,42,0.6), transparent 70%)' }} />
+          <motion.div
+            className="absolute inset-[-50%]"
+            style={{ background: 'conic-gradient(from 0deg, transparent, rgba(56,189,248,0.08), transparent, rgba(99,102,241,0.08), transparent)' }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+
         {/* ── PROFILE CARD HEADER ── */}
-        <div className="relative px-4 pt-4 pb-3 lg:px-5 lg:pt-5 lg:pb-4 flex-shrink-0 border-b border-white/10">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
+        <div className="relative px-5 pt-5 pb-4 flex-shrink-0 border-b border-white/10">
+          <div className="absolute top-0 left-0 right-0 flex flex-col gap-[2px]">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-[2px] w-full transition-opacity"
+                style={{ background: i < pilotTierLines ? '#facc15' : 'rgba(255,255,255,0.06)', opacity: i < pilotTierLines ? 1 : 0.4 }}
+              />
+            ))}
+          </div>
           <div className="flex items-center gap-2 mb-1">
             <p className="text-[10px] font-black tracking-[0.15em] uppercase text-[#00b4d8]">Pilot Platform</p>
           </div>
-          <h2 className="text-[13px] lg:text-[15px] font-black text-white tracking-tight">Profile Card</h2>
+          <h2 className="text-[15px] font-black text-white tracking-tight">Profile Card</h2>
         </div>
 
         {profile ? (
           <div className="flex flex-col flex-1 overflow-y-auto">
             {/* Game-style profile header */}
-            <div className="relative h-20 lg:h-24 bg-gradient-to-br from-blue-900/40 to-slate-900/60">
+            <div className="relative h-24 bg-gradient-to-br from-blue-900/40 to-slate-900/60">
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')] bg-cover bg-center opacity-30" />
             </div>
 
             {/* Avatar + identity */}
-            <div className="flex flex-col items-center px-4 -mt-8 lg:-mt-10 pb-3 lg:pb-4">
+            <div className="flex flex-col items-center px-4 -mt-10 pb-4">
               <div className="relative cursor-pointer group mb-2" onClick={() => !avatarUploading && avatarInputRef?.current?.click()}>
                 <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
-                <ProfileImage url={profile?.profile_image_url} publicId={profile?.profile_image_public_id} name={name} size={72} className="rounded-full border-[3px] border-[rgba(15,22,35,0.97)]" fallbackClassName="rounded-full bg-blue-500 text-white text-xl lg:text-2xl" />
+                <ProfileImage url={profile?.profile_image_url} publicId={profile?.profile_image_public_id} name={name} size={80} className="rounded-full border-[3px] border-[rgba(15,22,35,0.97)]" fallbackClassName="rounded-full bg-blue-500 text-white text-2xl" />
                 <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
                   {avatarUploading ? <div className="w-4 h-4 border-2 border-white/60 border-t-white rounded-full animate-spin" /> : <Camera size={14} className="text-white" />}
                 </div>
               </div>
-              <p className="text-base lg:text-lg font-black text-white text-center truncate w-full tracking-tight">{name}</p>
-              <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider mt-0.5">{level}</p>
+              <p className="text-lg font-black text-white text-center truncate w-full tracking-tight">{name}</p>
               {(() => {
-                const hasVerified = walletChecks.some((c: any) => c.status === 'verified');
-                const hasPending = walletChecks.some((c: any) => c.status === 'pending');
-                const status = hasVerified ? 'Verified' : hasPending ? 'Pending' : 'Unverified';
-                const color = hasVerified ? '#10b981' : hasPending ? '#f59e0b' : '#ef4444';
-                return (
-                  <div className="flex items-center justify-center gap-1.5 mt-2 px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
-                    <span className="text-[9px] font-black uppercase tracking-wider" style={{ color }}>{status}</span>
-                  </div>
-                );
+                const handle = (profile?.display_name || name).toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
+                return <p className="text-[11px] font-bold text-white/50 text-center tracking-wide mt-0.5">@{handle || 'pilot'}</p>;
               })()}
+              <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider mt-2">{level}</p>
+
+              {/* Social links */}
+              <div className="flex items-center gap-3 mt-2">
+                {profile?.linkedin_url ? (
+                  <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}>
+                    <Linkedin size={15} className="text-white" />
+                  </a>
+                ) : (
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(255,255,255,0.12)' }}>
+                    <Linkedin size={15} className="text-white/30" />
+                  </div>
+                )}
+                {profile?.instagram_url ? (
+                  <a href={profile.instagram_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}>
+                    <Instagram size={15} className="text-white" />
+                  </a>
+                ) : (
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(255,255,255,0.12)' }}>
+                    <Instagram size={15} className="text-white/30" />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Compact stat row */}
-            <div className="grid grid-cols-3 gap-2 px-4 mb-3 lg:mb-4">
-              {[
-                { label: 'Hours', value: hours || '—' },
-                { label: 'Score', value: score || '—' },
-                { label: 'Creds', value: walletChecks.filter(c => c.status === 'verified').length || '—' },
-              ].map(s => (
-                <div key={s.label} className="text-center py-2 lg:py-2.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-sm lg:text-base font-black text-white tracking-tight">{s.value}</p>
-                  <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">{s.label}</p>
+            {(() => {
+              const hasVerified = walletChecks.some((c: any) => c.status === 'verified');
+              const hasPending = walletChecks.some((c: any) => c.status === 'pending');
+              const status = hasVerified ? 'Verified' : hasPending ? 'Pending' : 'Unverified';
+              const statusColor = hasVerified ? '#10b981' : hasPending ? '#f59e0b' : '#ef4444';
+              const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
+              const tierLabel = tier === 'free' || tier === 'bronze' ? 'Free Account' : tier === 'plus' || tier === 'silver' ? 'Recognition+' : tier === 'enterprise' || tier === 'gold' ? 'Enterprise' : tier.charAt(0).toUpperCase() + tier.slice(1);
+              return (
+                <div className="grid grid-cols-3 gap-2 px-4 mb-4">
+                  <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <p className="text-base font-black text-white tracking-tight">{hours || '—'}</p>
+                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Hours</p>
+                  </div>
+                  <div className="text-center py-2.5 flex flex-col items-center justify-center rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <div className="flex items-center justify-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor }} />
+                      <span className="text-[11px] font-black text-white tracking-tight uppercase">{status}</span>
+                    </div>
+                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">{tierLabel}</p>
+                  </div>
+                  <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <p className="text-base font-black text-white tracking-tight">{walletChecks.filter(c => c.status === 'verified').length || '—'}</p>
+                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Creds</p>
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })()}
 
             {/* Recent activity / last flown */}
-            <div className="px-4 mb-3 lg:mb-4">
-              <div className="rounded-lg px-3 py-2 lg:py-2.5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="px-4 mb-4">
+              <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                 <div className="flex items-center gap-2">
                   <Clock size={12} className="text-white/30" />
                   <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Last Flown</span>
@@ -509,13 +620,30 @@ export const HomeTab: React.FC<{
               </div>
             </div>
 
+            {/* Airport tags */}
+            {airportTags.length > 0 && (
+              <div className="px-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <MapPin size={12} className="text-white/30" />
+                  <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Airport Tags</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {airportTags.map(({ code, name, difficulty, classes }) => (
+                    <div key={code} className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <span className="text-[9px] font-black text-white">{code}</span>
+                      <span className="text-[8px] text-white/40">{name}</span>
+                      <span className="text-[7px] font-black px-1 rounded" style={{ background: difficulty === 'Expert' ? 'rgba(239,68,68,0.2)' : difficulty === 'Advanced' ? 'rgba(245,158,11,0.2)' : 'rgba(16,185,129,0.2)', color: difficulty === 'Expert' ? '#f87171' : difficulty === 'Advanced' ? '#fbbf24' : '#34d399' }}>{difficulty}</span>
+                      {classes.map(c => <span key={c} className="text-[7px] font-black text-white/50">{c}</span>)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Actions */}
-            <div className="px-4 mt-auto pb-4 lg:pb-5 flex flex-col gap-2">
-              <button onClick={() => setTab('logbook' as TabId)} className="w-full py-2 lg:py-2.5 text-[11px] font-black tracking-wider text-white rounded-lg transition-all hover:bg-white/10 flex items-center justify-center gap-2" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <RefreshCw size={13} /> SYNC LOGBOOK
-              </button>
-              <button onClick={() => onNavigate('pilot-recognition-profile')} className="w-full py-2 lg:py-2.5 text-[11px] font-black tracking-wider text-white rounded-lg transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
-                VIEW FULL PROFILE →
+            <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
+              <button onClick={() => setTab('verification' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600 shadow-lg shadow-blue-600/20" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                VIEW DASHBOARD →
               </button>
             </div>
           </div>
@@ -554,8 +682,7 @@ export const HomeTab: React.FC<{
           </div>
         )}
 
-      </div>
-      </div>
+      </motion.div>
       </div>
 
       {/* ════════════════════════════════════════════════════════════

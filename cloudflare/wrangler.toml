@@ -19,7 +19,8 @@ database_id = "0652ca22-adb0-4642-8658-ccc3ad74d263"
 [vars]
 AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
 AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
-DODO_PRODUCT_ID_RECOGNITION_PLUS = "your_dodo_product_id"
+DODO_PRODUCT_ID_RECOGNITION_PLUS = "pdt_0NhgDLaiGjWD45S1gJmng"
+DODO_ENV = "test" # Set to "live" for production
 
 # Secrets (set these with `wrangler secret put`):
 # DODO_API_KEY = "your_dodo_api_key"

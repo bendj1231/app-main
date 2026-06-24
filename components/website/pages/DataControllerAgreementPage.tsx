@@ -12,16 +12,16 @@ interface CollapsibleSectionProps {
 const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <section className="border-b border-slate-200">
+        <section className={`border-b border-white/10 transition-colors ${isOpen ? 'bg-white/[0.04]' : ''}`}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between py-3 text-left text-slate-900 font-semibold text-sm hover:bg-slate-50 rounded-lg px-2"
+                className="w-full flex items-center justify-between py-3 text-left text-white font-semibold text-sm hover:bg-white/5 rounded-lg px-2"
             >
                 {title}
-                <span className={`text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+                <span className={`text-white/50 transition-transform -translate-y-px ${isOpen ? 'rotate-180' : ''}`}>▼</span>
             </button>
             {isOpen && (
-                <div className="pb-4 px-2 text-slate-600 text-xs leading-relaxed">
+                <div className="pt-1 pb-5 px-3 text-[#e5e7eb] text-xs leading-relaxed [&_strong]:text-white">
                     {children}
                 </div>
             )}
@@ -69,7 +69,9 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
                     colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
                     speed={0.22}
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-800/50 to-slate-950/70" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+                <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
             </div>
 
             <style>{`
@@ -93,32 +95,32 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
             `}</style>
 
             {/* Content card */}
-            <div className="relative z-10 w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ animation: 'glassMaterialize 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards' }}>
-                <div className="p-6 md:p-8">
+            <div className="relative z-10 w-full max-w-2xl bg-slate-900/40 border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl shadow-black/50 overflow-hidden" style={{ animation: 'glassMaterialize 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards' }}>
+                <div className="p-6 md:p-8 pb-8 md:pb-10">
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h1 className="text-2xl font-bold text-slate-900">Data Controller Agreement</h1>
-                            <p className="text-xs text-slate-500 mt-1">PR-DCA-001 v3.0 · Effective: 02 June 2026</p>
+                            <h1 className="text-2xl font-bold text-white">Data Controller Agreement</h1>
+                            <p className="text-xs text-[#9ca3af] mt-1">PR-DCA-001 v3.0 · Effective: 02 June 2026</p>
                         </div>
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-slate-500 hover:text-slate-700 text-sm font-medium"
+                            className="text-white/80 hover:text-white text-sm font-medium"
                         >
                             ← Back
                         </button>
                     </div>
 
-                    <div className="text-slate-600 text-sm leading-relaxed mb-6">
+                    <div className="text-white/70 text-sm leading-relaxed mb-8">
                         <p>
-                            This agreement is entered into by the Registrant (the <strong className="text-slate-800">Credential Custodian</strong>) and the <strong className="text-slate-800">Promoters of Aviation Pathways Ltd</strong>.
+                            This agreement is entered into by the Registrant (the <strong className="text-white">Credential Custodian</strong>) and the <strong className="text-white">Promoters of Aviation Pathways Ltd</strong>.
                         </p>
                     </div>
 
                     {/* Collapsible sections */}
-                    <div className="border border-slate-200 rounded-lg overflow-hidden mb-6">
+                    <div className="border border-white/10 rounded-lg overflow-hidden mb-6">
                         <CollapsibleSection title="Article 1: Decentralized Trust Architecture & Roles">
                             <p className="mb-3">This platform operates strictly as a cryptographic Trust Broker using a Self-Sovereign Identity (SSI) framework with W3C Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs).</p>
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 <p><strong>1. Infrastructure Controller — The Platform</strong></p>
                                 <p>Acts as an Independent Data Controller strictly for platform uptime, subscription billing orchestration, and ecosystem routing gates. The Platform does not collect, host, store, or parse raw pilot credentials.</p>
                                 <p><strong>2. Credential Custodian — You</strong></p>
@@ -132,7 +134,7 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
 
                         <CollapsibleSection title="Article 2: Recognition+ Verification & Subscription Flow">
                             <p className="mb-3">The Platform operates on a pure signal-and-response routing architecture:</p>
-                            <ol className="space-y-2">
+                            <ol className="space-y-3">
                                 <li><strong>1. Document Upload:</strong> Upload documents directly to the verification provider's portal. The Platform never touches these documents.</li>
                                 <li><strong>2. Subscription Invoice Trigger:</strong> Upon secure notification, the Platform activates Recognition+ status and processes the $100/year subscription fee.</li>
                                 <li><strong>3. The Status Signal:</strong> The verification provider transmits a detailed verification report and passes a binary all-clear signal to the Platform.</li>
@@ -148,7 +150,7 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
 
                         <CollapsibleSection title="Article 4: Domain Deployment & Routing Pathways">
                             <p className="mb-3">The Platform functions strictly as a professional networking infrastructure and strategic corporate advisory utility.</p>
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 <p><strong>1. The Identity Layer — pilotrecognition.com</strong></p>
                                 <p>The secure interface where you trigger regional verification requests, manage your subscription billing, and hold your issued cryptographic VC badges.</p>
                                 <p><strong>2. The Routing Layer — pilotcareerpathways.com</strong></p>
@@ -164,15 +166,15 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
 
                         <CollapsibleSection title="Article 6: Subscription Renewals, Cancellations & Audit Refunds">
                             <p className="mb-3">Rights under the Mauritius Data Protection Act 2017 and GDPR are natively integrated:</p>
-                            <ul className="space-y-1.5">
+                            <ul className="space-y-2.5">
                                 <li><strong>Right to Erasure:</strong> Permanent deletion of your account footprint and subscription record.</li>
                                 <li><strong>Right to Portability:</strong> Exportable W3C Verifiable Credential badge to any compatible external SSI wallet.</li>
                                 <li><strong>Right of Access & Rectification:</strong> Real-time visibility and management via the user dashboard.</li>
                                 <li><strong>Right to Object:</strong> Withdrawal of consent for non-essential processing at any time.</li>
                                 <li><strong>Right to Restriction:</strong> Suspension of active processing pending dispute resolution.</li>
                             </ul>
-                            <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                <p className="font-bold text-amber-800 text-xs uppercase">Audit Non-Compliance — Failed Verification Fee Split</p>
+                            <div className="mt-3 px-4 py-3 bg-amber-500/10 border border-amber-400/30 rounded-lg">
+                                <p className="font-bold text-amber-300 text-xs uppercase">Audit Non-Compliance — Failed Verification Fee Split</p>
                                 <p className="text-xs mt-2">
                                     If verification fails, you receive a <strong>65% refund ($65.00)</strong>. The remaining 35% is retained — 20% ($20.00) to the verification provider for the audit, and 15% ($15.00) to the Platform for processing and overhead.
                                 </p>
@@ -184,13 +186,7 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
                         onClick={handleAgreeAndContinue}
                         className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors text-sm tracking-wide shadow-lg shadow-red-600/20"
                     >
-                        Agree to Terms & Conditions
-                    </button>
-                    <button
-                        onClick={handleBackToSignup}
-                        className="w-full mt-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition-colors"
-                    >
-                        ← Back to Sign Up
+                        Accept & Continue
                     </button>
                 </div>
             </div>

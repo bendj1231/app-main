@@ -308,13 +308,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
     // Show graphics tooltip on first visit (logged in or out)
     useEffect(() => {
-        const hasSeenTooltip = localStorage.getItem('hasSeenGraphicsTooltip');
-        if (!hasSeenTooltip && !authLoading) {
-            const timer = setTimeout(() => {
-                setShowGraphicsTooltip(true);
-            }, 2000); // Show after 2 seconds
-            return () => clearTimeout(timer);
-        }
+        // Tooltip is now hover-only; auto-show removed to avoid visual clutter
     }, [authLoading]);
 
     // Fetch notification count and notifications
@@ -344,7 +338,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         .limit(10);
 
                     if (!error && data) {
-                        setNotifications(data);
+                        if (data.length === 0) {
+                            setNotifications([
+                                {
+                                    id: 'welcome',
+                                    type: 'welcome',
+                                    title: 'Welcome to pilotrecognition.com',
+                                    message: 'This is where your pilot journey starts! To get started with the verification of your licenses and logbooks — and earn the recognition you deserve — get started with Recognition+.',
+                                    is_read: false,
+                                    created_at: new Date().toISOString(),
+                                    metadata: { action_url: '/recognition-plus' },
+                                },
+                            ]);
+                            setNotificationCount(1);
+                        } else {
+                            setNotifications(data);
+                        }
                     }
                 } catch (err) {
                     // Suppress transient network errors (tab suspended, offline, etc.)
@@ -426,6 +435,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 return <XCircle className="w-5 h-5 text-red-500" />;
             case 'warning':
                 return <AlertCircle className="w-5 h-5 text-amber-500" />;
+            case 'welcome':
+                return <Bell className="w-5 h-5 text-red-500" />;
             case 'info':
             default:
                 return <Info className="w-5 h-5 text-blue-500" />;
@@ -802,7 +813,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         }`}
                                 >
                                     {item.name}
-                                    {item.subItems && <ChevronDown className="w-3 h-3" />}
+                                    {(item.subItems || item.target === '__enterprise_modal__') && <ChevronDown className="w-3 h-3" />}
                                 </button>
 
                                 {/* Dropdown Menu - Optimized with pre-calculated layouts */}
@@ -856,14 +867,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Contact button */}
                                 <button
                                     onClick={() => onNavigate('contact-support')}
-                                    className={`${isDarkMode ? 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 hover:border-slate-600 shadow-black/30' : 'bg-white text-black border border-black hover:bg-slate-100 shadow-lg hover:shadow-slate-500/20'} px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap`}
+                                    className={`${isDarkMode ? 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 hover:border-slate-600 shadow-black/30' : 'bg-white text-black border border-black hover:bg-slate-100 shadow-lg hover:shadow-slate-500/20'} px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap leading-none`}
                                 >
                                     Contact
                                 </button>
 
                                 <button
                                     onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
-                                    className={`${currentUser ? (isDarkMode ? 'bg-slate-700 hover:bg-slate-600 shadow-black/20' : 'bg-slate-700 hover:bg-slate-800 shadow-lg hover:shadow-slate-500/20') : 'bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-red-500/20'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap`}
+                                    className={`${currentUser ? (isDarkMode ? 'bg-slate-700 hover:bg-slate-600 shadow-black/20' : 'bg-slate-700 hover:bg-slate-800 shadow-lg hover:shadow-slate-500/20') : 'bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-red-500/20'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap leading-none`}
                                 >
                                     {currentUser ? 'Sign Out' : 'Get Started'}
                                 </button>
@@ -872,7 +883,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {!currentUser && (
                                     <button
                                         onClick={() => onNavigate('flight-deck-login')}
-                                        className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 border border-slate-600"
+                                        className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center justify-center gap-2 border border-slate-600 leading-none"
                                     >
                                         Login
                                     </button>
@@ -882,7 +893,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {currentUser && currentPage === 'home' && (
                                     <button
                                         onClick={() => onNavigate('platform')}
-                                        className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-2"
+                                        className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center justify-center gap-2 leading-none"
                                     >
                                         Go to Platform
                                     </button>
@@ -892,7 +903,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {currentUser && currentPage !== 'home' && (
                                     <button
                                         onClick={() => onNavigate('access-portal-2')}
-                                        className="bg-black hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2"
+                                        className="bg-black hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center justify-center gap-2 leading-none"
                                     >
                                         Access Portal
                                     </button>
@@ -901,8 +912,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Graphics Settings Button - Always visible */}
                                 <div className="relative group">
                                     <div className="relative">
-                                        <button
+                                                <button
                                             onClick={() => setIsGraphicsModalOpen(true)}
+                                            onMouseEnter={() => setShowGraphicsTooltip(true)}
+                                            onMouseLeave={() => setShowGraphicsTooltip(false)}
                                             className={`w-10 h-10 rounded-full flex items-center justify-center transition-all relative ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
                                             title="Graphics Settings"
                                         >
@@ -915,7 +928,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                     localStorage.setItem('hasSeenGraphicsTooltip', 'true');
                                                     setIsGraphicsModalOpen(true);
                                                 }}
-                                                className="absolute right-0 top-full mt-2 px-2 py-1.5 bg-white rounded shadow-lg border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-300 hover:bg-slate-50 transition-colors cursor-pointer"
+                                                className="absolute right-0 top-full mt-2 px-2 py-1.5 bg-white rounded shadow-lg border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in from-top-2 duration-300 hover:bg-slate-50 transition-colors cursor-pointer"
                                             >
                                                 <p className="text-[10px] text-slate-700 font-medium">
                                                     Adjust graphics
@@ -1024,7 +1037,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                                         View Pathway
                                                                                     </button>
                                                                                 )}
-                                                                                {notification.metadata?.action_url && (
+                                                                                {notification.type === 'welcome' && notification.metadata?.action_url && (
+                                                                                    <button
+                                                                                        onClick={() => {
+                                                                                            safeRedirect(notification.metadata.action_url);
+                                                                                            setIsNotificationDropdownOpen(false);
+                                                                                        }}
+                                                                                        className="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700"
+                                                                                    >
+                                                                                        Get Started with Recognition+ →
+                                                                                    </button>
+                                                                                )}
+                                                                                {notification.type !== 'welcome' && notification.metadata?.action_url && (
                                                                                     <button
                                                                                         onClick={() => {
                                                                                             safeRedirect(notification.metadata.action_url);

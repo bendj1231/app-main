@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, BarChart3,
-  CheckCircle, XCircle, Clock, RefreshCw, Bell, Building2, AlertTriangle, Star
+  CheckCircle, XCircle, Clock, RefreshCw, Bell, Building2, AlertTriangle, Star, BadgeCheck, Target
 } from 'lucide-react';
 import { supabase } from '@/shared/lib/supabase';
 import type { NavItem } from './types';
@@ -17,6 +17,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'airlines',      label: 'Airlines',        icon: Plane },
   { id: 'manufacturers', label: 'Manufacturers',   icon: Wrench },
   { id: 'atlas-cv',      label: 'Atlas CV',        icon: FileText },
+  { id: 'verification',  label: 'Verification',    icon: BadgeCheck },
   { id: 'logbook',       label: 'Logbook',         icon: BookMarked },
   { id: 'events',        label: 'Events',          icon: Calendar },
   { id: 'newsroom',      label: 'Newsroom',        icon: Newspaper },
@@ -161,7 +162,7 @@ export const CredentialRequestCard: React.FC<{ request: any; onRespond: (approve
   );
 };
 
-export const NotificationsFeedPanel: React.FC<{ profileId?: string }> = ({ profileId }) => {
+export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: any }> = ({ profileId, profile }) => {
   const [notifs, setNotifs] = React.useState<any[]>([]);
   React.useEffect(() => {
     if (!profileId) return;
@@ -171,6 +172,43 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string }> = ({ profi
     });
     return () => { active = false; };
   }, [profileId]);
+
+  const hours = profile?.total_flight_hours ?? 0;
+  const targetHours = 1500;
+  const hoursRemaining = Math.max(0, targetHours - hours);
+  const hasPpl = hasProfileField(profile, ['ppl', 'private']);
+  const hasCpl = hasProfileField(profile, ['cpl', 'commercial']);
+  const hasIr = hasProfileField(profile, ['instrument', 'ir']);
+  const hasAtpl = hasProfileField(profile, ['atpl', 'airline transport', 'frozen atpl']);
+  const pathwayReminder = (() => {
+    if (hoursRemaining > 0 && !hasCpl) return { title: 'Pathway objective: earn CPL + hours', body: `${hoursRemaining.toFixed(0)} hours left to reach the ${targetHours} hr regional-FO target.`, type: 'pathway_reminder' };
+    if (hoursRemaining > 0 && hasCpl) return { title: 'Pathway objective: build hours', body: `${hoursRemaining.toFixed(0)} hours remaining to hit the ${targetHours} hr target.`, type: 'pathway_reminder' };
+    if (!hasPpl) return { title: 'Pathway objective: start PPL', body: 'Begin Private Pilot License training to unlock the pathway tracker.', type: 'pathway_reminder' };
+    if (!hasIr) return { title: 'Pathway objective: add Instrument Rating', body: 'Instrument Rating is required for most airline pathway targets.', type: 'pathway_reminder' };
+    if (!hasAtpl) return { title: 'Pathway objective: ATPL theory', body: 'Complete ATPL / frozen ATPL theory to meet airline requirements.', type: 'pathway_reminder' };
+    return { title: 'Pathway target met', body: 'You have reached the minimum regional-FO requirements. Apply to pathways.', type: 'pathway_reminder' };
+  })();
+
+  const lastFlightDate = profile?.last_flown || profile?.last_flight_date;
+  const daysSinceFlight = lastFlightDate ? Math.floor((Date.now() - new Date(lastFlightDate).getTime()) / (1000 * 60 * 60 * 24)) : null;
+  const staleThreshold = 14;
+  const nearbySchools = (() => {
+    const region = (profile?.region || profile?.location || 'Global').toString().toLowerCase();
+    if (region.includes('philippine') || region.includes('manila') || region.includes('cebu')) return ['WCC Aviation College', 'OMNI Aviation', 'ALG ATO'];
+    if (region.includes('uae') || region.includes('dubai') || region.includes('abudhabi')) return ['Emirates Flight Academy', 'Gulf Aviation Academy', 'Dubai Aviation Club'];
+    if (region.includes('usa') || region.includes('america')) return ['ATP Flight School', 'American Flyers', 'Sporty\'s Academy'];
+    if (region.includes('uk') || region.includes('britain') || region.includes('england')) return ['L3Harris Airline Academy', 'CAE Oxford Aviation Academy', 'Skyborne Airline Academy'];
+    if (region.includes('europe') || region.includes('germany') || region.includes('france')) return ['European Flight Academy', 'Lufthansa Aviation Training', 'Air France Flight Academy'];
+    return ['European Flight Academy', 'ATP Flight School', 'WCC Aviation College'];
+  })();
+  const flightSchoolReminder = (daysSinceFlight === null || daysSinceFlight > staleThreshold)
+    ? {
+        title: 'Keep your hours fresh',
+        body: `You haven't flown in ${daysSinceFlight === null ? 'a while' : `${daysSinceFlight} days`}. Book a flight with a nearby school to keep your profile score up.`,
+        type: 'flight_school_reminder',
+        action: { label: 'BOOK A FLIGHT', schools: nearbySchools },
+      }
+    : null;
 
   const markRead = async (id: string) => {
     await supabase.from('pilot_notifications').update({ is_read: true }).eq('id', id);
@@ -182,8 +220,12 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string }> = ({ profi
     if (type === 'credential_expiry') return { icon: AlertTriangle, color: '#ef4444', bg: 'rgba(239,68,68,0.1)' };
     if (type === 'tc_update') return { icon: FileText, color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' };
     if (type === 'subscription_expiry') return { icon: Star, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' };
+    if (type === 'pathway_reminder') return { icon: Target, color: '#38bdf8', bg: 'rgba(56,189,248,0.12)' };
+    if (type === 'flight_school_reminder') return { icon: Plane, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' };
     return { icon: Bell, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' };
   };
+
+  const allNotifs = [pathwayReminder, ...(flightSchoolReminder ? [flightSchoolReminder] : []), ...notifs];
 
   return (
     <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
@@ -199,24 +241,38 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string }> = ({ profi
         )}
       </div>
       <div className="px-5 pb-4">
-        {notifs.length === 0 ? (
+        {allNotifs.length === 0 ? (
           <div className="flex items-center justify-center py-4">
             <p className="text-[10px] text-white/20">No notifications</p>
           </div>
         ) : (
           <div className="space-y-1">
-            {notifs.map(n => {
+            {allNotifs.map(n => {
               const cfg = iconFor(n.type);
               const Icon = cfg.icon;
               return (
-                <div key={n.id} className="flex items-start gap-3 px-3 py-2.5 cursor-pointer hover:brightness-110 transition-all" style={{ background: n.is_read ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)', border: `1px solid ${n.is_read ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)'}` }} onClick={() => !n.is_read && markRead(n.id)}>
+                <div key={n.id ?? n.type} className="flex items-start gap-3 px-3 py-2.5 cursor-pointer hover:brightness-110 transition-all" style={{ background: n.is_read ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)', border: `1px solid ${n.is_read ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)'}` }} onClick={() => n.id && !n.is_read && markRead(n.id)}>
                   <div className="w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: cfg.bg, border: `1px solid ${cfg.color}30` }}>
                     <Icon size={10} style={{ color: cfg.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className={`text-[10px] font-black truncate ${n.is_read ? 'text-white/50' : 'text-white'}`}>{n.title}</p>
                     {n.body && <p className="text-[9px] text-white/30 mt-0.5 leading-relaxed line-clamp-2">{n.body}</p>}
-                    <p className="text-[8px] text-white/20 mt-1">{new Date(n.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                    {n.action && (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {n.action.schools.map((school: string) => (
+                          <button
+                            key={school}
+                            className="px-2 py-1 rounded-md text-[8px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                            style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.9), rgba(217,119,6,0.9))' }}
+                            onClick={e => { e.stopPropagation(); alert(`Booking request for ${school} — contact integration placeholder`); }}
+                          >
+                            {n.action.label} {school}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {n.created_at && <p className="text-[8px] text-white/20 mt-1">{new Date(n.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>}
                   </div>
                   {!n.is_read && <span className="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0 mt-1.5" />}
                 </div>
@@ -279,3 +335,16 @@ export const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> 
     )}
   </div>
 );
+
+function hasProfileField(profile: any, terms: string[]) {
+  if (!profile) return false;
+  const text = [
+    profile?.pilot_stage,
+    profile?.license_type,
+    profile?.current_level,
+    profile?.current_occupation,
+    Array.isArray(profile?.license_types) ? profile.license_types.join(' ') : profile?.license_types,
+    Array.isArray(profile?.ratings) ? profile.ratings.join(' ') : profile?.ratings,
+  ].join(' ').toLowerCase();
+  return terms.some(t => text.includes(t));
+}

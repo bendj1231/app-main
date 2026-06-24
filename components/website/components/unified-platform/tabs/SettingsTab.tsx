@@ -199,7 +199,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
   ];
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5 max-w-2xl mx-auto w-full">
       {sections.map(s => (
         <SectionCard key={s.title} title={s.title}>
           <div className="space-y-0.5">

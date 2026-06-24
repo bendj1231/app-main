@@ -93,12 +93,9 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
       }}
       onRedirectCallback={(appState) => {
         console.log('[Auth0] onRedirectCallback called, appState:', appState);
-        if (appState?.returnTo) {
-          sessionStorage.setItem('auth0_return_to', appState.returnTo);
-          console.log('[Auth0] Stored auth0_return_to:', appState.returnTo);
-        } else {
-          console.warn('[Auth0] No appState.returnTo found');
-        }
+        const returnTo = appState?.returnTo || '/become-member?setup=1';
+        sessionStorage.setItem('auth0_return_to', returnTo);
+        console.log('[Auth0] Stored auth0_return_to:', returnTo);
         navigate('/auth/callback', { replace: true });
       }}
       skipRedirectCallback={
@@ -110,8 +107,6 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
     </Auth0Provider>
   );
 };
-
-export {};
 
 // Suppress specific benign ResizeObserver loop warning from framer-motion
 const resizeObserverErrorHandler = (e: ErrorEvent) => {

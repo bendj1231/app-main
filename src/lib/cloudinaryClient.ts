@@ -19,7 +19,11 @@
 // Free tier: 25 credits/month. We MUST stay under this limit.
 // Strategy: Client-side compression + Cloudinary transformations
 
-const CLOUDINARY_CLOUD_NAME = 'drcfmairy'; // From CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@drcfmairy
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const CLOUDINARY_CLOUD_NAME = typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME
+  : 'dridtecu6';
 const UPLOAD_PRESET = 'profile_avatars';
 
 // Transformation parameters for ALL profile images

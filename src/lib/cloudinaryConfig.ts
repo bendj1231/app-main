@@ -1,19 +1,19 @@
 /**
  * Cloudinary Configuration
- * 
+ *
  * Single Cloudinary account for all image uploads:
  * - PROFILE: User profile photos
  * - CONTENT: Pathway images, airline logos, platform images
- * 
+ *
  * Cloud Name: dridtecu6
  */
 
 // Profile Images Cloudinary (User Uploads)
 export const PROFILE_CLOUDINARY = {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME 
+  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME 
+    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME
     : 'dridtecu6',
   uploadPreset: 'profile_avatars', // Unsigned preset for client uploads
   folder: 'profiles',
@@ -23,9 +23,9 @@ export const PROFILE_CLOUDINARY = {
 // Uses the same account as profiles with different folder structure
 export const CONTENT_CLOUDINARY = {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME 
+  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME 
+    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME
     : 'dridtecu6',
   uploadPreset: 'content_images',
   folder: 'content',

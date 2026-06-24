@@ -4,7 +4,7 @@ export type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
   | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance'
-  | 'cockpit';
+  | 'cockpit' | 'verification' | 'advanced-profile';
 
 export interface NavItem {
   id: TabId;

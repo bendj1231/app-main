@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   current_level TEXT DEFAULT 'Foundation',
   current_occupation TEXT,
   license_id TEXT,
+  license_number TEXT,
   license_type TEXT,
   pilot_stage TEXT,
   license_issuing_authority TEXT,
@@ -54,12 +55,28 @@ CREATE TABLE IF NOT EXISTS profiles (
   hours_whole TEXT,
   hours_minutes TEXT,
   origin_jurisdiction TEXT,
+  logbook_sync_valid INTEGER DEFAULT 0,
   terms_accepted_at TEXT,
   data_controller_agreement_accepted INTEGER DEFAULT 0,
   data_controller_agreement_accepted_at TEXT,
+  favorite_airports TEXT,
+  favorite_aircraft_2 TEXT,
+  favorite_aircraft_3 TEXT,
+  other_industry_experience TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+
+--- Licensure experience table (JSON blob storage for advanced profile fields)
+CREATE TABLE IF NOT EXISTS pilot_licensure_experience (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  license_data TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_pilot_licensure_user ON pilot_licensure_experience(user_id);
 
 -- Mentorship badges
 CREATE TABLE IF NOT EXISTS mentorship_badges (

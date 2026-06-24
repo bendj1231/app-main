@@ -292,6 +292,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     return handleVeremarkWebhook(request, env);
   }
 
+  // ── Checkout (no auth — called from frontend with user_id in body) ──
+  if (path === '/api/checkout/recognition-plus' && method === 'POST') {
+    return handleCheckout(request, env);
+  }
+
   // Everything below requires Auth0 JWT
   let auth: JWTPayload;
   try {
@@ -1268,6 +1273,62 @@ async function handleVeremarkWebhook(request: Request, env: Env): Promise<Respon
   }
 
   return jsonResponse({ received: true }, 200, origin);
+}
+
+// ── Checkout Handler ──────────────────────────────────────────
+
+async function handleCheckout(request: Request, env: Env): Promise<Response> {
+  const origin = request.headers.get('Origin') || undefined;
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>;
+  const { user_id, email, name, return_url } = body;
+
+  if (!user_id) {
+    return jsonResponse({ error: 'user_id required' }, 400, origin);
+  }
+
+  const dodoApiKey = env.DODO_API_KEY;
+  const dodoProductId = env.DODO_PRODUCT_ID_RECOGNITION_PLUS;
+  const dodoBaseUrl = 'https://live.dodopayments.com';
+
+  if (!dodoApiKey || !dodoProductId) {
+    return jsonResponse({ error: 'Dodo Payments not configured' }, 500, origin);
+  }
+
+  const successUrl = (return_url as string) || 'https://pilotrecognition.com/platform?tab=verification&checkout=success';
+  const cancelUrl = 'https://pilotrecognition.com/platform?tab=verification&checkout=cancelled';
+
+  try {
+    const checkoutRes = await fetch(`${dodoBaseUrl}/v1/checkouts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${dodoApiKey}`,
+      },
+      body: JSON.stringify({
+        product_cart: [{ product_id: dodoProductId, quantity: 1 }],
+        customer: email ? { email: email as string, name: (name as string) || undefined } : undefined,
+        return_url: successUrl,
+        cancel_url: cancelUrl,
+        metadata: { user_id, tier: 'recognition_plus' },
+      }),
+    });
+
+    const checkoutData = await checkoutRes.json().catch(() => ({})) as Record<string, unknown>;
+
+    if (!checkoutRes.ok) {
+      console.error('[Dodo Checkout] error:', checkoutData);
+      return jsonResponse({ error: (checkoutData as any).message || 'Checkout creation failed' }, checkoutRes.status, origin);
+    }
+
+    return jsonResponse({
+      checkout_url: checkoutData.checkout_url,
+      session_id: checkoutData.session_id,
+      status: 'ready',
+    }, 200, origin);
+  } catch (err: any) {
+    console.error('[Dodo Checkout] exception:', err.message);
+    return jsonResponse({ error: err.message || 'Checkout creation failed' }, 500, origin);
+  }
 }
 
 // ── Crypto Helpers ────────────────────────────────────────────

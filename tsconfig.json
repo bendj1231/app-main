@@ -24,7 +24,9 @@
       ]
     },
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo"
   },
   "include": [
     "app/**/*",
@@ -42,6 +44,7 @@
     "waltid-identity",
     "supabase",
     "aeron-analysis",
+    "portal",
     ".git",
     "coverage",
     "out",
@@ -52,6 +55,12 @@
     "**/*.gif",
     "**/*.svg",
     "**/*.mp4",
-    "**/*.pdf"
+    "**/*.pdf",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx"
   ]
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
 import { useAccountTier } from '../../../../src/hooks/useAccountTier';
-import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star } from 'lucide-react';
+import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap } from 'lucide-react';
 
 interface UploadedDoc {
   id: string;
@@ -30,10 +31,13 @@ interface PilotLicensureExperiencePageProps {
     lastName?: string;
     email?: string;
   } | null;
+  embedded?: boolean;
 }
 
 interface JobExperience {
   id: string;
+  sector: 'aviation' | 'non-aviation';
+  industry: string;
   company: string;
   position: string;
   fromDate: string;
@@ -43,9 +47,14 @@ interface JobExperience {
 
 interface AircraftRating {
   id: string;
+  aircraftClass: string;
   aircraftType: string;
+  manufacturer: string;
+  model: string;
+  tailNumber: string;
   ratingDate: string;
   isCurrent: boolean;
+  lastFlown: string;
 }
 
 const OCCUPATION_OPTIONS = [
@@ -82,6 +91,31 @@ const COMMON_AIRCRAFT = [
   'Piper PA-28', 'Piper PA-34',
   'Diamond DA40', 'Diamond DA42',
   'Beechcraft King Air',
+  'Other'
+];
+
+const AIRCRAFT_CLASSES = [
+  'Single Engine Land (SEL)',
+  'Multi-Engine Land (MEL)',
+  'Single Engine Sea (SES)',
+  'Multi-Engine Sea (MES)',
+  'Helicopter',
+  'Other'
+];
+
+const AIRCRAFT_MANUFACTURERS = [
+  'Airbus',
+  'Boeing',
+  'Cessna',
+  'Piper',
+  'Diamond',
+  'Beechcraft',
+  'Embraer',
+  'Bombardier',
+  'ATR',
+  'Tecnam',
+  'Cirrus',
+  'Mooney',
   'Other'
 ];
 
@@ -130,6 +164,45 @@ const CORPORATE_BLUE = '#003366';
 
 // Monospace font for data fields
 const MONO_FONT = "'JetBrains Mono', 'SF Mono', 'Menlo', monospace";;
+
+// Helper: Convert DD/MM/YYYY or YYYY-MM-DD to HTML date input format (YYYY-MM-DD)
+function toInputDate(raw: string): string {
+  if (!raw) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw; // Already ISO
+  const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) {
+    const [, day, month, year] = m;
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+  // Try parsing as Date
+  const d = new Date(raw);
+  if (!isNaN(d.getTime())) {
+    return d.toISOString().split('T')[0];
+  }
+  return raw;
+}
+
+// Helper: Map D1 ELP value (e.g. "ELP Level 5") to form option (e.g. "Level 5 - Extended")
+function mapElpToFormLevel(elp: string): string {
+  if (!elp) return '';
+  const levelMatch = elp.match(/Level\s+(\d)/i);
+  if (!levelMatch) return '';
+  const levelNum = levelMatch[1];
+  return ENGLISH_PROFICIENCY_LEVELS.find(l => l.startsWith(`Level ${levelNum}`)) || '';
+}
+
+// Helper: Extract short license code from full name, e.g. "Commercial Pilot (CPL)" -> "CPL"
+function extractLicenseCode(fullName: string): string | null {
+  if (!fullName) return null;
+  const m = fullName.match(/\(([A-Z]+)\)/);
+  if (m) return m[1];
+  // Direct match for short codes already in LICENSE_TYPES
+  const upper = fullName.toUpperCase().trim();
+  for (const code of LICENSE_TYPES) {
+    if (upper === code || upper.includes(code)) return code;
+  }
+  return null;
+}
 
 // Aviation Pathways Options
 const AVIATION_PATHWAYS_OPTIONS = [
@@ -182,9 +255,37 @@ const PILOT_JOB_POSITIONS_OPTIONS = [
   'Aviation Consultant'
 ];
 
+const FAVORITE_AIRPORTS_OPTIONS = [
+  'DXB - Dubai', 'AUH - Abu Dhabi', 'DOH - Doha', 'JED - Jeddah', 'RUH - Riyadh',
+  'SIN - Singapore', 'HKG - Hong Kong', 'NRT - Tokyo Narita', 'ICN - Seoul Incheon',
+  'LHR - London Heathrow', 'CDG - Paris Charles de Gaulle', 'FRA - Frankfurt', 'AMS - Amsterdam',
+  'JFK - New York JFK', 'LAX - Los Angeles', 'ORD - Chicago O\'Hare', 'DFW - Dallas/Fort Worth',
+  'MNL - Manila', 'BKK - Bangkok', 'KUL - Kuala Lumpur', 'CGK - Jakarta', 'SYD - Sydney',
+  'AKL - Auckland', 'CPT - Cape Town', 'CAI - Cairo', 'IST - Istanbul',
+  'Other'
+];
+
+const OTHER_INDUSTRY_EXPERIENCE_OPTIONS = [
+  'Hospitality / Tourism',
+  'IT / Software Engineering',
+  'Finance / Banking',
+  'Military / Defense',
+  'Engineering / Manufacturing',
+  'Education / Training',
+  'Healthcare',
+  'Maritime / Shipping',
+  'Logistics / Supply Chain',
+  'Real Estate / Construction',
+  'Sales / Marketing',
+  'Legal / Compliance',
+  'Other',
+  'None — Aviation only'
+];
+
 export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePageProps> = ({ 
   onBack, 
-  userProfile: userProfileProp 
+  userProfile: userProfileProp,
+  embedded = false
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
@@ -216,6 +317,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showNationalityDropdown, setShowNationalityDropdown] = useState(false);
   const [flightSchoolSearch, setFlightSchoolSearch] = useState('');
+  const [interestSearchQuery, setInterestSearchQuery] = useState('');
+  const [interestSearchFocused, setInterestSearchFocused] = useState(false);
+  const interestSearchRef = useRef<HTMLDivElement>(null);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [residingCountry, setResidingCountry] = useState('');
@@ -236,10 +340,55 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   
   // Radio License State
   const [radioLicenseExpiry, setRadioLicenseExpiry] = useState('');
+  const [radioLicenseCountry, setRadioLicenseCountry] = useState('');
   
   // Aircraft Ratings State
   const [aircraftRatings, setAircraftRatings] = useState<AircraftRating[]>([]);
-  
+
+  // Endorsements & Additional Ratings State
+  const [endorsements, setEndorsements] = useState<Record<string, boolean>>({
+    firstOfficer: false,
+    captain: false,
+    highPerformance: false,
+    complexAircraft: false,
+    tailwheel: false,
+    aerobatic: false,
+    seaplane: false,
+    catI: false,
+    catII: false,
+    catIII: false,
+  });
+  const [endorsementRecency, setEndorsementRecency] = useState<Record<string, string>>({});
+
+  // Custom endorsements that users can add dynamically
+  interface CustomEndorsement {
+    id: string;
+    label: string;
+    desc: string;
+    section: 'license' | 'aircraft' | 'instrument';
+  }
+  const [customEndorsements, setCustomEndorsements] = useState<CustomEndorsement[]>([]);
+
+  const addCustomEndorsement = (section: 'license' | 'aircraft' | 'instrument') => {
+    const id = `custom_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    setCustomEndorsements([...customEndorsements, { id, label: '', desc: '', section }]);
+    setEndorsements({ ...endorsements, [id]: true });
+  };
+
+  const removeCustomEndorsement = (id: string) => {
+    setCustomEndorsements(customEndorsements.filter(ce => ce.id !== id));
+    const next = { ...endorsements };
+    delete next[id];
+    setEndorsements(next);
+    const nextRecency = { ...endorsementRecency };
+    delete nextRecency[id];
+    setEndorsementRecency(nextRecency);
+  };
+
+  const updateCustomEndorsement = (id: string, field: 'label' | 'desc', value: string) => {
+    setCustomEndorsements(customEndorsements.map(ce => ce.id === id ? { ...ce, [field]: value } : ce));
+  };
+
   // Job Experience State
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([]);
   
@@ -251,8 +400,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Additional Info State
   const [countriesVisited, setCountriesVisited] = useState('');
   const [favoriteAircraft, setFavoriteAircraft] = useState('');
+  const [favoriteAircraft2, setFavoriteAircraft2] = useState('');
+  const [favoriteAircraft3, setFavoriteAircraft3] = useState('');
+  const [favoriteAirports, setFavoriteAirports] = useState<string[]>([]);
+  const [biography, setBiography] = useState('');
   const [whyBecomePilot, setWhyBecomePilot] = useState('');
   const [otherSkills, setOtherSkills] = useState('');
+  const [pilotJourneyStory, setPilotJourneyStory] = useState('');
   const [englishProficiency, setEnglishProficiency] = useState('');
   
   // Pilot Interests State
@@ -341,21 +495,43 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         
         if (profileError) {
         } else if (profileData) {
-          
+
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
-          
+
           // Handle empty strings as well as null/undefined
           const hasValue = (val: any) => val && val.trim && val.trim() !== '';
-          
+          const parseArr = (raw: any) => {
+            if (!raw) return [];
+            if (Array.isArray(raw)) return raw;
+            try { return JSON.parse(raw); } catch { return [raw]; }
+          };
+
           initialData = {
             fullLegalName: hasValue(profileData.full_name) ? profileData.full_name : (hasValue(onboarding.full_name) ? onboarding.full_name : ''),
             contactNumber: hasValue(profileData.phone) ? profileData.phone : (hasValue(onboarding.phone) ? onboarding.phone : ''),
             residingCountry: hasValue(profileData.country) ? profileData.country : (hasValue(onboarding.country) ? onboarding.country : ''),
-            dateOfBirth: hasValue(profileData.date_of_birth) ? profileData.date_of_birth : (hasValue(onboarding.date_of_birth) ? onboarding.date_of_birth : ''),
+            dateOfBirth: toInputDate(hasValue(profileData.date_of_birth) ? profileData.date_of_birth : (hasValue(onboarding.date_of_birth) ? onboarding.date_of_birth : '')),
             nationality: hasValue(profileData.nationality) ? profileData.nationality : (hasValue(onboarding.nationality) ? onboarding.nationality : ''),
             flightSchoolAddress: hasValue(profileData.flight_school_address) ? profileData.flight_school_address : (hasValue(onboarding.flight_school_address) ? onboarding.flight_school_address : ''),
-            licenseNumber: hasValue(profileData.license_id) ? profileData.license_id : (hasValue(onboarding.license_id) ? onboarding.license_id : '')
+            licenseNumber: hasValue(profileData.license_id) ? profileData.license_id : (hasValue(onboarding.license_id) ? onboarding.license_id : ''),
+            // Extended profile fields from D1
+            licenseType: profileData.license_type || '',
+            licenseIssuingAuthority: profileData.license_issuing_authority || '',
+            elpLevel: mapElpToFormLevel(profileData.elp_level || ''),
+            medicalClass: profileData.medical_class || '',
+            ratings: parseArr(profileData.ratings),
+            aircraftTypes: parseArr(profileData.aircraft_types),
+            typeRatings: parseArr(profileData.type_ratings).filter((a: string) => a && !a.startsWith('__')),
+            employmentStatus: profileData.employment_status || '',
+            currentOccupation: profileData.current_occupation || '',
+            totalFlightHours: profileData.total_flight_hours || profileData.hours_whole || '',
+            pilotStage: profileData.pilot_stage || '',
+            licenseCountryOfIssue: profileData.country_of_license || profileData.license_issuing_authority || '',
+            biography: profileData.bio || onboarding.bio || '',
+            favoriteAirports: parseArr(profileData.favorite_airports),
+            favoriteAircraft2: profileData.favorite_aircraft_2 || '',
+            favoriteAircraft3: profileData.favorite_aircraft_3 || '',
           };
           
           // Parse display_name into first/last name (check for empty string)
@@ -424,37 +600,65 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setContactNumber(data.contact_number || initialData.contactNumber || '');
           setFlightSchoolAddress(data.flight_school_address || initialData.flightSchoolAddress || '');
           setLanguages(data.languages || '');
-          setEnglishProficiency(data.english_proficiency || '');
+          setEnglishProficiency(data.english_proficiency || initialData.elpLevel || '');
 
-          // License Info
-          setCurrentLicenses(data.current_license || []);
+          // License Info — extract short codes from full names
+          const licFromProfile = initialData.licenseType ? [extractLicenseCode(initialData.licenseType)].filter(Boolean) : [];
+          const ratingsFromProfile = (initialData.ratings || []).map((r: string) => extractLicenseCode(r)).filter(Boolean);
+          const allLicenses = [...new Set([...licFromProfile, ...ratingsFromProfile])] as string[];
+          setCurrentLicenses(data.current_license?.length ? data.current_license : allLicenses);
           setLicenseNumber(data.license_number || initialData.licenseNumber || '');
           setLicenseExpiry(data.license_expiry || '');
-          setLicenseCountryOfIssue(data.license_country_of_issue || '');
+          setLicenseCountryOfIssue(data.license_country_of_issue || initialData.licenseIssuingAuthority || '');
 
           // Medical Info
           setMedicalExpiry(data.medical_expiry || '');
-          setMedicalCountry(data.medical_country || '');
-          setMedicalClass(data.medical_class || '');
+          setMedicalCountry(data.medical_country || initialData.licenseIssuingAuthority || '');
+          setMedicalClass(data.medical_class || initialData.medicalClass || '');
           setRadioLicenseExpiry(data.radio_license_expiry || '');
+          setRadioLicenseCountry(data.radio_license_country || initialData.licenseIssuingAuthority || '');
 
           // Aircraft Ratings
-          setAircraftRatings(data.aircraft_ratings || []);
+          if (data.aircraft_ratings?.length) {
+            setAircraftRatings(data.aircraft_ratings);
+          } else {
+            const allTypes = [...(initialData.aircraftTypes || []), ...(initialData.typeRatings || [])];
+            if (allTypes.length > 0) {
+              setAircraftRatings(allTypes.map((type: string, i: number) => ({
+                id: `profile-${i}`,
+                aircraftClass: '',
+                aircraftType: type,
+                manufacturer: '',
+                model: '',
+                tailNumber: '',
+                ratingDate: '',
+                isCurrent: true,
+                lastFlown: ''
+              })));
+            }
+          }
 
           // Professional Experiences
           setJobExperiences(data.professional_experiences || []);
 
           // Current Occupation
-          setCurrentOccupation(data.current_occupation || '');
+          setCurrentOccupation(data.current_occupation || initialData.currentOccupation || '');
           setCurrentEmployer(data.current_employer || '');
           setCurrentPosition(data.current_position || '');
 
           // Pilot Interests
-          setCountriesVisited(data.countries_visited?.toString() || '');
+          setCountriesVisited(data.countries_visited?.toString() || initialData.totalFlightHours?.toString() || '');
           setFavoriteAircraft(data.favorite_aircraft || '');
+          setFavoriteAircraft2(data.favorite_aircraft_2 || initialData.favoriteAircraft2 || '');
+          setFavoriteAircraft3(data.favorite_aircraft_3 || initialData.favoriteAircraft3 || '');
+          setFavoriteAirports(data.favorite_airports?.length ? data.favorite_airports : (initialData.favoriteAirports || []));
+          setBiography(data.biography || initialData.biography || '');
           setWhyBecomePilot(data.why_become_pilot || '');
           setOtherSkills(data.other_skills || '');
-          setAviationPathwaysInterests(data.aviation_pathways_interests || []);
+          setPilotJourneyStory(data.pilot_journey_story || '');
+          if (data.endorsements) setEndorsements(prev => ({ ...prev, ...data.endorsements }));
+          if (data.endorsement_recency) setEndorsementRecency(data.endorsement_recency);
+          setAviationPathwaysInterests(data.aviation_pathways_interests?.length ? data.aviation_pathways_interests : (initialData.pilotStage ? [initialData.pilotStage] : []));
           setPilotJobPositionsInterests(data.pilot_job_positions_interests || []);
           setProgramInterests(data.program_interests || initialData.programInterests || []);
           setInsightInterests(data.insight_interests || initialData.insightInterests || []);
@@ -462,8 +666,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         
         // Apply all profile data fallbacks if no licensure data was found
         if (!data) {
-          setFirstName(initialData.firstName || '');
-          setLastName(initialData.lastName || '');
+          setFirstName(initialData.firstName || userProfile?.firstName || '');
+          setLastName(initialData.lastName || userProfile?.lastName || '');
           setContactNumber(initialData.contactNumber || '');
           setResidingCountry(initialData.residingCountry || '');
           setDateOfBirth(initialData.dateOfBirth || '');
@@ -473,6 +677,43 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setProgramInterests(initialData.programInterests || []);
           setAviationPathwaysInterests(initialData.pathwayInterests || []);
           setInsightInterests(initialData.insightInterests || []);
+
+          // Extended D1 profile fields
+          const licCodes = [
+            ...(initialData.licenseType ? [extractLicenseCode(initialData.licenseType)] : []),
+            ...(initialData.ratings || []).map((r: string) => extractLicenseCode(r))
+          ].filter(Boolean) as string[];
+          if (licCodes.length) setCurrentLicenses([...new Set(licCodes)]);
+          if (initialData.licenseIssuingAuthority) setLicenseCountryOfIssue(initialData.licenseIssuingAuthority);
+          if (initialData.elpLevel) setEnglishProficiency(initialData.elpLevel);
+          if (initialData.medicalClass) setMedicalClass(initialData.medicalClass);
+          if (initialData.currentOccupation) setCurrentOccupation(initialData.currentOccupation);
+          if (initialData.totalFlightHours) setCountriesVisited(initialData.totalFlightHours.toString());
+          if (initialData.biography) setBiography(initialData.biography);
+          if (initialData.favoriteAirports?.length) setFavoriteAirports(initialData.favoriteAirports);
+          if (initialData.favoriteAircraft2) setFavoriteAircraft2(initialData.favoriteAircraft2);
+          if (initialData.favoriteAircraft3) setFavoriteAircraft3(initialData.favoriteAircraft3);
+          if (initialData.pilotStage) setAviationPathwaysInterests([initialData.pilotStage]);
+          if (initialData.licenseIssuingAuthority) {
+            setRadioLicenseCountry(initialData.licenseIssuingAuthority);
+            setMedicalCountry(initialData.licenseIssuingAuthority);
+          }
+
+          // Build aircraft ratings from profile arrays
+          const allTypes = [...(initialData.aircraftTypes || []), ...(initialData.typeRatings || [])];
+          if (allTypes.length > 0) {
+            setAircraftRatings(allTypes.map((type: string, i: number) => ({
+              id: `profile-${i}`,
+              aircraftClass: '',
+              aircraftType: type,
+              manufacturer: '',
+              model: '',
+              tailNumber: '',
+              ratingDate: '',
+              isCurrent: true,
+              lastFlown: ''
+            })));
+          }
         }
         
         // Mark data as loaded - the separate effect will handle hiding the loader after min time
@@ -489,9 +730,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   }, [userProfile?.uid]);
 
   // Add new job experience
-  const addJobExperience = () => {
+  const addJobExperience = (sector: 'aviation' | 'non-aviation' = 'aviation') => {
     const newJob: JobExperience = {
       id: Date.now().toString(),
+      sector,
+      industry: '',
       company: '',
       position: '',
       fromDate: '',
@@ -517,9 +760,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const addAircraftRating = () => {
     const newRating: AircraftRating = {
       id: Date.now().toString(),
+      aircraftClass: '',
       aircraftType: '',
+      manufacturer: '',
+      model: '',
+      tailNumber: '',
       ratingDate: '',
-      isCurrent: true
+      isCurrent: true,
+      lastFlown: ''
     };
     setAircraftRatings([...aircraftRatings, newRating]);
   };
@@ -682,6 +930,15 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     }
   };
 
+  // Toggle favorite airport
+  const toggleFavoriteAirport = (airport: string) => {
+    if (favoriteAirports.includes(airport)) {
+      setFavoriteAirports(favoriteAirports.filter(a => a !== airport));
+    } else {
+      setFavoriteAirports([...favoriteAirports, airport]);
+    }
+  };
+
   // Save all data to Supabase
   const handleSave = async () => {
     const userId = userProfile?.id || userProfile?.uid;
@@ -710,6 +967,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         medical_country: medicalCountry,
         medical_class: medicalClass,
         radio_license_expiry: radioLicenseExpiry,
+        radio_license_country: radioLicenseCountry,
         aircraft_ratings: aircraftRatings,
         professional_experiences: jobExperiences,
         current_occupation: currentOccupation,
@@ -721,8 +979,15 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         contact_number: contactNumber,
         countries_visited: countriesVisited ? parseInt(countriesVisited, 10) : null,
         favorite_aircraft: favoriteAircraft,
+        favorite_aircraft_2: favoriteAircraft2,
+        favorite_aircraft_3: favoriteAircraft3,
+        favorite_airports: favoriteAirports,
+        biography,
         why_become_pilot: whyBecomePilot,
         other_skills: otherSkills,
+        pilot_journey_story: pilotJourneyStory,
+        endorsements,
+        endorsement_recency: endorsementRecency,
         aviation_pathways_interests: aviationPathwaysInterests,
         pilot_job_positions_interests: pilotJobPositionsInterests,
         english_proficiency: englishProficiency,
@@ -759,7 +1024,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           medical_country: medicalCountry,
           medical_class: medicalClass,
           radio_license_expiry: radioLicenseExpiry,
+          radio_license_country: radioLicenseCountry,
           license_expiry: licenseExpiry,
+          bio: biography,
+          favorite_airports: favoriteAirports,
+          favorite_aircraft_2: favoriteAircraft2,
+          favorite_aircraft_3: favoriteAircraft3,
           updated_at: new Date().toISOString()
         };
 
@@ -788,7 +1058,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   };
 
   return (
-    <div className="dashboard-container animate-fade-in" style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+    <div className="dashboard-container animate-fade-in" style={{ minHeight: '100vh', background: embedded ? 'transparent' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
       {/* Loading Screen */}
       {isLoading ? (
         <div style={{
@@ -842,74 +1112,45 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               background: 'transparent',
               cursor: 'pointer',
               fontSize: '0.875rem',
-              color: '#475569',
+              color: embedded ? '#94a3b8' : '#475569',
               fontWeight: 500
             }}
           >
             ← Back to Dashboard
           </button>
           
-          <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', marginTop: '1rem' }}>
+          <p style={{ letterSpacing: '0.2em', color: embedded ? '#60a5fa' : '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', marginTop: '1rem' }}>
             Pilot Recognition Profile
           </p>
-          <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: '#0f172a', fontWeight: 600 }}>
+          <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: embedded ? '#f8fafc' : '#0f172a', fontWeight: 600 }}>
             Pilot Licensure & Experience Data Entry
           </h1>
-          <p style={{ marginTop: '1rem', color: '#64748b', maxWidth: '600px', margin: '1rem auto' }}>
+          <p style={{ marginTop: '1rem', color: embedded ? '#cbd5e1' : '#64748b', maxWidth: '600px', margin: '1rem auto' }}>
             This information will be visible to aviation industry manufacturers and airlines who will see your current state, qualifications, and experience.
           </p>
         </header>
 
-        {/* Progress Stepper */}
-        <div style={{ marginBottom: '2rem', background: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-            {[
-              { step: 1, label: 'Personal Info' },
-              { step: 2, label: 'License Info' },
-              { step: 3, label: 'Medical & Ratings' },
-              { step: 4, label: 'Experience' }
-            ].map((item, index) => (
-              <React.Fragment key={item.step}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#e5e7eb',
-                    color: currentStep >= item.step ? 'white' : '#6b7280',
-                    fontWeight: 700,
-                    fontSize: '0.875rem',
-                    border: `2px solid ${currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#d1d5db'}`
-                  }}>
-                    {currentStep > item.step ? <Check style={{ width: '20px', height: '20px' }} /> : item.step}
-                  </div>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: currentStep === item.step ? 600 : 500,
-                    color: currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#6b7280'
-                  }}>
-                    {item.label}
-                  </span>
-                </div>
-                {index < 3 && (
-                  <div style={{
-                    width: '60px',
-                    height: '2px',
-                    background: currentStep > item.step ? '#10b981' : '#9ca3af',
-                    marginTop: '-20px'
-                  }} />
-                )}
-              </React.Fragment>
-            ))}
+        {/* Get Recognition+ Promo */}
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ marginBottom: '2rem', background: 'white', borderRadius: '12px', padding: '1.5rem 2rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', position: 'relative' }}>
+          <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem', fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
+            Get <span style={{ color: '#dc2626' }}>Recognition+</span> — Don&apos;t miss a thing. One{' '}
+            <span style={{ color: '#dc2626' }}>verification</span>, one{' '}
+            <span style={{ color: '#dc2626' }}>profile</span> that{' '}
+            <span style={{ color: '#dc2626' }}>carries with you</span> in your{' '}
+            <span style={{ color: '#dc2626' }}>aviation career</span>.
+          </h2>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: '#4b5563', lineHeight: 1.5, maxWidth: '720px' }}>
+            Build a single, verified pilot profile that airlines and operators trust. One verification check unlocks
+            full pathway matching, unlimited profile comparisons, and priority access to career opportunities.
+          </p>
+          <div style={{ position: 'absolute', bottom: '0.75rem', right: '1.25rem', fontSize: '0.7rem', color: '#6b7280', fontWeight: 500 }}>
+            In support of <span style={{ color: '#111827' }}>pilot</span><span style={{ color: '#dc2626' }}>shortage</span><span style={{ color: '#dc2626' }}>.org</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Save Message */}
         {saveMessage && (
-          <div style={{
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} style={{
             background: saveMessage.includes('success') ? '#dcfce7' : '#fee2e2',
             border: `1px solid ${saveMessage.includes('success') ? '#86efac' : '#fca5a5'}`,
             borderRadius: '12px',
@@ -919,11 +1160,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             color: saveMessage.includes('success') ? '#166534' : '#991b1b'
           }}>
             {saveMessage}
-          </div>
+          </motion.div>
         )}
 
         {/* Personal Information Section */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '20px', 
           padding: '2rem', 
@@ -1308,10 +1549,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               ICAO English Language Proficiency Rating
             </p>
           </div>
-        </section>
+        </motion.section>
 
         {/* License Information Section - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -1354,49 +1595,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            <div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                License Number
-                <button
-                  onMouseEnter={() => setActiveTooltip('license')}
-                  onMouseLeave={() => setActiveTooltip(null)}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
-                >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: '#9ca3af' }} />
-                </button>
-                {activeTooltip === 'license' && (
-                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
-                    Enter your license number from your physical certificate
-                  </span>
-                )}
-              </label>
-              <input
-                type="text"
-                value={licenseNumber}
-                onChange={(e) => setLicenseNumber(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: `1px solid ${SLATE[300]}`,
-                  borderRadius: '6px',
-                  fontSize: '0.875rem',
-                  fontFamily: MONO_FONT,
-                  letterSpacing: '0.025em',
-                  outline: 'none',
-                  transition: 'all 0.15s'
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = CORPORATE_BLUE;
-                  e.currentTarget.style.boxShadow = `0 0 0 2px rgba(0, 51, 102, 0.1)`;
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = SLATE[300];
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-                placeholder="e.g., CPL-2024-001234"
-              />
-            </div>
-            
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 License Country of Issue
@@ -1444,121 +1642,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
           </div>
-          
-          {/* License Certificate Upload - High Fidelity Terminal Style */}
-          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
-              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                Document Verification
-              </span>
-              <Lock style={{ width: '12px', height: '12px', color: EMERALD }} />
-              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>Secure SSL</span>
-            </div>
-            
-            {getDocsByType('license').length === 0 ? (
-              <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={(e) => handleDrop(e, 'license')}
-                onClick={() => {
-                  setActiveUploadType('license');
-                  fileInputRef.current?.click();
-                }}
-                style={{
-                  border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
-                  borderRadius: '4px',
-                  padding: '1rem 1.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  background: SLATE[50],
-                  cursor: 'pointer',
-                  transition: 'all 0.15s'
-                }}
-              >
-                <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
-                <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
-                    Upload CPL/ATPL Certificate
-                  </p>
-                  <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
-                    PDF, JPG, PNG • Max 10MB • Required for verification
-                  </p>
-                </div>
-                <span style={{ fontSize: '0.7rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {getDocsByType('license').map(doc => (
-                  <div key={doc.id} style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '0.75rem', 
-                    padding: '0.75rem', 
-                    background: SLATE[50], 
-                    borderRadius: '4px', 
-                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
-                  }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#ecfdf5' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {doc.status === 'processing' ? (
-                        <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
-                      ) : doc.status === 'pending_review' ? (
-                        <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
-                      ) : (
-                        <FileText style={{ width: '16px', height: '16px', color: SLATE[500] }} />
-                      )}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
-                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
-                        {doc.status === 'uploading' && (
-                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
-                        )}
-                        {doc.status === 'processing' && (
-                          <span style={{ fontSize: '0.7rem', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s infinite' }} />
-                            Processing OCR...
-                          </span>
-                        )}
-                        {doc.status === 'pending_review' && (
-                          <span style={{ fontSize: '0.7rem', color: EMERALD, fontWeight: 500 }}>
-                            VERIFIED (24-48h)
-                          </span>
-                        )}
-                      </div>
-                      {doc.extractedData && doc.status === 'pending_review' && (
-                        <div style={{ marginTop: '0.4rem', padding: '0.4rem 0.5rem', background: 'white', borderRadius: '3px', border: `1px solid ${SLATE[200]}`, fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Scan style={{ width: '12px', height: '12px', color: SLATE[400] }} />
-                          <span style={{ color: SLATE[500] }}>Extracted:</span>
-                          <span style={{ color: SLATE[700], fontFamily: MONO_FONT, fontWeight: 500 }}>{doc.extractedData.licenseNumber}</span>
-                          {doc.extractedData.expiryDate && (
-                            <span style={{ color: SLATE[400] }}>•</span>
-                          )}
-                          {doc.extractedData.expiryDate && (
-                            <span style={{ color: SLATE[700], fontFamily: MONO_FONT }}>{doc.extractedData.expiryDate}</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => removeDocument(doc.id)}
-                      style={{ padding: '0.4rem', background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.4, transition: 'opacity 0.15s' }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
-                    >
-                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        </motion.section>
 
         {/* Medical Certificate Section - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -1668,115 +1755,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
           
-          {/* Medical Certificate Upload - Terminal Style */}
-          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
-              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                Medical Verification
-              </span>
-              <Lock style={{ width: '12px', height: '12px', color: EMERALD }} />
-              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>AeroMedical Secure</span>
-            </div>
-            
-            {getDocsByType('medical').length === 0 ? (
-              <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={(e) => handleDrop(e, 'medical')}
-                onClick={() => {
-                  setActiveUploadType('medical');
-                  fileInputRef.current?.click();
-                }}
-                style={{
-                  border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
-                  borderRadius: '4px',
-                  padding: '1rem 1.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  background: SLATE[50],
-                  cursor: 'pointer',
-                  transition: 'all 0.15s'
-                }}
-              >
-                <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
-                <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
-                    Upload Medical Certificate
-                  </p>
-                  <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
-                    ICAO/EASA format • PDF, JPG • Auto-detects Class
-                  </p>
-                </div>
-                <span style={{ fontSize: '0.7rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {getDocsByType('medical').map(doc => (
-                  <div key={doc.id} style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '0.75rem', 
-                    padding: '0.75rem', 
-                    background: SLATE[50], 
-                    borderRadius: '4px', 
-                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
-                  }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#ecfdf5' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {doc.status === 'processing' ? (
-                        <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
-                      ) : doc.status === 'pending_review' ? (
-                        <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
-                      ) : (
-                        <FileText style={{ width: '16px', height: '16px', color: '#059669' }} />
-                      )}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
-                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
-                        {doc.status === 'uploading' && (
-                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
-                        )}
-                        {doc.status === 'processing' && (
-                          <span style={{ fontSize: '0.7rem', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s infinite' }} />
-                            Scanning medical class...
-                          </span>
-                        )}
-                        {doc.status === 'pending_review' && (
-                          <span style={{ fontSize: '0.7rem', color: EMERALD, fontWeight: 500 }}>
-                            VERIFIED (24-48h)
-                          </span>
-                        )}
-                      </div>
-                      {doc.extractedData?.medicalClass && doc.status === 'pending_review' && (
-                        <div style={{ marginTop: '0.4rem', padding: '0.4rem 0.5rem', background: 'white', borderRadius: '3px', border: `1px solid ${SLATE[200]}`, fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Scan style={{ width: '12px', height: '12px', color: SLATE[400] }} />
-                          <span style={{ color: SLATE[500] }}>Auto-detected:</span>
-                          <span style={{ color: '#059669', fontWeight: 600, fontFamily: MONO_FONT }}>{doc.extractedData.medicalClass}</span>
-                          <span style={{ color: EMERALD, fontSize: '0.65rem' }}>✓ Applied</span>
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => removeDocument(doc.id)}
-                      style={{ padding: '0.4rem', background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.4, transition: 'opacity 0.15s' }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
-                    >
-                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        </motion.section>
 
         {/* Radio License Section - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -1791,6 +1773,28 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Radio License Country of Issue
+              </label>
+              <select
+                value={radioLicenseCountry}
+                onChange={(e) => setRadioLicenseCountry(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  background: 'white'
+                }}
+              >
+                <option value="">Select country</option>
+                {NATIONALITIES.map(country => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
+            </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Radio License Expiration Date
@@ -1811,13 +1815,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Aircraft Type Ratings Section - Terminal Style */}
-        <section style={{ 
-          background: 'white', 
-          borderRadius: '8px', 
-          padding: '1.5rem', 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'white',
+          borderRadius: '8px',
+          padding: '1.5rem',
           marginBottom: '2rem',
           border: `1px solid ${SLATE[200]}`
         }}>
@@ -1828,42 +1832,18 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 Aircraft Type Ratings
               </h2>
             </div>
-            <button
-              onClick={addAircraftRating}
-              style={{
-                padding: '0.4rem 1rem',
-                background: 'white',
-                color: '#001E3C',
-                border: `1px solid #001E3C`,
-                borderRadius: '6px',
-                fontSize: '0.8rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                transition: 'all 0.15s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#001E3C';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'white';
-                e.currentTarget.style.color = '#001E3C';
-              }}
-            >
-              + Add Rating
-            </button>
           </div>
-          
+
           {aircraftRatings.length === 0 && (
             <div style={{ textAlign: 'center', padding: '1.5rem', background: SLATE[50], borderRadius: '8px', border: `1px solid ${SLATE[200]}` }}>
               <p style={{ color: SLATE[500], fontSize: '0.875rem', margin: 0 }}>
-                No aircraft ratings added yet. Click "Add Rating" to log your A320, B737, or other type ratings.
+                No aircraft ratings added yet. Use the + button below to add your A320, B737, or other type ratings.
               </p>
             </div>
           )}
-          
+
           {aircraftRatings.map((rating, index) => (
-            <div key={rating.id} style={{ 
+            <div key={rating.id} style={{
               marginBottom: '1rem',
               padding: '1rem',
               background: 'white',
@@ -1877,9 +1857,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     Rating #{index + 1}
                   </span>
                   {rating.aircraftType && (
-                    <span style={{ 
-                      fontSize: '0.7rem', 
-                      padding: '0.2rem 0.5rem', 
+                    <span style={{
+                      fontSize: '0.7rem',
+                      padding: '0.2rem 0.5rem',
                       background: getDocsByType('rating').length > index ? '#f0fdf4' : '#fef3c7',
                       color: getDocsByType('rating').length > index ? EMERALD : '#d97706',
                       borderRadius: '4px',
@@ -1909,13 +1889,40 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   Remove
                 </button>
               </div>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '1rem', alignItems: 'end' }}>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', alignItems: 'end' }}>
+                {/* Aircraft Class */}
                 <div>
                   <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                    Aircraft Type
+                    Aircraft Class
                   </label>
-                  <div style={{ position: 'relative' }}>
+                  <select
+                    value={rating.aircraftClass}
+                    onChange={(e) => updateAircraftRating(rating.id, 'aircraftClass', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: `1px solid ${SLATE[300]}`,
+                      borderRadius: '6px',
+                      fontSize: '0.875rem',
+                      outline: 'none',
+                      fontFamily: MONO_FONT,
+                      background: 'white'
+                    }}
+                  >
+                    <option value="">Select class</option>
+                    {AIRCRAFT_CLASSES.map(cls => (
+                      <option key={cls} value={cls}>{cls}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Type Rating + Rating Date stacked */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                      Type Rating
+                    </label>
                     <input
                       type="text"
                       value={rating.aircraftType}
@@ -1938,41 +1945,167 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       ))}
                     </datalist>
                   </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                      Rating Date
+                    </label>
+                    <input
+                      type="date"
+                      value={rating.ratingDate}
+                      onChange={(e) => updateAircraftRating(rating.id, 'ratingDate', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        border: `1px solid ${SLATE[300]}`,
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        fontFamily: MONO_FONT
+                      }}
+                    />
+                  </div>
                 </div>
-                
+
+                {/* Manufacturer */}
                 <div>
                   <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                    Rating Date
+                    Manufacturer
                   </label>
-                  <input
-                    type="date"
-                    value={rating.ratingDate}
-                    onChange={(e) => updateAircraftRating(rating.id, 'ratingDate', e.target.value)}
+                  <select
+                    value={rating.manufacturer}
+                    onChange={(e) => updateAircraftRating(rating.id, 'manufacturer', e.target.value)}
                     style={{
                       width: '100%',
                       padding: '0.5rem 0.75rem',
                       border: `1px solid ${SLATE[300]}`,
                       borderRadius: '6px',
                       fontSize: '0.875rem',
-                      fontFamily: MONO_FONT
+                      outline: 'none',
+                      fontFamily: MONO_FONT,
+                      background: 'white'
                     }}
-                  />
+                  >
+                    <option value="">Select make</option>
+                    {AIRCRAFT_MANUFACTURERS.map(m => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
                 </div>
-                
-                <div>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem', color: SLATE[700] }}>
+
+                {/* Model + Tail Number stacked */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                      Model
+                    </label>
+                    <input
+                      type="text"
+                      value={rating.model}
+                      onChange={(e) => updateAircraftRating(rating.id, 'model', e.target.value)}
+                      placeholder="e.g., 737-800, DA40..."
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        border: `1px solid ${SLATE[300]}`,
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        fontFamily: MONO_FONT
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                      Tail Number
+                    </label>
+                    <input
+                      type="text"
+                      value={rating.tailNumber}
+                      onChange={(e) => updateAircraftRating(rating.id, 'tailNumber', e.target.value)}
+                      placeholder="e.g., N123AB, RP-C1234..."
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        border: `1px solid ${SLATE[300]}`,
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        fontFamily: MONO_FONT
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Current / Currency checkbox + Last Flown */}
+                <div style={{ gridColumn: 'span 2' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem', color: SLATE[700], marginBottom: '0.5rem' }}>
                     <input
                       type="checkbox"
                       checked={rating.isCurrent}
                       onChange={(e) => updateAircraftRating(rating.id, 'isCurrent', e.target.checked)}
                       style={{ width: '1rem', height: '1rem' }}
                     />
-                    Current
+                    Have you flown this aircraft within the last 90 days? (currency)
                   </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: SLATE[500], marginBottom: '0.25rem' }}>
+                        Last Flown (optional)
+                      </label>
+                      <input
+                        type="date"
+                        value={rating.lastFlown}
+                        onChange={(e) => updateAircraftRating(rating.id, 'lastFlown', e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '0.5rem 0.75rem',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '6px',
+                          fontSize: '0.875rem',
+                          color: SLATE[700],
+                          background: 'white'
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <p style={{ margin: '0.5rem 0 0', fontSize: '0.7rem', color: SLATE[400], lineHeight: 1.4 }}>
+                    This date will be cross-checked with your synced logbook. If your logbook shows a different last-flown date, it will be automatically updated.
+                  </p>
                 </div>
               </div>
             </div>
           ))}
+
+          {/* + Add Rating button below last entry */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+            <button
+              onClick={addAircraftRating}
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: '#001E3C',
+                color: 'white',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+                boxShadow: '0 2px 8px rgba(0,30,60,0.25)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,30,60,0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,30,60,0.25)';
+              }}
+              title="Add new rating"
+            >
+              <Plus size={20} />
+            </button>
+          </div>
           
           {/* Type Rating Certificate Upload - Terminal Style - Recognition+ Gated */}
           <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
@@ -1995,8 +2128,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             {!isRecognitionPlus && getDocsByType('rating').length === 0 ? (
               <div style={{ padding: '1rem', background: '#fef3c7', borderRadius: '4px', border: '1px solid #fbbf24' }}>
                 <p style={{ margin: 0, fontSize: '0.75rem', color: '#92400e', lineHeight: 1.5 }}>
-                  <strong>Recognition+ Required:</strong> Document uploads are a premium feature.
-                  Free users can still add type ratings as text above. Upgrade to upload official ATO certificates for verification.
+                  <strong>Get Recognition+ — Get Verified:</strong> Get the recognition you deserve for your training investments and flight experience. Upgrade to upload official ATO certificates and unlock verified status for your type ratings.
                 </p>
                 <button
                   onClick={() => safeRedirect('/recognition-plus')}
@@ -2012,7 +2144,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     cursor: 'pointer'
                   }}
                 >
-                  Upgrade to Recognition+
+                  Get Verified
                 </button>
               </div>
             ) : getDocsByType('rating').length === 0 ? (
@@ -2146,13 +2278,191 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </div>
             )}
           </div>
-        </section>
+        </motion.section>
 
-        {/* Job Experience Section - Terminal Style */}
-        <section style={{ 
-          background: 'white', 
-          borderRadius: '8px', 
-          padding: '1.5rem', 
+        {/* Pilot Endorsements and Additional Ratings */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'white',
+          borderRadius: '8px',
+          padding: '1.5rem',
+          marginBottom: '2rem',
+          border: `1px solid ${SLATE[300]}`,
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Pilot Endorsements and Additional Ratings
+            </h3>
+          </div>
+
+          {([
+            {
+              title: 'License Endorsements',
+              section: 'license' as const,
+              items: [
+                { key: 'firstOfficer', label: 'First Officer Endorsement', desc: 'Qualified to operate as second-in-command on multi-crew aircraft.' },
+                { key: 'captain', label: 'Captain Endorsement', desc: 'Qualified to act as pilot-in-command and carry final authority.' },
+              ]
+            },
+            {
+              title: 'Aircraft Type Ratings',
+              section: 'aircraft' as const,
+              items: [
+                { key: 'highPerformance', label: 'High Performance', desc: 'Aircraft with more than 200 hp per engine.' },
+                { key: 'complexAircraft', label: 'Complex Aircraft', desc: 'Retractable gear, flaps, and controllable-pitch propeller.' },
+                { key: 'tailwheel', label: 'Tailwheel', desc: 'Conventional-gear aircraft requiring a tailwheel endorsement.' },
+                { key: 'aerobatic', label: 'Aerobatic', desc: 'Flight manoeuvres beyond normal flight such as spins and rolls.' },
+                { key: 'seaplane', label: 'Float / Seaplane', desc: 'Take-off and landing on water.' },
+              ]
+            },
+            {
+              title: 'Instrument Approach Authorizations',
+              section: 'instrument' as const,
+              items: [
+                { key: 'catI', label: 'CAT I', desc: 'Standard precision approach down to 200 ft decision height.' },
+                { key: 'catII', label: 'CAT II', desc: 'Autoland or guided approach down to 100 ft decision height.' },
+                { key: 'catIII', label: 'CAT III', desc: 'Zero-visibility autoland operations.' },
+              ]
+            }
+          ]).map(({ title, section, items }) => {
+            const sectionCustom = customEndorsements.filter(ce => ce.section === section);
+            return (
+              <div key={section} style={{ marginBottom: section === 'instrument' ? 0 : '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                  <h4 style={{ fontSize: '0.8rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>{title}</h4>
+                  <button
+                    onClick={() => addCustomEndorsement(section)}
+                    style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      border: `1px solid ${SLATE[300]}`,
+                      background: 'white',
+                      color: '#001E3C',
+                      fontSize: '1rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 0.15s'
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#001E3C'; e.currentTarget.style.color = 'white'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#001E3C'; }}
+                    title={`Add custom ${title.toLowerCase()}`}
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                  {items.map(({ key, label, desc }) => (
+                    <div key={key} style={{ padding: '1rem', background: SLATE[50], borderRadius: '8px', border: `1px solid ${SLATE[200]}` }}>
+                      <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={!!endorsements[key]}
+                          onChange={(e) => setEndorsements({ ...endorsements, [key]: e.target.checked })}
+                          style={{ width: '1rem', height: '1rem', marginTop: '0.15rem', flexShrink: 0 }}
+                        />
+                        <div>
+                          <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: SLATE[800] }}>{label}</p>
+                          <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: SLATE[500] }}>{desc}</p>
+                        </div>
+                      </label>
+                      {endorsements[key] && (
+                        <div style={{ marginTop: '0.75rem', marginLeft: '1.5rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 500, color: SLATE[500], marginBottom: '0.25rem' }}>Last Recurrency Date (optional)</label>
+                          <input
+                            type="date"
+                            value={endorsementRecency[key] || ''}
+                            onChange={(e) => setEndorsementRecency({ ...endorsementRecency, [key]: e.target.value })}
+                            style={{ padding: '0.4rem 0.5rem', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '0.8rem' }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {/* Custom endorsement cards */}
+                  {sectionCustom.map((ce) => (
+                    <div key={ce.id} style={{ padding: '1rem', background: '#f0f7ff', borderRadius: '8px', border: `1px solid #bfdbfe`, minHeight: '120px' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                        <input
+                          type="checkbox"
+                          checked={!!endorsements[ce.id]}
+                          onChange={(e) => setEndorsements({ ...endorsements, [ce.id]: e.target.checked })}
+                          style={{ width: '1rem', height: '1rem', marginTop: '0.15rem', flexShrink: 0 }}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <input
+                            type="text"
+                            value={ce.label}
+                            onChange={(e) => updateCustomEndorsement(ce.id, 'label', e.target.value)}
+                            placeholder="Endorsement name..."
+                            style={{
+                              width: '100%',
+                              fontSize: '0.875rem',
+                              fontWeight: 600,
+                              color: SLATE[800],
+                              border: 'none',
+                              borderBottom: `1px solid #bfdbfe`,
+                              background: 'transparent',
+                              padding: '0 0 0.25rem',
+                              outline: 'none',
+                              marginBottom: '0.25rem'
+                            }}
+                          />
+                          <input
+                            type="text"
+                            value={ce.desc}
+                            onChange={(e) => updateCustomEndorsement(ce.id, 'desc', e.target.value)}
+                            placeholder="Description..."
+                            style={{
+                              width: '100%',
+                              fontSize: '0.75rem',
+                              color: SLATE[500],
+                              border: 'none',
+                              borderBottom: `1px solid #bfdbfe`,
+                              background: 'transparent',
+                              padding: '0 0 0.25rem',
+                              outline: 'none'
+                            }}
+                          />
+                        </div>
+                        <button
+                          onClick={() => removeCustomEndorsement(ce.id)}
+                          style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.15rem', opacity: 0.6 }}
+                          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; }}
+                          title="Remove"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                      {endorsements[ce.id] && (
+                        <div style={{ marginTop: '0.75rem', marginLeft: '1.5rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 500, color: SLATE[500], marginBottom: '0.25rem' }}>Last Recurrency Date (optional)</label>
+                          <input
+                            type="date"
+                            value={endorsementRecency[ce.id] || ''}
+                            onChange={(e) => setEndorsementRecency({ ...endorsementRecency, [ce.id]: e.target.value })}
+                            style={{ padding: '0.4rem 0.5rem', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '0.8rem' }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </motion.section>
+
+        {/* Pilot Status and Interests Section */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'white',
+          borderRadius: '8px',
+          padding: '1.5rem',
           marginBottom: '2rem',
           border: `1px solid ${SLATE[200]}`
         }}>
@@ -2160,11 +2470,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
               <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
-                Job Experience
+                Pilot Status and Interests
               </h2>
             </div>
             <button
-              onClick={addJobExperience}
+              onClick={() => addJobExperience('aviation')}
               style={{
                 padding: '0.4rem 1rem',
                 background: '#001E3C',
@@ -2179,139 +2489,259 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               + Add Experience
             </button>
           </div>
-          
-          {jobExperiences.length === 0 && (
-            <p style={{ color: '#6b7280', fontStyle: 'italic', textAlign: 'center', padding: '2rem' }}>
-              No job experiences added yet. Click "Add Experience" to log your work history.
-            </p>
-          )}
-          
-          {jobExperiences.map((job, index) => (
-            <div key={job.id} style={{ 
-              marginBottom: '1.5rem',
-              padding: '1.5rem',
-              background: '#f9fafb',
-              borderRadius: '12px',
-              border: '1px solid #e5e7eb'
-            }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                    Company/Organization *
-                  </label>
-                  <input
-                    type="text"
-                    value={job.company}
-                    onChange={(e) => updateJobExperience(job.id, 'company', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '0.875rem'
-                    }}
-                    placeholder="e.g., Emirates Airlines"
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                    Position/Role *
-                  </label>
-                  <input
-                    type="text"
-                    value={job.position}
-                    onChange={(e) => updateJobExperience(job.id, 'position', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '0.875rem'
-                    }}
-                    placeholder="e.g., First Officer"
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                    From Date *
-                  </label>
-                  <input
-                    type="date"
-                    value={job.fromDate}
-                    onChange={(e) => updateJobExperience(job.id, 'fromDate', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '0.875rem'
-                    }}
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                    To Date
-                  </label>
-                  <input
-                    type="date"
-                    value={job.toDate}
-                    onChange={(e) => updateJobExperience(job.id, 'toDate', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '0.875rem'
-                    }}
-                  />
-                </div>
-              </div>
-              
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                  Job Description
-                </label>
-                <textarea
-                  value={job.description}
-                  onChange={(e) => updateJobExperience(job.id, 'description', e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem',
-                    minHeight: '80px',
-                    resize: 'vertical'
-                  }}
-                  placeholder="Describe your responsibilities and achievements in this role..."
-                />
-              </div>
-              
-              <button
-                onClick={() => removeJobExperience(job.id)}
+
+          {/* Biography */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              Pilot Biography
+            </label>
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={biography}
+                onChange={(e) => setBiography(e.target.value)}
                 style={{
-                  padding: '0.4rem 0.75rem',
-                  background: 'transparent',
-                  color: '#ef4444',
-                  border: '1px solid #ef4444',
+                  width: '100%',
+                  padding: '0.75rem',
+                  paddingRight: '4rem',
+                  border: `1px solid ${SLATE[300]}`,
                   borderRadius: '6px',
-                  fontSize: '0.75rem',
-                  cursor: 'pointer',
-                  fontWeight: 500,
-                  opacity: 0.7,
-                  transition: 'opacity 0.2s'
+                  fontSize: '0.875rem',
+                  minHeight: '100px',
+                  resize: 'vertical',
+                  fontFamily: MONO_FONT
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
-              >
-                ✕ Remove
-              </button>
+                placeholder="Tell us about yourself, your aviation journey, and what drives you..."
+                maxLength={1000}
+              />
+              <span style={{
+                position: 'absolute',
+                bottom: '0.75rem',
+                right: '0.75rem',
+                fontSize: '0.75rem',
+                color: SLATE[400],
+                fontFamily: MONO_FONT,
+                pointerEvents: 'none'
+              }}>
+                {biography.length} / 1000
+              </span>
             </div>
-          ))}
-          
+          </div>
+
+          {/* Favorite Airports */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              Favorite Airports
+            </label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {FAVORITE_AIRPORTS_OPTIONS.map(airport => (
+                <button
+                  key={airport}
+                  onClick={() => toggleFavoriteAirport(airport)}
+                  style={{
+                    padding: '0.4rem 0.875rem',
+                    borderRadius: '9999px',
+                    border: '1px solid',
+                    borderColor: favoriteAirports.includes(airport) ? '#001E3C' : SLATE[300],
+                    background: favoriteAirports.includes(airport) ? '#001E3C' : 'white',
+                    color: favoriteAirports.includes(airport) ? 'white' : SLATE[700],
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    fontWeight: favoriteAirports.includes(airport) ? 600 : 500,
+                    transition: 'all 0.15s',
+                    boxShadow: favoriteAirports.includes(airport) ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
+                  }}
+                >
+                  {airport}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Work Experience — Aviation & Non-Aviation */}
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
+              Work Experience
+            </label>
+            {jobExperiences.length === 0 && (
+              <p style={{ color: '#6b7280', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                No experience added yet. Click "+ Add Experience" to log your aviation or non-aviation work history.
+              </p>
+            )}
+            {jobExperiences.map((job, index) => (
+              <div key={job.id} style={{
+                marginBottom: '1.5rem',
+                padding: '1.5rem',
+                background: '#f9fafb',
+                borderRadius: '12px',
+                border: '1px solid #e5e7eb'
+              }}>
+                {/* Sector selector */}
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6b7280' }}>Sector:</label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {(['aviation', 'non-aviation'] as const).map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => updateJobExperience(job.id, 'sector', s)}
+                        style={{
+                          padding: '0.3rem 0.75rem',
+                          borderRadius: '9999px',
+                          border: '1px solid',
+                          borderColor: job.sector === s ? '#001E3C' : '#d1d5db',
+                          background: job.sector === s ? '#001E3C' : 'white',
+                          color: job.sector === s ? 'white' : '#374151',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          textTransform: 'capitalize'
+                        }}
+                      >
+                        {s === 'non-aviation' ? 'Non-Aviation' : 'Aviation'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Industry dropdown for non-aviation */}
+                {job.sector === 'non-aviation' && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                      Industry *
+                    </label>
+                    <select
+                      value={job.industry}
+                      onChange={(e) => updateJobExperience(job.id, 'industry', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        background: 'white'
+                      }}
+                    >
+                      <option value="">Select industry</option>
+                      {OTHER_INDUSTRY_EXPERIENCE_OPTIONS.map(industry => (
+                        <option key={industry} value={industry}>{industry}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                      Company/Organization *
+                    </label>
+                    <input
+                      type="text"
+                      value={job.company}
+                      onChange={(e) => updateJobExperience(job.id, 'company', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                      placeholder="e.g., Emirates Airlines"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                      Position/Role *
+                    </label>
+                    <input
+                      type="text"
+                      value={job.position}
+                      onChange={(e) => updateJobExperience(job.id, 'position', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                      placeholder="e.g., First Officer"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                      From Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={job.fromDate}
+                      onChange={(e) => updateJobExperience(job.id, 'fromDate', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                      To Date
+                    </label>
+                    <input
+                      type="date"
+                      value={job.toDate}
+                      onChange={(e) => updateJobExperience(job.id, 'toDate', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+                <div style={{ marginBottom: '1rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
+                    Job Description
+                  </label>
+                  <textarea
+                    value={job.description}
+                    onChange={(e) => updateJobExperience(job.id, 'description', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '0.875rem',
+                      minHeight: '80px',
+                      resize: 'vertical'
+                    }}
+                    placeholder="Describe your responsibilities and achievements in this role..."
+                  />
+                </div>
+                <button
+                  onClick={() => removeJobExperience(job.id)}
+                  style={{
+                    padding: '0.4rem 0.75rem',
+                    background: 'transparent',
+                    color: '#ef4444',
+                    border: '1px solid #ef4444',
+                    borderRadius: '6px',
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                    opacity: 0.7,
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                >
+                  ✕ Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
           {/* ICAO Data Security Audit Trail */}
           <div style={{ marginTop: '1.5rem', padding: '0.75rem', background: SLATE[50], borderRadius: '4px', border: `1px solid ${SLATE[200]}`, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Lock style={{ width: '14px', height: '14px', color: SLATE[400] }} />
@@ -2319,10 +2749,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               Data encrypted and stored according to ICAO data security standards
             </span>
           </div>
-        </section>
+        </motion.section>
 
         {/* Current Occupation Status Section - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -2406,10 +2836,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </div>
             </div>
           )}
-        </section>
+        </motion.section>
 
         {/* Pilot Interests Section - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -2423,70 +2853,236 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </h2>
           </div>
           
-          {/* Aviation Pathways Interests - Multiple Choice */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
-              Interests in Aviation Pathways (Select all that apply)
+          {/* Aviation Interests Search */}
+          <div style={{ marginBottom: '1.5rem' }} ref={interestSearchRef}>
+            <label style={{ display: 'block', fontSize: '1rem', fontWeight: 700, color: '#001E3C', marginBottom: '0.25rem' }}>
+              Select Aviation Interests
             </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {AVIATION_PATHWAYS_OPTIONS.map(pathway => (
-                <button
-                  key={pathway}
-                  onClick={() => toggleAviationPathway(pathway)}
-                  style={{
-                    padding: '0.4rem 0.875rem',
-                    borderRadius: '9999px',
-                    border: '1px solid',
-                    borderColor: aviationPathwaysInterests.includes(pathway) ? '#001E3C' : SLATE[300],
-                    background: aviationPathwaysInterests.includes(pathway) ? '#001E3C' : 'white',
-                    color: aviationPathwaysInterests.includes(pathway) ? 'white' : SLATE[700],
-                    fontSize: '0.8rem',
-                    cursor: 'pointer',
-                    fontWeight: aviationPathwaysInterests.includes(pathway) ? 600 : 500,
-                    transition: 'all 0.15s',
-                    boxShadow: aviationPathwaysInterests.includes(pathway) ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
-                  }}
-                >
-                  {pathway}
-                </button>
-              ))}
-            </div>
-          </div>
+            <p style={{ fontSize: '0.875rem', color: SLATE[500], marginBottom: '0.75rem', fontStyle: 'italic' }}>
+              What makes you Fly?
+            </p>
 
-          {/* Pilot Job Positions Interests - Multiple Choice */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
-              Interests in Pilot Job Positions (Select all that apply)
-            </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {PILOT_JOB_POSITIONS_OPTIONS.map(position => (
-                <button
-                  key={position}
-                  onClick={() => togglePilotJobPosition(position)}
-                  style={{
-                    padding: '0.4rem 0.875rem',
-                    borderRadius: '9999px',
-                    border: '1px solid',
-                    borderColor: pilotJobPositionsInterests.includes(position) ? '#001E3C' : SLATE[300],
-                    background: pilotJobPositionsInterests.includes(position) ? '#001E3C' : 'white',
-                    color: pilotJobPositionsInterests.includes(position) ? 'white' : SLATE[700],
-                    fontSize: '0.8rem',
-                    cursor: 'pointer',
-                    fontWeight: pilotJobPositionsInterests.includes(position) ? 600 : 500,
-                    transition: 'all 0.15s',
-                    boxShadow: pilotJobPositionsInterests.includes(position) ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
-                  }}
-                >
-                  {position}
-                </button>
-              ))}
+            {/* Search bar */}
+            <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+              <Search style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: SLATE[400] }} />
+              <input
+                type="text"
+                value={interestSearchQuery}
+                onChange={(e) => setInterestSearchQuery(e.target.value)}
+                onFocus={() => setInterestSearchFocused(true)}
+                onBlur={() => setTimeout(() => setInterestSearchFocused(false), 150)}
+                placeholder="Search pathways, roles, sectors..."
+                style={{
+                  width: '100%',
+                  padding: '0.625rem 0.75rem 0.625rem 2.25rem',
+                  border: `1px solid ${interestSearchFocused ? '#001E3C' : SLATE[300]}`,
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  fontFamily: MONO_FONT,
+                  background: 'white',
+                  transition: 'border-color 0.15s'
+                }}
+              />
+              {/* Dropdown */}
+              {interestSearchFocused && interestSearchQuery.trim().length > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
+                  left: 0,
+                  right: 0,
+                  background: 'white',
+                  border: `1px solid ${SLATE[200]}`,
+                  borderRadius: '8px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                  zIndex: 50,
+                  maxHeight: '280px',
+                  overflowY: 'auto'
+                }}>
+                  {(() => {
+                    const q = interestSearchQuery.toLowerCase();
+                    const filteredPathways = AVIATION_PATHWAYS_OPTIONS.filter(p => p.toLowerCase().includes(q) && !aviationPathwaysInterests.includes(p));
+                    const filteredPositions = PILOT_JOB_POSITIONS_OPTIONS.filter(p => p.toLowerCase().includes(q) && !pilotJobPositionsInterests.includes(p));
+                    if (filteredPathways.length === 0 && filteredPositions.length === 0) {
+                      return (
+                        <div style={{ padding: '0.75rem', fontSize: '0.8rem', color: SLATE[400], textAlign: 'center' }}>
+                          No matches found
+                        </div>
+                      );
+                    }
+                    return (
+                      <>
+                        {filteredPathways.length > 0 && (
+                          <div>
+                            <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.7rem', fontWeight: 700, color: SLATE[400], textTransform: 'uppercase', letterSpacing: '0.05em', background: SLATE[50] }}>
+                              Aviation Pathways
+                            </div>
+                            {filteredPathways.map(pathway => (
+                              <button
+                                key={pathway}
+                                onMouseDown={(e) => { e.preventDefault(); toggleAviationPathway(pathway); setInterestSearchQuery(''); }}
+                                style={{
+                                  width: '100%',
+                                  textAlign: 'left',
+                                  padding: '0.5rem 0.75rem',
+                                  fontSize: '0.8rem',
+                                  color: SLATE[700],
+                                  cursor: 'pointer',
+                                  border: 'none',
+                                  background: 'transparent',
+                                  borderBottom: `1px solid ${SLATE[100]}`,
+                                  fontFamily: 'inherit'
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = SLATE[50]; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                              >
+                                {pathway}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        {filteredPositions.length > 0 && (
+                          <div>
+                            <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.7rem', fontWeight: 700, color: SLATE[400], textTransform: 'uppercase', letterSpacing: '0.05em', background: SLATE[50] }}>
+                              Pilot Positions
+                            </div>
+                            {filteredPositions.map(position => (
+                              <button
+                                key={position}
+                                onMouseDown={(e) => { e.preventDefault(); togglePilotJobPosition(position); setInterestSearchQuery(''); }}
+                                style={{
+                                  width: '100%',
+                                  textAlign: 'left',
+                                  padding: '0.5rem 0.75rem',
+                                  fontSize: '0.8rem',
+                                  color: SLATE[700],
+                                  cursor: 'pointer',
+                                  border: 'none',
+                                  background: 'transparent',
+                                  borderBottom: `1px solid ${SLATE[100]}`,
+                                  fontFamily: 'inherit'
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = SLATE[50]; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                              >
+                                {position}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
+                </div>
+              )}
+            </div>
+
+            {/* Selected row */}
+            {[...aviationPathwaysInterests, ...pilotJobPositionsInterests].length > 0 && (
+              <div style={{ marginBottom: '0.75rem' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: SLATE[400], textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.375rem', display: 'block' }}>
+                  Selected
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+                  {aviationPathwaysInterests.map(item => (
+                    <span key={item} style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.25rem 0.625rem',
+                      borderRadius: '9999px',
+                      background: '#001E3C',
+                      color: 'white',
+                      fontSize: '0.75rem',
+                      fontWeight: 600
+                    }}>
+                      {item}
+                      <button
+                        onClick={() => toggleAviationPathway(item)}
+                        style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '0.7rem', padding: 0, lineHeight: 1 }}
+                      >
+                        <X size={12} />
+                      </button>
+                    </span>
+                  ))}
+                  {pilotJobPositionsInterests.map(item => (
+                    <span key={item} style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.25rem 0.625rem',
+                      borderRadius: '9999px',
+                      background: '#001E3C',
+                      color: 'white',
+                      fontSize: '0.75rem',
+                      fontWeight: 600
+                    }}>
+                      {item}
+                      <button
+                        onClick={() => togglePilotJobPosition(item)}
+                        style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '0.7rem', padding: 0, lineHeight: 1 }}
+                      >
+                        <X size={12} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recommended pills */}
+            <div>
+              <span style={{ fontSize: '0.7rem', fontWeight: 700, color: SLATE[400], textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.375rem', display: 'block' }}>
+                Recommended
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+                {[
+                  'Commercial Aviation (Airlines)',
+                  'Cargo Aviation',
+                  'Business Aviation / Private Jets',
+                  'First Officer (FO)',
+                  'Captain',
+                  'Flight Instruction'
+                ].filter(rec => !aviationPathwaysInterests.includes(rec) && !pilotJobPositionsInterests.includes(rec)).map(rec => (
+                  <button
+                    key={rec}
+                    onClick={() => {
+                      if (AVIATION_PATHWAYS_OPTIONS.includes(rec)) toggleAviationPathway(rec);
+                      else togglePilotJobPosition(rec);
+                    }}
+                    style={{
+                      padding: '0.3rem 0.625rem',
+                      borderRadius: '9999px',
+                      border: '1px solid',
+                      borderColor: SLATE[200],
+                      background: 'white',
+                      color: SLATE[600],
+                      fontSize: '0.75rem',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                      transition: 'all 0.15s'
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#001E3C'; e.currentTarget.style.color = '#001E3C'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = SLATE[200]; e.currentTarget.style.color = SLATE[600]; }}
+                  >
+                    + {rec}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Powered by */}
+            <div style={{ marginTop: '0.75rem', textAlign: 'right' }}>
+              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>
+                Powered by pilotcareer<span style={{ color: '#dc2626', fontWeight: 700 }}>pathways</span>.com
+              </span>
             </div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                Countries Visited (General Average)
+                Countries Visited
               </label>
               <input
                 type="number"
@@ -2503,10 +3099,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 min="0"
               />
             </div>
-            
+
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                Favorite Aircraft Type
+                Favorite Aircraft #1
               </label>
               <select
                 value={favoriteAircraft}
@@ -2520,7 +3116,53 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   background: 'white'
                 }}
               >
-                <option value="">Select favorite aircraft</option>
+                <option value="">Select aircraft</option>
+                {COMMON_AIRCRAFT.map(aircraft => (
+                  <option key={aircraft} value={aircraft}>{aircraft}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Favorite Aircraft #2
+              </label>
+              <select
+                value={favoriteAircraft2}
+                onChange={(e) => setFavoriteAircraft2(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  background: 'white'
+                }}
+              >
+                <option value="">Select aircraft</option>
+                {COMMON_AIRCRAFT.map(aircraft => (
+                  <option key={aircraft} value={aircraft}>{aircraft}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Favorite Aircraft #3
+              </label>
+              <select
+                value={favoriteAircraft3}
+                onChange={(e) => setFavoriteAircraft3(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  background: 'white'
+                }}
+              >
+                <option value="">Select aircraft</option>
                 {COMMON_AIRCRAFT.map(aircraft => (
                   <option key={aircraft} value={aircraft}>{aircraft}</option>
                 ))}
@@ -2599,10 +3241,133 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </span>
             </div>
           </div>
-        </section>
+        </motion.section>
+
+        {/* Attestation to a Pilot Journey */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
+          background: 'white', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
+          marginBottom: '2rem',
+          border: `1px solid ${SLATE[300]}`,
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <BookOpen style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Attestation to a Pilot Journey
+            </h3>
+          </div>
+
+          {/* pilotshortage.org notice bar */}
+          <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'linear-gradient(135deg, rgba(220,38,38,0.06) 0%, rgba(220,38,38,0.03) 100%)', borderRadius: '8px', border: '1px solid rgba(220,38,38,0.15)' }}>
+            <p style={{ margin: 0, fontSize: '0.8125rem', color: SLATE[700], lineHeight: 1.6, fontWeight: 500 }}>
+              With support from <a href="https://pilotshortage.org" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 700, textDecoration: 'none' }}>pilotshortage.org</a>, your story will be one of thousands of pilots testifying to the difficulties in the aviation industry — how challenging times can arise and spark change. Common factors such as the <strong>1500-hour rule</strong> implementation caused drastic effects on pilot careers, leading some to change careers entirely. Tell your story on how difficult it was to gain <strong>recognition</strong> in an industry with little direction or solid foundational structure to place you in.
+            </p>
+          </div>
+
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              My Pilot Journey — Autobiography
+            </label>
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={pilotJourneyStory}
+                onChange={(e) => setPilotJourneyStory(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  minHeight: '180px',
+                  resize: 'vertical',
+                  fontFamily: 'inherit',
+                  lineHeight: 1.5
+                }}
+                placeholder="Share your story. How did you get into aviation? What challenges did you face? How did industry changes like the 1500-hour rule, furloughs, or lack of mentorship shape your path? This is your space to be heard."
+                maxLength={2000}
+              />
+              <span style={{
+                position: 'absolute',
+                bottom: '0.5rem',
+                right: '0.75rem',
+                fontSize: '0.75rem',
+                color: SLATE[400],
+                fontFamily: MONO_FONT,
+                pointerEvents: 'none'
+              }}>
+                {pilotJourneyStory.length} / 2000
+              </span>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Skills & Other Experience */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
+          background: 'white', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
+          marginBottom: '2rem',
+          border: `1px solid ${SLATE[300]}`,
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Zap style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Skills & Other Experience
+            </h3>
+          </div>
+
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              Other Skills & Experiences That Give You an Edge
+            </label>
+            <p style={{ margin: '0 0 0.75rem', fontSize: '0.8125rem', color: SLATE[500], lineHeight: 1.5 }}>
+              Customer service, IT management, leadership roles, language fluency, mechanical expertise, military service, teaching, project management — these details are often overlooked but can bring your profile to the forefront during pathway submissions on <strong>pilotcareerpathways.com</strong>.
+            </p>
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={otherSkills}
+                onChange={(e) => setOtherSkills(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  minHeight: '120px',
+                  resize: 'vertical',
+                  fontFamily: 'inherit',
+                  lineHeight: 1.5
+                }}
+                placeholder="List your transferable skills and non-aviation experiences that set you apart..."
+                maxLength={500}
+              />
+              <span style={{
+                position: 'absolute',
+                bottom: '0.5rem',
+                right: '0.75rem',
+                fontSize: '0.75rem',
+                color: SLATE[400],
+                fontFamily: MONO_FONT,
+                pointerEvents: 'none'
+              }}>
+                {otherSkills.length} / 500
+              </span>
+            </div>
+          </div>
+
+          {/* Community notice */}
+          <div style={{ padding: '1rem', background: 'linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(37,99,235,0.03) 100%)', borderRadius: '8px', border: '1px solid rgba(37,99,235,0.15)' }}>
+            <p style={{ margin: 0, fontSize: '0.8125rem', color: SLATE[700], lineHeight: 1.6, fontWeight: 500 }}>
+              In accordance with <strong>pilot advocacy and transparency</strong> at <a href="https://pilotshortage.org" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 700, textDecoration: 'none' }}>pilotshortage.org</a>, always remember that <strong>you are never alone</strong>. That is why we developed this platform — to voice out for many pilots and build a community. Join the association at <a href="https://pilotshortage.org" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 700, textDecoration: 'none' }}>pilotshortage.org</a> with a mission to fight the cause of ending the pilot shortage and providing <strong>transparency, direction, recognition</strong> and mission-driven pathways.
+            </p>
+          </div>
+        </motion.section>
 
         {/* Review Your Information - Terminal Style */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
           padding: '1.5rem', 
@@ -2659,10 +3424,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               <strong style={{ color: '#001E3C' }}>Legal Confirmation:</strong> I confirm that all information provided is accurate and complete. I understand this data will be visible to aviation industry partners and may be verified according to ICAO standards.
             </span>
           </label>
-        </section>
+        </motion.section>
 
         {/* Industry Visibility Notice - Terminal Style (Legal Disclosure) */}
-        <section style={{ 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: SLATE[50], 
           borderRadius: '6px', 
           padding: '1.25rem', 
@@ -2683,96 +3448,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             Your current state, qualifications, experience, and employment status will be visible to recruiters and hiring managers who are looking for qualified pilots. 
             Keep your information up-to-date to maximize your opportunities in the aviation industry.
           </p>
-        </section>
-
-        {/* Terminal-Style Sticky Action Bar */}
-        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', borderTop: `1px solid ${SLATE[200]}`, padding: '0.75rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxShadow: '0 -4px 20px rgba(0,0,0,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: SLATE[50], borderRadius: '4px', border: `1px solid ${SLATE[200]}` }}>
-              <Clock style={{ width: '14px', height: '14px', color: SLATE[500] }} />
-              {autoSaveStatus === 'idle' && lastSaved && (
-                <span style={{ fontSize: '0.75rem', color: SLATE[500], fontFamily: MONO_FONT }}>
-                  {lastSaved.toLocaleTimeString()}
-                </span>
-              )}
-              {autoSaveStatus === 'saving' && (
-                <span style={{ fontSize: '0.75rem', color: SLATE[500] }}>Syncing...</span>
-              )}
-              {autoSaveStatus === 'saved' && (
-                <span style={{ fontSize: '0.75rem', color: EMERALD, fontWeight: 500 }}>SAVED</span>
-              )}
-            </div>
-            <span style={{ fontSize: '0.75rem', color: SLATE[400] }}>
-              {uploadedDocs.length} doc{uploadedDocs.length !== 1 ? 's' : ''} queued
-            </span>
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <button
-              onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-              disabled={currentStep === 0}
-              style={{
-                padding: '0.625rem 1.25rem',
-                background: 'white',
-                color: SLATE[600],
-                border: `1px solid ${SLATE[300]}`,
-                borderRadius: '6px',
-                fontSize: '0.8rem',
-                fontWeight: 500,
-                cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
-                opacity: currentStep === 0 ? 0.5 : 1
-              }}
-            >
-              Back
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              style={{
-                padding: '0.75rem 2rem',
-                background: isSaving ? SLATE[300] : '#001E3C',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                cursor: isSaving ? 'not-allowed' : 'pointer',
-                transition: 'all 0.15s',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                boxShadow: isSaving ? 'none' : '0 2px 8px rgba(0, 30, 60, 0.25)'
-              }}
-              onMouseEnter={(e) => {
-                if (!isSaving) {
-                  e.currentTarget.style.background = '#00294d';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 30, 60, 0.35)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSaving) {
-                  e.currentTarget.style.background = '#001E3C';
-                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 30, 60, 0.25)';
-                }
-              }}
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 style={{ width: '14px', height: '14px', animation: 'spin 1s linear infinite' }} />
-                  Generating...
-                </>
-              ) : (
-                <>Generate ATLAS CV →</>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Spacer for fixed bottom bar */}
-        <div style={{ height: '80px' }} />
+        </motion.section>
 
         {/* Save Button */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>
           <button
             onClick={handleSave}
             disabled={isSaving}
@@ -2791,7 +3470,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           >
             {isSaving ? 'Saving...' : 'Save All Information'}
           </button>
-        </div>
+        </motion.div>
       </main>
       )}
     </div>

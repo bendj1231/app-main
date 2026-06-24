@@ -116,6 +116,46 @@ async function handleApiAction(request: Request, env: Env): Promise<Response> {
   }
 }
 
+/**
+ * Rate limiter: track profile mutations per user per calendar month.
+ * Limit defaults to 2 changes per month for updateProfile and saveLicensure.
+ */
+async function checkRateLimit(db: D1Database, userId: string, action: string, maxChanges: number = 2): Promise<{ allowed: boolean; remaining: number; resetsAt: string }> {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+  await db.prepare(`
+    CREATE TABLE IF NOT EXISTS profile_change_log (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      action TEXT NOT NULL,
+      changed_at TEXT NOT NULL
+    )
+  `).run();
+
+  const { results } = await db.prepare(`
+    SELECT COUNT(*) as count FROM profile_change_log
+    WHERE user_id = ? AND action = ? AND changed_at >= ?
+  `).bind(userId, action, monthStart).all();
+
+  const count = Number((results?.[0] as any)?.count || 0);
+  const allowed = count < maxChanges;
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+  return {
+    allowed,
+    remaining: Math.max(0, maxChanges - count),
+    resetsAt: nextMonth.toISOString()
+  };
+}
+
+async function recordChange(db: D1Database, userId: string, action: string) {
+  await db.prepare(`
+    INSERT INTO profile_change_log (id, user_id, action, changed_at)
+    VALUES (?, ?, ?, ?)
+  `).bind(crypto.randomUUID(), userId, action, new Date().toISOString()).run();
+}
+
 async function executeAction(env: Env, action: string, params: any): Promise<unknown> {
   const db = env.pilotrecognition_profiles;
 
@@ -158,7 +198,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           phone, address, date_of_birth, nationality,
           current_flight_hours, total_flight_hours, mentorship_hours,
           foundation_progress, overall_recognition_score, current_level,
-          current_occupation, license_id, country_of_license, ratings, pilot_id,
+          current_occupation, license_id, license_number, country_of_license, ratings, pilot_id,
           enrolled_programs, app_access, is_enrolled_in_foundational,
           recognition_tier, subscription_tier, terms_accepted_at,
           data_controller_agreement_accepted, data_controller_agreement_accepted_at,
@@ -166,9 +206,9 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           license_types, type_ratings, type_rating_input, elp_level, medical_class,
           employment_status, current_job, career_goal, other_licence, bio,
           linkedin_url, instagram_url, domicile, is_visitor,
-          hours_whole, hours_minutes, origin_jurisdiction,
+          hours_whole, hours_minutes, origin_jurisdiction, logbook_sync_valid, referral_code,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         id,
         data.auth0_id || '',
@@ -194,6 +234,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.current_level || 'Foundation',
         data.current_occupation || null,
         data.license_id || null,
+        data.license_number || null,
         data.country_of_license || null,
         data.ratings ? JSON.stringify(data.ratings) : null,
         data.pilot_id || null,
@@ -227,10 +268,62 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.hours_whole || null,
         data.hours_minutes || null,
         data.origin_jurisdiction || null,
+        data.logbook_sync_valid ? 1 : 0,
+        data.referral_code || generateReferralCode(id),
         now,
         now
       ).run();
-      return { id, ...data, created_at: now, updated_at: now };
+
+      // If user was referred, track it
+      if (data.referred_by) {
+        await db.prepare(`
+          INSERT INTO referral_uses (id, referral_code, referrer_id, referred_id, referred_email, status, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, 'pending', ?, ?)
+        `).bind(
+          crypto.randomUUID(),
+          data.referred_by,
+          data.referrer_id || '',
+          id,
+          data.email || '',
+          now,
+          now
+        ).run();
+      }
+
+      // Create Dodo discount code for this user's referrals
+      const referralCode = data.referral_code || generateReferralCode(id);
+      const dodoApiKey = (env as any).DODO_API_KEY;
+      if (dodoApiKey) {
+        try {
+          const dodoBaseUrl = (env as any).DODO_ENV === 'test' ? 'https://test.dodopayments.com' : 'https://live.dodopayments.com';
+          const discountRes = await fetch(`${dodoBaseUrl}/v1/discounts`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${dodoApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: `Referral - ${data.display_name || data.name || data.email || id.slice(-8)}`,
+              code: referralCode,
+              amount: 20,
+              type: 'percentage',
+              usage_limit: 50,
+              preserve_on_plan_change: true,
+              restricted_to: [(env as any).DODO_PRODUCT_ID_RECOGNITION_PLUS].filter(Boolean),
+            }),
+          });
+          if (!discountRes.ok) {
+            const errText = await discountRes.text().catch(() => 'unknown');
+            console.error('[Dodo Discount] failed:', discountRes.status, errText);
+          } else {
+            console.log('[Dodo Discount] created:', referralCode);
+          }
+        } catch (err: any) {
+          console.error('[Dodo Discount] error:', err.message);
+        }
+      }
+
+      return { id, ...data, referral_code: referralCode, created_at: now, updated_at: now };
     }
 
     case 'upsertProfile': {
@@ -261,6 +354,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         bio: 'bio', linkedin_url: 'linkedin_url', instagram_url: 'instagram_url', domicile: 'domicile',
         is_visitor: 'is_visitor', hours_whole: 'hours_whole',
         hours_minutes: 'hours_minutes', origin_jurisdiction: 'origin_jurisdiction',
+        logbook_sync_valid: 'logbook_sync_valid',
       };
       // Build onboarding metadata from fields not in fieldMap
       const onboardingMeta: Record<string, any> = {};
@@ -297,8 +391,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       // Create
       const newId = crypto.randomUUID();
       await db.prepare(`
-        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, profile_image_url, profile_image_public_id, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, bio, linkedin_url, instagram_url, domicile, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, app_access, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO profiles (id, auth0_id, email, full_name, display_name, first_name, last_name, role, status, profile_image_url, profile_image_public_id, date_of_birth, nationality, current_occupation, total_flight_hours, current_flight_hours, ratings, license_id, country_of_license, recognition_tier, subscription_tier, terms_accepted_at, data_controller_agreement_accepted, data_controller_agreement_accepted_at, license_type, pilot_stage, license_issuing_authority, aircraft_types, aircraft_category, license_types, type_ratings, type_rating_input, elp_level, medical_class, employment_status, current_job, career_goal, other_licence, bio, linkedin_url, instagram_url, domicile, is_visitor, hours_whole, hours_minutes, origin_jurisdiction, logbook_sync_valid, app_access, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         newId, auth0Id, data.email || '', data.name || null, data.display_name || null,
         data.first_name || null, data.last_name || null, data.role || 'pilot', data.status || 'active',
@@ -333,6 +427,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.hours_whole || null,
         data.hours_minutes || null,
         data.origin_jurisdiction || null,
+        data.logbook_sync_valid ? 1 : 0,
         Object.keys(onboardingMeta).length > 0 ? JSON.stringify(onboardingMeta) : null,
         now, now
       ).run();
@@ -342,6 +437,11 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
     case 'updateProfile': {
       const { id, ...updates } = params || {};
       if (!id) throw new Error('Profile id required');
+
+      const rateLimit = await checkRateLimit(db, id, 'updateProfile', 2);
+      if (!rateLimit.allowed) {
+        throw new Error(`Profile update limit reached. ${rateLimit.remaining} changes remaining. Resets on ${new Date(rateLimit.resetsAt).toLocaleDateString()}.`);
+      }
 
       const setClauses: string[] = [];
       const values: any[] = [];
@@ -359,7 +459,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         'aircraft_category', 'license_types', 'type_ratings', 'type_rating_input',
         'elp_level', 'medical_class', 'employment_status', 'current_job',
         'career_goal', 'other_licence', 'bio', 'linkedin_url', 'instagram_url', 'domicile', 'is_visitor',
-        'hours_whole', 'hours_minutes', 'origin_jurisdiction',
+        'hours_whole', 'hours_minutes', 'origin_jurisdiction', 'logbook_sync_valid',
       ];
 
       for (const field of allowedFields) {
@@ -379,6 +479,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       await db.prepare(`UPDATE profiles SET ${setClauses.join(', ')} WHERE id = ?`)
         .bind(...values)
         .run();
+
+      await recordChange(db, id, 'updateProfile');
 
       return { success: true, updated_at: now };
     }
@@ -480,17 +582,24 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
       const profileId = profile.id;
 
-      const [{ results: fhResults }, { results: badgeResults }, { results: receiptResults }] = await Promise.all([
+      const [{ results: fhResults }, { results: badgeResults }, { results: receiptResults }, { results: credentialResults }, { results: licensureResults }] = await Promise.all([
         db.prepare('SELECT * FROM flight_hours WHERE user_id = ?').bind(profileId).all(),
         db.prepare('SELECT * FROM mentorship_badges WHERE user_id = ? ORDER BY earned_at DESC').bind(profileId).all(),
         db.prepare('SELECT * FROM verification_receipts WHERE user_id = ? ORDER BY updated_at DESC').bind(profileId).all(),
+        db.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(profileId).all(),
+        db.prepare('SELECT * FROM pilot_licensure_experience WHERE user_id = ?').bind(profileId).all(),
       ]);
+
+      const licensure = (licensureResults?.[0] || null) as Record<string, unknown> | null;
+      const parsedLicensure = licensure?.license_data ? JSON.parse(licensure.license_data as string) : null;
 
       return {
         profile,
         flight_hours: fhResults?.[0] || null,
         badges: badgeResults || [],
         verification_receipts: receiptResults || [],
+        credentials: credentialResults || [],
+        licensure: parsedLicensure,
       };
     }
 
@@ -531,6 +640,12 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       const data = params || {};
       const userId = data.user_id;
       if (!userId) throw new Error('user_id required');
+
+      const rateLimit = await checkRateLimit(db, userId, 'saveLicensure', 2);
+      if (!rateLimit.allowed) {
+        throw new Error(`Licensure save limit reached. ${rateLimit.remaining} changes remaining. Resets on ${new Date(rateLimit.resetsAt).toLocaleDateString()}.`);
+      }
+
       const { results } = await db.prepare('SELECT id FROM pilot_licensure_experience WHERE user_id = ?').bind(userId).all();
       const existingId = results?.[0]?.id as string | undefined;
       const now = new Date().toISOString();
@@ -541,6 +656,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         await db.prepare('INSERT INTO pilot_licensure_experience (id, user_id, license_data, created_at, updated_at) VALUES (?, ?, ?, ?, ?)')
           .bind(crypto.randomUUID(), userId, JSON.stringify(data), now, now).run();
       }
+      await recordChange(db, userId, 'saveLicensure');
       return { success: true };
     }
 
@@ -584,7 +700,39 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
     }
 
     case 'generateReferral': {
-      return { success: true, referral_code: 'REF' + Math.random().toString(36).slice(2, 8).toUpperCase() };
+      const userId = params?.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const code = generateReferralCode(userId);
+      await db.prepare('UPDATE profiles SET referral_code = ? WHERE id = ?').bind(code, userId).run();
+      return { success: true, referral_code: code };
+    }
+
+    case 'getReferralStats': {
+      const userId = params?.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const { results } = await db.prepare(`
+        SELECT id, referral_code, referred_id, referred_email, status, reward_amount, reward_type, created_at
+        FROM referral_uses WHERE referrer_id = ? ORDER BY created_at DESC
+      `).bind(userId).all();
+      const profile = await db.prepare('SELECT referral_code FROM profiles WHERE id = ?').bind(userId).first() as Record<string, unknown> | undefined;
+      return {
+        referral_code: profile?.referral_code || null,
+        total_referrals: (results || []).length,
+        pending: (results || []).filter((r: any) => r.status === 'pending').length,
+        claimed: (results || []).filter((r: any) => r.status === 'claimed').length,
+        paid: (results || []).filter((r: any) => r.status === 'paid').length,
+        referrals: results || [],
+      };
+    }
+
+    case 'updateReferralStatus': {
+      const { referral_id, status, notes } = params || {};
+      if (!referral_id || !status) throw new Error('Missing referral_id or status');
+      const now = new Date().toISOString();
+      await db.prepare(`
+        UPDATE referral_uses SET status = ?, notes = ?, updated_at = ? WHERE id = ?
+      `).bind(status, notes || null, now, referral_id).run();
+      return { success: true };
     }
 
     case 'mfaBackupCodes': {
@@ -646,11 +794,21 @@ async function handleDodoWebhook(request: Request, env: Env): Promise<Response> 
   if (body.status === 'succeeded' || body.payment_status === 'succeeded') {
     const userId = body.customer_id || body.metadata?.user_id;
     const tier = body.metadata?.tier || 'recognition_plus';
+    const discountCode = body.discount?.code || body.discount_code;
 
     if (userId) {
       await db.prepare('UPDATE profiles SET subscription_tier = ? WHERE id = ?')
         .bind(tier, userId)
         .run();
+
+      // If a referral discount code was used, mark it as claimed
+      if (discountCode && discountCode.startsWith('PR-')) {
+        const now = new Date().toISOString();
+        await db.prepare(`
+          UPDATE referral_uses SET status = 'claimed', updated_at = ?
+          WHERE referral_code = ? AND referred_id = ? AND status = 'pending'
+        `).bind(now, discountCode, userId).run();
+      }
 
       return jsonResponse({ success: true, action: 'tier_upgraded', userId, tier });
     }
@@ -701,18 +859,71 @@ async function handleEmailSend(request: Request, _env: Env): Promise<Response> {
 
 async function handleCheckout(request: Request, env: Env, tier: string): Promise<Response> {
   const body = await request.json().catch(() => ({}));
-  const { user_id, return_url } = body;
+  const { user_id, email, name, return_url } = body;
 
   if (!user_id) {
     return jsonResponse({ error: 'user_id required' }, 400);
   }
 
-  // In production, this calls Dodo Payments API to create a checkout session
-  // For now, return a mock checkout URL
-  return jsonResponse({
-    checkout_url: `https://checkout.dodopayments.com/buy/test-product?user_id=${user_id}&tier=${tier}`,
-    status: 'ready',
-  });
+  // Dodo Payments API configuration
+  const dodoApiKey = (env as any).DODO_API_KEY;
+  const dodoProductId = (env as any).DODO_PRODUCT_ID_RECOGNITION_PLUS;
+  const dodoBaseUrl = (env as any).DODO_ENV === 'test' ? 'https://test.dodopayments.com' : 'https://live.dodopayments.com';
+
+  if (!dodoApiKey || !dodoProductId) {
+    return jsonResponse({ error: 'Dodo Payments not configured' }, 500);
+  }
+
+  const origin = request.headers.get('Origin') || 'https://pilotrecognition.com';
+  const successUrl = return_url || `${origin}/platform?tab=verification&checkout=success`;
+  const cancelUrl = `${origin}/platform?tab=verification&checkout=cancelled`;
+
+  try {
+    const checkoutRes = await fetch(`${dodoBaseUrl}/checkouts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${dodoApiKey}`,
+      },
+      body: JSON.stringify({
+        product_cart: [{ product_id: dodoProductId, quantity: 1 }],
+        customer: email ? { email, name: name || undefined } : undefined,
+        return_url: successUrl,
+        cancel_url: cancelUrl,
+        metadata: { user_id, tier },
+        feature_flags: {
+          allow_customer_editing_email: true,
+          allow_customer_editing_name: true,
+        },
+      }),
+    });
+
+    const checkoutData = await checkoutRes.json().catch(() => ({}));
+
+    if (!checkoutRes.ok) {
+      console.error('[Dodo Checkout] error:', checkoutData);
+      return jsonResponse({ error: checkoutData.message || 'Checkout creation failed' }, checkoutRes.status);
+    }
+
+    return jsonResponse({
+      checkout_url: checkoutData.checkout_url,
+      session_id: checkoutData.session_id,
+      status: 'ready',
+    });
+  } catch (err: any) {
+    console.error('[Dodo Checkout] exception:', err.message);
+    return jsonResponse({ error: err.message || 'Checkout creation failed' }, 500);
+  }
+}
+
+function generateReferralCode(userId: string): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = 'PR-';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  result += '-' + userId.slice(-4).toUpperCase();
+  return result;
 }
 
 function jsonResponse(data: unknown, status = 200): Response {

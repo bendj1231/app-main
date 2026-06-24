@@ -620,7 +620,7 @@ const AccessPlatformCard: React.FC<{
                                 )}
                                 <button
                                     onClick={() => onNavigate('flight-deck-login')}
-                                    className="px-6 py-3 bg-transparent hover:bg-white/5 border border-white/30 hover:border-white/50 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
+                                    className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/40 hover:border-white/60 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
                                 >
                                     Sign In
                                 </button>
@@ -656,7 +656,7 @@ const AccessPlatformCard: React.FC<{
                                     {slide.rightTitle}<span className="text-red-500">{slide.rightTitleHighlight}</span>
                                 </h2>
                                 <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
-                                    {slide.rightDescription} <span className="text-red-500">{slide.rightHighlightText}</span>
+                                    {slide.rightDescription} <span className="text-red-400">{slide.rightHighlightText}</span>
                                 </p>
                             </motion.div>
                         </AnimatePresence>
@@ -1470,7 +1470,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             href="https://www.tiktok.com/@pilotrecognition?is_from_webapp=1&sender_device=pc"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="TikTok"
                         >
                             <TikTokIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
@@ -1479,7 +1479,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             href="https://youtube.com/@pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="YouTube"
                         >
                             <YouTubeIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
@@ -1488,7 +1488,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             href="https://instagram.com/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="Instagram"
                         >
                             <InstagramIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
@@ -1497,7 +1497,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             href="https://facebook.com/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="Facebook"
                         >
                             <FacebookIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
@@ -1506,7 +1506,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             href="https://linkedin.com/company/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="LinkedIn"
                         >
                             <LinkedInIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
@@ -2057,7 +2057,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     src={currentImage || displayImage}
                                     alt={card.title}
                                     style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
-                                    className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
+                                    className={`w-full h-full object-cover rounded-xl ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
                                     onError={(e) => {
                                         console.error('Image load error:', card.id);
                                     }}
@@ -2084,7 +2084,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         {currentImageIndex === 0 ? 'NOW OPEN' : currentImageIndex === 1 ? 'DISCOVER' : ''}
                     </div>
                 ) : (card.id === 'pathways' || card.id === 'pilot-recognition' || card.id === 'programs') ? (
-                    <div className={`absolute top-4 right-4 px-3 py-1 text-xs font-bold uppercase tracking-wider ${card.isLightMode ? 'bg-slate-200 text-slate-700' : 'bg-[#ff9f1c] text-black'}`}>
+                    <div className={`absolute top-4 right-4 px-4 py-1.5 text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'bg-slate-200 text-slate-700' : 'bg-[#ff9f1c] text-black'}`}>
                         NEW
                     </div>
                 ) : (isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
