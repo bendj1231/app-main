@@ -40,3 +40,9 @@ functions/.env
 
 aeron-analysis/
 gcp-oauth.keys.json
+
+# Wrangler local state (SQLite, etc.)
+**/.wrangler/state/
+
+# TypeScript build info
+.tsbuildinfo
