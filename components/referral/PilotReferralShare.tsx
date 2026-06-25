@@ -1,44 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
-import { supabase } from '../../shared/lib/supabase';
-import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download } from 'lucide-react';
+import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign } from 'lucide-react';
 
 interface PilotReferralShareProps {
   userId?: string;
 }
 
 interface ReferralStats {
-  clicks: number;
   signups: number;
+  subscribed: number;
   earned: number;
 }
 
 export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }) => {
+  const { callApi } = useWorkerAuth();
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralLink, setReferralLink] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<ReferralStats>({ clicks: 0, signups: 0, earned: 0 });
+  const [stats, setStats] = useState<ReferralStats>({ signups: 0, subscribed: 0, earned: 0 });
 
   useEffect(() => {
     loadReferralCode();
   }, [userId]);
 
   const loadReferralCode = async () => {
-    if (!userId) return;
+    if (!userId) { setLoading(false); return; }
 
     try {
       setLoading(true);
-      const { data } = await supabase
-        .from('profiles')
-        .select('referral_code, referral_earnings')
-        .eq('id', userId)
-        .single();
+      // Read profile via Worker API
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { id: userId },
+        limit: 1,
+      });
+      const profile = rows?.[0];
+      const code = profile?.['referral_code'] as string | null;
 
-      if (data?.referral_code) {
-        setReferralCode(data.referral_code);
-        setReferralLink(`${window.location.origin}/ref/${data.referral_code}`);
-        await loadStats(data.referral_code, data.referral_earnings ?? 0);
+      if (code) {
+        setReferralCode(code);
+        setReferralLink(`${window.location.origin}/ref/${code}`);
+        await loadStats(code);
       }
     } catch (error) {
       console.error('Error loading referral code:', error);
@@ -47,33 +51,31 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
     }
   };
 
-  const loadStats = async (code: string, earnings: number) => {
+  const loadStats = async (code: string) => {
     try {
-      // Get partner record for this code (if exists) to query conversions
-      const { data: partner } = await supabase
-        .from('referral_partners')
-        .select('id, total_referrals, pending_payouts, total_payouts')
-        .eq('referral_code', code)
-        .maybeSingle();
+      // Count how many people signed up with this code
+      const signupRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { referred_by_code: code },
+      });
+      const signups = signupRows?.length ?? 0;
 
-      if (partner) {
-        const { data: conversions } = await supabase
-          .from('referral_conversions')
-          .select('status, commission_status, commission_amount')
-          .eq('partner_id', partner.id);
+      // Count how many converted to Recognition+ (subscribed)
+      const convRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'referral_conversions',
+        operation: 'select',
+        where: { referral_code: code, status: 'subscribed' },
+      });
+      const subscribed = convRows?.length ?? 0;
 
-        const clicks = partner.total_referrals ?? 0;
-        const signups = conversions?.filter(c => c.status === 'signed_up' || c.status === 'subscribed').length ?? 0;
-        const earned = (partner.total_payouts ?? 0) + (partner.pending_payouts ?? 0);
-        setStats({ clicks, signups, earned });
-      } else {
-        // Pilot has a referral_code but no partner record yet — use referred_by counts
-        const { count } = await supabase
-          .from('profiles')
-          .select('id', { count: 'exact', head: true })
-          .eq('referred_by_code', code);
-        setStats({ clicks: count ?? 0, signups: count ?? 0, earned: earnings });
-      }
+      // Sum earned commission
+      const earned = convRows?.reduce((sum, r) => {
+        const amt = (r['commission_amount'] as number) ?? 0;
+        return sum + amt;
+      }, 0) ?? 0;
+
+      setStats({ signups, subscribed, earned });
     } catch (e) {
       console.error('Error loading referral stats:', e);
     }
@@ -88,13 +90,17 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
   };
 
   const shareViaEmail = () => {
-    const subject = encodeURIComponent('Join PilotRecognition.com - Exclusive Invitation');
-    const body = encodeURIComponent(`Hi,\n\nI'm inviting you to join PilotRecognition.com, the leading platform for pilot career advancement.\n\nUse my referral link to sign up: ${referralLink}\n\nThis platform helps pilots connect with airline opportunities and advance their careers.\n\nBest regards`);
-    safeRedirect(`mailto:?subject=${subject}&body=${body}`);
+    const subject = encodeURIComponent('Join PilotRecognition.com — Pilot Career Advancement');
+    const body = encodeURIComponent(
+      `Hi,\n\nI'm inviting you to join PilotRecognition.com, the platform for pilot career advancement and verified credentials.\n\nUse my referral link: ${referralLink}\n\nWhen you subscribe to Recognition+, I earn $20 — and you get priority pathway access.\n\nBest regards`
+    );
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
   const shareViaTwitter = () => {
-    const text = encodeURIComponent(`🚀 Join PilotRecognition.com - The platform for pilot career advancement. Sign up through my referral link: ${referralLink} #Aviation #PilotCareers`);
+    const text = encodeURIComponent(
+      `🚀 Join PilotRecognition.com — the platform for pilot career advancement. Use my referral link and subscribe to Recognition+ for priority pathway access: ${referralLink} #Aviation #PilotCareers`
+    );
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
@@ -110,7 +116,7 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
     return (
       <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
         <div className="flex items-center justify-center py-8">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
     );
@@ -119,7 +125,7 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
   if (!referralCode) {
     return (
       <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
-        <p className="text-slate-400 text-center">No referral code assigned yet. Contact support to get your referral code.</p>
+        <p className="text-slate-400 text-center">No referral code assigned yet.</p>
       </div>
     );
   }
@@ -130,12 +136,23 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
       <div>
         <h3 className="text-white font-semibold flex items-center gap-2">
           <Share2 className="w-5 h-5 text-emerald-400" />
-          Share Your Referral Link
+          Refer & Earn
         </h3>
         <p className="text-slate-400 text-sm mt-1">
-          Share your unique referral link and earn rewards when pilots sign up through it
+          Share your link. Earn <strong className="text-emerald-400">$20</strong> for every pilot who subscribes to Recognition+.
         </p>
       </div>
+
+      {/* Earnings Badge */}
+      {stats.earned > 0 && (
+        <div className="bg-emerald-600/20 border border-emerald-500/40 rounded-xl p-4 flex items-center gap-3">
+          <DollarSign className="w-6 h-6 text-emerald-400 shrink-0" />
+          <div>
+            <p className="text-emerald-300 font-bold text-lg">${stats.earned.toFixed(2)}</p>
+            <p className="text-emerald-400/70 text-xs">Total referral earnings</p>
+          </div>
+        </div>
+      )}
 
       {/* Referral Link Display */}
       <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4">
@@ -221,12 +238,12 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-700">
         <div className="text-center">
-          <p className="text-2xl font-bold text-white">{stats.clicks}</p>
-          <p className="text-slate-400 text-xs">Referrals</p>
+          <p className="text-2xl font-bold text-white">{stats.signups}</p>
+          <p className="text-slate-400 text-xs">Signed Up</p>
         </div>
         <div className="text-center">
-          <p className="text-2xl font-bold text-white">{stats.signups}</p>
-          <p className="text-slate-400 text-xs">Sign-ups</p>
+          <p className="text-2xl font-bold text-emerald-400">{stats.subscribed}</p>
+          <p className="text-slate-400 text-xs">Subscribed</p>
         </div>
         <div className="text-center">
           <p className="text-2xl font-bold text-emerald-400">${stats.earned.toFixed(0)}</p>

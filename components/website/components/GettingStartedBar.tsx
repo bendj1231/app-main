@@ -85,11 +85,14 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
               </p>
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-1.5 h-1.5 w-32 rounded-full bg-white/20 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-red-500 transition-all duration-500"
-              style={{ width: `${(completedCount / total) * 100}%` }}
-            />
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="text-[10px] font-bold text-white/50">{Math.round((completedCount / total) * 100)}%</span>
+            <div className="flex items-center gap-1.5 h-2 w-32 rounded-full bg-white/20 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-red-500 transition-all duration-500"
+                style={{ width: `${(completedCount / total) * 100}%` }}
+              />
+            </div>
           </div>
         </div>
 
@@ -98,54 +101,61 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
             const Icon = s.icon;
             const isHighlight = s.highlight;
             return (
-              <button
+              <div
                 key={s.step}
-                onClick={() => onStepClick(s.tab)}
-                className={`group relative flex flex-col items-start justify-between min-w-[140px] flex-1 px-4 py-3.5 rounded-xl text-left transition-all duration-200 ${
-                  s.done
-                    ? 'bg-red-500 hover:bg-red-600'
-                    : isHighlight
-                    ? 'bg-red-50 hover:bg-red-100/80'
-                    : 'bg-white/70 hover:bg-white'
+                className={`flex-1 min-w-[140px] rounded-lg ${
+                  isHighlight ? 'p-[1px]' : 'p-0'
                 }`}
                 style={{
-                  border: `1px solid ${
-                    s.done ? 'rgba(239,68,68,1)' : isHighlight ? 'rgba(239,68,68,0.15)' : 'rgba(255,255,255,0.25)'
-                  }`,
+                  background: isHighlight ? 'rgba(239,68,68,0.45)' : 'transparent',
                 }}
               >
-                <div className="flex items-center justify-between w-full mb-2">
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      s.done ? 'bg-white' : isHighlight ? 'bg-red-500' : 'bg-slate-200'
-                    }`}
-                  >
-                    {s.done ? (
-                      <CheckCircle size={13} className="text-red-500" strokeWidth={2.5} />
-                    ) : (
-                      <Icon size={13} className={isHighlight ? 'text-white' : 'text-slate-600'} />
+                <button
+                  onClick={() => onStepClick(s.tab)}
+                  className={`group relative w-full h-full flex flex-col items-start justify-between px-4 py-3.5 rounded-[7px] text-left transition-all duration-200 ${
+                    s.done
+                      ? 'bg-red-500 hover:bg-red-600'
+                      : isHighlight
+                      ? 'bg-red-50 hover:bg-red-100/80'
+                      : 'bg-white/70 hover:bg-white'
+                  }`}
+                  style={{
+                    border: s.done ? '1px solid rgba(239,68,68,1)' : '1px solid rgba(255,255,255,0.25)',
+                  }}
+                >
+                  <div className="flex items-center justify-between w-full mb-2">
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                        s.done ? 'bg-white' : isHighlight ? 'bg-red-500' : 'bg-slate-200'
+                      }`}
+                    >
+                      {s.done ? (
+                        <CheckCircle size={13} className="text-red-500" strokeWidth={2.5} />
+                      ) : (
+                        <Icon size={13} className={isHighlight ? 'text-white' : 'text-slate-600'} />
+                      )}
+                    </div>
+                    {s.done && (
+                      <span className="text-[9px] font-black uppercase tracking-wider text-white">Done</span>
                     )}
                   </div>
-                  {s.done && (
-                    <span className="text-[9px] font-black uppercase tracking-wider text-white">Done</span>
-                  )}
-                </div>
 
-                <div>
-                  <p
-                    className={`text-[11px] font-bold leading-tight ${
-                      s.done ? 'text-white' : isHighlight ? 'text-red-600' : 'text-slate-900'
-                    }`}
-                  >
-                    {s.label}
-                  </p>
-                  {s.sublabel && (
-                    <p className={`text-[9px] mt-0.5 leading-snug ${s.done ? 'text-white/80' : 'text-slate-500'}`}>
-                      {s.sublabel}
+                  <div>
+                    <p
+                      className={`text-[11px] font-bold leading-tight ${
+                        s.done ? 'text-white' : isHighlight ? 'text-red-600' : 'text-slate-900'
+                      }`}
+                    >
+                      {s.label}
                     </p>
-                  )}
-                </div>
-              </button>
+                    {s.sublabel && (
+                      <p className={`text-[9px] mt-0.5 leading-snug ${s.done ? 'text-white/80' : 'text-slate-500'}`}>
+                        {s.sublabel}
+                      </p>
+                    )}
+                  </div>
+                </button>
+              </div>
             );
           })}
         </div>

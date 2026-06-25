@@ -49,17 +49,17 @@ export default function GetStartedPage() {
   useEffect(() => {
     // Try Auth0 name first, then Supabase profile
     if (auth0User?.name) {
-      setUserName(auth0User.name.split(' ')[0]);
+      setUserName(auth0User.name.split(' ')[0].trim());
     } else if (auth0User?.given_name) {
-      setUserName(auth0User.given_name);
+      setUserName(auth0User.given_name.trim());
     } else if (auth0User?.nickname) {
-      setUserName(auth0User.nickname);
+      setUserName(auth0User.nickname.trim());
     } else {
       // Fallback to Supabase profile
       supabase.auth.getUser().then(({ data }) => {
         const meta = data.user?.user_metadata;
         const name = meta?.full_name || meta?.first_name || meta?.display_name;
-        if (name) setUserName(name.split(' ')[0]);
+        if (name) setUserName(name.split(' ')[0].trim());
       });
     }
   }, [auth0User]);
@@ -143,7 +143,7 @@ export default function GetStartedPage() {
                 variants={fadeUp}
                 custom={1}
               >
-                <span className="text-gray-900">Welcome {userName}, to </span>
+                <span className="text-gray-900">Welcome {userName.trim()}, to{' '}</span>
                 <span style={{ color: '#dc2626' }}>Recognition+</span>
               </motion.h1>
 
@@ -163,12 +163,12 @@ export default function GetStartedPage() {
                 custom={3}
               >
                 <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(226,232,240,1) 0%, rgba(241,245,249,1) 100%)' }}>
-                  <Plane size={48} className="text-gray-300" />
+                  <Plane size={40} className="text-gray-300" />
                 </div>
               </motion.div>
 
               {/* Steps */}
-              <motion.div className="grid grid-cols-2 gap-3 mb-6 text-left" variants={staggerContainer}>
+              <motion.div className="grid grid-cols-2 gap-4 mb-6 text-left" variants={staggerContainer}>
                 {steps.map((s, i) => {
                   const Card = s.url ? motion.a : motion.div;
                   return (
@@ -177,15 +177,12 @@ export default function GetStartedPage() {
                       href={s.url}
                       target={s.url ? '_blank' : undefined}
                       rel={s.url ? 'noopener noreferrer' : undefined}
-                      className="flex items-start gap-3 p-3 rounded-xl transition-all hover:brightness-95 cursor-pointer"
+                      className="flex flex-col p-4 rounded-xl transition-all hover:brightness-95 cursor-pointer"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}
                       variants={fadeUp}
                       custom={4 + i}
                     >
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(0,0,0,0.05)' }}>
-                        {s.icon}
-                      </div>
-                      <div className="min-w-0">
+                      <div>
                         <p className="text-xs font-bold text-gray-900">{s.title}</p>
                         <p className="text-[10px] text-gray-500 leading-snug">{s.desc}</p>
                         {s.url && (
@@ -195,7 +192,7 @@ export default function GetStartedPage() {
                               const parts = domain.split(/(recognition|pathways|shortage)/);
                               return parts.map((part, idx) =>
                                 ['recognition', 'pathways', 'shortage'].includes(part) ? (
-                                  <span key={idx} className="text-red-600">{part}</span>
+                                  <span key={idx} className="text-slate-700">{part}</span>
                                 ) : (
                                   <span key={idx}>{part}</span>
                                 )
@@ -217,7 +214,7 @@ export default function GetStartedPage() {
               >
                 <motion.button
                   onClick={() => setStep('provider')}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-[11px] rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 leading-none"
                   style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
@@ -248,14 +245,14 @@ export default function GetStartedPage() {
               <div className="flex items-center gap-2 mb-6">
                 <button
                   onClick={() => setStep('welcome')}
-                  className="text-[10px] font-bold text-gray-400 hover:text-gray-600 uppercase tracking-wider transition-colors"
+                  className="text-[10px] font-bold text-gray-400 hover:text-gray-600 uppercase tracking-wider transition-colors leading-none"
                 >
                   ← Back
                 </button>
-                <div className="flex-1 h-[2px] rounded-full" style={{ background: 'rgba(0,0,0,0.08)' }}>
-                  <div className="h-full rounded-full" style={{ width: '33%', background: 'linear-gradient(90deg, #dc2626, #ef4444)' }} />
+                <div className="flex-1 h-[2px] rounded-full self-center" style={{ background: 'rgba(0,0,0,0.08)' }}>
+                  <div className="h-[2px] rounded-full" style={{ width: '33%', background: 'linear-gradient(90deg, #dc2626, #ef4444)' }} />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Step 2 of 3</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider leading-none">Step 2 of 3</span>
               </div>
 
               <motion.div
@@ -305,8 +302,8 @@ export default function GetStartedPage() {
                     'ATO Name & Location (for training records)',
                     'Signed Consent Form',
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-[5px]" />
                       <p className="text-xs text-gray-600">{item}</p>
                     </div>
                   ))}
@@ -322,22 +319,22 @@ export default function GetStartedPage() {
                 transition={{ delay: 0.25 }}
               >
                 <p className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wider">What to expect</p>
-                <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
+                <p className="text-[10px] text-gray-700 leading-relaxed mb-2">
                   APC will contact your issuing aviation authority and your named ATO to verify your credentials, flight hours, and training records. A formal third-party authorization with your signed consent is required for the ATO to release records.
                 </p>
-                <p className="text-[10px] text-gray-500 leading-relaxed mb-2">
+                <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
                   <span className="font-semibold text-gray-700">Note on archived records:</span> Many ATOs archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
                 </p>
-                <p className="text-[10px] text-gray-500 leading-relaxed">
+                <p className="text-[10px] text-gray-600 leading-relaxed">
                   <span className="font-semibold text-gray-700">ATO internal forms:</span> Some ATOs may reject our consent template and require you to sign their specific institutional release form instead. If this happens, APC will notify you immediately.
                 </p>
               </motion.div>
 
               {/* Action buttons */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center gap-4">
                 <motion.button
                   onClick={() => navigate('/get-started/verify-apc')}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-[11px] rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 leading-none"
                   style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -350,7 +347,7 @@ export default function GetStartedPage() {
 
                 <motion.button
                   onClick={() => setStep('copilot')}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-500 transition-all hover:text-gray-900 hover:bg-black/5"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-[11px] rounded-full text-xs font-bold tracking-wider text-gray-500 transition-all hover:text-gray-900 hover:bg-black/5 underline underline-offset-2 decoration-gray-300 hover:decoration-gray-600 leading-none"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 }}

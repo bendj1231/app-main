@@ -81,6 +81,11 @@ const BecomeMemberPage = lazy(() =>
     default: m.BecomeMemberPage,
   }))
 );
+const RecognitionProfileCreatePage = lazy(() =>
+  import('@/components/website/components/RecognitionProfileCreatePage').then((m) => ({
+    default: m.RecognitionProfileCreatePage,
+  }))
+);
 const DataControllerAgreementPage = lazy(() =>
   import('@/components/website/pages/DataControllerAgreementPage').then((m) => ({
     default: m.DataControllerAgreementPage,
@@ -182,6 +187,9 @@ const BankingFinancePage = lazy(() => import('@/app/banking-finance/page'));
 const CareerToolsPage = lazy(() => import('@/app/career-tools/page'));
 const GetStartedPage = lazy(() => import('@/app/get-started/page'));
 const VerifyApcPage = lazy(() => import('@/app/get-started/verify-apc/page'));
+const AboutVerificationPage = lazy(() => import('@/app/about-verification/page'));
+const ConsentFormPage = lazy(() => import('@/app/consent-form/page'));
+const FlightHoursLogbookPage = lazy(() => import('@/app/logbook-upload/page'));
 const EnrolledFoundationalPage = lazy(() =>
   import('@/components/website/components/programs/EnrolledFoundationalPage').then((m) => ({
     default: m.EnrolledFoundationalPage,
@@ -538,6 +546,7 @@ const AdminEventsPage = lazy(() => import('@/app/admin/events/page'));
 const AdminInvoicesPage = lazy(() => import('@/app/admin/invoices/page'));
 const AdminSettingsPage = lazy(() => import('@/app/admin/settings/page'));
 const AdminVerificationManagementPage = lazy(() => import('@/app/admin/verification-management/page'));
+const AdminApcVerificationsPage = lazy(() => import('@/app/admin/apc-verifications/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
 const PrivacyPolicyPage = lazy(() => import('@/app/privacy-policy/page'));
@@ -954,6 +963,7 @@ export const AppRoutes = () => {
           path="/become-member"
           element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
         />
+        <Route path="/recognition-profile/create" element={<RecognitionProfileCreatePage />} />
         <Route
           path="/terms-of-service"
           element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
@@ -1611,6 +1621,9 @@ export const AppRoutes = () => {
         <Route path="/career-tools" element={<CareerToolsPage />} />
         <Route path="/get-started" element={<GetStartedPage />} />
         <Route path="/get-started/verify-apc" element={<VerifyApcPage />} />
+        <Route path="/about-verification" element={<AboutVerificationPage />} />
+        <Route path="/consent-form" element={<ConsentFormPage />} />
+        <Route path="/flight-hours-logbook" element={<FlightHoursLogbookPage />} />
 
         {/* Blog & Store */}
         <Route path="/blog" element={<BlogPage />} />
@@ -1652,6 +1665,7 @@ export const AppRoutes = () => {
         <Route path="/admin/invoices" element={<AdminInvoicesPage />} />
         <Route path="/admin/settings" element={<AdminSettingsPage />} />
         <Route path="/admin/verification-management" element={<AdminVerificationManagementPage />} />
+        <Route path="/admin/apc-verifications" element={<AdminApcVerificationsPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

@@ -55,8 +55,8 @@ export const VerificationDashboardGrid: React.FC<VerificationDashboardGridProps>
   const recognitionBanner = (feature: string) => (
     <div className="mt-4 rounded-xl p-3 text-center" style={{ background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.25)' }}>
       <p className="text-[10px] font-black text-white/80 leading-relaxed">
-        <span className="text-white">Pilot</span>
-        <span style={{ color: '#dc2626' }}>Recognition+</span> unlocks {feature}.
+        <span className="text-white">Pilot{' '}</span>
+        <span style={{ color: '#dc2626' }}>Recognition+</span>{' '}unlocks {feature}.
       </p>
     </div>
   );
@@ -126,7 +126,7 @@ export const VerificationDashboardGrid: React.FC<VerificationDashboardGridProps>
       {/* Licenses and Ratings Validity */}
       <div className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
         <div className="flex items-center gap-2 mb-4">
-          <Shield size={16} className="text-sky-400" />
+          <Shield size={16} className="text-sky-400 mt-[2px]" />
           <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Licenses and Ratings Validity</span>
         </div>
 
@@ -161,12 +161,12 @@ export const VerificationDashboardGrid: React.FC<VerificationDashboardGridProps>
         )}
 
         {visibleLicense.length === 0 && visibleAircraft.length === 0 && visibleApproach.length === 0 && (
-          <div className="rounded-xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-[11px] font-bold text-white/50">No endorsements or ratings added yet.</p>
-            <p className="text-[10px] text-white/30 mt-1">Complete your advanced profile to add license endorsements, aircraft type ratings, and approach authorizations.</p>
+          <div className="rounded-2xl px-4 pt-4 pb-5 text-center" style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <p className="text-[11px] font-bold text-white/60">No endorsements or ratings added yet.</p>
+            <p className="text-[10px] text-white/80 mt-1">Complete your advanced profile to add license endorsements, aircraft type ratings, and approach authorizations.</p>
             <button
               onClick={() => setTab('advanced-profile')}
-              className="mt-3 px-4 py-2 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+              className="mt-4 mb-1 px-4 py-[9px] rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 leading-none"
               style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
             >
               ADD ENDORSEMENTS
@@ -187,15 +187,15 @@ export const VerificationDashboardGrid: React.FC<VerificationDashboardGridProps>
               <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/80">Maximize Your Visibility</span>
             </div>
             <p className="text-base font-black leading-snug" style={{ color: '#ffffff' }}>
-              Complete your <span style={{ color: '#dc2626' }}>advanced profile</span> to ensure no <span style={{ color: '#dc2626' }}>qualification</span> goes un-noticed while undergoing verification.
+              Complete your <span style={{ color: '#fbbf24' }}>advanced profile</span> to ensure no <span style={{ color: '#fbbf24' }}>qualification</span> goes unnoticed while undergoing verification.
             </p>
           </div>
           <button
             onClick={() => setTab('advanced-profile')}
-            className="px-5 py-2.5 rounded-xl text-xs font-black tracking-wider text-white transition-all hover:brightness-110 flex items-center justify-center gap-2 whitespace-nowrap"
+            className="px-5 py-[11px] rounded-xl text-xs font-black tracking-wider text-white transition-all hover:brightness-110 flex items-center justify-center gap-2 whitespace-nowrap leading-none"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            COMPLETE PROFILE <ArrowRight size={14} />
+            COMPLETE PROFILE <ArrowRight size={14} className="block" />
           </button>
         </div>
       </div>

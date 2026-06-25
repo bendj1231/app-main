@@ -96,7 +96,14 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
         const returnTo = appState?.returnTo || '/become-member?setup=1';
         sessionStorage.setItem('auth0_return_to', returnTo);
         console.log('[Auth0] Stored auth0_return_to:', returnTo);
-        navigate('/auth/callback', { replace: true });
+        const currentPath = window.location.pathname;
+        const alreadyOnCallback = currentPath === '/auth/callback' || currentPath === '/callback';
+        if (!alreadyOnCallback) {
+          console.log('[Auth0] Navigating to /auth/callback');
+          navigate('/auth/callback', { replace: true });
+        } else {
+          console.log('[Auth0] Already on callback route, not navigating');
+        }
       }}
       skipRedirectCallback={
         window.location.pathname === '/auth/logbook/callback' ||

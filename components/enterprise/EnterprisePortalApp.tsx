@@ -9,22 +9,34 @@ import {
   Users, TrendingUp, Star, Globe, Menu, Bell, ExternalLink,
   FileText, Clock, MapPin, DollarSign, Shield, RefreshCw,
   ShieldCheck, UserCheck, UserX, ChevronDown, Download, Video, History,
-  GraduationCap, Activity, Cpu, Package, Lock
+  GraduationCap, Activity, Cpu, Package, Lock, Crown, Ticket
 } from 'lucide-react';
-import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { useEnterprisePortal } from './hooks/useEnterprisePortal';
+import { useAuth0 } from '@auth0/auth0-react';
+import { supabase } from '../../shared/lib/supabase';
 import { InterviewerDashboard } from './InterviewerDashboard';
 import { InterviewHistoryPage } from './InterviewHistoryPage';
 import { FlightSchoolPortal } from './FlightSchoolPortal';
+import { FlightSchoolOnboarding } from './FlightSchoolOnboarding';
+import { CreditBalancePill } from './CreditBalancePill';
+import { AdminVerificationQueue } from './AdminVerificationQueue';
+import { VerificationSubmissionForm } from './VerificationSubmissionForm';
+import { SubscriptionBadge } from './SubscriptionBadge';
+import { SubscriptionManagement } from './SubscriptionManagement';
+import { VoucherManager } from './VoucherManager';
+import { ReferralPayoutAdmin } from './ReferralPayoutAdmin';
+import { ReverificationQueueAdmin } from './ReverificationQueueAdmin';
 import ResumeViewer from './ResumeViewer';
 import { OperatorIntelDashboard } from './OperatorIntelDashboard';
 
 const LOGO = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/upload`;
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const FIREBASE_BASE = (import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL as string;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin' | 'interviews' | 'interview-history' | 'flight-school' | 'sop';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin' | 'interviews' | 'interview-history' | 'flight-school' | 'sop' | 'verification' | 'verification-queue' | 'subscription' | 'vouchers' | 'referral-payouts' | 'reverification-queue';
 
 // ─── 72 Airlines List ────────────────────────────────────────────────────────
 const AIRLINE_LIST = [
@@ -144,11 +156,15 @@ const NAV = [
   { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Account Settings', icon: Settings },
   { id: 'support', label: 'Contact Support', icon: HelpCircle },
+  { id: 'verification', label: 'Verification', icon: ShieldCheck },
+  { id: 'subscription', label: 'Subscription', icon: Crown },
+  { id: 'vouchers', label: 'Vouchers', icon: Ticket },
 ] as const;
 
 const FLIGHT_SCHOOL_NAV = { id: 'flight-school', label: 'Flight School', icon: GraduationCap };
 const ADMIN_NAV = { id: 'admin', label: 'Enterprise Admin', icon: ShieldCheck };
 const SOP_NAV = { id: 'sop', label: 'Internal SOP', icon: Lock };
+const VERIFICATION_QUEUE_NAV = { id: 'verification-queue', label: 'Verification Queue', icon: ShieldCheck };
 
 function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager, isFlightSchool, isSuperAdmin }: {
   page: Page; setPage: (p: Page) => void;
@@ -245,12 +261,47 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
               <Lock className="w-4 h-4 shrink-0" />
               {!collapsed && <span>Internal SOP</span>}
             </button>
+            <button
+              onClick={() => setPage('verification-queue')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === 'verification-queue'
+                  ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30'
+                  : 'text-slate-400 hover:text-amber-400 hover:bg-amber-800/20'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Verification Queue</span>}
+            </button>
+            <button
+              onClick={() => setPage('referral-payouts')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === 'referral-payouts'
+                  ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30'
+                  : 'text-slate-400 hover:text-emerald-400 hover:bg-emerald-800/20'
+              }`}
+            >
+              <DollarSign className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Referral Payouts</span>}
+            </button>
+            <button
+              onClick={() => setPage('reverification-queue')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === 'reverification-queue'
+                  ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30'
+                  : 'text-slate-400 hover:text-amber-400 hover:bg-amber-800/20'
+              }`}
+            >
+              <RefreshCw className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Re-Verify Queue</span>}
+            </button>
           </>
         )}
       </nav>
 
-      {/* Logout */}
-      <div className="p-2 border-t border-slate-800">
+      {/* Credits + Logout */}
+      <div className="p-2 border-t border-slate-800 space-y-2">
+        {!collapsed && <SubscriptionBadge />}
+        {!collapsed && <CreditBalancePill />}
         <button
           onClick={onLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
@@ -2625,42 +2676,34 @@ function AdminPanel({ user }: { user: any }) {
 
 // ─── Main Portal App ───────────────────────────────────────────────────────────
 export function EnterprisePortalApp() {
-  const { user, account, loading, logout, refreshAccount, upsertEnterpriseAccount } = useEnterpriseAuth();
-  const { userProfile } = useAuth();
+  const { auth0User, account, hasAccess, loading, error, refreshAccount, updateAccount, callApi } = useEnterprisePortal();
+  const { logout } = useAuth0();
   const [page, setPage] = useState<Page>('dashboard');
   const [collapsed, setCollapsed] = useState(false);
-  const [isManager, setIsManager] = useState(false);
-  const [isFlightSchool, setIsFlightSchool] = useState(false);
-  const [flightSchoolId, setFlightSchoolId] = useState<string | null>(null);
-  const isSuperAdmin = userProfile?.role === 'super_admin';
+  const [flightSchoolExists, setFlightSchoolExists] = useState<boolean | null>(null);
+
+  // Derive role flags from enterprise account (D1) — no Supabase pilot profile mixing
+  const isManager = account?.account_tier === 'enterprise';
+  const isFlightSchool = account?.account_type === 'ato';
+  const isSuperAdmin = ((auth0User as Record<string, unknown> | undefined)?.['https://pilotrecognition.com/roles'] as string[] | undefined)?.includes('super_admin') ?? false;
 
   useEffect(() => {
-    if (!loading && !user) safeRedirect('/enterprise/login');
-    if (!loading && user && !user.enterprise_access) safeRedirect('/enterprise/login');
-  }, [user, loading]);
+    if (!loading && !auth0User) safeRedirect('/enterprise/login');
+    if (!loading && auth0User && !hasAccess) safeRedirect('/enterprise/login');
+  }, [auth0User, hasAccess, loading]);
 
-  // Check if current user is an enterprise manager
+  // Auto-route ATOs to flight-school tab
   useEffect(() => {
-    if (!user?.id) return;
-    supabase.from('profiles').select('is_enterprise_manager').eq('id', user.id).single()
-      .then(({ data }) => setIsManager(data?.is_enterprise_manager === true));
-  }, [user?.id]);
+    if (isFlightSchool) setPage('flight-school');
+  }, [isFlightSchool]);
 
-  // Check if user is a flight school admin
+  // Check if ATO already has a flight school record in D1
   useEffect(() => {
-    if (!user?.id) return;
-    supabase.from('flight_school_admins')
-      .select('flight_school_id')
-      .eq('user_id', user.id)
-      .single()
-      .then(({ data }) => {
-        if (data) {
-          setIsFlightSchool(true);
-          setFlightSchoolId(data.flight_school_id);
-          setPage('flight-school');
-        }
-      });
-  }, [user?.id]);
+    if (!isFlightSchool || !account?.id) { setFlightSchoolExists(false); return; }
+    callApi('getFlightSchool', { enterprise_id: account.id })
+      .then(() => setFlightSchoolExists(true))
+      .catch(() => setFlightSchoolExists(false));
+  }, [isFlightSchool, account?.id, callApi]);
 
   if (loading) {
     return (
@@ -2670,11 +2713,13 @@ export function EnterprisePortalApp() {
     );
   }
 
-  if (!user || !user.enterprise_access) return null;
+  if (!auth0User || !hasAccess) return null;
+
+  const user = auth0User; // pass auth0 user object to child pages
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); safeRedirect('/enterprise/login'); }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} isSuperAdmin={isSuperAdmin} />
+      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout({ logoutParams: { returnTo: window.location.origin + '/enterprise/login' } }); }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} isSuperAdmin={isSuperAdmin} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         {page === 'dashboard' && <OperatorIntelDashboard user={user} account={account} onNavigate={(p) => setPage(p as Page)} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}
@@ -2684,12 +2729,22 @@ export function EnterprisePortalApp() {
         {page === 'applications' && <ApplicationsPage user={user} account={account} />}
         {page === 'interviews' && <InterviewerDashboard user={user} account={account} />}
         {page === 'interview-history' && <InterviewHistoryPage user={user} />}
-        {page === 'analytics' && <AnalyticsPage user={user} account={account} isFlightSchool={isFlightSchool} flightSchoolId={flightSchoolId || undefined} />}
-        {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
+        {page === 'analytics' && <AnalyticsPage user={user} account={account} isFlightSchool={isFlightSchool} flightSchoolId={account?.id} />}
+        {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={updateAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
         {page === 'admin' && isManager && <AdminPanel user={user} />}
         {page === 'sop' && isSuperAdmin && <InternalSOPPanel />}
-        {page === 'flight-school' && isFlightSchool && flightSchoolId && <FlightSchoolPortal flightSchoolId={flightSchoolId} user={user} />}
+        {page === 'flight-school' && isFlightSchool && account?.id && (
+          flightSchoolExists === false
+            ? <FlightSchoolOnboarding onComplete={() => { setFlightSchoolExists(true); refreshAccount(); }} />
+            : <FlightSchoolPortal flightSchoolId={account.id} user={user} />
+        )}
+        {page === 'verification' && <VerificationSubmissionForm onSubmitted={() => setPage('dashboard')} />}
+        {page === 'verification-queue' && isSuperAdmin && <AdminVerificationQueue />}
+        {page === 'subscription' && <SubscriptionManagement />}
+        {page === 'vouchers' && <VoucherManager />}
+        {page === 'referral-payouts' && isSuperAdmin && <ReferralPayoutAdmin />}
+        {page === 'reverification-queue' && isSuperAdmin && <ReverificationQueueAdmin />}
       </main>
     </div>
   );

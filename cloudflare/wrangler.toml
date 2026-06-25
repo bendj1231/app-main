@@ -27,6 +27,15 @@ DODO_ENV = "test" # Set to "live" for production
 # DODO_WEBHOOK_SECRET = "your_dodo_webhook_secret"
 # VEREMARK_WEBHOOK_SECRET = "your_veremark_webhook_secret"
 
+# R2 Bucket for encrypted document storage (verification uploads, consent forms, licenses)
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "pilot-encrypted-vault"
+
+# Daily cron: purge expired verification documents (30 days post-result)
+[triggers]
+crons = ["0 0 * * *"]
+
 # Optional: KV for caching or rate limiting
 # [[kv_namespaces]]
 # binding = "CACHE"

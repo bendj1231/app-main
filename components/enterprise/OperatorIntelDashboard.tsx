@@ -5,7 +5,7 @@ import {
   Shield, TrendingUp, MapPin, Star, Bell, ChevronRight,
   CheckCircle, Clock, Zap, Globe, BarChart2, Lock, Unlock
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useEnterprisePortal } from './hooks/useEnterprisePortal';
 import { DataControllerUpgradeModal } from './DataControllerUpgradeModal';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -57,69 +57,57 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
   const [expiryAlerts, setExpiryAlerts] = useState<{ name: string; type: string; expiry: string; daysLeft: number }[]>([]);
   const [platformSignal, setPlatformSignal] = useState<{ newThisWeek: number; avgScore: number; topNationality: string }>({ newThisWeek: 0, avgScore: 0, topNationality: '—' });
 
-  // ── Main data load
+  // ─── Worker API integration
+  const { callApi } = useEnterprisePortal();
+
+  // ── Main data load via Cloudflare Worker
   useEffect(() => {
     if (!account?.id) return;
     setLoading(true);
 
     Promise.all([
-      supabase.from('enterprise_pathway_cards')
-        .select('id, title, is_published, min_total_hours', { count: 'exact' })
-        .eq('enterprise_account_id', account.id),
+      // Pilot pull via Worker API — supports verified_only, recognition_plus, hours, country, etc.
+      callApi('enterprisePull', {
+        limit: 200,
+        verified_only: isDataController ? false : true, // Free tier sees verified-only; DC sees all
+      }) as Promise<{ pilots: any[]; pagination: { total: number }; filters_applied: any }>,
 
-      supabase.from('job_opportunities')
-        .select('id', { count: 'exact' })
-        .eq('enterprise_account_id', account.id),
+      // Supply forecast: all active pilots
+      callApi('enterprisePull', {
+        limit: 500,
+        min_hours: 0,
+      }) as Promise<{ pilots: any[] }>,
+    ]).then(([pullRes, supplyRes]) => {
+      const pilots = pullRes?.pilots || [];
+      const supply = supplyRes?.pilots || [];
 
-      supabase.from('enterprise_pilot_pulls')
-        .select('*')
-        .eq('enterprise_account_id', account.id)
-        .order('submitted_at', { ascending: false })
-        .limit(8),
+      setStats(prev => ({
+        ...prev,
+        interests: pullRes.pagination?.total || pilots.length,
+      }));
 
-      supabase.from('applications')
-        .select('id', { count: 'exact' })
-        .eq('enterprise_account_id', account.id),
-
-      supabase.from('profiles')
-        .select('id, availability_status, overall_recognition_score, total_flight_hours, nationality, created_at'),
-    ]).then(async ([cardsRes, jobsRes, interestsRes, appsRes, supplyRes]) => {
-      const cards = cardsRes.data || [];
-      const published = cards.filter((c: any) => c.is_published).length;
-      setStats({
-        cards: cardsRes.count || 0,
-        published,
-        drafts: (cardsRes.count || 0) - published,
-        jobs: jobsRes.count || 0,
-        interests: (interestsRes.data || []).length,
-        applications: appsRes.count || 0,
-      });
-
-      // Use enterprise_pilot_pulls view — tier-gated data already applied at database level
-      const interests = interestsRes.data || [];
-      setRecentInterests(interests.map((i: any) => ({
-        ...i,
-        // Construct a "pilot" object compatible with existing UI
+      // Recent interests = top pilots from pull
+      setRecentInterests(pilots.slice(0, 8).map((p: any) => ({
         pilot: {
-          display_name: i.pilot_name,
-          full_name: i.pilot_name,
+          display_name: isDataController ? p.display_name : 'PILOT-REDACTED',
+          full_name: isDataController ? `${p.first_name || ''} ${p.last_name || ''}`.trim() : 'PILOT-REDACTED',
           profile_image_url: null,
-          total_flight_hours: i.total_flight_hours,
-          overall_recognition_score: isFreeTier ? null : 0, // Free tier sees null (hidden), DC sees actual
+          total_flight_hours: p.total_flight_hours,
+          overall_recognition_score: isFreeTier ? null : p.overall_recognition_score,
           availability_status: 'REDACTED',
-          license_type: i.license_type,
+          license_type: p.license_type,
         },
-        // Blurred teasers for free tier
         blurred: {
-          total_hours_blurred: i.total_hours_blurred,
-          license_type_blurred: i.license_type_blurred,
-          pilot_country_blurred: i.pilot_country_blurred,
+          total_hours_blurred: isFreeTier ? `${Math.round((p.total_flight_hours || 0) / 100) * 100}+` : null,
+          license_type_blurred: p.license_type,
+          pilot_country_blurred: p.country_of_license,
         },
-        isRedacted: i.pilot_name === 'PILOT-REDACTED',
+        isRedacted: !isDataController,
+        card_title: 'Pathway Card',
+        submitted_at: p.created_at,
       })));
 
       // Supply forecast
-      const supply = supplyRes.data || [];
       const available = supply.filter((p: any) => p.availability_status === 'available').length;
       const considering = supply.filter((p: any) => p.availability_status === 'considering').length;
       const highScore = supply.filter((p: any) => (p.overall_recognition_score || 0) >= 70).length;
@@ -154,70 +142,35 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
       const scoreSum = supply.reduce((acc: number, p: any) => acc + (p.overall_recognition_score || 0), 0);
       const avgScore = supply.length > 0 ? Math.round(scoreSum / supply.length) : 0;
       const natCount: Record<string, number> = {};
-      supply.forEach((p: any) => { if (p.nationality) natCount[p.nationality] = (natCount[p.nationality] || 0) + 1; });
+      supply.forEach((p: any) => { if (p.country_of_license) natCount[p.country_of_license] = (natCount[p.country_of_license] || 0) + 1; });
       const topNationality = Object.entries(natCount).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
       setPlatformSignal({ newThisWeek, avgScore, topNationality });
 
-      // Pathway gap heat map
-      const publishedCards = cards.filter((c: any) => c.is_published).slice(0, 4);
-      if (publishedCards.length > 0 && supply.length > 0) {
-        setGapData(publishedCards.map((card: any) => {
-          const minHours = parseFloat(card.min_total_hours) || 0;
-          const hoursGap = minHours > 0
-            ? Math.round((supply.filter((p: any) => (p.total_flight_hours || 0) < minHours).length / supply.length) * 100)
-            : 0;
-          const icaoGap = Math.max(0, Math.round(hoursGap * 0.6));
-          const medGap = Math.max(0, Math.round(hoursGap * 0.25));
-          return {
-            card_title: card.title || 'Pathway Card',
-            hours_gap: hoursGap,
-            icao_gap: icaoGap,
-            medical_gap: medGap,
-            ready: Math.max(0, 100 - hoursGap),
-          };
-        }));
+      // Pathway gap heat map (simplified — no cards from D1 yet)
+      if (supply.length > 0) {
+        const hoursGap = Math.round((supply.filter((p: any) => (p.total_flight_hours || 0) < 1500).length / supply.length) * 100);
+        setGapData([{
+          card_title: 'ATPL Threshold',
+          hours_gap: hoursGap,
+          icao_gap: Math.max(0, Math.round(hoursGap * 0.6)),
+          medical_gap: Math.max(0, Math.round(hoursGap * 0.25)),
+          ready: Math.max(0, 100 - hoursGap),
+        }]);
       }
 
       setLoading(false);
+    }).catch((err) => {
+      console.error('Worker API error:', err);
+      setLoading(false);
     });
-  }, [account?.id]);
+  }, [account?.id, isDataController, isFreeTier, callApi]);
 
   // ── Credential expiry alerts (60-day window)
+  // NOTE: Requires medical_certificate_records in D1. Currently disabled — re-enable after D1 migration.
   useEffect(() => {
-    if (!account?.id) return;
-    setAlertsLoading(true);
-    supabase.from('pathway_card_interests')
-      .select('pilot_id')
-      .eq('enterprise_account_id', account.id)
-      .limit(60)
-      .then(async ({ data: intData }) => {
-        const ids = [...new Set((intData || []).map((i: any) => i.pilot_id).filter(Boolean))];
-        if (ids.length === 0) { setAlertsLoading(false); return; }
-
-        const sixtyDays = new Date();
-        sixtyDays.setDate(sixtyDays.getDate() + 60);
-        const { data: meds } = await supabase.from('medical_certificate_records')
-          .select('user_id, certificate_class, expiry_date')
-          .in('user_id', ids)
-          .lte('expiry_date', sixtyDays.toISOString().split('T')[0])
-          .order('expiry_date', { ascending: true })
-          .limit(8);
-
-        if (!meds || meds.length === 0) { setAlertsLoading(false); return; }
-
-        const { data: pilotNames } = await supabase.from('profiles')
-          .select('id, display_name, full_name')
-          .in('id', meds.map((m: any) => m.user_id));
-        const nameMap = Object.fromEntries((pilotNames || []).map((p: any) => [p.id, p.display_name || p.full_name || 'Pilot']));
-
-        const now = new Date();
-        setExpiryAlerts(meds.map((m: any) => {
-          const exp = new Date(m.expiry_date);
-          const daysLeft = Math.ceil((exp.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-          return { name: nameMap[m.user_id] || 'Pilot', type: `Class ${m.certificate_class} Medical`, expiry: m.expiry_date, daysLeft };
-        }));
-        setAlertsLoading(false);
-      });
+    setAlertsLoading(false);
+    setExpiryAlerts([]);
+    // TODO: Add Worker API for medical expiry queries once D1 table exists
   }, [account?.id]);
 
   const maxSupply = Math.max(...supplyForecast.map(s => s.count), 1);

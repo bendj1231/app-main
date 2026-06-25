@@ -42,7 +42,20 @@ export const OAuthCallback = () => {
     }
   }, []);
 
+  const [authError, setAuthError] = useState<string | null>(null);
+
   useEffect(() => {
+    // If we're on /auth/callback with code+state but Auth0 says not authenticated,
+    // the token exchange likely failed (e.g. redirect_uri mismatch in Auth0 dashboard)
+    const url = new URL(window.location.href);
+    const hasCode = url.searchParams.has('code');
+    const hasState = url.searchParams.has('state');
+    if (!isAuthenticated && !isLoading && hasCode && hasState) {
+      console.error('[OAuthCallback] Auth0 callback URL has code+state but isAuthenticated=false. Check Auth0 Allowed Callback URLs include:', window.location.origin + '/auth/callback');
+      setAuthError('Authentication callback failed. Please ensure /auth/callback is in your Auth0 Allowed Callback URLs.');
+      return;
+    }
+
     // Guard: wait for Auth0 to finish processing the redirect before doing anything
     if (!isAuthenticated || !user || profileCreated || isLoading) {
       console.log('[OAuthCallback] Guard blocked — isAuthenticated:', isAuthenticated, 'user:', !!user, 'profileCreated:', profileCreated, 'isLoading:', isLoading);
@@ -67,7 +80,47 @@ export const OAuthCallback = () => {
 
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
 
-        // ─── STEP 1: Determine redirect from returnTo or default ───
+        // ─── STEP 1: Get access token + check profile FIRST ───
+        let token: string | null = null;
+        try {
+          console.log('[OAuthCallback] Fetching access token...');
+          token = await getAccessTokenSilently();
+          console.log('[OAuthCallback] Access token acquired, length:', token?.length || 0);
+        } catch (tokenErr) {
+          console.warn('[OAuthCallback] getAccessTokenSilently failed:', tokenErr);
+        }
+
+        let hasProfile = false;
+        if (token && user?.sub) {
+          const cached = getCachedProfile(user.sub);
+          if (cached?.id) {
+            hasProfile = true;
+            console.log('[OAuthCallback] Cached profile found');
+          } else {
+            console.log('[OAuthCallback] No cached profile, calling D1 getProfile for auth0_id:', user.sub);
+            try {
+              const profile = await api(token, 'getProfile', { auth0_id: user.sub, email: user.email });
+              console.log('[OAuthCallback] D1 getProfile response:', profile);
+              if (profile && (profile as any)?.id) {
+                setCachedProfile(user.sub, profile);
+                hasProfile = true;
+              }
+            } catch (apiErr) {
+              console.warn('[OAuthCallback] D1 getProfile API error:', apiErr);
+            }
+          }
+        }
+
+        // If profile exists, go straight to platform — ignore returnTo
+        if (hasProfile) {
+          sessionStorage.removeItem('auth0_return_to');
+          setProfileCreated(true);
+          console.log('[OAuthCallback] Profile found — redirecting to /platform');
+          navigate('/platform', { replace: true });
+          return;
+        }
+
+        // ─── STEP 2: No profile → follow returnTo or default to onboarding ───
         const returnTo = sessionStorage.getItem('auth0_return_to');
         console.log('[OAuthCallback] returnTo from sessionStorage:', returnTo);
         if (returnTo) {
@@ -78,21 +131,11 @@ export const OAuthCallback = () => {
           return;
         }
 
-        // ─── STEP 2: If no returnTo, route based on profile existence ───
+        // ─── STEP 3: Fallback — no returnTo, go to onboarding ───
         setProfileCreated(true);
         let target = '/become-member?setup=1';
 
-        // Step 2a: Get access token
-        let token: string | null = null;
-        try {
-          console.log('[OAuthCallback] Fetching access token...');
-          token = await getAccessTokenSilently();
-          console.log('[OAuthCallback] Access token acquired, length:', token?.length || 0);
-        } catch (tokenErr) {
-          console.warn('[OAuthCallback] getAccessTokenSilently failed:', tokenErr);
-        }
-
-        // Step 2b: Check profile (cached or D1 API)
+        // Reuse token from Step 1, or try again if it failed
         if (token && user?.sub) {
           const cached = getCachedProfile(user.sub);
           if (cached?.id) {
@@ -135,7 +178,7 @@ export const OAuthCallback = () => {
     return () => clearTimeout(timeout);
   }, [isAuthenticated, user, profileCreated, isLoading, navigate, getAccessTokenSilently]);
 
-  if (error) {
+  if (error || authError) {
     return (
       <div style={{
         display: 'flex',
@@ -144,9 +187,9 @@ export const OAuthCallback = () => {
         minHeight: '100vh',
         background: 'radial-gradient(ellipse at center, #0f172a 0%, #020617 100%)'
       }}>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', maxWidth: '480px', padding: '0 24px' }}>
           <h2 style={{ color: '#dc2626', fontSize: '1.5rem', fontWeight: 700, marginBottom: '8px' }}>Authentication Error</h2>
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem' }}>{error.message}</p>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem' }}>{error?.message || authError}</p>
           <button
             onClick={() => safeRedirect('/')}
             style={{

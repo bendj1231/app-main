@@ -351,6 +351,8 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         elp_level: 'elp_level', medical_class: 'medical_class',
         employment_status: 'employment_status', current_job: 'current_job',
         career_goal: 'career_goal', other_licence: 'other_licence',
+        immediate_available: 'immediate_available', unemployed_duration: 'unemployed_duration',
+        hours_certified: 'hours_certified', radio_license: 'radio_license',
         bio: 'bio', linkedin_url: 'linkedin_url', instagram_url: 'instagram_url', domicile: 'domicile',
         is_visitor: 'is_visitor', hours_whole: 'hours_whole',
         hours_minutes: 'hours_minutes', origin_jurisdiction: 'origin_jurisdiction',

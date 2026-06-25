@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { motion } from 'framer-motion';
-import { MeshGradient } from '@paper-design/shaders-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import {
-  ArrowRight, ShieldCheck, Plane, Briefcase, BadgeCheck, UserCheck,
+  ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
 } from 'lucide-react';
 
 const fadeUp = {
@@ -24,26 +22,93 @@ export default function VerifyApcPage() {
   const navigate = useNavigate();
   const { user: auth0User } = useAuth0();
   const { callApi } = useWorkerAuth();
-  const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
+  // Clean form — no shader background
 
   const [apcEmail, setApcEmail] = useState('');
   const [apcLicenseFile, setApcLicenseFile] = useState<File | null>(null);
-  const [apcRatingsFile, setApcRatingsFile] = useState<File | null>(null);
+  const [apcLicenseBackFile, setApcLicenseBackFile] = useState<File | null>(null);
+  const [ratingSets, setRatingSets] = useState<{ certFile: File | null; licFile: File | null; trainingCenter: string; country: string }[]>([{ certFile: null, licFile: null, trainingCenter: '', country: '' }]);
   const [apcLogbookFile, setApcLogbookFile] = useState<File | null>(null);
   const [apcMedicalFile, setApcMedicalFile] = useState<File | null>(null);
-  const [apcGovIdFile, setApcGovIdFile] = useState<File | null>(null);
+  const [apcRadioNtcFile, setApcRadioNtcFile] = useState<File | null>(null);
   const [apcConsentFile, setApcConsentFile] = useState<File | null>(null);
   const [apcConsentChecked, setApcConsentChecked] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<Record<string, 'idle' | 'uploading' | 'done' | 'error'>>({});
   const [atoConsentChecked, setAtoConsentChecked] = useState(false);
   const [privacyConsentChecked, setPrivacyConsentChecked] = useState(false);
   const [apcFormData, setApcFormData] = useState({
-    fullName: '', phone: '', licenseNumber: '', licenseType: 'PPL',
+    fullName: '', phone: '', nationality: '', licenseNumber: '', licenseType: 'PPL',
     issuingAuthority: 'CAAP', licenseIssueDate: '', licenseExpiryDate: '',
-    totalHours: '', picHours: '', nightHours: '', instrumentHours: '', crossCountryHours: '',
+    totalHours: '', picHours: '', dualHours: '', dualXcHours: '', nightHours: '', instrumentSimHours: '', instrumentActualHours: '', multiEngineSimHours: '', multiEngineActualHours: '', crossCountryHours: '',
     medicalClass: 'Class 1', medicalExpiry: '',
     atoName: '', atoLocation: '',
     atoDataNeeded: 'total_flight_hours',
+    additionalRatings: [] as string[],
   });
+  const [additionalATOs, setAdditionalATOs] = useState<{ name: string; location: string }[]>([]);
+  const [ratingInput, setRatingInput] = useState('');
+  const [showAdvancedHours, setShowAdvancedHours] = useState(false);
+  const [atoCountry, setAtoCountry] = useState('');
+
+  const FLIGHT_SCHOOLS: Record<string, string[]> = {
+    Philippines: [
+      'WCC Aviation College',
+      'OMNI Aviation Corporation',
+      'Alpha Aviation Group',
+      'PATTS College of Aeronautics',
+      'Philippine State College of Aeronautics (PhilSCA)',
+      'Air Link International Aviation School',
+      'Angeles City Flying Club',
+      'Asian Institute of Aviation',
+      'Apollo Aviation Academy',
+      'Aviatour Flight School',
+      'Bicol International Airport Aviation School',
+      'Blue Horizon Flying School',
+      'BSAU Flight School',
+      'Cebu Aero Flying School',
+      'Cebu Pacific Flight Academy',
+      'Clark International Flight School',
+      'Central Luzon Aero Sports',
+      'Davao City Flying School',
+      'Delta Air International Aviation Academy',
+      'Eagle Air Flying School',
+      'Exelinc Aviation Academy',
+      'First Aviation Academy',
+      'Flight Academy of the Philippines',
+      'General Aviation Training Academy',
+      'Global Aerospace University',
+      'Goldenstate College - Aviation',
+      'Iloilo Aero Club',
+      'Indira Gandhi Memorial Flight School',
+      'International School for Aviation Excellence',
+      'Island Aviation Training Center',
+      'Lancaster Aviation Training Center',
+      'Lanao Aero Club',
+      'Leading Edge Aviation Academy',
+      'Lipatech Aviation Training Center',
+      'Manila Aero Club',
+      'Mindanao Flying School',
+      'National Aviation Academy of the Philippines',
+      'Northern Luzon Flying School',
+      'Pacific Aero Flying School',
+      'Palawan Aero Club',
+      'Pan Pacific Aviation Training Center',
+      'Parañaque Aviation School',
+      'Philippine Academy of Aeronautics',
+      'Philippine Airlines Aviation School',
+      'Pilipinas Aero Training Center',
+      'Prime Aviation Academy',
+      'Sky Ranch Aviation Academy',
+      'South East Asian Institute of Aviation',
+      'Subic Bay Flying School',
+      'Topnotch Aviation Academy',
+      'Trece Aviation Training Center',
+      'Unified Aviation Academy',
+      'Villa Aviation Training Center',
+      'Visayas Aero Club',
+      'Zest Aviation Academy',
+    ],
+  };
 
   // Pre-fill from D1 profile
   useEffect(() => {
@@ -69,130 +134,737 @@ export default function VerifyApcPage() {
     fetchProfile();
   }, [auth0User?.sub, callApi]);
 
-  const handleSubmit = () => {
-    // TODO: Send form data + files to backend
-    navigate('/get-started', { state: { fromApcVerification: true } });
+  const VAULT_API = 'https://apc-document-vault.benjamintigerbowler.workers.dev';
+
+  const parseHhMm = (value: string): number => {
+    if (!value) return 0;
+    const [h, m] = value.split('+').map(v => parseInt(v) || 0);
+    return h + (m || 0) / 60;
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: '#0f172a' }}>
-      {/* MeshGradient Background */}
-      <div className="absolute inset-0 z-0">
-        {graphicsConfig.enableMeshGradient && (
-          <MeshGradient
-            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
-            speed={graphicsConfig.meshGradientSpeed || 0.3}
-            style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.7 }}
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-        <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
-      </div>
+  const uploadDocument = async (file: File, docType: string, setter: (f: File | null) => void) => {
+    const userId = auth0User?.sub;
+    if (!userId || !file) return;
+    
+    setUploadStatus(prev => ({ ...prev, [docType]: 'uploading' }));
+    
+    try {
+      const res = await fetch(`${VAULT_API}/upload/${docType}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${userId}`,
+          'Content-Type': file.type || 'application/octet-stream',
+        },
+        body: file,
+      });
+      
+      if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+      
+      const data = await res.json();
+      console.log('[Upload] Secure vault success:', data.key);
+      setter(file);
+      setUploadStatus(prev => ({ ...prev, [docType]: 'done' }));
+    } catch (err) {
+      console.error('[Upload] Vault error:', err);
+      setUploadStatus(prev => ({ ...prev, [docType]: 'error' }));
+      setter(null);
+    }
+  };
 
-      {/* Card */}
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async () => {
+    if (!auth0User?.sub) return;
+    setSubmitStatus('submitting');
+    
+    try {
+      const docKeys: Record<string, string> = {};
+      if (apcLicenseFile) docKeys['license'] = auth0User.sub + '/license';
+      if (apcLicenseBackFile) docKeys['license-back'] = auth0User.sub + '/license-back';
+      if (apcMedicalFile) docKeys['medical'] = auth0User.sub + '/medical';
+      if (apcRadioNtcFile) docKeys['radio-ntc'] = auth0User.sub + '/radio-ntc';
+      ratingSets.forEach((set, idx) => {
+        if (set.certFile) docKeys[`ratings-cert-${idx}`] = auth0User.sub + `/ratings-cert-${idx}`;
+        if (set.licFile) docKeys[`ratings-lic-${idx}`] = auth0User.sub + `/ratings-lic-${idx}`;
+      });
+      if (apcLogbookFile) docKeys['logbook'] = auth0User.sub + '/logbook';
+      if (apcConsentFile) docKeys['consent'] = auth0User.sub + '/consent';
+
+      console.log('[Frontend] Submitting verification via Worker API...');
+      console.log('[Frontend] auth0Sub:', auth0User.sub);
+      console.log('[Frontend] documentKeys:', docKeys);
+      console.log('[Frontend] ratingSets:', ratingSets);
+
+      const payload = {
+        auth0_sub: auth0User.sub,
+        email: apcEmail,
+        full_name: apcFormData.fullName,
+        phone: apcFormData.phone,
+        nationality: apcFormData.nationality,
+        license_number: apcFormData.licenseNumber,
+        license_type: apcFormData.licenseType,
+        license_expiry: apcFormData.licenseExpiryDate,
+        total_hours: parseHhMm(apcFormData.totalHours as string),
+        pic_hours: parseHhMm(apcFormData.picHours as string),
+        dual_hours: parseHhMm(apcFormData.dualHours as string),
+        dual_xc_hours: parseHhMm(apcFormData.dualXcHours as string),
+        night_hours: parseHhMm(apcFormData.nightHours as string),
+        instrument_sim_hours: parseHhMm(apcFormData.instrumentSimHours as string),
+        instrument_actual_hours: parseHhMm(apcFormData.instrumentActualHours as string),
+        multi_engine_sim_hours: parseHhMm(apcFormData.multiEngineSimHours as string),
+        multi_engine_actual_hours: parseHhMm(apcFormData.multiEngineActualHours as string),
+        cross_country_hours: parseHhMm(apcFormData.crossCountryHours as string),
+        medical_class: apcFormData.medicalClass,
+        medical_expiry: apcFormData.medicalExpiry,
+        rating_sets: ratingSets.map((set, idx) => ({
+          index: idx,
+          trainingCenter: set.trainingCenter,
+          country: set.country,
+          hasCertFile: !!set.certFile,
+          hasLicFile: !!set.licFile,
+        })),
+        ato_name: apcFormData.atoName,
+        ato_location: apcFormData.atoLocation,
+        ato_data_needed: apcFormData.atoDataNeeded,
+        document_keys: docKeys,
+      };
+
+      console.log('[Frontend] Payload:', payload);
+
+      const result = await callApi<Record<string, unknown>>('submitVerification', payload);
+
+      console.log('[Frontend] Worker response:', result);
+      console.log('[Frontend] submission_id:', result?.submission_id);
+      console.log('[Frontend] account_number:', result?.account_number);
+      console.log('[Frontend] consent_json_path:', result?.consent_json_path);
+
+      if (!result || !(result.success as boolean)) {
+        throw new Error(result?.error as string || 'Submit failed');
+      }
+
+      setSubmitStatus('success');
+      setTimeout(() => {
+        navigate('/get-started', { state: { fromApcVerification: true, status: 'submitted' } });
+      }, 1500);
+    } catch (err) {
+      console.error('[Submit] Error:', err);
+      setSubmitStatus('error');
+    }
+  };
+
+  const printConsentForm = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    const today = new Date().toLocaleDateString('en-GB');
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ATO Verification Consent Form — APC</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; line-height: 1.6; }
+    h1 { font-size: 18px; text-align: center; margin-bottom: 8px; }
+    h2 { font-size: 14px; margin-top: 24px; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header p { font-size: 11px; color: #666; margin: 4px 0; }
+    .field { margin: 12px 0; }
+    .field label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
+    .field .line { border-bottom: 1px solid #333; height: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .checkbox { margin: 8px 0; font-size: 11px; }
+    .footer { margin-top: 40px; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 12px; }
+    @media print { body { margin: 0; } .no-print { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>AVIATION PATHWAYS CONSULTANCY (APC)</h1>
+    <p>ATO Training Records Verification — Pilot Consent Form</p>
+    <p>Data Controller registered in Mauritius | DPA 2017 Compliant</p>
+  </div>
+
+  <h2>1. Pilot Information</h2>
+  <div class="grid-2">
+    <div class="field"><label>Full Name</label><div class="line"></div></div>
+    <div class="field"><label>License Number</label><div class="line"></div></div>
+    <div class="field"><label>Email Address</label><div class="line"></div></div>
+    <div class="field"><label>Phone Number</label><div class="line"></div></div>
+    <div class="field"><label>Nationality</label><div class="line"></div></div>
+    <div class="field"><label>Date of Birth</label><div class="line"></div></div>
+  </div>
+
+  <h2>2. ATO Information</h2>
+  <div class="grid-2">
+    <div class="field"><label>ATO Name</label><div class="line"></div></div>
+    <div class="field"><label>ATO Location</label><div class="line"></div></div>
+  </div>
+
+  <h2>3. Authorization</h2>
+  <p style="font-size:11px;">I hereby authorize Aviation Pathways Consultancy (APC) to contact the ATO named above and request verification of my flight training records and logbook hours on my behalf. I understand that:</p>
+  <ul style="font-size:11px; margin: 8px 0;">
+    <li>APC will send my uploaded documents (license, medical, ratings) and this consent form to the ATO via email.</li>
+    <li>The ATO will verify my logbook hours and send the results directly to my email address.</li>
+    <li>APC will receive only a confirmation that verification was completed, not my actual flight hours.</li>
+    <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
+  </ul>
+
+  <h2>4. Declaration</h2>
+  <p style="font-size:11px;">I confirm that all information provided is accurate and complete to the best of my knowledge. I understand that providing false or misleading information may result in the rejection of my verification request.</p>
+
+  <div class="grid-2" style="margin-top: 32px;">
+    <div class="field"><label>Pilot Signature</label><div class="line"></div></div>
+    <div class="field"><label>Date</label><div class="line">${today}</div></div>
+  </div>
+
+  <div class="footer">
+    <p>For data protection inquiries: Benjamin Bowler — benjamin@pilotrecognition.com</p>
+    <p>This form is issued under the Mauritius Data Protection Act 2017. Documents processed: encrypted storage, 30-day retention.</p>
+  </div>
+
+  <div class="no-print" style="text-align: center; margin-top: 30px;">
+    <button onclick="window.print()" style="padding: 10px 24px; background: #dc2626; color: white; border: none; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer;">PRINT / SAVE AS PDF</button>
+  </div>
+</body>
+</html>`;
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
+  const renderHoursRow = (label: string, key: string) => (
+    <tr key={key} style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+      <td className="px-3 py-2 text-gray-700">{label}</td>
+      <td className="px-3 py-2 text-right">
+        <div className="inline-flex items-center gap-1">
+          <input type="text" inputMode="numeric" placeholder="0"
+            value={(() => {
+              const v = apcFormData[key as keyof typeof apcFormData] as string;
+              if (!v) return '';
+              const [h] = v.split('+');
+              return h || '';
+            })()}
+            onChange={(e) => {
+              const h = e.target.value.replace(/\D/g, '');
+              const m = (() => {
+                const v = apcFormData[key as keyof typeof apcFormData] as string;
+                if (!v) return '00';
+                const [, mm] = v.split('+');
+                return mm || '00';
+              })();
+              setApcFormData(p => ({ ...p, [key]: h ? `${h}+${m}` : '' }));
+            }}
+            className="w-10 text-center rounded-lg px-1 py-1 text-xs text-gray-900 outline-none"
+            style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+          />
+          <span className="text-xs text-gray-400 font-bold">+</span>
+          <input type="text" inputMode="numeric" placeholder="00" maxLength={2}
+            value={(() => {
+              const v = apcFormData[key as keyof typeof apcFormData] as string;
+              if (!v) return '';
+              const [, m] = v.split('+');
+              return m || '';
+            })()}
+            onChange={(e) => {
+              let m = e.target.value.replace(/\D/g, '').slice(0, 2);
+              if (m && parseInt(m) > 59) m = '59';
+              const h = (() => {
+                const v = apcFormData[key as keyof typeof apcFormData] as string;
+                if (!v) return '0';
+                const [hh] = v.split('+');
+                return hh || '0';
+              })();
+              setApcFormData(p => ({ ...p, [key]: `${h || '0'}+${m || '00'}` }));
+            }}
+            className="w-10 text-center rounded-lg px-1 py-1 text-xs text-gray-900 outline-none"
+            style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+          />
+        </div>
+      </td>
+    </tr>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50">
       <motion.div
-        className="relative z-10 max-w-3xl w-full rounded-3xl p-6 md:p-8 max-h-[85vh] overflow-y-auto"
-        style={{
-          background: '#ffffff',
-          border: '1px solid rgba(0,0,0,0.06)',
-          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04)',
-        }}
-        initial={{ opacity: 0, y: 20 }}
+        className="max-w-3xl mx-auto w-full px-6 py-10 md:py-14"
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
       >
         {/* Header */}
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate('/get-started')}
-            className="text-[10px] font-bold text-gray-400 hover:text-gray-600 uppercase tracking-wider transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-500 hover:text-gray-700 backdrop-blur-md bg-white/40 border border-white/60 shadow-sm transition-all"
           >
             ← Back to Get Started
           </button>
+          <div className="flex flex-col items-end gap-1.5">
+            <button
+              onClick={() => navigate('/get-started')}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider text-white shadow-sm transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+            >
+              Initiate Verification Later <ArrowRight size={12} />
+            </button>
+            <button
+              onClick={() => navigate('/about-verification')}
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-red-500 hover:text-red-600 transition-colors"
+            >
+              About Verification <ExternalLink size={12} />
+            </button>
+          </div>
         </div>
 
-        <motion.p
-          className="text-center text-base font-black tracking-widest mb-3"
-          style={{ color: '#dc2626' }}
-          variants={fadeUp}
-          custom={0}
-        >
-          RECOGNITION+
-        </motion.p>
-
-        <motion.h1
-          className="text-2xl font-black tracking-tight text-gray-900 mb-2 text-center"
-          variants={fadeUp}
-          custom={1}
-        >
-          Verification Request
-        </motion.h1>
-
-        <motion.p
-          className="text-sm text-gray-500 mb-6 text-center"
-          variants={fadeUp}
-          custom={2}
-        >
-          Complete your verification with <span className="font-bold text-gray-700">Aviation Pathways Consultancy (APC)</span>. Your profile data has been pre-filled where available.
-        </motion.p>
+        <motion.div className="text-center mb-8" variants={fadeUp} custom={0}>
+          <p className="text-xs font-black tracking-widest mb-2" style={{ color: '#dc2626' }}>
+            RECOGNITION+
+          </p>
+          <h1 className="text-2xl font-black tracking-tight text-gray-900 mb-2">
+            Pilot Verification Form
+          </h1>
+          <p className="text-sm text-gray-500">
+            Complete your verification with <span className="font-semibold text-gray-700">Aviation Pathways Consultancy (APC)</span>
+          </p>
+        </motion.div>
 
         {/* ── Section 1: Personal Details ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={1}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">1. Personal Details</p>
           <div className="grid grid-cols-2 gap-2">
-            <input type="text" placeholder="Full Name" value={apcFormData.fullName} onChange={(e) => setApcFormData(p => ({ ...p, fullName: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="email" placeholder="Email" value={apcEmail} onChange={(e) => setApcEmail(e.target.value)} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="tel" placeholder="Phone" value={apcFormData.phone} onChange={(e) => setApcFormData(p => ({ ...p, phone: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="text" placeholder="License Number" value={apcFormData.licenseNumber} onChange={(e) => setApcFormData(p => ({ ...p, licenseNumber: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <input type="text" placeholder="Full Name" value={apcFormData.fullName} onChange={(e) => setApcFormData(p => ({ ...p, fullName: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <input type="email" placeholder="Email" value={apcEmail} onChange={(e) => setApcEmail(e.target.value)} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <input type="tel" placeholder="Phone" value={apcFormData.phone} onChange={(e) => setApcFormData(p => ({ ...p, phone: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <input type="text" placeholder="Nationality" value={apcFormData.nationality} onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
           </div>
         </motion.div>
 
         {/* ── Section 2: License Information ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={4}>
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">2. License Information</p>
-          <div className="grid grid-cols-2 gap-2 mb-2">
-            <select value={apcFormData.licenseType} onChange={(e) => setApcFormData(p => ({ ...p, licenseType: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-              <option>PPL</option><option>CPL</option><option>ATPL</option><option>Student Pilot</option>
-            </select>
-            <select value={apcFormData.issuingAuthority} onChange={(e) => setApcFormData(p => ({ ...p, issuingAuthority: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-              <option>CAAP</option><option>FAA</option><option>EASA</option><option>CAA UK</option><option>GCAA</option><option>CAAS</option>
-            </select>
+          <div className="grid grid-cols-2 gap-2 mb-3">
+            <div>
+              <p className="text-[10px] font-semibold text-gray-700 mb-1">License Number</p>
+              <input type="text" placeholder="Pilot License Number" value={apcFormData.licenseNumber} onChange={(e) => setApcFormData(p => ({ ...p, licenseNumber: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
+              <input type="date" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none h-9 leading-none appearance-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <input type="date" value={apcFormData.licenseIssueDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseIssueDate: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="date" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+          <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {['PPL', 'CPL', 'ATPL', 'SPL'].map((type) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setApcFormData(p => ({ ...p, licenseType: type }))}
+                className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all"
+                style={{
+                  background: apcFormData.licenseType === type ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                  color: apcFormData.licenseType === type ? '#fff' : '#6b7280',
+                  border: `1px solid ${apcFormData.licenseType === type ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                }}
+              >
+                {type}
+              </button>
+            ))}
           </div>
+          <p className="text-[10px] font-semibold text-gray-700 mb-1.5">Additional Ratings & Type Ratings</p>
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {apcFormData.additionalRatings.map((r) => (
+              <span key={r} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-gray-700 bg-gray-100 border border-gray-200">
+                {r}
+                <button
+                  type="button"
+                  onClick={() => setApcFormData(p => ({ ...p, additionalRatings: p.additionalRatings.filter(x => x !== r) }))}
+                  className="text-gray-400 hover:text-red-500"
+                >×</button>
+              </span>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="Type and press Enter (e.g. Instrument Rating, B737, B777...)"
+            value={ratingInput}
+            onChange={(e) => setRatingInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && ratingInput.trim()) {
+                e.preventDefault();
+                const val = ratingInput.trim();
+                if (!apcFormData.additionalRatings.includes(val)) {
+                  setApcFormData(p => ({ ...p, additionalRatings: [...p.additionalRatings, val] }));
+                }
+                setRatingInput('');
+              }
+            }}
+            list="rating-suggestions"
+            className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none h-9"
+            style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+          />
+          <datalist id="rating-suggestions">
+            <option value="Instrument Rating" />
+            <option value="Multi-Engine Rating" />
+            <option value="High Performance Aircraft Endorsement" />
+            <option value="Seaplane Rating" />
+            <option value="Tailwheel Endorsement" />
+            <option value="B737 Type Rating" />
+            <option value="B777 Type Rating" />
+            <option value="B747 Type Rating" />
+            <option value="A320 Type Rating" />
+            <option value="A330 Type Rating" />
+            <option value="ATR42/72 Type Rating" />
+            <option value="CRJ Type Rating" />
+          </datalist>
         </motion.div>
 
-        {/* ── CAAP License Verification Note ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={4}>
-          <div className="rounded-xl p-3" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.15)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">CAAP License Verification Process:</span> There is no public online database for instant CAAP license lookup. Your consultancy must submit a formal request to CAAP's Aviation Records Management Division (ARMD) with two required items:
-            </p>
-            <div className="space-y-1.5 mb-2">
-              <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0 mt-1" />
-                <p className="text-[10px] text-gray-600">A copy of your physical license (showing your unique PEL number)</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0 mt-1" />
-                <p className="text-[10px] text-gray-600">A signed consent letter authorizing APC to verify your records (provided in Section 8)</p>
+        {/* ── Section 3: Medical Certificate ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Medical Certificate</p>
+          <div className="grid grid-cols-2 gap-2 mb-3">
+            <div>
+              <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Class</p>
+              <div className="flex gap-1.5">
+                {['Class 1', 'Class 2', 'Class 3'].map((cls) => (
+                  <button
+                    key={cls}
+                    type="button"
+                    onClick={() => setApcFormData(p => ({ ...p, medicalClass: cls }))}
+                    className="flex-1 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all"
+                    style={{
+                      background: apcFormData.medicalClass === cls ? '#dc2626' : 'rgba(0,0,0,0.03)',
+                      color: apcFormData.medicalClass === cls ? '#fff' : '#6b7280',
+                      border: apcFormData.medicalClass === cls ? 'none' : '1px solid rgba(0,0,0,0.08)',
+                    }}
+                  >
+                    {cls}
+                  </button>
+                ))}
               </div>
             </div>
-            <p className="text-[10px] text-gray-500 leading-relaxed mb-1">
-              <span className="font-semibold text-gray-700">Option A (Fastest):</span> APC sends a formal corporate letter to CAAP Licensing / ARMD with your license copy and consent form.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed">
-              <span className="font-semibold text-gray-700">Option B (eFOI Portal):</span> Submit an official verification request via the Philippines eFOI Portal directed to CAAP.
+            <div>
+              <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Expiry Date</p>
+              <input type="date" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none h-9 leading-none appearance-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── Section 4: Pilot Documents & Ratings ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. Pilot Documents & Ratings</p>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
+              { label: 'License (Back)', file: apcLicenseBackFile, setter: setApcLicenseBackFile, icon: IdCard, docType: 'license-back' },
+              { label: 'Medical Certificate', file: apcMedicalFile, setter: setApcMedicalFile, icon: Award, docType: 'medical' },
+              { label: 'Radio License', file: apcRadioNtcFile, setter: setApcRadioNtcFile, icon: Radio, docType: 'radio-ntc' },
+            ].map((item) => (
+              <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadDocument(f, item.docType, item.setter); }} />
+                {uploadStatus[item.docType] === 'uploading' ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                    <p className="text-[9px] font-medium text-gray-500">Uploading securely...</p>
+                  </>
+                ) : item.file ? (
+                  <>
+                    <BadgeCheck size={18} className="text-green-500" />
+                    <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
+                  </>
+                ) : (
+                  <>
+                    <item.icon size={18} className="text-gray-300" />
+                    <p className="text-[9px] font-medium text-gray-600">{item.label}</p>
+                  </>
+                )}
+              </label>
+            ))}
+          </div>
+
+          {/* Type Ratings & Endorsements */}
+          <div className="mt-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[10px] font-semibold text-gray-700">Type Ratings & Endorsements</p>
+            </div>
+            {ratingSets.map((set, setIdx) => (
+              <div key={setIdx} className="mb-3">
+                {ratingSets.length > 1 && (
+                  <p className="text-[9px] font-bold text-gray-500 mb-1">Type Rating {setIdx + 1}</p>
+                )}
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'Certification of Type Rating', file: set.certFile, key: 'certFile' as const, docType: `ratings-cert-${setIdx}` },
+                    { label: 'Licensure of Type Rating', file: set.licFile, key: 'licFile' as const, docType: `ratings-lic-${setIdx}` },
+                  ].map((item) => (
+                    <label key={item.docType} className="flex flex-col items-center justify-center gap-1 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
+                      <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) {
+                          const updated = [...ratingSets];
+                          updated[setIdx] = { ...updated[setIdx], [item.key]: f };
+                          setRatingSets(updated);
+                          uploadDocument(f, item.docType, (file) => {
+                            const refreshed = [...ratingSets];
+                            refreshed[setIdx] = { ...refreshed[setIdx], [item.key]: file };
+                            setRatingSets(refreshed);
+                          });
+                        }
+                      }} />
+                      {uploadStatus[item.docType] === 'uploading' ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                          <p className="text-[9px] font-medium text-gray-500">Uploading securely...</p>
+                        </>
+                      ) : item.file ? (
+                        <>
+                          <BadgeCheck size={18} className="text-green-500" />
+                          <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
+                        </>
+                      ) : (
+                        <>
+                          <BadgeCheck size={18} className="text-gray-300" />
+                          <p className="text-[9px] font-medium text-gray-600">{item.label}</p>
+                        </>
+                      )}
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    list="training-centers"
+                    placeholder="Type Rating Recurrency / Training Center"
+                    value={set.trainingCenter}
+                    onChange={(e) => {
+                      const updated = [...ratingSets];
+                      updated[setIdx] = { ...updated[setIdx], trainingCenter: e.target.value };
+                      setRatingSets(updated);
+                    }}
+                    className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                  />
+                  <select
+                    value={set.country}
+                    onChange={(e) => {
+                      const updated = [...ratingSets];
+                      updated[setIdx] = { ...updated[setIdx], country: e.target.value };
+                      setRatingSets(updated);
+                    }}
+                    className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9 mt-2"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                  >
+                    <option value="">Center Location / Country</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Andorra">Andorra</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Armenia">Armenia</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Azerbaijan">Azerbaijan</option>
+                    <option value="Bahamas">Bahamas</option>
+                    <option value="Bahrain">Bahrain</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="Barbados">Barbados</option>
+                    <option value="Belarus">Belarus</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Belize">Belize</option>
+                    <option value="Benin">Benin</option>
+                    <option value="Bhutan">Bhutan</option>
+                    <option value="Bolivia">Bolivia</option>
+                    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                    <option value="Botswana">Botswana</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Brunei">Brunei</option>
+                    <option value="Bulgaria">Bulgaria</option>
+                    <option value="Burkina Faso">Burkina Faso</option>
+                    <option value="Burundi">Burundi</option>
+                    <option value="Cambodia">Cambodia</option>
+                    <option value="Cameroon">Cameroon</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Cape Verde">Cape Verde</option>
+                    <option value="Central African Republic">Central African Republic</option>
+                    <option value="Chad">Chad</option>
+                    <option value="Chile">Chile</option>
+                    <option value="China">China</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Comoros">Comoros</option>
+                    <option value="Congo">Congo</option>
+                    <option value="Costa Rica">Costa Rica</option>
+                    <option value="Croatia">Croatia</option>
+                    <option value="Cuba">Cuba</option>
+                    <option value="Cyprus">Cyprus</option>
+                    <option value="Czech Republic">Czech Republic</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Djibouti">Djibouti</option>
+                    <option value="Dominica">Dominica</option>
+                    <option value="Dominican Republic">Dominican Republic</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="El Salvador">El Salvador</option>
+                    <option value="Equatorial Guinea">Equatorial Guinea</option>
+                    <option value="Eritrea">Eritrea</option>
+                    <option value="Estonia">Estonia</option>
+                    <option value="Eswatini">Eswatini</option>
+                    <option value="Ethiopia">Ethiopia</option>
+                    <option value="Fiji">Fiji</option>
+                    <option value="Finland">Finland</option>
+                    <option value="France">France</option>
+                    <option value="Gabon">Gabon</option>
+                    <option value="Gambia">Gambia</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="Greece">Greece</option>
+                    <option value="Guatemala">Guatemala</option>
+                    <option value="Guinea">Guinea</option>
+                    <option value="Guyana">Guyana</option>
+                    <option value="Haiti">Haiti</option>
+                    <option value="Honduras">Honduras</option>
+                    <option value="Hungary">Hungary</option>
+                    <option value="Iceland">Iceland</option>
+                    <option value="India">India</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Iraq">Iraq</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Israel">Israel</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Jamaica">Jamaica</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Jordan">Jordan</option>
+                    <option value="Kazakhstan">Kazakhstan</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Kiribati">Kiribati</option>
+                    <option value="Kuwait">Kuwait</option>
+                    <option value="Kyrgyzstan">Kyrgyzstan</option>
+                    <option value="Laos">Laos</option>
+                    <option value="Latvia">Latvia</option>
+                    <option value="Lebanon">Lebanon</option>
+                    <option value="Lesotho">Lesotho</option>
+                    <option value="Liberia">Liberia</option>
+                    <option value="Libya">Libya</option>
+                    <option value="Liechtenstein">Liechtenstein</option>
+                    <option value="Lithuania">Lithuania</option>
+                    <option value="Luxembourg">Luxembourg</option>
+                    <option value="Madagascar">Madagascar</option>
+                    <option value="Malawi">Malawi</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Maldives">Maldives</option>
+                    <option value="Mali">Mali</option>
+                    <option value="Malta">Malta</option>
+                    <option value="Marshall Islands">Marshall Islands</option>
+                    <option value="Mauritania">Mauritania</option>
+                    <option value="Mauritius">Mauritius</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Micronesia">Micronesia</option>
+                    <option value="Moldova">Moldova</option>
+                    <option value="Monaco">Monaco</option>
+                    <option value="Mongolia">Mongolia</option>
+                    <option value="Montenegro">Montenegro</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Mozambique">Mozambique</option>
+                    <option value="Myanmar">Myanmar</option>
+                    <option value="Namibia">Namibia</option>
+                    <option value="Nauru">Nauru</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Nicaragua">Nicaragua</option>
+                    <option value="Niger">Niger</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="North Macedonia">North Macedonia</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Oman">Oman</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Palau">Palau</option>
+                    <option value="Panama">Panama</option>
+                    <option value="Papua New Guinea">Papua New Guinea</option>
+                    <option value="Paraguay">Paraguay</option>
+                    <option value="Peru">Peru</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Poland">Poland</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Qatar">Qatar</option>
+                    <option value="Romania">Romania</option>
+                    <option value="Russia">Russia</option>
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                    <option value="Saint Lucia">Saint Lucia</option>
+                    <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                    <option value="Samoa">Samoa</option>
+                    <option value="San Marino">San Marino</option>
+                    <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                    <option value="Senegal">Senegal</option>
+                    <option value="Serbia">Serbia</option>
+                    <option value="Seychelles">Seychelles</option>
+                    <option value="Sierra Leone">Sierra Leone</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Slovakia">Slovakia</option>
+                    <option value="Slovenia">Slovenia</option>
+                    <option value="Solomon Islands">Solomon Islands</option>
+                    <option value="Somalia">Somalia</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="South Korea">South Korea</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
+                    <option value="Sudan">Sudan</option>
+                    <option value="Suriname">Suriname</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="Syria">Syria</option>
+                    <option value="Tajikistan">Tajikistan</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Timor-Leste">Timor-Leste</option>
+                    <option value="Togo">Togo</option>
+                    <option value="Tonga">Tonga</option>
+                    <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                    <option value="Tunisia">Tunisia</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Turkmenistan">Turkmenistan</option>
+                    <option value="Tuvalu">Tuvalu</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Ukraine">Ukraine</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Uruguay">Uruguay</option>
+                    <option value="Uzbekistan">Uzbekistan</option>
+                    <option value="Vanuatu">Vanuatu</option>
+                    <option value="Vatican City">Vatican City</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="Yemen">Yemen</option>
+                    <option value="Zambia">Zambia</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setRatingSets([...ratingSets, { certFile: null, licFile: null, trainingCenter: '', country: '' }])}
+              className="w-full py-2 rounded-xl text-[10px] font-semibold text-blue-600 hover:text-blue-700 transition-colors flex items-center justify-center gap-1"
+              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+            >
+              + Add Another Type Rating
+            </button>
+          </div>
+          <div className="rounded-xl p-2 mt-2 flex items-center gap-2" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
+            <ShieldCheck size={14} className="text-green-500 flex-shrink-0" />
+            <p className="text-[9px] text-gray-600 leading-snug">
+              <span className="font-semibold text-gray-700">Secure storage:</span> Documents are encrypted and automatically deleted <span className="font-bold text-gray-800">30 days</span> after verification is complete.
             </p>
           </div>
         </motion.div>
 
-        {/* ── Section 3: Flight Hours Summary ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Flight Hours Summary</p>
+        {/* ── Section 5: Flight Hours Summary ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Flight Hours Summary</p>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs">
               <thead>
@@ -202,58 +874,48 @@ export default function VerifyApcPage() {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { label: 'Total Flight Time', key: 'totalHours' },
-                  { label: 'PIC (Pilot in Command)', key: 'picHours' },
-                  { label: 'Night', key: 'nightHours' },
-                  { label: 'Instrument', key: 'instrumentHours' },
-                  { label: 'Cross-Country', key: 'crossCountryHours' },
-                ].map((row) => (
-                  <tr key={row.key} style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                    <td className="px-3 py-2 text-gray-700">{row.label}</td>
-                    <td className="px-3 py-2">
-                      <input type="number" min="0" step="0.1" placeholder="0.0"
-                        value={apcFormData[row.key as keyof typeof apcFormData]}
-                        onChange={(e) => setApcFormData(p => ({ ...p, [row.key]: e.target.value }))}
-                        className="w-20 text-right rounded-lg px-2 py-1 text-xs text-gray-900 outline-none"
-                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {renderHoursRow('Total Flight Time', 'totalHours')}
+                {renderHoursRow('PIC (Pilot in Command)', 'picHours')}
+                {renderHoursRow('Dual Time (LCL)', 'dualHours')}
+                {renderHoursRow('Dual XC', 'dualXcHours')}
+                {renderHoursRow('Cross-Country (XC)', 'crossCountryHours')}
+                {showAdvancedHours && (
+                  <>
+                    {renderHoursRow('Night', 'nightHours')}
+                    {renderHoursRow('Instrument (SIM)', 'instrumentSimHours')}
+                    {renderHoursRow('Instrument (Actual)', 'instrumentActualHours')}
+                    {renderHoursRow('Multi Engine (SIM)', 'multiEngineSimHours')}
+                    {renderHoursRow('Multi Engine (Actual)', 'multiEngineActualHours')}
+                  </>
+                )}
               </tbody>
             </table>
           </div>
+          <button
+            type="button"
+            onClick={() => setShowAdvancedHours(!showAdvancedHours)}
+            className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            {showAdvancedHours ? '− Hide Advanced' : '+ Advanced (Night, Instrument, Multi Engine)'}
+          </button>
         </motion.div>
 
-        {/* ── Section 4: Medical Certificate ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={6}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. Medical Certificate</p>
+        {/* ── Section 6: Logbook Upload ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={4}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. Logbook Upload</p>
           <div className="grid grid-cols-2 gap-2">
-            <select value={apcFormData.medicalClass} onChange={(e) => setApcFormData(p => ({ ...p, medicalClass: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-              <option>Class 1</option><option>Class 2</option><option>Class 3</option>
-            </select>
-            <input type="date" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-          </div>
-        </motion.div>
-
-        {/* ── Section 5: License, Ratings & Government ID ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={7}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Pilot License, Ratings & Government ID</p>
-          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed">
-              <span className="font-bold text-gray-800">Government ID required:</span> Your ATO's Registrar must verify your signature against their internal files. We need a copy of your government-issued ID (passport, driver's license, or national ID) alongside your pilot license to match signatures.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Pilot License', file: apcLicenseFile, setter: setApcLicenseFile, icon: ShieldCheck },
-              { label: 'Type Ratings / Endorsements', file: apcRatingsFile, setter: setApcRatingsFile, icon: BadgeCheck },
-              { label: 'Government-Issued ID', file: apcGovIdFile, setter: setApcGovIdFile, icon: UserCheck },
+              { label: 'Logbook — Scanned or CSV', file: apcLogbookFile, setter: setApcLogbookFile, icon: Briefcase, docType: 'logbook' },
+              { label: 'Signed Consent Form', file: apcConsentFile, setter: setApcConsentFile, icon: UserCheck, docType: 'consent' },
             ].map((item) => (
-              <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${item.file ? 'rgba(34,197,94,0.4)' : 'rgba(0,0,0,0.12)'}` }}>
-                <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => item.setter(e.target.files?.[0] || null)} />
-                {item.file ? (
+              <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
+                <input type="file" accept={item.docType === 'logbook' ? '.pdf,.jpg,.jpeg,.png,.csv' : '.pdf,.jpg,.jpeg,.png'} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadDocument(f, item.docType, item.setter); }} />
+                {uploadStatus[item.docType] === 'uploading' ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                    <p className="text-[9px] font-medium text-gray-500">Uploading securely...</p>
+                  </>
+                ) : item.file ? (
                   <>
                     <BadgeCheck size={18} className="text-green-500" />
                     <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
@@ -261,81 +923,123 @@ export default function VerifyApcPage() {
                 ) : (
                   <>
                     <item.icon size={18} className="text-gray-300" />
-                    <p className="text-[9px] text-gray-500">{item.label}</p>
+                    <p className="text-[9px] font-medium text-gray-600">{item.label}</p>
                   </>
                 )}
               </label>
             ))}
           </div>
-        </motion.div>
+          <div className="flex justify-center mt-2">
+            <button
+              type="button"
+              onClick={() => navigate('/flight-hours-logbook')}
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-red-500 hover:text-red-600 transition-colors"
+            >
+              Fill out consent form for logbook audit →
+            </button>
+          </div>
 
-        {/* ── Section 6: Logbook Upload — Flight Hour Verification ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={8}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. Logbook Upload — Flight Hour Verification</p>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { label: 'Pilot Logbook (All Pages)', file: apcLogbookFile, setter: setApcLogbookFile, icon: Briefcase },
-              { label: 'Medical Certificate', file: apcMedicalFile, setter: setApcMedicalFile, icon: BadgeCheck },
-              { label: 'Signed Consent Form', file: apcConsentFile, setter: setApcConsentFile, icon: UserCheck },
-            ].map((item) => (
-              <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${item.file ? 'rgba(34,197,94,0.4)' : 'rgba(0,0,0,0.12)'}` }}>
-                <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => item.setter(e.target.files?.[0] || null)} />
-                {item.file ? (
-                  <>
-                    <BadgeCheck size={18} className="text-green-500" />
-                    <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
-                  </>
-                ) : (
-                  <>
-                    <item.icon size={18} className="text-gray-300" />
-                    <p className="text-[9px] text-gray-500">{item.label}</p>
-                  </>
-                )}
-              </label>
-            ))}
+          {/* Logbook Export Instructions */}
+          <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
+            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">How to Export Your Logbook</p>
+            <div className="space-y-3">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
+                    <span className="text-[8px] font-bold text-blue-600">1</span>
+                  </div>
+                  <p className="text-[10px] font-semibold text-gray-700">ForeFlight</p>
+                </div>
+                <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
+                  <li>Open ForeFlight and tap the <span className="font-medium text-gray-700">More</span> tab at the bottom</li>
+                  <li>Select <span className="font-medium text-gray-700">Logbook</span> from the menu</li>
+                  <li>Tap the <span className="font-medium text-gray-700">Actions</span> button (three dots) in the top right</li>
+                  <li>Choose <span className="font-medium text-gray-700">Export</span></li>
+                  <li>Select <span className="font-medium text-gray-700">CSV format</span> and tap Export</li>
+                  <li>Upload the downloaded .csv file here</li>
+                </ol>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
+                    <span className="text-[8px] font-bold text-blue-600">2</span>
+                  </div>
+                  <p className="text-[10px] font-semibold text-gray-700">LogTen Pro</p>
+                </div>
+                <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
+                  <li>Open LogTen Pro on your device or web browser</li>
+                  <li>Go to <span className="font-medium text-gray-700">Settings</span> in the main menu</li>
+                  <li>Select <span className="font-medium text-gray-700">Export Logbook</span></li>
+                  <li>Choose <span className="font-medium text-gray-700">CSV (Comma Separated Values)</span> as the format</li>
+                  <li>Tap Export and save the file</li>
+                  <li>Upload the exported .csv file here</li>
+                </ol>
+              </div>
+            </div>
           </div>
         </motion.div>
 
-        {/* ── Section 7: ATO & Flight School Verification Credentials ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={9}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. ATO & Flight School Verification Process</p>
-          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(139,92,246,0.04)', border: '1px solid rgba(139,92,246,0.15)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">Release Form:</span> For now, APC will use a <span className="font-semibold">generic third-party release form</span> to request your training records. If your specific ATO requires their own institutional release form, APC will notify you immediately to arrange the additional signature.
-            </p>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">Corporate Verification:</span> Most established flight academies will not release simulator profiles or ground school records via a simple email. APC will submit our official company profile, registered business license, and your signed consent form to the ATO's Records/Compliance Department.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed">
-              <span className="font-semibold text-gray-700">Custom Forms Database:</span> APC maintains a database of custom institutional release forms required by major flight academies. If your ATO has a proprietary form, we will swap it out and contact you for any additional signatures needed.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* ── Section 8: ATO Third-Party Authorization ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={10}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">8. ATO Authorization — Training Records Release</p>
-          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.15)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">Third-Party Authorization Required:</span> To legally obtain your flight training records from your Approved Training Organization (ATO), APC must submit a formal request with your signed consent. This authorization names APC as the authorized recipient of your training records.
-            </p>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              The ATO's Registrar or Training Records department will require this signed waiver along with a copy of your government-issued ID before releasing any records.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed mb-2">
-              <span className="font-semibold text-gray-700">Note:</span> Many ATOs archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed mb-2">
-              <span className="font-semibold text-gray-700">Internal forms:</span> Some ATOs may reject our consent template and require their own institutional release form. If this happens, APC will contact you immediately to arrange the additional signature.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed">
-              <span className="font-semibold text-gray-700">License validity:</span> ATOs can verify training hours and internal certificates only. Official license validity must be cross-referenced with your issuing civil aviation authority (e.g., CAAP, FAA, EASA).
-            </p>
-          </div>
+        {/* ── Section 7: ATO Authorization ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
-            <input type="text" placeholder="ATO Name (e.g. Alpha Aviation Group)" value={apcFormData.atoName} onChange={(e) => setApcFormData(p => ({ ...p, atoName: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="text" placeholder="ATO Location / Country" value={apcFormData.atoLocation} onChange={(e) => setApcFormData(p => ({ ...p, atoLocation: e.target.value }))} className="rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <select
+              value={atoCountry}
+              onChange={(e) => {
+                const country = e.target.value;
+                setAtoCountry(country);
+                setApcFormData(p => ({ ...p, atoLocation: country, atoName: '' }));
+              }}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <option value="">Select Country</option>
+              <option value="Philippines">Philippines</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="Singapore">Singapore</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Thailand">Thailand</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="India">India</option>
+              <option value="New Zealand">New Zealand</option>
+              <option value="Germany">Germany</option>
+              <option value="France">France</option>
+              <option value="Spain">Spain</option>
+              <option value="Other">Other — Not Listed</option>
+            </select>
+            <select
+              value={apcFormData.atoName}
+              onChange={(e) => setApcFormData(p => ({ ...p, atoName: e.target.value }))}
+              disabled={!atoCountry}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <option value="">
+                {atoCountry ? (FLIGHT_SCHOOLS[atoCountry] ? 'Select Flight School / ATO' : 'Enter manually below') : 'Select country first'}
+              </option>
+              {FLIGHT_SCHOOLS[atoCountry]?.map((school) => (
+                <option key={school} value={school}>{school}</option>
+              ))}
+              {atoCountry && !FLIGHT_SCHOOLS[atoCountry] && (
+                <option value="__manual__">— Type custom name below —</option>
+              )}
+            </select>
           </div>
+          {(!atoCountry || !FLIGHT_SCHOOLS[atoCountry] || apcFormData.atoName === '__manual__') && (
+            <input
+              type="text"
+              placeholder="Custom ATO / Flight School Name"
+              value={apcFormData.atoName === '__manual__' ? '' : apcFormData.atoName}
+              onChange={(e) => setApcFormData(p => ({ ...p, atoName: e.target.value }))}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 mb-3"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            />
+          )}
           <div className="mb-3">
             <p className="text-[10px] font-semibold text-gray-700 mb-1.5">What data should APC request from the ATO?</p>
             <select value={apcFormData.atoDataNeeded} onChange={(e) => setApcFormData(p => ({ ...p, atoDataNeeded: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
@@ -346,107 +1050,138 @@ export default function VerifyApcPage() {
               <option value="all_records">All Available Training Records</option>
             </select>
           </div>
+
+          {/* Additional ATOs */}
+          <div className="mb-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[10px] font-semibold text-gray-700">Additional ATO / Operator for Verification</p>
+              <span className="text-[9px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">+$15 each</span>
+            </div>
+            {additionalATOs.map((ato, idx) => (
+              <div key={idx} className="grid grid-cols-2 gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="ATO Name"
+                  value={ato.name}
+                  onChange={(e) => {
+                    const updated = [...additionalATOs];
+                    updated[idx].name = e.target.value;
+                    setAdditionalATOs(updated);
+                  }}
+                  className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Location / Country"
+                    value={ato.location}
+                    onChange={(e) => {
+                      const updated = [...additionalATOs];
+                      updated[idx].location = e.target.value;
+                      setAdditionalATOs(updated);
+                    }}
+                    className="flex-1 rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setAdditionalATOs(prev => prev.filter((_, i) => i !== idx))}
+                    className="px-2 rounded-lg text-xs font-bold text-gray-400 hover:text-red-500 transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setAdditionalATOs(prev => [...prev, { name: '', location: '' }])}
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              + Add another ATO
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 mb-3">
+            <button
+              type="button"
+              onClick={() => navigate('/consent-form')}
+              className="text-[10px] font-semibold text-amber-600 hover:text-amber-700 underline cursor-pointer"
+            >
+              Download/Print ATO Consent Form
+            </button>
+            <span className="text-[9px] text-gray-400">— sign, scan, and upload above</span>
+          </div>
           <div className="rounded-xl p-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
             <label className="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" checked={atoConsentChecked} onChange={(e) => setAtoConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
               <span className="text-[10px] text-gray-700 leading-snug">
-                I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to contact the ATO named above and request the release of my flight training records on my behalf. I understand this consent is required under data protection regulations and that the ATO may require additional verification of my identity before releasing records.
+                I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to contact the ATO named above and send my uploaded documents for logbook verification. I understand that the ATO will send verification results directly to my email address, and APC will receive only a confirmation that verification was completed.
               </span>
             </label>
           </div>
         </motion.div>
 
-        {/* ── Section 9: How APC Verifies Your Logbook ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={11}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">9. How APC Verifies Your Logbook</p>
-          <div className="rounded-xl p-3" style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.15)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">What we need from you:</span> Your complete pilot logbook (all pages) as a PDF scan or photo upload. If you use a digital logbook app (ForeFlight, LogTen Pro, or MCC PILOTLOG), please also provide an official export or backup file — this helps us verify your records are authentic and unmodified.
-            </p>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">What we do with it:</span> APC cross-references your logbook entries against your ATO's official training records and simulator logs. We check for consistency in flight hours, dates, aircraft types, and instructor signatures to ensure your records are accurate and complete.
-            </p>
-            <p className="text-[10px] text-gray-500 leading-relaxed">
-              <span className="font-semibold text-gray-700">Why this matters:</span> Airlines and operators require verified flight hours before hiring. APC's verification gives them confidence that your logbook matches official records from your training institution.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* ── Section 10: Privacy Notice ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={12}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">10. Privacy Notice</p>
-          <div className="rounded-xl p-3" style={{ background: 'rgba(220,38,38,0.04)', border: '1px solid rgba(220,38,38,0.15)' }}>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> is registered as a Data Controller with the Data Protection Office of Mauritius. We are committed to protecting your privacy in strict compliance with the Mauritius Data Protection Act (DPA) 2017.
-            </p>
-            <p className="text-[10px] text-gray-700 font-semibold mb-1">1. Data We Collect & Purpose</p>
-            <div className="space-y-1 mb-2">
-              <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-1" />
-                <p className="text-[10px] text-gray-600"><span className="font-semibold">Identity Data:</span> Government-issued ID, passport copies, and contact information.</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-1" />
-                <p className="text-[10px] text-gray-600"><span className="font-semibold">Professional Data:</span> Pilot licenses, type ratings, endorsements, and flight logbooks.</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-1" />
-                <p className="text-[10px] text-gray-600"><span className="font-semibold">Special Categories:</span> Aviation medical certificates and training/simulator records from your named ATO.</p>
-              </div>
-            </div>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              We process this data solely to perform credential validation and background checks based on your explicit written consent.
-            </p>
-            <p className="text-[10px] text-gray-700 font-semibold mb-1">2. Strict Data Minimization & Retention</p>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              We do not hoard your data. Your sensitive raw documents (ID scans, medical forms, full logbooks) are used strictly to generate your verification report. All raw documents are permanently deleted and purged from our systems exactly <span className="font-semibold">30 days</span> after your final verification report is delivered. Only the final, anonymized confirmation of your verification status is retained for regulatory audit purposes.
-            </p>
-            <p className="text-[10px] text-gray-700 font-semibold mb-1">3. Security</p>
-            <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-              Your data is securely stored on enterprise-grade, encrypted cloud storage protected by multi-factor authentication (MFA). We never sell, rent, or lease your personal information to third parties.
-            </p>
-            <p className="text-[10px] text-gray-700 font-semibold mb-1">4. Your Rights & Contact</p>
-            <p className="text-[10px] text-gray-600 leading-relaxed">
-              Under the Mauritius DPA 2017, you retain the right to access, rectify, or restrict the processing of your data, or withdraw your consent at any time. For data protection inquiries, contact our designated Data Protection representative directly: <span className="font-semibold">Benjamin Bowler</span> — benjamin@pilotrecognition.com
-            </p>
-          </div>
-        </motion.div>
-
-        {/* ── Section 11: General Authorization & Consent ── */}
-        <motion.div className="mb-6 text-left" variants={fadeUp} custom={13}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">11. Authorization & Consent</p>
-          <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
+        {/* ── Section 7: Privacy & Data Protection ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={6}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. Privacy & Data Protection</p>
+          <div className="rounded-xl p-3" style={{ background: 'rgba(220,38,38,0.04)', border: '1px solid rgba(220,38,38,0.12)' }}>
             <p className="text-[10px] text-gray-600 leading-relaxed mb-3">
-              I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to contact my issuing aviation authority and all relevant aviation organizations to verify my pilot credentials, flight hours, training records, and license validity on my behalf.
+              <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> is registered as a Data Controller with the Data Protection Office of Mauritius. Documents are encrypted, and all raw files are permanently deleted <span className="font-semibold">30 days</span> after verification is complete. For full details, see <button onClick={() => navigate('/about-verification')} className="text-red-500 hover:underline font-semibold">About Verification</button>.
             </p>
-            <div className="space-y-2">
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" checked={privacyConsentChecked} onChange={(e) => setPrivacyConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-blue-500 cursor-pointer" />
-                <span className="text-[10px] text-gray-700 leading-snug">
-                  I have read and agree to the <span className="font-semibold">Privacy Notice</span> above. I understand how APC collects, uses, and retains my data, including the 30-day purge policy for raw documents.
-                </span>
-              </label>
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" checked={apcConsentChecked} onChange={(e) => setApcConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-blue-500 cursor-pointer" />
-                <span className="text-[10px] text-gray-700 leading-snug">
-                  I have read and agree to the above authorization. I confirm that all information provided is accurate and I consent to APC contacting relevant aviation authorities to verify my records.
-                </span>
-              </label>
-            </div>
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" checked={privacyConsentChecked} onChange={(e) => setPrivacyConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-red-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700 leading-snug">
+                I have read and agree to the Privacy Notice. I understand how APC collects, uses, and retains my data, including the 30-day purge policy.
+              </span>
+            </label>
+          </div>
+        </motion.div>
+
+        {/* ── Section 8: Authorization & Consent ── */}
+        <motion.div className="mb-6 text-left" variants={fadeUp} custom={7}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">8. Authorization & Consent</p>
+          <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
+            <label className="flex items-start gap-2 cursor-pointer mb-2">
+              <input type="checkbox" checked={apcConsentChecked} onChange={(e) => setApcConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-blue-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700 leading-snug">
+                I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to contact my issuing aviation authority and ATO to verify my pilot credentials, flight hours, and training records on my behalf. I confirm all information provided is accurate.
+              </span>
+            </label>
           </div>
         </motion.div>
 
         {/* Submit */}
-        <motion.div className="flex justify-center pb-2" variants={fadeUp} custom={14}>
+        <motion.div className="flex flex-col items-center gap-2 pb-2" variants={fadeUp} custom={8}>
+          {submitStatus === 'success' && (
+            <p className="text-[10px] font-semibold text-green-600">Verification request submitted successfully!</p>
+          )}
+          {submitStatus === 'error' && (
+            <p className="text-[10px] font-semibold text-red-600">Submission failed. Please try again.</p>
+          )}
           <motion.button
             onClick={handleSubmit}
-            disabled={!apcEmail || !apcLicenseFile || !apcRatingsFile || !apcGovIdFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
+            disabled={submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcLicenseFile || !apcLicenseBackFile || !apcRadioNtcFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
-            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-            whileHover={apcEmail && apcLicenseFile && apcRatingsFile && apcGovIdFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName ? { scale: 1.03 } : {}}
-            whileTap={apcEmail && apcLicenseFile && apcRatingsFile && apcGovIdFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName ? { scale: 0.98 } : {}}
+            style={{ background: submitStatus === 'success' ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+            whileHover={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {}}
+            whileTap={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {}}
           >
-            SUBMIT & CONTINUE <ArrowRight size={14} />
+            {submitStatus === 'submitting' ? (
+              <>
+                <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                SUBMITTING...
+              </>
+            ) : submitStatus === 'success' ? (
+              <>
+                <BadgeCheck size={14} /> SUBMITTED
+              </>
+            ) : (
+              <>
+                SUBMIT & CONTINUE <ArrowRight size={14} />
+              </>
+            )}
           </motion.button>
         </motion.div>
       </motion.div>

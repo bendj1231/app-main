@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../../../shared/lib/supabase';
+import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 
 export default function ReferralLandingPage() {
   const params = useParams();
   const navigate = useNavigate();
+  const { callApi } = useWorkerAuth();
   const code = (params?.code as string)?.toUpperCase();
 
   const [status, setStatus] = useState<'loading' | 'valid' | 'invalid'>('loading');
@@ -21,61 +22,50 @@ export default function ReferralLandingPage() {
   }, [code]);
 
   const resolveCode = async () => {
-    // Check if it's a pilot referral code (in profiles)
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id, full_name, display_name')
-      .eq('referral_code', code)
-      .maybeSingle();
+    // Check if it's a pilot referral code (in profiles via Worker API)
+    try {
+      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { referral_code: code },
+        limit: 1,
+      });
+      const profile = profileRows?.[0];
 
-    if (profile) {
-      setReferrerName(profile.full_name || profile.display_name || 'A fellow pilot');
-      // Store in cookie — 30 day expiry, read by AuthContext on signup
-      document.cookie = `pr_ref=${code}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
-      setStatus('valid');
+      if (profile) {
+        const name = (profile['display_name'] as string) || (profile['full_name'] as string) || 'A fellow pilot';
+        setReferrerName(name);
+        // Store in cookie — 30 day expiry, read by AuthContext on signup
+        document.cookie = `pr_ref=${code}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+        setStatus('valid');
 
-      // Also track the click in referral_partners if this referrer has a partner record
-      try {
-        const { data: partner } = await supabase
-          .from('referral_partners')
-          .select('id, total_referrals')
-          .eq('referral_code', code)
-          .eq('is_active', true)
-          .maybeSingle();
-
-        if (partner) {
-          await supabase
-            .from('referral_partners')
-            .update({ total_referrals: (partner.total_referrals ?? 0) + 1 })
-            .eq('id', partner.id);
-        }
-      } catch {
-        // non-critical
+        // Redirect to become-member after short delay
+        setTimeout(() => {
+          navigate('/become-member?ref=' + code);
+        }, 2500);
+        return;
       }
 
-      // Redirect to signup after short delay
-      setTimeout(() => {
-        navigate('/?signup=1&ref=' + code);
-      }, 2500);
-      return;
-    }
+      // Check referral_partners table (flight school / ATO codes)
+      const partnerRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'referral_partners',
+        operation: 'select',
+        where: { referral_code: code, is_active: true },
+        limit: 1,
+      });
+      const partnerRecord = partnerRows?.[0];
 
-    // Check referral_partners table (flight school / ATO codes)
-    const { data: partnerRecord } = await supabase
-      .from('referral_partners')
-      .select('id, name, partner_type')
-      .eq('referral_code', code)
-      .eq('is_active', true)
-      .maybeSingle();
-
-    if (partnerRecord) {
-      setReferrerName(partnerRecord.name);
-      document.cookie = `pr_ref=${code}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
-      setStatus('valid');
-      setTimeout(() => {
-        navigate('/?signup=1&ref=' + code);
-      }, 2500);
-      return;
+      if (partnerRecord) {
+        setReferrerName((partnerRecord['name'] as string) || 'A partner');
+        document.cookie = `pr_ref=${code}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+        setStatus('valid');
+        setTimeout(() => {
+          navigate('/become-member?ref=' + code);
+        }, 2500);
+        return;
+      }
+    } catch {
+      // non-critical
     }
 
     setStatus('invalid');

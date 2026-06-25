@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/shared/lib/supabase';
 
 type TabId = 'home' | 'profile' | 'wallet' | 'pathways' | 'programs' | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook' | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance' | 'cockpit';
@@ -38,11 +39,11 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       eyebrow: 'Training',
       titleWhite: 'TYPE RATING',
       titleAccent: 'SEARCH',
-      description: 'Find approved type rating centres worldwide. Compare costs, locations, and airline partnerships.',
-      cta: 'Search Centres',
+      description: 'Find approved type rating centers worldwide. Compare costs, locations, and airline partnerships.',
+      cta: 'Search Centers',
       ctaAction: () => safeRedirect('/type-rating-search'),
       rightLabel: 'Training Network',
-      rightText: '200+ Approved Centres',
+      rightText: '200+ Approved Centers',
       image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1920&q=90',
       accent: '#6366f1',
     },
@@ -125,7 +126,7 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
 
           {/* Left content panel */}
           <div className="absolute inset-0 flex items-stretch">
-            <div className="relative w-[55%] h-full flex flex-col justify-center px-10 py-10">
+            <div className="relative w-[55%] h-full flex flex-col justify-center pl-14 pr-8 py-10">
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-cyan-400 text-xs">&#8811;</span>
@@ -142,14 +143,14 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={(e) => { e.stopPropagation(); slide.ctaAction(); }}
-                    className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider transition-all duration-200 hover:brightness-110"
+                    className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider transition-all duration-200 hover:brightness-110 flex items-center justify-center"
                     style={{ background: slide.accent }}
                   >
                     {slide.cta}
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); slide.ctaAction(); }}
-                    className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider border border-white/30 hover:bg-white/10 transition-all duration-200"
+                    className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider border border-white/30 hover:bg-white/10 transition-all duration-200 flex items-center justify-center"
                   >
                     {slide.rightText}
                   </button>
@@ -161,16 +162,50 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
         </motion.div>
       </AnimatePresence>
 
+      {/* Prev / Next arrows */}
+      <button
+        onClick={(e) => { e.stopPropagation(); if (current > 0) setCurrent((prev) => prev - 1); }}
+        className={`absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all ${current > 0 ? 'hover:scale-110' : ''}`}
+        style={{
+          background: current > 0 ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.2)',
+          backdropFilter: 'blur(4px)',
+          border: current > 0 ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.08)',
+          cursor: current > 0 ? 'pointer' : 'default',
+          opacity: current > 0 ? 1 : 0.35,
+        }}
+        aria-label="Previous slide"
+        disabled={current === 0}
+      >
+        <ChevronLeft size={20} className="text-white" />
+      </button>
+      <button
+        onClick={(e) => { e.stopPropagation(); if (current < slides.length - 1) setCurrent((prev) => prev + 1); }}
+        className={`absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all ${current < slides.length - 1 ? 'hover:scale-110' : ''}`}
+        style={{
+          background: current < slides.length - 1 ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.2)',
+          backdropFilter: 'blur(4px)',
+          border: current < slides.length - 1 ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.08)',
+          cursor: current < slides.length - 1 ? 'pointer' : 'default',
+          opacity: current < slides.length - 1 ? 1 : 0.35,
+        }}
+        aria-label="Next slide"
+        disabled={current === slides.length - 1}
+      >
+        <ChevronRight size={20} className="text-white" />
+      </button>
+
       {/* Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
         {slides.map((s, i) => (
           <button
             key={s.id}
             onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
-            className="w-2 h-2 rounded-full transition-all"
+            className="rounded-full transition-all"
             style={{
+              width: i === current ? 20 : 8,
+              height: 8,
               background: i === current ? 'white' : 'rgba(255,255,255,0.35)',
-              transform: i === current ? 'scale(1.3)' : 'scale(1)',
+              borderRadius: 4,
             }}
           />
         ))}

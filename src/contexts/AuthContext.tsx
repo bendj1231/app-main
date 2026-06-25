@@ -498,7 +498,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.warn('⚠️ Wallet provision non-critical error:', walletErr);
           }
 
-          // Referral attribution — read code stored by /ref/[code] landing page
+          // Store referral lineage on profile (payout happens on Recognition+ subscription, not signup)
           try {
             const refCode =
               typeof document !== 'undefined'
@@ -525,45 +525,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     referred_by_profile_id: (referrer as Record<string, unknown>).id,
                   },
                 });
-                // Record in referral_conversions (partner = referrer via referral_partners if they exist)
-                const partnerRows = await callApi<Record<string, unknown>[]>('queryTable', {
-                  table: 'referral_partners',
-                  operation: 'select',
-                  where: { referral_code: refCode, is_active: true },
-                  limit: 1,
-                });
-                const partner = partnerRows?.[0];
-                if (partner) {
-                  await callApi('queryTable', {
-                    table: 'referral_conversions',
-                    operation: 'insert',
-                    data: {
-                      partner_id: (partner as Record<string, unknown>).id,
-                      referral_code: refCode,
-                      pilot_id: userId,
-                      pilot_email: email,
-                      pilot_name: userData.fullName || null,
-                      status: 'signed_up',
-                      clicked_at: new Date().toISOString(),
-                      signed_up_at: new Date().toISOString(),
-                      commission_amount: (partner as Record<string, unknown>).commission_rate ?? 20,
-                    },
-                  });
-                  await callApi('queryTable', {
-                    table: 'referral_partners',
-                    operation: 'update',
-                    id: (partner as Record<string, unknown>).id as string,
-                    data: {
-                      total_referrals: ((partner as Record<string, unknown>).total_referrals as number) + 1,
-                    },
-                  });
-                }
                 // Clear cookie after attribution
                 document.cookie = 'pr_ref=; path=/; max-age=0';
               }
             }
           } catch (refErr) {
-            console.warn('⚠️ Referral attribution failed (non-critical):', refErr);
+            console.warn('⚠️ Referral lineage tracking failed (non-critical):', refErr);
           }
 
           // Generate referral code for new pilot (non-blocking)

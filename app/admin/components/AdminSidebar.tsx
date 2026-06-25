@@ -54,6 +54,7 @@ const navCategories: NavCategory[] = [
     label: 'Pilots',
     items: [
       { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
+      { label: 'APC Verifications', path: '/admin/apc-verifications', icon: '◆' },
       { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
     ],
   },

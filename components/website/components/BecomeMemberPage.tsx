@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { createPortal } from 'react-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -222,6 +222,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [occupation, setOccupation] = useState('');
     const [dob, setDob] = useState('');
     const [nationality, setNationality] = useState('');
+    const [phone, setPhone] = useState('');
     const [aircraftTypes, setAircraftTypes] = useState<string[]>([]);
     const [ratings, setRatings] = useState<string[]>([]);
     const [issuingAuthority, setIssuingAuthority] = useState('');
@@ -230,6 +231,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [typeRatingInput, setTypeRatingInput] = useState('');
     const [elpLevel, setElpLevel] = useState('');
     const [medicalClass, setMedicalClass] = useState('');
+    const [radioLicense, setRadioLicense] = useState(false);
     const [otherLicence, setOtherLicence] = useState('');
     const [showMoreClasses, setShowMoreClasses] = useState(false);
     const [showMoreCategories, setShowMoreCategories] = useState(false);
@@ -239,6 +241,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showRatingsModal, setShowRatingsModal] = useState(false);
     const [showTypeRatingsModal, setShowTypeRatingsModal] = useState(false);
     const [step3Subview, setStep3Subview] = useState<'overview' | 'aircraft' | 'ratings' | 'typeRatings'>('overview');
+    const [hoveredRow, setHoveredRow] = useState<'aircraft' | 'ratings' | null>(null);
+    const [exitingRow, setExitingRow] = useState<'aircraft' | 'ratings' | null>(null);
+    const rowExitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [stageTransition, setStageTransition] = useState<'idle' | 'exiting'>('idle');
     const [saving, setSaving] = useState(false);
 
     // ── Pilot Career Status (pilotshortage.org compliant) ──
@@ -251,6 +257,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [currentRole, setCurrentRole] = useState('');
     const [immediateAvailable, setImmediateAvailable] = useState(false);
     const [hoursCertified, setHoursCertified] = useState(false);
+    const [atoAuditRequested, setAtoAuditRequested] = useState(false);
+    const [atoAuditPending, setAtoAuditPending] = useState(false);
     const [pilotStage, setPilotStage] = useState('');
     const [showRedirect, setShowRedirect] = useState(false);
     const NON_PILOT_STAGES = ['aspirant', 'student_no_license', 'ground_school'];
@@ -294,8 +302,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     // ── Detect Auth0 user and pre-populate display name ──
     useEffect(() => {
         if (isSetup && auth0User) {
-            const name = auth0User.name || auth0User.email?.split('@')[0] || '';
-            setDisplayName(name);
+            setDisplayName(auth0User.email || '');
         }
     }, [isSetup, auth0User]);
 
@@ -535,22 +542,22 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 type_rating_input: typeRatingInput || null,
                 elp_level: elpLevel || null,
                 medical_class: medicalClass || null,
+                radio_license: radioLicense,
                 employment_status: employmentStatus || null,
-                current_job: currentJob || null,
+                current_job: currentRole || null,
                 career_goal: careerGoal || null,
                 pilot_stage: pilotStage || null,
-                show_aircraft_section: showAircraftSection,
-                show_ratings_section: showRatingsSection,
-                show_more_classes: showMoreClasses,
-                show_more_categories: showMoreCategories,
+                immediate_available: immediateAvailable,
+                unemployed_duration: unemployedDuration || null,
+                phone: phone || null,
+                hours_certified: hoursCertified,
                 data_controller_agreement_accepted: dcaAgreed ? 1 : 0,
                 data_controller_agreement_accepted_at: dcaAgreedAt,
             };
             console.log('[DEBUG][Worker] Full profile save payload:', JSON.stringify(workerPayload, null, 2));
 
-            const result = await callWorker('upsertProfile', workerPayload);
-            console.log('[BecomeMember] Profile saved:', result);
-            onNavigate('platform');
+            sessionStorage.setItem('pr_profile_payload', JSON.stringify(workerPayload));
+            onNavigate('recognition-profile/create');
         } catch (err) {
             console.error('🔴 [handleSaveProfile] outer catch:', err);
             setSaveError('Failed to save. Please try again.');
@@ -690,6 +697,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 0%   { opacity: 0; transform: scale(0.96) translateY(12px); filter: blur(4px); }
                                 60%  { opacity: 1; transform: scale(1.01) translateY(-2px); filter: blur(0px); }
                                 100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); }
+                            }
+                            @keyframes dematerializeOut {
+                                0%   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); }
+                                100% { opacity: 0; transform: scale(0.96) translateY(-6px); filter: blur(2px); }
+                            }
+                            @keyframes stageBlurOut {
+                                0%   { opacity: 1; filter: blur(0px) brightness(1); transform: scale(1) translateX(0); }
+                                50%  { opacity: 0.6; filter: blur(6px) brightness(0.8); transform: scale(0.98) translateX(-8px); }
+                                100% { opacity: 0; filter: blur(12px) brightness(0.5); transform: scale(0.94) translateX(-16px); }
                             }
                             @keyframes materializeCard {
                                 0%   { opacity: 0; transform: scale(0.94) translateY(24px); filter: blur(8px); }
@@ -985,7 +1001,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
 
                                 {/* Stage content wrapper — key forces remount + materialize animation on every stage change */}
-                                <div key={setupStage} className="materialize-stage">
+                                <div key={setupStage} className="materialize-stage" style={{ animation: stageTransition === 'exiting' ? 'stageBlurOut 0.28s cubic-bezier(0.55, 0, 0.45, 1) forwards' : undefined }}>
                                 {setupStage === 1 && (
                                 <>
                                 {/* ── SECTION 1: Identity ── */}
@@ -997,9 +1013,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                     <div className="mb-3">
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
-                                            Callsign / Nickname
+                                            Email / Public Callsign
                                         </div>
-                                        <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="e.g. Skyhawk" />
+                                        <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="your@email.com" />
                                     </div>
                                     <div className="mb-3">
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
@@ -1034,10 +1050,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
                                     </div>
+                                    <div className="mb-3">
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Phone <span style={{ color: 'rgba(148,163,184,0.5)', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional)</span></div>
+                                        <input
+                                            type="tel"
+                                            value={phone}
+                                            onChange={e => setPhone(e.target.value)}
+                                            placeholder="+971 55 123 4567"
+                                            style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', fontSize: '13px', lineHeight: '1.5', color: phone ? '#ffffff' : '#94a3b8', boxSizing: 'border-box' }}
+                                        />
+                                    </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '8px 12px', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
                                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
                                             <span style={{ fontSize: '11px', flexShrink: 0 }}>🔓</span>
-                                            <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.4 }}>Callsign is <strong style={{ color: '#ffffff' }}>public</strong> and visible to other operators.</span>
+                                            <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.4 }}>Email / callsign is <strong style={{ color: '#ffffff' }}>public</strong> and visible to other operators.</span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
                                             <span style={{ fontSize: '11px', flexShrink: 0 }}>🔒</span>
@@ -1057,7 +1083,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
                                     <button
                                         type="button"
-                                        onClick={() => setSetupStage(2)}
+                                        onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(2); setStageTransition('idle'); }, 280); }}
                                         disabled={!firstName.trim() || !lastName.trim() || !dob || !nationality}
                                         className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 btn-ripple hover-lift glow-active"
                                     >Next →</button>
@@ -1184,7 +1210,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>{/* end Section 2 */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(1)} className="px-6 py-2.5 h-10 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-xl text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(occupation && occupation !== 'None / No Licence' ? 3 : 4)} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(occupation && occupation !== 'None / No Licence' ? 3 : 4); setStageTransition('idle'); }, 280); }} disabled={!occupation || !pilotStage || (occupation !== 'None / No Licence' && (!issuingAuthority || (occupation === 'Other' && !otherLicence.trim())))} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>
                                 )}
@@ -1202,39 +1228,87 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <>
                                         <div style={{ fontSize: '11px', fontWeight: 700, color: '#94a3af', letterSpacing: '0.05em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginTop: '4px' }}>Aircraft &amp; Privileges</div>
 
-                                        {/* Aircraft Class / Type — always visible */}
+                                        {/* Aircraft Class / Type — hover expandable */}
                                         {(() => {
                                             const selectedCount = aircraftTypes.filter(t => t !== '__none__').length;
                                             const isNone = aircraftTypes.includes('__none__');
+                                            const isDone = isNone || selectedCount > 0;
                                             return (
-                                                <button type="button" onClick={() => setStep3Subview('aircraft')}
-                                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-                                                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Aircraft Class / Type</div>
-                                                        <div style={{ fontSize: '12px', color: isNone ? '#ffffff' : selectedCount > 0 ? '#ffffff' : 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
-                                                            {isNone ? 'None required' : selectedCount > 0 ? `${selectedCount} selected` : 'Select aircraft classes...'}
+                                                <div onMouseEnter={() => { if (rowExitTimer.current) { clearTimeout(rowExitTimer.current); rowExitTimer.current = null; } setExitingRow(null); setHoveredRow('aircraft'); }} onMouseLeave={() => { setExitingRow('aircraft'); setHoveredRow(null); rowExitTimer.current = setTimeout(() => setExitingRow(null), 280); }} style={{ position: 'relative' }}>
+                                                    <button type="button" onClick={() => setStep3Subview('aircraft')}
+                                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', width: '100%', background: isDone ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${isDone ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '50%', border: `1.5px solid ${isDone ? '#22c55e' : 'rgba(255,255,255,0.3)'}`, background: isDone ? '#22c55e' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                {isDone && <span style={{ color: '#fff', fontSize: '10px', fontWeight: 700 }}>✓</span>}
+                                                            </span>
+                                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                                                                <div style={{ fontSize: '11px', fontWeight: 600, color: isDone ? '#22c55e' : '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase', transition: 'all 0.15s' }}>Aircraft Class / Type</div>
+                                                                <div style={{ fontSize: '12px', color: isDone ? '#22c55e' : 'rgba(255,255,255,0.4)', fontWeight: 500, transition: 'all 0.15s' }}>
+                                                                    {isNone ? 'None required' : selectedCount > 0 ? `${selectedCount} selected` : 'Select aircraft classes...'}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <span style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 600 }}>Edit →</span>
-                                                </button>
+                                                        <span style={{ fontSize: '10px', color: (hoveredRow === 'aircraft' || exitingRow === 'aircraft') ? '#0f172a' : '#38bdf8', fontWeight: 700, background: (hoveredRow === 'aircraft' || exitingRow === 'aircraft') ? '#ffffff' : 'transparent', padding: (hoveredRow === 'aircraft' || exitingRow === 'aircraft') ? '4px 10px' : '0', borderRadius: '20px', transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>{(hoveredRow === 'aircraft' || exitingRow === 'aircraft') ? (<>Click to edit <span style={{ fontSize: '8px' }}>▶</span></>) : 'Edit →'}</span>
+                                                    </button>
+                                                    {(hoveredRow === 'aircraft' || exitingRow === 'aircraft') && (
+                                                        <div style={{ marginTop: '6px', padding: '14px', background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', zIndex: 10, position: 'relative', animation: exitingRow === 'aircraft' ? 'dematerializeOut 0.28s cubic-bezier(0.55, 0, 1, 0.45) forwards' : 'materializeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards', transformOrigin: 'center top' }}>
+                                                            {(() => {
+                                                                const isNone = aircraftTypes.includes('__none__');
+                                                                return (
+                                                                    <button type="button" onClick={(e) => { e.stopPropagation(); setAircraftTypes(isNone ? [] : ['__none__']); }}
+                                                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(255,255,255,0.08)' : 'transparent', border: `1px solid ${isNone ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#ffffff' : 'rgba(255,255,255,0.3)'}`, background: isNone ? 'rgba(255,255,255,0.2)' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                            {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                                        </span>
+                                                                        <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#ffffff' : 'rgba(255,255,255,0.6)' }}>None required — I'm not yet operating aircraft</span>
+                                                                    </button>
+                                                                );
+                                                            })()}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             );
                                         })()}
 
-                                        {/* Operational Ratings — Apple checklist style */}
+                                        {/* Operational Ratings — hover expandable */}
                                         {(() => {
                                             const selectedCount = ratings.filter(r => r !== '__none__').length;
                                             const isNone = ratings.includes('__none__');
+                                            const isDone = isNone || selectedCount > 0;
                                             return (
-                                                <button type="button" onClick={() => setStep3Subview('ratings')}
-                                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-                                                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Operational Ratings</div>
-                                                        <div style={{ fontSize: '12px', color: isNone ? '#ffffff' : selectedCount > 0 ? '#ffffff' : 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
-                                                            {isNone ? 'None required' : selectedCount > 0 ? `${selectedCount} selected` : 'Select operational ratings...'}
+                                                <div onMouseEnter={() => { if (rowExitTimer.current) { clearTimeout(rowExitTimer.current); rowExitTimer.current = null; } setExitingRow(null); setHoveredRow('ratings'); }} onMouseLeave={() => { setExitingRow('ratings'); setHoveredRow(null); rowExitTimer.current = setTimeout(() => setExitingRow(null), 280); }} style={{ position: 'relative' }}>
+                                                    <button type="button" onClick={() => setStep3Subview('ratings')}
+                                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', width: '100%', background: isDone ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${isDone ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '50%', border: `1.5px solid ${isDone ? '#22c55e' : 'rgba(255,255,255,0.3)'}`, background: isDone ? '#22c55e' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                {isDone && <span style={{ color: '#fff', fontSize: '10px', fontWeight: 700 }}>✓</span>}
+                                                            </span>
+                                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                                                                <div style={{ fontSize: '11px', fontWeight: 600, color: isDone ? '#22c55e' : '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase', transition: 'all 0.15s' }}>Operational Ratings</div>
+                                                                <div style={{ fontSize: '12px', color: isDone ? '#22c55e' : 'rgba(255,255,255,0.4)', fontWeight: 500, transition: 'all 0.15s' }}>
+                                                                    {isNone ? 'None required' : selectedCount > 0 ? `${selectedCount} selected` : 'Select operational ratings...'}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <span style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 600 }}>Edit →</span>
-                                                </button>
+                                                        <span style={{ fontSize: '10px', color: (hoveredRow === 'ratings' || exitingRow === 'ratings') ? '#0f172a' : '#38bdf8', fontWeight: 700, background: (hoveredRow === 'ratings' || exitingRow === 'ratings') ? '#ffffff' : 'transparent', padding: (hoveredRow === 'ratings' || exitingRow === 'ratings') ? '4px 10px' : '0', borderRadius: '20px', transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>{(hoveredRow === 'ratings' || exitingRow === 'ratings') ? (<>Click to edit <span style={{ fontSize: '8px' }}>▶</span></>) : 'Edit →'}</span>
+                                                    </button>
+                                                    {(hoveredRow === 'ratings' || exitingRow === 'ratings') && (
+                                                        <div style={{ marginTop: '6px', padding: '14px', background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', zIndex: 10, position: 'relative', animation: exitingRow === 'ratings' ? 'dematerializeOut 0.28s cubic-bezier(0.55, 0, 1, 0.45) forwards' : 'materializeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards', transformOrigin: 'center top' }}>
+                                                            {(() => {
+                                                                const isNone = ratings.includes('__none__');
+                                                                return (
+                                                                    <button type="button" onClick={(e) => { e.stopPropagation(); setRatings(isNone ? [] : ['__none__']); }}
+                                                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: isNone ? 'rgba(255,255,255,0.08)' : 'transparent', border: `1px solid ${isNone ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${isNone ? '#ffffff' : 'rgba(255,255,255,0.3)'}`, background: isNone ? 'rgba(255,255,255,0.2)' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                                                            {isNone && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                                                        </span>
+                                                                        <span style={{ fontSize: '12px', fontWeight: isNone ? 600 : 500, color: isNone ? '#ffffff' : 'rgba(255,255,255,0.6)' }}>None required — I don't hold any ratings yet</span>
+                                                                    </button>
+                                                                );
+                                                            })()}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             );
                                         })()}
                                         {/* Type Ratings — conditional for licensed pilots, inside progressive disclosure */}
@@ -1332,12 +1406,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                     )}
                                 </div>
+                                {/* Radio License */}
+                                <div className="mb-6">
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px', marginBottom: '8px' }}>
+                                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#94a3af', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Radio License <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                    </div>
+                                    <button type="button" onClick={() => setRadioLicense(!radioLicense)}
+                                        style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', width: '100%', background: radioLicense ? 'rgba(34,197,94,0.08)' : 'transparent', border: `1px solid ${radioLicense ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.15)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '50%', border: `1.5px solid ${radioLicense ? '#22c55e' : 'rgba(255,255,255,0.3)'}`, background: radioLicense ? '#22c55e' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                            {radioLicense && <span style={{ color: '#fff', fontSize: '10px', fontWeight: 700 }}>✓</span>}
+                                        </span>
+                                        <span style={{ fontSize: '13px', fontWeight: radioLicense ? 600 : 500, color: radioLicense ? '#22c55e' : '#ffffff' }}>I hold a valid Radio Telephone Operator license</span>
+                                    </button>
+                                </div>
                                 {/* Eligibility notice hidden on Step 3 to prevent overflow */}
                                 </>)}
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
                                     <button type="button" onClick={() => { setStep3Subview('overview'); setSetupStage(2); }} className="px-6 py-2.5 h-10 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-xl text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => { setStep3Subview('overview'); setSetupStage(4); }} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setStep3Subview('overview'); setSetupStage(4); setStageTransition('idle'); }, 280); }} disabled={occupation !== 'None / No Licence' && (aircraftTypes.length === 0 || ratings.length === 0)} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>)}
                                 {step3Subview === 'aircraft' && (
@@ -1532,7 +1619,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-lg text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(5)} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(5); setStageTransition('idle'); }, 280); }} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>
                                 ) : (
@@ -1598,7 +1685,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-lg text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(5)} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(5); setStageTransition('idle'); }, 280); }} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>
                                 )}
@@ -1787,7 +1874,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-lg text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(6)} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(6); setStageTransition('idle'); }, 280); }} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>
                                 ) : (
@@ -1814,39 +1901,95 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         Total hours entered here are a <strong style={{ color: '#0f172a' }}>self-declared claim</strong> and are not verified. Hours will remain unverified until audit under <strong style={{ color: '#0f172a' }}>Recognition+</strong>.
                                     </span>
                                 </div>
-                                {/* Logbook provider — inline */}
-                                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', lineHeight: '1.6', paddingBottom: '2px' }}>Logbook Provider <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
-                                    <p style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.55, margin: 0 }}>
-                                        Optionally connect your digital logbook to sync hours automatically.
+                                {/* Logbook — Recognition+ notice */}
+                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em', textTransform: 'uppercase', lineHeight: '1.6', paddingBottom: '2px' }}>
+                                        <span>⚠️</span>
+                                        <span>Logbook Upload — Recognition+ Only</span>
+                                    </div>
+                                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.55, margin: 0 }}>
+                                        Uploading your logbook is strictly reserved for <strong style={{ color: '#38bdf8' }}>Recognition+</strong> members. Public data privacy concerns restrict logbook access to pilots who have paid for storage, verification, and audit protection through our verified partner network.
                                     </p>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowLogbookModal(true)}
-                                        className={`w-full rounded-lg text-xs font-semibold text-center cursor-pointer transition-all duration-200 ${providerConnected ? 'bg-green-900/30 border border-green-500/40 text-green-400' : 'bg-slate-900/60 border border-white/10 text-white/80 hover:bg-slate-800/80 hover:border-white/20'}`}
-                                        style={{ padding: '9px 8px' }}>
-                                        {providerConnected ? '✓ Logbook Connected' : (
-                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                                Connect Digital Logbook
-                                            </span>
+                                                                        {/* Glassy logbook preview table */}
+                                    <div style={{ marginTop: '6px', padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '14px', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', overflow: 'hidden' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                                            <span style={{ fontSize: '12px' }}>📘</span>
+                                            <span style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(148,163,184,0.7)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Typical Log Entry</span>
+                                            <span style={{ marginLeft: 'auto', fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em' }}>⚙️ AUDIT REPORT</span>
+                                        </div>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '52px 120px 56px 56px 1fr 90px', gap: '4px', fontSize: '10px', lineHeight: 1.4 }}>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>DATE</div>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>AIRCRAFT</div>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'center', whiteSpace: 'nowrap' }}>DUR</div>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>PIC</div>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>REMARKS & NOTARY</div>
+                                            <div style={{ color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em', padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>AUDIT STATUS</div>
+
+                                            <div style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 500, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>18 JUN</div>
+                                            <div style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 500, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>RPX123 · C172</div>
+                                            <div style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 500, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)', textAlign: 'center', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>1:30</div>
+                                            <div style={{ color: '#f59e0b', fontWeight: 700, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)', textAlign: 'center', fontFamily: 'monospace', background: 'rgba(255,255,255,0.06)' }}>1:30 ⚠️</div>
+                                            <div style={{ color: 'rgba(255,255,255,0.6)', fontWeight: 400, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '9px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <span>Cross-country dual. Right seat entry logged.</span>
+                                                <span style={{ whiteSpace: 'nowrap', color: '#22c55e', fontWeight: 700, fontSize: '9px', background: 'rgba(34,197,94,0.1)', padding: '2px 8px', borderRadius: '10px', border: '1px solid rgba(34,197,94,0.2)', display: 'flex', alignItems: 'center', gap: '4px' }}>🔔 ATO NOTARY RECEIVED</span>
+                                            </div>
+                                            <div style={{ color: '#f59e0b', fontWeight: 700, padding: '6px 6px', borderBottom: '1px solid rgba(255,255,255,0.04)', textAlign: 'center', fontSize: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                                <span>🚩</span>
+                                                <span>FLAGGED</span>
+                                            </div>
+                                        </div>
+                                        {!atoAuditPending ? (
+                                        <div style={{ marginTop: '8px', padding: '10px 12px', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                                <span style={{ fontSize: '14px', flexShrink: 0, marginTop: '2px' }}>🚩</span>
+                                                <div>
+                                                    <p style={{ fontSize: '10px', color: '#ef4444', fontWeight: 700, margin: '0 0 4px', lineHeight: 1.4 }}>Right seat discrepancy detected</p>
+                                                    <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>
+                                                        Our automated system flagged <strong style={{ color: '#f59e0b' }}>1:30 PIC hours</strong> logged on a dual training flight. We are cross-referencing this entry with your ATO&apos;s training records to verify if you were acting as Sole Manipulator or safety pilot.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => { setAtoAuditRequested(true); setAtoAuditPending(true); }}
+                                                style={{ alignSelf: 'flex-start', padding: '6px 14px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '8px', color: '#ef4444', fontSize: '10px', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }}
+                                            >
+                                                <span>🔍</span>
+                                                <span>Request ATO Verification</span>
+                                            </button>
+                                        </div>
+                                        ) : (
+                                        <div style={{ marginTop: '8px', padding: '10px 12px', background: 'rgba(56,189,248,0.06)', border: '1px solid rgba(56,189,248,0.15)', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                                <span style={{ fontSize: '14px', flexShrink: 0, marginTop: '2px' }}>⏳</span>
+                                                <div>
+                                                    <p style={{ fontSize: '10px', color: '#38bdf8', fontWeight: 700, margin: '0 0 4px', lineHeight: 1.4 }}>ATO Audit in Progress</p>
+                                                    <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>
+                                                        Verification request sent to your ATO notary partner. We are reconciling logged PIC hours against the official training record. You will be notified once the audit completes — typically within 24-48 hours.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div style={{ alignSelf: 'flex-start', padding: '6px 14px', background: 'rgba(56,189,248,0.08)', border: '1px solid rgba(56,189,248,0.2)', borderRadius: '8px', color: '#38bdf8', fontSize: '10px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <span>🔄</span>
+                                                <span>Pending ATO / Operator</span>
+                                            </div>
+                                        </div>
                                         )}
-                                    </button>
+                                    </div>
                                 </div>
-                                {/* Hours accuracy certification */}
                                 <div style={{ marginTop: '8px' }}>
                                     <button type="button" onClick={() => setHoursCertified(!hoursCertified)}
                                         style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', width: '100%', background: hoursCertified ? 'rgba(255,255,255,0.04)' : 'transparent', border: `1px solid ${hoursCertified ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}>
                                         <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${hoursCertified ? '#dc2626' : 'rgba(255,255,255,0.3)'}`, background: hoursCertified ? 'rgba(220,38,38,0.2)' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
                                             {hoursCertified && <span style={{ color: '#dc2626', fontSize: '11px', fontWeight: 700 }}>✓</span>}
                                         </span>
-                                        <span style={{ fontSize: '12px', fontWeight: hoursCertified ? 600 : 500, color: hoursCertified ? '#ffffff' : 'rgba(255,255,255,0.6)' }}>I certify that my logged hours and background profile are accurate</span>
+                                        <span style={{ fontSize: '12px', fontWeight: hoursCertified ? 600 : 500, color: hoursCertified ? '#ffffff' : 'rgba(255,255,255,0.6)' }}>I certify these hours are accurate, subject to the resolution of pending ATO / operator audits</span>
                                     </button>
                                 </div>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-lg text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => setSetupStage(6)} className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(6); setStageTransition('idle'); }, 280); }} disabled={!hoursCertified} className="px-8 py-3 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 text-white font-bold rounded-lg text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
                                 </div>
                                 </>
                                 )}

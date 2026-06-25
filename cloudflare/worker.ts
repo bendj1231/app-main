@@ -40,7 +40,7 @@ interface CfRequestInit extends RequestInit {
  *              createCheckout
  *              createDid | getDid
  *              createCredential | getCredentials
- *              createEnterprise | getEnterprises | getEnterprise
+ *              createEnterprise | getEnterprises | getEnterprise | enterprisePull
  *              getAllPilots | updateUserTier
  *              batch  → runs multiple actions in one request
  *   POST /api/webhooks/dodo                  → Dodo payment confirmations
@@ -55,12 +55,42 @@ interface CfRequestInit extends RequestInit {
 
 interface Env {
   DB: D1Database;
+  VAULT: R2Bucket;
   AUTH0_DOMAIN: string;
   AUTH0_AUDIENCE: string;
   DODO_API_KEY?: string;
   DODO_WEBHOOK_SECRET?: string;
   VEREMARK_WEBHOOK_SECRET?: string;
   DODO_PRODUCT_ID_RECOGNITION_PLUS?: string;
+}
+
+// R2Bucket minimal interface for Workers runtime
+declare interface R2Bucket {
+  put(key: string, value: ArrayBuffer | string | ReadableStream | Blob, options?: R2PutOptions): Promise<R2Object>;
+  get(key: string): Promise<R2Object | null>;
+  list(options?: { prefix?: string; limit?: number; cursor?: string }): Promise<{ objects: R2Object[]; truncated: boolean; cursor?: string }>;
+}
+
+interface R2PutOptions {
+  httpMetadata?: { contentType?: string };
+  customMetadata?: Record<string, string>;
+}
+
+interface R2Object {
+  key: string;
+  size: number;
+  etag: string;
+  httpEtag: string;
+  httpMetadata?: { contentType?: string };
+  customMetadata?: Record<string, string>;
+  uploaded: Date;
+  checksum?: { md5?: string };
+  body?: ReadableStream;
+  bodyUsed: boolean;
+  arrayBuffer(): Promise<ArrayBuffer>;
+  text(): Promise<string>;
+  json(): Promise<unknown>;
+  blob(): Promise<Blob>;
 }
 
 interface JWTPayload {
@@ -714,18 +744,389 @@ async function handleAction(
       }));
     }
 
+    // ── Verification Submission (APC Form) ──
+    case 'submitVerification': {
+      const now = new Date().toISOString();
+      const submissionId = crypto.randomUUID();
+      const auth0Sub = params.auth0_sub as string;
+      const email = params.email as string;
+
+      if (!auth0Sub || !email) {
+        throw new Error('Missing auth0_sub or email');
+      }
+
+      console.log('[submitVerification] === START ===');
+      console.log('[submitVerification] submissionId:', submissionId);
+      console.log('[submitVerification] auth0Sub:', auth0Sub);
+      console.log('[submitVerification] email:', email);
+
+      // 1. Look up profile to get account_number
+      let accountNumber: string | null = null;
+      try {
+        const profile = await db.prepare('SELECT id, account_number FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string; account_number: string | null } | null;
+        if (profile) {
+          accountNumber = profile.account_number || null;
+          console.log('[submitVerification] Found profile:', profile.id, 'account_number:', accountNumber);
+        } else {
+          console.warn('[submitVerification] No profile found for auth0_sub:', auth0Sub);
+        }
+      } catch (profileErr) {
+        console.error('[submitVerification] Profile lookup error:', profileErr);
+      }
+
+      // 2. Build consent JSON document
+      const consentPayload = {
+        submission_id: submissionId,
+        submitted_at: now,
+        auth0_sub: auth0Sub,
+        account_number: accountNumber,
+        email,
+        full_name: params.full_name || '',
+        phone: params.phone || '',
+        nationality: params.nationality || '',
+        license_number: params.license_number || '',
+        license_expiry: params.license_expiry || '',
+        medical_class: params.medical_class || '',
+        medical_expiry: params.medical_expiry || '',
+        total_hours: params.total_hours || 0,
+        pic_hours: params.pic_hours || 0,
+        dual_hours: params.dual_hours || 0,
+        dual_xc_hours: params.dual_xc_hours || 0,
+        night_hours: params.night_hours || 0,
+        instrument_sim_hours: params.instrument_sim_hours || 0,
+        instrument_actual_hours: params.instrument_actual_hours || 0,
+        multi_engine_sim_hours: params.multi_engine_sim_hours || 0,
+        multi_engine_actual_hours: params.multi_engine_actual_hours || 0,
+        cross_country_hours: params.cross_country_hours || 0,
+        rating_sets: params.rating_sets || [],
+        ato_name: params.ato_name || '',
+        ato_location: params.ato_location || '',
+        ato_data_needed: params.ato_data_needed || '',
+        document_keys: params.document_keys || {},
+        consent_forms: {
+          data_sharing: true,
+          ato_authorization: true,
+          privacy_policy: true,
+          timestamp: now,
+        },
+      };
+
+      // 3. Store consent JSON in R2
+      let consentJsonPath: string | null = null;
+      try {
+        const consentJsonKey = `consents/${auth0Sub}/${submissionId}.json`;
+        await env.VAULT.put(consentJsonKey, JSON.stringify(consentPayload, null, 2), {
+          httpMetadata: { contentType: 'application/json' },
+          customMetadata: {
+            auth0_sub: auth0Sub,
+            account_number: accountNumber || 'none',
+            submitted_at: now,
+            type: 'consent_form',
+          },
+        });
+        consentJsonPath = consentJsonKey;
+        console.log('[submitVerification] Consent JSON stored to R2:', consentJsonKey);
+      } catch (r2Err) {
+        console.error('[submitVerification] R2 consent store error:', r2Err);
+      }
+
+      // 4. Store document keys (uploaded docs are already in R2 by the vault worker, but we record paths)
+      const documentKeys = (params.document_keys || {}) as Record<string, string>;
+      const docKeysJson = JSON.stringify(documentKeys);
+      console.log('[submitVerification] Document keys:', docKeysJson);
+
+      // 5. Insert into verification_submissions D1 table
+      try {
+        await db.prepare(`
+          INSERT INTO verification_submissions (
+            id, auth0_sub, account_number, email, full_name, phone, nationality,
+            license_number, license_type, license_expiry,
+            medical_class, medical_expiry,
+            total_hours, pic_hours, dual_hours, dual_xc_hours,
+            night_hours, instrument_sim_hours, instrument_actual_hours,
+            multi_engine_sim_hours, multi_engine_actual_hours, cross_country_hours,
+            rating_sets,
+            ato_name, ato_location, ato_data_needed,
+            document_keys, consent_json_path, status, submitted_at, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(
+          submissionId,
+          auth0Sub,
+          accountNumber,
+          email,
+          params.full_name || null,
+          params.phone || null,
+          params.nationality || null,
+          params.license_number || null,
+          params.license_type || null,
+          params.license_expiry || null,
+          params.medical_class || null,
+          params.medical_expiry || null,
+          params.total_hours || 0,
+          params.pic_hours || 0,
+          params.dual_hours || 0,
+          params.dual_xc_hours || 0,
+          params.night_hours || 0,
+          params.instrument_sim_hours || 0,
+          params.instrument_actual_hours || 0,
+          params.multi_engine_sim_hours || 0,
+          params.multi_engine_actual_hours || 0,
+          params.cross_country_hours || 0,
+          JSON.stringify(params.rating_sets || []),
+          params.ato_name || null,
+          params.ato_location || null,
+          params.ato_data_needed || null,
+          docKeysJson,
+          consentJsonPath,
+          'submitted',
+          now,
+          now
+        ).run();
+        console.log('[submitVerification] D1 insert successful. submissionId:', submissionId);
+      } catch (dbErr) {
+        console.error('[submitVerification] D1 insert error:', dbErr);
+        throw new Error('Failed to save verification submission to database');
+      }
+
+      // 6. Also update pilot_licensure_experience with the new hours (upsert)
+      try {
+        const profile = await db.prepare('SELECT id FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string } | null;
+        if (profile) {
+          const userId = profile.id;
+          const totalHours = (params.total_hours as number) || 0;
+          const picHours = (params.pic_hours as number) || 0;
+          const instrumentHours = ((params.instrument_sim_hours as number) || 0) + ((params.instrument_actual_hours as number) || 0);
+          const nightHours = (params.night_hours as number) || 0;
+          const crossCountryHours = (params.cross_country_hours as number) || 0;
+          const dualHours = (params.dual_hours as number) || 0;
+
+          await db.prepare(`
+            INSERT INTO pilot_licensure_experience (
+              id, user_id, total_flight_hours, pic_hours, instrument_hours,
+              night_hours, cross_country_hours, dual_hours, last_updated
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+              total_flight_hours = excluded.total_flight_hours,
+              pic_hours = excluded.pic_hours,
+              instrument_hours = excluded.instrument_hours,
+              night_hours = excluded.night_hours,
+              cross_country_hours = excluded.cross_country_hours,
+              dual_hours = excluded.dual_hours,
+              last_updated = excluded.last_updated
+          `).bind(
+            crypto.randomUUID(), userId, totalHours, picHours, instrumentHours,
+            nightHours, crossCountryHours, dualHours, now
+          ).run();
+          console.log('[submitVerification] pilot_licensure_experience upserted for user:', userId);
+        }
+      } catch (licErr) {
+        console.error('[submitVerification] Licensure upsert error:', licErr);
+        // Non-fatal: don't throw, just log
+      }
+
+      // Note: Traceable verification data (license_number, medical_class, hours)
+      // is intentionally NOT written to profiles. It lives only in
+      // verification_submissions as part of the specific verification request.
+
+      console.log('[submitVerification] === END === submissionId:', submissionId);
+
+      return {
+        success: true,
+        submission_id: submissionId,
+        account_number: accountNumber,
+        consent_json_path: consentJsonPath,
+        status: 'submitted',
+        submitted_at: now,
+      };
+    }
+
+    // ── Admin: Search Verification by Account Number ──
+    case 'getVerificationByAccountNumber': {
+      const acctNum = params.account_number as string;
+      if (!acctNum) throw new Error('Missing account_number');
+
+      // Role check: super_admin, admin, or employee
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      const role = (me?.['role'] as string) || '';
+      if (!['super_admin', 'admin', 'employee'].includes(role)) {
+        throw new Error('Forbidden: admin or employee access required');
+      }
+
+      // 1. Get the latest verification submission for this account
+      const submission = await db.prepare(`
+        SELECT * FROM verification_submissions
+        WHERE account_number = ?
+        ORDER BY submitted_at DESC
+        LIMIT 1
+      `).bind(acctNum).first() as Record<string, unknown> | null;
+
+      if (!submission) {
+        return { found: false, account_number: acctNum };
+      }
+
+      // 2. Get the pilot's profile
+      const auth0Sub = submission['auth0_sub'] as string;
+      const profile = await getProfileByAuth0Id(db, auth0Sub);
+
+      // 3. Log employee access
+      const logId = crypto.randomUUID();
+      await db.prepare(`
+        INSERT INTO verification_employee_access_log
+        (id, employee_auth0_sub, employee_email, action, target_account_number, target_submission_id, metadata, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        logId,
+        auth.sub,
+        (me?.['email'] as string) || '',
+        'view_submission',
+        acctNum,
+        submission['id'] as string,
+        JSON.stringify({ role, accessed_at: new Date().toISOString() }),
+        new Date().toISOString()
+      ).run();
+
+      // 4. Check if documents are still within retention
+      const purgeAfter = submission['document_purge_after'] as string | null;
+      const documentsExpired = purgeAfter ? new Date(purgeAfter) < new Date() : false;
+
+      return {
+        found: true,
+        account_number: acctNum,
+        submission: {
+          id: submission['id'],
+          status: submission['status'],
+          submitted_at: submission['submitted_at'],
+          document_purge_after: purgeAfter,
+          documents_expired: documentsExpired,
+          license_number: submission['license_number'],
+          license_type: submission['license_type'],
+          license_expiry: submission['license_expiry'],
+          medical_class: submission['medical_class'],
+          medical_expiry: submission['medical_expiry'],
+          total_hours: submission['total_hours'],
+          pic_hours: submission['pic_hours'],
+          dual_hours: submission['dual_hours'],
+          dual_xc_hours: submission['dual_xc_hours'],
+          night_hours: submission['night_hours'],
+          instrument_sim_hours: submission['instrument_sim_hours'],
+          instrument_actual_hours: submission['instrument_actual_hours'],
+          multi_engine_sim_hours: submission['multi_engine_sim_hours'],
+          multi_engine_actual_hours: submission['multi_engine_actual_hours'],
+          cross_country_hours: submission['cross_country_hours'],
+          rating_sets: submission['rating_sets'],
+          ato_name: submission['ato_name'],
+          ato_location: submission['ato_location'],
+          ato_data_needed: submission['ato_data_needed'],
+          document_keys: documentsExpired ? null : submission['document_keys'],
+          consent_json_path: submission['consent_json_path'],
+        },
+        pilot: profile ? {
+          auth0_id: profile['auth0_id'],
+          email: profile['email'],
+          full_name: profile['full_name'] || profile['display_name'],
+          phone: profile['phone'],
+          nationality: profile['nationality'],
+          pilot_id: profile['pilot_id'],
+          subscription_tier: profile['subscription_tier'],
+          status: profile['status'],
+        } : null,
+      };
+    }
+
+    // ── Admin: Update Verification Status ──
+    case 'updateVerificationStatus': {
+      const submissionId = params.submission_id as string;
+      const newStatus = params.status as string;
+      if (!submissionId || !newStatus) throw new Error('Missing submission_id or status');
+
+      // Role check
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      const role = (me?.['role'] as string) || '';
+      if (!['super_admin', 'admin', 'employee'].includes(role)) {
+        throw new Error('Forbidden: admin or employee access required');
+      }
+
+      // Valid terminal statuses that trigger purge countdown
+      const terminalStatuses = new Set(['verified', 'rejected', 'flagged']);
+      const isTerminal = terminalStatuses.has(newStatus);
+
+      // Fetch current submission
+      const submission = await db.prepare('SELECT * FROM verification_submissions WHERE id = ?').bind(submissionId).first() as Record<string, unknown> | null;
+      if (!submission) throw new Error('Submission not found');
+
+      const now = new Date().toISOString();
+      let purgeAfter = submission['document_purge_after'] as string | null;
+
+      // If transitioning to a terminal state and purge date not yet set, start 30-day clock
+      if (isTerminal && !purgeAfter) {
+        purgeAfter = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      }
+
+      // Update status (and purge date if set)
+      await db.prepare(`
+        UPDATE verification_submissions
+        SET status = ?, document_purge_after = ?, updated_at = ?
+        WHERE id = ?
+      `).bind(newStatus, purgeAfter, now, submissionId).run();
+
+      // Log action
+      const logId = crypto.randomUUID();
+      await db.prepare(`
+        INSERT INTO verification_employee_access_log
+        (id, employee_auth0_sub, employee_email, action, target_account_number, target_submission_id, metadata, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        logId,
+        auth.sub,
+        (me?.['email'] as string) || '',
+        'update_status',
+        (submission['account_number'] as string) || '',
+        submissionId,
+        JSON.stringify({ previous_status: submission['status'], new_status: newStatus, role }),
+        now
+      ).run();
+
+      return {
+        success: true,
+        submission_id: submissionId,
+        new_status: newStatus,
+        document_purge_after: purgeAfter,
+        previous_status: submission['status'],
+      };
+    }
+
     // ── Enterprise ──
     case 'createEnterprise': {
       const missing = validateRequiredFields(params, ['company_name']);
       if (missing) throw new Error(missing);
       const id = crypto.randomUUID();
+      const now = new Date().toISOString();
       await db.prepare(`
-        INSERT INTO enterprise_profiles (id, company_name, industry, contact_email, contact_phone, website, country, employee_count)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO enterprise_profiles (
+          id, auth0_id, company_name, airline_name, airline_iata_code, airline_logo_url,
+          airline_website, company_description, industry, account_type, contact_email,
+          contact_phone, billing_email, website, country, base_locations, fleet_information,
+          contact_information, employee_count, is_active, account_tier,
+          can_pull_verified_profiles, can_view_pilot_details, can_export_data,
+          max_pathway_cards, max_interest_views_per_month, stripe_customer_id,
+          tier_expires_at, subscription_status, subscription_tier,
+          created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
-        id, params.company_name, params.industry || null, params.contact_email || null,
-        params.contact_phone || null, params.website || null, params.country || null,
-        params.employee_count || null
+        id, params.auth0_id || null, params.company_name, params.airline_name || params.company_name || null,
+        params.airline_iata_code || null, params.airline_logo_url || null, params.airline_website || null,
+        params.company_description || null, params.industry || null, params.account_type || 'airline',
+        params.contact_email || null, params.contact_phone || null, params.billing_email || null,
+        params.website || null, params.country || null,
+        params.base_locations ? JSON.stringify(params.base_locations) : null,
+        params.fleet_information ? JSON.stringify(params.fleet_information) : null,
+        params.contact_information ? JSON.stringify(params.contact_information) : null,
+        params.employee_count || null, 1, params.account_tier || 'free',
+        params.can_pull_verified_profiles ? 1 : 0, params.can_view_pilot_details ? 1 : 0,
+        params.can_export_data ? 1 : 0, params.max_pathway_cards || 3,
+        params.max_interest_views_per_month || 50, params.stripe_customer_id || null,
+        params.tier_expires_at || null, params.subscription_status || 'trial',
+        params.subscription_tier || 'basic', now, now
       ).run();
       return db.prepare('SELECT * FROM enterprise_profiles WHERE id = ?').bind(id).first();
     }
@@ -739,6 +1140,497 @@ async function handleAction(
       const row = await db.prepare('SELECT * FROM enterprise_profiles WHERE id = ?').bind(id).first();
       if (!row) throw new Error('Not found');
       return row;
+    }
+    case 'getEnterpriseByAuth0': {
+      const auth0Id = params.auth0_id as string;
+      if (!auth0Id) throw new Error('Missing auth0_id');
+      const row = await db.prepare('SELECT * FROM enterprise_profiles WHERE auth0_id = ? AND is_active = 1').bind(auth0Id).first();
+      if (!row) throw new Error('No enterprise account found for this user');
+      return row;
+    }
+    case 'updateEnterprise': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const allowed = [
+        'company_name','airline_name','airline_iata_code','airline_logo_url',
+        'airline_website','company_description','industry','account_type',
+        'contact_email','contact_phone','billing_email','website','country',
+        'base_locations','fleet_information','contact_information','employee_count',
+        'is_active','account_tier','can_pull_verified_profiles','can_view_pilot_details',
+        'can_export_data','max_pathway_cards','max_interest_views_per_month',
+        'stripe_customer_id','tier_expires_at','subscription_status','subscription_tier'
+      ];
+      const updates: string[] = [];
+      const binds: unknown[] = [];
+      for (const key of allowed) {
+        if (params[key] !== undefined) {
+          updates.push(`${key} = ?`);
+          if (['base_locations','fleet_information','contact_information'].includes(key)) {
+            binds.push(typeof params[key] === 'string' ? params[key] : JSON.stringify(params[key]));
+          } else if (['is_active','can_pull_verified_profiles','can_view_pilot_details','can_export_data'].includes(key)) {
+            binds.push(params[key] ? 1 : 0);
+          } else {
+            binds.push(params[key]);
+          }
+        }
+      }
+      if (updates.length === 0) throw new Error('No fields to update');
+      updates.push('updated_at = datetime("now")');
+      await db.prepare(`UPDATE enterprise_profiles SET ${updates.join(', ')} WHERE id = ?`).bind(...binds, id).run();
+      return db.prepare('SELECT * FROM enterprise_profiles WHERE id = ?').bind(id).first();
+    }
+
+    case 'enterprisePull': {
+      // ── Auth: admin OR enterprise with can_pull_verified_profiles ──
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      const role = (me?.['role'] as string) || '';
+      const isAdmin = ['super_admin', 'admin'].includes(role);
+
+      let canPull = isAdmin;
+      let canViewPii = isAdmin;
+
+      if (!canPull) {
+        const enterprise = await db.prepare(
+          'SELECT can_pull_verified_profiles, can_view_pilot_details FROM enterprise_profiles WHERE auth0_id = ? AND is_active = 1'
+        ).bind(auth.sub).first() as Record<string, number> | null;
+        if (enterprise) {
+          canPull = Boolean(enterprise['can_pull_verified_profiles']);
+          canViewPii = Boolean(enterprise['can_view_pilot_details']);
+        }
+      }
+
+      if (!canPull) {
+        throw new Error('Forbidden: enterprise pull access required');
+      }
+
+      // ── Parse filters ──
+      const minHours = params.min_hours !== undefined ? Number(params.min_hours) : null;
+      const maxHours = params.max_hours !== undefined ? Number(params.max_hours) : null;
+      const country = params.country as string | null;
+      const licenseType = params.license_type as string | null;
+      const medicalClass = params.medical_class as string | null;
+      const verifiedOnly = params.verified_only === true || params.verified_only === 'true' || params.verified_only === 1;
+      const recognitionPlusOnly = params.recognition_plus_only === true || params.recognition_plus_only === 'true' || params.recognition_plus_only === 1;
+      const minScore = params.min_score !== undefined ? Number(params.min_score) : null;
+      const rating = params.rating as string | null;
+      const languageLevel = params.language_level as string | null;
+      const limit = Math.min(Number(params.limit || 50), 200);
+      const offset = Number(params.offset || 0);
+
+      // ── Build query ──
+      const filterConditions: string[] = ["p.role = 'pilot'", "p.status = 'active'"];
+      const filterValues: unknown[] = [];
+
+      if (minHours !== null && !isNaN(minHours)) {
+        filterConditions.push('p.total_flight_hours >= ?');
+        filterValues.push(minHours);
+      }
+      if (maxHours !== null && !isNaN(maxHours)) {
+        filterConditions.push('p.total_flight_hours <= ?');
+        filterValues.push(maxHours);
+      }
+      if (country) {
+        filterConditions.push('p.country_of_license = ?');
+        filterValues.push(country);
+      }
+      if (licenseType) {
+        filterConditions.push('p.license_type = ?');
+        filterValues.push(licenseType);
+      }
+      if (medicalClass) {
+        filterConditions.push('p.medical_class = ?');
+        filterValues.push(medicalClass);
+      }
+      if (languageLevel) {
+        filterConditions.push('p.elp_level = ?');
+        filterValues.push(languageLevel);
+      }
+      if (recognitionPlusOnly) {
+        filterConditions.push("p.subscription_tier = 'recognition_plus'");
+      }
+      if (minScore !== null && !isNaN(minScore)) {
+        filterConditions.push('r.total_score >= ?');
+        filterValues.push(minScore);
+      }
+      if (rating) {
+        filterConditions.push('p.ratings LIKE ?');
+        filterValues.push(`%${rating}%`);
+      }
+
+      const joinClause = verifiedOnly
+        ? " INNER JOIN (SELECT DISTINCT user_id FROM pilot_credentials WHERE status = 'active') vc ON vc.user_id = p.id"
+        : '';
+
+      const whereClause = filterConditions.join(' AND ');
+      const countQuery = `SELECT COUNT(*) as total FROM profiles p${joinClause} LEFT JOIN recognition_scores r ON r.user_id = p.id WHERE ${whereClause}`;
+      const dataQuery = `SELECT
+        p.id, p.auth0_id, p.email, p.display_name, p.first_name, p.last_name,
+        p.phone, p.country_code, p.date_of_birth, p.nationality,
+        p.current_flight_hours, p.total_flight_hours, p.mentorship_hours,
+        p.overall_recognition_score, p.current_level, p.current_occupation,
+        p.license_id, p.country_of_license, p.ratings, p.license_type,
+        p.pilot_stage, p.license_issuing_authority, p.aircraft_types,
+        p.aircraft_category, p.license_types, p.type_ratings, p.type_rating_input,
+        p.elp_level, p.medical_class, p.employment_status, p.current_job,
+        p.career_goal, p.bio, p.linkedin_url, p.domicile,
+        p.subscription_tier, p.recognition_tier, p.status, p.pilot_id,
+        p.created_at, p.updated_at,
+        r.total_score, r.score_tier
+      FROM profiles p${joinClause}
+      LEFT JOIN recognition_scores r ON r.user_id = p.id
+      WHERE ${whereClause}
+      ORDER BY p.overall_recognition_score DESC
+      LIMIT ? OFFSET ?`;
+
+      const countResult = await db.prepare(countQuery).bind(...filterValues).first() as { total: number } | null;
+      const total = Number(countResult?.total || 0);
+
+      const { results } = await db.prepare(dataQuery).bind(...filterValues, limit, offset).all();
+
+      // ── Sanitize PII ──
+      const pilots = (results || []).map((row: unknown) => {
+        const p = row as Record<string, unknown>;
+        const base: Record<string, unknown> = {
+          id: p.id,
+          pilot_id: p.pilot_id,
+          total_flight_hours: p.total_flight_hours,
+          overall_recognition_score: p.overall_recognition_score,
+          recognition_tier: p.recognition_tier,
+          current_level: p.current_level,
+          license_type: p.license_type,
+          medical_class: p.medical_class,
+          elp_level: p.elp_level,
+          country_of_license: p.country_of_license,
+          ratings: p.ratings,
+          subscription_tier: p.subscription_tier,
+          status: p.status,
+          created_at: p.created_at,
+          total_score: p.total_score,
+          score_tier: p.score_tier,
+        };
+
+        if (canViewPii) {
+          base.display_name = p.display_name;
+          base.first_name = p.first_name;
+          base.last_name = p.last_name;
+          base.email = p.email;
+          base.phone = p.phone;
+          base.license_id = p.license_id;
+          base.current_occupation = p.current_occupation;
+          base.current_job = p.current_job;
+          base.bio = p.bio;
+          base.linkedin_url = p.linkedin_url;
+          base.domicile = p.domicile;
+        }
+
+        return base;
+      });
+
+      // ── Audit log ──
+      const logId = crypto.randomUUID();
+      await db.prepare(`
+        INSERT INTO user_activity_log (id, user_id, action, entity_type, entity_id, metadata, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        logId,
+        auth.sub,
+        'enterprise_pull',
+        'profile',
+        null,
+        JSON.stringify({
+          filters: { min_hours: minHours, max_hours: maxHours, country, license_type: licenseType, medical_class: medicalClass, verified_only: verifiedOnly, recognition_plus_only: recognitionPlusOnly, min_score: minScore, rating, language_level: languageLevel, limit, offset },
+          results_count: pilots.length,
+          total_count: total,
+          pii_exposed: canViewPii,
+        }),
+        new Date().toISOString()
+      ).run();
+
+      return {
+        pilots,
+        pagination: { total, limit, offset, has_more: offset + pilots.length < total },
+        filters_applied: {
+          min_hours: minHours, max_hours: maxHours, country, license_type: licenseType,
+          medical_class: medicalClass, verified_only: verifiedOnly,
+          recognition_plus_only: recognitionPlusOnly, min_score: minScore,
+          rating, language_level: languageLevel,
+        },
+      };
+    }
+
+    // ── Flight School / ATO ──
+    case 'createFlightSchool': {
+      const missing = validateRequiredFields(params, ['enterprise_id', 'name']);
+      if (missing) throw new Error(missing);
+      const id = crypto.randomUUID();
+      const now = new Date().toISOString();
+      const referralCode = params.referral_code as string || `FS${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      await db.prepare(`
+        INSERT INTO flight_schools (
+          id, enterprise_id, name, referral_code, commission_rate, payout_method,
+          contact_email, contact_phone, country, website, is_active, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        id, params.enterprise_id, params.name, referralCode,
+        params.commission_rate || 20, params.payout_method || 'bank_transfer',
+        params.contact_email || null, params.contact_phone || null,
+        params.country || null, params.website || null, 1, now, now
+      ).run();
+      return db.prepare('SELECT * FROM flight_schools WHERE id = ?').bind(id).first();
+    }
+    case 'getFlightSchool': {
+      const enterpriseId = params.enterprise_id as string;
+      if (!enterpriseId) throw new Error('Missing enterprise_id');
+      const row = await db.prepare('SELECT * FROM flight_schools WHERE enterprise_id = ? AND is_active = 1').bind(enterpriseId).first();
+      if (!row) throw new Error('No flight school found for this enterprise');
+      return row;
+    }
+    case 'getFlightSchoolReferrals': {
+      const flightSchoolId = params.flight_school_id as string;
+      if (!flightSchoolId) throw new Error('Missing flight_school_id');
+      const { results } = await db.prepare('SELECT * FROM flight_school_referrals WHERE flight_school_id = ? ORDER BY created_at DESC LIMIT 200').bind(flightSchoolId).all();
+      return results || [];
+    }
+    case 'getFlightSchoolPayouts': {
+      const flightSchoolId = params.flight_school_id as string;
+      if (!flightSchoolId) throw new Error('Missing flight_school_id');
+      const { results } = await db.prepare('SELECT * FROM flight_school_payouts WHERE flight_school_id = ? ORDER BY created_at DESC LIMIT 100').bind(flightSchoolId).all();
+      return results || [];
+    }
+    case 'getFlightSchoolNotifications': {
+      const flightSchoolId = params.flight_school_id as string;
+      if (!flightSchoolId) throw new Error('Missing flight_school_id');
+      const { results } = await db.prepare('SELECT * FROM flight_school_notifications WHERE flight_school_id = ? ORDER BY created_at DESC LIMIT 50').bind(flightSchoolId).all();
+      return results || [];
+    }
+    case 'createFlightSchoolReferral': {
+      const flightSchoolId = params.flight_school_id as string;
+      const pilotEmail = params.pilot_email as string;
+      if (!flightSchoolId || !pilotEmail) throw new Error('Missing flight_school_id or pilot_email');
+      const id = crypto.randomUUID();
+      const now = new Date().toISOString();
+      const school = await db.prepare('SELECT referral_code, commission_rate FROM flight_schools WHERE id = ?').bind(flightSchoolId).first() as Record<string, unknown> | null;
+      const referralCode = (school?.referral_code as string) || '';
+      const commissionRate = (school?.commission_rate as number) || 20;
+      const referralLink = `${params.origin as string || ''}/ref/${referralCode}?email=${encodeURIComponent(pilotEmail)}`;
+      await db.prepare(`
+        INSERT INTO flight_school_referrals (id, flight_school_id, pilot_email, referral_code, referral_link, commission_amount, status, commission_status, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(id, flightSchoolId, pilotEmail, referralCode, referralLink, commissionRate * 100, 'pending', 'pending', now, now).run();
+      return db.prepare('SELECT * FROM flight_school_referrals WHERE id = ?').bind(id).first();
+    }
+    case 'markNotificationRead': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      await db.prepare('UPDATE flight_school_notifications SET read = 1 WHERE id = ?').bind(id).run();
+      return { success: true };
+    }
+
+    // ── Credit System ──
+    case 'getCredits': {
+      const enterpriseId = params.enterprise_id as string;
+      if (!enterpriseId) throw new Error('Missing enterprise_id');
+      const row = await db.prepare('SELECT * FROM enterprise_credits WHERE enterprise_id = ?').bind(enterpriseId).first();
+      if (!row) return { balance: 0, total_burned: 0, total_topped_up: 0 };
+      return row;
+    }
+    case 'getCreditTransactions': {
+      const enterpriseId = params.enterprise_id as string;
+      if (!enterpriseId) throw new Error('Missing enterprise_id');
+      const limit = Math.min((params.limit as number) || 50, 200);
+      const { results } = await db.prepare('SELECT * FROM credit_transactions WHERE enterprise_id = ? ORDER BY created_at DESC LIMIT ?').bind(enterpriseId, limit).all();
+      return results || [];
+    }
+    case 'burnCredit': {
+      const enterpriseId = params.enterprise_id as string;
+      const amount = Math.abs(params.amount as number || 0);
+      const description = params.description as string || 'Verification credit burn';
+      const verificationId = params.verification_id as string || null;
+      if (!enterpriseId || !amount) throw new Error('Missing enterprise_id or amount');
+
+      // Atomic balance check and deduct
+      const creditRow = await db.prepare('SELECT balance FROM enterprise_credits WHERE enterprise_id = ?').bind(enterpriseId).first() as { balance: number } | null;
+      const currentBalance = creditRow?.balance || 0;
+      if (currentBalance < amount) throw new Error('Insufficient credits');
+
+      const newBalance = currentBalance - amount;
+      const now = new Date().toISOString();
+      const txId = crypto.randomUUID();
+
+      await db.prepare('UPDATE enterprise_credits SET balance = ?, total_burned = total_burned + ?, updated_at = ? WHERE enterprise_id = ?')
+        .bind(newBalance, amount, now, enterpriseId).run();
+      await db.prepare('INSERT INTO credit_transactions (id, enterprise_id, type, amount, balance_after, description, verification_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+        .bind(txId, enterpriseId, 'burn', -amount, newBalance, description, verificationId, now).run();
+
+      return { success: true, balance: newBalance, transaction_id: txId };
+    }
+    case 'topUpCredits': {
+      const enterpriseId = params.enterprise_id as string;
+      const amount = Math.abs(params.amount as number || 0);
+      if (!enterpriseId || !amount) throw new Error('Missing enterprise_id or amount');
+      const now = new Date().toISOString();
+      const txId = crypto.randomUUID();
+
+      await db.prepare(`
+        INSERT INTO enterprise_credits (id, enterprise_id, balance, total_topped_up, updated_at)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT(enterprise_id) DO UPDATE SET
+          balance = balance + excluded.balance,
+          total_topped_up = total_topped_up + excluded.total_topped_up,
+          updated_at = excluded.updated_at
+      `).bind(crypto.randomUUID(), enterpriseId, amount, amount, now).run();
+
+      const row = await db.prepare('SELECT balance FROM enterprise_credits WHERE enterprise_id = ?').bind(enterpriseId).first() as { balance: number };
+      await db.prepare('INSERT INTO credit_transactions (id, enterprise_id, type, amount, balance_after, description, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(txId, enterpriseId, 'top_up', amount, row.balance, `Top-up of ${amount} credits`, now).run();
+
+      return { success: true, balance: row.balance, transaction_id: txId };
+    }
+    case 'createVerification': {
+      const missing = validateRequiredFields(params, ['enterprise_id', 'document_type']);
+      if (missing) throw new Error(missing);
+      const id = crypto.randomUUID();
+      const now = new Date().toISOString();
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30); // 30-day retention
+      await db.prepare(`
+        INSERT INTO verification_submissions (id, enterprise_id, pilot_email, pilot_name, document_type, document_url, document_hash, status, metadata, expires_at, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        id, params.enterprise_id, params.pilot_email || null, params.pilot_name || null,
+        params.document_type, params.document_url || null, params.document_hash || null,
+        'pending', params.metadata ? JSON.stringify(params.metadata) : null,
+        expiresAt.toISOString(), now
+      ).run();
+      return db.prepare('SELECT * FROM verification_submissions WHERE id = ?').bind(id).first();
+    }
+    case 'getVerifications': {
+      const enterpriseId = params.enterprise_id as string;
+      if (!enterpriseId) throw new Error('Missing enterprise_id');
+      const status = params.status as string | undefined;
+      let sql = 'SELECT * FROM verification_submissions WHERE enterprise_id = ?';
+      const binds: unknown[] = [enterpriseId];
+      if (status) { sql += ' AND status = ?'; binds.push(status); }
+      sql += ' ORDER BY created_at DESC LIMIT 200';
+      const { results } = await db.prepare(sql).bind(...binds).all();
+      return results || [];
+    }
+    case 'getVerificationQueue': {
+      const status = params.status as string | undefined;
+      let sql = 'SELECT vs.*, ep.company_name FROM verification_submissions vs JOIN enterprise_profiles ep ON vs.enterprise_id = ep.id';
+      const binds: unknown[] = [];
+      if (status) { sql += ' WHERE vs.status = ?'; binds.push(status); }
+      sql += ' ORDER BY vs.created_at DESC LIMIT 500';
+      const { results } = await db.prepare(sql).bind(...binds).all();
+      return results || [];
+    }
+    case 'updateVerification': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const allowed = ['status', 'reviewer_notes', 'credits_burned', 'reviewed_at', 'document_url', 'document_hash', 'is_permanent'];
+      const updates: string[] = [];
+      const binds: unknown[] = [];
+      for (const key of allowed) {
+        if (params[key] !== undefined) { updates.push(`${key} = ?`); binds.push(params[key]); }
+      }
+      if (updates.length === 0) throw new Error('No fields to update');
+      await db.prepare(`UPDATE verification_submissions SET ${updates.join(', ')} WHERE id = ?`).bind(...binds, id).run();
+      return db.prepare('SELECT * FROM verification_submissions WHERE id = ?').bind(id).first();
+    }
+    case 'purgeExpiredVerifications': {
+      const now = new Date().toISOString();
+      const result = await db.prepare('DELETE FROM verification_submissions WHERE expires_at < ? AND status IN ("verified","rejected") AND is_permanent = 0').bind(now).run();
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      return { purged: (result as any)?.meta?.changes || 0 };
+    }
+
+    // ── Subscription Tracking ──
+    case 'createSubscription': {
+      const missing = validateRequiredFields(params, ['subscriber_type', 'subscriber_id', 'tier']);
+      if (missing) throw new Error(missing);
+      const id = crypto.randomUUID();
+      const now = new Date();
+      const billingCycle = (params.billing_cycle as string) || 'monthly';
+      const periodEnd = new Date(now);
+      if (billingCycle === 'monthly') periodEnd.setMonth(periodEnd.getMonth() + 1);
+      else if (billingCycle === 'quarterly') periodEnd.setMonth(periodEnd.getMonth() + 3);
+      else if (billingCycle === 'yearly') periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+
+      await db.prepare(`
+        INSERT INTO subscriptions (id, subscriber_type, subscriber_id, tier, status, billing_cycle, amount_cents, currency,
+          payment_provider, provider_subscription_id, current_period_start, current_period_end, cancel_at_period_end, trial_end, metadata, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        id, params.subscriber_type, params.subscriber_id, params.tier,
+        params.status || 'active', billingCycle, params.amount_cents || 0, params.currency || 'USD',
+        params.payment_provider || null, params.provider_subscription_id || null,
+        now.toISOString(), periodEnd.toISOString(), params.cancel_at_period_end || 0,
+        params.trial_end || null, params.metadata ? JSON.stringify(params.metadata) : null,
+        now.toISOString(), now.toISOString()
+      ).run();
+
+      // Sync to subscriber profile
+      const profileTable = params.subscriber_type === 'enterprise' ? 'enterprise_profiles' : 'profiles';
+      await db.prepare(`UPDATE ${profileTable} SET subscription_tier = ?, subscription_status = ?, subscription_start_date = ?, subscription_end_date = ?, updated_at = ? WHERE id = ?`)
+        .bind(params.tier, params.status || 'active', now.toISOString(), periodEnd.toISOString(), now.toISOString(), params.subscriber_id).run();
+
+      return db.prepare('SELECT * FROM subscriptions WHERE id = ?').bind(id).first();
+    }
+    case 'getSubscription': {
+      const subscriberType = params.subscriber_type as string;
+      const subscriberId = params.subscriber_id as string;
+      if (!subscriberType || !subscriberId) throw new Error('Missing subscriber_type or subscriber_id');
+      const row = await db.prepare('SELECT * FROM subscriptions WHERE subscriber_type = ? AND subscriber_id = ? AND status IN ("active","trial","past_due") ORDER BY current_period_end DESC LIMIT 1').bind(subscriberType, subscriberId).first();
+      return row || null;
+    }
+    case 'renewSubscription': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const sub = await db.prepare('SELECT * FROM subscriptions WHERE id = ?').bind(id).first() as Record<string, unknown> | null;
+      if (!sub) throw new Error('Subscription not found');
+      if (sub.cancel_at_period_end === 1) throw new Error('Subscription set to cancel, cannot renew');
+
+      const now = new Date();
+      const currentEnd = new Date(sub.current_period_end as string);
+      const newEnd = currentEnd > now ? currentEnd : now;
+      const billingCycle = sub.billing_cycle as string;
+      if (billingCycle === 'monthly') newEnd.setMonth(newEnd.getMonth() + 1);
+      else if (billingCycle === 'quarterly') newEnd.setMonth(newEnd.getMonth() + 3);
+      else if (billingCycle === 'yearly') newEnd.setFullYear(newEnd.getFullYear() + 1);
+
+      const renewalCount = (sub.renewal_count as number || 0) + 1;
+      await db.prepare('UPDATE subscriptions SET current_period_end = ?, renewal_count = ?, status = "active", updated_at = ? WHERE id = ?')
+        .bind(newEnd.toISOString(), renewalCount, now.toISOString(), id).run();
+
+      // Sync to subscriber profile
+      const profileTable = sub.subscriber_type === 'enterprise' ? 'enterprise_profiles' : 'profiles';
+      await db.prepare(`UPDATE ${profileTable} SET subscription_status = "active", subscription_end_date = ?, updated_at = ? WHERE id = ?`)
+        .bind(newEnd.toISOString(), now.toISOString(), sub.subscriber_id).run();
+
+      return db.prepare('SELECT * FROM subscriptions WHERE id = ?').bind(id).first();
+    }
+    case 'cancelSubscription': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const sub = await db.prepare('SELECT * FROM subscriptions WHERE id = ?').bind(id).first() as Record<string, unknown> | null;
+      if (!sub) throw new Error('Subscription not found');
+      const now = new Date().toISOString();
+      await db.prepare('UPDATE subscriptions SET status = "cancelled", cancel_at_period_end = 1, updated_at = ? WHERE id = ?').bind(now, id).run();
+      // Sync to profile
+      const profileTable = sub.subscriber_type === 'enterprise' ? 'enterprise_profiles' : 'profiles';
+      await db.prepare(`UPDATE ${profileTable} SET subscription_status = "cancelled", updated_at = ? WHERE id = ?`).bind(now, sub.subscriber_id).run();
+      return { success: true, id };
+    }
+    case 'checkExpiredSubscriptions': {
+      const now = new Date().toISOString();
+      const { results } = await db.prepare('SELECT * FROM subscriptions WHERE current_period_end < ? AND status IN ("active","trial","past_due") AND cancel_at_period_end = 0').bind(now).all();
+      const expired = (results || []) as Record<string, unknown>[];
+      for (const sub of expired) {
+        await db.prepare('UPDATE subscriptions SET status = "expired", updated_at = ? WHERE id = ?').bind(now, sub.id).run();
+        const profileTable = sub.subscriber_type === 'enterprise' ? 'enterprise_profiles' : 'profiles';
+        await db.prepare(`UPDATE ${profileTable} SET subscription_status = "expired", subscription_tier = "free", updated_at = ? WHERE id = ?`).bind(now, sub.subscriber_id).run();
+      }
+      return { expired_count: expired.length, ids: expired.map(s => s.id) };
     }
 
     // ── Leaderboard / Rank ──
@@ -1129,8 +2021,39 @@ async function handleAction(
     }
 
     case 'generateReferral': {
-      // TODO: Implement real referral code generation
-      return { success: true, referralCode: `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}` };
+      const profileId = params.profileId as string;
+      if (!profileId) return { success: false, error: 'profileId required' };
+
+      // Check if profile already has a referral code
+      const existing = await env.DB.prepare(`
+        SELECT referral_code, display_name, email FROM profiles WHERE id = ?
+      `).bind(profileId).first() as Record<string, unknown> | null;
+
+      if (existing?.['referral_code']) {
+        return { success: true, referralCode: existing['referral_code'] };
+      }
+
+      const code = `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+      await env.DB.prepare(`
+        UPDATE profiles SET referral_code = ? WHERE id = ?
+      `).bind(code, profileId).run();
+
+      // Auto-create partner record so webhook can credit them
+      const partnerId = crypto.randomUUID();
+      await env.DB.prepare(`
+        INSERT INTO referral_partners
+        (id, profile_id, name, email, partner_type, referral_code, is_active, commission_rate, total_referrals, total_payouts, pending_payouts)
+        VALUES (?, ?, ?, ?, ?, ?, 1, 20, 0, 0, 0)
+      `).bind(
+        partnerId,
+        profileId,
+        existing?.['display_name'] || 'Pilot',
+        existing?.['email'] || null,
+        'pilot',
+        code
+      ).run();
+
+      return { success: true, referralCode: code };
     }
 
     case 'sendAccountCreatedEmail': {
@@ -1146,6 +2069,242 @@ async function handleAction(
     case 'mfbTokenExchange': {
       // TODO: Migrate mfb-token-exchange edge function into Worker
       return { success: false, error: 'mfbTokenExchange not yet migrated to Worker' };
+    }
+
+    // ── ATO Bulk Voucher System ──
+    case 'createVoucherBatch': {
+      const missing = validateRequiredFields(params, ['enterprise_id', 'batch_name', 'quantity']);
+      if (missing) throw new Error(missing);
+      const batchId = crypto.randomUUID();
+      const now = new Date().toISOString();
+      const qty = Number(params.quantity);
+      await db.prepare(`
+        INSERT INTO bulk_voucher_batches (id, enterprise_id, batch_name, tier, amount_cents, quantity, codes_generated, codes_redeemed, expires_at, status, payment_status, metadata, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        batchId, params.enterprise_id, params.batch_name,
+        params.tier || 'recognition_plus', params.amount_cents || 2900, qty, 0, 0,
+        params.expires_at || null, 'active', 'pending', params.metadata ? JSON.stringify(params.metadata) : null, now, now
+      ).run();
+      return db.prepare('SELECT * FROM bulk_voucher_batches WHERE id = ?').bind(batchId).first();
+    }
+    case 'purchaseVoucherBatch': {
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      if (!env.DODO_API_KEY) throw new Error('Checkout not configured');
+
+      const batch = await db.prepare('SELECT * FROM bulk_voucher_batches WHERE id = ?').bind(batchId).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      if (batch.payment_status === 'paid') throw new Error('Batch already paid');
+
+      const totalCents = Number(batch.amount_cents) * Number(batch.quantity);
+      const enterprise = await db.prepare('SELECT company_name, contact_email FROM enterprise_profiles WHERE id = ?').bind(batch.enterprise_id).first() as Record<string, unknown> | null;
+
+      const dodoRes = await fetch('https://live.dodopayments.com/v1/checkouts', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.DODO_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          product_cart: [{ product_id: env.DODO_PRODUCT_ID_RECOGNITION_PLUS || 'voucher_batch', quantity: Number(batch.quantity) }],
+          customer: {
+            email: (enterprise?.['contact_email'] as string) || 'enterprise@pilotrecognition.com',
+            name: (enterprise?.['company_name'] as string) || 'Enterprise',
+          },
+          metadata: {
+            batch_id: batchId,
+            enterprise_id: batch.enterprise_id,
+            type: 'voucher_batch',
+            quantity: batch.quantity,
+            amount_cents_per_voucher: batch.amount_cents,
+          },
+          return_url: `https://pilotterminal.com/enterprise/vouchers?batch=${batchId}&checkout=success`,
+          cancel_url: `https://pilotterminal.com/enterprise/vouchers?batch=${batchId}&checkout=cancelled`,
+        }),
+      });
+      if (!dodoRes.ok) {
+        const errText = await dodoRes.text();
+        console.error('[VoucherCheckout] Dodo error:', dodoRes.status, errText);
+        throw new Error('Payment provider error');
+      }
+      const dodoData = await dodoRes.json() as { checkout_url?: string; session_id?: string };
+      if (dodoData.session_id) {
+        await db.prepare('UPDATE bulk_voucher_batches SET dodo_checkout_id = ? WHERE id = ?').bind(dodoData.session_id, batchId).run();
+      }
+      return { checkout_url: dodoData.checkout_url, session_id: dodoData.session_id, total_cents: totalCents };
+    }
+    case 'generateVoucherCodes': {
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      const batch = await db.prepare('SELECT * FROM bulk_voucher_batches WHERE id = ?').bind(batchId).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      if (batch.status !== 'active') throw new Error('Batch not active');
+
+      const qty = Number(batch.quantity);
+      const enterpriseId = String(batch.enterprise_id);
+      const batchName = String(batch.batch_name).replace(/\s+/g, '').toUpperCase().slice(0, 10);
+      const now = new Date().toISOString();
+      const codes: string[] = [];
+
+      for (let i = 0; i < qty; i++) {
+        const code = `ATO-${batchName}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+        codes.push(code);
+        await db.prepare('INSERT INTO bulk_voucher_codes (id, batch_id, code, status, created_at) VALUES (?, ?, ?, ?, ?)')
+          .bind(crypto.randomUUID(), batchId, code, 'unused', now).run();
+      }
+
+      await db.prepare('UPDATE bulk_voucher_batches SET codes_generated = ? WHERE id = ?').bind(qty, batchId).run();
+      return { generated: qty, codes };
+    }
+    case 'getVoucherBatches': {
+      const enterpriseId = params.enterprise_id as string;
+      if (!enterpriseId) throw new Error('Missing enterprise_id');
+      const { results } = await db.prepare('SELECT * FROM bulk_voucher_batches WHERE enterprise_id = ? ORDER BY created_at DESC LIMIT 50').bind(enterpriseId).all();
+      return results || [];
+    }
+    case 'getVoucherCodes': {
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      const { results } = await db.prepare('SELECT * FROM bulk_voucher_codes WHERE batch_id = ? ORDER BY created_at DESC').bind(batchId).all();
+      return results || [];
+    }
+    case 'redeemVoucher': {
+      const code = (params.code as string)?.trim().toUpperCase();
+      if (!code) throw new Error('Missing code');
+      const pilotId = params.pilot_id as string;
+      if (!pilotId) throw new Error('Missing pilot_id');
+
+      const voucher = await db.prepare('SELECT * FROM bulk_voucher_codes WHERE code = ?').bind(code).first() as Record<string, unknown> | null;
+      if (!voucher) throw new Error('Invalid voucher code');
+      if (voucher.status !== 'unused') throw new Error('Voucher already used or expired');
+
+      const batch = await db.prepare('SELECT * FROM bulk_voucher_batches WHERE id = ?').bind(voucher.batch_id).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      if (batch.status !== 'active') throw new Error('Batch not active');
+      if (batch.expires_at && new Date(batch.expires_at as string) < new Date()) throw new Error('Batch expired');
+
+      const now = new Date().toISOString();
+      // Mark voucher redeemed
+      await db.prepare('UPDATE bulk_voucher_codes SET status = "redeemed", redeemed_by = ?, redeemed_at = ? WHERE id = ?')
+        .bind(pilotId, now, voucher.id).run();
+      // Update batch stats
+      await db.prepare('UPDATE bulk_voucher_batches SET codes_redeemed = codes_redeemed + 1 WHERE id = ?').bind(voucher.batch_id).run();
+      // Grant tier to pilot
+      const tier = String(batch.tier || 'recognition_plus');
+      await db.prepare('UPDATE profiles SET subscription_tier = ?, subscription_status = "active", updated_at = ? WHERE id = ?')
+        .bind(tier, now, pilotId).run();
+
+      return { success: true, tier, redeemed_at: now };
+    }
+    case 'revokeVoucher': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      await db.prepare('UPDATE bulk_voucher_codes SET status = "revoked" WHERE id = ?').bind(id).run();
+      return { success: true };
+    }
+
+    // ── Referral Payout Automation ──
+    case 'triggerReferralPayout': {
+      // Trigger a manual $20 payout to a partner (admin only)
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
+
+      const partnerId = params.partner_id as string;
+      if (!partnerId) throw new Error('Missing partner_id');
+
+      const partner = await db.prepare('SELECT * FROM referral_partners WHERE id = ?').bind(partnerId).first() as Record<string, unknown> | null;
+      if (!partner) throw new Error('Partner not found');
+      if ((partner.pending_payouts as number || 0) <= 0) throw new Error('No pending payouts');
+
+      const payoutAmount = partner.pending_payouts as number;
+      const now = new Date().toISOString();
+
+      // Record payout
+      const payoutId = crypto.randomUUID();
+      await db.prepare(`
+        INSERT INTO flight_school_payouts (id, flight_school_id, amount, status, payout_method, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(payoutId, partnerId, payoutAmount, 'completed', partner.email || 'bank_transfer', now).run();
+
+      // Update partner
+      await db.prepare(`
+        UPDATE referral_partners SET total_payouts = total_payouts + ?, pending_payouts = 0, updated_at = ? WHERE id = ?
+      `).bind(payoutAmount, now, partnerId).run();
+
+      // Mark all pending conversions as paid
+      await db.prepare('UPDATE referral_conversions SET commission_status = "paid", paid_at = ? WHERE partner_id = ? AND commission_status = "pending"')
+        .bind(now, partnerId).run();
+
+      return { success: true, payout_id: payoutId, amount: payoutAmount };
+    }
+    case 'getReferralPartners': {
+      const { results } = await db.prepare('SELECT * FROM referral_partners ORDER BY total_referrals DESC LIMIT 200').all();
+      return results || [];
+    }
+    case 'getReferralConversions': {
+      const partnerId = params.partner_id as string;
+      let sql = 'SELECT * FROM referral_conversions';
+      const binds: unknown[] = [];
+      if (partnerId) { sql += ' WHERE partner_id = ?'; binds.push(partnerId); }
+      sql += ' ORDER BY subscribed_at DESC LIMIT 200';
+      const { results } = await db.prepare(sql).bind(...binds).all();
+      return results || [];
+    }
+
+    // ── Annual Re-Verification Queue ──
+    case 'getReverificationQueue': {
+      const status = params.status as string | undefined;
+      const cycleYear = (params.cycle_year as number) || new Date().getFullYear();
+      const limit = Math.min((params.limit as number) || 200, 500);
+      let sql = 'SELECT * FROM reverification_queue WHERE cycle_year = ?';
+      const binds: unknown[] = [cycleYear];
+      if (status) { sql += ' AND status = ?'; binds.push(status); }
+      sql += ' ORDER BY created_at DESC LIMIT ?';
+      binds.push(limit);
+      const { results } = await db.prepare(sql).bind(...binds).all();
+      return results || [];
+    }
+    case 'triggerAnnualReverification': {
+      // Admin-only: manually kick off a re-verification scan
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
+      return runReverificationScan(db, params.cycle_year as number | undefined);
+    }
+    case 'dismissReverification': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const now = new Date().toISOString();
+      await db.prepare('UPDATE reverification_queue SET status = "dismissed", dismissed_at = ?, dismissed_by = ?, updated_at = ? WHERE id = ?')
+        .bind(now, auth.sub, now, id).run();
+      return { success: true };
+    }
+    case 'notifyReverification': {
+      const id = params.id as string;
+      if (!id) throw new Error('Missing id');
+      const now = new Date().toISOString();
+      await db.prepare('UPDATE reverification_queue SET status = "notified", notified_at = ?, updated_at = ? WHERE id = ?')
+        .bind(now, now, id).run();
+      // TODO: Integrate Resend MCP to send actual email
+      return { success: true, notified_at: now };
+    }
+    case 'getCredentialExpiryStats': {
+      const now = new Date().toISOString();
+      const ninetyDays = new Date();
+      ninetyDays.setDate(ninetyDays.getDate() + 90);
+      const { results: expiringSoon } = await db.prepare(
+        'SELECT COUNT(*) as count FROM pilot_credentials WHERE expires_at IS NOT NULL AND expires_at <= ? AND expires_at > ? AND status = "active"'
+      ).bind(ninetyDays.toISOString(), now).all();
+      const { results: expired } = await db.prepare(
+        'SELECT COUNT(*) as count FROM pilot_credentials WHERE expires_at IS NOT NULL AND expires_at < ? AND status = "active"'
+      ).bind(now).all();
+      const { results: total } = await db.prepare('SELECT COUNT(*) as count FROM pilot_credentials').all();
+      return {
+        total_credentials: (total?.[0] as Record<string, unknown>)?.['count'] || 0,
+        expiring_90d: (expiringSoon?.[0] as Record<string, unknown>)?.['count'] || 0,
+        expired: (expired?.[0] as Record<string, unknown>)?.['count'] || 0,
+        scan_date: now,
+      };
     }
 
     default:
@@ -1197,11 +2356,109 @@ async function handleDodoWebhook(request: Request, env: Env): Promise<Response> 
           UPDATE profiles SET subscription_tier = ?, subscription_status = 'active', updated_at = datetime('now')
           WHERE id = ?
         `).bind(tier, userId).run();
+
+        // ── Referral Conversion: payout on Recognition+ subscription ──
+        try {
+          const profile = await env.DB.prepare(`
+            SELECT id, email, display_name, referred_by_code, referred_by_profile_id
+            FROM profiles WHERE id = ?
+          `).bind(userId).first() as Record<string, unknown> | null;
+
+          const refCode = profile?.['referred_by_code'] as string | null;
+          if (refCode && profile?.['referred_by_profile_id']) {
+            const referrerId = profile['referred_by_profile_id'] as string;
+            const pilotEmail = profile['email'] as string;
+            const pilotName = profile['display_name'] as string | null;
+
+            // Check if conversion already recorded for this pilot
+            const existing = await env.DB.prepare(`
+              SELECT id FROM referral_conversions WHERE pilot_id = ? AND status = 'subscribed'
+            `).bind(userId).first();
+
+            if (!existing) {
+              // Find partner / referrer account
+              const partner = await env.DB.prepare(`
+                SELECT id, commission_rate, total_referrals
+                FROM referral_partners
+                WHERE referral_code = ? AND is_active = 1
+              `).bind(refCode).first() as Record<string, unknown> | null;
+
+              const commission = (partner?.['commission_rate'] as number) ?? 20;
+
+              await env.DB.prepare(`
+                INSERT INTO referral_conversions
+                (id, partner_id, referral_code, pilot_id, pilot_email, pilot_name,
+                 status, signed_up_at, subscribed_at, commission_amount)
+                VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'), ?)
+              `).bind(
+                crypto.randomUUID(),
+                (partner?.['id'] as string) || null,
+                refCode,
+                userId,
+                pilotEmail,
+                pilotName,
+                'subscribed',
+                commission
+              ).run();
+
+              if (partner?.['id']) {
+                await env.DB.prepare(`
+                  UPDATE referral_partners
+                  SET total_referrals = COALESCE(total_referrals, 0) + 1
+                  WHERE id = ?
+                `).bind(partner['id']).run();
+              }
+
+              console.log('[DodoWebhook] Referral conversion recorded:', refCode, 'commission:', commission);
+            }
+          }
+        } catch (refErr) {
+          console.error('[DodoWebhook] Referral conversion error (non-critical):', refErr);
+        }
       } catch (dbErr) {
         // Log error but still acknowledge webhook (Dodo will retry if we 500)
         console.error('[DodoWebhook] DB error:', dbErr);
       }
-    } else {
+    }
+
+    // ── Voucher Batch Payment ──
+    const batchId = metadata.batch_id as string | undefined;
+    const voucherType = metadata.type as string | undefined;
+    if (voucherType === 'voucher_batch' && batchId) {
+      try {
+        const now = new Date().toISOString();
+        // Mark batch as paid
+        await env.DB.prepare('UPDATE bulk_voucher_batches SET payment_status = "paid", updated_at = ? WHERE id = ?').bind(now, batchId).run();
+
+        // Record payment
+        await env.DB.prepare(`
+          INSERT INTO payments (id, user_id, amount_cents, currency, tier_purchased,
+            tax_amount, tax_rate_percent, dodo_payment_id, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(
+          crypto.randomUUID(), batchId, Math.round(amount * 100), currency, 'voucher_batch',
+          Math.round(amount * 100 * 0.15), 15, paymentId, 'completed'
+        ).run();
+
+        // Auto-generate codes
+        const batch = await env.DB.prepare('SELECT * FROM bulk_voucher_batches WHERE id = ?').bind(batchId).first() as Record<string, unknown> | null;
+        if (batch && batch.codes_generated === 0) {
+          const qty = Number(batch.quantity);
+          const batchName = String(batch.batch_name).replace(/\s+/g, '').toUpperCase().slice(0, 10);
+          for (let i = 0; i < qty; i++) {
+            const code = `ATO-${batchName}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+            await env.DB.prepare('INSERT INTO bulk_voucher_codes (id, batch_id, code, status, created_at) VALUES (?, ?, ?, ?, ?)')
+              .bind(crypto.randomUUID(), batchId, code, 'unused', now).run();
+          }
+          await env.DB.prepare('UPDATE bulk_voucher_batches SET codes_generated = ? WHERE id = ?').bind(qty, batchId).run();
+          console.log('[DodoWebhook] Voucher codes auto-generated for batch:', batchId, 'qty:', qty);
+        }
+      } catch (voucherErr) {
+        console.error('[DodoWebhook] Voucher batch processing error (non-critical):', voucherErr);
+      }
+    }
+
+    if (!userId && voucherType !== 'voucher_batch') {
       console.warn('[DodoWebhook] Missing userId in payload:', body);
     }
   }
@@ -1351,4 +2608,140 @@ export default {
       return jsonResponse({ error: 'Internal error', message: msg }, 500);
     }
   },
+
+  // ── Daily Cron: Purge expired verification documents ──
+  async scheduled(_event: ScheduledEvent, env: Env, _ctx: ExecutionContext): Promise<void> {
+    const now = new Date().toISOString();
+    console.log('[PurgeCron] Starting at', now);
+
+    const db = env.DB;
+
+    // Find submissions where purge date has passed and documents haven't been purged yet
+    const { results } = await db.prepare(`
+      SELECT id, auth0_sub, account_number, document_keys, consent_json_path, document_purge_after, status
+      FROM verification_submissions
+      WHERE document_purge_after IS NOT NULL
+        AND document_purge_after < ?
+        AND document_keys IS NOT NULL
+        AND document_keys != ''
+        AND document_keys != '{}'
+    `).bind(now).all();
+
+    const rows = (results || []) as Array<Record<string, unknown>>;
+    console.log('[PurgeCron] Found', rows.length, 'submissions with expired documents');
+
+    for (const row of rows) {
+      const submissionId = row['id'] as string;
+      const documentKeysRaw = row['document_keys'] as string;
+
+      let documentKeys: Record<string, string> = {};
+      try {
+        documentKeys = JSON.parse(documentKeysRaw || '{}');
+      } catch {
+        console.warn('[PurgeCron] Invalid document_keys JSON for submission:', submissionId);
+        continue;
+      }
+
+      const keysToDelete = Object.values(documentKeys).filter(Boolean);
+      console.log('[PurgeCron] Submission:', submissionId, '| Docs to purge:', keysToDelete.length);
+
+      let deletedCount = 0;
+
+      for (const r2Key of keysToDelete) {
+        // Safety: never delete anything in the consents/ prefix
+        if (r2Key.startsWith('consents/')) {
+          console.log('[PurgeCron] Skipping consent form:', r2Key);
+          continue;
+        }
+
+        try {
+          await env.VAULT.delete(r2Key);
+          deletedCount++;
+          console.log('[PurgeCron] Deleted:', r2Key);
+        } catch (err) {
+          console.error('[PurgeCron] Failed to delete:', r2Key, err);
+        }
+      }
+
+      // Update D1: clear document_keys, keep consent_json_path
+      try {
+        await db.prepare(`
+          UPDATE verification_submissions
+          SET document_keys = '{}', updated_at = ?
+          WHERE id = ?
+        `).bind(now, submissionId).run();
+
+        console.log('[PurgeCron] Cleared document_keys for submission:', submissionId, '| Deleted:', deletedCount);
+      } catch (dbErr) {
+        console.error('[PurgeCron] Failed to update D1 for submission:', submissionId, dbErr);
+      }
+    }
+
+    console.log('[PurgeCron] Finished. Processed', rows.length, 'submissions');
+
+    // ── Annual Re-Verification Scan ──
+    try {
+      const year = new Date().getFullYear();
+      await runReverificationScan(db, year);
+    } catch (scanErr) {
+      console.error('[ReverificationCron] Scan error:', scanErr);
+    }
+  },
 } satisfies ExportedHandler<Env>;
+
+// ── Re-Verification Scan Helper ───────────────────────────────
+
+async function runReverificationScan(db: D1Database, cycleYear?: number): Promise<{ created: number; skipped: number; cycle_year: number }> {
+  const year = cycleYear || new Date().getFullYear();
+  const batchId = `annual-${year}`;
+  const now = new Date().toISOString();
+
+  // Find all active credentials expiring within 90 days or already expired
+  const ninetyDays = new Date();
+  ninetyDays.setDate(ninetyDays.getDate() + 90);
+
+  const { results } = await db.prepare(`
+    SELECT pc.*, p.email, p.display_name
+    FROM pilot_credentials pc
+    JOIN profiles p ON pc.user_id = p.id
+    WHERE pc.expires_at IS NOT NULL
+      AND pc.expires_at <= ?
+      AND pc.status = 'active'
+    ORDER BY pc.expires_at ASC
+  `).bind(ninetyDays.toISOString()).all();
+
+  const credentials = (results || []) as Record<string, unknown>[];
+  let created = 0;
+  let skipped = 0;
+
+  for (const cred of credentials) {
+    const pilotId = cred.user_id as string;
+    const credType = cred.credential_type as string;
+
+    // Check if already in queue for this cycle
+    const existing = await db.prepare(`
+      SELECT id FROM reverification_queue
+      WHERE pilot_id = ? AND credential_type = ? AND cycle_year = ?
+    `).bind(pilotId, credType, year).first();
+
+    if (existing) {
+      skipped++;
+      continue;
+    }
+
+    const id = crypto.randomUUID();
+    await db.prepare(`
+      INSERT INTO reverification_queue
+      (id, pilot_id, pilot_email, pilot_name, credential_type, credential_id, current_expiry, status, cycle_year, batch_id, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      id, pilotId, cred.email || null, cred.display_name || null,
+      credType, cred.id || null, cred.expires_at as string || null,
+      'pending', year, batchId, now, now
+    ).run();
+    created++;
+  }
+
+  console.log(`[ReverificationScan] Year ${year}: ${created} created, ${skipped} skipped`);
+  return { created, skipped, cycle_year: year };
+}

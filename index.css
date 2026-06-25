@@ -50,6 +50,17 @@ img[src*="accreditation-"] , img[src*="Airbus_Logo_2017"], img[alt="FAA"], img[a
   animation: marquee 30s linear infinite;
 }
 
+/* Hide number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
 }

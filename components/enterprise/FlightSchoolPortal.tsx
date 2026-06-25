@@ -9,13 +9,15 @@ import {
   FileText, Settings, Bell, ChevronRight, ChevronDown,
   ExternalLink, RefreshCw
 } from 'lucide-react';
-import { supabase } from '../../shared/lib/supabase';
+import { useEnterprisePortal } from './hooks/useEnterprisePortal';
 import { FlightSchoolAnalyticsDashboard } from '../../components/referral';
 
 interface FlightSchoolPortalProps {
   flightSchoolId: string;
   user: any;
 }
+
+const WORKER_BASE = import.meta.env.VITE_WORKER_API_URL || 'https://api.pilotrecognition.com';
 
 type Tab = 'overview' | 'referrals' | 'payouts' | 'marketing' | 'pilots' | 'settings';
 
@@ -31,6 +33,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
+  const { callApi } = useEnterprisePortal();
 
   useEffect(() => {
     loadFlightSchoolData();
@@ -39,49 +42,25 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
   const loadFlightSchoolData = async () => {
     try {
       setLoading(true);
-      
-      // Load flight school data
-      const { data: schoolData } = await supabase
-        .from('flight_schools')
-        .select('*')
-        .eq('id', flightSchoolId)
-        .single();
-      
+
+      // Load flight school data from Worker
+      const schoolData = await callApi('getFlightSchool', { enterprise_id: flightSchoolId }) as Record<string, unknown> | null;
       if (schoolData) setFlightSchool(schoolData);
 
-      // Load referrals
-      const { data: referralData } = await supabase
-        .from('referrals')
-        .select('*')
-        .eq('flight_school_id', flightSchoolId)
-        .order('created_at', { ascending: false })
-        .limit(20);
-      
+      // Load referrals from Worker
+      const referralData = await callApi('getFlightSchoolReferrals', { flight_school_id: flightSchoolId }) as unknown[] | null;
       if (referralData) setReferrals(referralData);
 
-      // Load payouts
-      const { data: payoutData } = await supabase
-        .from('payouts')
-        .select('*')
-        .eq('flight_school_id', flightSchoolId)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      
+      // Load payouts from Worker
+      const payoutData = await callApi('getFlightSchoolPayouts', { flight_school_id: flightSchoolId }) as unknown[] | null;
       if (payoutData) setPayouts(payoutData);
 
-      // Load notifications
-      const { data: notificationData } = await supabase
-        .from('flight_school_notifications')
-        .select('*')
-        .eq('flight_school_id', flightSchoolId)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      
+      // Load notifications from Worker
+      const notificationData = await callApi('getFlightSchoolNotifications', { flight_school_id: flightSchoolId }) as unknown[] | null;
       if (notificationData) {
         setNotifications(notificationData);
-        setUnreadNotifications(notificationData.filter(n => !n.read).length);
+        setUnreadNotifications(notificationData.filter((n: any) => !n.read).length);
       }
-
     } catch (error) {
       console.error('Error loading flight school data:', error);
     } finally {
@@ -105,15 +84,10 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
     if (!newReferralEmail || !flightSchool) return;
 
     try {
-      const referralLink = generateReferralLink(newReferralEmail);
-      
-      await supabase.from('referrals').insert({
+      await callApi('createFlightSchoolReferral', {
         flight_school_id: flightSchoolId,
         pilot_email: newReferralEmail,
-        referral_code: flightSchool.referral_code,
-        referral_link: referralLink,
-        commission_amount: flightSchool.commission_rate,
-        status: 'pending'
+        origin: window.location.origin,
       });
 
       setNewReferralEmail('');
@@ -126,12 +100,8 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await supabase
-        .from('flight_school_notifications')
-        .update({ read: true })
-        .eq('id', notificationId);
-      
-      setNotifications(prev => 
+      await callApi('markNotificationRead', { id: notificationId });
+      setNotifications(prev =>
         prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
       );
       setUnreadNotifications(prev => Math.max(0, prev - 1));

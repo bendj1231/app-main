@@ -4,9 +4,9 @@ export function getAuth0RedirectUri() {
   // always redirects back to the correct domain, regardless of what
   // VITE_AUTH0_CALLBACK_URL is set to in .env.local (which may be localhost).
   if (typeof window !== 'undefined') {
-    return `${window.location.origin}/callback`;
+    return `${window.location.origin}/auth/callback`;
   }
 
   // Server-side fallback (should never hit in browser)
-  return 'https://pilotrecognition.com/callback';
+  return 'https://pilotrecognition.com/auth/callback';
 }

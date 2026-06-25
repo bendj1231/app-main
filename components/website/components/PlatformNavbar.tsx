@@ -103,10 +103,11 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4"
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 lg:px-10"
       style={{
         height: '68px',
-        background: 'linear-gradient(to bottom, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.85) 50%, rgba(15,23,42,0.6) 80%, transparent 100%)',
+        background: 'linear-gradient(to bottom, rgba(15,23,42,0.98) 0%, rgba(15,23,42,0.95) 60%, rgba(15,23,42,0.92) 100%)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
         backdropFilter: 'blur(8px)',
       }}
     >
@@ -114,7 +115,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
       <div className="flex items-center flex-shrink-0">
         <a
           href="/"
-          className="text-base sm:text-lg md:text-xl lg:text-2xl font-black cursor-pointer whitespace-nowrap inline-block"
+          className="text-base sm:text-lg md:text-xl lg:text-2xl font-black cursor-pointer whitespace-nowrap inline-block pl-1"
           style={{ fontFamily: 'Arial, Helvetica Neue, sans-serif', letterSpacing: '0.05em' }}
         >
           <span className="text-white inline">pilot</span>
@@ -146,7 +147,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
       </div>
 
       {/* Right — MSFS-style square tile icon toolbar */}
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-2 flex-shrink-0" style={{ transform: 'translateY(-2px)' }}>
         {currentUser ? (
           <>
             <div className="flex items-center gap-2">
@@ -263,11 +264,11 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
                   <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
                 </button>
                 {profileDropOpen && (
-                  <div className="absolute right-0 top-10 w-64 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
-                    <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                  <div className="absolute right-0 top-10 w-72 z-50 shadow-2xl overflow-hidden rounded-xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                    <div className="px-4 pt-3 pb-2.5 border-b border-white/5">
                       <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
                       <p className="text-sm font-black text-white truncate">{displayName}</p>
-                      <p className="text-[10px] text-white/40 truncate">{userProfile?.email || currentUser?.email}</p>
+                      <p className="text-[10px] text-white/40 truncate leading-relaxed">{userProfile?.email || currentUser?.email}</p>
                     </div>
                     <div className="py-1">
                       {[

@@ -541,19 +541,25 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             { id: 'pathways',     label: 'Pathways' },
             { id: 'programs',     label: 'Programs' },
             { id: 'verification', label: 'Verification' },
-          ].map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => setTab(id as TabId)}
-              className={`px-5 py-2 rounded-lg text-sm font-bold tracking-wide transition-all ${
-                activeTab === id
-                  ? 'bg-white/15 text-white'
-                  : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+          ].map(({ id, label }) => {
+            const isActive = activeTab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setTab(id as TabId)}
+                className={`relative px-5 py-2 rounded-lg text-sm font-bold tracking-wide transition-all ${
+                  isActive
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {label}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-red-500" />
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Right — MSFS-style square tile icon toolbar */}
@@ -597,7 +603,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   >
                     <Bell size={20} className="text-white" strokeWidth={2} />
                     {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white" style={{ background: '#f59e0b', border: '1.5px solid rgba(15,22,35,0.9)' }}>
+                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center text-[8px] font-black text-white" style={{ background: '#ef4444', border: '2px solid rgba(15,22,35,0.95)', boxShadow: '0 0 0 1px rgba(255,255,255,0.35)' }}>
                         {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
                       </span>
                     )}
@@ -1078,10 +1084,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 <div className="py-1">
                   {NAV_ITEMS.map(item => {
                     const Icon = item.icon;
+                    const isActive = activeTab === item.id;
                     return (
-                      <button key={item.id} onClick={() => { setTab(item.id); setHamburgerOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group">
-                        <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
-                        <span className="text-[11px] font-black text-white/60 group-hover:text-white tracking-wide transition-colors">{item.label.toUpperCase()}</span>
+                      <button key={item.id} onClick={() => { setTab(item.id); setHamburgerOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 transition-colors group ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}>
+                        <Icon size={13} className={`transition-colors ${isActive ? 'text-red-400' : 'text-white/40 group-hover:text-white/70'}`} />
+                        <span className={`text-[11px] font-black tracking-wide transition-colors ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>{item.label.toUpperCase()}</span>
+                        {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-red-500" />}
                       </button>
                     );
                   })}

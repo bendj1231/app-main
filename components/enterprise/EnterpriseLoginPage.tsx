@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Mail, AlertCircle, ArrowRight, Building2, ChevronRight, ChevronDown } from 'lucide-react';
-import { useEnterpriseAuth } from './hooks/useEnterpriseAuth';
+import { ArrowRight, Building2, ChevronRight, ChevronDown } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NAV_GROUPS = [
   {
@@ -45,13 +45,17 @@ const NAV_GROUPS = [
 ];
 
 export function EnterpriseLoginPage() {
-  const { login, loading, error } = useEnterpriseAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileNav, setMobileNav] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      navigate('/enterprise/dashboard');
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -63,15 +67,13 @@ export function EnterpriseLoginPage() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    const ok = await login(email, password);
-    setSubmitting(false);
-    if (ok) safeRedirect('/enterprise/dashboard');
+  const handleAuth0Login = () => {
+    loginWithRedirect({
+      appState: { returnTo: '/enterprise/dashboard' },
+    });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin" />
@@ -217,58 +219,16 @@ export function EnterpriseLoginPage() {
 
           {/* Card */}
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
-            {/* Error */}
-            {error && (
-              <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-6">
-                <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
-                <p className="text-red-700 text-sm">{error}</p>
-              </div>
-            )}
+            <button
+              onClick={handleAuth0Login}
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-red-200 hover:shadow-lg"
+            >
+              Access Enterprise Portal <ArrowRight className="w-4 h-4" />
+            </button>
 
-            {/* Form */}
-            <form onSubmit={handleLogin} className="space-y-5">
-              <div>
-                <label className="block text-slate-700 text-sm font-semibold mb-1.5">Email address</label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                    placeholder="partner@organisation.com"
-                    className="w-full bg-white border border-slate-300 text-slate-900 placeholder-slate-400 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/10 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-slate-700 text-sm font-semibold mb-1.5">Password</label>
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
-                    placeholder="••••••••"
-                    className="w-full bg-white border border-slate-300 text-slate-900 placeholder-slate-400 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/10 transition-all"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-red-200 hover:shadow-lg"
-              >
-                {submitting ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <>Access Enterprise Portal <ArrowRight className="w-4 h-4" /></>
-                )}
-              </button>
-            </form>
+            <p className="text-center text-slate-400 text-xs mt-4">
+              Authenticated via Auth0. Same login as pilot platform.
+            </p>
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-6">

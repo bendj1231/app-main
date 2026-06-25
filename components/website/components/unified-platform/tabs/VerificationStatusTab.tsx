@@ -24,11 +24,11 @@ const DashboardLegendBanner: React.FC<{ isFreeUser: boolean }> = ({ isFreeUser }
       className="rounded-2xl p-4 md:p-5"
       style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.92))', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
     >
-      <div className="flex items-start gap-3 mb-3">
-        <Info size={16} className="text-sky-400 mt-0.5 flex-shrink-0" />
+      <div className="flex items-center gap-3 mb-3">
+        <Info size={16} className="text-sky-400 flex-shrink-0" />
         <div>
           <p className="text-[11px] font-black uppercase tracking-wider text-white/80">Dashboard Overview</p>
-          <p className="text-[11px] text-white/50 mt-1 leading-relaxed max-w-2xl">
+          <p className="text-[11px] text-white/70 mt-1 leading-relaxed max-w-2xl">
             This panel gives you a real-time overview of your pilot licenses and credentials.
             You can see what is currently valid, what is under review, and if anything has been flagged or expired.
           </p>
@@ -45,32 +45,32 @@ const DashboardLegendBanner: React.FC<{ isFreeUser: boolean }> = ({ isFreeUser }
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
           <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400">Valid</p>
-            <p className="text-[9px] text-white/40">Credential is active</p>
+          <div className="flex flex-col justify-center">
+            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400 leading-tight">Valid</p>
+            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Credential is active</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
           <Flag size={14} className="text-amber-400 flex-shrink-0" />
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-amber-400">Under Review</p>
-            <p className="text-[9px] text-white/40">Check your email</p>
+          <div className="flex flex-col justify-center">
+            <p className="text-[10px] font-black uppercase tracking-wider text-amber-400 leading-tight">Under Review</p>
+            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Check your email</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
+        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
           <Flag size={14} className="text-red-500 flex-shrink-0" />
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-red-400">Flagged / Expired</p>
-            <p className="text-[9px] text-white/40">Fraud suspicion or expired</p>
+          <div className="flex flex-col justify-center">
+            <p className="text-[10px] font-black uppercase tracking-wider text-red-400 leading-tight">Flagged / Expired</p>
+            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Fraud suspicion or expired</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
+        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
           <MinusCircle size={14} className="text-gray-400 flex-shrink-0" />
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-gray-400">N/A</p>
-            <p className="text-[9px] text-white/40">Not verified or free tier</p>
+          <div className="flex flex-col justify-center">
+            <p className="text-[10px] font-black uppercase tracking-wider text-gray-400 leading-tight">N/A</p>
+            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Not verified or free tier</p>
           </div>
         </div>
       </div>
@@ -228,10 +228,10 @@ export const VerificationStatusTab: React.FC<{
       */}
 
       {/* Advert / upgrade banner */}
-      <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
-        <div className="absolute bottom-4 right-4 text-right z-10">
+      <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl px-6 pt-6 pb-9 pr-8 md:pr-10" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
+        <div className="absolute bottom-5 right-5 text-right z-10">
           <p className="text-[9px] font-black uppercase tracking-wider" style={{ color: '#111827' }}>supported by Pilot<span style={{ color: '#dc2626' }}>shortage</span>.org</p>
-          <p className="text-[8px] font-medium tracking-wide" style={{ color: '#6b7280' }}>recognition · pathways · advocacy · mission</p>
+          <p className="text-[9px] font-medium tracking-wide" style={{ color: '#6b7280' }}>recognition · pathways · advocacy · mission</p>
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-3">
@@ -250,12 +250,12 @@ export const VerificationStatusTab: React.FC<{
                 You're one step away from being <span style={{ color: '#dc2626' }}>internationally verified</span>.
               </h1>
               <p className="text-sm max-w-xl leading-relaxed mb-5" style={{ color: '#4b5563' }}>
-                We contact your ATO through verified verification providers to ensure your profile is up-to-date. Verified profiles gain exclusive access to pathways held by charter and confidential operators.
+                We contact your ATO through authorized verification providers to ensure your profile is up-to-date. Verified profiles gain exclusive access to pathways held by charter and confidential operators.
               </p>
               <a
                 href={`https://checkout.dodopayments.com/buy/pdt_0NhgDLaiGjWD45S1gJmng?return_url=${encodeURIComponent(returnUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}`}
                 className="inline-flex px-5 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 items-center gap-2 no-underline w-fit"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', boxShadow: '0 4px 20px rgba(220,38,38,0.35)' }}
               >
                 GET RECOGNITION+ <ArrowRight size={14} />
               </a>
@@ -295,7 +295,7 @@ export const VerificationStatusTab: React.FC<{
         {/* Pilot Profile — Profile Card Style */}
         <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
           {/* Banner */}
-          <div className="relative px-5 pt-5 pb-10" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,58,95,0.9) 50%, rgba(15,23,42,0.95) 100%)' }}>
+          <div className="relative px-5 pt-6 pb-4" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,58,95,0.9) 50%, rgba(15,23,42,0.95) 100%)' }}>
             {/* Gold stripes — rank based on license type */}
             {(() => {
               const lt = String(profile?.license_type || '').toLowerCase();
@@ -366,11 +366,24 @@ export const VerificationStatusTab: React.FC<{
               </div>
             </div>
 
-            <div className="text-center mt-3">
-              <p className="text-base font-black text-white">{profile?.display_name || profile?.full_name || 'Pilot'}</p>
-              <p className="text-[11px] text-white/40">@{profile?.display_name?.toLowerCase().replace(/\s+/g, '') || 'pilot'}</p>
-              <p className="text-[10px] font-black tracking-wider uppercase text-white/50 mt-1">{profile?.license_type || 'Commercial Pilot (CPL)'}</p>
-            </div>
+            {(() => {
+              const rawDisplay = profile?.display_name || profile?.full_name;
+              const cleanName = typeof rawDisplay === 'string' && rawDisplay.includes('@')
+                ? rawDisplay.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                : rawDisplay;
+              const displayName = cleanName || profile?.full_name || 'Pilot';
+              const handleSource = (profile?.display_name || '');
+              const handle = handleSource.includes('@')
+                ? handleSource.split('@')[0].replace(/[^a-z0-9]/gi, '').toLowerCase()
+                : handleSource.toLowerCase().replace(/\s+/g, '');
+              return (
+                <div className="text-center mt-3">
+                  <p className="text-base font-black text-white truncate px-2">{displayName}</p>
+                  <p className="text-[11px] text-white/60 truncate px-2">@{handle || 'pilot'}</p>
+                  <p className="text-[10px] font-black tracking-wider uppercase text-white/50 mt-1 truncate px-2">{profile?.license_type || 'Commercial Pilot (CPL)'}</p>
+                </div>
+              );
+            })()}
 
             {/* Social Icons */}
             <div className="flex justify-center gap-3 mt-4">
@@ -386,7 +399,7 @@ export const VerificationStatusTab: React.FC<{
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={profile?.linkedin_url ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="block" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={profile?.linkedin_url ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect x="2" y="9" width="4" height="12" />
                   <circle cx="4" cy="4" r="2" />
@@ -404,7 +417,7 @@ export const VerificationStatusTab: React.FC<{
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={profile?.instagram_url ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="block" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={profile?.instagram_url ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
@@ -432,20 +445,24 @@ export const VerificationStatusTab: React.FC<{
 
             {/* Hours Grid */}
             <div className="mt-3 grid grid-cols-2 gap-2">
-              <div className="rounded-lg p-2 text-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400">Total Hours</p>
-                <p className="text-lg font-black text-white">{hours.toFixed(1)}</p>
+              <div className="rounded-lg p-3 flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', minHeight: '70px' }}>
+                <div className="text-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400 leading-tight">Total Hours</p>
+                  <p className="text-lg font-black text-white leading-tight mt-1">{hours.toFixed(1)}</p>
+                </div>
               </div>
-              <div className="rounded-lg p-2 text-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                <p className="text-[10px] font-black uppercase tracking-wider text-amber-400">{isFreeUser ? 'UNVERIFIED' : 'Unverified Hours'}</p>
-                <p className="text-lg font-black text-white">{isFreeUser ? hours.toFixed(1) : unverifiedHours.toFixed(1)}</p>
+              <div className="rounded-lg p-3 flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', minHeight: '70px' }}>
+                <div className="text-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-amber-400 leading-tight">{isFreeUser ? 'UNVERIFIED' : 'Unverified Hours'}</p>
+                  <p className="text-lg font-black text-white leading-tight mt-1">{isFreeUser ? hours.toFixed(1) : unverifiedHours.toFixed(1)}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Current Credentials Validity */}
-        <div className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+        <div className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="flex items-center gap-2 mb-4">
             <ShieldCheck size={16} className="text-sky-400" />
             <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Current Credentials Validity</span>
@@ -538,7 +555,7 @@ export const VerificationStatusTab: React.FC<{
             const items = [
               { label: 'Pilot License', claimed: profile?.license_type, cred: licenseCred },
               { label: 'Class 1 Medical', claimed: profile?.medical_class, cred: medicalCred },
-              { label: 'ICAO ELP — English', claimed: profile?.elp_level, cred: elpCred },
+              { label: 'ICAO ELP', claimed: profile?.elp_level, cred: elpCred },
               { label: 'Radio License', claimed: profile?.other_licence, cred: radioCred },
             ];
 
@@ -570,8 +587,8 @@ export const VerificationStatusTab: React.FC<{
           })()}
           {isFreeUser && (
             <div className="mt-5 rounded-xl p-4 text-center" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
-              <p className="text-[11px] text-white/60 leading-relaxed">
-                Upgrade to <span className="font-black" style={{ color: '#dc2626' }}>Recognition+</span> to view real-time credential validity, international compliance alerts, and automatic renewal reminders.
+              <p className="text-[11px] text-white/80 leading-relaxed">
+                Upgrade to{' '}<span className="font-black" style={{ color: '#dc2626' }}>Recognition+</span>{' '}to view real-time credential validity, international compliance alerts, and automatic renewal reminders.
               </p>
             </div>
           )}
@@ -665,7 +682,7 @@ export const VerificationStatusTab: React.FC<{
                   </div>
                 </div>
                 <div className="rounded-xl p-3 mb-4" style={{ background: meterBg, border: `1px solid ${meterBorder}` }}>
-                  <p className="text-[10px] text-white/70 leading-relaxed">
+                  <p className="text-[10px] text-white/90 leading-relaxed">
                     <span className="font-bold text-white">Verification unlocks expiry tracking.</span> Complete your profile, then start verification to see license and medical expiration dates, renewal alerts, and international compliance status.
                   </p>
                 </div>
@@ -700,7 +717,7 @@ export const VerificationStatusTab: React.FC<{
                             <span className={`text-[11px] font-black ${allFilled ? 'text-white/60' : 'text-white/80'}`}>{cat.title}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full" style={{ background: allFilled ? 'rgba(16,185,129,0.15)' : filledCount > 0 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)', color: allFilled ? '#16a34a' : filledCount > 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.35)' }}>
+                            <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: allFilled ? 'rgba(16,185,129,0.15)' : filledCount > 0 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)', color: allFilled ? '#16a34a' : filledCount > 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.35)' }}>
                               {filledCount}/{cat.items.length}
                             </span>
                           </div>
@@ -742,7 +759,7 @@ export const VerificationStatusTab: React.FC<{
       {/* Recency & Currency Tracker — Recognition+ feature */}
       <motion.div variants={itemVariants} className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
         <div className="flex items-center gap-2 mb-4">
-          <Award size={16} className="text-sky-400" />
+          <Award size={16} className="text-sky-400 mt-[2px]" />
           <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Recency & Currency Tracker</span>
         </div>
         {isFreeUser ? (
@@ -883,7 +900,7 @@ export const VerificationStatusTab: React.FC<{
                     </div>
 
                     {/* Verified Hours Total */}
-                    <div className="min-w-[130px] text-right">
+                    <div className="min-w-[130px] text-right pr-2">
                       <span className="text-[9px] font-black px-2 py-0.5 rounded-full cursor-pointer" style={{ background: 'rgba(220,38,38,0.15)', color: '#ef4444' }}>
                         Get Verified
                       </span>
@@ -924,17 +941,17 @@ export const VerificationStatusTab: React.FC<{
                           </span>
                         </>
                       ) : (
-                        <>
+                        <div className="flex items-center gap-2 flex-1">
                           <MinusCircle size={12} className="text-gray-400 flex-shrink-0" />
                           <span className="text-[10px] font-bold text-gray-400">No logbook entry</span>
                           <button
                             onClick={() => setShowLogbookModal(true)}
-                            className="ml-2 px-2.5 py-1 rounded-md text-[9px] font-black tracking-wide transition-all hover:opacity-80"
+                            className="ml-1 px-2.5 py-1 rounded-md text-[9px] font-black tracking-wide transition-all hover:opacity-80 self-center"
                             style={{ background: '#000000', color: '#ffffff' }}
                           >
                             Connect Digital Logbook
                           </button>
-                        </>
+                        </div>
                       )}
                     </div>
                     {/* Currency Tracker */}
@@ -951,7 +968,7 @@ export const VerificationStatusTab: React.FC<{
                       )}
                     </div>
                     {/* Verified Hours Total */}
-                    <div className="min-w-[130px] text-right">
+                    <div className="min-w-[130px] text-right pr-2">
                       <span className="text-[9px] font-black px-2 py-0.5 rounded-full cursor-pointer" style={{ background: 'rgba(220,38,38,0.15)', color: '#ef4444' }}>
                         Get Verified
                       </span>
@@ -1001,7 +1018,7 @@ export const VerificationStatusTab: React.FC<{
                           </div>
                         </>
                       ) : (
-                        <div className="px-4 py-2 rounded-lg text-[10px] text-white/30" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', marginLeft: '1.5rem' }}>
+                        <div className="px-4 py-2 rounded-2xl text-[10px] text-white/40 italic" style={{ background: 'transparent', marginLeft: '1.5rem' }}>
                           No SEL aircraft logged
                         </div>
                       )}
@@ -1025,7 +1042,7 @@ export const VerificationStatusTab: React.FC<{
                           </div>
                         </>
                       ) : (
-                        <div className="px-4 py-2 rounded-lg text-[10px] text-white/30" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', marginLeft: '1.5rem' }}>
+                        <div className="px-4 py-2 rounded-2xl text-[10px] text-white/40 italic" style={{ background: 'transparent', marginLeft: '1.5rem' }}>
                           No MEL aircraft logged
                         </div>
                       )}
@@ -1110,12 +1127,12 @@ export const VerificationStatusTab: React.FC<{
               >
                 <Settings size={14} className="text-sky-400 transition-transform duration-300 group-hover:rotate-90" />
                 Complete Advanced Profile
-                <ArrowRight size={14} className="text-white/40 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5" />
+                <ArrowRight size={14} className="text-white/40 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5" style={{ transform: 'translateY(-1px)' }} />
               </button>
             </div>
             <div className="mt-4 rounded-xl p-4 text-center" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
               <p className="text-[11px] text-white/60 leading-relaxed">
-                Upgrade to <span className="font-black" style={{ color: '#dc2626' }}>Recognition+</span> to unlock recency tracking, proficiency check countdown, and international compliance alerts.
+                Upgrade to{' '}<span className="font-black" style={{ color: '#dc2626' }}>Recognition+</span>{' '}to unlock recency tracking, proficiency check countdown, and international compliance alerts.
               </p>
             </div>
           </>
@@ -1135,7 +1152,7 @@ export const VerificationStatusTab: React.FC<{
             <BookOpen size={20} className="text-sky-400" />
             <span className="text-xs font-black tracking-widest uppercase text-white">Digital Dashboard</span>
           </div>
-          <span className="text-[10px] font-black text-white/40">{logbookConnected ? `${logbook.length} entries synced` : 'Not connected'}</span>
+          <span className="text-[11px] font-black text-amber-400 pr-1">{logbookConnected ? `${logbook.length} entries synced` : 'Not connected'}</span>
         </div>
 
         {/* Floating hours cards with collapse reveal */}
@@ -1148,10 +1165,10 @@ export const VerificationStatusTab: React.FC<{
                 { label: 'PIC', value: fmtHrs(picTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
                 { label: 'DUAL', value: fmtHrs(dualTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
               ].map(({ label, value, color, sub }) => (
-                <div key={label} className="rounded-xl p-4 text-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                  <p className="text-3xl font-black text-white" style={{ color }}>{value}</p>
-                  <p className="text-[9px] font-black text-white/40 uppercase tracking-wider mt-1">{label}</p>
-                  {sub && <p className="text-[9px] font-black text-white/40 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2">{sub}</p>}
+                <div key={label} className="rounded-xl p-4 text-center flex flex-col items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                  <p className="text-3xl font-black text-white text-center w-full" style={{ color }}>{value}</p>
+                  <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-1 text-center w-full">{label}</p>
+                  {sub && <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2 text-center w-full">{sub}</p>}
                 </div>
               ))}
             </div>
@@ -1166,10 +1183,10 @@ export const VerificationStatusTab: React.FC<{
                 { label: 'SIM Time', value: fmtHrs(simTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
                 { label: 'Actual Instrument', value: fmtHrs(actualInstTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
               ].map(({ label, value, color, sub }) => (
-                <div key={label} className="rounded-xl p-4 text-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                  <p className="text-2xl font-black text-white" style={{ color }}>{value}</p>
-                  <p className="text-[9px] font-black text-white/40 uppercase tracking-wider mt-1">{label}</p>
-                  {sub && <p className="text-[9px] font-black text-white/40 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2">{sub}</p>}
+                <div key={label} className="rounded-xl p-4 text-center flex flex-col items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                  <p className="text-2xl font-black text-white text-center w-full" style={{ color }}>{value}</p>
+                  <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-1 text-center w-full">{label}</p>
+                  {sub && <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2 text-center w-full">{sub}</p>}
                 </div>
               ))}
             </div>
@@ -1179,8 +1196,8 @@ export const VerificationStatusTab: React.FC<{
         {/* Free user sync prompt */}
         {isFreeUser && !logbookConnected && (
           <div className="rounded-xl p-4 text-center mb-3" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.35)' }}>
-            <p className="text-[10px] text-white leading-relaxed">
-              <span className="font-black text-white">UNVERIFIED</span> — Hours pulled from profile. Please sync a logbook to confirm total count and ready for verification.
+            <p className="text-[10px] text-white/90 leading-relaxed">
+              <span className="font-black text-white">UNVERIFIED</span> — Hours pulled from profile. Please sync a logbook to confirm total count and ensure it is ready for verification.
             </p>
           </div>
         )}
@@ -1191,7 +1208,7 @@ export const VerificationStatusTab: React.FC<{
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black tracking-wider text-white/60 transition-all hover:bg-white/10"
           style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
         >
-          {logsExpanded ? 'SHOW LESS' : 'VIEW MORE'} {logsExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          {logsExpanded ? 'SHOW LESS' : 'VIEW MORE'} <span className="inline-flex items-center justify-center ml-2 leading-none">{logsExpanded ? <ChevronUp size={12} className="block" /> : <ChevronDown size={12} className="block" />}</span>
         </button>
 
         {/* Floating Access Logbook — only visible when synced */}
@@ -1228,11 +1245,11 @@ export const VerificationStatusTab: React.FC<{
       {/* Connect a digital logbook */}
       <button
         onClick={() => { setSelectedProvider(null); setShowLogbookModal(true); }}
-        className="w-full flex items-center justify-center gap-2 px-6 py-4 text-[10px] font-black tracking-wider uppercase text-white/50 transition-all hover:bg-white/5"
+        className="w-full flex items-center justify-center gap-2.5 px-6 py-[18px] text-[10px] font-black tracking-wider uppercase text-white/50 transition-all hover:bg-white/5 leading-none"
         style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        <BookOpen size={16} className="text-white/40" />
-        Connect digital logbook
+        <BookOpen size={16} className="text-white/40 block" />
+        <span className="leading-none">Connect digital logbook</span>
       </button>
 
       {/* Logbook Provider Modal */}
@@ -1341,13 +1358,13 @@ export const VerificationStatusTab: React.FC<{
       >
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(56,189,248,0.15)', border: '1px solid rgba(56,189,248,0.3)' }}>
-              <TrendingUp size={18} className="text-sky-400" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(56,189,248,0.15)', border: '1px solid rgba(56,189,248,0.3)' }}>
+              <TrendingUp size={18} className="text-sky-400 block" />
             </div>
             <div>
               <p className="text-[10px] font-black tracking-wider uppercase text-sky-400 mb-1">Career Progress</p>
               <p className="text-sm font-black text-white">View Career Progress Dashboard</p>
-              <p className="text-xs text-white/50 mt-0.5">Track your pathway to airline readiness</p>
+              <p className="text-xs text-white/80 mt-0.5">Track your pathway to airline readiness</p>
             </div>
           </div>
           <ArrowRight size={18} className="text-white/30 group-hover:text-white transition-colors" />

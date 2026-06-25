@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   is_visitor INTEGER DEFAULT 0,
   recognition_tier TEXT DEFAULT 'Bronze',
   subscription_tier TEXT DEFAULT 'free',
+  account_number TEXT UNIQUE, -- Recognition+ unique account number
   elp_level TEXT,
   medical_class TEXT,
   employment_status TEXT,
@@ -131,7 +132,65 @@ CREATE TABLE IF NOT EXISTS _cache (
 );
 CREATE INDEX IF NOT EXISTS idx_cache_expires ON _cache(expires_at);
 
+-- APC Verification Submissions (manual form + document metadata)
+-- Stores all submitted form data, consent forms, document keys, and R2 paths
+CREATE TABLE IF NOT EXISTS verification_submissions (
+  id TEXT PRIMARY KEY,
+  auth0_sub TEXT NOT NULL,
+  account_number TEXT,
+  email TEXT NOT NULL,
+  full_name TEXT,
+  phone TEXT,
+  nationality TEXT,
+  license_number TEXT,
+  license_type TEXT,
+  license_expiry TEXT,
+  medical_class TEXT,
+  medical_expiry TEXT,
+  total_hours REAL DEFAULT 0,
+  pic_hours REAL DEFAULT 0,
+  dual_hours REAL DEFAULT 0,
+  dual_xc_hours REAL DEFAULT 0,
+  night_hours REAL DEFAULT 0,
+  instrument_sim_hours REAL DEFAULT 0,
+  instrument_actual_hours REAL DEFAULT 0,
+  multi_engine_sim_hours REAL DEFAULT 0,
+  multi_engine_actual_hours REAL DEFAULT 0,
+  cross_country_hours REAL DEFAULT 0,
+  rating_sets TEXT, -- JSON array of {index, trainingCenter, country, hasCertFile, hasLicFile}
+  ato_name TEXT,
+  ato_location TEXT,
+  ato_data_needed TEXT,
+  document_keys TEXT, -- JSON mapping of docType -> R2 key
+  consent_json_path TEXT, -- R2 path to the consent form JSON
+  consent_pdf_path TEXT, -- R2 path to the consent form PDF (if generated)
+  logbook_path TEXT, -- R2 path to logbook CSV
+  status TEXT DEFAULT 'submitted', -- submitted, processing, verified, rejected
+  document_purge_after TEXT, -- ISO timestamp when R2 documents should be deleted (30 days post-verification)
+  submitted_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_verification_submissions_auth0 ON verification_submissions(auth0_sub);
+CREATE INDEX IF NOT EXISTS idx_verification_submissions_status ON verification_submissions(status);
+CREATE INDEX IF NOT EXISTS idx_verification_submissions_account_number ON verification_submissions(account_number);
+
+-- Employee Access Audit Log (who searched what account number, when)
+CREATE TABLE IF NOT EXISTS verification_employee_access_log (
+  id TEXT PRIMARY KEY,
+  employee_auth0_sub TEXT NOT NULL,
+  employee_email TEXT,
+  action TEXT NOT NULL, -- 'view_submission', 'download_document', 'update_status'
+  target_account_number TEXT NOT NULL,
+  target_submission_id TEXT,
+  metadata TEXT, -- JSON extras
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_access_log_employee ON verification_employee_access_log(employee_auth0_sub);
+CREATE INDEX IF NOT EXISTS idx_access_log_target ON verification_employee_access_log(target_account_number);
+CREATE INDEX IF NOT EXISTS idx_access_log_created ON verification_employee_access_log(created_at);
+
 -- Index for auth0 lookups
 CREATE INDEX IF NOT EXISTS idx_profiles_auth0_id ON profiles(auth0_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_account_number ON profiles(account_number);
 CREATE INDEX IF NOT EXISTS idx_mentorship_badges_user ON mentorship_badges(user_id);
