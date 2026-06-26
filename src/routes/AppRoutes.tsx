@@ -39,8 +39,8 @@ const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
   return null;
 };
 
-const LoginModal = lazy(() =>
-  import('@/components/website/components/LoginModal').then((m) => ({ default: m.LoginModal }))
+const FlightDeckOverlay = lazy(() =>
+  import('@/components/website/components/FlightDeckOverlay').then((m) => ({ default: m.FlightDeckOverlay }))
 );
 const HomePage = lazy(() =>
   import('@/components/website/components/home/HomePage').then((m) => ({ default: m.HomePage }))
@@ -926,10 +926,13 @@ export const AppRoutes = () => {
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, scale: 1.04, filter: 'blur(20px) brightness(1.5)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px) brightness(1)' }}
+          animate={isLoginModalOpen
+            ? { opacity: 0, scale: 0.96, filter: 'blur(12px) brightness(0.3)' }
+            : { opacity: 1, scale: 1, filter: 'blur(0px) brightness(1)' }
+          }
           exit={{ opacity: 0, scale: 0.94, filter: 'blur(28px) brightness(0.25)' }}
           transition={{
-            duration: 1.2,
+            duration: isLoginModalOpen ? 0.6 : 1.2,
             ease: [0.22, 1, 0.36, 1] as const,
           }}
           style={{ willChange: 'transform, opacity, filter', position: 'relative', zIndex: 1 }}
@@ -1779,7 +1782,7 @@ export const AppRoutes = () => {
         </motion.div>
       </AnimatePresence>
 
-      <LoginModal
+      <FlightDeckOverlay
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onNavigate={handleNavigate}
