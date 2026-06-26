@@ -2037,8 +2037,8 @@ async function handleAction(
       if (!profile) throw new Error('Not found');
       // Require Recognition+ subscription to verify flight hours
       const tier = (profile['subscription_tier'] as string) || 'free';
-      const status = (profile['subscription_status'] as string) || 'inactive';
-      if (!['recognition_plus', 'enterprise'].includes(tier) || status !== 'active') {
+      const subStatus = (profile['subscription_status'] as string) || 'inactive';
+      if (!['recognition_plus', 'enterprise'].includes(tier) || subStatus !== 'active') {
         throw new Error('Flight hours verification requires an active Recognition+ subscription');
       }
       const batch = await dbProfiles.prepare(
@@ -2051,6 +2051,75 @@ async function handleAction(
         'UPDATE pilot_flight_log_batches SET status = ? WHERE id = ?'
       ).bind('pending_verification', batchId).run();
       return { batch_id: batchId, status: 'pending_verification' };
+    }
+
+    // ── Admin: verify flight log batch (called from admin portal after ATO/CFI confirmation) ──
+    case 'adminVerifyFlightLogBatch': {
+      // Only super_admin can verify batches
+      const me = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden: super_admin required');
+
+      const batchId = params.batch_id as string;
+      const verificationNotes = (params.verification_notes as string) || '';
+      const verifiedBy = (params.verified_by as string) || '';
+      const cfiName = (params.cfi_name as string) || '';
+      const cfiLicense = (params.cfi_license as string) || '';
+      const atoName = (params.ato_name as string) || '';
+      const signedDocumentUrl = (params.signed_document_url as string) || '';
+      if (!batchId) throw new Error('Missing batch_id');
+
+      const batch = await dbProfiles.prepare(
+        'SELECT * FROM pilot_flight_log_batches WHERE id = ? AND status = ?'
+      ).bind(batchId, 'pending_verification').first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found or not pending verification');
+
+      const pilotProfileId = batch['pilot_profile_id'] as string;
+      const now = new Date().toISOString();
+      const traceId = crypto.randomUUID();
+
+      // Insert verified hours into DB_TRACE audit table
+      await env.DB_TRACE.prepare(`
+        INSERT INTO pilot_flight_hours
+        (id, pilot_profile_id, total_hours, pic_hours, night_hours, instrument_hours, cross_country_hours, multi_engine_hours, jet_hours, turbine_hours, simulator_hours, source, verified_by, verified_at, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        traceId, pilotProfileId,
+        batch['total_hours'] || 0, batch['pic_hours'] || 0, batch['night_hours'] || 0,
+        batch['instrument_hours'] || 0, batch['cross_country_hours'] || 0,
+        batch['multi_engine_hours'] || 0, batch['jet_hours'] || 0,
+        batch['turbine_hours'] || 0, batch['simulator_hours'] || 0,
+        'recognition_plus_verified', verifiedBy || 'admin', now, now, now
+      ).run();
+
+      // Link batch to trace record and mark verified
+      await dbProfiles.prepare(`
+        UPDATE pilot_flight_log_batches
+        SET status = ?, verified_by = ?, verification_notes = ?, verified_at = ?, trace_record_id = ?
+        WHERE id = ?
+      `).bind('verified', verifiedBy || 'admin', verificationNotes, now, traceId, batchId).run();
+
+      // Store CFI/ATO signature evidence in trace audit trail
+      await env.DB_TRACE.prepare(`
+        INSERT INTO verification_audit_trail
+        (id, verification_id, pilot_profile_id, action, actor_id, actor_type, previous_status, new_status, evidence_url, notes, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        crypto.randomUUID(), traceId, pilotProfileId,
+        'flight_hours_verified',
+        verifiedBy || 'admin', 'recognition_plus_admin',
+        'pending_verification', 'verified',
+        signedDocumentUrl || null,
+        JSON.stringify({ cfi_name: cfiName, cfi_license: cfiLicense, ato_name: atoName, batch_id: batchId, verification_notes: verificationNotes }),
+        now
+      ).run();
+
+      return {
+        batch_id: batchId,
+        status: 'verified',
+        trace_record_id: traceId,
+        verified_at: now,
+        verified_by: verifiedBy || 'admin',
+      };
     }
 
     default:
