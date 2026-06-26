@@ -2345,20 +2345,20 @@ async function handleAction(
       if (status) { sql += ' AND status = ?'; binds.push(status); }
       sql += ' ORDER BY created_at DESC LIMIT ?';
       binds.push(limit);
-      const { results } = await db.prepare(sql).bind(...binds).all();
+      const { results } = await pilotDb.prepare(sql).bind(...binds).all();
       return results || [];
     }
     case 'triggerAnnualReverification': {
       // Admin-only: manually kick off a re-verification scan
-      const me = await getProfileByAuth0Id(db, auth.sub);
+      const me = await getProfileByAuth0Id(pilotDb, auth.sub);
       if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
-      return runReverificationScan(db, params.cycle_year as number | undefined);
+      return runReverificationScan(pilotDb, params.cycle_year as number | undefined);
     }
     case 'dismissReverification': {
       const id = params.id as string;
       if (!id) throw new Error('Missing id');
       const now = new Date().toISOString();
-      await db.prepare('UPDATE reverification_queue SET status = "dismissed", dismissed_at = ?, dismissed_by = ?, updated_at = ? WHERE id = ?')
+      await pilotDb.prepare('UPDATE reverification_queue SET status = "dismissed", dismissed_at = ?, dismissed_by = ?, updated_at = ? WHERE id = ?')
         .bind(now, auth.sub, now, id).run();
       return { success: true };
     }
@@ -2366,7 +2366,7 @@ async function handleAction(
       const id = params.id as string;
       if (!id) throw new Error('Missing id');
       const now = new Date().toISOString();
-      await db.prepare('UPDATE reverification_queue SET status = "notified", notified_at = ?, updated_at = ? WHERE id = ?')
+      await pilotDb.prepare('UPDATE reverification_queue SET status = "notified", notified_at = ?, updated_at = ? WHERE id = ?')
         .bind(now, now, id).run();
       // TODO: Integrate Resend MCP to send actual email
       return { success: true, notified_at: now };
@@ -2375,13 +2375,13 @@ async function handleAction(
       const now = new Date().toISOString();
       const ninetyDays = new Date();
       ninetyDays.setDate(ninetyDays.getDate() + 90);
-      const { results: expiringSoon } = await db.prepare(
+      const { results: expiringSoon } = await pilotDb.prepare(
         'SELECT COUNT(*) as count FROM pilot_credentials WHERE expires_at IS NOT NULL AND expires_at <= ? AND expires_at > ? AND status = "active"'
       ).bind(ninetyDays.toISOString(), now).all();
-      const { results: expired } = await db.prepare(
+      const { results: expired } = await pilotDb.prepare(
         'SELECT COUNT(*) as count FROM pilot_credentials WHERE expires_at IS NOT NULL AND expires_at < ? AND status = "active"'
       ).bind(now).all();
-      const { results: total } = await db.prepare('SELECT COUNT(*) as count FROM pilot_credentials').all();
+      const { results: total } = await pilotDb.prepare('SELECT COUNT(*) as count FROM pilot_credentials').all();
       return {
         total_credentials: (total?.[0] as Record<string, unknown>)?.['count'] || 0,
         expiring_90d: (expiringSoon?.[0] as Record<string, unknown>)?.['count'] || 0,
@@ -2394,10 +2394,10 @@ async function handleAction(
     case 'issueProfileVC': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const targetProfile = await getProfileById(db, userId);
+      const targetProfile = await getProfileById(pilotDb, userId);
       if (!targetProfile) throw new Error('Not found');
       if (targetProfile['auth0_id'] !== auth.sub) {
-        const me = await getProfileByAuth0Id(db, auth.sub);
+        const me = await getProfileByAuth0Id(pilotDb, auth.sub);
         if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
       }
 
@@ -2421,7 +2421,7 @@ async function handleAction(
         },
       });
 
-      await db.prepare(`
+      await pilotDb.prepare(`
         INSERT INTO pilot_credentials (id, user_id, credential_type, issuer, credential_data, issued_at, status)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `).bind(vcId, userId, 'profile', 'PilotRecognition', credentialData, now, 'active').run();
@@ -2444,17 +2444,17 @@ async function handleAction(
       const externalAccountId = params.external_account_id as string;
       if (!userId || !providerId) throw new Error('Missing user_id or provider_id');
 
-      const me = await getProfileByAuth0Id(db, auth.sub);
+      const me = await getProfileByAuth0Id(pilotDb, auth.sub);
       if (!me || (me['id'] !== userId && me['role'] !== 'super_admin')) throw new Error('Forbidden');
 
       const id = crypto.randomUUID();
       const now = new Date().toISOString();
-      await db.prepare(`
+      await pilotDb.prepare(`
         INSERT INTO pilot_logbook_connections (id, pilot_id, provider_id, external_account_id, status, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `).bind(id, userId, providerId, externalAccountId || null, 'connected', now, now).run();
 
-      // Update provider user count
+      // Update provider user count (platform table stays in DB)
       await db.prepare(`
         UPDATE logbook_providers SET user_count = user_count + 1, updated_at = ? WHERE id = ?
       `).bind(now, providerId).run();
@@ -2466,22 +2466,37 @@ async function handleAction(
     case 'getCareerPathwayMatches': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const targetProfile = await getProfileById(db, userId);
+      const targetProfile = await getProfileById(pilotDb, userId);
       if (!targetProfile) throw new Error('Not found');
 
       // Get verified credentials
-      const { results: creds } = await db.prepare(`
+      const { results: creds } = await pilotDb.prepare(`
         SELECT credential_type, status FROM pilot_credentials WHERE user_id = ? AND status = 'active'
       `).bind(userId).all();
       const credentialTypes = (creds || []).map((c: unknown) => (c as Record<string, unknown>)['credential_type'] as string);
 
-      // Get logbook connections
-      const { results: connections } = await db.prepare(`
-        SELECT plc.*, lp.name as provider_name, lp.tier as provider_tier
-        FROM pilot_logbook_connections plc
-        JOIN logbook_providers lp ON plc.provider_id = lp.id
-        WHERE plc.pilot_id = ? AND plc.status = 'connected'
+      // Get logbook connections (split cross-db JOIN into two queries)
+      const { results: rawConnections } = await pilotDb.prepare(`
+        SELECT * FROM pilot_logbook_connections WHERE pilot_id = ? AND status = 'connected'
       `).bind(userId).all();
+      const connections: Record<string, unknown>[] = [];
+      if (rawConnections && rawConnections.length > 0) {
+        const providerIds = rawConnections.map((c: unknown) => (c as Record<string, unknown>)['provider_id'] as string);
+        const placeholders = providerIds.map(() => '?').join(',');
+        const { results: providers } = await db.prepare(`
+          SELECT id, name, tier FROM logbook_providers WHERE id IN (${placeholders})
+        `).bind(...providerIds).all();
+        const providerMap = new Map((providers || []).map((p: unknown) => [(p as Record<string, unknown>)['id'] as string, p as Record<string, unknown>]));
+        for (const conn of rawConnections) {
+          const c = conn as Record<string, unknown>;
+          const provider = providerMap.get(c['provider_id'] as string);
+          connections.push({
+            ...c,
+            provider_name: provider?.['name'] || null,
+            provider_tier: provider?.['tier'] || null,
+          });
+        }
+      }
 
       // Risk algorithm
       const requiredCreds = ['license', 'medical', 'radio_license', 'english_proficiency'];
