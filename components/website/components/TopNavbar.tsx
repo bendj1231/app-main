@@ -25,6 +25,7 @@ interface TopNavbarProps {
     forceScrolled?: boolean;
     isLight?: boolean;
     onLoginModalOpen?: () => void;
+    onBecomeMemberOpen?: () => void;
     currentPage?: string;
     pathwayGridRef?: React.RefObject<HTMLDivElement>;
 }
@@ -54,6 +55,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     forceScrolled = false,
     isLight = false,
     onLoginModalOpen,
+    onBecomeMemberOpen,
     currentPage = '',
     pathwayGridRef,
 }) => {
@@ -873,7 +875,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 </button>
 
                                 <button
-                                    onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
+                                    onClick={currentUser ? (e) => handleLogout(e) : () => {
+                                        if (onBecomeMemberOpen) onBecomeMemberOpen();
+                                        else window.dispatchEvent(new CustomEvent('open-become-member-modal'));
+                                    }}
                                     className={`${currentUser ? (isDarkMode ? 'bg-slate-700 hover:bg-slate-600 shadow-black/20' : 'bg-slate-700 hover:bg-slate-800 shadow-lg hover:shadow-slate-500/20') : 'bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-red-500/20'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap leading-none`}
                                 >
                                     {currentUser ? 'Sign Out' : 'Get Started'}
@@ -882,10 +887,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Access Portal button - Only show when not logged in */}
                                 {!currentUser && (
                                     <button
-                                        onClick={() => onNavigate('flight-deck-login')}
-                                        onMouseEnter={() => {
-                                            // Preload the flight-deck-login chunk so no loading screen flashes
-                                            import('@/components/website/components/FlightDeckLoginPage');
+                                        onClick={() => {
+                                            if (onLoginModalOpen) onLoginModalOpen();
+                                            else window.dispatchEvent(new CustomEvent('open-login-modal'));
                                         }}
                                         className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center justify-center gap-2 border border-slate-600 leading-none"
                                     >
@@ -1364,14 +1368,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             ) : (
                                 <div className="flex flex-col gap-3 mb-8">
                                     <button
-                                        onClick={currentUser ? (e) => handleLogout(e) : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
+                                        onClick={currentUser ? (e) => handleLogout(e) : () => {
+                                            if (onBecomeMemberOpen) onBecomeMemberOpen();
+                                            else window.dispatchEvent(new CustomEvent('open-become-member-modal'));
+                                            setIsMenuOpen(false);
+                                        }}
                                         className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest text-sm ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
                                     >
                                         {currentUser ? 'Sign Out' : 'Become a Member'}
                                     </button>
 
                                     <button
-                                        onClick={currentUser ? () => { onNavigate(currentPage === 'home' ? 'platform' : 'portal'); setIsMenuOpen(false); } : () => { onNavigate('flight-deck-login'); setIsMenuOpen(false); }}
+                                        onClick={currentUser ? () => { onNavigate(currentPage === 'home' ? 'platform' : 'portal'); setIsMenuOpen(false); } : () => {
+                                            if (onLoginModalOpen) onLoginModalOpen();
+                                            else window.dispatchEvent(new CustomEvent('open-login-modal'));
+                                            setIsMenuOpen(false);
+                                        }}
                                         className={`${currentUser ? (currentPage === 'home' ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700') : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg text-sm font-bold uppercase tracking-widest shadow-xl`}
                                     >
                                         {currentUser ? (currentPage === 'home' ? 'Go to Platform' : 'Access Portal') : 'Login'}

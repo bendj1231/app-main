@@ -59,6 +59,7 @@ interface PathwayGridProps {
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide: Slide) => void;
     onLogin?: () => void;
+    onBecomeMemberOpen?: () => void;
     isLoggedIn?: boolean;
     isEnrolledInFoundation?: boolean;
 }
@@ -504,9 +505,10 @@ const heroSlides: HeroSlide[] = [
 
 const AccessPlatformCard: React.FC<{
     onLogin?: () => void;
+    onBecomeMemberOpen?: () => void;
     onNavigate: (page: string) => void;
     isLoggedIn: boolean;
-}> = ({ onLogin, onNavigate, isLoggedIn }) => {
+}> = ({ onLogin, onBecomeMemberOpen, onNavigate, isLoggedIn }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [direction, setDirection] = useState(0);
 
@@ -612,14 +614,14 @@ const AccessPlatformCard: React.FC<{
                             <div className="flex flex-col sm:flex-row gap-3">
                                 {!isLoggedIn && (
                                     <button
-                                        onClick={() => onNavigate(slide.primaryButtonAction)}
+                                        onClick={() => slide.primaryButtonAction === 'become-member' && onBecomeMemberOpen ? onBecomeMemberOpen() : onNavigate(slide.primaryButtonAction)}
                                         className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
                                     >
                                         {slide.primaryButtonText}
                                     </button>
                                 )}
                                 <button
-                                    onClick={() => onNavigate('flight-deck-login')}
+                                    onClick={() => onLogin && onLogin()}
                                     className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/40 hover:border-white/60 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
                                 >
                                     Sign In
@@ -673,6 +675,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     onNavigate,
     onGoToProgramDetail,
     onLogin,
+    onBecomeMemberOpen,
 }) => {
     const { currentUser, userProfile, refreshUserProfile } = useAuth();
     const isLoggedIn = !!currentUser;
@@ -1225,7 +1228,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {isTabletView && (
                                         <>
                                             <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-2.5 h-[240px]">
-                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
                                             </motion.div>
                                             <div className="grid grid-cols-3 gap-2 mb-2.5">
                                                 {currentCards.slice(2, 5).map((card) => (
@@ -1241,7 +1244,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                         <>
                                             {/* Full-width panoramic hero card */}
                                             <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[280px] lg:h-[320px] xl:h-[340px] 2xl:h-[380px]">
-                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
                                             </motion.div>
                                             {/* Bottom 3 cards — larger than before */}
                                             <div className="grid grid-cols-3 gap-4 md:gap-6">

@@ -24,6 +24,7 @@ interface HomePageProps {
     onGoToProgramDetail: (slide?: Slide) => void;
     isLoggedIn?: boolean;
     onLoginModalOpen?: () => void;
+    onBecomeMemberOpen?: () => void;
     isEnrolledInFoundation?: boolean;
     pilotId?: string;
     totalHours?: number;
@@ -589,6 +590,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     onGoToProgramDetail,
     isLoggedIn,
     onLoginModalOpen,
+    onBecomeMemberOpen,
     isEnrolledInFoundation,
     pilotId,
     totalHours,
@@ -1092,6 +1094,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     isLight={isOverWhite}
                     isDark={!isOverWhite}
                     onLoginModalOpen={onLoginModalOpen}
+                    onBecomeMemberOpen={onBecomeMemberOpen}
                     pathwayGridRef={pathwayGridRef}
                     currentPage="home"
                 />
@@ -1302,12 +1305,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
                         <div ref={pathwayGridRef} className="relative z-0 pt-32 md:pt-36">
-                            <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                            <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} onBecomeMemberOpen={onJoinUs} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                         </div>
                     </React.Suspense>
                 ) : (
                     <div ref={pathwayGridRef} className="relative z-0 pt-32 md:pt-36">
-                        <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                        <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} onBecomeMemberOpen={onJoinUs} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                     </div>
                 )}
             </div>

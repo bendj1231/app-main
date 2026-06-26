@@ -9,9 +9,10 @@ interface FlightDeckOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigate: (page: string) => void;
+  onBecomeMemberOpen?: () => void;
 }
 
-export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, onClose, onNavigate }) => {
+export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, onClose, onNavigate, onBecomeMemberOpen }) => {
   const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
   const { currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
@@ -326,7 +327,7 @@ export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, on
               <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', margin: 0 }}>
                 Don't have an account?{' '}
                 <button
-                  onClick={() => { onClose(); onNavigate('become-member'); }}
+                  onClick={() => { onClose(); onBecomeMemberOpen ? onBecomeMemberOpen() : onNavigate('become-member'); }}
                   style={{ background: 'none', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13 }}
                 >
                   Sign up
@@ -340,7 +341,7 @@ export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, on
                 Terms of Service
               </button>
               <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12 }}>|</span>
-              <button onClick={() => { onClose(); onNavigate('privacy'); }} style={{ background: 'none', border: 'none', color: 'rgba(rgba(255,255,255,0.45)', fontSize: 12, cursor: 'pointer', padding: 0 }}>
+              <button onClick={() => { onClose(); onNavigate('privacy'); }} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', fontSize: 12, cursor: 'pointer', padding: 0 }}>
                 Privacy Policy
               </button>
             </div>

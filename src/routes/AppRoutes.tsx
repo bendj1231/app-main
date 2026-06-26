@@ -42,6 +42,9 @@ const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
 const FlightDeckOverlay = lazy(() =>
   import('@/components/website/components/FlightDeckOverlay').then((m) => ({ default: m.FlightDeckOverlay }))
 );
+const BecomeMemberOverlay = lazy(() =>
+  import('@/components/website/components/BecomeMemberOverlay').then((m) => ({ default: m.BecomeMemberOverlay }))
+);
 const HomePage = lazy(() =>
   import('@/components/website/components/home/HomePage').then((m) => ({ default: m.HomePage }))
 );
@@ -633,6 +636,7 @@ export const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isBecomeMemberOpen, setIsBecomeMemberOpen] = useState(false);
   const [careerPathwaysMode, setCareerPathwaysMode] = useState(() => {
     // Check on initial render
     const isDomain =
@@ -672,16 +676,17 @@ export const AppRoutes = () => {
     document.body.classList.remove('page-exiting');
   }, []);
 
-  // Listen for custom login modal events
+  // Listen for custom modal events from any page
   useEffect(() => {
-    const handleOpenLoginModal = () => {
-      setIsLoginModalOpen(true);
-    };
+    const handleOpenLoginModal = () => setIsLoginModalOpen(true);
+    const handleOpenBecomeMemberModal = () => setIsBecomeMemberOpen(true);
 
     window.addEventListener('open-login-modal', handleOpenLoginModal);
+    window.addEventListener('open-become-member-modal', handleOpenBecomeMemberModal);
 
     return () => {
       window.removeEventListener('open-login-modal', handleOpenLoginModal);
+      window.removeEventListener('open-become-member-modal', handleOpenBecomeMemberModal);
     };
   }, []);
 
@@ -922,31 +927,27 @@ export const AppRoutes = () => {
         aria-hidden="true"
       />
 
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={location.pathname}
-          initial={{ opacity: 0, scale: 1.04, filter: 'blur(20px) brightness(1.5)' }}
-          animate={isLoginModalOpen
-            ? { opacity: 0, scale: 0.96, filter: 'blur(12px) brightness(0.3)' }
-            : { opacity: 1, scale: 1, filter: 'blur(0px) brightness(1)' }
-          }
-          exit={{ opacity: 0, scale: 0.94, filter: 'blur(28px) brightness(0.25)' }}
-          transition={{
-            duration: isLoginModalOpen ? 0.6 : 1.2,
-            ease: [0.22, 1, 0.36, 1] as const,
-          }}
-          style={{ willChange: 'transform, opacity, filter', position: 'relative', zIndex: 1 }}
-        >
-          <Routes location={location} key={location.pathname}>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          transition: 'opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+          opacity: isLoginModalOpen || isBecomeMemberOpen ? 0 : 1,
+          transform: isLoginModalOpen || isBecomeMemberOpen ? 'scale(0.96)' : 'none',
+          filter: isLoginModalOpen || isBecomeMemberOpen ? 'blur(12px) brightness(0.3)' : 'blur(0px) brightness(1)',
+        }}
+      >
+        <Routes location={location} key={location.pathname}>
             {/* Home route */}
         <Route
           path="/"
           element={
             <HomePage
-              onJoinUs={() => delayedNavigate('/become-member')}
+              onJoinUs={() => setIsBecomeMemberOpen(true)}
               onLogin={() => setIsLoginModalOpen(true)}
               onNavigate={handleNavigate}
               onLoginModalOpen={() => setIsLoginModalOpen(true)}
+              onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
               onGoToProgramDetail={() => delayedNavigate('/programs')}
             />
           }
@@ -955,10 +956,11 @@ export const AppRoutes = () => {
           path="/home"
           element={
             <HomePage
-              onJoinUs={() => delayedNavigate('/become-member')}
+              onJoinUs={() => setIsBecomeMemberOpen(true)}
               onLogin={() => setIsLoginModalOpen(true)}
               onNavigate={handleNavigate}
               onLoginModalOpen={() => setIsLoginModalOpen(true)}
+              onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
               onGoToProgramDetail={() => delayedNavigate('/programs')}
             />
           }
@@ -1287,7 +1289,7 @@ export const AppRoutes = () => {
             <WhatIsPilotRecognitionPage
               onNavigate={handleNavigate}
               onLogin={() => setIsLoginModalOpen(true)}
-              onJoinUs={() => delayedNavigate('/become-member')}
+              onJoinUs={() => setIsBecomeMemberOpen(true)}
             />
           }
         />
@@ -1779,13 +1781,20 @@ export const AppRoutes = () => {
           element={<Navigate to="/recognition-plus?section=program-discounts" replace />}
         />
           </Routes>
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
       <FlightDeckOverlay
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onNavigate={handleNavigate}
+        onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
+      />
+
+      <BecomeMemberOverlay
+        isOpen={isBecomeMemberOpen}
+        onClose={() => setIsBecomeMemberOpen(false)}
+        onNavigate={handleNavigate}
+        onLogin={() => setIsLoginModalOpen(true)}
       />
     </Suspense>
   );
