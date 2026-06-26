@@ -2035,6 +2035,12 @@ async function handleAction(
       if (!batchId) throw new Error('Missing batch_id');
       const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
       if (!profile) throw new Error('Not found');
+      // Require Recognition+ subscription to verify flight hours
+      const tier = (profile['subscription_tier'] as string) || 'free';
+      const status = (profile['subscription_status'] as string) || 'inactive';
+      if (!['recognition_plus', 'enterprise'].includes(tier) || status !== 'active') {
+        throw new Error('Flight hours verification requires an active Recognition+ subscription');
+      }
       const batch = await dbProfiles.prepare(
         'SELECT id, pilot_profile_id, status FROM pilot_flight_log_batches WHERE id = ?'
       ).bind(batchId).first() as Record<string, unknown> | null;
