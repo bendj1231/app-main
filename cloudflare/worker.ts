@@ -615,13 +615,13 @@ async function handleAction(
     case 'deleteProfile': {
       const id = params.id as string;
       if (!id) throw new Error('Missing id');
-      const existing = await getProfileById(db, id);
+      const existing = await getProfileById(pilotDb, id);
       if (!existing) throw new Error('Not found');
       if (existing['auth0_id'] !== auth.sub) {
-        const me = await getProfileByAuth0Id(db, auth.sub);
+        const me = await getProfileByAuth0Id(pilotDb, auth.sub);
         if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
       }
-      await db.prepare('DELETE FROM profiles WHERE id = ?').bind(id).run();
+      await pilotDb.prepare('DELETE FROM profiles WHERE id = ?').bind(id).run();
       return { deleted: true };
     }
 
@@ -629,13 +629,13 @@ async function handleAction(
     case 'getVerificationStatus': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const targetProfile = await getProfileById(db, userId);
+      const targetProfile = await getProfileById(pilotDb, userId);
       if (!targetProfile) throw new Error('Not found');
       if (targetProfile['auth0_id'] !== auth.sub) {
-        const me = await getProfileByAuth0Id(db, auth.sub);
+        const me = await getProfileByAuth0Id(pilotDb, auth.sub);
         if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
       }
-      const { results } = await db.prepare(`
+      const { results } = await pilotDb.prepare(`
         SELECT credential_type, status, issued_at, expires_at, revoked_at
         FROM pilot_credentials
         WHERE user_id = ?
@@ -668,7 +668,7 @@ async function handleAction(
     case 'getRecognitionScore': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const row = await db.prepare('SELECT * FROM recognition_scores WHERE user_id = ?').bind(userId).first();
+      const row = await pilotDb.prepare('SELECT * FROM recognition_scores WHERE user_id = ?').bind(userId).first();
       if (!row) throw new Error('Not found');
       return row;
     }
@@ -676,9 +676,9 @@ async function handleAction(
       const missing = validateRequiredFields(params, ['user_id']);
       if (missing) throw new Error(missing);
       const userId = params.user_id as string;
-      const existing = await db.prepare('SELECT id FROM recognition_scores WHERE user_id = ?').bind(userId).first();
+      const existing = await pilotDb.prepare('SELECT id FROM recognition_scores WHERE user_id = ?').bind(userId).first();
       if (existing) {
-        await db.prepare(`
+        await pilotDb.prepare(`
           UPDATE recognition_scores SET
             total_score = ?, hours_score = ?, experience_score = ?, assessment_score = ?,
             mentorship_score = ?, score_tier = ?, breakdown = ?, recommendations = ?,
@@ -691,7 +691,7 @@ async function handleAction(
         ).run();
       } else {
         const id = crypto.randomUUID();
-        await db.prepare(`
+        await pilotDb.prepare(`
           INSERT INTO recognition_scores (id, user_id, total_score, hours_score, experience_score,
             assessment_score, mentorship_score, score_tier, breakdown, recommendations)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -701,7 +701,7 @@ async function handleAction(
           JSON.stringify(params.breakdown || {}), JSON.stringify(params.recommendations || [])
         ).run();
       }
-      return db.prepare('SELECT * FROM recognition_scores WHERE user_id = ?').bind(userId).first();
+      return pilotDb.prepare('SELECT * FROM recognition_scores WHERE user_id = ?').bind(userId).first();
     }
 
     // ── Payments ──
@@ -771,19 +771,19 @@ async function handleAction(
       const missing = validateRequiredFields(params, ['profile_id', 'auth0_id', 'did']);
       if (missing) throw new Error(missing);
       const id = crypto.randomUUID();
-      await db.prepare(`
+      await pilotDb.prepare(`
         INSERT INTO pilot_dids (id, profile_id, auth0_id, did, did_method, public_key_jwk)
         VALUES (?, ?, ?, ?, ?, ?)
       `).bind(
         id, params.profile_id, params.auth0_id, params.did,
         params.did_method || 'did:key', JSON.stringify(params.public_key_jwk || {})
       ).run();
-      return db.prepare('SELECT * FROM pilot_dids WHERE id = ?').bind(id).first();
+      return pilotDb.prepare('SELECT * FROM pilot_dids WHERE id = ?').bind(id).first();
     }
     case 'getDid': {
       const auth0Id = params.auth0_id as string;
       if (!auth0Id) throw new Error('Missing auth0_id');
-      const row = await db.prepare('SELECT * FROM pilot_dids WHERE auth0_id = ?').bind(auth0Id).first();
+      const row = await pilotDb.prepare('SELECT * FROM pilot_dids WHERE auth0_id = ?').bind(auth0Id).first();
       if (!row) throw new Error('Not found');
       return row;
     }
@@ -793,7 +793,7 @@ async function handleAction(
       const missing = validateRequiredFields(params, ['user_id', 'credential_type', 'issuer']);
       if (missing) throw new Error(missing);
       const id = crypto.randomUUID();
-      await db.prepare(`
+      await pilotDb.prepare(`
         INSERT INTO pilot_credentials (id, user_id, credential_type, issuer, credential_data, walt_id, expires_at, status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
@@ -801,12 +801,12 @@ async function handleAction(
         JSON.stringify(params.credential_data || {}), params.walt_id || null,
         params.expires_at || null, params.status || 'active'
       ).run();
-      return db.prepare('SELECT * FROM pilot_credentials WHERE id = ?').bind(id).first();
+      return pilotDb.prepare('SELECT * FROM pilot_credentials WHERE id = ?').bind(id).first();
     }
     case 'getCredentials': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const { results } = await db.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(userId).all();
+      const { results } = await pilotDb.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(userId).all();
       return results || [];
     }
 
@@ -846,7 +846,7 @@ async function handleAction(
       // 1. Look up profile to get account_number
       let accountNumber: string | null = null;
       try {
-        const profile = await db.prepare('SELECT id, account_number FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string; account_number: string | null } | null;
+        const profile = await pilotDb.prepare('SELECT id, account_number FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string; account_number: string | null } | null;
         if (profile) {
           accountNumber = profile.account_number || null;
           console.log('[submitVerification] Found profile:', profile.id, 'account_number:', accountNumber);
@@ -920,7 +920,7 @@ async function handleAction(
 
       // 5. Insert into verification_submissions D1 table
       try {
-        await db.prepare(`
+        await pilotDb.prepare(`
           INSERT INTO verification_submissions (
             id, auth0_sub, account_number, email, full_name, phone, nationality,
             license_number, license_type, license_expiry,
@@ -973,7 +973,7 @@ async function handleAction(
 
       // 6. Also update pilot_licensure_experience with the new hours (upsert)
       try {
-        const profile = await db.prepare('SELECT id FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string } | null;
+        const profile = await pilotDb.prepare('SELECT id FROM profiles WHERE auth0_id = ?').bind(auth0Sub).first() as { id: string } | null;
         if (profile) {
           const userId = profile.id;
           const totalHours = (params.total_hours as number) || 0;
@@ -983,7 +983,7 @@ async function handleAction(
           const crossCountryHours = (params.cross_country_hours as number) || 0;
           const dualHours = (params.dual_hours as number) || 0;
 
-          await db.prepare(`
+          await pilotDb.prepare(`
             INSERT INTO pilot_licensure_experience (
               id, user_id, total_flight_hours, pic_hours, instrument_hours,
               night_hours, cross_country_hours, dual_hours, last_updated
@@ -1029,14 +1029,14 @@ async function handleAction(
       if (!acctNum) throw new Error('Missing account_number');
 
       // Role check: super_admin, admin, or employee
-      const me = await getProfileByAuth0Id(db, auth.sub);
+      const me = await getProfileByAuth0Id(pilotDb, auth.sub);
       const role = (me?.['role'] as string) || '';
       if (!['super_admin', 'admin', 'employee'].includes(role)) {
         throw new Error('Forbidden: admin or employee access required');
       }
 
       // 1. Get the latest verification submission for this account
-      const submission = await db.prepare(`
+      const submission = await pilotDb.prepare(`
         SELECT * FROM verification_submissions
         WHERE account_number = ?
         ORDER BY submitted_at DESC
@@ -1049,7 +1049,7 @@ async function handleAction(
 
       // 2. Get the pilot's profile
       const auth0Sub = submission['auth0_sub'] as string;
-      const profile = await getProfileByAuth0Id(db, auth0Sub);
+      const profile = await getProfileByAuth0Id(pilotDb, auth0Sub);
 
       // 3. Log employee access
       const logId = crypto.randomUUID();
@@ -1123,7 +1123,7 @@ async function handleAction(
       if (!submissionId || !newStatus) throw new Error('Missing submission_id or status');
 
       // Role check
-      const me = await getProfileByAuth0Id(db, auth.sub);
+      const me = await getProfileByAuth0Id(pilotDb, auth.sub);
       const role = (me?.['role'] as string) || '';
       if (!['super_admin', 'admin', 'employee'].includes(role)) {
         throw new Error('Forbidden: admin or employee access required');
@@ -1134,7 +1134,7 @@ async function handleAction(
       const isTerminal = terminalStatuses.has(newStatus);
 
       // Fetch current submission
-      const submission = await db.prepare('SELECT * FROM verification_submissions WHERE id = ?').bind(submissionId).first() as Record<string, unknown> | null;
+      const submission = await pilotDb.prepare('SELECT * FROM verification_submissions WHERE id = ?').bind(submissionId).first() as Record<string, unknown> | null;
       if (!submission) throw new Error('Submission not found');
 
       const now = new Date().toISOString();
@@ -1146,7 +1146,7 @@ async function handleAction(
       }
 
       // Update status (and purge date if set)
-      await db.prepare(`
+      await pilotDb.prepare(`
         UPDATE verification_submissions
         SET status = ?, document_purge_after = ?, updated_at = ?
         WHERE id = ?
@@ -1728,23 +1728,23 @@ async function handleAction(
       }
       sql += ' ORDER BY total_score DESC LIMIT ?';
       binds.push(limit);
-      const { results } = await db.prepare(sql).bind(...binds).all();
+      const { results } = await pilotDb.prepare(sql).bind(...binds).all();
       return results || [];
     }
     case 'getUserRank': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const userScore = await db.prepare('SELECT total_score FROM recognition_scores WHERE user_id = ?').bind(userId).first() as { total_score: number } | null;
+      const userScore = await pilotDb.prepare('SELECT total_score FROM recognition_scores WHERE user_id = ?').bind(userId).first() as { total_score: number } | null;
       if (!userScore) return 0;
-      const { results } = await db.prepare('SELECT COUNT(*) as count FROM recognition_scores WHERE total_score > ?').bind(userScore.total_score).all();
+      const { results } = await pilotDb.prepare('SELECT COUNT(*) as count FROM recognition_scores WHERE total_score > ?').bind(userScore.total_score).all();
       return ((results?.[0] as Record<string, unknown>)?.['count'] as number || 0) + 1;
     }
     case 'getScoreStatistics': {
       const userId = params.user_id as string;
       if (!userId) throw new Error('Missing user_id');
-      const { results: allScores } = await db.prepare('SELECT total_score FROM recognition_scores').all();
+      const { results: allScores } = await pilotDb.prepare('SELECT total_score FROM recognition_scores').all();
       const scores = (allScores || []).map(r => (r as Record<string, unknown>)['total_score'] as number);
-      const userRow = await db.prepare('SELECT total_score FROM recognition_scores WHERE user_id = ?').bind(userId).first() as { total_score: number } | null;
+      const userRow = await pilotDb.prepare('SELECT total_score FROM recognition_scores WHERE user_id = ?').bind(userId).first() as { total_score: number } | null;
       const userScore = userRow?.total_score || 0;
       const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
       const max = scores.length ? Math.max(...scores) : 0;
@@ -2867,10 +2867,10 @@ export default {
     const now = new Date().toISOString();
     console.log('[PurgeCron] Starting at', now);
 
-    const db = env.DB;
+    const pilotDb = env.PILOT_DB;
 
     // Find submissions where purge date has passed and documents haven't been purged yet
-    const { results } = await db.prepare(`
+    const { results } = await pilotDb.prepare(`
       SELECT id, auth0_sub, account_number, document_keys, consent_json_path, document_purge_after, status
       FROM verification_submissions
       WHERE document_purge_after IS NOT NULL
@@ -2918,7 +2918,7 @@ export default {
 
       // Update D1: clear document_keys, keep consent_json_path
       try {
-        await db.prepare(`
+        await pilotDb.prepare(`
           UPDATE verification_submissions
           SET document_keys = '{}', updated_at = ?
           WHERE id = ?
@@ -2935,7 +2935,7 @@ export default {
     // ── Annual Re-Verification Scan ──
     try {
       const year = new Date().getFullYear();
-      await runReverificationScan(db, year);
+      await runReverificationScan(pilotDb, year);
     } catch (scanErr) {
       console.error('[ReverificationCron] Scan error:', scanErr);
     }
