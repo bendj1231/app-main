@@ -2122,6 +2122,94 @@ async function handleAction(
       };
     }
 
+    // ── Admin: list pending flight log batches ──
+    case 'getPendingVerificationBatches': {
+      const me = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden: super_admin required');
+      const limit = Math.min((params.limit as number) || 50, 200);
+      const offset = (params.offset as number) || 0;
+      const { results } = await dbProfiles.prepare(`
+        SELECT b.*, p.display_name as pilot_name, p.email as pilot_email, p.public_slug as pilot_slug
+        FROM pilot_flight_log_batches b
+        LEFT JOIN profiles p ON b.pilot_profile_id = p.id
+        WHERE b.status = ?
+        ORDER BY b.uploaded_at DESC
+        LIMIT ? OFFSET ?
+      `).bind('pending_verification', limit, offset).all();
+      return results || [];
+    }
+
+    // ── Admin: get single batch details (with pilot info and audit trail) ──
+    case 'getBatchDetails': {
+      const me = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden: super_admin required');
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      const batch = await dbProfiles.prepare(`
+        SELECT b.*, p.display_name as pilot_name, p.email as pilot_email, p.phone as pilot_phone,
+               p.country_of_license, p.license_id, p.current_occupation
+        FROM pilot_flight_log_batches b
+        LEFT JOIN profiles p ON b.pilot_profile_id = p.id
+        WHERE b.id = ?
+      `).bind(batchId).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      // Get audit trail from DB_TRACE if verified
+      let auditTrail: Record<string, unknown>[] = [];
+      if (batch['trace_record_id']) {
+        const { results } = await env.DB_TRACE.prepare(`
+          SELECT * FROM verification_audit_trail WHERE verification_id = ? ORDER BY created_at DESC
+        `).bind(batch['trace_record_id']).all();
+        auditTrail = (results || []) as Record<string, unknown>[];
+      }
+      return { batch, audit_trail: auditTrail };
+    }
+
+    // ── Admin: reject a flight log batch ──
+    case 'rejectFlightLogBatch': {
+      const me = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden: super_admin required');
+      const batchId = params.batch_id as string;
+      const rejectionReason = (params.rejection_reason as string) || '';
+      if (!batchId) throw new Error('Missing batch_id');
+      const batch = await dbProfiles.prepare(
+        'SELECT * FROM pilot_flight_log_batches WHERE id = ? AND status = ?'
+      ).bind(batchId, 'pending_verification').first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found or not pending verification');
+      const now = new Date().toISOString();
+      await dbProfiles.prepare(
+        'UPDATE pilot_flight_log_batches SET status = ?, verification_notes = ?, verified_at = ? WHERE id = ?'
+      ).bind('rejected', rejectionReason, now, batchId).run();
+      // Log rejection in audit trail
+      await env.DB_TRACE.prepare(`
+        INSERT INTO verification_audit_trail
+        (id, verification_id, pilot_profile_id, action, actor_id, actor_type, previous_status, new_status, notes, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        crypto.randomUUID(), batchId, batch['pilot_profile_id'] as string,
+        'flight_hours_rejected',
+        auth.sub, 'recognition_plus_admin',
+        'pending_verification', 'rejected',
+        rejectionReason, now
+      ).run();
+      return { batch_id: batchId, status: 'rejected', reason: rejectionReason };
+    }
+
+    // ── Pilot: delete their own unverified batch ──
+    case 'deleteFlightLogBatch': {
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!profile) throw new Error('Not found');
+      const batch = await dbProfiles.prepare(
+        'SELECT id, pilot_profile_id, status FROM pilot_flight_log_batches WHERE id = ?'
+      ).bind(batchId).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      if (batch['pilot_profile_id'] !== profile['id']) throw new Error('Forbidden');
+      if (batch['status'] === 'verified') throw new Error('Cannot delete a verified batch');
+      await dbProfiles.prepare('DELETE FROM pilot_flight_log_batches WHERE id = ?').bind(batchId).run();
+      return { deleted: true, batch_id: batchId };
+    }
+
     default:
       throw new Error(`Unknown action: ${action}`);
   }
