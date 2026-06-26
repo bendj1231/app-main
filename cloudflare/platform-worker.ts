@@ -259,6 +259,27 @@ async function ensureProfile(dbProfiles: D1Database, auth0Id: string, email: str
   return profile;
 }
 
+// Simple CSV line parser (handles quoted fields)
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (c === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += c;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
 async function handlePublicProfileRequest(token: string, dbProfiles: D1Database, origin?: string): Promise<Response> {
   const profile = await dbProfiles.prepare(`
     SELECT id, auth0_id, display_name, full_name, first_name, last_name, email, avatar_url, profile_image_url,
@@ -404,11 +425,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     return jsonResponse({ error: 'Unauthorized' }, 401, origin);
   }
 
-  const dbOps = env.DB_OPS;         // operational DB: payments, enterprises, vouchers, forums
-  const dbProfiles = env.DB_PROFILES; // profiles DB: profiles, recognition_scores
-  const dbTrace = env.DB_TRACE;
-  const dbDocs = env.DB_DOCS;
-  const dbRef = env.DB;             // reference data: manufacturers, aircraft, training
+  const dbOps = env.DB_OPS;         // operational DB: payments, subscriptions, enterprise_profiles, forums, vouchers
+  const dbProfiles = env.DB_PROFILES; // profiles DB: profiles, recognition_scores, pilot_verifications
+  const dbTrace = env.DB_TRACE;     // audit DB: credentials, background_checks, security_events
+  const dbDocs = env.DB_DOCS;       // content DB: stories, documents, evidence
+  const dbRef = env.DB;             // pilotpathways data: airlines, ATOs, TRCs, aircraft, training
 
   // ── Action Router ─────────────────────────────────────────────
   if (path === '/api' && method === 'POST') {
@@ -1921,6 +1942,111 @@ async function handleAction(
       const { results } = await db.prepare(sql).bind(...binds).all();
       return results || [];
     }
+
+    // ── Flight Hours Diary (self-reported blocks — NOT a regulatory logbook) ──
+    case 'getFlightHours': {
+      const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!profile) throw new Error('Not found');
+      const claims = await dbProfiles.prepare(
+        'SELECT COALESCE(SUM(total_hours),0) as claimed_total, COALESCE(SUM(pic_hours),0) as claimed_pic FROM pilot_flight_log_batches WHERE pilot_profile_id = ? AND status != "rejected"'
+      ).bind(profile['id']).first() as Record<string, unknown>;
+      const verified = await env.DB_TRACE.prepare(
+        'SELECT total_hours, pic_hours, night_hours, instrument_hours, cross_country_hours, multi_engine_hours, jet_hours, turbine_hours, simulator_hours FROM pilot_flight_hours WHERE pilot_profile_id = ?'
+      ).bind(profile['id']).first() as Record<string, unknown> | null;
+      return {
+        claimed: { total_hours: claims['claimed_total'], pic_hours: claims['claimed_pic'] },
+        verified: verified || null,
+        disclaimer: 'These hours are self-reported claims for pathway-matching only. They are NOT a regulatory logbook and cannot be used for licensing or certification.',
+      };
+    }
+    case 'getFlightLogBatches': {
+      const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!profile) throw new Error('Not found');
+      const { results } = await dbProfiles.prepare(
+        'SELECT id, batch_name, source, entry_count, date_from, date_to, total_hours, pic_hours, night_hours, instrument_hours, status, verified_by, verified_at, trace_record_id, uploaded_at FROM pilot_flight_log_batches WHERE pilot_profile_id = ? ORDER BY uploaded_at DESC'
+      ).bind(profile['id']).all();
+      return results || [];
+    }
+    case 'importFlightLogCSV': {
+      const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!profile) throw new Error('Not found');
+      const pilotId = profile['id'] as string;
+      const csvText = params.csv as string;
+      if (!csvText || typeof csvText !== 'string') throw new Error('Missing csv param');
+
+      const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+      if (lines.length < 2) throw new Error('CSV must have header and at least one data row');
+      const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''));
+      const colMap: Record<string, number> = {};
+      headers.forEach((h, i) => { colMap[h] = i; });
+      const getCol = (names: string[]) => {
+        for (const n of names) { const idx = colMap[n]; if (idx !== undefined) return idx; }
+        return -1;
+      };
+      const dateCol = getCol(['date', 'flight_date', 'day']);
+      const totalCol = getCol(['total_time', 'total', 'duration', 'flight_time', 'time']);
+      const picCol = getCol(['pic', 'pilot_in_command', 'pic_time']);
+      const nightCol = getCol(['night', 'night_time']);
+      const imcCol = getCol(['instrument', 'imc', 'instrument_time', 'ifr']);
+      const xcCol = getCol(['cross_country', 'xc', 'cross_country_time']);
+      const multiCol = getCol(['multi_engine', 'multi', 'multi_time']);
+      const simCol = getCol(['simulator', 'sim', 'sim_time', 'simulator_time']);
+
+      let totalH = 0, picH = 0, nightH = 0, imcH = 0, xcH = 0, multiH = 0, simH = 0;
+      let entryCount = 0;
+      let dateFrom: string | null = null;
+      let dateTo: string | null = null;
+
+      for (let i = 1; i < lines.length; i++) {
+        const cols = parseCSVLine(lines[i]);
+        if (cols.length < 2 || !cols[0]) continue;
+        entryCount++;
+        const parseTime = (idx: number) => {
+          if (idx < 0 || idx >= cols.length) return 0;
+          const v = cols[idx].replace(/[^0-9.]/g, '');
+          return v ? parseFloat(v) : 0;
+        };
+        totalH += parseTime(totalCol);
+        picH += parseTime(picCol);
+        nightH += parseTime(nightCol);
+        imcH += parseTime(imcCol);
+        xcH += parseTime(xcCol);
+        multiH += parseTime(multiCol);
+        simH += parseTime(simCol);
+        if (dateCol >= 0) {
+          const d = cols[dateCol];
+          if (d && (!dateFrom || d < dateFrom)) dateFrom = d;
+          if (d && (!dateTo || d > dateTo)) dateTo = d;
+        }
+      }
+
+      const batchId = crypto.randomUUID();
+      const now = new Date().toISOString();
+      await dbProfiles.prepare(`
+        INSERT INTO pilot_flight_log_batches
+        (id, pilot_profile_id, batch_name, source, entry_count, date_from, date_to, total_hours, pic_hours, night_hours, instrument_hours, cross_country_hours, multi_engine_hours, simulator_hours, status, file_name, uploaded_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(batchId, pilotId, (params.batch_name as string) || 'CSV Import', 'csv_import', entryCount, dateFrom, dateTo, totalH, picH, nightH, imcH, xcH, multiH, simH, 'self_reported', (params.file_name as string) || 'import.csv', now).run();
+
+      return { batch_id: batchId, entry_count: entryCount, totals: { total_hours: totalH, pic_hours: picH, night_hours: nightH, instrument_hours: imcH }, status: 'self_reported' };
+    }
+    case 'requestBatchVerification': {
+      const batchId = params.batch_id as string;
+      if (!batchId) throw new Error('Missing batch_id');
+      const profile = await getProfileByAuth0Id(dbProfiles, auth.sub);
+      if (!profile) throw new Error('Not found');
+      const batch = await dbProfiles.prepare(
+        'SELECT id, pilot_profile_id, status FROM pilot_flight_log_batches WHERE id = ?'
+      ).bind(batchId).first() as Record<string, unknown> | null;
+      if (!batch) throw new Error('Batch not found');
+      if (batch['pilot_profile_id'] !== profile['id']) throw new Error('Forbidden');
+      if (batch['status'] !== 'self_reported') throw new Error('Batch already processed');
+      await dbProfiles.prepare(
+        'UPDATE pilot_flight_log_batches SET status = ? WHERE id = ?'
+      ).bind('pending_verification', batchId).run();
+      return { batch_id: batchId, status: 'pending_verification' };
+    }
+
     default:
       throw new Error(`Unknown action: ${action}`);
   }

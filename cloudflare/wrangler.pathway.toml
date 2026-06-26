@@ -8,8 +8,8 @@ compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
 # D1 Database bindings — 5-database segregated architecture
-# DB = reference data (manufacturers, aircraft, training requirements, simulator locations)
-# DB_OPS = operational ecosystem (airlines, ATOs, TRCs, pathways, charters)
+# DB = pilotpathways data (airlines, ATOs, TRCs, pathways, charters, manufacturers, aircraft, training)
+# DB_OPS = operational DB (payments, subscriptions, enterprise_profiles, forums, vouchers)
 # DB_PROFILES = pilot identity & verification (profiles, verifications, connect requests)
 # DB_TRACE = audit & compliance (security events, audit logs, consent journal)
 # DB_DOCS = content & evidence (stories, documents, moderation log)

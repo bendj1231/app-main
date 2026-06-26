@@ -622,9 +622,9 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   const url = new URL(request.url);
   const origin = request.headers.get('Origin') || undefined;
   const path = url.pathname;
-  const db = env.DB_OPS;      // Default: operational DB (atos, trcs, airlines, pathways, pjc)
-  const dbOps = env.DB_OPS;     // Explicit alias for operational helper call sites
-  const dbRef = env.DB;         // Reference data (manufacturers, aircraft, training, simulators)
+  const db = env.DB;            // pilotpathways data (airlines, ATOs, TRCs, pathways, aircraft, training)
+  const dbOps = env.DB_OPS;     // operational DB (payments, subscriptions, enterprise_profiles, forums)
+  const dbRef = env.DB;         // same as db — reference data lives in pilotpathways data
   const dbProfiles = env.DB_PROFILES;
   const dbTrace = env.DB_TRACE;
   const dbDocs = env.DB_DOCS;
@@ -715,7 +715,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /atos/:slug
   if (path.match(/^\/atos\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     const hasOutputData = ato.pilots_trained_total && (ato.pilots_trained_total as number) > 0;
@@ -737,7 +737,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /atos/:slug/programs
   if (path.match(/^\/atos\/[^\/]+\/programs$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM ato_programs WHERE ato_id = ? AND is_active = 1 ORDER BY name'
@@ -757,7 +757,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /atos/:slug/ratings
   if (path.match(/^\/atos\/[^\/]+\/ratings$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM ato_ratings_offered WHERE ato_id = ? AND is_active = 1 ORDER BY rating_type'
@@ -777,7 +777,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /atos/:slug/fleet
   if (path.match(/^\/atos\/[^\/]+\/fleet$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM ato_fleet WHERE ato_id = ? AND is_active = 1 ORDER BY model'
@@ -818,7 +818,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /trcs/:slug
   if (path.match(/^\/trcs\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     const hasOutputData = trc.total_type_ratings_issued && (trc.total_type_ratings_issued as number) > 0;
@@ -839,7 +839,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /trcs/:slug/ratings
   if (path.match(/^\/trcs\/[^\/]+\/ratings$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM trc_type_ratings_offered WHERE trc_id = ? AND is_active = 1 ORDER BY aircraft_model'
@@ -859,7 +859,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /trcs/:slug/simulators
   if (path.match(/^\/trcs\/[^\/]+\/simulators$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM trc_simulators WHERE trc_id = ? AND is_active = 1 ORDER BY aircraft_model'
@@ -879,7 +879,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /trcs/:slug/instructors
   if (path.match(/^\/trcs\/[^\/]+\/instructors$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM trc_instructors WHERE trc_id = ? AND is_active = 1 ORDER BY name'
@@ -899,7 +899,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /atos/:slug/instructors
   if (path.match(/^\/atos\/[^\/]+\/instructors$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM ato_instructors WHERE ato_id = ? AND is_active = 1 ORDER BY name'
@@ -947,7 +947,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /airlines/:slug
   if (path.match(/^\/airlines\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     const hasOutputData = airline.yearly_hires && (airline.yearly_hires as number) > 0;
@@ -968,7 +968,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /airlines/:slug/cadet-programs
   if (path.match(/^\/airlines\/[^\/]+\/cadet-programs$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM airline_cadet_programs WHERE airline_id = ? AND is_active = 1 ORDER BY program_name'
@@ -988,7 +988,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /airlines/:slug/fleet
   if (path.match(/^\/airlines\/[^\/]+\/fleet$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM airline_fleet WHERE airline_id = ? AND is_active = 1 ORDER BY aircraft_model'
@@ -1008,7 +1008,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /airlines/:slug/pathways
   if (path.match(/^\/airlines\/[^\/]+\/pathways$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
     const { results } = await db.prepare(
       'SELECT * FROM airline_pathways WHERE airline_id = ? AND is_active = 1 ORDER BY pathway_type, title'
@@ -1092,7 +1092,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // Body: pilot profile snapshot { total_hours, pic_hours, ratings, age, english_level, ... }
   if (path.match(/^\/airlines\/[^\/]+\/pathway-match$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     const body = await request.json().catch(() => ({})) as Record<string, unknown>;
@@ -1577,7 +1577,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
   // GET /private-jet-charters/:slug
   if (path.match(/^\/private-jet-charters\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const pjc = await getPjc(dbOps, slug);
+    const pjc = await getPjc(db, slug);
     if (!pjc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     const isPlusOnly = pjc.recognition_plus_only && (pjc.recognition_plus_only as number) === 1;
@@ -1934,7 +1934,7 @@ async function handlePublicRequest(request: Request, env: Env): Promise<Response
     const airlinesMap: Record<string, Record<string, unknown>> = {};
     if (airlineIds.length > 0) {
       const placeholders = airlineIds.map(() => '?').join(',');
-      const { results: airlineResults } = await dbOps.prepare(`
+      const { results: airlineResults } = await db.prepare(`
         SELECT id, name, slug, iata_code, logo FROM airlines WHERE id IN (${placeholders})
       `).bind(...airlineIds).all() as { results: Record<string, unknown>[] };
       for (const a of (airlineResults || [])) {
@@ -2025,9 +2025,9 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   const origin = request.headers.get('Origin') || undefined;
   const path = url.pathname;
   const method = request.method;
-  const db = env.DB_OPS;      // Default: operational DB
-  const dbOps = env.DB_OPS;     // Explicit alias
-  const dbRef = env.DB;         // Reference data
+  const db = env.DB;            // pilotpathways data (enterprise entities)
+  const dbOps = env.DB_OPS;     // operational DB (enterprise_profiles, payments, forums)
+  const dbRef = env.DB;         // same as db
   const dbProfiles = env.DB_PROFILES;
   const dbTrace = env.DB_TRACE;
   const dbDocs = env.DB_DOCS;
@@ -2042,7 +2042,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   }
 
   // Get the enterprise profile for scoping
-  const enterprise = await db.prepare(
+  const enterprise = await dbOps.prepare(
     'SELECT id, manufacturer_id, ato_id, trc_id, airline_id, pjc_id FROM enterprise_profiles WHERE auth0_id = ? AND status = ?'
   ).bind(auth.sub, 'active').first() as Record<string, unknown> | null;
 
@@ -2210,7 +2210,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /atos/:slug/claim
   if (method === 'POST' && path.match(/^\/atos\/[^\/]+\/claim$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
     if (ato.claimed_by) return jsonResponse({ error: 'Already claimed' }, 409, origin);
 
@@ -2220,18 +2220,18 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     ).bind(enterpriseId, 'claimed', now, enterpriseId, slug).run();
 
     // Link enterprise to ATO
-    await db.prepare(
+    await dbOps.prepare(
       'UPDATE enterprise_profiles SET ato_id = ? WHERE id = ?'
     ).bind(ato.id as string, enterpriseId).run();
 
-    const updated = await getAto(dbOps, slug);
+    const updated = await getAto(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // PUT /atos/:slug
   if (method === 'PUT' && path.match(/^\/atos\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     // Scope check: can only edit their own claimed ATO
@@ -2263,14 +2263,14 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
 
     await db.prepare(`UPDATE atos SET ${sets.join(', ')} WHERE slug = ?`).bind(...values).run();
 
-    const updated = await getAto(dbOps, slug);
+    const updated = await getAto(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // POST /atos/:slug/programs
   if (method === 'POST' && path.match(/^\/atos\/[^\/]+\/programs$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAtoId || claimedAtoId !== ato.id) {
@@ -2382,7 +2382,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /atos/:slug/ratings
   if (method === 'POST' && path.match(/^\/atos\/[^\/]+\/ratings$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAtoId || claimedAtoId !== ato.id) {
@@ -2455,7 +2455,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /atos/:slug/fleet
   if (method === 'POST' && path.match(/^\/atos\/[^\/]+\/fleet$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAtoId || claimedAtoId !== ato.id) {
@@ -2521,7 +2521,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /atos/:slug/instructors
   if (method === 'POST' && path.match(/^\/atos\/[^\/]+\/instructors$/)) {
     const slug = path.split('/')[2];
-    const ato = await getAto(dbOps, slug);
+    const ato = await getAto(db, slug);
     if (!ato) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAtoId || claimedAtoId !== ato.id) {
@@ -2587,7 +2587,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /trcs/:slug/claim
   if (method === 'POST' && path.match(/^\/trcs\/[^\/]+\/claim$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
     if (trc.claimed_by) return jsonResponse({ error: 'Already claimed' }, 409, origin);
 
@@ -2597,18 +2597,18 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     ).bind(enterpriseId, 'claimed', now, enterpriseId, slug).run();
 
     // Link enterprise to TRC
-    await db.prepare(
+    await dbOps.prepare(
       'UPDATE enterprise_profiles SET trc_id = ? WHERE id = ?'
     ).bind(trc.id as string, enterpriseId).run();
 
-    const updated = await getTrc(dbOps, slug);
+    const updated = await getTrc(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // PUT /trcs/:slug
   if (method === 'PUT' && path.match(/^\/trcs\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedTrcId || claimedTrcId !== trc.id) {
@@ -2637,14 +2637,14 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
 
     await db.prepare(`UPDATE type_rating_centers SET ${sets.join(', ')} WHERE slug = ?`).bind(...values).run();
 
-    const updated = await getTrc(dbOps, slug);
+    const updated = await getTrc(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // POST /trcs/:slug/ratings
   if (method === 'POST' && path.match(/^\/trcs\/[^\/]+\/ratings$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedTrcId || claimedTrcId !== trc.id) {
@@ -2717,7 +2717,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /trcs/:slug/simulators
   if (method === 'POST' && path.match(/^\/trcs\/[^\/]+\/simulators$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedTrcId || claimedTrcId !== trc.id) {
@@ -2783,7 +2783,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /trcs/:slug/instructors
   if (method === 'POST' && path.match(/^\/trcs\/[^\/]+\/instructors$/)) {
     const slug = path.split('/')[2];
-    const trc = await getTrc(dbOps, slug);
+    const trc = await getTrc(db, slug);
     if (!trc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedTrcId || claimedTrcId !== trc.id) {
@@ -2849,7 +2849,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /airlines/:slug/claim
   if (method === 'POST' && path.match(/^\/airlines\/[^\/]+\/claim$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
     if (airline.claimed_by) return jsonResponse({ error: 'Already claimed' }, 409, origin);
 
@@ -2858,18 +2858,18 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
       'UPDATE airlines SET claimed_by = ?, verification_status = ?, claimed_at = ?, updated_by = ? WHERE slug = ?'
     ).bind(enterpriseId, 'claimed', now, enterpriseId, slug).run();
 
-    await db.prepare(
+    await dbOps.prepare(
       'UPDATE enterprise_profiles SET airline_id = ? WHERE id = ?'
     ).bind(airline.id as string, enterpriseId).run();
 
-    const updated = await getAirline(dbOps, slug);
+    const updated = await getAirline(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // PUT /airlines/:slug
   if (method === 'PUT' && path.match(/^\/airlines\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAirlineId || claimedAirlineId !== airline.id) {
@@ -2913,14 +2913,14 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     values.push(slug);
 
     await db.prepare(`UPDATE airlines SET ${sets.join(', ')} WHERE slug = ?`).bind(...values).run();
-    const updated = await getAirline(dbOps, slug);
+    const updated = await getAirline(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // POST /airlines/:slug/cadet-programs
   if (method === 'POST' && path.match(/^\/airlines\/[^\/]+\/cadet-programs$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAirlineId || claimedAirlineId !== airline.id) {
@@ -2995,7 +2995,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /airlines/:slug/fleet
   if (method === 'POST' && path.match(/^\/airlines\/[^\/]+\/fleet$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAirlineId || claimedAirlineId !== airline.id) {
@@ -3054,7 +3054,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /airlines/:slug/pathways
   if (method === 'POST' && path.match(/^\/airlines\/[^\/]+\/pathways$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAirlineId || claimedAirlineId !== airline.id) {
@@ -3193,7 +3193,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // Enterprise only — airline views pilots who submitted interest (the pool)
   if (method === 'GET' && path.match(/^\/airlines\/[^\/]+\/candidate-pool$/)) {
     const slug = path.split('/')[2];
-    const airline = await getAirline(dbOps, slug);
+    const airline = await getAirline(db, slug);
     if (!airline) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedAirlineId || claimedAirlineId !== airline.id) {
@@ -3360,7 +3360,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     }
 
     // Get enterprise profile to find airline
-    const enterprise = await db.prepare(
+    const enterprise = await dbOps.prepare(
       'SELECT id, airline_id FROM enterprise_profiles WHERE auth0_id = ? AND status = ?'
     ).bind(auth.sub, 'active').first() as Record<string, unknown> | null;
 
@@ -3429,7 +3429,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     }
 
     // Get enterprise profile to find airline
-    const enterprise = await db.prepare(
+    const enterprise = await dbOps.prepare(
       'SELECT id, airline_id FROM enterprise_profiles WHERE auth0_id = ? AND status = ?'
     ).bind(auth.sub, 'active').first() as Record<string, unknown> | null;
 
@@ -4027,7 +4027,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
   // POST /private-jet-charters/:slug/claim
   if (method === 'POST' && path.match(/^\/private-jet-charters\/[^\/]+\/claim$/)) {
     const slug = path.split('/')[2];
-    const pjc = await getPjc(dbOps, slug);
+    const pjc = await getPjc(db, slug);
     if (!pjc) return jsonResponse({ error: 'Not found' }, 404, origin);
     if (pjc.claimed_by) return jsonResponse({ error: 'Already claimed' }, 409, origin);
 
@@ -4036,18 +4036,18 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
       'UPDATE private_jet_charters SET claimed_by = ?, verification_status = ?, claimed_at = ?, updated_by = ? WHERE slug = ?'
     ).bind(enterpriseId, 'claimed', now, enterpriseId, slug).run();
 
-    await db.prepare(
+    await dbOps.prepare(
       'UPDATE enterprise_profiles SET pjc_id = ? WHERE id = ?'
     ).bind(pjc.id as string, enterpriseId).run();
 
-    const updated = await getPjc(dbOps, slug);
+    const updated = await getPjc(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
   // PUT /private-jet-charters/:slug
   if (method === 'PUT' && path.match(/^\/private-jet-charters\/[^\/]+$/)) {
     const slug = path.split('/')[2];
-    const pjc = await getPjc(dbOps, slug);
+    const pjc = await getPjc(db, slug);
     if (!pjc) return jsonResponse({ error: 'Not found' }, 404, origin);
 
     if (!claimedPjcId || claimedPjcId !== pjc.id) {
@@ -4078,7 +4078,7 @@ async function handleEnterpriseRequest(request: Request, env: Env): Promise<Resp
     values.push(slug);
 
     await db.prepare(`UPDATE private_jet_charters SET ${sets.join(', ')} WHERE slug = ?`).bind(...values).run();
-    const updated = await getPjc(dbOps, slug);
+    const updated = await getPjc(db, slug);
     return jsonResponse(updated, 200, origin);
   }
 
