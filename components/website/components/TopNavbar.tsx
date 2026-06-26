@@ -883,6 +883,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {!currentUser && (
                                     <button
                                         onClick={() => onNavigate('flight-deck-login')}
+                                        onMouseEnter={() => {
+                                            // Preload the flight-deck-login chunk so no loading screen flashes
+                                            import('@/components/website/components/FlightDeckLoginPage');
+                                        }}
                                         className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center justify-center gap-2 border border-slate-600 leading-none"
                                     >
                                         Login
