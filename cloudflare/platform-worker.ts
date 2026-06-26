@@ -191,7 +191,7 @@ function base64UrlDecode(str: string): Uint8Array {
 
 function corsHeaders(origin?: string): Record<string, string> {
   // Whitelist production + local dev origins
-  const allowed = ['https://pilotterminal.com', 'https://pilotrecognition.com', 'http://localhost:5173'];
+  const allowed = ['https://pilotterminal.com', 'https://pilotrecognition.com', 'http://localhost:5173', 'http://localhost:3000'];
   const reflect = origin && allowed.some((a) => origin.startsWith(a)) ? origin : allowed[0];
   return {
     'Access-Control-Allow-Origin': reflect,
