@@ -835,17 +835,28 @@ export const AppRoutes = () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <AnimatePresence mode="wait">
+      {/* Persistent dark background — prevents white flash during transitions */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f172a 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      <AnimatePresence mode="sync">
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, scale: 1.02, filter: 'blur(8px)' }}
+          initial={{ opacity: 0, scale: 1.01, filter: 'blur(10px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 0.98, filter: 'blur(6px)' }}
+          exit={{ opacity: 0, scale: 0.99, filter: 'blur(8px)' }}
           transition={{
-            duration: 0.5,
+            duration: 0.6,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity, filter', position: 'relative', zIndex: 1 }}
         >
           <Routes location={location} key={location.pathname}>
             {/* Home route */}
