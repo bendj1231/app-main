@@ -6,7 +6,6 @@ import { CareerPathwaysNavbar } from '../layout/CareerPathwaysNavbar';
 import { BreadcrumbSchema } from '../../website/components/seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { DataControllerAgreementModal } from '../../website/components/DataControllerAgreementModal';
-import { LoginModal } from '../../website/components/LoginModal';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from '../../website/components/WalletFirstCredentialFlow';
 import { issueAndStoreCredential } from '../../../src/lib/wallet';
@@ -182,7 +181,6 @@ export const GetStartedPage: React.FC = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-    const [showLoginModal, setShowLoginModal] = useState(false);
     const [enable3D, setEnable3D] = useState(false);
 
     useEffect(() => {
@@ -353,7 +351,7 @@ export const GetStartedPage: React.FC = () => {
 
                                 {/* Email signup */}
                                 <button
-                                    onClick={() => setShowLoginModal(true)}
+                                    onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
                                     className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
                                 >
                                     Sign up with Email
@@ -387,7 +385,7 @@ export const GetStartedPage: React.FC = () => {
                                 <p className="text-center text-sm text-slate-300">
                                     Already have an account?{' '}
                                     <button
-                                        onClick={() => setShowLoginModal(true)}
+                                        onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
                                         className="text-[#00b4d8] hover:text-white font-semibold transition-colors"
                                     >
                                         Sign in
@@ -703,15 +701,6 @@ export const GetStartedPage: React.FC = () => {
                     />
                 )}
 
-                {/* Login Modal */}
-                <LoginModal
-                    isOpen={showLoginModal}
-                    onClose={() => setShowLoginModal(false)}
-                    onNavigate={(page) => {
-                        // Handle navigation if needed
-                        setShowLoginModal(false);
-                    }}
-                />
 
                 {/* Wallet First Credential Flow */}
                 {showWalletFlow && (

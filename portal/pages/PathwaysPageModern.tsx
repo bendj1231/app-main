@@ -47,7 +47,6 @@ import { PathwaysSidebar } from '../../components/website/components/pilot-recog
 import { PlatformNavbar } from '../../components/website/components/PlatformNavbar';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
-import { LoginModal } from '../../components/website/components/LoginModal';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
 import { DUMMY_MILITARY_PATHWAYS } from '../../data/military-pathways';
 import {
@@ -3521,7 +3520,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [showSpecialPathwaysPage, setShowSpecialPathwaysPage] = useState(false);
   const [showLicensureTypeRatingPage, setShowLicensureTypeRatingPage] = useState(false);
   const [showCommercialPilotPathwayPage, setShowCommercialPilotPathwayPage] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { addToast } = useToast();
 
   // Debug: Log when showSpecialPathwaysPage changes
@@ -7291,16 +7289,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       )}
       </div>
     </div>
-    <LoginModal
-      isOpen={isLoginModalOpen}
-      onClose={() => setIsLoginModalOpen(false)}
-      onNavigate={(page) => {
-        setIsLoginModalOpen(false);
-        if (onNavigate) {
-          onNavigate(page);
-        }
-      }}
-    />
 
       {/* Align Profile Tools - Floating Button (only when logged in) */}
       {userProfile?.id && (

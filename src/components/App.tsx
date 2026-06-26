@@ -3,7 +3,6 @@ import { useAuth } from '@/src/contexts/AuthContext';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { HomePage } from '@/src/routes';
-import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
 import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
@@ -24,7 +23,6 @@ initializeAnalyticsServices();
 
 export const App = () => {
   const [loading, _setLoading] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
   const [pilotId, setPilotId] = useState('');
@@ -171,10 +169,10 @@ export const App = () => {
         ].includes(currentPage) && (
           <HomePage
             onJoinUs={() => navigateTo('become-member')}
-            onLogin={() => setIsLoginModalOpen(true)}
+            onLogin={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
             onNavigate={navigateTo}
             isLoggedIn={!!currentUser}
-            onLoginModalOpen={() => setIsLoginModalOpen(true)}
+            onLoginModalOpen={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
             isEnrolledInFoundation={isEnrolledInFoundation}
             pilotId={pilotId}
             totalHours={totalHours}
@@ -205,16 +203,6 @@ export const App = () => {
           />
         )}
 
-        {/* Login Modal */}
-        {isLoginModalOpen && (
-          <LoginModal
-            key="login-modal"
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-            onLogin={navigateToPortal}
-            onNavigate={navigateTo}
-          />
-        )}
       </ThemeProvider>
 
       {/* Passkey registration prompt — shown once after first Google login */}

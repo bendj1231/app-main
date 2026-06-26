@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Clock, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { TopNavbar } from './TopNavbar';
-import { LoginModal } from './LoginModal';
 
 interface WhatIsPilotRecognitionPageProps {
     onNavigate: (page: string) => void;
@@ -68,7 +67,6 @@ const HERO_IMAGES = [
 
 const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({ onNavigate, onLogin, onJoinUs }) => {
     const { currentUser } = useAuth();
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [heroIndex, setHeroIndex] = useState(0);
     const [mockTab, setMockTab] = useState<'profile' | 'pathways' | 'verification'>('verification');
 
@@ -83,7 +81,7 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 onNavigate={onNavigate}
                 onLogin={onLogin}
                 isLight={false}
-                onLoginModalOpen={() => setIsLoginModalOpen(true)}
+                onLoginModalOpen={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
             />
 
             {/* ── HERO ── */}
@@ -493,11 +491,6 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 </div>
             </footer>
 
-            <LoginModal
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
-                onNavigate={onNavigate}
-            />
         </div>
     );
 };

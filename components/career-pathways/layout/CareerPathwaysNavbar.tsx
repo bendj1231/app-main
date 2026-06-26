@@ -13,7 +13,6 @@ import {
   Wallet,
   ShieldCheck
 } from 'lucide-react';
-import { LoginModal } from '../../website/components/LoginModal';
 
 interface CareerPathwaysNavbarProps {
   onLogin?: () => void;
@@ -34,7 +33,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnterpriseModalOpen, setIsEnterpriseModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -234,7 +232,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
             ) : (
               <>
                 <button
-                  onClick={() => setIsLoginModalOpen(true)}
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
                   className="hidden sm:block px-4 py-2 rounded-lg bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-200 text-sm font-medium hover:bg-slate-800/70 hover:border-slate-600/50 transition-all"
                 >
                   Sign In
@@ -440,14 +438,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
         </div>
       )}
 
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        onNavigate={(page: string) => {
-          // Handle navigation if needed
-        }}
-      />
     </>
   );
 };
