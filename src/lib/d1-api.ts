@@ -21,7 +21,7 @@
 
 // ── Config ─────────────────────────────────────────────────────
 
-const WORKER_URL = import.meta.env.VITE_WORKER_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+const PLATFORM_API_URL = import.meta.env.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
 
 async function fetchAPI(
   accessToken: string,
@@ -30,7 +30,7 @@ async function fetchAPI(
 ): Promise<unknown> {
   if (!accessToken) throw new Error('Not authenticated');
 
-  const url = `${WORKER_URL}${path}`;
+  const url = `${PLATFORM_API_URL}${path}`;
   let lastErr: Error | null = null;
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -262,7 +262,7 @@ export async function deleteProfile(accessToken: string, profileId: string) {
 // ── Health ─────────────────────────────────────────────────────
 
 export async function healthCheck() {
-  const res = await fetch(`${WORKER_URL}/api/health`);
+  const res = await fetch(`${PLATFORM_API_URL}/api/health`);
   return res.json();
 }
 

@@ -10,7 +10,6 @@ import { LoginModal } from '../../website/components/LoginModal';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from '../../website/components/WalletFirstCredentialFlow';
 import { issueAndStoreCredential } from '../../../src/lib/wallet';
-import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',

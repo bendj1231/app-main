@@ -1,0 +1,14 @@
+# Pilot Public API — read-only public access to pilot data
+# Public profile cards, leaderboard, search (no auth required)
+
+name = "pilot-public-api"
+main = "legacy-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# OLD D1 Database — the one with 6 pilots
+[[d1_databases]]
+binding = "DB"
+database_name = "pilotrecognition-profiles"
+database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"

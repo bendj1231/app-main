@@ -723,15 +723,26 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         return () => window.removeEventListener('resize', updateBreakpoints);
     }, [viewMode]);
 
-    // Trigger animations on every mount (including refresh)
+    // Trigger animations only when splash screen finishes (body.app-ready)
     useEffect(() => {
         setMountKey(Date.now());
         setIsVisible(false);
-        
-        const timer = setTimeout(() => {
-            setIsVisible(true);
-        }, 100);
-        return () => clearTimeout(timer);
+
+        const tryReveal = () => {
+            if (document.body.classList.contains('app-ready')) {
+                setIsVisible(true);
+                return true;
+            }
+            return false;
+        };
+
+        if (tryReveal()) return;
+
+        const observer = new MutationObserver(() => {
+            if (tryReveal()) observer.disconnect();
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
     }, []);
 
     // Keyboard navigation

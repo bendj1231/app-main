@@ -415,3 +415,107 @@ interface FourFloorHeroProps {
 *Concept: Four Floors Hero v1.0*
 *For: pilotshortage.org*
 *Core metaphor: The tower everyone is climbing, with the collapse at Floor 2*
+
+---
+
+## The Controversy Is the Hook — Marketing Positioning
+
+> "My dad thinks pilotshortage.org is negative. He's wrong. It's the truth every pilot is already thinking."
+
+### The Insight
+
+The word "shortage" triggers pilots instantly. Every pilot has heard an airline CEO cry "pilot shortage" while simultaneously rejecting qualified applicants. The contradiction is the crack in the system.
+
+**The hook is not the problem. The hook is the proof.**
+
+### The Psychology
+
+| What Pilots Think | What They See Everywhere |
+|-------------------|-------------------------|
+| "I have 1,500 hours and no callback" | "Global pilot shortage!" |
+| "My instructor job pays $28,000" | "Boeing predicts 600,000 needed!" |
+| "I spent $80,000 and drive Uber now" | "Airlines desperate for talent!" |
+
+**This gap breeds rage. Rage breeds curiosity.**
+
+When a pilot sees "pilotshortage.org," they don't think "negative." They think:
+> *"Finally. Someone is saying what I already know."
+
+### The Shock Factor: Real Pilots, Real Stories
+
+The marketing weapon is not statistics. It is **testimony.**
+
+A pilot scrolling Instagram sees:
+- Another airline hiring ad → *ignored*
+- A pilot from their own flight school saying *"I got my CPL in 2019. I'm delivering packages now. Here's why."* → **stopped scrolling**
+
+**The shock is recognition.** Not a news anchor. Not an analyst. A fellow pilot, with a license number, with logged hours, with a face, saying:
+> "I left because there was no place for me. I am not the failure. The pipeline failed me."
+
+### The Three-Layer Conversion
+
+```
+Layer 1: OUTRAGE (The Hook)
+  "There Is No Pilot Shortage. There Is A Clogged Pipeline."
+  → Every pilot agrees. Every pilot shares.
+
+Layer 2: CURIOSITY (The Organization)
+  "What is pilotshortage.org doing about it?"
+  → They click. They see the Four Floors. They see other pilots.
+
+Layer 3: ACTION (The Testimony)
+  "Submit your story. In exchange for recognition."
+  → They write. They join. They get verified. They get seen.
+```
+
+### The Reframe for Skeptics
+
+When someone says "this is negative," respond:
+
+> "A doctor who diagnoses cancer is not being negative. A pilot who reports engine failure is not being negative. We are reporting what the industry refuses to acknowledge. The only negative thing is pretending 15,000 trained pilots don't exist."
+
+### The Tagline
+
+**Primary:**
+> "There is no pilot shortage. There is a clogged pipeline."
+
+**Secondary (for testimony section):**
+> "Testify your pilot journey. In exchange for recognition."
+
+**Tertiary (for skeptics):**
+> "The pilot is not the failure. The pipeline is."
+
+### Why This Works
+
+1. **Controversy = algorithmic reach.** Platforms push polarizing content. Pilots argue in comments. The thread grows.
+2. **Testimony = trust.** No analyst can argue with a verified pilot's logged hours and uploaded CFI-signed logbook.
+3. **Recognition = incentive.** Pilots don't join to complain. They join to be seen, verified, and reconnected to pathways.
+4. **Free = zero friction.** No credit card. No risk. Just a story and a shot.
+
+### The Content Engine
+
+Every verified testimony becomes marketing:
+
+| Testimony Type | Platform | Format |
+|----------------|----------|--------|
+| Floor 0 (Graduate) | TikTok/Instagram Reels | 30-sec: "I spent $80K and drive Uber" |
+| Floor 1 (Instructor) | LinkedIn | Long-form: "15 years instructing. No pathway." |
+| Floor 2 (Gap) | Twitter/X | Thread: "The recognition gap is real. Here's proof." |
+| Floor 3 (Airline) | YouTube | Interview: "I want to leave but seniority traps me." |
+
+### The Dad Test
+
+If your dad (or any skeptic) says "this is negative," show them:
+
+1. **The verification queue** — "These aren't complaints. These are cross-checked, CFI-signed, CAA-validated records."
+2. **The airline dashboard** — "Airlines are using this to find pilots they couldn't find before."
+3. **The pathway matches** — "This pilot testified 3 months ago. Today, an airline poked them. They're interviewing next week."
+
+**The negativity is the diagnosis. The platform is the cure.**
+
+---
+
+*Concept: Four Floors Hero v1.0*
+*For: pilotshortage.org*
+*Core metaphor: The tower everyone is climbing, with the collapse at Floor 2*
+*Marketing layer: The controversy is the hook. The testimony is the proof. The recognition is the outcome.*

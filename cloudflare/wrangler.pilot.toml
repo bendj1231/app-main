@@ -1,0 +1,27 @@
+# Cloudflare Worker configuration for Pilot Profile API
+# Handles ordinary pilot claim data: profiles, scores, basic identity
+
+name = "pilot-profile-api"
+main = "pilot-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# D1 Database binding
+# DB = pilot data (profiles, credentials, verification, scores, logbook)
+[[d1_databases]]
+binding = "DB"
+database_name = "pilotrecognition-profiles"
+database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
+
+# Environment variables
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
+DODO_PRODUCT_ID_RECOGNITION_PLUS = "pdt_0NhgDLaiGjWD45S1gJmng"
+DODO_ENV = "test"
+
+# R2 Bucket for encrypted document storage
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "pilot-encrypted-vault"

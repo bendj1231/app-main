@@ -689,6 +689,26 @@ export const HomePage: React.FC<HomePageProps> = ({
         }
     }, []);
 
+    // Disable transitions after initial materialization so scroll doesn't re-trigger animations
+    useEffect(() => {
+        const tryDisable = () => {
+            if (document.body.classList.contains('app-ready')) {
+                // Wait for longest stagger (0.72s delay + 0.6s duration) + buffer
+                setTimeout(() => {
+                    document.querySelectorAll('#home-root [data-section]').forEach((el) => {
+                        (el as HTMLElement).style.transition = 'none';
+                    });
+                }, 1500);
+                return true;
+            }
+            return false;
+        };
+        if (tryDisable()) return;
+        const obs = new MutationObserver(tryDisable);
+        obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => obs.disconnect();
+    }, []);
+
     const allSlides: Slide[] = [
         {
             image: "/images/homepage-1.png",
@@ -1009,19 +1029,77 @@ export const HomePage: React.FC<HomePageProps> = ({
                     100% { transform: translateX(-50%); }
                 }
             `}</style>
-            <div className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen pt-16">
-            {/* Navigation Bar */}
-            <TopNavbar
-                onNavigate={onNavigate}
-                onLogin={onLogin}
-                isLight={isOverWhite}
-                isDark={!isOverWhite}
-                onLoginModalOpen={onLoginModalOpen}
-                pathwayGridRef={pathwayGridRef}
-                currentPage="home"
-            />
+            <div id="home-root" className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen pt-16">
+            <style>{`
+                /* ENTRANCE: sections start invisible and materialize when app-ready */
+                #home-root [data-section] {
+                    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                                filter 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+                    opacity: 0;
+                    filter: blur(8px);
+                    transform: scale(0.96) translateY(16px);
+                    pointer-events: none;
+                }
+                body.app-ready #home-root [data-section] {
+                    opacity: 1;
+                    filter: none;
+                    transform: none;
+                    pointer-events: auto;
+                }
+                body.app-ready #home-root [data-section="3"] { transition-delay: 0.00s; }
+                body.app-ready #home-root [data-section="2"] { transition-delay: 0.06s; }
+                body.app-ready #home-root [data-section="4"] { transition-delay: 0.18s; }
+                body.app-ready #home-root [data-section="5"] { transition-delay: 0.24s; }
+                body.app-ready #home-root [data-section="6"] { transition-delay: 0.30s; }
+                body.app-ready #home-root [data-section="7"] { transition-delay: 0.36s; }
+                body.app-ready #home-root [data-section="8"] { transition-delay: 0.42s; }
+                body.app-ready #home-root [data-section="9"] { transition-delay: 0.48s; }
+                body.app-ready #home-root [data-section="10"] { transition-delay: 0.54s; }
+                body.app-ready #home-root [data-section="11"] { transition-delay: 0.60s; }
+                body.app-ready #home-root [data-section="12"] { transition-delay: 0.66s; }
+                body.app-ready #home-root [data-section="13"] { transition-delay: 0.72s; }
 
-            <HomeLabel />
+                /* EXIT: staggered dematerialization when leaving */
+                .page-exiting #home-root [data-section] {
+                    transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                                filter 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                                transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+                    opacity: 0 !important;
+                    filter: blur(12px) !important;
+                    transform: scale(0.96) translateY(-8px) !important;
+                    pointer-events: none !important;
+                }
+                .page-exiting #home-root [data-section="2"] { transition-delay: 0.00s; }
+                .page-exiting #home-root [data-section="3"] { transition-delay: 0.08s; }
+                .page-exiting #home-root [data-section="4"] { transition-delay: 0.12s; }
+                .page-exiting #home-root [data-section="5"] { transition-delay: 0.16s; }
+                .page-exiting #home-root [data-section="6"] { transition-delay: 0.20s; }
+                .page-exiting #home-root [data-section="7"] { transition-delay: 0.24s; }
+                .page-exiting #home-root [data-section="8"] { transition-delay: 0.28s; }
+                .page-exiting #home-root [data-section="9"] { transition-delay: 0.32s; }
+                .page-exiting #home-root [data-section="10"] { transition-delay: 0.36s; }
+                .page-exiting #home-root [data-section="11"] { transition-delay: 0.40s; }
+                .page-exiting #home-root [data-section="12"] { transition-delay: 0.44s; }
+                .page-exiting #home-root [data-section="13"] { transition-delay: 0.48s; }
+                .page-exiting #home-root [data-section="14"] { transition-delay: 0.52s; }
+            `}</style>
+            {/* Navigation Bar — always visible, not part of materialization */}
+            <div>
+                <TopNavbar
+                    onNavigate={onNavigate}
+                    onLogin={onLogin}
+                    isLight={isOverWhite}
+                    isDark={!isOverWhite}
+                    onLoginModalOpen={onLoginModalOpen}
+                    pathwayGridRef={pathwayGridRef}
+                    currentPage="home"
+                />
+            </div>
+
+            <div data-section="2">
+                <HomeLabel />
+            </div>
 
             {/* Enrollment Confirmation Modal */}
             <AnimatePresence>
@@ -1184,9 +1262,9 @@ export const HomePage: React.FC<HomePageProps> = ({
             </AnimatePresence>
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
-            <div className="relative w-full min-h-screen overflow-hidden">
+            <div data-section="3" className="relative w-full min-h-screen overflow-hidden">
                 <div className="fixed inset-0 z-0">
-                    {graphicsConfig?.enableMeshGradient ? (
+                    {graphicsConfig ? (
                         <MeshGradient
                             className="w-full h-full"
                             colors={isDarkMode ? [
@@ -1235,7 +1313,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === BECOME A MEMBER BANNER === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-10">
+            <div data-section="4" className="relative z-30 w-full px-4 md:px-8 py-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative overflow-hidden shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
                         <div className="px-8 py-8 md:px-10 md:py-10 flex flex-col lg:flex-row items-center gap-8 min-h-[280px]">
@@ -1274,7 +1352,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === INDUSTRY PARTNER HEADLINES === */}
-            <div className="relative z-30 w-full bg-white border-b border-slate-100 px-4 md:px-8 py-5 overflow-hidden">
+            <div data-section="5" className="relative z-30 w-full bg-white border-b border-slate-100 px-4 md:px-8 py-5 overflow-hidden">
                 <div className="max-w-7xl mx-auto mb-3 text-center">
                     <h4
                         className="text-2xl md:text-3xl text-slate-900 font-normal"
@@ -1313,7 +1391,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === FULL IMAGE BANNER - Split Layout === */}
-            <div className="relative z-30 w-full h-[400px] md:h-[520px] lg:h-[600px] overflow-hidden flex">
+            <div data-section="6" className="relative z-30 w-full h-[400px] md:h-[520px] lg:h-[600px] overflow-hidden flex">
                 {/* Left Half - Text Content */}
                 <div className="relative z-10 w-1/2 flex items-center bg-slate-950 px-8 md:px-14 lg:px-20">
                     <div>
@@ -1360,7 +1438,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === DISCOVER PILOT RECOGNITION === */}
-            <div className="relative z-10 bg-white w-full py-12 md:py-16 overflow-hidden">
+            <div data-section="7" className="relative z-10 bg-white w-full py-12 md:py-16 overflow-hidden">
                 <div className="absolute inset-y-0 right-0 hidden md:block w-[48vw] lg:w-[50vw] xl:w-[52vw]">
                     <div
                         className="absolute inset-0 bg-contain bg-right bg-no-repeat bg-white"
@@ -1444,7 +1522,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === DISCOVER PATHWAYS - Three Vertical Cards === */}
-            <div className="relative z-10 bg-white">
+            <div data-section="8" className="relative z-10 bg-white">
             <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pb-6 sm:pb-8 pt-8 sm:pt-10 md:pt-12">
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
@@ -1552,9 +1630,10 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 </div>
             </div>
+            </div>
 
             {/* === PLATFORM NEWS UPDATES === */}
-            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-4 md:py-6">
+            <div data-section="9" className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-4 md:py-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="overflow-hidden rounded-[2rem] bg-white ring-1 ring-slate-200 shadow-2xl">
                         <div className="px-5 py-4 sm:px-7 sm:py-5 rounded-t-[2rem] bg-red-600 text-white">
@@ -1647,7 +1726,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === RECOMMENDED PATHWAYS CAROUSEL === */}
-            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8">
+            <div data-section="10" className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
                     <div className="mb-6 text-center">
@@ -1824,7 +1903,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === DISCOVER PROGRAMS SECTION === */}
-            <div className="relative z-30 bg-white w-full px-4 md:px-8 py-12">
+            <div data-section="11" className="relative z-30 bg-white w-full px-4 md:px-8 py-12">
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
                     <div className="mb-6 text-center">
@@ -2394,7 +2473,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>}
 
             {/* About Us section - Moved above iPad section */}
-            <div className="relative bg-white pt-24 pb-12 px-6">
+            <div data-section="12" className="relative bg-white pt-24 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <p className="text-lg font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
                         ABOUT US
@@ -2557,7 +2636,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Footer */}
-            <footer className="relative z-10 mt-auto bg-slate-900 text-white py-12 px-6">
+            <footer data-section="13" className="relative z-10 mt-auto bg-slate-900 text-white py-12 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
@@ -2607,11 +2686,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             </footer>
 
 
-            </div>{/* end white background wrapper */}
+            </div>{/* end home-root wrapper */}
 
             {/* Recognition ATC Chat Widget */}
             <RecognitionATC />
-        </div>
         </>
     );
 };

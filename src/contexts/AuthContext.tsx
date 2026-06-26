@@ -4,7 +4,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '../hooks/useWorkerAuth';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
 import { PostOAuthWelcomeScreen } from '@/components/website/components/PostOAuthWelcomeScreen';
-import { clearVaultKey } from '../../lib/vault';
 
 interface SupabaseUser {
   id: string;
@@ -236,7 +235,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const resetTimer = () => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       idleTimerRef.current = setTimeout(() => {
-        clearVaultKey();
         logoutRef.current?.();
       }, IDLE_TIMEOUT_MS);
     };
@@ -251,9 +249,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [currentUser, IDLE_TIMEOUT_MS]);
 
-  // Article 5 — Flush vault key on tab close / navigate away (shared airport terminal protection)
+  // Article 5 — Session cleanup on tab close
   useEffect(() => {
-    const handleUnload = () => clearVaultKey();
+    const handleUnload = () => {
+      setCurrentUser(null);
+      setUserProfile(null);
+    };
     window.addEventListener('beforeunload', handleUnload);
     return () => window.removeEventListener('beforeunload', handleUnload);
   }, []);
@@ -830,7 +831,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(null); // Clear current user
     setUserProfile(null); // Clear user profile
     setOauthAccountCheck({ checking: false, hasAccount: null }); // Clear OAuth account check to prevent redirect effects
-    clearVaultKey(); // Clear vault key from memory
 
     // Clear Auth0 session data from sessionStorage
     sessionStorage.removeItem('sb-auth-provider');

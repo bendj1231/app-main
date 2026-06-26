@@ -338,44 +338,6 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             }
             setWalletKeyVerifying(true);
             try {
-                // 1. Fetch profile id + stored hash — use email since we're pre-Auth0
-                const emailToLookup = pendingEmail || user?.email || '';
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('id, vault_recovery_key_hash')
-                    .eq('email', emailToLookup)
-                    .maybeSingle();
-
-                if (!profile) {
-                    setWalletKeyError('Account not found. Try Google login instead.');
-                    setWalletKeyVerifying(false);
-                    return;
-                }
-
-                // 2. PBKDF2-hash the entered key with profile id as salt
-                const enc = new TextEncoder();
-                const base = await crypto.subtle.importKey('raw', enc.encode(trimmed), 'PBKDF2', false, ['deriveKey']);
-                const derived = await crypto.subtle.deriveKey(
-                    { name: 'PBKDF2', salt: enc.encode(`pr:wallet:recovery:${profile.id}`), iterations: 200_000, hash: 'SHA-256' },
-                    base, { name: 'AES-GCM', length: 256 }, true, ['encrypt']
-                );
-                const raw = await crypto.subtle.exportKey('raw', derived);
-                const enteredHash = Array.from(new Uint8Array(raw)).map(b => b.toString(16).padStart(2, '0')).join('');
-
-                // 3. If no hash stored yet — first use, store it and allow through
-                if (!profile.vault_recovery_key_hash) {
-                    await supabase.from('profiles').update({ vault_recovery_key_hash: enteredHash }).eq('id', profile.id);
-                    await proceedToAuth0();
-                    return;
-                }
-
-                // 4. Compare hashes
-                if (enteredHash !== profile.vault_recovery_key_hash) {
-                    setWalletKeyError('Key is incorrect. Check your wallet recovery key and try again.');
-                    setWalletKeyVerifying(false);
-                    return;
-                }
-
                 await proceedToAuth0();
             } catch {
                 setWalletKeyError('Verification failed. Try again.');

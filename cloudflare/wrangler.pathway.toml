@@ -1,8 +1,8 @@
-# Cloudflare Worker configuration for PilotRecognition API
-# This replaces Supabase Edge Functions and direct client queries
+# Cloudflare Worker — Aviation Reference Data (Pathways)
+# Handles manufacturers, aircraft type ratings, training requirements, simulator locations
 
-name = "platform-api"
-main = "platform-worker.ts"
+name = "pilotcareerpathways-api"
+main = "pathway-worker.ts"
 compatibility_date = "2025-06-19"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
@@ -43,20 +43,6 @@ database_id = "4ffbd2f3-c424-437a-80ea-b3d75b896afb"
 [vars]
 AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
 AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
-DODO_PRODUCT_ID_RECOGNITION_PLUS = "pdt_0NhgDLaiGjWD45S1gJmng"
-DODO_ENV = "test" # Set to "live" for production
 
-# Secrets (set these with `wrangler secret put`):
-# DODO_API_KEY = "your_dodo_api_key"
-# DODO_WEBHOOK_SECRET = "your_dodo_webhook_secret"
-# VEREMARK_WEBHOOK_SECRET = "your_veremark_webhook_secret"
-
-# R2 Bucket for encrypted document storage (verification uploads, consent forms, licenses)
-[[r2_buckets]]
-binding = "VAULT"
-bucket_name = "pilot-encrypted-vault"
-
-# Optional: KV for caching or rate limiting
-# [[kv_namespaces]]
-# binding = "CACHE"
-# id = "your_kv_namespace_id"
+# Secrets (set with `wrangler secret put --config wrangler.pathway.toml`):
+# (none currently)

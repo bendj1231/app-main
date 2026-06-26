@@ -1,0 +1,31 @@
+# Recognition+ Trace Data API
+# Handles sensitive aviation trace data: licenses, credentials, verification, logbook
+# Separated from ordinary pilot profile data for regulatory compliance
+
+name = "recognition-plus-api"
+main = "recognition-plus-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# D1 Database binding
+# DB = trace data (credentials, licenses, verification, logbook, flight hours)
+[[d1_databases]]
+binding = "DB"
+database_name = "recognition-plus-trace"
+database_id = "4ca6354b-fc0b-4bfd-86cf-532babf74af9"
+
+# Environment variables
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
+DODO_ENV = "test"
+
+# R2 Bucket for encrypted document storage (verification uploads, consent forms, licenses)
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "pilot-encrypted-vault"
+
+# Daily cron: purge expired verification documents (30 days post-result)
+[triggers]
+crons = ["0 0 * * *"]

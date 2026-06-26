@@ -646,6 +646,10 @@ export const AppRoutes = () => {
     return isDomain || isLocalDev || fromStorage;
   });
 
+  // Intro splash screen state
+  const [introPhase, setIntroPhase] = useState<'entering' | 'exiting' | 'done'>('entering');
+  const introFinishedRef = React.useRef(false);
+
   // Re-check domain when location changes
   useEffect(() => {
     const isDomain =
@@ -663,6 +667,11 @@ export const AppRoutes = () => {
     }
   }, [location]);
 
+  // Safety: remove page-exiting class on mount in case it was left behind
+  useEffect(() => {
+    document.body.classList.remove('page-exiting');
+  }, []);
+
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {
@@ -676,13 +685,40 @@ export const AppRoutes = () => {
     };
   }, []);
 
+  const delayedNavigate = (to: string) => {
+    document.body.classList.add('page-exiting');
+    setTimeout(() => {
+      navigate(to);
+      requestAnimationFrame(() => {
+        document.body.classList.remove('page-exiting');
+      });
+    }, 700);
+  };
+
   const handleNavigate = (page: string) => {
-    navigate(`/${page}`);
+    delayedNavigate(`/${page}`);
   };
 
   const handleBack = (fallback: string = '/') => {
-    navigate(fallback);
+    delayedNavigate(fallback);
   };
+
+  // Intro splash screen sequence: hold → exit → done
+  useEffect(() => {
+    if (introFinishedRef.current) return;
+
+    const holdTimer = setTimeout(() => {
+      setIntroPhase('exiting');
+      const exitTimer = setTimeout(() => {
+        setIntroPhase('done');
+        introFinishedRef.current = true;
+        document.body.classList.add('app-ready');
+      }, 700);
+      return () => clearTimeout(exitTimer);
+    }, 1200);
+
+    return () => clearTimeout(holdTimer);
+  }, []);
 
   // If we're currently checking an OAuth account, show a full-screen loading overlay
   // to avoid briefly rendering the Home page before redirecting to /become-member.
@@ -835,6 +871,46 @@ export const AppRoutes = () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
+      {/* Intro Splash Screen — shows immediately on app load */}
+      <AnimatePresence>
+        {introPhase !== 'done' && (
+          <motion.div
+            key="intro"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 1.05,
+              transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
+            }}
+          >
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, y: 30, scale: 0.82 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{
+                opacity: 0,
+                y: -40,
+                scale: 0.92,
+                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const }
+              }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
+              style={{ willChange: 'transform, opacity' }}
+            >
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none mb-4 select-none">
+                <span className="text-slate-900">pilot</span>
+                <span className="text-red-600">recognition</span>
+                <span className="text-slate-900">.com</span>
+              </h1>
+              <p className="text-sm md:text-base text-slate-400 tracking-[0.2em] uppercase font-medium select-none">
+                connecting pilots to the industry
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Persistent dark background — prevents white flash during transitions */}
       <div
         style={{
@@ -849,12 +925,12 @@ export const AppRoutes = () => {
       <AnimatePresence mode="sync">
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, scale: 1.01, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 0.99, filter: 'blur(8px)' }}
+          initial={{ opacity: 0, scale: 1.04, filter: 'blur(20px) brightness(1.5)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px) brightness(1)' }}
+          exit={{ opacity: 0, scale: 0.94, filter: 'blur(28px) brightness(0.25)' }}
           transition={{
-            duration: 0.6,
-            ease: [0.22, 1, 0.36, 1],
+            duration: 1.2,
+            ease: [0.22, 1, 0.36, 1] as const,
           }}
           style={{ willChange: 'transform, opacity, filter', position: 'relative', zIndex: 1 }}
         >
@@ -864,11 +940,11 @@ export const AppRoutes = () => {
           path="/"
           element={
             <HomePage
-              onJoinUs={() => navigate('/become-member')}
+              onJoinUs={() => delayedNavigate('/become-member')}
               onLogin={() => setIsLoginModalOpen(true)}
               onNavigate={handleNavigate}
               onLoginModalOpen={() => setIsLoginModalOpen(true)}
-              onGoToProgramDetail={() => navigate('/programs')}
+              onGoToProgramDetail={() => delayedNavigate('/programs')}
             />
           }
         />
@@ -876,11 +952,11 @@ export const AppRoutes = () => {
           path="/home"
           element={
             <HomePage
-              onJoinUs={() => navigate('/become-member')}
+              onJoinUs={() => delayedNavigate('/become-member')}
               onLogin={() => setIsLoginModalOpen(true)}
               onNavigate={handleNavigate}
               onLoginModalOpen={() => setIsLoginModalOpen(true)}
-              onGoToProgramDetail={() => navigate('/programs')}
+              onGoToProgramDetail={() => delayedNavigate('/programs')}
             />
           }
         />
@@ -1208,7 +1284,7 @@ export const AppRoutes = () => {
             <WhatIsPilotRecognitionPage
               onNavigate={handleNavigate}
               onLogin={() => setIsLoginModalOpen(true)}
-              onJoinUs={() => navigate('/become-member')}
+              onJoinUs={() => delayedNavigate('/become-member')}
             />
           }
         />
@@ -1529,9 +1605,9 @@ export const AppRoutes = () => {
               onNavigate={handleNavigate}
               onNavigateToPathway={(pathwayId) => {
                 if (pathwayId.includes('air-taxi') || pathwayId.includes('wingmentor')) {
-                  navigate('/air-taxi-pathways');
+                  delayedNavigate('/air-taxi-pathways');
                 } else {
-                  navigate(`/pathways-detail/${pathwayId}`);
+                  delayedNavigate(`/pathways-detail/${pathwayId}`);
                 }
               }}
             />

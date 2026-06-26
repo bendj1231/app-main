@@ -590,14 +590,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     };
 
     // Worker API helper with request counting
-    const WORKER_URL = 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+    const PLATFORM_API_URL = 'https://platform-api.benjamintigerbowler.workers.dev';
     const workerRequestCountRef = React.useRef(0);
     const callWorker = async (action: string, params: Record<string, unknown>) => {
         workerRequestCountRef.current += 1;
         const count = workerRequestCountRef.current;
         console.log(`[DEBUG][Worker] Request #${count}: action="${action}"`);
         const token = await getAccessTokenSilently();
-        const res = await fetch(`${WORKER_URL}/api`, {
+        const res = await fetch(`${PLATFORM_API_URL}/api`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ action, params }),
