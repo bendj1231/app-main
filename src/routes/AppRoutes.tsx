@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LogbookCallback } from '@/src/components/LogbookCallback';
@@ -190,6 +191,7 @@ const VerifyApcPage = lazy(() => import('@/app/get-started/verify-apc/page'));
 const AboutVerificationPage = lazy(() => import('@/app/about-verification/page'));
 const ConsentFormPage = lazy(() => import('@/app/consent-form/page'));
 const FlightHoursLogbookPage = lazy(() => import('@/app/logbook-upload/page'));
+const PublicPilotCardPage = lazy(() => import('@/app/verify/[token]/page'));
 const EnrolledFoundationalPage = lazy(() =>
   import('@/components/website/components/programs/EnrolledFoundationalPage').then((m) => ({
     default: m.EnrolledFoundationalPage,
@@ -863,8 +865,20 @@ export const AppRoutes = () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <Routes>
-        {/* Home route */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, scale: 1.02, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, scale: 0.98, filter: 'blur(6px)' }}
+          transition={{
+            duration: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ willChange: 'transform, opacity, filter' }}
+        >
+          <Routes location={location} key={location.pathname}>
+            {/* Home route */}
         <Route
           path="/"
           element={
@@ -1624,6 +1638,7 @@ export const AppRoutes = () => {
         <Route path="/about-verification" element={<AboutVerificationPage />} />
         <Route path="/consent-form" element={<ConsentFormPage />} />
         <Route path="/flight-hours-logbook" element={<FlightHoursLogbookPage />} />
+        <Route path="/verify/:token" element={<PublicPilotCardPage />} />
 
         {/* Blog & Store */}
         <Route path="/blog" element={<BlogPage />} />
@@ -1703,7 +1718,9 @@ export const AppRoutes = () => {
           path="/program-discounts"
           element={<Navigate to="/recognition-plus?section=program-discounts" replace />}
         />
-      </Routes>
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
 
       <LoginModal
         isOpen={isLoginModalOpen}
