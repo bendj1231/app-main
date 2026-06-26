@@ -4,7 +4,10 @@ export function getAuth0RedirectUri() {
   // always redirects back to the correct domain, regardless of what
   // VITE_AUTH0_CALLBACK_URL is set to in .env.local (which may be localhost).
   if (typeof window !== 'undefined') {
-    return `${window.location.origin}/auth/callback`;
+    const origin = window.location.origin;
+    // Auth0 dashboard allows /callback for localhost, /auth/callback for production
+    const path = origin.includes('localhost') ? '/callback' : '/auth/callback';
+    return `${origin}${path}`;
   }
 
   // Server-side fallback (should never hit in browser)

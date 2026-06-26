@@ -55,6 +55,7 @@ interface CfRequestInit extends RequestInit {
 
 interface Env {
   DB: D1Database;
+  PILOT_DB: D1Database;
   VAULT: R2Bucket;
   AUTH0_DOMAIN: string;
   AUTH0_AUDIENCE: string;
@@ -226,19 +227,91 @@ function validateRequiredFields(body: Record<string, unknown>, required: string[
   return null;
 }
 
+function generatePublicToken(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let token = 'pr-';
+  for (let i = 0; i < 12; i++) token += chars[Math.floor(Math.random() * chars.length)];
+  return token;
+}
+
 async function ensureProfile(db: D1Database, auth0Id: string, email: string, name?: string, originJurisdiction?: string) {
   let profile = await getProfileByAuth0Id(db, auth0Id);
   if (!profile) {
     const id = crypto.randomUUID();
     const displayName = name || email.split('@')[0];
+    const publicToken = generatePublicToken();
     const now = new Date().toISOString();
     await db.prepare(`
-      INSERT INTO profiles (id, auth0_id, email, display_name, role, status, subscription_tier, origin_jurisdiction, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(id, auth0Id, email, displayName, 'pilot', 'active', 'free', originJurisdiction || null, now, now).run();
+      INSERT INTO profiles (id, auth0_id, email, display_name, public_token, role, status, subscription_tier, origin_jurisdiction, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(id, auth0Id, email, displayName, publicToken, 'pilot', 'active', 'free', originJurisdiction || null, now, now).run();
     profile = await getProfileById(db, id);
   }
+  // Backfill public_token for existing profiles
+  if (profile && !profile['public_token']) {
+    const publicToken = generatePublicToken();
+    await db.prepare(`UPDATE profiles SET public_token = ? WHERE id = ?`).bind(publicToken, profile['id']).run();
+    profile = await getProfileById(db, profile['id'] as string);
+  }
   return profile;
+}
+
+async function handlePublicProfileRequest(token: string, db: D1Database, origin?: string): Promise<Response> {
+  const profile = await db.prepare(`
+    SELECT id, display_name, full_name, first_name, last_name, email, avatar_url, profile_image_url,
+           current_flight_hours, total_flight_hours, license_id, country_of_license, ratings,
+           license_types, type_ratings, current_occupation, current_level, pilot_stage,
+           nationality, subscription_tier, created_at
+    FROM profiles WHERE public_token = ?
+  `).bind(token).first() as Record<string, unknown> | null;
+
+  if (!profile) {
+    return jsonResponse({ error: 'Not found' }, 404, origin);
+  }
+
+  // Get verified credentials
+  const { results: creds } = await db.prepare(`
+    SELECT credential_type, status, issued_at, expires_at
+    FROM pilot_credentials WHERE user_id = ? AND status = 'active'
+  `).bind(profile['id']).all();
+
+  // Get verification stats
+  const { results: verifications } = await db.prepare(`
+    SELECT document_type, status, created_at
+    FROM verification_submissions WHERE user_id = ? AND status = 'approved'
+  `).bind(profile['id']).all();
+
+  // Calculate risk score for airlines
+  const credentialTypes = (creds || []).map((c: unknown) => (c as Record<string, unknown>)['credential_type'] as string);
+  const requiredCreds = ['license', 'medical', 'radio_license', 'english_proficiency'];
+  const verifiedCount = requiredCreds.filter(t => credentialTypes.includes(t)).length;
+  const hasVerifiedHours = credentialTypes.includes('flight_hours');
+  const riskScore = Math.round((verifiedCount / requiredCreds.length) * (hasVerifiedHours ? 1 : 0.7) * 100);
+
+  const publicProfile = {
+    id: profile['id'],
+    name: profile['display_name'] || profile['full_name'] || `${profile['first_name'] || ''} ${profile['last_name'] || ''}`.trim(),
+    email: profile['email'],
+    avatar_url: profile['avatar_url'] || profile['profile_image_url'],
+    total_flight_hours: profile['total_flight_hours'],
+    license_id: profile['license_id'],
+    country_of_license: profile['country_of_license'],
+    ratings: profile['ratings'],
+    license_types: profile['license_types'],
+    type_ratings: profile['type_ratings'],
+    current_occupation: profile['current_occupation'],
+    current_level: profile['current_level'],
+    pilot_stage: profile['pilot_stage'],
+    nationality: profile['nationality'],
+    subscription_tier: profile['subscription_tier'],
+    credentials: creds || [],
+    verifications: verifications || [],
+    risk_score: riskScore,
+    verified_pct: Math.round((verifiedCount / requiredCreds.length) * 100),
+    created_at: profile['created_at'],
+  };
+
+  return jsonResponse(publicProfile, 200, origin);
 }
 
 // ── Rate Limiting ──────────────────────────────────────────────
@@ -327,6 +400,13 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     return handleCheckout(request, env);
   }
 
+  // ── Public Profile Card (no auth — airline/HR lookup by public_token) ──
+  if (path === '/api/public/profile' && method === 'GET') {
+    const token = url.searchParams.get('token');
+    if (!token) return jsonResponse({ error: 'Missing token' }, 400, origin);
+    return handlePublicProfileRequest(token, env.PILOT_DB, origin);
+  }
+
   // Everything below requires Auth0 JWT
   let auth: JWTPayload;
   try {
@@ -340,6 +420,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
 
   const db = env.DB;
+  const pilotDb = env.PILOT_DB;
 
   // ── Action Router ─────────────────────────────────────────────
   if (path === '/api' && method === 'POST') {
@@ -364,7 +445,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
       const results: Record<string, unknown> = {};
       for (const req of requests) {
         try {
-          results[req.action] = await handleAction(req.action, req.params || {}, db, auth, env);
+          results[req.action] = await handleAction(req.action, req.params || {}, db, pilotDb, auth, env);
         } catch (err) {
           results[req.action] = { error: err instanceof Error ? err.message : String(err) };
         }
@@ -373,7 +454,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     }
 
     try {
-      const result = await handleAction(action, params, db, auth, env);
+      const result = await handleAction(action, params, db, pilotDb, auth, env);
       return jsonResponse(result, 200, origin);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -391,6 +472,7 @@ async function handleAction(
   action: string,
   params: Record<string, unknown>,
   db: D1Database,
+  pilotDb: D1Database,
   auth: JWTPayload,
   env: Env
 ): Promise<unknown> {
@@ -399,17 +481,17 @@ async function handleAction(
     // ── Profile ──
     case 'getProfile': {
       if (params.me === 1 || params.me === '1' || params.me === true) {
-        const profile = await getProfileByAuth0Id(db, auth.sub);
+        const profile = await getProfileByAuth0Id(pilotDb, auth.sub);
         if (!profile) throw new Error('Not found');
         return profile;
       }
       if (params.id) {
-        const profile = await getProfileById(db, params.id as string);
+        const profile = await getProfileById(pilotDb, params.id as string);
         if (!profile) throw new Error('Not found');
         return profile;
       }
       if (params.auth0_id) {
-        const profile = await getProfileByAuth0Id(db, params.auth0_id as string);
+        const profile = await getProfileByAuth0Id(pilotDb, params.auth0_id as string);
         if (!profile) throw new Error('Not found');
         return profile;
       }
@@ -419,20 +501,20 @@ async function handleAction(
       const missing = validateRequiredFields(params, ['email']);
       if (missing) throw new Error(missing);
       const originJurisdiction = params._originJurisdiction as string | undefined;
-      return ensureProfile(db, auth.sub, params.email as string, params.name as string, originJurisdiction);
+      return ensureProfile(pilotDb, auth.sub, params.email as string, params.name as string, originJurisdiction);
     }
     case 'updateProfile': {
       let id = params.id as string;
       if (!id) throw new Error('Missing id');
-      let existing = await getProfileById(db, id);
+      let existing = await getProfileById(pilotDb, id);
       // If not found by UUID, try auth0_id (for partial saves during onboarding)
       if (!existing) {
-        existing = await getProfileByAuth0Id(db, id);
+        existing = await getProfileByAuth0Id(pilotDb, id);
         if (existing) id = existing['id'] as string;
       }
       if (!existing) throw new Error('Not found');
       if (existing['auth0_id'] !== auth.sub) {
-        const me = await getProfileByAuth0Id(db, auth.sub);
+        const me = await getProfileByAuth0Id(pilotDb, auth.sub);
         if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
       }
       const allowed = new Set([
@@ -464,8 +546,8 @@ async function handleAction(
       if (sets.length === 0) throw new Error('No fields to update');
       sets.push("updated_at = datetime('now')");
       values.push(id);
-      await db.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
-      return getProfileById(db, id);
+      await pilotDb.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
+      return getProfileById(pilotDb, id);
     }
     case 'upsertProfile': {
       // Full onboarding batch — creates or updates profile with all onboarding fields
@@ -475,7 +557,7 @@ async function handleAction(
 
       const auth0Id = auth.sub;
       const email = params.email as string;
-      let profile = await getProfileByAuth0Id(db, auth0Id);
+      let profile = await getProfileByAuth0Id(pilotDb, auth0Id);
       const now = new Date().toISOString();
 
       // All onboarding fields that can be set
@@ -490,7 +572,7 @@ async function handleAction(
 
       if (!profile) {
         // Generate pilot_id in PR0001 format
-        const countRow = await db.prepare('SELECT COUNT(*) as cnt FROM profiles').first() as { cnt: number } | null;
+        const countRow = await pilotDb.prepare('SELECT COUNT(*) as cnt FROM profiles').first() as { cnt: number } | null;
         const count = (countRow?.cnt ?? 0) + 1;
         const pilotId = `PR${String(count).padStart(4, '0')}`;
         const id = crypto.randomUUID();
@@ -504,12 +586,13 @@ async function handleAction(
             values.push(params[key]);
           }
         }
-        columns.push('pilot_id', 'role', 'status', 'subscription_tier', 'created_at', 'updated_at');
-        values.push(pilotId, params.role || 'mentee', 'active', 'free', now, now);
+        const publicToken = generatePublicToken();
+        columns.push('pilot_id', 'public_token', 'role', 'status', 'subscription_tier', 'created_at', 'updated_at');
+        values.push(pilotId, publicToken, params.role || 'mentee', 'active', 'free', now, now);
 
         const placeholders = values.map(() => '?').join(', ');
-        await db.prepare(`INSERT INTO profiles (${columns.join(', ')}) VALUES (${placeholders})`).bind(...values).run();
-        profile = await getProfileById(db, id);
+        await pilotDb.prepare(`INSERT INTO profiles (${columns.join(', ')}) VALUES (${placeholders})`).bind(...values).run();
+        profile = await getProfileById(pilotDb, id);
       } else {
         // Update existing profile
         const sets: string[] = [];
@@ -523,8 +606,8 @@ async function handleAction(
         if (sets.length === 0) throw new Error('No fields to update');
         sets.push("updated_at = datetime('now')");
         values.push(profile['id']);
-        await db.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
-        profile = await getProfileById(db, profile['id'] as string);
+        await pilotDb.prepare(`UPDATE profiles SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
+        profile = await getProfileById(pilotDb, profile['id'] as string);
       }
 
       return { success: true, pilot_id: profile?.['pilot_id'], profile_id: profile?.['id'], profile };
@@ -2307,6 +2390,161 @@ async function handleAction(
       };
     }
 
+    // ── VC Issuance ──
+    case 'issueProfileVC': {
+      const userId = params.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const targetProfile = await getProfileById(db, userId);
+      if (!targetProfile) throw new Error('Not found');
+      if (targetProfile['auth0_id'] !== auth.sub) {
+        const me = await getProfileByAuth0Id(db, auth.sub);
+        if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
+      }
+
+      const now = new Date().toISOString();
+      const vcId = crypto.randomUUID();
+      const credentialData = JSON.stringify({
+        '@context': ['https://www.w3.org/2018/credentials/v1', 'https://pilotrecognition.com/contexts/v2/aviation-v2.jsonld'],
+        type: ['VerifiableCredential', 'PilotProfileCredential'],
+        issuer: { id: 'did:web:pilotrecognition.com', name: 'PilotRecognition' },
+        issuanceDate: now,
+        credentialSubject: {
+          id: targetProfile['wallet_did'] || `urn:uuid:${userId}`,
+          pilotId: targetProfile['pilot_id'],
+          name: targetProfile['display_name'] || targetProfile['full_name'],
+          licenseId: targetProfile['license_id'],
+          countryOfLicense: targetProfile['country_of_license'],
+          totalFlightHours: targetProfile['total_flight_hours'],
+          ratings: targetProfile['ratings'],
+          licenseTypes: targetProfile['license_types'],
+          typeRatings: targetProfile['type_ratings'],
+        },
+      });
+
+      await db.prepare(`
+        INSERT INTO pilot_credentials (id, user_id, credential_type, issuer, credential_data, issued_at, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).bind(vcId, userId, 'profile', 'PilotRecognition', credentialData, now, 'active').run();
+
+      return { success: true, vc_id: vcId };
+    }
+
+    // ── Logbook Provider Integration ──
+    case 'getLogbookProviders': {
+      const { results } = await db.prepare(`
+        SELECT id, name, provider_type, country, website, user_count, tier, certification_status,
+               is_active, created_at
+        FROM logbook_providers WHERE is_active = 1 ORDER BY user_count DESC
+      `).all();
+      return results || [];
+    }
+    case 'connectLogbookProvider': {
+      const userId = params.user_id as string;
+      const providerId = params.provider_id as string;
+      const externalAccountId = params.external_account_id as string;
+      if (!userId || !providerId) throw new Error('Missing user_id or provider_id');
+
+      const me = await getProfileByAuth0Id(db, auth.sub);
+      if (!me || (me['id'] !== userId && me['role'] !== 'super_admin')) throw new Error('Forbidden');
+
+      const id = crypto.randomUUID();
+      const now = new Date().toISOString();
+      await db.prepare(`
+        INSERT INTO pilot_logbook_connections (id, pilot_id, provider_id, external_account_id, status, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).bind(id, userId, providerId, externalAccountId || null, 'connected', now, now).run();
+
+      // Update provider user count
+      await db.prepare(`
+        UPDATE logbook_providers SET user_count = user_count + 1, updated_at = ? WHERE id = ?
+      `).bind(now, providerId).run();
+
+      return { success: true, connection_id: id };
+    }
+
+    // ── Career Pathway Matching ──
+    case 'getCareerPathwayMatches': {
+      const userId = params.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const targetProfile = await getProfileById(db, userId);
+      if (!targetProfile) throw new Error('Not found');
+
+      // Get verified credentials
+      const { results: creds } = await db.prepare(`
+        SELECT credential_type, status FROM pilot_credentials WHERE user_id = ? AND status = 'active'
+      `).bind(userId).all();
+      const credentialTypes = (creds || []).map((c: unknown) => (c as Record<string, unknown>)['credential_type'] as string);
+
+      // Get logbook connections
+      const { results: connections } = await db.prepare(`
+        SELECT plc.*, lp.name as provider_name, lp.tier as provider_tier
+        FROM pilot_logbook_connections plc
+        JOIN logbook_providers lp ON plc.provider_id = lp.id
+        WHERE plc.pilot_id = ? AND plc.status = 'connected'
+      `).bind(userId).all();
+
+      // Risk algorithm
+      const requiredCreds = ['license', 'medical', 'radio_license', 'english_proficiency'];
+      const verifiedCount = requiredCreds.filter(t => credentialTypes.includes(t)).length;
+      const hasVerifiedHours = credentialTypes.includes('flight_hours');
+      const hasLogbookProvider = (connections || []).length > 0;
+      const providerTier = hasLogbookProvider ? (connections[0] as Record<string, unknown>)['provider_tier'] as string : null;
+
+      let riskScore = Math.round((verifiedCount / requiredCreds.length) * 100);
+      if (!hasVerifiedHours) riskScore = Math.round(riskScore * 0.7);
+      if (hasLogbookProvider) {
+        if (providerTier === 'certified') riskScore = Math.min(100, Math.round(riskScore * 1.1));
+        else if (providerTier === 'preferred') riskScore = Math.min(100, Math.round(riskScore * 1.2));
+        else if (providerTier === 'anchor') riskScore = Math.min(100, Math.round(riskScore * 1.3));
+      }
+
+      const riskLabel = riskScore >= 80 ? 'low' : riskScore >= 50 ? 'medium' : 'high';
+      const totalHours = (targetProfile['total_flight_hours'] as number) || 0;
+
+      // Pathway matching logic
+      const pathways = [
+        { id: 'airline_cadet', name: 'Airline Cadet Program', minHours: 0, maxHours: 250, requiredCreds: 2, riskTolerance: 'high' },
+        { id: 'regional_fo', name: 'Regional First Officer', minHours: 500, maxHours: 1500, requiredCreds: 3, riskTolerance: 'medium' },
+        { id: 'major_airline', name: 'Major Airline Captain', minHours: 1500, maxHours: 99999, requiredCreds: 4, riskTolerance: 'low' },
+        { id: 'cargo_operator', name: 'Cargo Operator', minHours: 500, maxHours: 3000, requiredCreds: 3, riskTolerance: 'medium' },
+        { id: 'corporate_aviation', name: 'Corporate / Business Jet', minHours: 1000, maxHours: 5000, requiredCreds: 3, riskTolerance: 'medium' },
+        { id: 'flight_instructor', name: 'Flight Instructor', minHours: 200, maxHours: 2000, requiredCreds: 2, riskTolerance: 'high' },
+      ];
+
+      const matches = pathways.map(p => {
+        const hoursMatch = totalHours >= p.minHours && totalHours <= p.maxHours;
+        const credsMatch = verifiedCount >= p.requiredCreds;
+        const riskMatch = riskLabel === 'low' || (riskLabel === 'medium' && p.riskTolerance !== 'low') || p.riskTolerance === 'high';
+        const matchScore = (hoursMatch ? 30 : 0) + (credsMatch ? 40 : 0) + (riskMatch ? 20 : 0) + (hasVerifiedHours ? 10 : 0);
+        return { ...p, eligible: hoursMatch && credsMatch && riskMatch, match_score: matchScore };
+      }).sort((a, b) => b.match_score - a.match_score);
+
+      return {
+        pilot_id: userId,
+        risk_score: riskScore,
+        risk_label: riskLabel,
+        verified_credentials: verifiedCount,
+        has_verified_hours: hasVerifiedHours,
+        logbook_provider: hasLogbookProvider ? { name: (connections[0] as Record<string, unknown>)['provider_name'], tier: providerTier } : null,
+        total_flight_hours: totalHours,
+        pathway_matches: matches,
+      };
+    }
+
+    // ── In-App Notifications ──
+    case 'getNotifications': {
+      const userId = params.user_id as string;
+      if (!userId) throw new Error('Missing user_id');
+      const limit = Math.min((params.limit as number) || 50, 200);
+      const unreadOnly = params.unread_only === true || params.unread_only === 'true';
+      let sql = 'SELECT * FROM notifications WHERE user_id = ?';
+      const binds: unknown[] = [userId];
+      if (unreadOnly) { sql += ' AND read_at IS NULL'; }
+      sql += ' ORDER BY created_at DESC LIMIT ?';
+      binds.push(limit);
+      const { results } = await db.prepare(sql).bind(...binds).all();
+      return results || [];
+    }
     default:
       throw new Error(`Unknown action: ${action}`);
   }
