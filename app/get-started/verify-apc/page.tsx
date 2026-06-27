@@ -163,7 +163,7 @@ export default function VerifyApcPage() {
     isAbInitioPilot: false,
     abInitioDetails: '',
     homeBase: '',
-    hasFlightExperience: false,
+    hasFlightExperience: null as boolean | null,
     pathwayInterest: [] as string[],
     radioLicenseExpiry: '',
     hasNoLicenseExpiry: false,
@@ -223,7 +223,7 @@ export default function VerifyApcPage() {
       case 1:
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality && !!apcFormData.homeBase;
       case 2:
-        return true;
+        return apcFormData.hasFlightExperience !== null;
       case 3:
         if (apcFormData.hasNoLicense) return true;
         const hasValidLicense = !!apcFormData.licenseNumber && (apcFormData.hasNoLicenseExpiry || !!apcFormData.licenseExpiryDate);
@@ -652,7 +652,7 @@ export default function VerifyApcPage() {
 
             {/* Progress Bar */}
             {(() => {
-              const shouldHideExtras = apcFormData.hasNotFlown || !apcFormData.hasFlightExperience;
+              const shouldHideExtras = apcFormData.hasNotFlown || apcFormData.hasFlightExperience === false;
               const visibleStepIdxs = apcFormData.hasNoLicense ? [0, 1, 2, 8] : shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
               const visibleTotal = visibleStepIdxs.length;
               const visualStep = apcFormData.hasNoLicense ? (step <= 3 ? step : 4) : shouldHideExtras ? (step <= 4 ? step : 5) : step;
@@ -805,13 +805,15 @@ export default function VerifyApcPage() {
             <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Flight Experience</p>
             <p className="text-[10px] text-gray-700 mb-2">Do you have any flight experience?</p>
             <div className="flex gap-2 mb-2">
-              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: true, hasNotFlown: false, licenseType: '', medicalClass: '', medicalExpiry: '', totalHours: '', picHours: '', dualHours: '', dualXcHours: '', nightHours: '', instrumentSimHours: '', instrumentActualHours: '', multiEngineSimHours: '', multiEngineActualHours: '', crossCountryHours: '' }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>Yes</button>
-              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: false, hasNotFlown: true, medicalClass: '', licenseType: '' }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: !apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: !apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${!apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>No</button>
+              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: true, hasNotFlown: false, licenseType: '', medicalClass: '', medicalExpiry: '', totalHours: '', picHours: '', dualHours: '', dualXcHours: '', nightHours: '', instrumentSimHours: '', instrumentActualHours: '', multiEngineSimHours: '', multiEngineActualHours: '', crossCountryHours: '' }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: apcFormData.hasFlightExperience === true ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: apcFormData.hasFlightExperience === true ? '#fff' : '#374151', border: `1px solid ${apcFormData.hasFlightExperience === true ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>Yes</button>
+              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: false, hasNotFlown: true, medicalClass: '', licenseType: '' }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: apcFormData.hasFlightExperience === false ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: apcFormData.hasFlightExperience === false ? '#fff' : '#374151', border: `1px solid ${apcFormData.hasFlightExperience === false ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>No</button>
             </div>
             <p className="text-[9px] text-gray-500 leading-snug">
-              {apcFormData.hasFlightExperience
+              {apcFormData.hasFlightExperience === true
                 ? 'You will be asked for license details, ratings, flight hours, and logbook in upcoming stages.'
-                : 'Stages for aircraft ratings, type ratings, and flight hours will be skipped. You can always update your profile later as you gain experience.'}
+                : apcFormData.hasFlightExperience === false
+                ? 'Stages for aircraft ratings, type ratings, and flight hours will be skipped. You can always update your profile later as you gain experience.'
+                : 'Please select whether you have any flight experience to continue.'}
             </p>
           </div>
 
@@ -1910,7 +1912,7 @@ export default function VerifyApcPage() {
         >
         {/* ── Step 8: ATO Authorization / Junior Pilot Documents ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          {(!apcFormData.hasFlightExperience || apcFormData.hasNotFlown) ? (
+          {(apcFormData.hasFlightExperience === false || apcFormData.hasNotFlown) ? (
             <>
               <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">8. Supporting Documents</p>
               <p className="text-[10px] text-gray-600 mb-3 leading-relaxed">
@@ -2119,7 +2121,7 @@ export default function VerifyApcPage() {
           <motion.button
             onClick={handleSubmit}
             disabled={(() => {
-              const isZeroExp = !apcFormData.hasFlightExperience || apcFormData.hasNotFlown;
+              const isZeroExp = apcFormData.hasFlightExperience === false || apcFormData.hasNotFlown;
               if (isZeroExp) {
                 return submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcConsentChecked || !privacyConsentChecked;
               }
@@ -2128,12 +2130,12 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: submitStatus === 'success' ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
             whileHover={(() => {
-              const isZeroExp = !apcFormData.hasFlightExperience || apcFormData.hasNotFlown;
+              const isZeroExp = apcFormData.hasFlightExperience === false || apcFormData.hasNotFlown;
               if (isZeroExp) return apcEmail && apcConsentChecked && privacyConsentChecked && submitStatus !== 'submitting' ? { scale: 1.03 } : {};
               return apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && logbookConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {};
             })()}
             whileTap={(() => {
-              const isZeroExp = !apcFormData.hasFlightExperience || apcFormData.hasNotFlown;
+              const isZeroExp = apcFormData.hasFlightExperience === false || apcFormData.hasNotFlown;
               if (isZeroExp) return apcEmail && apcConsentChecked && privacyConsentChecked && submitStatus !== 'submitting' ? { scale: 0.98 } : {};
               return apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && logbookConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {};
             })()}
