@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface PasskeyGateProps {
   onAuthenticated: (userId: string) => void;

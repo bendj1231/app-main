@@ -1,7 +1,7 @@
 // Pathway Dashboard - Shows real pathway matches from browser engine
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { 
   Route, 
   Target, 

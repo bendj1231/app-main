@@ -4,7 +4,7 @@
  * Handles real-time score calculation and updates for pilot recognition system
  */
 
-import { supabase } from '../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import {
   calculateRecognitionScore,
   PilotScoreInput,

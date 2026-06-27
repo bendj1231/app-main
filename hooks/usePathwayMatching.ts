@@ -2,7 +2,7 @@
 // All matching happens locally in the browser for privacy and speed
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { supabase } from '../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { 
   pathwayEngine, 
   extractPilotProfile, 

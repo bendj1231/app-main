@@ -12,7 +12,7 @@ import {
   Award,
   Loader2
 } from 'lucide-react';
-import { supabase } from '../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface CareerPathwaysHomePageProps {
   onNavigate?: (path: string) => void;

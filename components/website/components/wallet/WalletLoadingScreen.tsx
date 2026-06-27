@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { supabase } from '../../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface WalletLoadingScreenProps {
   onComplete: () => void;

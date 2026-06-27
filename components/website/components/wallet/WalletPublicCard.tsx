@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface WalletProfile {
   display_name: string;

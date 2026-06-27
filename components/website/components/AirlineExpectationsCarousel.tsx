@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { IMAGES } from '@/lib/website-constants';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { AirlineDetailModal } from './AirlineDetailModal';
 import { usePathwaysIntelligence } from '../../../portal/hooks/usePathwaysIntelligence';
 import { AirlineReadinessBanner } from '../../../portal/components/PathwaysIntelligenceWidgets';

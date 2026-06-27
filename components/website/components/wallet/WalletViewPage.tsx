@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { supabase } from '../../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import {
   buildInitialWalletState,
   buildAviationRecordSummaryVP,
