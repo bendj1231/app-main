@@ -1076,15 +1076,35 @@ export default function VerifyApcPage() {
           )}
 
           {/* Radio License */}
-          <label className="flex items-center gap-2 mt-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={apcFormData.hasRadioLicense}
-              onChange={(e) => setApcFormData(p => ({ ...p, hasRadioLicense: e.target.checked }))}
-              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
-            />
-            <span className="text-[10px] text-gray-700">I hold a radio license (NTC / RT)</span>
-          </label>
+          <div className="mt-3">
+            <p className="text-[10px] text-gray-700 mb-2">Do you hold a radio license (NTC / RT)?</p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setApcFormData(p => ({ ...p, hasRadioLicense: true }))}
+                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
+                style={{
+                  background: apcFormData.hasRadioLicense ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                  color: apcFormData.hasRadioLicense ? '#fff' : '#374151',
+                  border: `1px solid ${apcFormData.hasRadioLicense ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                }}
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                onClick={() => setApcFormData(p => ({ ...p, hasRadioLicense: false }))}
+                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
+                style={{
+                  background: !apcFormData.hasRadioLicense ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                  color: !apcFormData.hasRadioLicense ? '#fff' : '#374151',
+                  border: `1px solid ${!apcFormData.hasRadioLicense ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
         </motion.div>
 
         <div className="flex justify-between">
