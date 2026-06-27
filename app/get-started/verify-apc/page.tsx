@@ -157,6 +157,8 @@ export default function VerifyApcPage() {
     aviationDegreeDetails: '',
     currentlyEnrolled: false,
     enrollmentDetails: '',
+    isAbInitioPilot: false,
+    abInitioDetails: '',
     hasNoLicenseExpiry: false,
     hasNotFlown: false,
     hasNoMedical: false,
@@ -740,6 +742,26 @@ export default function VerifyApcPage() {
                 placeholder="Institution / Program, Expected graduation..."
                 value={apcFormData.enrollmentDetails}
                 onChange={(e) => setApcFormData(p => ({ ...p, enrollmentDetails: e.target.value }))}
+                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+              />
+            )}
+
+            <label className="flex items-center gap-2 mt-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={apcFormData.isAbInitioPilot}
+                onChange={(e) => setApcFormData(p => ({ ...p, isAbInitioPilot: e.target.checked, abInitioDetails: e.target.checked ? p.abInitioDetails : '' }))}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              />
+              <span className="text-[10px] text-gray-700">Fast track / Ab-initio pilot</span>
+            </label>
+            {apcFormData.isAbInitioPilot && (
+              <input
+                type="text"
+                placeholder="Training program, Institution, Year..."
+                value={apcFormData.abInitioDetails}
+                onChange={(e) => setApcFormData(p => ({ ...p, abInitioDetails: e.target.value }))}
                 className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2"
                 style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
               />
