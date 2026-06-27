@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '../../@/lib/supabase';
-import { useAuth } from '../../@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { Send, Clock, CheckCircle2, XCircle, AlertCircle, Loader2, School, Calendar, MessageSquare, TrendingUp, ShieldCheck } from 'lucide-react';
 
 interface ATOInstitution {

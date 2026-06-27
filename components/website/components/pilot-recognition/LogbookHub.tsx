@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft } from 'lucide-react';
-import { supabase } from '../../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 
 interface LogbookHubProps {

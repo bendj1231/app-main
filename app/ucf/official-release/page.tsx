@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navSections = [
   { id: 'document-information', label: 'Document Information', group: 'doc', standalone: true },

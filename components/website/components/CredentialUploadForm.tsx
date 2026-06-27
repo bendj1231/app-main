@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { supabase } from '../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 interface CredentialUploadFormProps {
   onCredentialUploaded: (credentialData: any) => void;

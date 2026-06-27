@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2, Download } from 'lucide-react';
 import { StorageEngineCard } from './StorageEngineCard';
-import { supabase } from '../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 interface SettingsDirectoryPageProps {
     onBack: () => void;

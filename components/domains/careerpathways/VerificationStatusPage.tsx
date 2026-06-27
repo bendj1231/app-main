@@ -7,11 +7,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet, getWalletCredentials } from '../@/lib/wallet';
+import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet, getWalletCredentials } from '@/lib/wallet';
 import { generateEnclaveKey } from '../../../lib/wallet/enclave';
 import { ShieldCheck, Plane, Briefcase, Award, Share2, CheckCircle, AlertCircle } from 'lucide-react';
 import { CookieConsent } from '../../../components/CookieConsent';
-import { useWorkerAuth } from '../@/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface PathwaysWalletPageProps {
   auth0Id: string;

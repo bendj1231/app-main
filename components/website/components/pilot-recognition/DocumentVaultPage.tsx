@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
-import { supabase } from '../../@/lib/supabase';
-import { useAccountTier } from '../../@/hooks/useAccountTier';
+import { supabase } from '@/lib/supabase';
+import { useAccountTier } from '@/hooks/useAccountTier';
 import { 
   Upload, FileText, Check, AlertCircle, X, Camera, FileCheck, Shield, 
   Lock, Clock, History, ChevronRight, FileDigit, Stethoscope, Plane, 

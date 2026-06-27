@@ -8,8 +8,8 @@ import React, { useState, useEffect } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { motion } from 'framer-motion';
 import { Bookmark, Search, Filter, Grid3x3, List, ChevronRight, ChevronLeft, Clock, Star, Trash2, ExternalLink, Plane, Building, GraduationCap, Factory } from 'lucide-react';
-import { useAuth } from '../../@/contexts/AuthContext';
-import { bookmarkService, BookmarkItem } from '../../@/services/bookmarkService';
+import { useAuth } from '@/contexts/AuthContext';
+import { bookmarkService, BookmarkItem } from '@/services/bookmarkService';
 
 interface BookmarksViewProps {
   className?: string;

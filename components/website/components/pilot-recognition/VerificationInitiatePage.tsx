@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ShieldCheck, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { useVerificationWallet } from '../../@/hooks/useVerificationWallet';
-import { useAuth } from '../../@/contexts/AuthContext';
+import { useVerificationWallet } from '@/hooks/useVerificationWallet';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props {
   onBack: () => void;

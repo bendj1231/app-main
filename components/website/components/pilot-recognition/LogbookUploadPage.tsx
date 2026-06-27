@@ -3,7 +3,7 @@ import {
   ArrowLeft, Upload, CheckCircle2, AlertCircle, Loader2,
   FileText, Clock, RefreshCw, ShieldCheck, Info,
 } from 'lucide-react';
-import { useLogbookUpload } from '../../@/hooks/useLogbookUpload';
+import { useLogbookUpload } from '@/hooks/useLogbookUpload';
 
 interface Props {
   onBack: () => void;

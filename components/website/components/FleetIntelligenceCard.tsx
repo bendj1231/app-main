@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { supabase } from '../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;

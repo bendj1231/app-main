@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/shared/supabase';
 import { safeRedirect } from '@/lib/url-validator';
-import ProfileImage from '../../../@/components/ProfileImage';
+import ProfileImage from '@/components/ProfileImage';
 import { GettingStartedBar } from '../../GettingStartedBar';
 import { CareerPathwaysCarousel } from '../../CareerPathwaysCarousel';
 import { LogbookPreviewPanel, CredentialRequestCard, NotificationsFeedPanel } from '../shared';

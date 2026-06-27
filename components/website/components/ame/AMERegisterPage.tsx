@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Stethoscope } from 'lucide-react';
-import { supabase } from '../../@/lib/supabase';
-import { useAuth } from '../../@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 

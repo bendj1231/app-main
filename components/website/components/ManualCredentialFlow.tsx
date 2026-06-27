@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CredentialUploadForm } from './CredentialUploadForm';
-import { supabase } from '../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 interface ManualCredentialFlowProps {
   auth0Id: string;

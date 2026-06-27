@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { safeRedirect } from '../@/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 const regions = [
   { code: 'en-ph', name: 'Philippines', flag: '🇵🇭' },

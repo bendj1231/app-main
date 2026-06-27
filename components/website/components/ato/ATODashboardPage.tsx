@@ -4,8 +4,8 @@ import {
   ArrowLeft, CheckCircle2, XCircle, Clock, ShieldCheck, Users,
   Award, AlertTriangle, Loader2, ChevronDown, ChevronUp, RefreshCw, Plus, CreditCard, Send
 } from 'lucide-react';
-import { supabase } from '../../@/lib/supabase';
-import { useAuth } from '../../@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { CSVUploadBox } from './CSVUploadBox';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

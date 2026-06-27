@@ -1,7 +1,7 @@
 import React from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Target, TrendingUp, Award, Compass, Zap, BarChart3, Route, Star } from 'lucide-react';
 
 export interface PathwaysSidebarProps {

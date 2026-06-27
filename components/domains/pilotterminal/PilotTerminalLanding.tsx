@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MessageSquare, Users, Radio, Search, Bell, User, Hash, TrendingUp, Clock, ChevronRight, ChevronUp, ChevronDown, ArrowBigUp, ArrowBigDown, Share, MoreHorizontal, Plane, Shield, Map, AlertTriangle, Globe, Home, Star, Newspaper, Compass, Plus, Info, BookOpen, Award, ExternalLink, Rss, Moon, Sun, Loader2 } from 'lucide-react';
-import { supabase } from '../@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import AggregatedSocialFeed from './AggregatedSocialFeed';
 
 export default function PilotTerminalLanding() {
