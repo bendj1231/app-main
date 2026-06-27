@@ -162,12 +162,13 @@ export default function VerifyApcPage() {
   const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
   const [hasStarted, setHasStarted] = useState(false);
-  const totalSteps = 5;
-  const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Ratings', 'Flight Hours & Logbook', 'Authorization & Submit'];
+  const totalSteps = 6;
+  const stepTitles = ['Personal Details', 'License & Medical', 'Core Documents', 'Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
   const stepDescriptions = [
     'Provide your identity, contact information, and nationality for the verification record.',
     'Enter your pilot license details, medical certificate class, and any additional ratings or type ratings.',
-    'Upload your license, medical, radio documents, rating certificates, type rating endorsements, and sign the consent form.',
+    'Upload your license, medical certificate, radio license, and sign the document consent form.',
+    'Upload certificates for each additional rating and add your type rating endorsements with training details.',
     'Enter your flight hours summary, upload your logbook, and sign the logbook audit consent.',
     'Review all details, select your ATO, confirm privacy consent, and submit your verification request to APC.',
   ];
@@ -200,15 +201,17 @@ export default function VerifyApcPage() {
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
       case 2:
         return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
-      case 3: {
+      case 3:
+        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && licenseConsentChecked;
+      case 4: {
         const allRatingsHaveDocs = apcFormData.additionalRatings.every(
           (r) => !!ratingFiles[r]
         );
-        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && licenseConsentChecked && allRatingsHaveDocs;
+        return allRatingsHaveDocs;
       }
-      case 4:
-        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
       case 5:
+        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+      case 6:
         return true;
       default:
         return false;
@@ -938,7 +941,7 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Documents & Ratings <ArrowRight size={14} />
+            Next: Core Documents <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -950,9 +953,9 @@ export default function VerifyApcPage() {
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 3: Pilot Documents & Ratings ── */}
+        {/* ── Step 3: Core Documents ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Pilot Documents & Ratings</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Core Documents</p>
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
@@ -982,6 +985,63 @@ export default function VerifyApcPage() {
             ))}
           </div>
 
+          {/* License & Type Rating Verification Consent */}
+          <div className="flex items-center gap-2 mb-2 mt-3">
+            <button
+              type="button"
+              onClick={() => navigate('/license-verification-consent')}
+              className="text-[10px] font-semibold text-amber-600 hover:text-amber-700 underline cursor-pointer"
+            >
+              Download/Print License Verification Consent Form
+            </button>
+            <span className="text-[9px] text-gray-400">— sign, scan, and upload above</span>
+          </div>
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" checked={licenseConsentChecked} onChange={(e) => setLicenseConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700 leading-snug">
+                The pilot authorizes <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to use the pilot's license, type ratings, medical certificate, and related documents for verification with the designated Civil Aviation Authority (CAA). The pilot confirms these documents are authentic and the pilot is the legitimate holder. The pilot understands that submitting falsified, fraudulent, expired, blacklisted, missing, stolen, or tampered documents is a criminal offense and will result in immediate revocation of the pilot's PilotRecognition profile and wallet credentials, and may be reported to regulatory and law enforcement authorities by APC, the governing <span className="font-bold text-gray-800">Approved Aviation Body</span>. The pilot acknowledges that if discrepancies are found — including documents identified as falsified, expired, blacklisted, missing, stolen, or tampered by the <span className="font-bold text-gray-800">Approved Aviation Body</span> — the pilot's account will be flagged for review for 30 days to fix necessary issues, and a <span className="font-bold text-gray-800">$50 reverification fee</span> applies for manual re-review. While under review the pilot may still submit to pathways, but the pilot's profile will carry a verification flag visible to <span className="font-bold text-gray-800">Approved Aviation Bodies</span> and airlines for safety and compliance. After 30 days, unresolved issues may restrict pathway submissions. To fully clear the pilot's account of all flags and restrictions, the pilot is required to pay the full verification fee again for a complete clean re-verification; upon re-uploading corrected documents and declaring all issues resolved, the pilot's account will be cleared, subject to successful verification. The <span className="font-bold text-gray-800">Approved Aviation Body</span> responsible for conducting or reviewing the verification will receive a <span className="font-bold text-gray-800">10% incentive on verification fees</span> when the pilot achieves full verification compliance across all submitted documents, as a reward for clean, accurate verification outcomes.
+              </span>
+            </label>
+          </div>
+
+          <div className="rounded-xl p-2 flex items-center gap-2" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
+            <ShieldCheck size={14} className="text-green-500 flex-shrink-0" />
+            <p className="text-[9px] text-gray-600 leading-snug">
+              <span className="font-semibold text-gray-700">Secure storage:</span> Documents are encrypted and automatically deleted <span className="font-bold text-gray-800">30 days</span> after verification is complete.
+            </p>
+          </div>
+        </motion.div>
+
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button
+            type="button"
+            onClick={() => canProceed(3) && setStep(4)}
+            disabled={!canProceed(3)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: Ratings & Endorsements <ArrowRight size={14} />
+          </button>
+        </div>
+        </motion.div>)}
+        {step === 4 && (<motion.div
+          key="step4"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+        {/* ── Step 4: Ratings & Endorsements ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           {/* Additional Rating Certificates */}
           {apcFormData.additionalRatings.length > 0 && (
             <div className="mt-3">
@@ -1298,38 +1358,12 @@ export default function VerifyApcPage() {
             </button>
           </div>
 
-          {/* License & Type Rating Verification Consent */}
-          <div className="flex items-center gap-2 mb-2 mt-3">
-            <button
-              type="button"
-              onClick={() => navigate('/license-verification-consent')}
-              className="text-[10px] font-semibold text-amber-600 hover:text-amber-700 underline cursor-pointer"
-            >
-              Download/Print License Verification Consent Form
-            </button>
-            <span className="text-[9px] text-gray-400">— sign, scan, and upload above</span>
-          </div>
-          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
-            <label className="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" checked={licenseConsentChecked} onChange={(e) => setLicenseConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
-              <span className="text-[10px] text-gray-700 leading-snug">
-                The pilot authorizes <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to use the pilot's license, type ratings, medical certificate, and related documents for verification with the designated Civil Aviation Authority (CAA). The pilot confirms these documents are authentic and the pilot is the legitimate holder. The pilot understands that submitting falsified, fraudulent, expired, blacklisted, missing, stolen, or tampered documents is a criminal offense and will result in immediate revocation of the pilot's PilotRecognition profile and wallet credentials, and may be reported to regulatory and law enforcement authorities by APC, the governing <span className="font-bold text-gray-800">Approved Aviation Body</span>. The pilot acknowledges that if discrepancies are found — including documents identified as falsified, expired, blacklisted, missing, stolen, or tampered by the <span className="font-bold text-gray-800">Approved Aviation Body</span> — the pilot's account will be flagged for review for 30 days to fix necessary issues, and a <span className="font-bold text-gray-800">$50 reverification fee</span> applies for manual re-review. While under review the pilot may still submit to pathways, but the pilot's profile will carry a verification flag visible to <span className="font-bold text-gray-800">Approved Aviation Bodies</span> and airlines for safety and compliance. After 30 days, unresolved issues may restrict pathway submissions. To fully clear the pilot's account of all flags and restrictions, the pilot is required to pay the full verification fee again for a complete clean re-verification; upon re-uploading corrected documents and declaring all issues resolved, the pilot's account will be cleared, subject to successful verification. The <span className="font-bold text-gray-800">Approved Aviation Body</span> responsible for conducting or reviewing the verification will receive a <span className="font-bold text-gray-800">10% incentive on verification fees</span> when the pilot achieves full verification compliance across all submitted documents, as a reward for clean, accurate verification outcomes.
-              </span>
-            </label>
-          </div>
-
-          <div className="rounded-xl p-2 flex items-center gap-2" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
-            <ShieldCheck size={14} className="text-green-500 flex-shrink-0" />
-            <p className="text-[9px] text-gray-600 leading-snug">
-              <span className="font-semibold text-gray-700">Secure storage:</span> Documents are encrypted and automatically deleted <span className="font-bold text-gray-800">30 days</span> after verification is complete.
-            </p>
-          </div>
         </motion.div>
 
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(2)}
+            onClick={() => setStep(3)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1337,8 +1371,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(4)}
-            disabled={!canProceed(3)}
+            onClick={() => canProceed(4) && setStep(5)}
+            disabled={!canProceed(4)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1347,15 +1381,15 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 4 && (<motion.div
-          key="step4"
+        {step === 5 && (<motion.div
+          key="step5"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
 
-        {/* ── Step 4: Flight Hours & Logbook ── */}
+        {/* ── Step 5: Flight Hours & Logbook ── */}
         {/* ── Section 5: Flight Hours Summary ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Flight Hours Summary</p>
@@ -1486,7 +1520,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(3)}
+            onClick={() => setStep(4)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1494,8 +1528,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(4) && setStep(5)}
-            disabled={!canProceed(4)}
+            onClick={() => canProceed(5) && setStep(6)}
+            disabled={!canProceed(5)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1504,16 +1538,16 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 5 && (<motion.div
-          key="step5"
+        {step === 6 && (<motion.div
+          key="step6"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 5: ATO Authorization ── */}
+        {/* ── Step 6: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. ATO Authorization</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <select
               value={atoCountry}
@@ -1720,7 +1754,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-start">
           <button
             type="button"
-            onClick={() => setStep(4)}
+            onClick={() => setStep(5)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
