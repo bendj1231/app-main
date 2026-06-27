@@ -634,7 +634,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
-              <input type="text" placeholder="MM/DD/YYYY" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="Month/Day/Year" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
@@ -829,7 +829,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Expiry Date</p>
-              <input type="text" placeholder="MM/DD/YYYY" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="Month/Day/Year" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
         </motion.div>
