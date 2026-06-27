@@ -54,10 +54,17 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">1. Pilot Information</h2>
             <div className="grid grid-cols-2 gap-4">
-              {['Full Name', 'License Number', 'Email Address', 'Phone Number', 'Nationality', 'Date of Birth'].map((label) => (
+              {[
+                { label: 'Full Name', type: 'text' },
+                { label: 'License Number', type: 'text' },
+                { label: 'Email Address', type: 'email' },
+                { label: 'Phone Number', type: 'tel' },
+                { label: 'Nationality', type: 'text' },
+                { label: 'Date of Birth', type: 'text', placeholder: 'DD / MM / YYYY' },
+              ].map(({ label, type, placeholder }) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
-                  <div className="border-b border-gray-400 h-7" />
+                  <input type={type} placeholder={placeholder} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
                 </div>
               ))}
             </div>
@@ -69,10 +76,13 @@ export default function ConsentFormPage() {
               The pilot must identify the Approved Aviation Body from which authorization is being requested, print this form, and present it to the organization's authorized representative for signature. If multiple bodies are involved, a separate consent form should be completed for each.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              {['Organization / Body Name', 'Organization Location / Country'].map((label) => (
+              {[
+                { label: 'Organization / Body Name', type: 'text' },
+                { label: 'Organization Location / Country', type: 'text' },
+              ].map(({ label, type }) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
-                  <div className="border-b border-gray-400 h-7" />
+                  <input type={type} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
                 </div>
               ))}
             </div>
@@ -113,25 +123,33 @@ export default function ConsentFormPage() {
             {/* Organization Name Field */}
             <div className="mb-4">
               <label className="block text-xs font-semibold text-gray-700 mb-1">Organization / Operator / ATO Name</label>
-              <div className="border-b border-gray-400 h-7" />
+              <input type="text" className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
             </div>
 
             {/* Representative Details */}
             <div className="grid grid-cols-2 gap-4 mb-4">
-              {['Representative Full Name', 'Representative Title / Designation', 'Representative License / Certificate Number (if applicable)', 'Organization ICAO / CAA Registration Number (if applicable)'].map((label) => (
+              {[
+                { label: 'Representative Full Name', type: 'text' },
+                { label: 'Representative Title / Designation', type: 'text' },
+                { label: 'Representative License / Certificate Number (if applicable)', type: 'text' },
+                { label: 'Organization ICAO / CAA Registration Number (if applicable)', type: 'text' },
+              ].map(({ label, type }) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
-                  <div className="border-b border-gray-400 h-7" />
+                  <input type={type} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
                 </div>
               ))}
             </div>
 
             {/* Contact Details */}
             <div className="grid grid-cols-2 gap-4 mb-4">
-              {['Official Email Address', 'Official Phone Number'].map((label) => (
+              {[
+                { label: 'Official Email Address', type: 'email' },
+                { label: 'Official Phone Number', type: 'tel' },
+              ].map(({ label, type }) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
-                  <div className="border-b border-gray-400 h-7" />
+                  <input type={type} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
                 </div>
               ))}
             </div>
@@ -158,15 +176,15 @@ export default function ConsentFormPage() {
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Representative Signature</label>
-                <div className="border-b border-gray-400 h-10" />
+                <input type="text" placeholder="Sign here after printing or type name" className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Print Name</label>
-                <div className="border-b border-gray-400 h-10" />
+                <input type="text" className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Date</label>
-                <div className="border-b border-gray-400 h-10 text-xs text-gray-500 pt-2">{today}</div>
+                <input type="text" defaultValue={today} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
               </div>
             </div>
           </section>
@@ -196,11 +214,11 @@ export default function ConsentFormPage() {
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Pilot Signature</label>
-                <div className="border-b border-gray-400 h-10" />
+                <input type="text" placeholder="Sign here after printing or type name" className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Date</label>
-                <div className="border-b border-gray-400 h-10 text-xs text-gray-500 pt-2">{today}</div>
+                <input type="text" defaultValue={today} className="w-full text-xs text-gray-800 border-b border-gray-400 bg-transparent outline-none px-0 py-1 focus:border-amber-500 transition-colors" />
               </div>
             </div>
           </section>
