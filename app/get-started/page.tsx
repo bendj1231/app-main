@@ -294,20 +294,21 @@ export default function GetStartedPage() {
                 <p className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wider">Have these ready</p>
                 <div className="space-y-2">
                   {[
-                    { text: 'Pilot License (front and back)', link: null },
-                    { text: 'Type Ratings / Endorsements', link: null },
-                    { text: 'Government-Issued ID (passport, driver\'s license, or national ID)', link: null },
-                    { text: 'Pilot Logbook (all pages)', link: null },
-                    { text: 'Medical Certificate', link: null },
-                    { text: 'ATO Name & Location (for training records)', link: null },
-                    { text: 'Signed ATO Consent Form', link: '/consent-form', label: 'Download / Print' },
-                    { text: 'License Verification Consent', link: '/license-verification-consent', label: 'Download / Print' },
-                    { text: 'Logbook Audit Consent', link: '/logbook-consent', label: 'Download / Print' },
+                    { text: 'SPL, PPL, CPL, or ATPL License (front and back)', optional: false },
+                    { text: 'Medical Certificate (Class 1, 2, or 3)', optional: false },
+                    { text: 'Radio License', optional: false },
+                    { text: 'Pilot Logbook (all pages)', optional: false },
+                    { text: 'Type Ratings / Endorsements', optional: true },
+                    { text: 'Additional Ratings — IR, ME, Night, Seaplane, Tailwheel, etc.', optional: true },
+                    { text: 'ATO Name & Location (for training records)', optional: false },
+                    { text: 'Signed ATO Consent Form', link: '/consent-form', label: 'Download / Print', optional: false },
+                    { text: 'License Verification Consent', link: '/license-verification-consent', label: 'Download / Print', optional: false },
+                    { text: 'Logbook Audit Consent', link: '/logbook-consent', label: 'Download / Print', optional: false },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-[5px]" />
+                      <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-[5px] ${item.optional ? 'bg-gray-400' : 'bg-red-500'}`} />
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <p className="text-xs text-gray-600">{item.text}</p>
+                        <p className="text-xs text-gray-600">{item.text}{item.optional && <span className="text-[10px] text-gray-400 ml-1">(optional)</span>}</p>
                         {item.link && (
                           <button
                             type="button"
