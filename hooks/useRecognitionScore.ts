@@ -10,7 +10,7 @@ import {
   calculateRecognitionScore,
   PilotScoreInput,
   getScoreTier,
-} from '../../lib/pilot-recognition-score';
+} from '@/lib/pilot-recognition-score';
 
 export interface RecognitionScoreBreakdown {
   totalHours: number;
