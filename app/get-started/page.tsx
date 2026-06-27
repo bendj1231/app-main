@@ -294,17 +294,30 @@ export default function GetStartedPage() {
                 <p className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wider">Have these ready</p>
                 <div className="space-y-2">
                   {[
-                    'Pilot License (front and back)',
-                    'Type Ratings / Endorsements',
-                    'Government-Issued ID (passport, driver\'s license, or national ID)',
-                    'Pilot Logbook (all pages)',
-                    'Medical Certificate',
-                    'ATO Name & Location (for training records)',
-                    'Signed Consent Form',
+                    { text: 'Pilot License (front and back)', link: null },
+                    { text: 'Type Ratings / Endorsements', link: null },
+                    { text: 'Government-Issued ID (passport, driver\'s license, or national ID)', link: null },
+                    { text: 'Pilot Logbook (all pages)', link: null },
+                    { text: 'Medical Certificate', link: null },
+                    { text: 'ATO Name & Location (for training records)', link: null },
+                    { text: 'Signed ATO Consent Form', link: '/consent-form', label: 'Download / Print' },
+                    { text: 'License Verification Consent', link: '/license-verification-consent', label: 'Download / Print' },
+                    { text: 'Logbook Audit Consent', link: '/logbook-consent', label: 'Download / Print' },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-[5px]" />
-                      <p className="text-xs text-gray-600">{item}</p>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-xs text-gray-600">{item.text}</p>
+                        {item.link && (
+                          <button
+                            type="button"
+                            onClick={() => navigate(item.link!)}
+                            className="text-[10px] font-semibold text-amber-600 hover:text-amber-700 underline cursor-pointer"
+                          >
+                            {item.label}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
