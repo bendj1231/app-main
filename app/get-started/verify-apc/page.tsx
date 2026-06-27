@@ -162,13 +162,14 @@ export default function VerifyApcPage() {
   const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
   const [hasStarted, setHasStarted] = useState(false);
-  const totalSteps = 6;
-  const stepTitles = ['Personal Details', 'License & Medical', 'Core Documents', 'Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
+  const totalSteps = 7;
+  const stepTitles = ['Personal Details', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
   const stepDescriptions = [
     'Provide your identity, contact information, and nationality for the verification record.',
-    'Enter your pilot license details, medical certificate class, and any additional ratings or type ratings.',
+    'Enter your pilot license details, medical certificate class, and select any additional aircraft ratings.',
     'Upload your license, medical certificate, radio license, and sign the document consent form.',
-    'Upload certificates for each additional rating and add your type rating endorsements with training details.',
+    'Upload certificates for each selected aircraft rating (e.g., C152, C172, P200JF).',
+    'Add your type rating endorsements with certification, licensure, and training center details.',
     'Enter your flight hours summary, upload your logbook, and sign the logbook audit consent.',
     'Review all details, select your ATO, confirm privacy consent, and submit your verification request to APC.',
   ];
@@ -202,16 +203,13 @@ export default function VerifyApcPage() {
       case 2:
         return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
       case 3:
+      case 4:
         return true;
-      case 4: {
-        const allRatingsHaveDocs = apcFormData.additionalRatings.every(
-          (r) => !!ratingFiles[r]
-        );
-        return allRatingsHaveDocs;
-      }
       case 5:
-        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+        return true;
       case 6:
+        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+      case 7:
         return true;
       default:
         return false;
@@ -782,7 +780,7 @@ export default function VerifyApcPage() {
             </select>
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">
-            Additional Ratings & Type Ratings
+            Aircraft Ratings & Type Ratings
             {apcFormData.additionalRatings.length > 0 && (
               <span className="ml-1.5 text-[9px] font-bold text-red-600">
                 {apcFormData.additionalRatings.length} {apcFormData.additionalRatings.length === 1 ? 'rating' : 'ratings'}
@@ -1029,7 +1027,7 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Ratings & Endorsements <ArrowRight size={14} />
+            Next: Aircraft Ratings <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -1040,12 +1038,12 @@ export default function VerifyApcPage() {
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 4: Ratings & Endorsements ── */}
+        {/* ── Step 4: Aircraft Ratings ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          {/* Additional Rating Certificates */}
+          {/* Aircraft Rating Certificates */}
           {apcFormData.additionalRatings.length > 0 && (
             <div className="mt-3">
-              <p className="text-[10px] font-semibold text-gray-700 mb-2">Additional Rating Certificates</p>
+              <p className="text-[10px] font-semibold text-gray-700 mb-2">Aircraft Rating Certificates</p>
               <div className="grid grid-cols-2 gap-2">
                 {apcFormData.additionalRatings.map((rating) => {
                   const docType = `rating-cert-${rating.replace(/[^a-zA-Z0-9]/g, '-')}`;
@@ -1376,11 +1374,10 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Flight Hours & Logbook <ArrowRight size={14} />
+            Next: Type Ratings & Endorsements <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
-
         {step === 5 && (<motion.div
           key="step5"
           initial={{ opacity: 0, x: 40 }}
@@ -1388,11 +1385,319 @@ export default function VerifyApcPage() {
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
+        {/* ── Step 5: Type Ratings & Endorsements ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Type Ratings & Endorsements</p>
+          {/* Type Ratings & Endorsements */}
+          <div className="mt-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[10px] font-semibold text-gray-700">Type Ratings & Endorsements</p>
+            </div>
+            {ratingSets.map((set, setIdx) => (
+              <div key={setIdx} className="mb-3">
+                {ratingSets.length > 1 && (
+                  <p className="text-[9px] font-bold text-gray-500 mb-1">Type Rating {setIdx + 1}</p>
+                )}
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'Certification of Type Rating', file: set.certFile, key: 'certFile' as const, docType: `ratings-cert-${setIdx}` },
+                    { label: 'Licensure of Type Rating', file: set.licFile, key: 'licFile' as const, docType: `ratings-lic-${setIdx}` },
+                  ].map((item) => (
+                    <label key={item.docType} className="flex flex-col items-center justify-center gap-1 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
+                      <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) {
+                          const updated = [...ratingSets];
+                          updated[setIdx] = { ...updated[setIdx], [item.key]: f };
+                          setRatingSets(updated);
+                          uploadDocument(f, item.docType, (file) => {
+                            const refreshed = [...ratingSets];
+                            refreshed[setIdx] = { ...refreshed[setIdx], [item.key]: file };
+                            setRatingSets(refreshed);
+                          });
+                        }
+                      }} />
+                      {uploadStatus[item.docType] === 'uploading' ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                          <p className="text-[9px] font-medium text-gray-500">Uploading securely...</p>
+                        </>
+                      ) : item.file ? (
+                        <>
+                          <BadgeCheck size={18} className="text-green-500" />
+                          <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
+                        </>
+                      ) : (
+                        <>
+                          <BadgeCheck size={18} className="text-gray-300" />
+                          <p className="text-[9px] font-medium text-gray-600">{item.label}</p>
+                        </>
+                      )}
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    list="training-centers"
+                    placeholder="Type Rating Recurrency / Training Center"
+                    value={set.trainingCenter}
+                    onChange={(e) => {
+                      const updated = [...ratingSets];
+                      updated[setIdx] = { ...updated[setIdx], trainingCenter: e.target.value };
+                      setRatingSets(updated);
+                    }}
+                    className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                  />
+                  <select
+                    value={set.country}
+                    onChange={(e) => {
+                      const updated = [...ratingSets];
+                      updated[setIdx] = { ...updated[setIdx], country: e.target.value };
+                      setRatingSets(updated);
+                    }}
+                    className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9 mt-2"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                  >
+                    <option value="">Center Location / Country</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Andorra">Andorra</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Armenia">Armenia</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Azerbaijan">Azerbaijan</option>
+                    <option value="Bahamas">Bahamas</option>
+                    <option value="Bahrain">Bahrain</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="Barbados">Barbados</option>
+                    <option value="Belarus">Belarus</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Belize">Belize</option>
+                    <option value="Benin">Benin</option>
+                    <option value="Bhutan">Bhutan</option>
+                    <option value="Bolivia">Bolivia</option>
+                    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                    <option value="Botswana">Botswana</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Brunei">Brunei</option>
+                    <option value="Bulgaria">Bulgaria</option>
+                    <option value="Burkina Faso">Burkina Faso</option>
+                    <option value="Burundi">Burundi</option>
+                    <option value="Cambodia">Cambodia</option>
+                    <option value="Cameroon">Cameroon</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Cape Verde">Cape Verde</option>
+                    <option value="Central African Republic">Central African Republic</option>
+                    <option value="Chad">Chad</option>
+                    <option value="Chile">Chile</option>
+                    <option value="China">China</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Comoros">Comoros</option>
+                    <option value="Congo">Congo</option>
+                    <option value="Costa Rica">Costa Rica</option>
+                    <option value="Croatia">Croatia</option>
+                    <option value="Cuba">Cuba</option>
+                    <option value="Cyprus">Cyprus</option>
+                    <option value="Czech Republic">Czech Republic</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Djibouti">Djibouti</option>
+                    <option value="Dominica">Dominica</option>
+                    <option value="Dominican Republic">Dominican Republic</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="El Salvador">El Salvador</option>
+                    <option value="Equatorial Guinea">Equatorial Guinea</option>
+                    <option value="Eritrea">Eritrea</option>
+                    <option value="Estonia">Estonia</option>
+                    <option value="Eswatini">Eswatini</option>
+                    <option value="Ethiopia">Ethiopia</option>
+                    <option value="Fiji">Fiji</option>
+                    <option value="Finland">Finland</option>
+                    <option value="France">France</option>
+                    <option value="Gabon">Gabon</option>
+                    <option value="Gambia">Gambia</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="Greece">Greece</option>
+                    <option value="Guatemala">Guatemala</option>
+                    <option value="Guinea">Guinea</option>
+                    <option value="Guyana">Guyana</option>
+                    <option value="Haiti">Haiti</option>
+                    <option value="Honduras">Honduras</option>
+                    <option value="Hungary">Hungary</option>
+                    <option value="Iceland">Iceland</option>
+                    <option value="India">India</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Iraq">Iraq</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Israel">Israel</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Jamaica">Jamaica</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Jordan">Jordan</option>
+                    <option value="Kazakhstan">Kazakhstan</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Kiribati">Kiribati</option>
+                    <option value="Kuwait">Kuwait</option>
+                    <option value="Kyrgyzstan">Kyrgyzstan</option>
+                    <option value="Laos">Laos</option>
+                    <option value="Latvia">Latvia</option>
+                    <option value="Lebanon">Lebanon</option>
+                    <option value="Lesotho">Lesotho</option>
+                    <option value="Liberia">Liberia</option>
+                    <option value="Libya">Libya</option>
+                    <option value="Liechtenstein">Liechtenstein</option>
+                    <option value="Lithuania">Lithuania</option>
+                    <option value="Luxembourg">Luxembourg</option>
+                    <option value="Madagascar">Madagascar</option>
+                    <option value="Malawi">Malawi</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Maldives">Maldives</option>
+                    <option value="Mali">Mali</option>
+                    <option value="Malta">Malta</option>
+                    <option value="Marshall Islands">Marshall Islands</option>
+                    <option value="Mauritania">Mauritania</option>
+                    <option value="Mauritius">Mauritius</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Micronesia">Micronesia</option>
+                    <option value="Moldova">Moldova</option>
+                    <option value="Monaco">Monaco</option>
+                    <option value="Mongolia">Mongolia</option>
+                    <option value="Montenegro">Montenegro</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Mozambique">Mozambique</option>
+                    <option value="Myanmar">Myanmar</option>
+                    <option value="Namibia">Namibia</option>
+                    <option value="Nauru">Nauru</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Nicaragua">Nicaragua</option>
+                    <option value="Niger">Niger</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="North Macedonia">North Macedonia</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Oman">Oman</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Palau">Palau</option>
+                    <option value="Panama">Panama</option>
+                    <option value="Papua New Guinea">Papua New Guinea</option>
+                    <option value="Paraguay">Paraguay</option>
+                    <option value="Peru">Peru</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Poland">Poland</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Qatar">Qatar</option>
+                    <option value="Romania">Romania</option>
+                    <option value="Russia">Russia</option>
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                    <option value="Saint Lucia">Saint Lucia</option>
+                    <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                    <option value="Samoa">Samoa</option>
+                    <option value="San Marino">San Marino</option>
+                    <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                    <option value="Senegal">Senegal</option>
+                    <option value="Serbia">Serbia</option>
+                    <option value="Seychelles">Seychelles</option>
+                    <option value="Sierra Leone">Sierra Leone</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Slovakia">Slovakia</option>
+                    <option value="Slovenia">Slovenia</option>
+                    <option value="Solomon Islands">Solomon Islands</option>
+                    <option value="Somalia">Somalia</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="South Korea">South Korea</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
+                    <option value="Sudan">Sudan</option>
+                    <option value="Suriname">Suriname</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="Syria">Syria</option>
+                    <option value="Tajikistan">Tajikistan</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Timor-Leste">Timor-Leste</option>
+                    <option value="Togo">Togo</option>
+                    <option value="Tonga">Tonga</option>
+                    <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                    <option value="Tunisia">Tunisia</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Turkmenistan">Turkmenistan</option>
+                    <option value="Tuvalu">Tuvalu</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Ukraine">Ukraine</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Uruguay">Uruguay</option>
+                    <option value="Uzbekistan">Uzbekistan</option>
+                    <option value="Vanuatu">Vanuatu</option>
+                    <option value="Vatican City">Vatican City</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="Yemen">Yemen</option>
+                    <option value="Zambia">Zambia</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setRatingSets([...ratingSets, { certFile: null, licFile: null, trainingCenter: '', country: '' }])}
+              className="w-full py-2 rounded-xl text-[10px] font-semibold text-blue-600 hover:text-blue-700 transition-colors flex items-center justify-center gap-1"
+              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+            >
+              + Add Another Type Rating
+            </button>
+          </div>
 
-        {/* ── Step 5: Flight Hours & Logbook ── */}
+        </motion.div>
+
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(4)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button
+            type="button"
+            onClick={() => canProceed(5) && setStep(6)}
+            disabled={!canProceed(5)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: Flight Hours & Logbook <ArrowRight size={14} />
+          </button>
+        </div>
+        </motion.div>)}
+
+        {step === 6 && (<motion.div
+          key="step6"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+
+        {/* ── Step 6: Flight Hours & Logbook ── */}
         {/* ── Section 5: Flight Hours Summary ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Flight Hours Summary</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. Flight Hours Summary</p>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs">
               <thead>
@@ -1520,7 +1825,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(4)}
+            onClick={() => setStep(5)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1528,8 +1833,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(5) && setStep(6)}
-            disabled={!canProceed(5)}
+            onClick={() => canProceed(6) && setStep(7)}
+            disabled={!canProceed(6)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1538,16 +1843,16 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 6 && (<motion.div
-          key="step6"
+        {step === 7 && (<motion.div
+          key="step7"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 6: ATO Authorization ── */}
+        {/* ── Step 7: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. ATO Authorization</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <select
               value={atoCountry}
@@ -1754,7 +2059,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-start">
           <button
             type="button"
-            onClick={() => setStep(5)}
+            onClick={() => setStep(6)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
