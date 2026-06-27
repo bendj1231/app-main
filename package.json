@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run prebuild && vite build",
-    "prebuild": "npx tsx scripts/generate-framework-html.ts",
+    "prebuild": "npx tsx scripts/db/generate-framework-html.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
