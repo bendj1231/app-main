@@ -66,13 +66,13 @@ export default function LicenseVerificationConsentPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Authorization for License & Type Rating Verification</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              I hereby authorize <span className="font-semibold text-gray-800">Aviation Pathways Consultancy (APC)</span> to use my pilot license, type ratings, medical certificate, and related documents for verification purposes with the designated Civil Aviation Authority (CAA) and regulatory bodies. I understand that:
+              The undersigned pilot hereby authorizes <span className="font-semibold text-gray-800">Aviation Pathways Consultancy (APC)</span> to use the pilot's license, type ratings, medical certificate, and related documents for verification purposes with the designated Civil Aviation Authority (CAA) and regulatory bodies. The pilot understands that:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>APC will submit my uploaded documents to the relevant CAA for verification of authenticity and validity.</li>
+              <li>APC will submit the pilot's uploaded documents to the relevant CAA for verification of authenticity and validity.</li>
               <li>Verification includes confirmation of license type, ratings, endorsements, limitations, and expiry dates.</li>
-              <li>The CAA may retain my documents during the verification process as per their standard procedures.</li>
-              <li>APC will receive verification results (verified / not verified / pending) but will not store my raw documents beyond the 30-day retention period.</li>
+              <li>The CAA may retain the pilot's documents during the verification process as per their standard procedures.</li>
+              <li>APC will receive verification results (verified / not verified / pending) but will not store the pilot's raw documents beyond the 30-day retention period.</li>
               <li>This consent is given for the sole purpose of compliance with verification, proof of claim, and ownership requirements under the PilotRecognition framework.</li>
             </ul>
           </section>
@@ -80,37 +80,37 @@ export default function LicenseVerificationConsentPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">4. Proof of Claim & Ownership</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              I confirm that I am the legitimate holder of the licenses, ratings, and certificates submitted above. I understand that:
+              The pilot confirms that they are the legitimate holder of the licenses, ratings, and certificates submitted above. The pilot understands that:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
               <li>Submitting falsified or fraudulent documents is a criminal offense under applicable aviation and data protection laws.</li>
               <li>APC and the verifying CAA may report suspected fraudulent documentation to the appropriate regulatory and law enforcement authorities.</li>
-              <li>My PilotRecognition profile and any associated wallet credentials may be revoked if documents are found to be fraudulent.</li>
+              <li>The pilot's PilotRecognition profile and any associated wallet credentials may be revoked if documents are found to be fraudulent.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">5. Verification Outcomes & Compliance</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              I understand that verification findings may result in different compliance statuses depending on the document type reviewed. I acknowledge the following terms:
+              The pilot understands that verification findings may result in different compliance statuses depending on the document type reviewed. The pilot acknowledges the following terms:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
               <li><span className="font-semibold text-gray-800">CAA-issued licenses</span> (PPL, CPL, ATPL, type ratings) that are verified as valid and authentic will be marked compliant with no further action required.</li>
               <li><span className="font-semibold text-gray-800">Logbook & training records</span> are subject to credibility review based on the ATO response. Any discrepancies found — including mismatched hours, missing CFI signatures, incomplete endorsements, or conflicting entries — will be flagged for review.</li>
-              <li>If discrepancies are identified, my account will be <span className="font-semibold text-gray-800">flagged for review for 30 days</span> to allow correction or re-upload of corrected documents. Issues will be underlined throughout the verification report.</li>
-              <li>If the ATO or CFI indicates that a document requires review or re-upload (e.g., illegible signature, incorrect date format, missing page), I must resolve the issue within the 30-day window.</li>
+              <li>If discrepancies are identified, the pilot's account will be <span className="font-semibold text-gray-800">flagged for review for 30 days</span> to allow correction or re-upload of corrected documents. Issues will be underlined throughout the verification report.</li>
+              <li>If the ATO or CFI indicates that a document requires review or re-upload (e.g., illegible signature, incorrect date format, missing page), the pilot is required to resolve the issue within the 30-day window.</li>
               <li>The initial verification fee is <span className="font-semibold text-gray-800">non-refundable</span>. If reverification is required due to discrepancies or rejected documents, a <span className="font-semibold text-gray-800">$50 reverification fee</span> will apply, as this involves manual review and compliance processing.</li>
-              <li>If I wish to fully clear my account of all flags and restrictions, I must pay the <span className="font-semibold text-gray-800">full verification fee again</span> for a complete clean re-verification. Upon re-uploading corrected documents and declaring that all issues have been resolved, my account will be cleared of all flags and restrictions, subject to successful verification of the newly submitted documents.</li>
-              <li>While my account is under review, I may still browse pathways and submit applications; however, my profile will display a <span className="font-semibold text-gray-800">verification flag</span> visible to ATOs, operators, and airlines for transparency and pilot safety.</li>
+              <li>If the pilot wishes to fully clear their account of all flags and restrictions, the pilot is required to pay the <span className="font-semibold text-gray-800">full verification fee again</span> for a complete clean re-verification. Upon re-uploading corrected documents and declaring that all issues have been resolved, the pilot's account will be cleared of all flags and restrictions, subject to successful verification of the newly submitted documents.</li>
+              <li>While the pilot's account is under review, the pilot may still browse pathways and submit applications; however, the pilot's profile will display a <span className="font-semibold text-gray-800">verification flag</span> visible to ATOs, operators, and airlines for transparency and pilot safety.</li>
               <li>Verification flags are shared with pathway operators to ensure compliance and safety standards are maintained across all submissions.</li>
-              <li>After 30 days, if issues remain unresolved, my account may be restricted from submitting to certain pathways until compliance is restored.</li>
+              <li>After 30 days, if issues remain unresolved, the pilot's account may be restricted from submitting to certain pathways until compliance is restored.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">6. Declaration</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-4">
-              I confirm that all information and documents provided are accurate, complete, and authentic to the best of my knowledge. I understand that providing false or misleading information may result in the rejection of my verification request, revocation of my PilotRecognition profile, and potential legal consequences.
+              The pilot confirms that all information and documents provided are accurate, complete, and authentic to the best of the pilot's knowledge. The pilot understands that providing false or misleading information may result in the rejection of the verification request, revocation of the pilot's PilotRecognition profile, and potential legal consequences.
             </p>
           </section>
 
