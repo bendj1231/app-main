@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { motion } from 'framer-motion';
+import { MeshGradient } from '@paper-design/shaders-react';
+import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
@@ -22,7 +24,7 @@ export default function VerifyApcPage() {
   const navigate = useNavigate();
   const { user: auth0User } = useAuth0();
   const { callApi } = useWorkerAuth();
-  // Clean form — no shader background
+  const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
 
   const [apcEmail, setApcEmail] = useState('');
   const [apcLicenseFile, setApcLicenseFile] = useState<File | null>(null);
@@ -325,13 +327,28 @@ export default function VerifyApcPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
+      {/* ── BACKGROUND: MeshGradient ── */}
+      <div className="fixed inset-0 z-0">
+        {graphicsConfig.enableMeshGradient ? (
+          <MeshGradient
+            className="w-full h-full"
+            colors={['#dbeafe','#94a3b8','#64748b','#475569','#334155','#1e3a5f','#1e3a8a','#0f172a']}
+            speed={graphicsConfig.meshGradientSpeed}
+          />
+        ) : (
+          <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
+        )}
+      </div>
+
       <motion.div
-        className="max-w-3xl mx-auto w-full px-6 py-10 md:py-14"
+        className="relative z-10 max-w-3xl mx-auto w-full"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
+        {/* Card */}
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-10" style={{ border: '1px solid rgba(255,255,255,0.3)' }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -1264,6 +1281,7 @@ export default function VerifyApcPage() {
         </div>
         </>)}
 
+        </div>
       </motion.div>
     </div>
   );

@@ -350,7 +350,7 @@ export default function GetStartedPage() {
                 <motion.button
                   onClick={() => {
                     setIsVerifying(true);
-                    navigate('/get-started/verify-apc');
+                    setTimeout(() => navigate('/get-started/verify-apc'), 500);
                   }}
                   disabled={isVerifying}
                   className="inline-flex items-center justify-center gap-2 px-6 py-[11px] rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 leading-none disabled:opacity-60 disabled:cursor-not-allowed"
