@@ -442,6 +442,9 @@ export default function VerifyApcPage() {
             </div>
             <input type="text" placeholder="Nationality" value={apcFormData.nationality} onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
           </div>
+          <p className="text-[10px] text-gray-500 leading-relaxed mt-2">
+            This email will be the recipient for your verification report, covering account status, logbook status, and license status. This report can and will be used for international personal identification during pathway submission of interests to operators, and can also be used outside of the platform as a form of verification.
+          </p>
         </motion.div>
 
         <div className="flex justify-end">
