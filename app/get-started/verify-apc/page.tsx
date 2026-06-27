@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -117,6 +117,8 @@ export default function VerifyApcPage() {
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const [showAdvancedHours, setShowAdvancedHours] = useState(false);
   const [atoCountry, setAtoCountry] = useState('');
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
   const totalSteps = 4;
   const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Logbook', 'Authorization & Submit'];
@@ -126,6 +128,28 @@ export default function VerifyApcPage() {
     'Upload your license, medical, radio documents, logbook, and signed consent forms for audit.',
     'Review all details, confirm privacy consent, and submit your verification request to APC.',
   ];
+
+  // Dynamically scale card to fit viewport without scrolling
+  useEffect(() => {
+    const calculateScale = () => {
+      if (!cardRef.current) return;
+      const cardHeight = cardRef.current.scrollHeight;
+      const cardWidth = cardRef.current.scrollWidth;
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const padding = 48;
+      const scaleY = (viewportHeight - padding) / cardHeight;
+      const scaleX = (viewportWidth - padding) / cardWidth;
+      setCardScale(Math.min(1, scaleY, scaleX));
+    };
+
+    const timer = setTimeout(calculateScale, 100);
+    window.addEventListener('resize', calculateScale);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', calculateScale);
+    };
+  }, [step]);
 
   const canProceed = (currentStep: number) => {
     switch (currentStep) {
@@ -398,7 +422,7 @@ export default function VerifyApcPage() {
   );
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
+    <div className="relative h-screen flex items-center justify-center px-4 py-6 overflow-hidden">
       {/* ── BACKGROUND: MeshGradient ── */}
       <div className="fixed inset-0 z-0">
         {graphicsConfig.enableMeshGradient ? (
@@ -413,13 +437,22 @@ export default function VerifyApcPage() {
       </div>
 
       <motion.div
-        className="relative z-10 max-w-5xl mx-auto w-full"
+        className="relative z-10 mx-auto"
+        style={{ maxWidth: 'fit-content' }}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         {/* Card */}
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-5 md:p-8" style={{ border: '1px solid rgba(255,255,255,0.3)' }}>
+        <div
+          ref={cardRef}
+          style={{
+            transform: `scale(${cardScale})`,
+            transformOrigin: 'center center',
+            transition: 'transform 0.3s ease-out',
+          }}
+        >
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-5 md:p-8" style={{ border: '1px solid rgba(255,255,255,0.3)', width: '90vw', maxWidth: '1024px' }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -1471,6 +1504,7 @@ export default function VerifyApcPage() {
         </AnimatePresence>
 
         </div>
+      </div>
       </motion.div>
     </div>
   );
