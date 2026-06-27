@@ -588,12 +588,16 @@ export default function VerifyApcPage() {
           {/* Selected tags */}
           <div className="flex flex-wrap gap-1.5 mb-2">
             {apcFormData.additionalRatings.map((r) => (
-              <span key={r} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-gray-700 bg-gray-100 border border-gray-200">
+              <span
+                key={r}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-white border border-transparent"
+                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+              >
                 {r}
                 <button
                   type="button"
                   onClick={() => setApcFormData(p => ({ ...p, additionalRatings: p.additionalRatings.filter(x => x !== r) }))}
-                  className="text-gray-400 hover:text-red-500"
+                  className="text-white/70 hover:text-white transition-colors"
                 >×</button>
               </span>
             ))}
