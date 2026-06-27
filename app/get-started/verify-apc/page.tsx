@@ -51,6 +51,24 @@ export default function VerifyApcPage() {
   const [ratingInput, setRatingInput] = useState('');
   const [showAdvancedHours, setShowAdvancedHours] = useState(false);
   const [atoCountry, setAtoCountry] = useState('');
+  const [step, setStep] = useState(1);
+  const totalSteps = 4;
+  const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Logbook', 'Authorization & Submit'];
+
+  const canProceed = (currentStep: number) => {
+    switch (currentStep) {
+      case 1:
+        return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
+      case 2:
+        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
+      case 3:
+        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && !!apcLogbookFile && licenseConsentChecked && logbookConsentChecked;
+      case 4:
+        return true;
+      default:
+        return false;
+    }
+  };
 
   const FLIGHT_SCHOOLS: Record<string, string[]> = {
     Philippines: [
@@ -351,7 +369,43 @@ export default function VerifyApcPage() {
           </p>
         </motion.div>
 
-        {/* ── Section 1: Personal Details ── */}
+        {/* Progress Bar */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+              Step {step} of {totalSteps}: {stepTitles[step - 1]}
+            </p>
+            <p className="text-[10px] font-bold text-gray-400">{Math.round((step / totalSteps) * 100)}% complete</p>
+          </div>
+          <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${(step / totalSteps) * 100}%`,
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+              }}
+            />
+          </div>
+          <div className="flex justify-between mt-2">
+            {stepTitles.map((title, i) => (
+              <div key={title} className="flex flex-col items-center" style={{ width: `${100 / totalSteps}%` }}>
+                <div
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 transition-all"
+                  style={{
+                    background: step > i + 1 ? '#dc2626' : step === i + 1 ? '#dc2626' : 'rgba(0,0,0,0.06)',
+                    color: step >= i + 1 ? '#fff' : '#9ca3af',
+                  }}
+                >
+                  {step > i + 1 ? '✓' : i + 1}
+                </div>
+                <p className={`text-[8px] font-semibold text-center leading-tight ${step >= i + 1 ? 'text-gray-800' : 'text-gray-400'}`}>{title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {step === 1 && (<>
+        {/* ── Step 1: Personal Details ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={1}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">1. Personal Details</p>
           <div className="grid grid-cols-2 gap-2">
@@ -362,7 +416,21 @@ export default function VerifyApcPage() {
           </div>
         </motion.div>
 
-        {/* ── Section 2: License Information ── */}
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => canProceed(1) && setStep(2)}
+            disabled={!canProceed(1)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: License & Medical <ArrowRight size={14} />
+          </button>
+        </div>
+        </>)}
+
+        {step === 2 && (<>
+        {/* ── Step 2: License Information ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">2. License Information</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
@@ -472,9 +540,31 @@ export default function VerifyApcPage() {
           </div>
         </motion.div>
 
-        {/* ── Section 4: Pilot Documents & Ratings ── */}
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button
+            type="button"
+            onClick={() => canProceed(2) && setStep(3)}
+            disabled={!canProceed(2)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: Documents & Logbook <ArrowRight size={14} />
+          </button>
+        </div>
+        </>)}
+
+        {step === 3 && (<>
+        {/* ── Step 3: Pilot Documents & Ratings ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. Pilot Documents & Ratings</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Pilot Documents & Ratings</p>
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
@@ -934,9 +1024,31 @@ export default function VerifyApcPage() {
           </div>
         </motion.div>
 
-        {/* ── Section 7: ATO Authorization ── */}
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button
+            type="button"
+            onClick={() => canProceed(3) && setStep(4)}
+            disabled={!canProceed(3)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: Authorization & Submit <ArrowRight size={14} />
+          </button>
+        </div>
+        </>)}
+
+        {step === 4 && (<>
+        {/* ── Step 4: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. ATO Authorization</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <select
               value={atoCountry}
@@ -1139,6 +1251,19 @@ export default function VerifyApcPage() {
             )}
           </motion.button>
         </motion.div>
+
+        <div className="flex justify-start">
+          <button
+            type="button"
+            onClick={() => setStep(3)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+        </div>
+        </>)}
+
       </motion.div>
     </div>
   );
