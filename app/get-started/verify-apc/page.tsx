@@ -202,7 +202,7 @@ export default function VerifyApcPage() {
       case 2:
         return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
       case 3:
-        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && licenseConsentChecked;
+        return true;
       case 4: {
         const allRatingsHaveDocs = apcFormData.additionalRatings.every(
           (r) => !!ratingFiles[r]
