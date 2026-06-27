@@ -7,7 +7,7 @@
 
 import { useCallback, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { api, apiBatch } from '../lib/d1-api';
+import { api, apiBatch, pilotApi } from '../lib/d1-api';
 
 export function useWorkerAuth() {
   const { getAccessTokenSilently, user: auth0User } = useAuth0();
@@ -28,6 +28,14 @@ export function useWorkerAuth() {
     [getToken]
   );
 
+  const callPilotApi = useCallback(
+    async <T>(action: string, params?: Record<string, unknown>): Promise<T> => {
+      const token = await getToken();
+      return pilotApi(token, action, params ?? {}) as Promise<T>;
+    },
+    [getToken]
+  );
+
   const callBatch = useCallback(
     async (requests: Array<{ action: string; params?: Record<string, unknown>; cache?: number }>): Promise<Record<string, unknown>> => {
       const token = await getToken();
@@ -38,5 +46,5 @@ export function useWorkerAuth() {
 
   const userId = auth0User?.sub ?? null;
 
-  return { getToken, callApi, callBatch, userId, auth0User };
+  return { getToken, callApi, callPilotApi, callBatch, userId, auth0User };
 }

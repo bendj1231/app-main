@@ -487,7 +487,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const savePartialProfile = async (fields: Record<string, any>) => {
         try {
             if (!auth0User?.sub) return;
-            await callWorker('updateProfile', { id: auth0User.sub, ...fields });
+            await callPilotWorker('updateProfile', { id: auth0User.sub, ...fields });
         } catch (e) {
             console.warn('[BecomeMember] partial save failed (non-blocking):', e);
         }
@@ -589,15 +589,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         onNavigate('data-controller-agreement?signup=apple');
     };
 
-    // Worker API helper with request counting
+    // Worker API helpers — profile actions go to pilot-profile-api, ops to platform-api
     const PLATFORM_API_URL = 'https://platform-api.benjamintigerbowler.workers.dev';
+    const PILOT_API_URL    = 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
     const workerRequestCountRef = React.useRef(0);
-    const callWorker = async (action: string, params: Record<string, unknown>) => {
+    const callWorker = async (action: string, params: Record<string, unknown>, baseUrl: string = PLATFORM_API_URL) => {
         workerRequestCountRef.current += 1;
         const count = workerRequestCountRef.current;
-        console.log(`[DEBUG][Worker] Request #${count}: action="${action}"`);
+        console.log(`[DEBUG][Worker] Request #${count}: action="${action}" base="${baseUrl === PILOT_API_URL ? 'pilot' : 'platform'}"`);
         const token = await getAccessTokenSilently();
-        const res = await fetch(`${PLATFORM_API_URL}/api`, {
+        const res = await fetch(`${baseUrl}/api`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ action, params }),
@@ -611,10 +612,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         return data;
     };
 
-    // Check if user has an existing profile via Worker
+    // Profile actions → pilot worker
+    const callPilotWorker = async (action: string, params: Record<string, unknown>) => callWorker(action, params, PILOT_API_URL);
+
+    // Check if user has an existing profile via pilot worker
     const checkUserProfileExists = async (auth0Id: string): Promise<boolean> => {
         try {
-            const result = await callWorker('getProfile', { auth0_id: auth0Id });
+            const result = await callPilotWorker('getProfile', { auth0_id: auth0Id });
             console.log('[DEBUG][BecomeMember] checkUserProfileExists result:', { hasId: !!(result as any)?.id, id: (result as any)?.id });
             return !!(result as any)?.id;
         } catch (err: any) {

@@ -3,7 +3,7 @@
  * Replaces direct Supabase profile queries with batched Worker API calls
  */
 
-const API_BASE = import.meta.env.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
+const API_BASE = import.meta.env.VITE_PILOT_API_URL || 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
 
 interface Profile {
   id: string;

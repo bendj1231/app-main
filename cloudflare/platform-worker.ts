@@ -426,9 +426,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
 
   const dbOps = env.DB_OPS;         // operational DB: payments, subscriptions, enterprise_profiles, forums, vouchers
-  const dbProfiles = env.DB_PROFILES; // profiles DB: profiles, recognition_scores, pilot_verifications
-  const dbTrace = env.DB_TRACE;     // audit DB: credentials, background_checks, security_events
-  const dbDocs = env.DB_DOCS;       // content DB: stories, documents, evidence
+  const dbProfiles = env.DB_PROFILES; // profiles DB: read-only for platform ops (checkout, auth)
   const dbRef = env.DB;             // pilotpathways data: airlines, ATOs, TRCs, aircraft, training
 
   // ── Action Router ─────────────────────────────────────────────
@@ -441,9 +439,13 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
       return jsonResponse({ error: 'Missing action' }, 400, origin);
     }
 
-    // Inject CF-IPCountry for profile creation (ToS Section 13.3)
-    if (action === 'createProfile') {
-      params._originJurisdiction = request.headers.get('CF-IPCountry') || undefined;
+    // Profile actions moved to pilot-profile-api
+    const profileActions = ['getProfile', 'createProfile', 'updateProfile', 'upsertProfile', 'deleteProfile',
+      'getVerificationStatus', 'getRecognitionScore', 'saveRecognitionScore',
+      'createDid', 'getDid', 'createCredential', 'getCredentials',
+      'getVerificationReceipts', 'submitVerification', 'getVerificationByAccountNumber', 'updateVerificationStatus'];
+    if (profileActions.includes(action)) {
+      return jsonResponse({ error: `Action '${action}' moved to pilot-profile-api` }, 410, origin);
     }
 
     if (action === 'batch') {
@@ -481,7 +483,7 @@ async function handleAction(
   action: string,
   params: Record<string, unknown>,
   db: D1Database,          // dbOps: operational tables
-  dbProfiles: D1Database, // dbProfiles: profiles, recognition_scores
+  dbProfiles: D1Database,  // read-only for platform ops (checkout, auth)
   auth: JWTPayload,
   env: Env
 ): Promise<unknown> {

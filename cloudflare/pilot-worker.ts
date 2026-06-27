@@ -54,7 +54,9 @@ interface CfRequestInit extends RequestInit {
 // ── Types ──────────────────────────────────────────────────────
 
 interface Env {
-  DB: D1Database;
+  DB: D1Database;           // pilotrecognition-profiles
+  DB_TRACE: D1Database;     // recognition-plus-trace
+  DB_DOCS: D1Database;      // apc-document-metadata
   PILOT_DB: D1Database;
   VAULT: R2Bucket;
   AUTH0_DOMAIN: string;
@@ -444,7 +446,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
       const results: Record<string, unknown> = {};
       for (const req of requests) {
         try {
-          results[req.action] = await handleAction(req.action, req.params || {}, db, db, auth, env);
+          results[req.action] = await handleAction(req.action, req.params || {}, db, auth, env);
         } catch (err) {
           results[req.action] = { error: err instanceof Error ? err.message : String(err) };
         }
@@ -453,7 +455,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     }
 
     try {
-      const result = await handleAction(action, params, db, db, auth, env);
+      const result = await handleAction(action, params, db, auth, env);
       return jsonResponse(result, 200, origin);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);

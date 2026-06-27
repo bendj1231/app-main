@@ -7,12 +7,24 @@ compatibility_date = "2025-06-19"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
-# D1 Database binding
+# D1 Database bindings
 # DB = pilot data (profiles, credentials, verification, scores, logbook)
+# DB_TRACE = audit & compliance (security events, audit logs)
+# DB_DOCS = content & evidence (stories, documents)
 [[d1_databases]]
 binding = "DB"
 database_name = "pilotrecognition-profiles"
 database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
+
+[[d1_databases]]
+binding = "DB_TRACE"
+database_name = "recognition-plus-trace"
+database_id = "4ca6354b-fc0b-4bfd-86cf-532babf74af9"
+
+[[d1_databases]]
+binding = "DB_DOCS"
+database_name = "apc-document-metadata"
+database_id = "4ffbd2f3-c424-437a-80ea-b3d75b896afb"
 
 # Environment variables
 [vars]

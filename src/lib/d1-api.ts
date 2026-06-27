@@ -22,15 +22,17 @@
 // ── Config ─────────────────────────────────────────────────────
 
 const PLATFORM_API_URL = import.meta.env.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
+const PILOT_API_URL    = import.meta.env.VITE_PILOT_API_URL    || 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
 
 async function fetchAPI(
   accessToken: string,
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  baseUrl: string = PLATFORM_API_URL
 ): Promise<unknown> {
   if (!accessToken) throw new Error('Not authenticated');
 
-  const url = `${PLATFORM_API_URL}${path}`;
+  const url = `${baseUrl}${path}`;
   let lastErr: Error | null = null;
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -62,7 +64,28 @@ async function fetchAPI(
 
 // ── Generic Action Router ──────────────────────────────────────
 
+const PROFILE_ACTIONS = new Set([
+  'getProfile', 'createProfile', 'updateProfile', 'upsertProfile', 'deleteProfile',
+  'getVerificationStatus', 'getRecognitionScore', 'saveRecognitionScore',
+  'createDid', 'getDid', 'createCredential', 'getCredentials',
+  'getVerificationReceipts', 'submitVerification', 'getVerificationByAccountNumber', 'updateVerificationStatus',
+]);
+
 export async function api(
+  accessToken: string,
+  action: string,
+  params?: unknown
+): Promise<unknown> {
+  if (PROFILE_ACTIONS.has(action)) {
+    return pilotApi(accessToken, action, params);
+  }
+  return fetchAPI(accessToken, '/api', {
+    method: 'POST',
+    body: JSON.stringify({ action, params }),
+  });
+}
+
+export async function pilotApi(
   accessToken: string,
   action: string,
   params?: unknown
@@ -70,7 +93,7 @@ export async function api(
   return fetchAPI(accessToken, '/api', {
     method: 'POST',
     body: JSON.stringify({ action, params }),
-  });
+  }, PILOT_API_URL);
 }
 
 export async function apiBatch(
@@ -117,23 +140,23 @@ export interface ProfileInput {
 }
 
 export async function getProfile(accessToken: string, auth0Id: string) {
-  return api(accessToken, 'getProfile', { auth0_id: auth0Id });
+  return pilotApi(accessToken, 'getProfile', { auth0_id: auth0Id });
 }
 
 export async function getProfileById(accessToken: string, userId: string) {
-  return api(accessToken, 'getProfile', { id: userId });
+  return pilotApi(accessToken, 'getProfile', { id: userId });
 }
 
 export async function getMe(accessToken: string) {
-  return api(accessToken, 'getProfile', { me: 1 });
+  return pilotApi(accessToken, 'getProfile', { me: 1 });
 }
 
 export async function createProfile(accessToken: string, data: { email: string; name?: string }) {
-  return api(accessToken, 'createProfile', data);
+  return pilotApi(accessToken, 'createProfile', data);
 }
 
 export async function updateProfile(accessToken: string, profileId: string, updates: ProfileInput) {
-  return api(accessToken, 'updateProfile', { id: profileId, ...updates });
+  return pilotApi(accessToken, 'updateProfile', { id: profileId, ...updates });
 }
 
 // ── Verification Status (what pilots see) ────────────────────
@@ -154,7 +177,7 @@ export interface VerificationStatus {
 }
 
 export async function getVerificationStatus(accessToken: string, userId: string) {
-  return api(accessToken, 'getVerificationStatus', { user_id: userId });
+  return pilotApi(accessToken, 'getVerificationStatus', { user_id: userId });
 }
 
 // ── Recognition Scores ────────────────────────────────────────
@@ -172,11 +195,11 @@ export interface RecognitionScoreInput {
 }
 
 export async function getRecognitionScore(accessToken: string, userId: string) {
-  return api(accessToken, 'getRecognitionScore', { user_id: userId });
+  return pilotApi(accessToken, 'getRecognitionScore', { user_id: userId });
 }
 
 export async function saveRecognitionScore(accessToken: string, data: RecognitionScoreInput) {
-  return api(accessToken, 'saveRecognitionScore', data);
+  return pilotApi(accessToken, 'saveRecognitionScore', data);
 }
 
 // ── Payments ───────────────────────────────────────────────────
@@ -198,11 +221,11 @@ export async function createDid(accessToken: string, data: {
   did_method?: string;
   public_key_jwk?: Record<string, unknown>;
 }) {
-  return api(accessToken, 'createDid', data);
+  return pilotApi(accessToken, 'createDid', data);
 }
 
 export async function getDid(accessToken: string, auth0Id: string) {
-  return api(accessToken, 'getDid', { auth0_id: auth0Id });
+  return pilotApi(accessToken, 'getDid', { auth0_id: auth0Id });
 }
 
 export async function createCredential(accessToken: string, data: {
@@ -214,11 +237,11 @@ export async function createCredential(accessToken: string, data: {
   expires_at?: string;
   status?: string;
 }) {
-  return api(accessToken, 'createCredential', data);
+  return pilotApi(accessToken, 'createCredential', data);
 }
 
 export async function getCredentials(accessToken: string, userId: string) {
-  return api(accessToken, 'getCredentials', { user_id: userId });
+  return pilotApi(accessToken, 'getCredentials', { user_id: userId });
 }
 
 // ── Enterprise ─────────────────────────────────────────────────
@@ -256,7 +279,7 @@ export async function updateUserTier(accessToken: string, userId: string, tier: 
 // ── GDPR ───────────────────────────────────────────────────────
 
 export async function deleteProfile(accessToken: string, profileId: string) {
-  return api(accessToken, 'deleteProfile', { id: profileId });
+  return pilotApi(accessToken, 'deleteProfile', { id: profileId });
 }
 
 // ── Health ─────────────────────────────────────────────────────
