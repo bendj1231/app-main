@@ -128,9 +128,9 @@ export default function VerifyApcPage() {
       case 1:
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
       case 2:
-        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry && !!apcLicenseFile && !!apcLicenseBackFile && !!apcConsentFile;
+        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
       case 3:
-        return !!apcRadioNtcFile && !!apcLogbookFile && licenseConsentChecked && logbookConsentChecked;
+        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && !!apcLogbookFile && licenseConsentChecked && logbookConsentChecked;
       case 4:
         return true;
       default:
@@ -630,38 +630,6 @@ export default function VerifyApcPage() {
           </div>
         </motion.div>
 
-        {/* ── License Uploads & Consent ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">License & Consent Uploads</p>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
-              { label: 'License (Back)', file: apcLicenseBackFile, setter: setApcLicenseBackFile, icon: IdCard, docType: 'license-back' },
-              { label: 'Signed Consent Form', file: apcConsentFile, setter: setApcConsentFile, icon: UserCheck, docType: 'consent' },
-            ].map((item) => (
-              <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
-                <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadDocument(f, item.docType, item.setter); }} />
-                {uploadStatus[item.docType] === 'uploading' ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-[9px] font-medium text-gray-500">Uploading securely...</p>
-                  </>
-                ) : item.file ? (
-                  <>
-                    <BadgeCheck size={18} className="text-green-500" />
-                    <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{item.file.name}</p>
-                  </>
-                ) : (
-                  <>
-                    <item.icon size={18} className="text-gray-300" />
-                    <p className="text-[9px] font-medium text-gray-600">{item.label}</p>
-                  </>
-                )}
-              </label>
-            ))}
-          </div>
-        </motion.div>
-
         <div className="flex justify-between">
           <button
             type="button"
@@ -689,6 +657,8 @@ export default function VerifyApcPage() {
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Pilot Documents & Ratings</p>
           <div className="grid grid-cols-2 gap-2">
             {[
+              { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
+              { label: 'License (Back)', file: apcLicenseBackFile, setter: setApcLicenseBackFile, icon: IdCard, docType: 'license-back' },
               { label: 'Medical Certificate', file: apcMedicalFile, setter: setApcMedicalFile, icon: Award, docType: 'medical' },
               { label: 'Radio License', file: apcRadioNtcFile, setter: setApcRadioNtcFile, icon: Radio, docType: 'radio-ntc' },
             ].map((item) => (
@@ -1061,6 +1031,7 @@ export default function VerifyApcPage() {
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: 'Logbook — Scanned or CSV', file: apcLogbookFile, setter: setApcLogbookFile, icon: Briefcase, docType: 'logbook' },
+              { label: 'Signed Consent Form', file: apcConsentFile, setter: setApcConsentFile, icon: UserCheck, docType: 'consent' },
             ].map((item) => (
               <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
                 <input type="file" accept={item.docType === 'logbook' ? '.pdf,.jpg,.jpeg,.png,.csv' : '.pdf,.jpg,.jpeg,.png'} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadDocument(f, item.docType, item.setter); }} />

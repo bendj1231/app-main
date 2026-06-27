@@ -43,6 +43,7 @@
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-is": "^19.2.7",
     "react-pageflip": "^2.0.3",
     "react-phone-number-input": "^3.4.17",
     "react-router-dom": "^7.14.1",

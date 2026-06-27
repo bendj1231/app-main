@@ -48,6 +48,15 @@ export const OAuthCallback = () => {
     // Guard: wait for Auth0 to finish processing the redirect before doing anything
     if (!isAuthenticated || !user || profileCreated || isLoading) {
       console.log('[OAuthCallback] Guard blocked — isAuthenticated:', isAuthenticated, 'user:', !!user, 'profileCreated:', profileCreated, 'isLoading:', isLoading);
+
+      // Fallback: Auth0 settled but user is not authenticated — redirect to login
+      if (!isLoading && !isAuthenticated) {
+        console.warn('[OAuthCallback] Auth0 settled but not authenticated — redirecting to login');
+        const timer = setTimeout(() => {
+          navigate('/login', { replace: true });
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
       return;
     }
 
