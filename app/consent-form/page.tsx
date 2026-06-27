@@ -102,10 +102,10 @@ export default function ConsentFormPage() {
                   'Flight School / Academy',
                   'Other (specify below)',
                 ].map((item) => (
-                  <div key={item} className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 border border-gray-400 rounded-sm flex-shrink-0" />
+                  <label key={item} className="flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" className="w-3 h-3 rounded border-gray-300 text-amber-500 cursor-pointer flex-shrink-0" />
                     <span className="text-gray-700 leading-tight">{item}</span>
-                  </div>
+                  </label>
                 ))}
               </div>
             </div>
@@ -146,10 +146,10 @@ export default function ConsentFormPage() {
                   'I confirm that I am authorized to act on behalf of the organization named above and have the authority to provide this consent.',
                   'I confirm that the information provided above is accurate and complete to the best of my knowledge.',
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-1.5">
-                    <div className="w-3 h-3 border border-gray-400 rounded-sm flex-shrink-0 mt-0.5" />
+                  <label key={i} className="flex items-start gap-1.5 cursor-pointer">
+                    <input type="checkbox" className="w-3 h-3 rounded border-gray-300 text-amber-500 cursor-pointer flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700 leading-tight">{item}</span>
-                  </div>
+                  </label>
                 ))}
               </div>
             </div>
