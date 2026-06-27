@@ -155,6 +155,9 @@ export default function VerifyApcPage() {
     additionalRatings: [] as string[],
     hasAviationDegree: false,
     aviationDegreeDetails: '',
+    hasNoLicenseExpiry: false,
+    hasNotFlown: false,
+    hasNoMedical: false,
   });
   const [additionalATOs, setAdditionalATOs] = useState<{ name: string; location: string }[]>([]);
   const [ratingInput, setRatingInput] = useState('');
@@ -205,7 +208,9 @@ export default function VerifyApcPage() {
       case 1:
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
       case 2:
-        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
+        const hasValidLicense = !!apcFormData.licenseNumber && (apcFormData.hasNoLicenseExpiry || !!apcFormData.licenseExpiryDate);
+        const hasValidMedical = !apcFormData.hasNoMedical && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
+        return hasValidLicense && (apcFormData.hasNotFlown || true) && (apcFormData.hasNoMedical || hasValidMedical);
       case 3:
       case 4:
         return true;
@@ -770,7 +775,24 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
-              <input type="text" placeholder="Month/Day/Year" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input
+                type="text"
+                placeholder="Month/Day/Year"
+                value={apcFormData.licenseExpiryDate}
+                onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))}
+                disabled={apcFormData.hasNoLicenseExpiry}
+                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 disabled:opacity-40"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+              />
+              <label className="flex items-center gap-1.5 mt-1.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={apcFormData.hasNoLicenseExpiry}
+                  onChange={(e) => setApcFormData(p => ({ ...p, hasNoLicenseExpiry: e.target.checked, licenseExpiryDate: e.target.checked ? '' : p.licenseExpiryDate }))}
+                  className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+                />
+                <span className="text-[9px] text-gray-600">I don't have an expiry date</span>
+              </label>
             </div>
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
@@ -826,6 +848,19 @@ export default function VerifyApcPage() {
               <option value="Other">Other — Not listed above</option>
             </select>
           </div>
+          {/* I haven't flown checkbox */}
+          <label className="flex items-center gap-2 mb-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={apcFormData.hasNotFlown}
+              onChange={(e) => setApcFormData(p => ({ ...p, hasNotFlown: e.target.checked, additionalRatings: e.target.checked ? [] : p.additionalRatings }))}
+              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+            />
+            <span className="text-[10px] text-gray-700">I haven't flown yet / No ratings</span>
+          </label>
+
+          {!apcFormData.hasNotFlown && (
+          <>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">
             Aircraft Ratings & Type Ratings
             {apcFormData.additionalRatings.length > 0 && (
@@ -962,11 +997,27 @@ export default function VerifyApcPage() {
               </div>
             )}
           </div>
+          </>
+          )}
         </motion.div>
 
         {/* ── Section 3: Medical Certificate ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Medical Certificate</p>
+
+          {/* I don't hold a medical checkbox */}
+          <label className="flex items-center gap-2 mb-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={apcFormData.hasNoMedical}
+              onChange={(e) => setApcFormData(p => ({ ...p, hasNoMedical: e.target.checked, medicalClass: 'Class 1', medicalExpiry: '' }))}
+              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+            />
+            <span className="text-[10px] text-gray-700">I don't hold a medical certificate</span>
+          </label>
+
+          {!apcFormData.hasNoMedical && (
+          <>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Class</p>
@@ -993,6 +1044,8 @@ export default function VerifyApcPage() {
               <input type="text" placeholder="Month/Day/Year" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
+          </>
+          )}
         </motion.div>
 
         <div className="flex justify-between">
