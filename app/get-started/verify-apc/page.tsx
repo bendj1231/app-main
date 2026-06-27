@@ -784,7 +784,7 @@ export default function VerifyApcPage() {
             <p className="text-[10px] text-gray-700 mb-2">Do you have any flight experience?</p>
             <div className="flex gap-2 mb-2">
               <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: true }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>Yes</button>
-              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: false }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: !apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: !apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${!apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>No</button>
+              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: false, licenseType: 'SPL' }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: !apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: !apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${!apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>No</button>
             </div>
             <p className="text-[9px] text-gray-500 leading-snug">
               {apcFormData.hasFlightExperience
@@ -1263,12 +1263,12 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(4) && setStep(5)}
+            onClick={() => canProceed(4) && setStep(apcFormData.hasFlightExperience ? 5 : 8)}
             disabled={!canProceed(4)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Aircraft Ratings <ArrowRight size={14} />
+            {apcFormData.hasFlightExperience ? 'Next: Aircraft Ratings' : 'Next: Authorization & Submit'} <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -2109,7 +2109,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-start">
           <button
             type="button"
-            onClick={() => setStep(7)}
+            onClick={() => setStep(apcFormData.hasFlightExperience ? 7 : 4)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
