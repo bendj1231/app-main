@@ -252,13 +252,22 @@ export const VerificationStatusTab: React.FC<{
               <p className="text-sm max-w-xl leading-relaxed mb-5" style={{ color: '#4b5563' }}>
                 We contact your ATO through authorized verification providers to ensure your profile is up-to-date. Verified profiles gain exclusive access to pathways held by charter and confidential operators.
               </p>
-              <a
-                href={`https://checkout.dodopayments.com/buy/pdt_0NhgDLaiGjWD45S1gJmng?return_url=${encodeURIComponent(returnUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}`}
-                className="inline-flex px-5 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 items-center gap-2 no-underline w-fit"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', boxShadow: '0 4px 20px rgba(220,38,38,0.35)' }}
-              >
-                GET RECOGNITION+ <ArrowRight size={14} />
-              </a>
+              <div className="flex items-center gap-3">
+                <a
+                  href={`https://checkout.dodopayments.com/buy/pdt_0NhgDLaiGjWD45S1gJmng?return_url=${encodeURIComponent(returnUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}`}
+                  className="inline-flex px-5 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 items-center gap-2 no-underline w-fit"
+                  style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', boxShadow: '0 4px 20px rgba(220,38,38,0.35)' }}
+                >
+                  GET RECOGNITION+ <ArrowRight size={14} />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('/get-started')}
+                  className="text-[11px] font-bold text-gray-500 hover:text-gray-800 underline underline-offset-2 decoration-gray-300 hover:decoration-gray-600 transition-colors"
+                >
+                  Skip to get started →
+                </button>
+              </div>
             </>
           ) : verificationStatus === 'in_progress' ? (
             <>
