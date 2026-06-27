@@ -11,7 +11,7 @@ import {
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
   Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase
 } from 'lucide-react';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { safeRedirect } from '@/lib/url-validator';
 import ProfileImage from '../../../../../src/components/ProfileImage';
 import { GettingStartedBar } from '../../GettingStartedBar';

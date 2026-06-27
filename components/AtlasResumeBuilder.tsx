@@ -14,7 +14,7 @@ import {
   AviationRole,
   ResumeTemplate 
 } from '@/types/atlas-resume';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { 
   FileText, 
   Download, 

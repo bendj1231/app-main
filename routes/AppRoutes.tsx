@@ -351,7 +351,7 @@ const ATODashboardPage = lazy(() =>
   }))
 );
 const WhatIsPilotRecognitionPage = lazy(
-  () => import('../../components/website/components/WhatIsPilotRecognitionPage')
+  () => import('@/components/website/components/WhatIsPilotRecognitionPage')
 );
 const ScoreOptimizationPage = lazy(() =>
   import('@/components/website/components/pilot-recognition/ScoreOptimizationPage').then((m) => ({

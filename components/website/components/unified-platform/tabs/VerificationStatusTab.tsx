@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { safeRedirect } from '@/lib/url-validator';
 import type { TabId } from '../types';
 import VerificationDashboardGrid from '../VerificationDashboardGrid';

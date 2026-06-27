@@ -3,7 +3,7 @@
  * Fetches Universal Commercial Framework data from Supabase
  */
 
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import type {
   FrameworkPillar,
   FrameworkContentSection,

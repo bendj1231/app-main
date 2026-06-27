@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, Plane, Check, Building2, Filter, ArrowRight, AlertCircle } from 'lucide-react';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface AirlineSelectionModalProps {
   isOpen: boolean;

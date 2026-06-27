@@ -4,7 +4,7 @@ import {
   BookMarked, Calendar, Newspaper, Settings, BarChart3,
   CheckCircle, XCircle, Clock, RefreshCw, Bell, Building2, AlertTriangle, Star, BadgeCheck, Target
 } from 'lucide-react';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import type { NavItem } from './types';
 
 export const NAV_ITEMS: NavItem[] = [

@@ -1,4 +1,4 @@
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 export interface AuditLogOptions {
   actionType: 'create' | 'update' | 'delete' | 'approve' | 'reject' | 'verify' | 'upload' | 'custom';

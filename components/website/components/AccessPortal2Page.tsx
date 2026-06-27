@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { NewsroomModal } from './NewsroomModal';
 import { MeshGradient } from '@paper-design/shaders-react';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';

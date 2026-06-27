@@ -7,7 +7,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { HomeLabel } from './HomeLabel';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
-import { IMAGES } from '../../../../src/lib/website-constants';
+import { IMAGES } from '@/lib/website-constants';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid, type Slide } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';

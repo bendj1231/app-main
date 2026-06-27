@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 

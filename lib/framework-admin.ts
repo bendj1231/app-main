@@ -4,7 +4,7 @@
  * Use these for programmatic updates or build an admin UI
  */
 
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import type {
   FrameworkPillar,
   FrameworkContentSection,

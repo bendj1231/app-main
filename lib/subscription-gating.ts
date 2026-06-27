@@ -1,4 +1,4 @@
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 export interface SubscriptionStatus {
   isPremium: boolean;

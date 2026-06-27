@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import {
   Database, Cloud, Zap, Users, Shield, Activity, Image,
   CreditCard, Mail, RefreshCw, AlertTriangle, CheckCircle, XCircle,

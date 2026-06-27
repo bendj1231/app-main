@@ -4,7 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/lib/device-detection';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import {
   ArrowRight, UserCheck, ShieldCheck, Plane, Briefcase, BadgeCheck
 } from 'lucide-react';

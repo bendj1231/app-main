@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
 // TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
-import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
+import { shouldEnable3DEffects } from '@/lib/device-detection';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';

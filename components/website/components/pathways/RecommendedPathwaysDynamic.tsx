@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Target, Plane, GraduationCap, Briefcase, ArrowRight, Lock, ChevronRight, Star, DollarSign, Clock, Award } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface RecommendedPathwaysDynamicProps {
     onNavigate?: (page: string) => void;

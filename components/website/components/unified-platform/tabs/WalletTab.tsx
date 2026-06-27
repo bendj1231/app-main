@@ -10,7 +10,7 @@ import {
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
 } from 'lucide-react';
-import { supabase } from '@/shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { safeRedirect } from '@/lib/url-validator';
 import { WalletPageWithSidebar } from '../../wallet/WalletPageWithSidebar';
 import { PilotLicensureExperiencePage } from '../../pilot-recognition/PilotLicensureExperiencePage';
