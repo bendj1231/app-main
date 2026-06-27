@@ -142,7 +142,7 @@ export default function VerifyApcPage() {
   const [ratingFiles, setRatingFiles] = useState<Record<string, File | null>>({});
   const [atoConsentChecked, setAtoConsentChecked] = useState(false);
   const [licenseConsentChecked, setLicenseConsentChecked] = useState(false);
-  const [aircraftRatingActive, setAircraftRatingActive] = useState<Record<string, boolean>>({});
+  const [aircraftRatingActive, setAircraftRatingActive] = useState<Record<string, { active: boolean; recurrency: boolean }>>({});
   const [logbookConsentChecked, setLogbookConsentChecked] = useState(false);
   const [privacyConsentChecked, setPrivacyConsentChecked] = useState(false);
   const [apcFormData, setApcFormData] = useState({
@@ -1077,20 +1077,31 @@ export default function VerifyApcPage() {
                           </>
                         )}
                       </label>
-                      <label className="flex items-center gap-1.5 mt-2 cursor-pointer self-start">
-                        <input
-                          type="checkbox"
-                          checked={aircraftRatingActive[rating] || false}
-                          onChange={(e) => setAircraftRatingActive(prev => ({ ...prev, [rating]: e.target.checked }))}
-                          className="w-3 h-3 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
-                        />
-                        <span className="text-[9px] font-semibold text-gray-700">Active or Requires Recurrency</span>
-                      </label>
-                      {aircraftRatingActive[rating] && (
-                        <p className="text-[8px] text-gray-500 mt-0.5 ml-5 leading-tight self-start">
-                          Recurrency details collected next step
-                        </p>
-                      )}
+                      <div className="flex flex-col gap-1 mt-2 self-start w-full">
+                        <label className="flex items-center gap-1.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={aircraftRatingActive[rating]?.active || false}
+                            onChange={(e) => setAircraftRatingActive(prev => ({ ...prev, [rating]: { ...prev[rating], active: e.target.checked } }))}
+                            className="w-3 h-3 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
+                          />
+                          <span className="text-[9px] font-semibold text-gray-700">Active</span>
+                        </label>
+                        <label className="flex items-center gap-1.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={aircraftRatingActive[rating]?.recurrency || false}
+                            onChange={(e) => setAircraftRatingActive(prev => ({ ...prev, [rating]: { ...prev[rating], recurrency: e.target.checked } }))}
+                            className="w-3 h-3 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
+                          />
+                          <span className="text-[9px] font-semibold text-gray-700">Requires Recurrency</span>
+                        </label>
+                        {aircraftRatingActive[rating]?.recurrency && (
+                          <p className="text-[8px] text-gray-500 mt-0.5 ml-5 leading-tight">
+                            Recurrency details collected next step
+                          </p>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
