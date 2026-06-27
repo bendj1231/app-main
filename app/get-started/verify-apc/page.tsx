@@ -160,6 +160,7 @@ export default function VerifyApcPage() {
     hasNoLicenseExpiry: false,
     hasNotFlown: false,
     hasNoMedical: false,
+    hasRadioLicense: false,
   });
   const [additionalATOs, setAdditionalATOs] = useState<{ name: string; location: string }[]>([]);
   const [ratingInput, setRatingInput] = useState('');
@@ -1051,6 +1052,17 @@ export default function VerifyApcPage() {
           </div>
           </>
           )}
+
+          {/* Radio License */}
+          <label className="flex items-center gap-2 mt-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={apcFormData.hasRadioLicense}
+              onChange={(e) => setApcFormData(p => ({ ...p, hasRadioLicense: e.target.checked }))}
+              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+            />
+            <span className="text-[10px] text-gray-700">I hold a radio license (NTC / RT)</span>
+          </label>
         </motion.div>
 
         <div className="flex justify-between">
@@ -1088,9 +1100,9 @@ export default function VerifyApcPage() {
             {[
               { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
               { label: 'License (Back)', file: apcLicenseBackFile, setter: setApcLicenseBackFile, icon: IdCard, docType: 'license-back' },
-              { label: 'Medical Certificate', file: apcMedicalFile, setter: setApcMedicalFile, icon: Award, docType: 'medical' },
-              { label: 'Radio License', file: apcRadioNtcFile, setter: setApcRadioNtcFile, icon: Radio, docType: 'radio-ntc' },
-            ].map((item) => (
+              !apcFormData.hasNoMedical && { label: 'Medical Certificate', file: apcMedicalFile, setter: setApcMedicalFile, icon: Award, docType: 'medical' },
+              apcFormData.hasRadioLicense && { label: 'Radio License', file: apcRadioNtcFile, setter: setApcRadioNtcFile, icon: Radio, docType: 'radio-ntc' },
+            ].filter(Boolean).map((item) => (
               <label key={item.label} className="flex flex-col items-center justify-center gap-1.5 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[item.docType] === 'done' || item.file ? 'rgba(34,197,94,0.4)' : uploadStatus[item.docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
                 <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadDocument(f, item.docType, item.setter); }} />
                 {uploadStatus[item.docType] === 'uploading' ? (
