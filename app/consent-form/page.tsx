@@ -103,7 +103,7 @@ export default function ConsentFormPage() {
               <li>The ATO will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
               <li>APC will receive only a confirmation that verification was completed, not the pilot's actual flight hours.</li>
               <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
-              <li>Pilots who achieve full verification compliance across all submitted documents are eligible for a <span className="font-semibold text-gray-800">10% incentive on verification fees</span> as a reward for clean, accurate documentation.</li>
+              <li>The <span className="font-semibold text-gray-800">Authorized Training Organization (ATO)</span> or authorized representative (e.g., Chief Flight Instructor) responsible for conducting the verification will receive a <span className="font-semibold text-gray-800">10% incentive on verification fees</span> when the pilot achieves full verification compliance across all submitted documents, as a reward for clean, accurate verification outcomes.</li>
             </ul>
           </section>
 
