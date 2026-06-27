@@ -1,4 +1,4 @@
-/// <reference path="../../../../src/vite-env.d.ts" />
+/// <reference path="@/vite-env.d.ts" />
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { QRCodeSVG } from 'qrcode.react';
