@@ -434,8 +434,8 @@ const PortalAirlineExpectationsPage = lazy(() =>
     default: m.PortalAirlineExpectationsPage,
   }))
 );
-const TypeRatingSearchPage = lazy(() => import('@/pages/TypeRatingSearchPage'));
-const JobListingsPage = lazy(() => import('@/pages/JobListingsPage'));
+const TypeRatingSearchPage = lazy(() => import('@/components/pages/TypeRatingSearchPage'));
+const JobListingsPage = lazy(() => import('@/components/pages/JobListingsPage'));
 const PilotGapAboutPage = lazy(() =>
   import('@/components/website/components/PilotGapAboutPage').then((m) => ({
     default: m.PilotGapAboutPage,
@@ -527,7 +527,7 @@ const WhyRecognitionPage = lazy(() =>
     default: m.WhyRecognitionPage,
   }))
 );
-const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationAuthoritiesPage'));
+const GlobalAviationAuthoritiesPage = lazy(() => import('@/components/pages/GlobalAviationAuthoritiesPage'));
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const BlogPostPage = lazy(() => import('@/app/blog/[slug]/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
