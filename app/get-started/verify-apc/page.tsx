@@ -552,21 +552,102 @@ export default function VerifyApcPage() {
             ))}
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">Additional Ratings & Type Ratings</p>
+          {/* Toggleable preset pills */}
           <div className="flex flex-wrap gap-1.5 mb-2">
-            {apcFormData.additionalRatings.map((r) => (
-              <span key={r} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-gray-700 bg-gray-100 border border-gray-200">
-                {r}
+            {[
+              'Instrument Rating',
+              'Multi-Engine Rating',
+              'Night Rating',
+              'Seaplane Rating',
+              'Tailwheel Endorsement',
+              'High Performance',
+              'Complex Aircraft',
+              'Aerobatic',
+            ].map((rating) => {
+              const isSelected = apcFormData.additionalRatings.includes(rating);
+              return (
                 <button
+                  key={rating}
                   type="button"
-                  onClick={() => setApcFormData(p => ({ ...p, additionalRatings: p.additionalRatings.filter(x => x !== r) }))}
-                  className="text-gray-400 hover:text-red-500"
-                >×</button>
-              </span>
-            ))}
+                  onClick={() => {
+                    setApcFormData(p => ({
+                      ...p,
+                      additionalRatings: isSelected
+                        ? p.additionalRatings.filter(x => x !== rating)
+                        : [...p.additionalRatings, rating],
+                    }));
+                  }}
+                  className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all"
+                  style={{
+                    background: isSelected ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                    color: isSelected ? '#fff' : '#6b7280',
+                    border: `1px solid ${isSelected ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                  }}
+                >
+                  {rating}
+                </button>
+              );
+            })}
+          </div>
+          {/* Type rating pills */}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {[
+              'B737 Type Rating',
+              'B777 Type Rating',
+              'B747 Type Rating',
+              'A320 Type Rating',
+              'A330 Type Rating',
+              'ATR42/72 Type Rating',
+              'CRJ Type Rating',
+            ].map((rating) => {
+              const isSelected = apcFormData.additionalRatings.includes(rating);
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  onClick={() => {
+                    setApcFormData(p => ({
+                      ...p,
+                      additionalRatings: isSelected
+                        ? p.additionalRatings.filter(x => x !== rating)
+                        : [...p.additionalRatings, rating],
+                    }));
+                  }}
+                  className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all"
+                  style={{
+                    background: isSelected ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                    color: isSelected ? '#fff' : '#6b7280',
+                    border: `1px solid ${isSelected ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                  }}
+                >
+                  {rating}
+                </button>
+              );
+            })}
+          </div>
+          {/* Custom input for anything else */}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {apcFormData.additionalRatings
+              .filter(r => ![
+                'Instrument Rating','Multi-Engine Rating','Night Rating','Seaplane Rating','Tailwheel Endorsement',
+                'High Performance','Complex Aircraft','Aerobatic',
+                'B737 Type Rating','B777 Type Rating','B747 Type Rating','A320 Type Rating',
+                'A330 Type Rating','ATR42/72 Type Rating','CRJ Type Rating',
+              ].includes(r))
+              .map((r) => (
+                <span key={r} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-gray-700 bg-gray-100 border border-gray-200">
+                  {r}
+                  <button
+                    type="button"
+                    onClick={() => setApcFormData(p => ({ ...p, additionalRatings: p.additionalRatings.filter(x => x !== r) }))}
+                    className="text-gray-400 hover:text-red-500"
+                  >×</button>
+                </span>
+              ))}
           </div>
           <input
             type="text"
-            placeholder="Type and press Enter (e.g. Instrument Rating, B737, B777...)"
+            placeholder="Type and press Enter for custom rating..."
             value={ratingInput}
             onChange={(e) => setRatingInput(e.target.value)}
             onKeyDown={(e) => {
@@ -579,7 +660,6 @@ export default function VerifyApcPage() {
                 setRatingInput('');
               }
             }}
-            list="rating-suggestions"
             className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none h-9"
             style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
           />
