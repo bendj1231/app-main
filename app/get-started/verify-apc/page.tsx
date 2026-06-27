@@ -142,7 +142,7 @@ export default function VerifyApcPage() {
   const [ratingFiles, setRatingFiles] = useState<Record<string, File | null>>({});
   const [atoConsentChecked, setAtoConsentChecked] = useState(false);
   const [licenseConsentChecked, setLicenseConsentChecked] = useState(false);
-  const [aircraftRatingActive, setAircraftRatingActive] = useState(false);
+  const [aircraftRatingActive, setAircraftRatingActive] = useState<Record<string, boolean>>({});
   const [logbookConsentChecked, setLogbookConsentChecked] = useState(false);
   const [privacyConsentChecked, setPrivacyConsentChecked] = useState(false);
   const [apcFormData, setApcFormData] = useState({
@@ -1050,8 +1050,8 @@ export default function VerifyApcPage() {
                   const docType = `rating-cert-${rating.replace(/[^a-zA-Z0-9]/g, '-')}`;
                   const file = ratingFiles[rating];
                   return (
-                    <label key={rating} className="flex flex-col items-center justify-center gap-1 rounded-xl p-3 cursor-pointer transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[docType] === 'done' || file ? 'rgba(34,197,94,0.4)' : uploadStatus[docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
-                      <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => {
+                    <div key={rating} className="flex flex-col items-center rounded-xl p-3 transition-all hover:bg-gray-50" style={{ background: 'rgba(0,0,0,0.02)', border: `1.5px dashed ${uploadStatus[docType] === 'done' || file ? 'rgba(34,197,94,0.4)' : uploadStatus[docType] === 'error' ? 'rgba(239,68,68,0.4)' : 'rgba(0,0,0,0.2)'}` }}>
+                      <input id={rating} type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => {
                         const f = e.target.files?.[0];
                         if (f) {
                           uploadDocument(f, docType, () => {
@@ -1059,46 +1059,45 @@ export default function VerifyApcPage() {
                           });
                         }
                       }} />
-                      {uploadStatus[docType] === 'uploading' ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                          <p className="text-[9px] font-medium text-gray-500">Uploading...</p>
-                        </>
-                      ) : file ? (
-                        <>
-                          <BadgeCheck size={18} className="text-green-500" />
-                          <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{file.name}</p>
-                        </>
-                      ) : (
-                        <>
-                          <Award size={18} className="text-gray-300" />
-                          <p className="text-[9px] font-medium text-gray-600">{rating} Certificate</p>
-                        </>
+                      <label htmlFor={rating} className="flex flex-col items-center justify-center gap-1 cursor-pointer w-full flex-1">
+                        {uploadStatus[docType] === 'uploading' ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                            <p className="text-[9px] font-medium text-gray-500">Uploading...</p>
+                          </>
+                        ) : file ? (
+                          <>
+                            <BadgeCheck size={18} className="text-green-500" />
+                            <p className="text-[9px] font-semibold text-gray-700 truncate max-w-full">{file.name}</p>
+                          </>
+                        ) : (
+                          <>
+                            <Award size={18} className="text-gray-300" />
+                            <p className="text-[9px] font-medium text-gray-600">{rating} Certificate</p>
+                          </>
+                        )}
+                      </label>
+                      <label className="flex items-center gap-1.5 mt-2 cursor-pointer self-start">
+                        <input
+                          type="checkbox"
+                          checked={aircraftRatingActive[rating] || false}
+                          onChange={(e) => setAircraftRatingActive(prev => ({ ...prev, [rating]: e.target.checked }))}
+                          className="w-3 h-3 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
+                        />
+                        <span className="text-[9px] font-semibold text-gray-700">Active or Requires Recurrency</span>
+                      </label>
+                      {aircraftRatingActive[rating] && (
+                        <p className="text-[8px] text-gray-500 mt-0.5 ml-5 leading-tight self-start">
+                          Recurrency details collected next step
+                        </p>
                       )}
-                    </label>
+                    </div>
                   );
                 })}
               </div>
             </div>
           )}
 
-          {/* Active or Requires Recurrency */}
-          <div className="mt-3">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={aircraftRatingActive}
-                onChange={(e) => setAircraftRatingActive(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
-              />
-              <span className="text-[10px] font-semibold text-gray-700">Active or Requires Recurrency</span>
-            </label>
-            {aircraftRatingActive && (
-              <p className="text-[9px] text-gray-500 mt-1 ml-6">
-                You will be prompted to provide recurrency details in the next step.
-              </p>
-            )}
-          </div>
 
         </motion.div>
 
