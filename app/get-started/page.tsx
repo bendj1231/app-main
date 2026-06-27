@@ -334,13 +334,13 @@ export default function GetStartedPage() {
               >
                 <p className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wider">What to expect</p>
                 <p className="text-[10px] text-gray-700 leading-relaxed mb-2">
-                  APC will contact your issuing aviation authority and your named ATO to verify your credentials, flight hours, and training records. A formal third-party authorization with your signed consent is required for the ATO to release records.
+                  APC will verify your pilot license with the governing aviation authority to confirm validity, expiration status, and detect any fraudulent or tampered documents. We will also contact your named ATO, Operator, Type Rating Center, or any aviation body to verify your logged flight hours and training records. A formal third-party authorization with your signed consent is required for the aviation body to release records.
                 </p>
                 <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-                  <span className="font-semibold text-gray-700">Note on archived records:</span> Many ATOs archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
+                  <span className="font-semibold text-gray-700">Note on archived records:</span> Many ATOs and operators archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
                 </p>
                 <p className="text-[10px] text-gray-600 leading-relaxed">
-                  <span className="font-semibold text-gray-700">ATO internal forms:</span> Some ATOs may reject our consent template and require you to sign their specific institutional release form instead. If this happens, APC will notify you immediately.
+                  <span className="font-semibold text-gray-700">Aviation body internal forms:</span> Some ATOs, operators, or type rating centers may reject our consent template and require you to sign their specific institutional release form instead. If this happens, APC will notify you immediately.
                 </p>
               </motion.div>
 
