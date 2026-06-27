@@ -816,9 +816,16 @@ export default function VerifyApcPage() {
           <div className="flex gap-2 relative">
             <input
               type="text"
-              placeholder="Type and press Enter for custom rating..."
+              placeholder="Type to search ratings..."
               value={ratingInput}
-              onChange={(e) => setRatingInput(e.target.value)}
+              onChange={(e) => {
+                setRatingInput(e.target.value);
+                setShowRatingDropdown(true);
+              }}
+              onFocus={() => setShowRatingDropdown(true)}
+              onBlur={() => {
+                setTimeout(() => setShowRatingDropdown(false), 150);
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && ratingInput.trim()) {
                   e.preventDefault();
@@ -827,26 +834,17 @@ export default function VerifyApcPage() {
                     setApcFormData(p => ({ ...p, additionalRatings: [...p.additionalRatings, val] }));
                   }
                   setRatingInput('');
+                  setShowRatingDropdown(false);
                 }
               }}
               className="flex-1 rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-400 outline-none h-9"
               style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
             />
-            <button
-              type="button"
-              onClick={() => setShowRatingDropdown(v => !v)}
-              className="px-3 rounded-xl text-[10px] font-bold tracking-wider transition-all shrink-0"
-              style={{
-                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-                color: '#fff',
-                border: '1px solid transparent',
-              }}
-            >
-              {showRatingDropdown ? 'Close' : 'Add from list'}
-            </button>
             {showRatingDropdown && (
-              <div className="absolute right-0 top-10 z-20 bg-white rounded-xl shadow-xl border border-gray-100 p-2 w-64 max-h-56 overflow-y-auto">
-                <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5 px-1">Click to add</p>
+              <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl shadow-xl border border-gray-100 p-2 max-h-56 overflow-y-auto">
+                <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5 px-1">
+                  {ratingInput.trim() ? `Matching "${ratingInput.trim()}"` : 'Click to add'}
+                </p>
                 <div className="flex flex-wrap gap-1">
                   {[
                     'Instrument Rating',
@@ -864,31 +862,58 @@ export default function VerifyApcPage() {
                     'A330 Type Rating',
                     'ATR42/72 Type Rating',
                     'CRJ Type Rating',
-                  ].map((rating) => {
-                    const isAdded = apcFormData.additionalRatings.includes(rating);
-                    return (
-                      <button
-                        key={rating}
-                        type="button"
-                        disabled={isAdded}
-                        onClick={() => {
-                          if (!isAdded) {
-                            setApcFormData(p => ({ ...p, additionalRatings: [...p.additionalRatings, rating] }));
-                          }
-                        }}
-                        className="px-2.5 py-1 rounded-full text-[10px] font-semibold transition-all"
-                        style={{
-                          background: isAdded ? '#f3f4f6' : 'rgba(0,0,0,0.03)',
-                          color: isAdded ? '#9ca3af' : '#374151',
-                          border: `1px solid ${isAdded ? '#e5e7eb' : 'rgba(0,0,0,0.08)'}`,
-                          cursor: isAdded ? 'default' : 'pointer',
-                        }}
-                      >
-                        {isAdded ? `${rating} ✓` : rating}
-                      </button>
-                    );
-                  })}
+                  ]
+                    .filter((rating) =>
+                      rating.toLowerCase().includes(ratingInput.toLowerCase().trim())
+                    )
+                    .map((rating) => {
+                      const isAdded = apcFormData.additionalRatings.includes(rating);
+                      return (
+                        <button
+                          key={rating}
+                          type="button"
+                          disabled={isAdded}
+                          onClick={() => {
+                            if (!isAdded) {
+                              setApcFormData(p => ({ ...p, additionalRatings: [...p.additionalRatings, rating] }));
+                              setRatingInput('');
+                            }
+                          }}
+                          className="px-2.5 py-1 rounded-full text-[10px] font-semibold transition-all"
+                          style={{
+                            background: isAdded ? '#f3f4f6' : 'rgba(0,0,0,0.03)',
+                            color: isAdded ? '#9ca3af' : '#374151',
+                            border: `1px solid ${isAdded ? '#e5e7eb' : 'rgba(0,0,0,0.08)'}`,
+                            cursor: isAdded ? 'default' : 'pointer',
+                          }}
+                        >
+                          {isAdded ? `${rating} ✓` : rating}
+                        </button>
+                      );
+                    })}
                 </div>
+                {ratingInput.trim() &&
+                  ![
+                    'Instrument Rating',
+                    'Multi-Engine Rating',
+                    'Night Rating',
+                    'Seaplane Rating',
+                    'Tailwheel Endorsement',
+                    'High Performance Aircraft Endorsement',
+                    'Complex Aircraft Endorsement',
+                    'Aerobatic Endorsement',
+                    'B737 Type Rating',
+                    'B777 Type Rating',
+                    'B747 Type Rating',
+                    'A320 Type Rating',
+                    'A330 Type Rating',
+                    'ATR42/72 Type Rating',
+                    'CRJ Type Rating',
+                  ].some((r) => r.toLowerCase().includes(ratingInput.toLowerCase().trim())) && (
+                    <p className="text-[9px] text-gray-400 mt-2 px-1">
+                      Press <span className="font-bold text-gray-600">Enter</span> to add &quot;{ratingInput.trim()}&quot; as custom rating
+                    </p>
+                  )}
               </div>
             )}
           </div>
