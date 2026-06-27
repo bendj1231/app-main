@@ -120,6 +120,12 @@ export default function VerifyApcPage() {
   const [step, setStep] = useState(1);
   const totalSteps = 4;
   const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Logbook', 'Authorization & Submit'];
+  const stepDescriptions = [
+    'Provide your identity, contact information, and nationality for the verification record.',
+    'Enter your pilot license details, medical certificate class, and any additional ratings or type ratings.',
+    'Upload your license, medical, radio documents, logbook, and signed consent forms for audit.',
+    'Review all details, confirm privacy consent, and submit your verification request to APC.',
+  ];
 
   const canProceed = (currentStep: number) => {
     switch (currentStep) {
@@ -447,7 +453,7 @@ export default function VerifyApcPage() {
             Pilot Verification Form
           </h1>
           <p className="text-sm text-gray-500">
-            Complete your verification with <span className="font-semibold text-gray-700">Aviation Pathways Consultancy (APC)</span>
+            {stepDescriptions[step - 1]}
           </p>
         </motion.div>
 
