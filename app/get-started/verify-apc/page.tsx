@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
@@ -492,7 +492,14 @@ export default function VerifyApcPage() {
           </div>
         </div>
 
-        {step === 1 && (<>
+        <AnimatePresence mode="wait">
+        {step === 1 && (<motion.div
+          key="step1"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
         {/* ── Step 1: Personal Details ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={1}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">1. Personal Details</p>
@@ -521,9 +528,15 @@ export default function VerifyApcPage() {
             Next: License & Medical <ArrowRight size={14} />
           </button>
         </div>
-        </>)}
+        </motion.div>)}
 
-        {step === 2 && (<>
+        {step === 2 && (<motion.div
+          key="step2"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
         {/* ── Step 2: License Information ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">2. License Information</p>
@@ -739,9 +752,15 @@ export default function VerifyApcPage() {
             Next: Documents & Logbook <ArrowRight size={14} />
           </button>
         </div>
-        </>)}
+        </motion.div>)}
 
-        {step === 3 && (<>
+        {step === 3 && (<motion.div
+          key="step3"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
         {/* ── Step 3: Pilot Documents & Ratings ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Pilot Documents & Ratings</p>
@@ -1223,9 +1242,15 @@ export default function VerifyApcPage() {
             Next: Authorization & Submit <ArrowRight size={14} />
           </button>
         </div>
-        </>)}
+        </motion.div>)}
 
-        {step === 4 && (<>
+        {step === 4 && (<motion.div
+          key="step4"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
         {/* ── Step 4: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. ATO Authorization</p>
@@ -1442,7 +1467,8 @@ export default function VerifyApcPage() {
             <ArrowRight size={14} className="rotate-180" /> Back
           </button>
         </div>
-        </>)}
+        </motion.div>)}
+        </AnimatePresence>
 
         </div>
       </motion.div>
