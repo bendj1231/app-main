@@ -891,28 +891,32 @@ export default function VerifyApcPage() {
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {['PPL', 'CPL', 'ATPL', 'SPL', 'No License Yet'].map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setApcFormData(p => ({
-                  ...p,
-                  licenseType: type,
-                  hasNoLicense: type === 'No License Yet',
-                  licenseNumber: type === 'No License Yet' ? '' : p.licenseNumber,
-                  licenseExpiryDate: type === 'No License Yet' ? '' : p.licenseExpiryDate,
-                  hasNoLicenseExpiry: type === 'No License Yet' ? false : p.hasNoLicenseExpiry,
-                }))}
-                className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all"
-                style={{
-                  background: apcFormData.licenseType === type ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
-                  color: apcFormData.licenseType === type ? '#fff' : '#6b7280',
-                  border: `1px solid ${apcFormData.licenseType === type ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
-                }}
-              >
-                {type}
-              </button>
-            ))}
+            {['PPL', 'CPL', 'ATPL', 'SPL', 'No License Yet'].map((type) => {
+              const isDisabled = !apcFormData.hasFlightExperience && ['PPL', 'CPL', 'ATPL'].includes(type);
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  disabled={isDisabled}
+                  onClick={() => !isDisabled && setApcFormData(p => ({
+                    ...p,
+                    licenseType: type,
+                    hasNoLicense: type === 'No License Yet',
+                    licenseNumber: type === 'No License Yet' ? '' : p.licenseNumber,
+                    licenseExpiryDate: type === 'No License Yet' ? '' : p.licenseExpiryDate,
+                    hasNoLicenseExpiry: type === 'No License Yet' ? false : p.hasNoLicenseExpiry,
+                  }))}
+                  className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all disabled:cursor-not-allowed"
+                  style={{
+                    background: isDisabled ? 'rgba(0,0,0,0.02)' : apcFormData.licenseType === type ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                    color: isDisabled ? '#d1d5db' : apcFormData.licenseType === type ? '#fff' : '#6b7280',
+                    border: `1px solid ${isDisabled ? 'rgba(0,0,0,0.04)' : apcFormData.licenseType === type ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                  }}
+                >
+                  {type}
+                </button>
+              );
+            })}
           </div>
           <div className="mb-3">
             <p className="text-[10px] font-semibold text-gray-700 mb-1">Issuing Authority / Governing Aviation Authority</p>
