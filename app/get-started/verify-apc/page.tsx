@@ -7,7 +7,7 @@ import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
-  Globe, Star, Lock, CheckCircle,
+  Globe, Star, Lock, CheckCircle, X, BookOpen,
 } from 'lucide-react';
 
 const fadeUp = {
@@ -162,6 +162,7 @@ export default function VerifyApcPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
+  const [showLogbookModal, setShowLogbookModal] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const totalSteps = 7;
   const stepTitles = ['Personal Details', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
@@ -1546,44 +1547,90 @@ export default function VerifyApcPage() {
             </label>
           </div>
 
-          {/* Logbook Export Instructions */}
-          <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
-            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">How to Export Your Logbook</p>
-            <div className="space-y-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
-                    <span className="text-[8px] font-bold text-blue-600">1</span>
+          {/* Logbook Export Instructions Link */}
+          <button
+            onClick={() => setShowLogbookModal(true)}
+            className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-[10px] font-bold text-blue-700 transition-all hover:bg-blue-50"
+            style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+          >
+            <BookOpen size={14} />
+            How to Export Your Logbook
+          </button>
+
+          {/* Logbook Export Modal */}
+          <AnimatePresence>
+            {showLogbookModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)' }}
+                onClick={() => setShowLogbookModal(false)}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative w-full max-w-md rounded-2xl p-5 shadow-2xl"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-xs font-black text-gray-900 uppercase tracking-wider">How to Export Your Logbook</p>
+                    <button
+                      onClick={() => setShowLogbookModal(false)}
+                      className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <X size={16} className="text-gray-400" />
+                    </button>
                   </div>
-                  <p className="text-[10px] font-semibold text-gray-700">ForeFlight</p>
-                </div>
-                <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
-                  <li>Open ForeFlight and tap the <span className="font-medium text-gray-700">More</span> tab at the bottom</li>
-                  <li>Select <span className="font-medium text-gray-700">Logbook</span> from the menu</li>
-                  <li>Tap the <span className="font-medium text-gray-700">Actions</span> button (three dots) in the top right</li>
-                  <li>Choose <span className="font-medium text-gray-700">Export</span></li>
-                  <li>Select <span className="font-medium text-gray-700">CSV format</span> and tap Export</li>
-                  <li>Upload the downloaded .csv file here</li>
-                </ol>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
-                    <span className="text-[8px] font-bold text-blue-600">2</span>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
+                          <span className="text-[8px] font-bold text-blue-600">1</span>
+                        </div>
+                        <p className="text-[10px] font-semibold text-gray-700">ForeFlight</p>
+                      </div>
+                      <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
+                        <li>Open ForeFlight and tap the <span className="font-medium text-gray-700">More</span> tab at the bottom</li>
+                        <li>Select <span className="font-medium text-gray-700">Logbook</span> from the menu</li>
+                        <li>Tap the <span className="font-medium text-gray-700">Actions</span> button (three dots) in the top right</li>
+                        <li>Choose <span className="font-medium text-gray-700">Export</span></li>
+                        <li>Select <span className="font-medium text-gray-700">CSV format</span> and tap Export</li>
+                        <li>Upload the downloaded .csv file here</li>
+                      </ol>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center">
+                          <span className="text-[8px] font-bold text-blue-600">2</span>
+                        </div>
+                        <p className="text-[10px] font-semibold text-gray-700">LogTen Pro</p>
+                      </div>
+                      <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
+                        <li>Open LogTen Pro on your device or web browser</li>
+                        <li>Go to <span className="font-medium text-gray-700">Settings</span> in the main menu</li>
+                        <li>Select <span className="font-medium text-gray-700">Export Logbook</span></li>
+                        <li>Choose <span className="font-medium text-gray-700">CSV (Comma Separated Values)</span> as the format</li>
+                        <li>Tap Export and save the file</li>
+                        <li>Upload the exported .csv file here</li>
+                      </ol>
+                    </div>
                   </div>
-                  <p className="text-[10px] font-semibold text-gray-700">LogTen Pro</p>
-                </div>
-                <ol className="text-[9px] text-gray-500 leading-snug ml-7 space-y-0.5">
-                  <li>Open LogTen Pro on your device or web browser</li>
-                  <li>Go to <span className="font-medium text-gray-700">Settings</span> in the main menu</li>
-                  <li>Select <span className="font-medium text-gray-700">Export Logbook</span></li>
-                  <li>Choose <span className="font-medium text-gray-700">CSV (Comma Separated Values)</span> as the format</li>
-                  <li>Tap Export and save the file</li>
-                  <li>Upload the exported .csv file here</li>
-                </ol>
-              </div>
-            </div>
-          </div>
+                  <button
+                    onClick={() => setShowLogbookModal(false)}
+                    className="mt-4 w-full py-2.5 rounded-xl text-[10px] font-bold text-white transition-all hover:brightness-110"
+                    style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+                  >
+                    Got it
+                  </button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         <div className="flex justify-between">
