@@ -5,7 +5,7 @@ import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 import { supabase } from '../lib/supabase-auth';
 import { RecognitionScoreCard } from '../../components/RecognitionScoreCard';
-import { useRecognitionScore } from '../../src/hooks/useRecognitionScore';
+import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 
 interface PilotProfilePageProps {
   onBack: () => void;

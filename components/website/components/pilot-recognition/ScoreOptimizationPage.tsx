@@ -8,8 +8,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Target, Loader2 } from 'lucide-react';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
-import { supabase } from '../../../../src/lib/supabase';
-import { useAuth } from '../../../../src/contexts/AuthContext';
+import { supabase } from '../../@/lib/supabase';
+import { useAuth } from '../../@/contexts/AuthContext';
 
 interface ScoreOptimizationPageProps {
     onNavigate: (page: string) => void;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, ShieldCheck, RefreshCw, Info, Monitor } from 'lucide-react';
-import { useSimSessionUpload, SimSessionFormData, EMPTY_SIM_FORM, ICAO_COMPETENCIES, SESSION_TYPES } from '../../../../src/hooks/useSimSessionUpload';
+import { useSimSessionUpload, SimSessionFormData, EMPTY_SIM_FORM, ICAO_COMPETENCIES, SESSION_TYPES } from '../../@/hooks/useSimSessionUpload';
 
 interface Props {
   onBack: () => void;

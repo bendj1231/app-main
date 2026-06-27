@@ -9,7 +9,7 @@ import { PathwaysCarousel } from '../components/PathwaysCarousel';
 import { PathwayStrategyCarousel } from '../components/PathwayStrategyCarousel';
 import { IndustryExpectationsCarousel } from '../components/IndustryExpectationsCarousel';
 import { ScoreOptimizationGuide } from '../../components/ScoreOptimizationGuide';
-import { useRecognitionScore } from '../../src/hooks/useRecognitionScore';
+import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../lib/pilot-recognition-score';
 
 interface DashboardPageProps {

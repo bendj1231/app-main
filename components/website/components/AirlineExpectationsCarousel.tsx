@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { IMAGES } from '../../../src/lib/website-constants';
-import { useAuth } from '../../../src/contexts/AuthContext';
+import { IMAGES } from '../@/lib/website-constants';
+import { useAuth } from '../@/contexts/AuthContext';
 import { supabase } from '../../../shared/lib/supabase';
 import { AirlineDetailModal } from './AirlineDetailModal';
 import { usePathwaysIntelligence } from '../../../portal/hooks/usePathwaysIntelligence';

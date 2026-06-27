@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Users, Clock, TrendingUp, Award, BarChart3, Star } from 'lucide-react';
-import { MentorshipAnalytics } from '../src/hooks/useMentorshipAnalytics';
+import { MentorshipAnalytics } from '@/hooks/useMentorshipAnalytics';
 
 interface MentorshipAnalyticsDashboardProps {
   analytics: MentorshipAnalytics | null;

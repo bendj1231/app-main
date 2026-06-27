@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { User, MapPin, Clock, Award, Send } from 'lucide-react';
-import { MentorMatch } from '../src/hooks/useMentorMatching';
+import { MentorMatch } from '@/hooks/useMentorMatching';
 
 interface MentorMatchingCardProps {
   match: MentorMatch;

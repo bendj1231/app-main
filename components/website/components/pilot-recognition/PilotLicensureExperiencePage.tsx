@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
-import { supabase } from '../../../../src/lib/supabase';
+import { supabase } from '../../@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
-import { useAccountTier } from '../../../../src/hooks/useAccountTier';
+import { useVaultProfile } from '../../@/hooks/useVaultProfile';
+import { useAccountTier } from '../../@/hooks/useAccountTier';
 import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap } from 'lucide-react';
 
 interface UploadedDoc {

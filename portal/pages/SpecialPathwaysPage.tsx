@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Search, MapPin, Star, Shield, Users, Clock, Award, Plane, X, ArrowLeft, User, Settings, Bell, LogOut, Globe, DollarSign } from 'lucide-react';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SpecialPathwaysPageProps {
   pathwayId: string;

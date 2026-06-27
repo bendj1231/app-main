@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { supabase } from '../../src/lib/supabase';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   MessageCircle,
   TrendingUp,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../../../src/contexts/AuthContext';
+import { useAuth } from '../../@/contexts/AuthContext';
 
 export const MFASetup: React.FC = () => {
   const { mfaSetup, mfaSetupData, mfaSetupStep, mfaVerify } = useAuth();

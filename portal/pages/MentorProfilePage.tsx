@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import { User, MapPin, Clock, Award, Star, Mail, Plane, GraduationCap, Briefcase, MessageSquare, CheckCircle } from 'lucide-react';
-import { useMentorshipTracking } from '../../src/hooks/useMentorshipTracking';
+import { useMentorshipTracking } from '@/hooks/useMentorshipTracking';
 
 interface MentorProfilePageProps {
   onBack: () => void;

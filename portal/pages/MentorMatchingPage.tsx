@@ -6,8 +6,8 @@
 
 import React, { useState } from 'react';
 import { Icons } from '../icons';
-import { useMentorMatching } from '../../src/hooks/useMentorMatching';
-import { useSubscriptionStatus } from '../../src/hooks/useSubscriptionStatus';
+import { useMentorMatching } from '@/hooks/useMentorMatching';
+import { useSubscriptionStatus } from '@/hooks/useSubscriptionStatus';
 import { MentorMatchingCard } from '../../components/MentorMatchingCard';
 import { Search, Filter, Crown } from 'lucide-react';
 

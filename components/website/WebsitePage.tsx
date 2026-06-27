@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { IMAGES } from '../../src/lib/website-constants';
+import { IMAGES } from '@/lib/website-constants';
 import { RevealOnScroll } from './RevealOnScroll';
 import { MindMap } from './MindMap';
 import { PilotsStory } from './PilotsStory';

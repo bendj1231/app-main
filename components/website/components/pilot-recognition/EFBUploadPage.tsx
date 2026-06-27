@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, BarChart2, ShieldCheck, RefreshCw, Info } from 'lucide-react';
-import { useEFBUpload, EFBFormData, EMPTY_EFB_FORM } from '../../../../src/hooks/useEFBUpload';
+import { useEFBUpload, EFBFormData, EMPTY_EFB_FORM } from '../../@/hooks/useEFBUpload';
 
 interface Props {
   onBack: () => void;

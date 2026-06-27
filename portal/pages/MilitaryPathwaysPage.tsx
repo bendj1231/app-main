@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Search, MapPin, Star, Shield, Users, Clock, Award, Plane, X, ArrowLeft, User, Settings, Bell, LogOut, Globe } from 'lucide-react';
 import { DUMMY_MILITARY_PATHWAYS, MilitaryBranch } from '../../data/military-pathways';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MilitaryPathwaysPageProps {
   pathwayId: string;

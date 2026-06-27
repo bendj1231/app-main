@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, GraduationCap, Award, Plane, Users, Clock, CheckCircle2, X, ArrowLeft, User, Settings, Bell, LogOut, Globe } from 'lucide-react';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '../../shared/lib/supabase';
 
 interface PathwayDetailPageProps {

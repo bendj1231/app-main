@@ -3,7 +3,7 @@ import { W1000App } from '../../../portal/components/w1000/W1000App';
 import { ArrowLeft, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/shared/supabase';
-import { useAuth } from '../../../src/contexts/AuthContext';
+import { useAuth } from '../@/contexts/AuthContext';
 
 interface W1000PageProps {
     onBack: () => void;

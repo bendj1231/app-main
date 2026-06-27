@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, CheckCircle2, XCircle, Clock, Loader2, Send, AlertCircle, ShieldCheck } from 'lucide-react';
-import { supabase } from '../../../../src/lib/supabase';
-import { useAuth } from '../../../../src/contexts/AuthContext';
+import { supabase } from '../../@/lib/supabase';
+import { useAuth } from '../../@/contexts/AuthContext';
 
 interface Props {
   onBack: () => void;

@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { useAuth } from '../src/contexts/AuthContext';
-import { supabase } from '../src/lib/supabase';
-import { bookmarkService } from '../src/services/bookmarkService';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { bookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '../components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '../components/website/components/PlatformNavbar';
-import { safeRedirect } from '../src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 // Types from Supabase schema
 interface Manufacturer {

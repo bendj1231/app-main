@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { useRecognitionScore } from '../src/hooks/useRecognitionScore';
+import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 import { RecognitionScoreDisplay } from './RecognitionScoreDisplay';
 import { RecognitionScoreCard } from './RecognitionScoreCard';
 import { LeaderboardTable } from './LeaderboardTable';

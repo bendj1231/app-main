@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../src/lib/supabase';
-import { useAuth } from '../../../src/contexts/AuthContext';
+import { supabase } from '../@/lib/supabase';
+import { useAuth } from '../@/contexts/AuthContext';
 
 type StoragePreference = 'multi' | 'supabase' | 'firebase';
 

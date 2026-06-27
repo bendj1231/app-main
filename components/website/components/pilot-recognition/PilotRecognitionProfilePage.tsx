@@ -5,7 +5,7 @@ import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus } from 'lucide-react';
 
 type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
-import { useWorkerAuth } from '../../../../src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '../../@/hooks/useWorkerAuth';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
@@ -16,15 +16,15 @@ import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { AdminDashboardPanel } from './AdminDashboardPanel';
-import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
-import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
+import { useRecognitionScore } from '../../@/hooks/useRecognitionScore';
+import { useVaultProfile } from '../../@/hooks/useVaultProfile';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
-import { uploadProfileImage } from '../../../../src/lib/cloudinaryClient';
-import ProfileImage from '../../../../src/components/ProfileImage';
-import { getProfileImageUrl } from '../../../../src/lib/cloudinaryConfig';
-import { cleanupOldProfileImage } from '../../../../src/lib/cloudinaryDelete';
+import { uploadProfileImage } from '../../@/lib/cloudinaryClient';
+import ProfileImage from '../../@/components/ProfileImage';
+import { getProfileImageUrl } from '../../@/lib/cloudinaryConfig';
+import { cleanupOldProfileImage } from '../../@/lib/cloudinaryDelete';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { useAuth } from '../../../../src/contexts/AuthContext';
+import { useAuth } from '../../@/contexts/AuthContext';
 
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;

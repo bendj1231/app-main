@@ -45,7 +45,7 @@ import LicensureTypeRatingPage from './LicensureTypeRatingPage';
 import CommercialPilotPathwayPage from './CommercialPilotPathwayPage';
 import { PathwaysSidebar } from '../../components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '../../components/website/components/PlatformNavbar';
-import { useAuth } from '../../src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
 import { DUMMY_MILITARY_PATHWAYS } from '../../data/military-pathways';
@@ -64,7 +64,7 @@ import {
   ScoreLiveWidget,
 } from '../components/PathwaysIntelligenceWidgets';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '../../src/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { 
   pathwayEngine, 
   extractPilotProfile, 

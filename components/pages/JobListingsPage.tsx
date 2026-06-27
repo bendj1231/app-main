@@ -18,7 +18,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { jobApplicationListings } from '../portal/pages/PilotJobDatabasePage';
-import { useAuth } from '../src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface JobListingsPageProps {
   onNavigate?: (page: string) => void;

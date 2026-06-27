@@ -6,7 +6,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, MoreVertical, Check } from 'lucide-react';
-import { MentorshipMessage } from '../src/hooks/useMentorshipMessaging';
+import { MentorshipMessage } from '@/hooks/useMentorshipMessaging';
 
 interface MentorshipMessageThreadProps {
   messages: MentorshipMessage[];

@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Trophy, Award, Star, Crown, Lock } from 'lucide-react';
-import { MentorshipBadge, BadgeDefinition } from '../src/hooks/useMentorshipBadges';
+import { MentorshipBadge, BadgeDefinition } from '@/hooks/useMentorshipBadges';
 
 interface MentorshipBadgesGridProps {
   earnedBadges: MentorshipBadge[];

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Clock, CheckCircle2 } from 'lucide-react';
-import { useAuth } from '../../../src/contexts/AuthContext';
+import { useAuth } from '../@/contexts/AuthContext';
 import { TopNavbar } from './TopNavbar';
 
 interface WhatIsPilotRecognitionPageProps {

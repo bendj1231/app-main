@@ -4,11 +4,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { CareerPathwaysNavbar } from '../layout/CareerPathwaysNavbar';
 import { BreadcrumbSchema } from '../../website/components/seo/BreadcrumbSchema';
-import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
+import { shouldEnable3DEffects } from '../@/lib/device-detection';
 import { DataControllerAgreementModal } from '../../website/components/DataControllerAgreementModal';
-import { supabase } from '../../../src/lib/supabase';
+import { supabase } from '../@/lib/supabase';
 import { WalletFirstCredentialFlow } from '../../website/components/WalletFirstCredentialFlow';
-import { issueAndStoreCredential } from '../../../src/lib/wallet';
+import { issueAndStoreCredential } from '../@/lib/wallet';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',

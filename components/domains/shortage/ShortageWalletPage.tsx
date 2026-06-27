@@ -7,10 +7,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet } from '../../../src/lib/wallet';
+import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet } from '../@/lib/wallet';
 import { generateEnclaveKey, getEnclaveStatus } from '../../../lib/wallet/enclave';
 import { Shield, Wallet, CheckCircle, AlertTriangle, Mic, FileText } from 'lucide-react';
-import { useWorkerAuth } from '../../../src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '../@/hooks/useWorkerAuth';
 
 interface ShortageWalletPageProps {
   auth0Id: string;

@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Icons } from '../icons';
-import { useMentorshipAnalytics } from '../../src/hooks/useMentorshipAnalytics';
+import { useMentorshipAnalytics } from '@/hooks/useMentorshipAnalytics';
 import { MentorshipAnalyticsDashboard } from '../../components/MentorshipAnalyticsDashboard';
 import { BarChart3 } from 'lucide-react';
 

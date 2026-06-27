@@ -7,7 +7,7 @@
 import React from 'react';
 import { Icons } from '../icons';
 import { LeaderboardTable } from '../../components/LeaderboardTable';
-import { useRecognitionScore } from '../../src/hooks/useRecognitionScore';
+import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 
 interface CommunityLeaderboardPageProps {
   onBack: () => void;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Shield, Mail, Users, BookOpen } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
-import { sanitizeHtml } from '../../../src/lib/sanitize-html';
+import { sanitizeHtml } from '../@/lib/sanitize-html';
 
 interface AboutPageProps {
     onBack: () => void;

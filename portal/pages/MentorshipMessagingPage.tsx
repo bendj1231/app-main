@@ -6,7 +6,7 @@
 
 import React, { useState } from 'react';
 import { Icons } from '../icons';
-import { useMentorshipMessaging } from '../../src/hooks/useMentorshipMessaging';
+import { useMentorshipMessaging } from '@/hooks/useMentorshipMessaging';
 import { MentorshipConversationList } from '../../components/MentorshipConversationList';
 import { MentorshipMessageThread } from '../../components/MentorshipMessageThread';
 import { MessageSquare, ArrowLeft } from 'lucide-react';

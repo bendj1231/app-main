@@ -6,7 +6,7 @@
 
 import React, { useState } from 'react';
 import { Calendar, Clock, Video, Users, Star, MessageSquare, CheckCircle } from 'lucide-react';
-import { MentorshipSession } from '../src/hooks/useMentorshipTracking';
+import { MentorshipSession } from '@/hooks/useMentorshipTracking';
 
 interface MentorshipSessionCardProps {
   session: MentorshipSession;

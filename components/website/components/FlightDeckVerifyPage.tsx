@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '../../../src/lib/supabase';
+import { supabase } from '../@/lib/supabase';
 import { getAuth0RedirectUri } from '@/lib/auth0';
 
 // Read pending login state set by FlightDeckLoginPage before Auth0

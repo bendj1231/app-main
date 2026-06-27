@@ -21,8 +21,8 @@ import {
   Target,
   Zap
 } from 'lucide-react';
-import RFormulaEngine from '../../../../src/lib/r-formula-engine';
-import { FlightInstrumentMetrics } from '../../../../src/lib/r-formula-engine';
+import RFormulaEngine from '../../@/lib/r-formula-engine';
+import { FlightInstrumentMetrics } from '../../@/lib/r-formula-engine';
 
 interface FlightInstrumentDashboardProps {
   userId: string;

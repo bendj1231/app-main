@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { User, Clock } from 'lucide-react';
-import { Conversation } from '../src/hooks/useMentorshipMessaging';
+import { Conversation } from '@/hooks/useMentorshipMessaging';
 
 interface MentorshipConversationListProps {
   conversations: Conversation[];

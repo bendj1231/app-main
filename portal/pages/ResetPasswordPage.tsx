@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase-auth';
 import { Icons } from '../icons';
-import { safeRedirect } from '../../src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 export const ResetPasswordPage: React.FC = () => {
     const [newPassword, setNewPassword] = useState('');
