@@ -159,6 +159,7 @@ export default function VerifyApcPage() {
     enrollmentDetails: '',
     isAbInitioPilot: false,
     abInitioDetails: '',
+    radioLicenseExpiry: '',
     hasNoLicenseExpiry: false,
     hasNotFlown: false,
     hasNoMedical: false,
@@ -1104,6 +1105,19 @@ export default function VerifyApcPage() {
                 No
               </button>
             </div>
+            {apcFormData.hasRadioLicense && (
+              <div className="mt-2">
+                <p className="text-[10px] font-semibold text-gray-700 mb-1">Radio License Expiry Date</p>
+                <input
+                  type="text"
+                  placeholder="Month/Day/Year"
+                  value={apcFormData.radioLicenseExpiry}
+                  onChange={(e) => setApcFormData(p => ({ ...p, radioLicenseExpiry: formatDateInput(e.target.value) }))}
+                  className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+                />
+              </div>
+            )}
           </div>
         </motion.div>
 
