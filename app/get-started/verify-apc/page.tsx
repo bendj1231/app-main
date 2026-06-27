@@ -222,7 +222,6 @@ export default function VerifyApcPage() {
       case 2:
         return true;
       case 3:
-        if (apcFormData.hasNoLicense) return true;
         const hasValidLicense = !!apcFormData.licenseNumber && (apcFormData.hasNoLicenseExpiry || !!apcFormData.licenseExpiryDate);
         const hasValidMedical = !apcFormData.hasNoMedical && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
         return hasValidLicense && (apcFormData.hasNotFlown || true) && (apcFormData.hasNoMedical || hasValidMedical);
@@ -647,9 +646,9 @@ export default function VerifyApcPage() {
             {/* Progress Bar */}
             {(() => {
               const shouldHideExtras = apcFormData.hasNotFlown || !apcFormData.hasFlightExperience;
-              const visibleStepIdxs = apcFormData.hasNoLicense ? [0, 1, 2, 8] : shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
+              const visibleStepIdxs = apcFormData.hasNoLicense ? [0, 1, 8] : shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
               const visibleTotal = visibleStepIdxs.length;
-              const visualStep = apcFormData.hasNoLicense ? (step <= 3 ? step : 4) : shouldHideExtras ? (step <= 4 ? step : 5) : step;
+              const visualStep = apcFormData.hasNoLicense ? (step <= 2 ? step : 3) : shouldHideExtras ? (step <= 4 ? step : 5) : step;
               return (
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
@@ -807,6 +806,18 @@ export default function VerifyApcPage() {
                 ? 'You will be asked for license details, ratings, flight hours, and logbook in upcoming stages.'
                 : 'Stages for aircraft ratings, type ratings, and flight hours will be skipped. You can always update your profile later as you gain experience.'}
             </p>
+            {/* No license checkbox (only for zero-experience pilots) */}
+            {!apcFormData.hasFlightExperience && (
+              <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={apcFormData.hasNoLicense}
+                  onChange={(e) => setApcFormData(p => ({ ...p, hasNoLicense: e.target.checked }))}
+                  className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+                />
+                <span className="text-[10px] text-gray-700">I don't have a pilot license yet</span>
+              </label>
+            )}
           </div>
 
           {/* Pathway Interest */}
@@ -840,8 +851,8 @@ export default function VerifyApcPage() {
           <button type="button" onClick={() => setStep(1)} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
             <ArrowRight size={14} className="rotate-180" /> Back
           </button>
-          <button type="button" onClick={() => canProceed(2) && setStep(3)} disabled={!canProceed(2)} className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}>
-            Next: License & Medical <ArrowRight size={14} />
+          <button type="button" onClick={() => canProceed(2) && setStep(apcFormData.hasNoLicense ? 9 : 3)} disabled={!canProceed(2)} className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}>
+            {apcFormData.hasNoLicense ? 'Continue' : 'Next: License & Medical'} <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -1157,18 +1168,6 @@ export default function VerifyApcPage() {
               <span className="text-[9px] text-gray-600">I don't hold a radio license</span>
             </label>
           </div>
-          {/* No license checkbox (only for zero-experience pilots) */}
-          {!apcFormData.hasFlightExperience && (
-            <label className="flex items-center gap-2 mt-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={apcFormData.hasNoLicense}
-                onChange={(e) => setApcFormData(p => ({ ...p, hasNoLicense: e.target.checked, licenseNumber: e.target.checked ? '' : p.licenseNumber, licenseExpiryDate: e.target.checked ? '' : p.licenseExpiryDate, hasNoLicenseExpiry: false }))}
-                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
-              />
-              <span className="text-[10px] text-gray-700">I don't have a pilot license yet</span>
-            </label>
-          )}
         </motion.div>
 
         <div className="flex justify-between">
@@ -1182,12 +1181,12 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(apcFormData.hasNoLicense ? 9 : 4)}
+            onClick={() => canProceed(3) && setStep(4)}
             disabled={!canProceed(3)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            {apcFormData.hasNoLicense ? 'Continue' : 'Next: Core Documents'} <ArrowRight size={14} />
+            Next: Core Documents <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
