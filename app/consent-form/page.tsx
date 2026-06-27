@@ -34,8 +34,20 @@ export default function ConsentFormPage() {
         {/* Form Content */}
         <div className="text-center mb-8">
           <h1 className="text-lg font-black tracking-tight text-gray-900">AVIATION PATHWAYS CONSULTANCY (APC)</h1>
-          <p className="text-sm text-gray-500">Universal Aviation Verification — Pilot Consent Form</p>
+          <p className="text-sm text-gray-500">Universal Aviation Verification — Pilot-Initiated Consent Form</p>
           <p className="text-xs text-gray-400 mt-1">Data Controller registered in Mauritius | DPA 2017 Compliant</p>
+        </div>
+
+        {/* Pilot Workflow Instruction */}
+        <div className="rounded-xl p-3 mb-6" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
+          <p className="text-[10px] font-semibold text-blue-800 mb-1.5 uppercase tracking-wider">How to use this form — pilot-initiated verification</p>
+          <ol className="text-[10px] text-blue-700 space-y-1 list-decimal list-inside leading-snug">
+            <li><span className="font-semibold">Print</span> this form after completing Sections 1 and 2.</li>
+            <li><span className="font-semibold">Present</span> the printed form to the authorized representative of your Approved Aviation Body (e.g., your ATO, operator, or flight school).</li>
+            <li><span className="font-semibold">Obtain</span> their signature, classification tick, and consent in Section 3.</li>
+            <li><span className="font-semibold">Scan</span> the fully signed form and upload it to your APC verification portal.</li>
+          </ol>
+          <p className="text-[9px] text-blue-600 mt-1.5 leading-snug">You do not need APC to contact the aviation body on your behalf — this form empowers you to obtain consent directly from the organization that knows your training and flight history best.</p>
         </div>
 
         <div className="space-y-8">
@@ -54,7 +66,7 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">2. Approved Aviation Body Information</h2>
             <p className="text-[10px] text-gray-500 mb-3 leading-snug">
-              The pilot must identify the Approved Aviation Body from which authorization is being requested. If multiple bodies are involved, a separate consent form should be completed for each.
+              The pilot must identify the Approved Aviation Body from which authorization is being requested, print this form, and present it to the organization's authorized representative for signature. If multiple bodies are involved, a separate consent form should be completed for each.
             </p>
             <div className="grid grid-cols-2 gap-4">
               {['Organization / Body Name', 'Organization Location / Country'].map((label) => (
@@ -69,7 +81,7 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Approved Aviation Body Representative — Information, Classification & Consent</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              This section is to be completed by the authorized representative of the <span className="font-semibold text-gray-800">Approved Aviation Body</span> identified in Section 2 above. The undersigned representative provides consent and authorization for Aviation Pathways Consultancy (APC) to verify the pilot named above. The representative confirms they are authorized to act on behalf of the organization and have the authority to provide this consent. This form serves as a universal authorization — any Approved Aviation Body listed in the classification grid below may use this form.
+              This section is to be completed by the authorized representative of the <span className="font-semibold text-gray-800">Approved Aviation Body</span> identified in Section 2 above. The pilot will present this printed form to the organization's representative in person. The undersigned representative provides consent and authorization for Aviation Pathways Consultancy (APC) to verify the pilot named above. The representative confirms they are authorized to act on behalf of the organization and have the authority to provide this consent. This form serves as a universal authorization — any Approved Aviation Body listed in the classification grid below may use this form.
             </p>
 
             {/* Classification Grid */}
@@ -129,7 +141,7 @@ export default function ConsentFormPage() {
               <p className="text-[10px] font-semibold text-gray-700 mb-2 uppercase tracking-wider">Consent confirmation — tick to confirm</p>
               <div className="space-y-1.5 text-[10px]">
                 {[
-                  'I acknowledge that APC may contact this organization to verify the pilot\'s flight training records, logbook hours, licenses, ratings, and endorsements.',
+                  'I acknowledge that the pilot has presented this form on their own initiative and that APC may contact this organization to verify the pilot\'s flight training records, logbook hours, licenses, ratings, and endorsements.',
                   'I consent to the release of verification information to APC and the pilot as part of the PilotRecognition verification framework.',
                   'I confirm that I am authorized to act on behalf of the organization named above and have the authority to provide this consent.',
                   'I confirm that the information provided above is accurate and complete to the best of my knowledge.',
@@ -162,10 +174,10 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">4. Authorization</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              The pilot hereby authorizes Aviation Pathways Consultancy (APC) to contact the <span className="font-semibold text-gray-800">Approved Aviation Body</span> named above and request verification of the pilot's flight training records and logbook hours. The pilot understands that:
+              The pilot hereby confirms that they have obtained consent from the <span className="font-semibold text-gray-800">Approved Aviation Body</span> named above by presenting this signed form in person, and authorizes Aviation Pathways Consultancy (APC) to contact that body to request verification of the pilot's flight training records and logbook hours. The pilot understands that:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>APC will send the pilot's uploaded documents (license, medical, ratings) and this consent form to the Approved Aviation Body via email.</li>
+              <li>APC will send the pilot's uploaded documents (license, medical, ratings) and this signed consent form to the Approved Aviation Body via email.</li>
               <li>The Approved Aviation Body will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
               <li>APC will receive only a confirmation that verification was completed, not the pilot's actual flight hours.</li>
               <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
@@ -176,7 +188,7 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">5. Declaration</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-4">
-              The pilot confirms that all information provided is accurate and complete to the best of the pilot's knowledge. The pilot understands that providing false or misleading information may result in the rejection of the verification request.
+              The pilot confirms that all information provided is accurate and complete to the best of the pilot's knowledge. The pilot further confirms that they personally obtained the signature and consent of the Approved Aviation Body representative documented in Section 3 above, and that they are authorized to submit this form on behalf of that organization for verification purposes. The pilot understands that providing false or misleading information, or submitting a form with an unauthorized or falsified signature, may result in the rejection of the verification request, immediate revocation of the pilot's PilotRecognition profile, and potential legal consequences.
             </p>
           </section>
 
