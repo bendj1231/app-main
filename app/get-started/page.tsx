@@ -38,6 +38,7 @@ export default function GetStartedPage() {
   const [step, setStep] = useState<Step>('welcome');
   const [userName, setUserName] = useState<string>('Pilot');
   const [isVerifying, setIsVerifying] = useState(false);
+  const [showExpectModal, setShowExpectModal] = useState(false);
 
   // If returning from APC verification page, auto-advance to copilot
   useEffect(() => {
@@ -325,24 +326,20 @@ export default function GetStartedPage() {
                 </div>
               </motion.div>
 
-              {/* What to expect */}
+              {/* Learn More */}
               <motion.div
-                className="rounded-xl p-4 mb-6 text-left"
-                style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}
+                className="flex items-center justify-center mb-5"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
               >
-                <p className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wider">What to expect</p>
-                <p className="text-[10px] text-gray-700 leading-relaxed mb-2">
-                  APC will verify your pilot license with the governing aviation authority to confirm validity, expiration status, and detect any fraudulent or tampered documents. We will also contact your named ATO, Operator, Type Rating Center, or any aviation body to verify your logged flight hours and training records. A formal third-party authorization with your signed consent is required for the aviation body to release records.
-                </p>
-                <p className="text-[10px] text-gray-600 leading-relaxed mb-2">
-                  <span className="font-semibold text-gray-700">Note on archived records:</span> Many ATOs and operators archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
-                </p>
-                <p className="text-[10px] text-gray-600 leading-relaxed">
-                  <span className="font-semibold text-gray-700">Aviation body internal forms:</span> Some ATOs, operators, or type rating centers may reject our consent template and require you to sign their specific institutional release form instead. If this happens, APC will notify you immediately.
-                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowExpectModal(true)}
+                  className="text-[11px] font-bold text-blue-600 hover:text-blue-700 underline underline-offset-2 decoration-blue-300 hover:decoration-blue-500 transition-colors"
+                >
+                  Learn more about the verification process →
+                </button>
               </motion.div>
 
               {/* Action buttons */}
@@ -383,6 +380,52 @@ export default function GetStartedPage() {
                   Verify Later
                 </motion.button>
               </div>
+
+              {/* What to Expect Modal */}
+              {showExpectModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowExpectModal(false)} />
+                  <motion.div
+                    className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 md:p-8"
+                    style={{ border: '1px solid rgba(0,0,0,0.08)' }}
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-xs font-black text-gray-900 uppercase tracking-wider">What to expect</p>
+                      <button
+                        type="button"
+                        onClick={() => setShowExpectModal(false)}
+                        className="text-gray-400 hover:text-gray-700 text-lg leading-none"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      <p className="text-[11px] text-gray-700 leading-relaxed">
+                        APC will verify your pilot license with the governing aviation authority to confirm validity, expiration status, and detect any fraudulent or tampered documents. We will also contact your named ATO, Operator, Type Rating Center, or any aviation body to verify your logged flight hours and training records. A formal third-party authorization with your signed consent is required for the aviation body to release records.
+                      </p>
+                      <p className="text-[11px] text-gray-600 leading-relaxed">
+                        <span className="font-semibold text-gray-700">Note on archived records:</span> Many ATOs and operators archive older records. Response times can range from 3 to 14 business days, and some institutions may charge a processing fee to extract logbooks or simulator profiles.
+                      </p>
+                      <p className="text-[11px] text-gray-600 leading-relaxed">
+                        <span className="font-semibold text-gray-700">Aviation body internal forms:</span> Some ATOs, operators, or type rating centers may reject our consent template and require you to sign their specific institutional release form instead. If this happens, APC will notify you immediately.
+                      </p>
+                    </div>
+                    <div className="mt-5 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setShowExpectModal(false)}
+                        className="px-5 py-2 rounded-full text-[11px] font-bold text-white transition-all hover:brightness-110"
+                        style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+                      >
+                        Got it
+                      </button>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
             </motion.div>
           )}
 
