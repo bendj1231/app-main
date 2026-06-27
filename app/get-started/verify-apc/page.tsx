@@ -35,6 +35,38 @@ const COUNTRIES = [
   { code: 'MU', name: 'Mauritius', flag: '🇲🇺', prefix: '+230' },
 ];
 
+const NATIONALITY_OPTIONS = [
+  'Philippines', 'United States', 'United Kingdom', 'Canada', 'Australia', 'UAE', 'Singapore',
+  'India', 'Pakistan', 'South Africa', 'Nigeria', 'Kenya', 'Ghana', 'Ethiopia', 'Uganda',
+  'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda',
+  'Argentina', 'Armenia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh',
+  'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia',
+  'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso',
+  'Burundi', 'Cambodia', 'Cameroon', 'Cape Verde', 'Central African Republic', 'Chad',
+  'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba',
+  'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic',
+  'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia',
+  'Eswatini', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany',
+  'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti',
+  'Honduras', 'Hungary', 'Iceland', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel',
+  'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kiribati', 'Kuwait', 'Kyrgyzstan',
+  'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein',
+  'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali',
+  'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia',
+  'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar',
+  'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger',
+  'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Palau', 'Palestine', 'Panama',
+  'Papua New Guinea', 'Paraguay', 'Peru', 'Poland', 'Portugal', 'Qatar', 'Romania',
+  'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines',
+  'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia',
+  'Seychelles', 'Sierra Leone', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia',
+  'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden',
+  'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo',
+  'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu',
+  'Ukraine', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam',
+  'Yemen', 'Zambia', 'Zimbabwe',
+];
+
 const CountryPhoneInput: React.FC<{ value: string; onChange: (val: string) => void }> = ({ value, onChange }) => {
   // Parse initial value to set country and local number
   const [country, setCountry] = useState(() => {
@@ -548,7 +580,17 @@ export default function VerifyApcPage() {
               value={apcFormData.phone}
               onChange={(value) => setApcFormData(p => ({ ...p, phone: value }))}
             />
-            <input type="text" placeholder="Nationality" value={apcFormData.nationality} onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <select
+              value={apcFormData.nationality}
+              onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <option value="">Select Nationality</option>
+              {NATIONALITY_OPTIONS.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
           </div>
           <p className="text-[10px] text-gray-500 leading-relaxed mt-2">
             This email will be the recipient for your verification report, covering account status, logbook status, and license status. This report can and will be used for international personal identification during pathway submission of interests to operators, and can also be used outside of the platform as a form of verification.
