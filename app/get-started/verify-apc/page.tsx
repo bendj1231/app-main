@@ -35,6 +35,7 @@ export default function VerifyApcPage() {
   const [apcConsentChecked, setApcConsentChecked] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<Record<string, 'idle' | 'uploading' | 'done' | 'error'>>({});
   const [atoConsentChecked, setAtoConsentChecked] = useState(false);
+  const [licenseConsentChecked, setLicenseConsentChecked] = useState(false);
   const [privacyConsentChecked, setPrivacyConsentChecked] = useState(false);
   const [apcFormData, setApcFormData] = useState({
     fullName: '', phone: '', nationality: '', licenseNumber: '', licenseType: 'PPL',
@@ -250,84 +251,6 @@ export default function VerifyApcPage() {
       console.error('[Submit] Error:', err);
       setSubmitStatus('error');
     }
-  };
-
-  const printConsentForm = () => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
-    const today = new Date().toLocaleDateString('en-GB');
-    const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ATO Verification Consent Form — APC</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #333; line-height: 1.6; }
-    h1 { font-size: 18px; text-align: center; margin-bottom: 8px; }
-    h2 { font-size: 14px; margin-top: 24px; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
-    .header { text-align: center; margin-bottom: 24px; }
-    .header p { font-size: 11px; color: #666; margin: 4px 0; }
-    .field { margin: 12px 0; }
-    .field label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
-    .field .line { border-bottom: 1px solid #333; height: 20px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .checkbox { margin: 8px 0; font-size: 11px; }
-    .footer { margin-top: 40px; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 12px; }
-    @media print { body { margin: 0; } .no-print { display: none; } }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h1>AVIATION PATHWAYS CONSULTANCY (APC)</h1>
-    <p>ATO Training Records Verification — Pilot Consent Form</p>
-    <p>Data Controller registered in Mauritius | DPA 2017 Compliant</p>
-  </div>
-
-  <h2>1. Pilot Information</h2>
-  <div class="grid-2">
-    <div class="field"><label>Full Name</label><div class="line"></div></div>
-    <div class="field"><label>License Number</label><div class="line"></div></div>
-    <div class="field"><label>Email Address</label><div class="line"></div></div>
-    <div class="field"><label>Phone Number</label><div class="line"></div></div>
-    <div class="field"><label>Nationality</label><div class="line"></div></div>
-    <div class="field"><label>Date of Birth</label><div class="line"></div></div>
-  </div>
-
-  <h2>2. ATO Information</h2>
-  <div class="grid-2">
-    <div class="field"><label>ATO Name</label><div class="line"></div></div>
-    <div class="field"><label>ATO Location</label><div class="line"></div></div>
-  </div>
-
-  <h2>3. Authorization</h2>
-  <p style="font-size:11px;">I hereby authorize Aviation Pathways Consultancy (APC) to contact the ATO named above and request verification of my flight training records and logbook hours on my behalf. I understand that:</p>
-  <ul style="font-size:11px; margin: 8px 0;">
-    <li>APC will send my uploaded documents (license, medical, ratings) and this consent form to the ATO via email.</li>
-    <li>The ATO will verify my logbook hours and send the results directly to my email address.</li>
-    <li>APC will receive only a confirmation that verification was completed, not my actual flight hours.</li>
-    <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
-  </ul>
-
-  <h2>4. Declaration</h2>
-  <p style="font-size:11px;">I confirm that all information provided is accurate and complete to the best of my knowledge. I understand that providing false or misleading information may result in the rejection of my verification request.</p>
-
-  <div class="grid-2" style="margin-top: 32px;">
-    <div class="field"><label>Pilot Signature</label><div class="line"></div></div>
-    <div class="field"><label>Date</label><div class="line">${today}</div></div>
-  </div>
-
-  <div class="footer">
-    <p>For data protection inquiries: Benjamin Bowler — benjamin@pilotrecognition.com</p>
-    <p>This form is issued under the Mauritius Data Protection Act 2017. Documents processed: encrypted storage, 30-day retention.</p>
-  </div>
-
-  <div class="no-print" style="text-align: center; margin-top: 30px;">
-    <button onclick="window.print()" style="padding: 10px 24px; background: #dc2626; color: white; border: none; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer;">PRINT / SAVE AS PDF</button>
-  </div>
-</body>
-</html>`;
-    printWindow.document.write(html);
-    printWindow.document.close();
   };
 
   const renderHoursRow = (label: string, key: string) => (
@@ -854,7 +777,28 @@ export default function VerifyApcPage() {
               + Add Another Type Rating
             </button>
           </div>
-          <div className="rounded-xl p-2 mt-2 flex items-center gap-2" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
+
+          {/* License & Type Rating Verification Consent */}
+          <div className="flex items-center gap-2 mb-2 mt-3">
+            <button
+              type="button"
+              onClick={() => navigate('/license-verification-consent')}
+              className="text-[10px] font-semibold text-amber-600 hover:text-amber-700 underline cursor-pointer"
+            >
+              Download/Print License Verification Consent Form
+            </button>
+            <span className="text-[9px] text-gray-400">— sign, scan, and upload above</span>
+          </div>
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" checked={licenseConsentChecked} onChange={(e) => setLicenseConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700 leading-snug">
+                I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to use my pilot license, type ratings, medical certificate, and related documents for verification with the designated Civil Aviation Authority (CAA). I confirm these documents are authentic and I am the legitimate holder. I understand that falsified documents may result in profile revocation and legal consequences.
+              </span>
+            </label>
+          </div>
+
+          <div className="rounded-xl p-2 flex items-center gap-2" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
             <ShieldCheck size={14} className="text-green-500 flex-shrink-0" />
             <p className="text-[9px] text-gray-600 leading-snug">
               <span className="font-semibold text-gray-700">Secure storage:</span> Documents are encrypted and automatically deleted <span className="font-bold text-gray-800">30 days</span> after verification is complete.
@@ -1162,11 +1106,11 @@ export default function VerifyApcPage() {
           )}
           <motion.button
             onClick={handleSubmit}
-            disabled={submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcLicenseFile || !apcLicenseBackFile || !apcRadioNtcFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
+            disabled={submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcLicenseFile || !apcLicenseBackFile || !apcRadioNtcFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !licenseConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: submitStatus === 'success' ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-            whileHover={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {}}
-            whileTap={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {}}
+            whileHover={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {}}
+            whileTap={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {}}
           >
             {submitStatus === 'submitting' ? (
               <>
