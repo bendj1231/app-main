@@ -83,9 +83,10 @@ export default function LicenseVerificationConsentPage() {
               The pilot confirms that they are the legitimate holder of the licenses, ratings, and certificates submitted above. The pilot understands that:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>Submitting falsified or fraudulent documents is a criminal offense under applicable aviation and data protection laws.</li>
-              <li>APC and the verifying CAA may report suspected fraudulent documentation to the appropriate regulatory and law enforcement authorities.</li>
-              <li>The pilot's PilotRecognition profile and any associated wallet credentials may be revoked if documents are found to be fraudulent.</li>
+              <li>Submitting falsified, fraudulent, expired, blacklisted, missing, stolen, or tampered documents is a criminal offense under applicable aviation and data protection laws.</li>
+              <li>The governing Civil Aviation Authority (CAA), Authorized Training Organization (ATO), or Chief Flight Instructor (CFI) may identify documents that are falsified, expired, blacklisted, missing, stolen, or tampered with during the verification process.</li>
+              <li>APC, the verifying CAA, ATO, or CFI may report suspected fraudulent, expired, blacklisted, missing, stolen, or tampered documentation to the appropriate regulatory and law enforcement authorities.</li>
+              <li>The pilot's PilotRecognition profile and any associated wallet credentials will be immediately revoked if documents are found to be falsified, fraudulent, expired, blacklisted, missing, stolen, or tampered with.</li>
             </ul>
           </section>
 
@@ -96,7 +97,7 @@ export default function LicenseVerificationConsentPage() {
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
               <li><span className="font-semibold text-gray-800">CAA-issued licenses</span> (PPL, CPL, ATPL, type ratings) that are verified as valid and authentic will be marked compliant with no further action required.</li>
-              <li><span className="font-semibold text-gray-800">Logbook & training records</span> are subject to credibility review based on the ATO response. Any discrepancies found — including mismatched hours, missing CFI signatures, incomplete endorsements, or conflicting entries — will be flagged for review.</li>
+              <li><span className="font-semibold text-gray-800">Logbook & training records</span> are subject to credibility review based on the ATO and CFI response. Any discrepancies found — including mismatched hours, missing CFI signatures, incomplete endorsements, conflicting entries, or evidence of falsified, expired, blacklisted, missing, stolen, or tampered documents — will be flagged for review.</li>
               <li>If discrepancies are identified, the pilot's account will be <span className="font-semibold text-gray-800">flagged for review for 30 days</span> to allow correction or re-upload of corrected documents. Issues will be underlined throughout the verification report.</li>
               <li>If the ATO or CFI indicates that a document requires review or re-upload (e.g., illegible signature, incorrect date format, missing page), the pilot is required to resolve the issue within the 30-day window.</li>
               <li>The initial verification fee is <span className="font-semibold text-gray-800">non-refundable</span>. If reverification is required due to discrepancies or rejected documents, a <span className="font-semibold text-gray-800">$50 reverification fee</span> will apply, as this involves manual review and compliance processing.</li>
