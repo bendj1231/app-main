@@ -113,7 +113,7 @@ export default function ConsentFormPage() {
                   'Other (specify below)',
                 ].map((item) => (
                   <label key={item} className="flex items-center gap-1.5 cursor-pointer">
-                    <input type="checkbox" className="w-3 h-3 rounded border-gray-300 text-amber-500 cursor-pointer flex-shrink-0" />
+                    <input type="checkbox" className="w-3 h-3 rounded border-black text-amber-500 cursor-pointer flex-shrink-0" />
                     <span className="text-gray-700 leading-tight">{item}</span>
                   </label>
                 ))}
@@ -165,7 +165,7 @@ export default function ConsentFormPage() {
                   'I confirm that the information provided above is accurate and complete to the best of my knowledge.',
                 ].map((item, i) => (
                   <label key={i} className="flex items-start gap-1.5 cursor-pointer">
-                    <input type="checkbox" className="w-3 h-3 rounded border-gray-300 text-amber-500 cursor-pointer flex-shrink-0 mt-0.5" />
+                    <input type="checkbox" className="w-3 h-3 rounded border-black text-amber-500 cursor-pointer flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700 leading-tight">{item}</span>
                   </label>
                 ))}
