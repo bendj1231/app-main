@@ -551,6 +551,41 @@ export default function VerifyApcPage() {
               </button>
             ))}
           </div>
+          <div className="mb-3">
+            <p className="text-[10px] font-semibold text-gray-700 mb-1">Issuing Authority / Governing Aviation Authority</p>
+            <select
+              value={apcFormData.issuingAuthority}
+              onChange={(e) => setApcFormData(p => ({ ...p, issuingAuthority: e.target.value }))}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <option value="">Select Authority</option>
+              <option value="CAAP">CAAP — Civil Aviation Authority of the Philippines</option>
+              <option value="FAA">FAA — Federal Aviation Administration (USA)</option>
+              <option value="EASA">EASA — European Union Aviation Safety Agency</option>
+              <option value="CAA UK">CAA UK — Civil Aviation Authority (UK)</option>
+              <option value="CASA">CASA — Civil Aviation Safety Authority (Australia)</option>
+              <option value="GCAA">GCAA — General Civil Aviation Authority (UAE)</option>
+              <option value="CAAS">CAAS — Civil Aviation Authority of Singapore</option>
+              <option value="CAAM">CAAM — Civil Aviation Authority of Malaysia</option>
+              <option value="CAAS Indonesia">CAAS Indonesia — Civil Aviation Authority (Indonesia)</option>
+              <option value="DGCA India">DGCA India — Directorate General of Civil Aviation (India)</option>
+              <option value="SACAA">SACAA — South African Civil Aviation Authority</option>
+              <option value="NCAA">NCAA — Nigerian Civil Aviation Authority</option>
+              <option value="KCAA">KCAA — Kenya Civil Aviation Authority</option>
+              <option value="CAA Mauritius">CAA Mauritius — Civil Aviation Department</option>
+              <option value="TC Canada">TC Canada — Transport Canada</option>
+              <option value="JCAB">JCAB — Japan Civil Aviation Bureau</option>
+              <option value="CAAC">CAAC — Civil Aviation Administration of China</option>
+              <option value="CAA Thailand">CAA Thailand — Department of Civil Aviation</option>
+              <option value="CAA Vietnam">CAA Vietnam — Civil Aviation Authority of Vietnam</option>
+              <option value="CAA Saudi Arabia">CAA Saudi Arabia — General Authority of Civil Aviation</option>
+              <option value="CAA Qatar">CAA Qatar — Civil Aviation Authority</option>
+              <option value="CAA Oman">CAA Oman — Public Authority for Civil Aviation</option>
+              <option value="CAA Kuwait">CAA Kuwait — Directorate General of Civil Aviation</option>
+              <option value="Other">Other — Not listed above</option>
+            </select>
+          </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">Additional Ratings & Type Ratings</p>
           {/* Toggleable preset pills */}
           <div className="flex flex-wrap gap-1.5 mb-2">
