@@ -188,18 +188,8 @@ export default function VerifyApcPage() {
     switch (currentStep) {
       case 1:
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
-      case 2: {
-        const ok = !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
-        if (!ok) {
-          console.log('[canProceed:2]', {
-            licenseNumber: apcFormData.licenseNumber,
-            licenseExpiryDate: apcFormData.licenseExpiryDate,
-            medicalClass: apcFormData.medicalClass,
-            medicalExpiry: apcFormData.medicalExpiry,
-          });
-        }
-        return ok;
-      }
+      case 2:
+        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
       case 3: {
         const allRatingsHaveDocs = apcFormData.additionalRatings.every(
           (r) => !!ratingFiles[r]
@@ -637,7 +627,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
-              <input type="date" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none h-9 leading-none appearance-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="YYYY-MM-DD" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
@@ -832,7 +822,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Expiry Date</p>
-              <input type="date" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none h-9 leading-none appearance-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="YYYY-MM-DD" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
         </motion.div>
