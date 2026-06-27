@@ -1041,6 +1041,16 @@ export default function VerifyApcPage() {
         >
         {/* ── Step 4: Aircraft Ratings ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+          {/* Recurrency Info */}
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
+            <p className="text-[9px] font-bold text-blue-700 mb-1">Will the aircraft be removed from my license if I don&apos;t do recurrency?</p>
+            <p className="text-[9px] text-gray-600 mb-1">No. The aircraft class or type ratings will not be removed from your physical license card if you fall out of recurrency. The ratings remain printed on your license permanently, but they become inactive (un-exercisable). You are legally prohibited from acting as a pilot or crew member on those aircraft until you meet the standard Philippine Civil Aviation Regulations (PCAR) currency requirements.</p>
+            <p className="text-[9px] font-bold text-gray-700 mb-0.5">The Rating (On the Card)</p>
+            <p className="text-[9px] text-gray-600 mb-1">This proves you successfully passed the checkride and ground school required to fly that specific aircraft category, class, or type. It does not vanish because of time.</p>
+            <p className="text-[9px] font-bold text-gray-700 mb-0.5">The Privilege (The Legality)</p>
+            <p className="text-[9px] text-gray-600">To actually fly that aircraft, your rating must be &quot;current&quot;. Without recurrency, you still &quot;hold&quot; the rating, but you cannot legally use it.</p>
+          </div>
+
           {/* Aircraft Rating Certificates */}
           {apcFormData.additionalRatings.length > 0 && (
             <div className="mt-3">
