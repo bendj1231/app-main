@@ -7,6 +7,7 @@ import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
+  Globe, Star, Lock, CheckCircle,
 } from 'lucide-react';
 
 const fadeUp = {
@@ -160,6 +161,7 @@ export default function VerifyApcPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
+  const [hasStarted, setHasStarted] = useState(false);
   const totalSteps = 5;
   const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Ratings', 'Flight Hours & Logbook', 'Authorization & Submit'];
   const stepDescriptions = [
@@ -525,53 +527,136 @@ export default function VerifyApcPage() {
           </div>
         </div>
 
-        <motion.div className="text-center mb-8" variants={fadeUp} custom={0}>
-          <p className="text-xs font-black tracking-widest mb-2" style={{ color: '#dc2626' }}>
-            RECOGNITION+
-          </p>
-          <h1 className="text-2xl font-black tracking-tight text-gray-900 mb-2">
-            Pilot Verification Form
-          </h1>
-          <p className="text-sm text-gray-500">
-            {stepDescriptions[step - 1]}
-          </p>
-        </motion.div>
+        {!hasStarted ? (
+          <motion.div
+            className="text-center py-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Hero Shield */}
+            <motion.div
+              className="mx-auto w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
+              style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+            >
+              <ShieldCheck size={40} className="text-white" />
+            </motion.div>
 
-        {/* Progress Bar */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-              Step {step} of {totalSteps}: {stepTitles[step - 1]}
+            <p className="text-xs font-black tracking-widest mb-2" style={{ color: '#dc2626' }}>
+              RECOGNITION+
             </p>
-            <p className="text-[10px] font-bold text-gray-400">{Math.round((step / totalSteps) * 100)}% complete</p>
-          </div>
-          <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-500 ease-out"
-              style={{
-                width: `${(step / totalSteps) * 100}%`,
-                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-              }}
-            />
-          </div>
-          <div className="flex justify-between mt-2">
-            {stepTitles.map((title, i) => (
-              <div key={title} className="flex flex-col items-center" style={{ width: `${100 / totalSteps}%` }}>
-                <div
-                  className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 transition-all"
-                  style={{
-                    background: step > i + 1 ? '#dc2626' : step === i + 1 ? '#dc2626' : 'rgba(0,0,0,0.06)',
-                    color: step >= i + 1 ? '#fff' : '#9ca3af',
-                  }}
-                >
-                  {step > i + 1 ? '✓' : i + 1}
-                </div>
-                <p className={`text-[8px] font-semibold text-center leading-tight ${step >= i + 1 ? 'text-gray-800' : 'text-gray-400'}`}>{title}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+            <h1 className="text-2xl font-black tracking-tight text-gray-900 mb-2">
+              Verify Your Pilot Credentials
+            </h1>
+            <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto leading-relaxed">
+              Get recognized by airlines and operators worldwide. Your verified profile becomes your passport to exclusive pathway opportunities.
+            </p>
 
+            {/* Benefit Cards */}
+            <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto mb-6">
+              {[
+                { icon: Globe, label: 'Global Pathways', desc: 'Unlock airline & operator opportunities' },
+                { icon: Star, label: 'Airline Visibility', desc: 'Get discovered by recruiters worldwide' },
+                { icon: Lock, label: 'Secure & Trusted', desc: 'Encrypted docs, 30-day auto-delete' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  className="rounded-xl p-3 text-left"
+                  style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                >
+                  <item.icon size={18} className="text-red-500 mb-2" />
+                  <p className="text-[10px] font-bold text-gray-800">{item.label}</p>
+                  <p className="text-[9px] text-gray-500 leading-snug">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <motion.button
+              type="button"
+              onClick={() => setHasStarted(true)}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-black tracking-wider text-white shadow-lg transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start Verification <ArrowRight size={16} />
+            </motion.button>
+
+            {/* Trust Badges */}
+            <div className="flex items-center justify-center gap-4 mt-5">
+              <div className="flex items-center gap-1 text-[9px] text-gray-400">
+                <ShieldCheck size={12} className="text-green-500" />
+                <span>256-bit Encryption</span>
+              </div>
+              <div className="flex items-center gap-1 text-[9px] text-gray-400">
+                <CheckCircle size={12} className="text-green-500" />
+                <span>CAAP Compliant</span>
+              </div>
+              <div className="flex items-center gap-1 text-[9px] text-gray-400">
+                <BadgeCheck size={12} className="text-green-500" />
+                <span>5-Min Setup</span>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <>
+            <motion.div className="text-center mb-8" variants={fadeUp} custom={0}>
+              <p className="text-xs font-black tracking-widest mb-2" style={{ color: '#dc2626' }}>
+                RECOGNITION+
+              </p>
+              <h1 className="text-2xl font-black tracking-tight text-gray-900 mb-2">
+                Pilot Verification Form
+              </h1>
+              <p className="text-sm text-gray-500">
+                {stepDescriptions[step - 1]}
+              </p>
+            </motion.div>
+
+            {/* Progress Bar */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                  Step {step} of {totalSteps}: {stepTitles[step - 1]}
+                </p>
+                <p className="text-[10px] font-bold text-gray-400">{Math.round((step / totalSteps) * 100)}% complete</p>
+              </div>
+              <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-500 ease-out"
+                  style={{
+                    width: `${(step / totalSteps) * 100}%`,
+                    background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                  }}
+                />
+              </div>
+              <div className="flex justify-between mt-2">
+                {stepTitles.map((title, i) => (
+                  <div key={title} className="flex flex-col items-center" style={{ width: `${100 / totalSteps}%` }}>
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 transition-all"
+                      style={{
+                        background: step > i + 1 ? '#dc2626' : step === i + 1 ? '#dc2626' : 'rgba(0,0,0,0.06)',
+                        color: step >= i + 1 ? '#fff' : '#9ca3af',
+                      }}
+                    >
+                      {step > i + 1 ? '✓' : i + 1}
+                    </div>
+                    <p className={`text-[8px] font-semibold text-center leading-tight ${step >= i + 1 ? 'text-gray-800' : 'text-gray-400'}`}>{title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {hasStarted && (
         <AnimatePresence mode="wait">
         {step === 1 && (<motion.div
           key="step1"
@@ -1644,6 +1729,7 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
         </AnimatePresence>
+        )}
 
         </div>
       </div>
