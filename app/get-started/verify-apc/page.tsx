@@ -642,39 +642,51 @@ export default function VerifyApcPage() {
             </motion.div>
 
             {/* Progress Bar */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                  Step {step} of {totalSteps}: {stepTitles[step - 1]}
-                </p>
-                <p className="text-[10px] font-bold text-gray-400">{Math.round((step / totalSteps) * 100)}% complete</p>
-              </div>
-              <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-500 ease-out"
-                  style={{
-                    width: `${(step / totalSteps) * 100}%`,
-                    background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between mt-2">
-                {stepTitles.map((title, i) => (
-                  <div key={title} className="flex flex-col items-center" style={{ width: `${100 / totalSteps}%` }}>
-                    <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 transition-all"
-                      style={{
-                        background: step > i + 1 ? '#dc2626' : step === i + 1 ? '#dc2626' : 'rgba(0,0,0,0.06)',
-                        color: step >= i + 1 ? '#fff' : '#9ca3af',
-                      }}
-                    >
-                      {step > i + 1 ? '✓' : i + 1}
-                    </div>
-                    <p className={`text-[8px] font-semibold text-center leading-tight ${step >= i + 1 ? 'text-gray-800' : 'text-gray-400'}`}>{title}</p>
+            {(() => {
+              const visibleStepIdxs = apcFormData.hasNotFlown ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
+              const visibleTotal = visibleStepIdxs.length;
+              const visualStep = apcFormData.hasNotFlown ? (step <= 4 ? step : 5) : step;
+              return (
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Step {visualStep} of {visibleTotal}: {stepTitles[step - 1]}
+                    </p>
+                    <p className="text-[10px] font-bold text-gray-400">{Math.round((visualStep / visibleTotal) * 100)}% complete</p>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      style={{
+                        width: `${(visualStep / visibleTotal) * 100}%`,
+                        background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    {visibleStepIdxs.map((titleIdx, vi) => {
+                      const internalStep = titleIdx + 1;
+                      const isDone = step > internalStep;
+                      const isActive = step === internalStep;
+                      return (
+                        <div key={titleIdx} className="flex flex-col items-center" style={{ width: `${100 / visibleTotal}%` }}>
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 transition-all"
+                            style={{
+                              background: isDone ? '#dc2626' : isActive ? '#dc2626' : 'rgba(0,0,0,0.06)',
+                              color: step >= internalStep ? '#fff' : '#9ca3af',
+                            }}
+                          >
+                            {isDone ? '✓' : vi + 1}
+                          </div>
+                          <p className={`text-[8px] font-semibold text-center leading-tight ${step >= internalStep ? 'text-gray-800' : 'text-gray-400'}`}>{stepTitles[titleIdx]}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
           </>
         )}
 
