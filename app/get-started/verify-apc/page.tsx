@@ -155,6 +155,8 @@ export default function VerifyApcPage() {
     additionalRatings: [] as string[],
     hasAviationDegree: false,
     aviationDegreeDetails: '',
+    currentlyEnrolled: false,
+    enrollmentDetails: '',
     hasNoLicenseExpiry: false,
     hasNotFlown: false,
     hasNoMedical: false,
@@ -698,43 +700,46 @@ export default function VerifyApcPage() {
             </select>
           </div>
 
-          {/* Aviation Degree Question */}
+          {/* Aviation Education */}
           <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
             <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Aviation Education</p>
-            <p className="text-[10px] text-gray-700 mb-2">Do you hold an aviation graduation degree?</p>
-            <div className="flex gap-2 mb-2">
-              <button
-                type="button"
-                onClick={() => setApcFormData(p => ({ ...p, hasAviationDegree: true }))}
-                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
-                style={{
-                  background: apcFormData.hasAviationDegree ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
-                  color: apcFormData.hasAviationDegree ? '#fff' : '#374151',
-                  border: `1px solid ${apcFormData.hasAviationDegree ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
-                }}
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                onClick={() => setApcFormData(p => ({ ...p, hasAviationDegree: false, aviationDegreeDetails: '' }))}
-                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
-                style={{
-                  background: !apcFormData.hasAviationDegree ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
-                  color: !apcFormData.hasAviationDegree ? '#fff' : '#374151',
-                  border: `1px solid ${!apcFormData.hasAviationDegree ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
-                }}
-              >
-                No
-              </button>
-            </div>
+
+            <label className="flex items-center gap-2 mb-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={apcFormData.hasAviationDegree}
+                onChange={(e) => setApcFormData(p => ({ ...p, hasAviationDegree: e.target.checked, aviationDegreeDetails: e.target.checked ? p.aviationDegreeDetails : '' }))}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              />
+              <span className="text-[10px] text-gray-700">Do you hold an aviation degree?</span>
+            </label>
             {apcFormData.hasAviationDegree && (
               <input
                 type="text"
                 placeholder="University / Institution, Year, Degree type..."
                 value={apcFormData.aviationDegreeDetails}
                 onChange={(e) => setApcFormData(p => ({ ...p, aviationDegreeDetails: e.target.value }))}
-                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none"
+                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mb-2"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+              />
+            )}
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={apcFormData.currentlyEnrolled}
+                onChange={(e) => setApcFormData(p => ({ ...p, currentlyEnrolled: e.target.checked, enrollmentDetails: e.target.checked ? p.enrollmentDetails : '' }))}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              />
+              <span className="text-[10px] text-gray-700">Currently enrolled</span>
+            </label>
+            {apcFormData.currentlyEnrolled && (
+              <input
+                type="text"
+                placeholder="Institution / Program, Expected graduation..."
+                value={apcFormData.enrollmentDetails}
+                onChange={(e) => setApcFormData(p => ({ ...p, enrollmentDetails: e.target.value }))}
+                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2"
                 style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
               />
             )}
