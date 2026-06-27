@@ -64,26 +64,89 @@ export default function ConsentFormPage() {
           </section>
 
           <section>
-            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Chief Flight Instructor (CFI) Information & Consent</h2>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Approved Aviation Body Representative — Information, Classification & Consent</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              The undersigned Chief Flight Instructor (CFI) or authorized ATO representative provides consent and authorization for Aviation Pathways Consultancy (APC) to contact the ATO regarding the pilot named above. The CFI signature below confirms:
+              The undersigned representative of an <span className="font-semibold text-gray-800">Approved Aviation Body</span> provides consent and authorization for Aviation Pathways Consultancy (APC) to verify the pilot named above. The representative confirms they are authorized to act on behalf of the organization and have the authority to provide this consent.
             </p>
-            <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>The CFI acknowledges that APC may contact the ATO to verify the pilot's flight training records, logbook hours, and endorsements.</li>
-              <li>The CFI consents to the release of verification information to APC and the pilot as part of the PilotRecognition verification framework.</li>
-              <li>The CFI confirms they are authorized to act on behalf of the ATO named above and have the authority to provide this consent.</li>
-            </ul>
+
+            {/* Classification Grid */}
+            <div className="mb-4">
+              <p className="text-[10px] font-semibold text-gray-700 mb-2 uppercase tracking-wider">Classification of Aviation Body — tick all that apply</p>
+              <div className="grid grid-cols-3 gap-2 text-[10px]">
+                {[
+                  'Authorized Training Organization (ATO)',
+                  'Airline / Commercial Operator',
+                  'Cargo Operator',
+                  'Charter Operator',
+                  'Private / Business Aviation Operator',
+                  'Type Rating Center',
+                  'Aircraft Manufacturer — Flight Operations',
+                  'Military Aviation Authority',
+                  'Government / Regulatory Agency',
+                  'General Aviation Corporation',
+                  'Flight School / Academy',
+                  'Other (specify below)',
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 border border-gray-400 rounded-sm flex-shrink-0" />
+                    <span className="text-gray-700 leading-tight">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Organization Name Field */}
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Organization / Operator / ATO Name</label>
+              <div className="border-b border-gray-400 h-7" />
+            </div>
+
+            {/* Representative Details */}
             <div className="grid grid-cols-2 gap-4 mb-4">
-              {['CFI Full Name', 'CFI License / Certificate Number'].map((label) => (
+              {['Representative Full Name', 'Representative Title / Designation', 'Representative License / Certificate Number (if applicable)', 'Organization ICAO / CAA Registration Number (if applicable)'].map((label) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
                   <div className="border-b border-gray-400 h-7" />
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-2 gap-8">
+
+            {/* Contact Details */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {['Official Email Address', 'Official Phone Number'].map((label) => (
+                <div key={label}>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
+                  <div className="border-b border-gray-400 h-7" />
+                </div>
+              ))}
+            </div>
+
+            {/* Consent Checklist */}
+            <div className="mb-4">
+              <p className="text-[10px] font-semibold text-gray-700 mb-2 uppercase tracking-wider">Consent confirmation — tick to confirm</p>
+              <div className="space-y-1.5 text-[10px]">
+                {[
+                  'I acknowledge that APC may contact this organization to verify the pilot\'s flight training records, logbook hours, licenses, ratings, and endorsements.',
+                  'I consent to the release of verification information to APC and the pilot as part of the PilotRecognition verification framework.',
+                  'I confirm that I am authorized to act on behalf of the organization named above and have the authority to provide this consent.',
+                  'I confirm that the information provided above is accurate and complete to the best of my knowledge.',
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-1.5">
+                    <div className="w-3 h-3 border border-gray-400 rounded-sm flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 leading-tight">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Signature Block */}
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">CFI Signature</label>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Representative Signature</label>
+                <div className="border-b border-gray-400 h-10" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Print Name</label>
                 <div className="border-b border-gray-400 h-10" />
               </div>
               <div>
