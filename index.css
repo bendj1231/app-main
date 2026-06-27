@@ -24,6 +24,40 @@ img[src*="accreditation-"] , img[src*="Airbus_Logo_2017"], img[alt="FAA"], img[a
   }
 }
 
+/* react-phone-number-input custom styling */
+.phone-input-custom {
+  --PhoneInputCountryFlag-height: 14px;
+  --PhoneInputCountryFlag-width: 20px;
+  --PhoneInputCountrySelectArrow-marginLeft: 4px;
+  --PhoneInput-color--focus: transparent;
+}
+.phone-input-custom .PhoneInputInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: #111827;
+  width: 100%;
+  padding: 0;
+}
+.phone-input-custom .PhoneInputInput::placeholder {
+  color: #6b7280;
+  font-size: 12px;
+}
+.phone-input-custom .PhoneInputCountrySelect {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+.phone-input-custom .PhoneInputCountryIcon {
+  border-radius: 2px;
+}
+.phone-input-custom .PhoneInputCountrySelectArrow {
+  opacity: 0.4;
+  border-top-color: #6b7280;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

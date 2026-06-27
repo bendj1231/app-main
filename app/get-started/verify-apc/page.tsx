@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
 } from 'lucide-react';
@@ -429,7 +431,15 @@ export default function VerifyApcPage() {
           <div className="grid grid-cols-2 gap-2">
             <input type="text" placeholder="Full Name" value={apcFormData.fullName} onChange={(e) => setApcFormData(p => ({ ...p, fullName: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             <input type="email" placeholder="Email" value={apcEmail} onChange={(e) => setApcEmail(e.target.value)} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <input type="tel" placeholder="Phone" value={apcFormData.phone} onChange={(e) => setApcFormData(p => ({ ...p, phone: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            <div className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
+              <PhoneInput
+                placeholder="Phone"
+                value={apcFormData.phone || undefined}
+                onChange={(value) => setApcFormData(p => ({ ...p, phone: value || '' }))}
+                defaultCountry="PH"
+                className="phone-input-custom"
+              />
+            </div>
             <input type="text" placeholder="Nationality" value={apcFormData.nationality} onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
           </div>
         </motion.div>
