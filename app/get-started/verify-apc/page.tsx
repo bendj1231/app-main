@@ -342,13 +342,13 @@ export default function VerifyApcPage() {
       </div>
 
       <motion.div
-        className="relative z-10 max-w-3xl mx-auto w-full"
+        className="relative z-10 max-w-5xl mx-auto w-full"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         {/* Card */}
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-10" style={{ border: '1px solid rgba(255,255,255,0.3)' }}>
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-5 md:p-8" style={{ border: '1px solid rgba(255,255,255,0.3)' }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
