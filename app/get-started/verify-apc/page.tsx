@@ -347,6 +347,43 @@ export default function VerifyApcPage() {
     return h + (m || 0) / 60;
   };
 
+  const getNotEligibleMessage = () => {
+    const { hasNoLicense, hasFlightExperience, hasNotFlown, isAbInitioPilot, hasAviationDegree } = apcFormData;
+    if (hasNoLicense && !hasFlightExperience) {
+      if (isAbInitioPilot && !hasAviationDegree) {
+        return {
+          title: 'License Required for Verification',
+          reason: 'You selected a fast-track, license-only ab-initio program with no flight experience and no current pilot license. Because you are not a graduating student and have no degree or course attestation for us to verify, APC cannot establish a credible verification record at this stage.',
+          nextStep: 'Once you obtain at least an SPL (Student Pilot License) or another pilot license, you can return and APC will verify your credentials with your ATO.',
+        };
+      }
+      return {
+        title: 'License Required for Verification',
+        reason: 'You indicated you have no flight experience and do not yet hold a pilot license. APC needs a license or verified enrollment in active flight training to confirm your aviation credentials.',
+        nextStep: 'Return once you have started flight training and received at least an SPL, or when your ATO can confirm your enrollment.',
+      };
+    }
+    if (hasNoLicense && hasNotFlown) {
+      return {
+        title: 'Not Eligible Yet',
+        reason: 'You indicated you have not flown yet and do not hold a pilot license. Without a license or verified training record, APC cannot complete verification.',
+        nextStep: 'Once you obtain an SPL or begin verified flight training, you will be eligible to re-apply.',
+      };
+    }
+    if (hasNoLicense) {
+      return {
+        title: 'License Required',
+        reason: 'You selected "No License Yet." APC requires at least a student pilot license or verified enrollment to process your verification.',
+        nextStep: 'Please return after you have received your SPL or have a flight school attestation we can verify.',
+      };
+    }
+    return {
+      title: 'Not Eligible for Verification',
+      reason: 'Sorry, unfortunately you are not eligible for verification yet.',
+      nextStep: 'Once you have your SPL or any pilot license, or once you start flight training and receive at least an SPL, you will be eligible for verification.',
+    };
+  };
+
   const uploadDocument = async (file: File, docType: string, setter: (f: File | null) => void) => {
     const userId = auth0User?.sub;
     if (!userId || !file) return;
@@ -885,7 +922,7 @@ export default function VerifyApcPage() {
           <div className="grid grid-cols-2 gap-2 mb-3">
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Number</p>
-              <input type="text" placeholder="Pilot License Number" value={apcFormData.licenseNumber} onChange={(e) => setApcFormData(p => ({ ...p, licenseNumber: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="Pilot License Number" value={apcFormData.licenseNumber} onChange={(e) => setApcFormData(p => ({ ...p, licenseNumber: e.target.value }))} disabled={apcFormData.hasNoLicense} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 disabled:opacity-40" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
@@ -894,7 +931,7 @@ export default function VerifyApcPage() {
                 placeholder="Month/Day/Year"
                 value={apcFormData.licenseExpiryDate}
                 onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))}
-                disabled={apcFormData.hasNoLicenseExpiry}
+                disabled={apcFormData.hasNoLicenseExpiry || apcFormData.hasNoLicense}
                 className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 disabled:opacity-40"
                 style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
               />
@@ -903,7 +940,8 @@ export default function VerifyApcPage() {
                   type="checkbox"
                   checked={apcFormData.hasNoLicenseExpiry}
                   onChange={(e) => setApcFormData(p => ({ ...p, hasNoLicenseExpiry: e.target.checked, licenseExpiryDate: e.target.checked ? '' : p.licenseExpiryDate }))}
-                  className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+                  disabled={apcFormData.hasNoLicense}
+                  className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer disabled:cursor-not-allowed"
                 />
                 <span className="text-[9px] text-gray-600">I don't have an expiry date</span>
               </label>
@@ -938,12 +976,13 @@ export default function VerifyApcPage() {
               );
             })}
           </div>
-          <div className="mb-3">
+          <div className={`mb-3 transition-opacity ${apcFormData.hasNoLicense ? 'opacity-40 pointer-events-none' : ''}`}>
             <p className="text-[10px] font-semibold text-gray-700 mb-1">Issuing Authority / Governing Aviation Authority</p>
             <select
               value={apcFormData.issuingAuthority}
               onChange={(e) => setApcFormData(p => ({ ...p, issuingAuthority: e.target.value }))}
-              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9"
+              disabled={apcFormData.hasNoLicense}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none cursor-pointer h-9 disabled:cursor-not-allowed"
               style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
             >
               <option value="">Select Authority</option>
@@ -1127,7 +1166,7 @@ export default function VerifyApcPage() {
         </motion.div>
 
         {/* ── Section 3: Medical Certificate ── */}
-        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+        <motion.div className={`mb-5 text-left transition-opacity ${apcFormData.hasNoLicense ? 'opacity-40 pointer-events-none' : ''}`} variants={fadeUp} custom={2}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Medical Certificate</p>
 
           {/* I don't hold a medical checkbox */}
@@ -1136,7 +1175,8 @@ export default function VerifyApcPage() {
               type="checkbox"
               checked={apcFormData.hasNoMedical}
               onChange={(e) => setApcFormData(p => ({ ...p, hasNoMedical: e.target.checked, medicalClass: 'Class 1', medicalExpiry: '' }))}
-              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              disabled={apcFormData.hasNoLicense}
+              className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer disabled:cursor-not-allowed"
             />
             <span className="text-[10px] text-gray-700">I don't hold a medical certificate</span>
           </label>
@@ -1173,13 +1213,13 @@ export default function VerifyApcPage() {
           )}
 
           {/* Radio License */}
-          <div className="mt-3">
+          <div className={`mt-3 transition-opacity ${apcFormData.hasNoLicense ? 'opacity-40 pointer-events-none' : ''}`}>
             <p className="text-[10px] font-semibold text-gray-700 mb-1">Radio License Expiry Date (NTC / RT)</p>
             <input
               type="text"
               placeholder="Month/Day/Year"
               value={apcFormData.radioLicenseExpiry}
-              disabled={!apcFormData.hasRadioLicense}
+              disabled={!apcFormData.hasRadioLicense || apcFormData.hasNoLicense}
               onChange={(e) => setApcFormData(p => ({ ...p, radioLicenseExpiry: formatDateInput(e.target.value) }))}
               className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 disabled:opacity-40"
               style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
@@ -1189,7 +1229,8 @@ export default function VerifyApcPage() {
                 type="checkbox"
                 checked={!apcFormData.hasRadioLicense}
                 onChange={(e) => setApcFormData(p => ({ ...p, hasRadioLicense: !e.target.checked, radioLicenseExpiry: e.target.checked ? '' : p.radioLicenseExpiry }))}
-                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+                disabled={apcFormData.hasNoLicense}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer disabled:cursor-not-allowed"
               />
               <span className="text-[9px] text-gray-600">I don't hold a radio license</span>
             </label>
@@ -1207,12 +1248,12 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(4)}
+            onClick={() => canProceed(3) && setStep(apcFormData.hasNoLicense ? 9 : 4)}
             disabled={!canProceed(3)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Core Documents <ArrowRight size={14} />
+            {apcFormData.hasNoLicense ? 'Check Eligibility' : 'Next: Core Documents'} <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -2408,29 +2449,34 @@ export default function VerifyApcPage() {
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-          <motion.div className="mb-5 text-center" variants={fadeUp} custom={2}>
-            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.08)' }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            </div>
-            <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-2">Not Eligible for Verification</p>
-            <p className="text-[10px] text-gray-600 mb-4 leading-relaxed max-w-sm mx-auto">
-              Sorry, unfortunately you are not eligible for verification yet. However, you may enjoy <strong className="text-gray-900">Recognition+</strong> features such as career alignment AI tools and viewing pathways as a Recognition+ member.
-            </p>
-            <div className="rounded-xl p-4 mb-4 text-left" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
-              <p className="text-[10px] font-bold text-gray-900 mb-1">What you can do now:</p>
-              <ul className="text-[9px] text-gray-600 space-y-1 list-disc pl-4">
-                <li>Explore career pathways and see what airlines are looking for</li>
-                <li>Use AI career alignment tools to plan your training</li>
-                <li>Track your progress toward your first license</li>
-              </ul>
-            </div>
-            <div className="rounded-xl p-4 text-left" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
-              <p className="text-[10px] font-bold text-gray-900 mb-1">When you'll be eligible:</p>
-              <p className="text-[9px] text-gray-600 leading-relaxed">
-                Once you have your <strong className="text-gray-900">SPL license</strong> (or any pilot license), you'll be eligible for verification. Or once you start your flight training and receive at least an SPL, we can contact your ATO and verify you.
-              </p>
-            </div>
-          </motion.div>
+          {(() => {
+            const message = getNotEligibleMessage();
+            return (
+              <motion.div className="mb-5 text-center" variants={fadeUp} custom={2}>
+                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.08)' }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-2">{message.title}</p>
+                <p className="text-[10px] text-gray-600 mb-4 leading-relaxed max-w-sm mx-auto">
+                  {message.reason}
+                </p>
+                <div className="rounded-xl p-4 mb-4 text-left" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                  <p className="text-[10px] font-bold text-gray-900 mb-1">What you can do now:</p>
+                  <ul className="text-[9px] text-gray-600 space-y-1 list-disc pl-4">
+                    <li>Explore career pathways and see what airlines are looking for</li>
+                    <li>Use AI career alignment tools to plan your training</li>
+                    <li>Track your progress toward your first license</li>
+                  </ul>
+                </div>
+                <div className="rounded-xl p-4 text-left" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
+                  <p className="text-[10px] font-bold text-gray-900 mb-1">When you'll be eligible:</p>
+                  <p className="text-[9px] text-gray-600 leading-relaxed">
+                    {message.nextStep}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })()}
 
           <div className="flex justify-between">
             <button
