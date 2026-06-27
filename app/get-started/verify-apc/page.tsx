@@ -643,9 +643,10 @@ export default function VerifyApcPage() {
 
             {/* Progress Bar */}
             {(() => {
-              const visibleStepIdxs = apcFormData.hasNotFlown ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
+              const shouldHideExtras = apcFormData.hasNotFlown || !apcFormData.hasFlightExperience;
+              const visibleStepIdxs = shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
               const visibleTotal = visibleStepIdxs.length;
-              const visualStep = apcFormData.hasNotFlown ? (step <= 4 ? step : 5) : step;
+              const visualStep = shouldHideExtras ? (step <= 4 ? step : 5) : step;
               return (
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
