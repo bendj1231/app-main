@@ -601,7 +601,32 @@ export default function VerifyApcPage() {
             type="text"
             placeholder="Type and press Enter (e.g. Instrument Rating, B737, B777...)"
             value={ratingInput}
-            onChange={(e) => setRatingInput(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.trim();
+              const knownRatings = [
+                'Instrument Rating',
+                'Multi-Engine Rating',
+                'Night Rating',
+                'Seaplane Rating',
+                'Tailwheel Endorsement',
+                'High Performance Aircraft Endorsement',
+                'Complex Aircraft Endorsement',
+                'Aerobatic Endorsement',
+                'B737 Type Rating',
+                'B777 Type Rating',
+                'B747 Type Rating',
+                'A320 Type Rating',
+                'A330 Type Rating',
+                'ATR42/72 Type Rating',
+                'CRJ Type Rating',
+              ];
+              if (knownRatings.includes(val) && !apcFormData.additionalRatings.includes(val)) {
+                setApcFormData(p => ({ ...p, additionalRatings: [...p.additionalRatings, val] }));
+                setRatingInput('');
+              } else {
+                setRatingInput(e.target.value);
+              }
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && ratingInput.trim()) {
                 e.preventDefault();
@@ -619,9 +644,12 @@ export default function VerifyApcPage() {
           <datalist id="rating-suggestions">
             <option value="Instrument Rating" />
             <option value="Multi-Engine Rating" />
-            <option value="High Performance Aircraft Endorsement" />
+            <option value="Night Rating" />
             <option value="Seaplane Rating" />
             <option value="Tailwheel Endorsement" />
+            <option value="High Performance Aircraft Endorsement" />
+            <option value="Complex Aircraft Endorsement" />
+            <option value="Aerobatic Endorsement" />
             <option value="B737 Type Rating" />
             <option value="B777 Type Rating" />
             <option value="B747 Type Rating" />
