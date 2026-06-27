@@ -1121,46 +1121,25 @@ export default function VerifyApcPage() {
 
           {/* Radio License */}
           <div className="mt-3">
-            <p className="text-[10px] text-gray-700 mb-2">Do you hold a radio license (NTC / RT)?</p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setApcFormData(p => ({ ...p, hasRadioLicense: true }))}
-                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
-                style={{
-                  background: apcFormData.hasRadioLicense ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
-                  color: apcFormData.hasRadioLicense ? '#fff' : '#374151',
-                  border: `1px solid ${apcFormData.hasRadioLicense ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
-                }}
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                onClick={() => setApcFormData(p => ({ ...p, hasRadioLicense: false }))}
-                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
-                style={{
-                  background: !apcFormData.hasRadioLicense ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
-                  color: !apcFormData.hasRadioLicense ? '#fff' : '#374151',
-                  border: `1px solid ${!apcFormData.hasRadioLicense ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
-                }}
-              >
-                No
-              </button>
-            </div>
-            {apcFormData.hasRadioLicense && (
-              <div className="mt-2">
-                <p className="text-[10px] font-semibold text-gray-700 mb-1">Radio License Expiry Date</p>
-                <input
-                  type="text"
-                  placeholder="Month/Day/Year"
-                  value={apcFormData.radioLicenseExpiry}
-                  onChange={(e) => setApcFormData(p => ({ ...p, radioLicenseExpiry: formatDateInput(e.target.value) }))}
-                  className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
-                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
-                />
-              </div>
-            )}
+            <p className="text-[10px] font-semibold text-gray-700 mb-1">Radio License Expiry Date (NTC / RT)</p>
+            <input
+              type="text"
+              placeholder="Month/Day/Year"
+              value={apcFormData.radioLicenseExpiry}
+              disabled={!apcFormData.hasRadioLicense}
+              onChange={(e) => setApcFormData(p => ({ ...p, radioLicenseExpiry: formatDateInput(e.target.value) }))}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9 disabled:opacity-40"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            />
+            <label className="flex items-center gap-1.5 mt-1.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!apcFormData.hasRadioLicense}
+                onChange={(e) => setApcFormData(p => ({ ...p, hasRadioLicense: !e.target.checked, radioLicenseExpiry: e.target.checked ? '' : p.radioLicenseExpiry }))}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              />
+              <span className="text-[9px] text-gray-600">I don't hold a radio license</span>
+            </label>
           </div>
         </motion.div>
 
