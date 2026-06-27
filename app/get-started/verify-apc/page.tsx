@@ -69,9 +69,9 @@ const NATIONALITY_OPTIONS = [
 
 const formatDateInput = (raw: string): string => {
   const digits = raw.replace(/\D/g, '').slice(0, 8);
-  if (digits.length <= 4) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 4)}/${digits.slice(4)}`;
-  return `${digits.slice(0, 4)}/${digits.slice(4, 6)}/${digits.slice(6)}`;
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
 };
 
 const CountryPhoneInput: React.FC<{ value: string; onChange: (val: string) => void }> = ({ value, onChange }) => {
@@ -634,7 +634,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Expiry Date</p>
-              <input type="text" placeholder="YYYY/MM/DD" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="MM/DD/YYYY" value={apcFormData.licenseExpiryDate} onChange={(e) => setApcFormData(p => ({ ...p, licenseExpiryDate: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">License Type</p>
@@ -829,7 +829,7 @@ export default function VerifyApcPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">Medical Expiry Date</p>
-              <input type="text" placeholder="YYYY/MM/DD" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+              <input type="text" placeholder="MM/DD/YYYY" value={apcFormData.medicalExpiry} onChange={(e) => setApcFormData(p => ({ ...p, medicalExpiry: formatDateInput(e.target.value) }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             </div>
           </div>
         </motion.div>
