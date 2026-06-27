@@ -159,6 +159,9 @@ export default function VerifyApcPage() {
     enrollmentDetails: '',
     isAbInitioPilot: false,
     abInitioDetails: '',
+    homeBase: '',
+    hasFlightExperience: false,
+    pathwayInterest: [] as string[],
     radioLicenseExpiry: '',
     hasNoLicenseExpiry: false,
     hasNotFlown: false,
@@ -175,10 +178,11 @@ export default function VerifyApcPage() {
   const [step, setStep] = useState(1);
   const [showLogbookModal, setShowLogbookModal] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const totalSteps = 7;
-  const stepTitles = ['Personal Details', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
+  const totalSteps = 8;
+  const stepTitles = ['Personal Details', 'Background & Experience', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
   const stepDescriptions = [
-    'Provide your identity, contact information, and nationality for the verification record.',
+    'Provide your identity, contact information, nationality, and home base for the verification record.',
+    'Tell us about your education, flight experience, and the career pathway you are pursuing.',
     'Enter your pilot license details, medical certificate class, and select any additional aircraft ratings.',
     'Upload your license, medical certificate, radio license, and sign the document consent form.',
     'Upload certificates for each selected aircraft rating (e.g., C152, C172, P200JF).',
@@ -212,19 +216,21 @@ export default function VerifyApcPage() {
   const canProceed = (currentStep: number) => {
     switch (currentStep) {
       case 1:
-        return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
+        return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality && !!apcFormData.homeBase;
       case 2:
+        return true;
+      case 3:
         const hasValidLicense = !!apcFormData.licenseNumber && (apcFormData.hasNoLicenseExpiry || !!apcFormData.licenseExpiryDate);
         const hasValidMedical = !apcFormData.hasNoMedical && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
         return hasValidLicense && (apcFormData.hasNotFlown || true) && (apcFormData.hasNoMedical || hasValidMedical);
-      case 3:
       case 4:
-        return true;
       case 5:
         return true;
       case 6:
-        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+        return true;
       case 7:
+        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+      case 8:
         return true;
       default:
         return false;
@@ -704,69 +710,17 @@ export default function VerifyApcPage() {
             </select>
           </div>
 
-          {/* Aviation Education */}
-          <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
-            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Aviation Education</p>
-
-            <label className="flex items-center gap-2 mb-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={apcFormData.hasAviationDegree}
-                onChange={(e) => setApcFormData(p => ({ ...p, hasAviationDegree: e.target.checked, aviationDegreeDetails: e.target.checked ? p.aviationDegreeDetails : '' }))}
-                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
-              />
-              <span className="text-[10px] text-gray-700">Do you hold an aviation degree?</span>
-            </label>
-            {apcFormData.hasAviationDegree && (
-              <input
-                type="text"
-                placeholder="University / Institution, Year, Degree type..."
-                value={apcFormData.aviationDegreeDetails}
-                onChange={(e) => setApcFormData(p => ({ ...p, aviationDegreeDetails: e.target.value }))}
-                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mb-2"
-                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
-              />
-            )}
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={apcFormData.currentlyEnrolled}
-                onChange={(e) => setApcFormData(p => ({ ...p, currentlyEnrolled: e.target.checked, enrollmentDetails: e.target.checked ? p.enrollmentDetails : '' }))}
-                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
-              />
-              <span className="text-[10px] text-gray-700">Currently enrolled</span>
-            </label>
-            {apcFormData.currentlyEnrolled && (
-              <input
-                type="text"
-                placeholder="Institution / Program, Expected graduation..."
-                value={apcFormData.enrollmentDetails}
-                onChange={(e) => setApcFormData(p => ({ ...p, enrollmentDetails: e.target.value }))}
-                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2"
-                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
-              />
-            )}
-
-            <label className="flex items-center gap-2 mt-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={apcFormData.isAbInitioPilot}
-                onChange={(e) => setApcFormData(p => ({ ...p, isAbInitioPilot: e.target.checked, abInitioDetails: e.target.checked ? p.abInitioDetails : '' }))}
-                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
-              />
-              <span className="text-[10px] text-gray-700">Fast track / Ab-initio pilot</span>
-            </label>
-            {apcFormData.isAbInitioPilot && (
-              <input
-                type="text"
-                placeholder="Training program, Institution, Year..."
-                value={apcFormData.abInitioDetails}
-                onChange={(e) => setApcFormData(p => ({ ...p, abInitioDetails: e.target.value }))}
-                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2"
-                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
-              />
-            )}
+          {/* Home Base */}
+          <div className="mt-3">
+            <p className="text-[10px] font-semibold text-gray-700 mb-1">Home Base Airfield / Flight School</p>
+            <input
+              type="text"
+              placeholder="e.g., WCC Aviation College, Clark International..."
+              value={apcFormData.homeBase}
+              onChange={(e) => setApcFormData(p => ({ ...p, homeBase: e.target.value }))}
+              className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none h-9"
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+            />
           </div>
 
           <p className="text-[10px] text-gray-500 leading-relaxed mt-2">
@@ -782,11 +736,12 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: License & Medical <ArrowRight size={14} />
+            Next: Background & Experience <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
 
+        {/* ── Step 2: Background & Experience ── */}
         {step === 2 && (<motion.div
           key="step2"
           initial={{ opacity: 0, x: 40 }}
@@ -794,9 +749,97 @@ export default function VerifyApcPage() {
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 2: License Information ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">2. License Information</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">2. Background & Experience</p>
+
+          {/* Education */}
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
+            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Education</p>
+            <label className="flex items-center gap-2 mb-2 cursor-pointer">
+              <input type="checkbox" checked={apcFormData.hasAviationDegree} onChange={(e) => setApcFormData(p => ({ ...p, hasAviationDegree: e.target.checked }))} className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700">Do you hold an aviation degree?</span>
+            </label>
+            {apcFormData.hasAviationDegree && (
+              <input type="text" placeholder="University / Institution, Year, Degree type..." value={apcFormData.aviationDegreeDetails} onChange={(e) => setApcFormData(p => ({ ...p, aviationDegreeDetails: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mb-2" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            )}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={apcFormData.currentlyEnrolled} onChange={(e) => setApcFormData(p => ({ ...p, currentlyEnrolled: e.target.checked }))} className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700">Currently enrolled</span>
+            </label>
+            {apcFormData.currentlyEnrolled && (
+              <input type="text" placeholder="Institution / Program, Expected graduation..." value={apcFormData.enrollmentDetails} onChange={(e) => setApcFormData(p => ({ ...p, enrollmentDetails: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            )}
+            <label className="flex items-center gap-2 mt-2 cursor-pointer">
+              <input type="checkbox" checked={apcFormData.isAbInitioPilot} onChange={(e) => setApcFormData(p => ({ ...p, isAbInitioPilot: e.target.checked }))} className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700">Fast track / Ab-initio pilot</span>
+            </label>
+            {apcFormData.isAbInitioPilot && (
+              <input type="text" placeholder="Training program, Institution, Year..." value={apcFormData.abInitioDetails} onChange={(e) => setApcFormData(p => ({ ...p, abInitioDetails: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none mt-2" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
+            )}
+          </div>
+
+          {/* Flight Experience */}
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.12)' }}>
+            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Flight Experience</p>
+            <p className="text-[10px] text-gray-700 mb-2">Do you have any flight experience?</p>
+            <div className="flex gap-2 mb-2">
+              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: true }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>Yes</button>
+              <button type="button" onClick={() => setApcFormData(p => ({ ...p, hasFlightExperience: false }))} className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all" style={{ background: !apcFormData.hasFlightExperience ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)', color: !apcFormData.hasFlightExperience ? '#fff' : '#374151', border: `1px solid ${!apcFormData.hasFlightExperience ? 'transparent' : 'rgba(0,0,0,0.08)'}` }}>No</button>
+            </div>
+            <p className="text-[9px] text-gray-500 leading-snug">
+              {apcFormData.hasFlightExperience
+                ? 'You will be asked for license details, ratings, flight hours, and logbook in upcoming stages.'
+                : 'Stages for aircraft ratings, type ratings, and flight hours will be skipped. You can always update your profile later as you gain experience.'}
+            </p>
+          </div>
+
+          {/* Pathway Interest */}
+          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
+            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Career Pathway</p>
+            <p className="text-[10px] text-gray-700 mb-2">What pathway do you have in mind?</p>
+            <div className="flex flex-wrap gap-1.5">
+              {['Airline', 'Cargo', 'Military', 'Corporate / VIP', 'Charter', 'Flight Instructor', 'Helicopter', 'Agricultural', 'Seaplane', 'Undecided'].map((path) => {
+                const isSelected = apcFormData.pathwayInterest.includes(path);
+                return (
+                  <button
+                    key={path}
+                    type="button"
+                    onClick={() => setApcFormData(p => ({ ...p, pathwayInterest: isSelected ? p.pathwayInterest.filter(x => x !== path) : [...p.pathwayInterest, path] }))}
+                    className="px-3 py-1.5 rounded-full text-[10px] font-bold transition-all"
+                    style={{
+                      background: isSelected ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                      color: isSelected ? '#fff' : '#6b7280',
+                      border: `1px solid ${isSelected ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                    }}
+                  >
+                    {isSelected ? `${path} ✓` : path}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="flex justify-between">
+          <button type="button" onClick={() => setStep(1)} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button type="button" onClick={() => canProceed(2) && setStep(3)} disabled={!canProceed(2)} className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}>
+            Next: License & Medical <ArrowRight size={14} />
+          </button>
+        </div>
+        </motion.div>)}
+
+        {step === 3 && (<motion.div
+          key="step3"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+        {/* ── Step 3: License Information ── */}
+        <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. License Information</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <div>
               <p className="text-[10px] font-semibold text-gray-700 mb-1">License Number</p>
@@ -1124,7 +1167,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(1)}
+            onClick={() => setStep(2)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1132,8 +1175,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(2) && setStep(3)}
-            disabled={!canProceed(2)}
+            onClick={() => canProceed(3) && setStep(4)}
+            disabled={!canProceed(3)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1142,16 +1185,16 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 3 && (<motion.div
-          key="step3"
+        {step === 4 && (<motion.div
+          key="step4"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 3: Core Documents ── */}
+        {/* ── Step 4: Core Documents ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">3. Core Documents</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. Core Documents</p>
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: 'License (Front)', file: apcLicenseFile, setter: setApcLicenseFile, icon: IdCard, docType: 'license' },
@@ -1212,7 +1255,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(2)}
+            onClick={() => setStep(3)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1220,8 +1263,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(4)}
-            disabled={!canProceed(3)}
+            onClick={() => canProceed(4) && setStep(5)}
+            disabled={!canProceed(4)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1229,14 +1272,14 @@ export default function VerifyApcPage() {
           </button>
         </div>
         </motion.div>)}
-        {step === 4 && (<motion.div
-          key="step4"
+        {step === 5 && (<motion.div
+          key="step5"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 4: Aircraft Ratings ── */}
+        {/* ── Step 5: Aircraft Ratings ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
           {/* Recurrency Info */}
           <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
@@ -1322,7 +1365,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(3)}
+            onClick={() => setStep(4)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1330,8 +1373,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(4) && setStep(5)}
-            disabled={!canProceed(4)}
+            onClick={() => canProceed(5) && setStep(6)}
+            disabled={!canProceed(5)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1339,16 +1382,16 @@ export default function VerifyApcPage() {
           </button>
         </div>
         </motion.div>)}
-        {step === 5 && (<motion.div
-          key="step5"
+        {step === 6 && (<motion.div
+          key="step6"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 5: Type Ratings & Endorsements ── */}
+        {/* ── Step 6: Type Ratings & Endorsements ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={2}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Type Ratings & Endorsements</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. Type Ratings & Endorsements</p>
           {/* Type Ratings & Endorsements */}
           <div className="mt-3">
             <div className="flex items-center justify-between mb-2">
@@ -1647,18 +1690,18 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 6 && (<motion.div
-          key="step6"
+        {step === 7 && (<motion.div
+          key="step7"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
 
-        {/* ── Step 6: Flight Hours & Logbook ── */}
+        {/* ── Step 7: Flight Hours & Logbook ── */}
         {/* ── Section 5: Flight Hours Summary ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">6. Flight Hours Summary</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. Flight Hours Summary</p>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs">
               <thead>
@@ -1832,7 +1875,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(5)}
+            onClick={() => setStep(6)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1840,8 +1883,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(6) && setStep(7)}
-            disabled={!canProceed(6)}
+            onClick={() => canProceed(7) && setStep(8)}
+            disabled={!canProceed(7)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1850,16 +1893,16 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 7 && (<motion.div
-          key="step7"
+        {step === 8 && (<motion.div
+          key="step8"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 7: ATO Authorization ── */}
+        {/* ── Step 8: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">7. ATO Authorization</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">8. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <select
               value={atoCountry}
@@ -2066,7 +2109,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-start">
           <button
             type="button"
-            onClick={() => setStep(6)}
+            onClick={() => setStep(7)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
