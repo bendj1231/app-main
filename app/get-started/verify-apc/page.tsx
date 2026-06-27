@@ -144,6 +144,7 @@ export default function VerifyApcPage() {
           ...prev,
           fullName: (profile.full_name as string) || (profile.display_name as string) || prev.fullName,
           phone: (profile.phone as string) || prev.phone,
+          nationality: (profile.nationality as string) || (profile.country_of_residence as string) || (profile.citizenship as string) || prev.nationality,
           licenseNumber: (profile.license_id as string) || prev.licenseNumber,
           licenseType: (profile.license_types as string) || prev.licenseType,
           issuingAuthority: (profile.license_issuing_authority as string) || (profile.country_of_license as string) || prev.issuingAuthority,
