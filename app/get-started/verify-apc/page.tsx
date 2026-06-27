@@ -5,8 +5,6 @@ import { motion } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
 } from 'lucide-react';
@@ -20,6 +18,72 @@ const fadeUp = {
     filter: 'blur(0px)',
     transition: { delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
   }),
+};
+
+const COUNTRIES = [
+  { code: 'PH', name: 'Philippines', flag: '🇵🇭', prefix: '+63' },
+  { code: 'US', name: 'United States', flag: '🇺🇸', prefix: '+1' },
+  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧', prefix: '+44' },
+  { code: 'AE', name: 'UAE', flag: '🇦🇪', prefix: '+971' },
+  { code: 'SG', name: 'Singapore', flag: '🇸🇬', prefix: '+65' },
+  { code: 'AU', name: 'Australia', flag: '🇦🇺', prefix: '+61' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦', prefix: '+1' },
+  { code: 'IN', name: 'India', flag: '🇮🇳', prefix: '+91' },
+  { code: 'ZA', name: 'South Africa', flag: '🇿🇦', prefix: '+27' },
+  { code: 'NG', name: 'Nigeria', flag: '🇳🇬', prefix: '+234' },
+  { code: 'KE', name: 'Kenya', flag: '🇰🇪', prefix: '+254' },
+  { code: 'MU', name: 'Mauritius', flag: '🇲🇺', prefix: '+230' },
+];
+
+const CountryPhoneInput: React.FC<{ value: string; onChange: (val: string) => void }> = ({ value, onChange }) => {
+  const [country, setCountry] = useState(COUNTRIES[0]);
+  const [localNumber, setLocalNumber] = useState('');
+
+  useEffect(() => {
+    if (!value) return;
+    // Parse existing value to find matching country prefix
+    const found = COUNTRIES.find(c => value.startsWith(c.prefix));
+    if (found) {
+      setCountry(found);
+      setLocalNumber(value.slice(found.prefix.length));
+    } else {
+      setLocalNumber(value);
+    }
+  }, []);
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const c = COUNTRIES.find(x => x.code === e.target.value) || COUNTRIES[0];
+    setCountry(c);
+    onChange(c.prefix + localNumber);
+  };
+
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const num = e.target.value.replace(/\D/g, '');
+    setLocalNumber(num);
+    onChange(country.prefix + num);
+  };
+
+  return (
+    <div className="w-full rounded-xl px-2 py-1.5 text-xs text-gray-900 outline-none flex items-center gap-1.5" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
+      <select
+        value={country.code}
+        onChange={handleCountryChange}
+        className="bg-transparent text-xs font-semibold outline-none cursor-pointer"
+        style={{ maxWidth: '70px' }}
+      >
+        {COUNTRIES.map(c => (
+          <option key={c.code} value={c.code}>{c.flag} {c.prefix}</option>
+        ))}
+      </select>
+      <input
+        type="tel"
+        placeholder="Phone"
+        value={localNumber}
+        onChange={handleNumberChange}
+        className="flex-1 bg-transparent text-xs text-gray-900 placeholder-gray-500 outline-none"
+      />
+    </div>
+  );
 };
 
 export default function VerifyApcPage() {
@@ -431,15 +495,10 @@ export default function VerifyApcPage() {
           <div className="grid grid-cols-2 gap-2">
             <input type="text" placeholder="Full Name" value={apcFormData.fullName} onChange={(e) => setApcFormData(p => ({ ...p, fullName: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
             <input type="email" placeholder="Email" value={apcEmail} onChange={(e) => setApcEmail(e.target.value)} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
-            <div className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-              <PhoneInput
-                placeholder="Phone"
-                value={apcFormData.phone || undefined}
-                onChange={(value) => setApcFormData(p => ({ ...p, phone: value || '' }))}
-                defaultCountry="PH"
-                className="phone-input-custom"
-              />
-            </div>
+            <CountryPhoneInput
+              value={apcFormData.phone}
+              onChange={(value) => setApcFormData(p => ({ ...p, phone: value }))}
+            />
             <input type="text" placeholder="Nationality" value={apcFormData.nationality} onChange={(e) => setApcFormData(p => ({ ...p, nationality: e.target.value }))} className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }} />
           </div>
           <p className="text-[10px] text-gray-500 leading-relaxed mt-2">
