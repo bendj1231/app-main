@@ -160,13 +160,14 @@ export default function VerifyApcPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardScale, setCardScale] = useState(1);
   const [step, setStep] = useState(1);
-  const totalSteps = 4;
-  const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Logbook', 'Authorization & Submit'];
+  const totalSteps = 5;
+  const stepTitles = ['Personal Details', 'License & Medical', 'Documents & Ratings', 'Flight Hours & Logbook', 'Authorization & Submit'];
   const stepDescriptions = [
     'Provide your identity, contact information, and nationality for the verification record.',
     'Enter your pilot license details, medical certificate class, and any additional ratings or type ratings.',
-    'Upload your license, medical, radio documents, logbook, and signed consent forms for audit.',
-    'Review all details, confirm privacy consent, and submit your verification request to APC.',
+    'Upload your license, medical, radio documents, rating certificates, type rating endorsements, and sign the consent form.',
+    'Enter your flight hours summary, upload your logbook, and sign the logbook audit consent.',
+    'Review all details, select your ATO, confirm privacy consent, and submit your verification request to APC.',
   ];
 
   // Dynamically scale card to fit viewport without scrolling
@@ -201,9 +202,11 @@ export default function VerifyApcPage() {
         const allRatingsHaveDocs = apcFormData.additionalRatings.every(
           (r) => !!ratingFiles[r]
         );
-        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && !!apcLogbookFile && licenseConsentChecked && logbookConsentChecked && allRatingsHaveDocs;
+        return !!apcLicenseFile && !!apcLicenseBackFile && !!apcRadioNtcFile && licenseConsentChecked && allRatingsHaveDocs;
       }
       case 4:
+        return !!apcLogbookFile && !!apcConsentFile && logbookConsentChecked;
+      case 5:
         return true;
       default:
         return false;
@@ -850,7 +853,7 @@ export default function VerifyApcPage() {
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Documents & Logbook <ArrowRight size={14} />
+            Next: Documents & Ratings <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -1238,6 +1241,36 @@ export default function VerifyApcPage() {
           </div>
         </motion.div>
 
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+          >
+            <ArrowRight size={14} className="rotate-180" /> Back
+          </button>
+          <button
+            type="button"
+            onClick={() => canProceed(3) && setStep(4)}
+            disabled={!canProceed(3)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+          >
+            Next: Flight Hours & Logbook <ArrowRight size={14} />
+          </button>
+        </div>
+        </motion.div>)}
+
+        {step === 4 && (<motion.div
+          key="step4"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+
+        {/* ── Step 4: Flight Hours & Logbook ── */}
         {/* ── Section 5: Flight Hours Summary ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={3}>
           <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. Flight Hours Summary</p>
@@ -1368,7 +1401,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-between">
           <button
             type="button"
-            onClick={() => setStep(2)}
+            onClick={() => setStep(3)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
@@ -1376,8 +1409,8 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(4)}
-            disabled={!canProceed(3)}
+            onClick={() => canProceed(4) && setStep(5)}
+            disabled={!canProceed(4)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
@@ -1386,16 +1419,16 @@ export default function VerifyApcPage() {
         </div>
         </motion.div>)}
 
-        {step === 4 && (<motion.div
-          key="step4"
+        {step === 5 && (<motion.div
+          key="step5"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-        {/* ── Step 4: ATO Authorization ── */}
+        {/* ── Step 5: ATO Authorization ── */}
         <motion.div className="mb-5 text-left" variants={fadeUp} custom={5}>
-          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">4. ATO Authorization</p>
+          <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">5. ATO Authorization</p>
           <div className="grid grid-cols-2 gap-2 mb-3">
             <select
               value={atoCountry}
@@ -1602,7 +1635,7 @@ export default function VerifyApcPage() {
         <div className="flex justify-start">
           <button
             type="button"
-            onClick={() => setStep(3)}
+            onClick={() => setStep(4)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
           >
