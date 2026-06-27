@@ -37,6 +37,7 @@ export default function GetStartedPage() {
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
   const [step, setStep] = useState<Step>('welcome');
   const [userName, setUserName] = useState<string>('Pilot');
+  const [isVerifying, setIsVerifying] = useState(false);
 
   // If returning from APC verification page, auto-advance to copilot
   useEffect(() => {
@@ -347,16 +348,29 @@ export default function GetStartedPage() {
               {/* Action buttons */}
               <div className="flex items-center justify-center gap-4">
                 <motion.button
-                  onClick={() => navigate('/get-started/verify-apc')}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-[11px] rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 leading-none"
+                  onClick={() => {
+                    setIsVerifying(true);
+                    navigate('/get-started/verify-apc');
+                  }}
+                  disabled={isVerifying}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-[11px] rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 leading-none disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={isVerifying ? {} : { scale: 1.03 }}
+                  whileTap={isVerifying ? {} : { scale: 0.98 }}
                 >
-                  START VERIFICATION <ArrowRight size={14} />
+                  {isVerifying ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      STARTING VERIFICATION...
+                    </>
+                  ) : (
+                    <>
+                      START VERIFICATION <ArrowRight size={14} />
+                    </>
+                  )}
                 </motion.button>
 
                 <motion.button
