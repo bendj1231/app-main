@@ -19,8 +19,8 @@ const ProfilePage = lazy(() => import('@/app/profile/page.tsx'));
 
 // Unified platform pages
 const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
-const TypeRatingSearchPage = lazy(() => import('../../pages/TypeRatingSearchPage').then(m => ({ default: m.default })));
-const GlobalAviationAuthoritiesPage = lazy(() => import('../../pages/GlobalAviationAuthoritiesPage').then(m => ({ default: m.default })));
+const TypeRatingSearchPage = lazy(() => import('@/components/pages/TypeRatingSearchPage').then(m => ({ default: m.default })));
+const GlobalAviationAuthoritiesPage = lazy(() => import('@/components/pages/GlobalAviationAuthoritiesPage').then(m => ({ default: m.default })));
 
 const PageLoader = () => (
   <div className="min-h-screen bg-slate-950 flex items-center justify-center">

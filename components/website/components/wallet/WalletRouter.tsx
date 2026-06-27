@@ -4,7 +4,7 @@ import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';
 import { WalletPageWithSidebar } from './WalletPageWithSidebar';
-import { supabase } from '../../../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 type View = 'loading' | 'public' | 'gate' | 'manage' | 'no-token';
 

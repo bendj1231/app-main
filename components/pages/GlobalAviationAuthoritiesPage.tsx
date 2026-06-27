@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Shield, Database, CheckCircle, Plane, FileCheck, Building2, ArrowRight } from 'lucide-react';
-import { PathwaysSidebar } from '../components/website/components/pilot-recognition/PathwaysSidebar';
-import { PlatformNavbar } from '../components/website/components/PlatformNavbar';
+import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
+import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 
 const authorities = [
   {

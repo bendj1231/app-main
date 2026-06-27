@@ -5,8 +5,8 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { bookmarkService } from '@/services/bookmarkService';
-import { PathwaysSidebar } from '../components/website/components/pilot-recognition/PathwaysSidebar';
-import { PlatformNavbar } from '../components/website/components/PlatformNavbar';
+import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
+import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { safeRedirect } from '@/lib/url-validator';
 
 // Types from Supabase schema

@@ -17,7 +17,7 @@ import {
   Loader2,
   ArrowLeft
 } from 'lucide-react';
-import { jobApplicationListings } from '../portal/pages/PilotJobDatabasePage';
+import { jobApplicationListings } from '@/portal/pages/PilotJobDatabasePage';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface JobListingsPageProps {
