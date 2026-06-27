@@ -34,7 +34,7 @@ export default function ConsentFormPage() {
         {/* Form Content */}
         <div className="text-center mb-8">
           <h1 className="text-lg font-black tracking-tight text-gray-900">AVIATION PATHWAYS CONSULTANCY (APC)</h1>
-          <p className="text-sm text-gray-500">ATO Training Records Verification — Pilot Consent Form</p>
+          <p className="text-sm text-gray-500">Universal Aviation Verification — Pilot Consent Form</p>
           <p className="text-xs text-gray-400 mt-1">Data Controller registered in Mauritius | DPA 2017 Compliant</p>
         </div>
 
@@ -52,9 +52,12 @@ export default function ConsentFormPage() {
           </section>
 
           <section>
-            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">2. ATO Information</h2>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">2. Approved Aviation Body Information</h2>
+            <p className="text-[10px] text-gray-500 mb-3 leading-snug">
+              The pilot must identify the Approved Aviation Body from which authorization is being requested. If multiple bodies are involved, a separate consent form should be completed for each.
+            </p>
             <div className="grid grid-cols-2 gap-4">
-              {['ATO Name', 'ATO Location / Country'].map((label) => (
+              {['Organization / Body Name', 'Organization Location / Country'].map((label) => (
                 <div key={label}>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
                   <div className="border-b border-gray-400 h-7" />
@@ -66,7 +69,7 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Approved Aviation Body Representative — Information, Classification & Consent</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              The undersigned representative of an <span className="font-semibold text-gray-800">Approved Aviation Body</span> provides consent and authorization for Aviation Pathways Consultancy (APC) to verify the pilot named above. The representative confirms they are authorized to act on behalf of the organization and have the authority to provide this consent.
+              This section is to be completed by the authorized representative of the <span className="font-semibold text-gray-800">Approved Aviation Body</span> identified in Section 2 above. The undersigned representative provides consent and authorization for Aviation Pathways Consultancy (APC) to verify the pilot named above. The representative confirms they are authorized to act on behalf of the organization and have the authority to provide this consent. This form serves as a universal authorization — any Approved Aviation Body listed in the classification grid below may use this form.
             </p>
 
             {/* Classification Grid */}
@@ -159,11 +162,11 @@ export default function ConsentFormPage() {
           <section>
             <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">4. Authorization</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              The pilot hereby authorizes Aviation Pathways Consultancy (APC) to contact the ATO named above and request verification of the pilot's flight training records and logbook hours. The pilot understands that:
+              The pilot hereby authorizes Aviation Pathways Consultancy (APC) to contact the <span className="font-semibold text-gray-800">Approved Aviation Body</span> named above and request verification of the pilot's flight training records and logbook hours. The pilot understands that:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>APC will send the pilot's uploaded documents (license, medical, ratings) and this consent form to the ATO via email.</li>
-              <li>The ATO will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
+              <li>APC will send the pilot's uploaded documents (license, medical, ratings) and this consent form to the Approved Aviation Body via email.</li>
+              <li>The Approved Aviation Body will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
               <li>APC will receive only a confirmation that verification was completed, not the pilot's actual flight hours.</li>
               <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
               <li>The <span className="font-semibold text-gray-800">Approved Aviation Body</span> responsible for conducting or reviewing the verification will receive a <span className="font-semibold text-gray-800">10% incentive on verification fees</span> when the pilot achieves full verification compliance across all submitted documents, as a reward for clean, accurate verification outcomes.</li>
