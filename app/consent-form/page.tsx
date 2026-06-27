@@ -103,6 +103,7 @@ export default function ConsentFormPage() {
               <li>The ATO will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
               <li>APC will receive only a confirmation that verification was completed, not the pilot's actual flight hours.</li>
               <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
+              <li>Pilots who achieve full verification compliance across all submitted documents are eligible for a <span className="font-semibold text-gray-800">10% incentive on verification fees</span> as a reward for clean, accurate documentation.</li>
             </ul>
           </section>
 
