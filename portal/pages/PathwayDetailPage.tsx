@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, Graduation
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface PathwayDetailPageProps {
   pathwayId: string;

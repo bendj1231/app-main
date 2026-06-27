@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, Eye, Clock, Plane, Award, MapPin, Mail, Phone, Calendar, GraduationCap, Briefcase, Shield, ChevronDown, ChevronUp, FileText, Send } from 'lucide-react';
-import { supabase } from '../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 
 interface ResumeViewerProps {
   isOpen: boolean;

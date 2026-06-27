@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useEnterprisePortal } from './hooks/useEnterprisePortal';
 import { useAuth0 } from '@auth0/auth0-react';
-import { supabase } from '../../shared/lib/supabase';
+import { supabase } from '@/lib/shared/supabase';
 import { InterviewerDashboard } from './InterviewerDashboard';
 import { InterviewHistoryPage } from './InterviewHistoryPage';
 import { FlightSchoolPortal } from './FlightSchoolPortal';
