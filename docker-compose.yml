@@ -5,7 +5,7 @@ services:
   service-router:
     build:
       context: .
-      dockerfile: Dockerfile.router
+      dockerfile: docker/Dockerfile.router
     ports:
       - "8080:8080"
     environment:
@@ -31,7 +31,7 @@ services:
   matching-service:
     build:
       context: .
-      dockerfile: Dockerfile.matching
+      dockerfile: docker/Dockerfile.matching
     environment:
       - AI_ACCOUNT=matching@pilotrecognition.com
       - GROQ_API_KEY=${GROQ_API_KEY_1}
@@ -52,7 +52,7 @@ services:
   coaching-service:
     build:
       context: .
-      dockerfile: Dockerfile.coaching
+      dockerfile: docker/Dockerfile.coaching
     environment:
       - AI_ACCOUNT=coaching@pilotrecognition.com
       - OPENAI_API_KEY=${OPENAI_API_KEY_1}
@@ -74,7 +74,7 @@ services:
   prediction-service:
     build:
       context: .
-      dockerfile: Dockerfile.prediction
+      dockerfile: docker/Dockerfile.prediction
     environment:
       - AI_ACCOUNT=prediction@pilotrecognition.com
       - HF_TOKEN=${HF_TOKEN_1}
@@ -96,7 +96,7 @@ services:
   consensus-service:
     build:
       context: .
-      dockerfile: Dockerfile.consensus
+      dockerfile: docker/Dockerfile.consensus
     environment:
       - AI_ACCOUNT=consensus@pilotrecognition.com
       - GROQ_API_KEY=${GROQ_API_KEY_4}
@@ -119,7 +119,7 @@ services:
   social-service:
     build:
       context: .
-      dockerfile: Dockerfile.social
+      dockerfile: docker/Dockerfile.social
     environment:
       - AI_ACCOUNT=social@pilotrecognition.com
       - GROQ_API_KEY=${GROQ_API_KEY_5}
@@ -140,7 +140,7 @@ services:
   demand-service:
     build:
       context: .
-      dockerfile: Dockerfile.demand
+      dockerfile: docker/Dockerfile.demand
     environment:
       - AI_ACCOUNT=demand@pilotrecognition.com
       - HF_TOKEN=${HF_TOKEN_3}
