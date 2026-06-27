@@ -297,13 +297,13 @@ export default function GetStartedPage() {
                     { text: 'SPL, PPL, CPL, or ATPL License (front and back)', optional: false },
                     { text: 'Medical Certificate (Class 1, 2, or 3)', optional: false },
                     { text: 'Radio License', optional: false },
-                    { text: 'Pilot Logbook (all pages)', optional: false },
+                    { text: 'Photo scanned logbook pages OR CSV file digital logbook upload — verification of hours will be contacted as per ATO/Operator mentioned', optional: false },
                     { text: 'Type Ratings / Endorsements', optional: true },
                     { text: 'Additional Ratings — IR, ME, Night, Seaplane, Tailwheel, etc.', optional: true },
-                    { text: 'ATO Name & Location (for training records)', optional: false },
-                    { text: 'Signed ATO Consent Form', link: '/consent-form', label: 'Download / Print', optional: false },
-                    { text: 'License Verification Consent', link: '/license-verification-consent', label: 'Download / Print', optional: false },
-                    { text: 'Logbook Audit Consent', link: '/logbook-consent', label: 'Download / Print', optional: false },
+                    { text: 'ATO/Operator name and location for logbook verification and attestation of being there', optional: false },
+                    { text: 'Signed Authorized Verification Form for ATO, Operator, Type Rating Center, etc.', link: '/consent-form', label: 'Download / Print', optional: false },
+                    { text: 'Explicit consent for verification of licenses — validity, expiration, fraudulent, tampered — to prove ownership with the governing aviation authority as listed', link: '/license-verification-consent', label: 'Download / Print', optional: false },
+                    { text: 'Explicit consent for APC to verify logged batch of hours per ATO/Operator/Type Rating Center or within any aviation body', link: '/logbook-consent', label: 'Download / Print', optional: false },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-[5px] ${item.optional ? 'bg-gray-400' : 'bg-red-500'}`} />
