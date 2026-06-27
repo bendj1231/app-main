@@ -36,6 +36,7 @@ export default function VerifyApcPage() {
   const [uploadStatus, setUploadStatus] = useState<Record<string, 'idle' | 'uploading' | 'done' | 'error'>>({});
   const [atoConsentChecked, setAtoConsentChecked] = useState(false);
   const [licenseConsentChecked, setLicenseConsentChecked] = useState(false);
+  const [logbookConsentChecked, setLogbookConsentChecked] = useState(false);
   const [privacyConsentChecked, setPrivacyConsentChecked] = useState(false);
   const [apcFormData, setApcFormData] = useState({
     fullName: '', phone: '', nationality: '', licenseNumber: '', licenseType: 'PPL',
@@ -876,11 +877,21 @@ export default function VerifyApcPage() {
           <div className="flex justify-center mt-2">
             <button
               type="button"
-              onClick={() => navigate('/flight-hours-logbook')}
+              onClick={() => navigate('/logbook-consent')}
               className="inline-flex items-center gap-1 text-[10px] font-semibold text-red-500 hover:text-red-600 transition-colors"
             >
               Fill out consent form for logbook audit →
             </button>
+          </div>
+
+          {/* Logbook Consent Checkbox */}
+          <div className="rounded-xl p-3 mb-3 mt-3" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.12)' }}>
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" checked={logbookConsentChecked} onChange={(e) => setLogbookConsentChecked(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer" />
+              <span className="text-[10px] text-gray-700 leading-snug">
+                I authorize <span className="font-bold text-gray-800">Aviation Pathways Consultancy (APC)</span> to audit my flight logbook and submit it to the designated ATO and CAA for verification of flight hours, training records, and endorsements. I confirm my logbook entries are authentic and accurate. I understand that falsified logbook entries may result in profile revocation and legal consequences. I acknowledge that if discrepancies are found — including mismatched hours, missing CFI signatures, or conflicting entries — my account will be flagged for review for 30 days, and a <span className="font-bold text-gray-800">$50 reverification fee</span> applies for manual re-review. While under review I may still submit to pathways, but my profile will carry a verification flag visible to ATOs, operators, and airlines. To fully clear my account of all flags, I must pay the full verification fee again for a complete clean re-verification; upon re-uploading corrected documents and declaring all issues resolved, my account will be cleared, subject to successful verification.
+              </span>
+            </label>
           </div>
 
           {/* Logbook Export Instructions */}
@@ -1106,11 +1117,11 @@ export default function VerifyApcPage() {
           )}
           <motion.button
             onClick={handleSubmit}
-            disabled={submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcLicenseFile || !apcLicenseBackFile || !apcRadioNtcFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !licenseConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
+            disabled={submitStatus === 'submitting' || submitStatus === 'success' || !apcEmail || !apcLicenseFile || !apcLicenseBackFile || !apcRadioNtcFile || !apcLogbookFile || !apcConsentChecked || !atoConsentChecked || !licenseConsentChecked || !logbookConsentChecked || !privacyConsentChecked || !apcFormData.atoName}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: submitStatus === 'success' ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-            whileHover={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {}}
-            whileTap={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {}}
+            whileHover={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && logbookConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 1.03 } : {}}
+            whileTap={apcEmail && apcLicenseFile && apcLicenseBackFile && apcRadioNtcFile && apcLogbookFile && apcConsentChecked && atoConsentChecked && licenseConsentChecked && logbookConsentChecked && privacyConsentChecked && apcFormData.atoName && submitStatus !== 'submitting' ? { scale: 0.98 } : {}}
           >
             {submitStatus === 'submitting' ? (
               <>

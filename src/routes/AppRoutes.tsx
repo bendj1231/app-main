@@ -194,6 +194,7 @@ const VerifyApcPage = lazy(() => import('@/app/get-started/verify-apc/page'));
 const AboutVerificationPage = lazy(() => import('@/app/about-verification/page'));
 const ConsentFormPage = lazy(() => import('@/app/consent-form/page'));
 const LicenseVerificationConsentPage = lazy(() => import('@/app/license-verification-consent/page'));
+const LogbookConsentPage = lazy(() => import('@/app/logbook-consent/page'));
 const FlightHoursLogbookPage = lazy(() => import('@/app/logbook-upload/page'));
 const PublicPilotCardPage = lazy(() => import('@/app/verify/[token]/page'));
 const EnrolledFoundationalPage = lazy(() =>
@@ -1701,6 +1702,7 @@ export const AppRoutes = () => {
         <Route path="/about-verification" element={<AboutVerificationPage />} />
         <Route path="/consent-form" element={<ConsentFormPage />} />
         <Route path="/license-verification-consent" element={<LicenseVerificationConsentPage />} />
+        <Route path="/logbook-consent" element={<LogbookConsentPage />} />
         <Route path="/flight-hours-logbook" element={<FlightHoursLogbookPage />} />
         <Route path="/verify/:token" element={<PublicPilotCardPage />} />
 
