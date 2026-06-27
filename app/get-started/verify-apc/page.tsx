@@ -686,7 +686,7 @@ export default function VerifyApcPage() {
           <p className="text-[10px] font-semibold text-gray-700 mb-1.5">
             Additional Ratings & Type Ratings
             {apcFormData.additionalRatings.length > 0 && (
-              <span className="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white" style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}>
+              <span className="ml-1.5 text-[9px] font-bold text-red-600">
                 {apcFormData.additionalRatings.length} {apcFormData.additionalRatings.length === 1 ? 'rating' : 'ratings'}
               </span>
             )}
