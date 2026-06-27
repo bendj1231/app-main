@@ -188,8 +188,18 @@ export default function VerifyApcPage() {
     switch (currentStep) {
       case 1:
         return !!apcFormData.fullName && !!apcEmail && !!apcFormData.phone && !!apcFormData.nationality;
-      case 2:
-        return !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
+      case 2: {
+        const ok = !!apcFormData.licenseNumber && !!apcFormData.licenseExpiryDate && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
+        if (!ok) {
+          console.log('[canProceed:2]', {
+            licenseNumber: apcFormData.licenseNumber,
+            licenseExpiryDate: apcFormData.licenseExpiryDate,
+            medicalClass: apcFormData.medicalClass,
+            medicalExpiry: apcFormData.medicalExpiry,
+          });
+        }
+        return ok;
+      }
       case 3: {
         const allRatingsHaveDocs = apcFormData.additionalRatings.every(
           (r) => !!ratingFiles[r]
