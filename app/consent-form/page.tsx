@@ -64,22 +64,52 @@ export default function ConsentFormPage() {
           </section>
 
           <section>
-            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Authorization</h2>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">3. Chief Flight Instructor (CFI) Information & Consent</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-3">
-              I hereby authorize Aviation Pathways Consultancy (APC) to contact the ATO named above and request verification of my flight training records and logbook hours on my behalf. I understand that:
+              The undersigned Chief Flight Instructor (CFI) or authorized ATO representative provides consent and authorization for Aviation Pathways Consultancy (APC) to contact the ATO regarding the pilot named above. The CFI signature below confirms:
             </p>
             <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
-              <li>APC will send my uploaded documents (license, medical, ratings) and this consent form to the ATO via email.</li>
-              <li>The ATO will verify my logbook hours and send the results directly to my email address.</li>
-              <li>APC will receive only a confirmation that verification was completed, not my actual flight hours.</li>
+              <li>The CFI acknowledges that APC may contact the ATO to verify the pilot's flight training records, logbook hours, and endorsements.</li>
+              <li>The CFI consents to the release of verification information to APC and the pilot as part of the PilotRecognition verification framework.</li>
+              <li>The CFI confirms they are authorized to act on behalf of the ATO named above and have the authority to provide this consent.</li>
+            </ul>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {['CFI Full Name', 'CFI License / Certificate Number'].map((label) => (
+                <div key={label}>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
+                  <div className="border-b border-gray-400 h-7" />
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">CFI Signature</label>
+                <div className="border-b border-gray-400 h-10" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Date</label>
+                <div className="border-b border-gray-400 h-10 text-xs text-gray-500 pt-2">{today}</div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">4. Authorization</h2>
+            <p className="text-xs text-gray-600 leading-relaxed mb-3">
+              The pilot hereby authorizes Aviation Pathways Consultancy (APC) to contact the ATO named above and request verification of the pilot's flight training records and logbook hours. The pilot understands that:
+            </p>
+            <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
+              <li>APC will send the pilot's uploaded documents (license, medical, ratings) and this consent form to the ATO via email.</li>
+              <li>The ATO will verify the pilot's logbook hours and send the results directly to the pilot's email address.</li>
+              <li>APC will receive only a confirmation that verification was completed, not the pilot's actual flight hours.</li>
               <li>All documents are encrypted and automatically deleted 30 days after verification.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">4. Declaration</h2>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">5. Declaration</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-4">
-              I confirm that all information provided is accurate and complete to the best of my knowledge. I understand that providing false or misleading information may result in the rejection of my verification request.
+              The pilot confirms that all information provided is accurate and complete to the best of the pilot's knowledge. The pilot understands that providing false or misleading information may result in the rejection of the verification request.
             </p>
           </section>
 
