@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { NewsroomModal } from './NewsroomModal';
 import { MeshGradient } from '@paper-design/shaders-react';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { safeRedirect } from '@/lib/url-validator';
+import { useAuth } from '@/contexts/AuthContext';
 import { getUserSubscription, checkFeatureAccess } from '@/lib/subscription-gating';
 import { 
   AtlasResumeData, 

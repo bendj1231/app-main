@@ -1,5 +1,5 @@
 import React from 'react';
-import { sanitizeJsonLd } from '@/src/lib/sanitize-html';
+import { sanitizeJsonLd } from '@/lib/sanitize-html';
 
 interface NavigationItem {
   name: string;

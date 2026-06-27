@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { useAuth } from '@/contexts/AuthContext';
+import { safeRedirect } from '@/lib/url-validator';
 
 export const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => {
   const { currentUser, userProfile } = useAuth();

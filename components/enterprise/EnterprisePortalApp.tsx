@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Plane, Briefcase, Building2, Search,

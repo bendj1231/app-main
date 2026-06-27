@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { getHomepageGraphicsConfig } from '@/lib/device-detection';
+import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useVaultProfile } from '@/src/hooks/useVaultProfile';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useVaultProfile } from '@/hooks/useVaultProfile';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { ChevronLeft, TrendingUp, Target, Pencil, ArrowRight, Clock } from 'lucide-react';
 
 const PathwayProgressTracker = React.lazy(() => import('./PathwayProgressTracker'));

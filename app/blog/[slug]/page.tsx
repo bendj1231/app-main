@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getBlogPostBySlug, getAllPostMeta, formatDate } from '@/lib/blog/loader';
 import { markdownToHtml } from '@/lib/blog/markdown';
-import { sanitizeHtmlCustom } from '@/src/lib/sanitize-html';
+import { sanitizeHtmlCustom } from '@/lib/sanitize-html';
 import { ArrowLeft, Calendar, Clock, Tag, Share2, Twitter, Linkedin, Facebook } from 'lucide-react';
 
 export default function BlogArticlePage() {

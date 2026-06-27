@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { Shield, Lock, Eye, Zap, X, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface Props {

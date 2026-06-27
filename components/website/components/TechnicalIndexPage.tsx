@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, BookOpen, Shield } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
-import { sanitizeHtml } from '@/src/lib/sanitize-html';
+import { sanitizeHtml } from '@/lib/sanitize-html';
 
 interface TechnicalIndexPageProps {
     onBack: () => void;

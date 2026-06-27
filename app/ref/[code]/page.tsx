@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export default function ReferralLandingPage() {
   const params = useParams();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import {
   Route, Target, TrendingUp, AlertTriangle, ShieldCheck,
   Plane, Clock, Award, ChevronRight, CheckCircle2, XCircle,

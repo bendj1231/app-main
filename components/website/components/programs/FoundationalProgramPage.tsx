@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, CheckCircle, Home } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { supabase } from '@/src/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { ProgramStages } from './ProgramStages';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { FoundationLoadingScreen } from './FoundationLoadingScreen';

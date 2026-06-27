@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ProtectedRoute } from '@/src/components/ProtectedRoute';
-import { OAuthCallback } from '@/src/components/OAuthCallback';
-import { LogbookCallback } from '@/src/components/LogbookCallback';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { OAuthCallback } from '@/components/OAuthCallback';
+import { LogbookCallback } from '@/components/LogbookCallback';
+import { useAuth } from '@/contexts/AuthContext';
 
 // External redirect component for full URLs — validates before navigation
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
@@ -597,7 +597,7 @@ const CareerPathwaysApp = lazy(() =>
   }))
 );
 const DevDomainSelector = lazy(() =>
-  import('@/src/components/DevDomainSelector').then((m) => ({ default: m.DevDomainSelector }))
+  import('@/components/DevDomainSelector').then((m) => ({ default: m.DevDomainSelector }))
 );
 const PilotTerminalHome = lazy(() =>
   import('@/components/domains/pilotterminal/PilotTerminalHome').then((m) => ({

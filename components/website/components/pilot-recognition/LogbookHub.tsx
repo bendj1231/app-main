@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import { DigitalLogbookPage } from './DigitalLogbookPage';

@@ -11,7 +11,7 @@ import {
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
 } from 'lucide-react';
 import { supabase } from '@/shared/lib/supabase';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { WalletPageWithSidebar } from '../../wallet/WalletPageWithSidebar';
 import { PilotLicensureExperiencePage } from '../../pilot-recognition/PilotLicensureExperiencePage';
 import { LogbookPreviewPanel, CredentialRequestCard, NotificationsFeedPanel } from '../shared';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { useAuth } from '@/contexts/AuthContext';
+import { safeRedirect } from '@/lib/url-validator';
 import FlightInstrumentDashboard from '../../dashboard/FlightInstrumentDashboard';
 import { InfrastructureDashboard } from '../../InfrastructureDashboard';
 import {

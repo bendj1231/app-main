@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { X, User, Camera, Award, Clock, Edit } from 'lucide-react';
-import { supabase } from '@/src/lib/supabase';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ProfileModalProps {
     isOpen: boolean;

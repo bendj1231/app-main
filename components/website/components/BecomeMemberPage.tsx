@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { createPortal } from 'react-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
 // TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 
 const COUNTRIES = [

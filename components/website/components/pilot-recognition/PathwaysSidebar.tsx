@@ -1,5 +1,5 @@
 import React from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 import { Target, TrendingUp, Award, Compass, Zap, BarChart3, Route, Star } from 'lucide-react';

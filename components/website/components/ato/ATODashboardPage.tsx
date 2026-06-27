@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import {
   ArrowLeft, CheckCircle2, XCircle, Clock, ShieldCheck, Users,
   Award, AlertTriangle, Loader2, ChevronDown, ChevronUp, RefreshCw, Plus, CreditCard, Send

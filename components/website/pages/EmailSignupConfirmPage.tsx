@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface EmailSignupConfirmPageProps {
   onNavigate?: (page: string) => void;

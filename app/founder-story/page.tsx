@@ -1,5 +1,5 @@
 import { FounderStoryPage } from '@/components/website/components/FounderStoryPage';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 export const metadata = {
   title: "The Founder's Story — PilotRecognition.com",
   description: "Benjamin Tiger Bowler built PilotRecognition after living $50,000 in training debt, a 3-year waiting list, and being handed a QR code at the Dubai Aviation Career Fair. This is the story of why PilotRecognition exists.",

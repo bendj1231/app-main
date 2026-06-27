@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
-import { uploadProfileImage, type CloudinaryUploadResult } from '@/src/lib/cloudinaryClient';
+import { uploadProfileImage, type CloudinaryUploadResult } from '@/lib/cloudinaryClient';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 

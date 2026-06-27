@@ -13,7 +13,7 @@ import { PathwayGrid, type Slide } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { HomePageSchema } from '../seo/HomePageSchema';
-import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/src/lib/device-detection';
+import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/lib/device-detection';
 import { NewsroomModal } from '../NewsroomModal';
 import { RecognitionATC } from '../RecognitionATC';
 

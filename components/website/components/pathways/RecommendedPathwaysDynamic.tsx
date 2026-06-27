@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Target, Plane, GraduationCap, Briefcase, ArrowRight, Lock, ChevronRight, Star, DollarSign, Clock, Award } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 
 interface RecommendedPathwaysDynamicProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { getDevicePerformanceTier, shouldReduceMotion, isUltraLowPerformanceMode } from '@/src/lib/device-detection';
+import { getDevicePerformanceTier, shouldReduceMotion, isUltraLowPerformanceMode } from '@/lib/device-detection';
 
 interface ShaderCloudProps {
     className?: string;

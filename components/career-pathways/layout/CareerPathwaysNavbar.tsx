@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { useLocation, Link } from 'react-router-dom';
 import {
   Target,

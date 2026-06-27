@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Shield } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
-import { sanitizeJsonLd, sanitizeHtml } from '@/src/lib/sanitize-html';
+import { sanitizeJsonLd, sanitizeHtml } from '@/lib/sanitize-html';
 
 interface FAQPageProps {
     onBack: () => void;

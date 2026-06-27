@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo, useContext } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
-import { supabase } from '@/src/lib/supabase';
+import { safeRedirect } from '@/lib/url-validator';
+import { supabase } from '@/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink, Moon, Sun } from 'lucide-react';
-import { Skeleton } from '@/src/components/ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
 import { GraphicsSettingsModal } from './GraphicsSettingsModal';
-import { sanitizeHtml } from '@/src/lib/sanitize-html';
+import { sanitizeHtml } from '@/lib/sanitize-html';
 import { ThemeContext } from '../context/ThemeContext';
 
 // Safe hook that handles missing ThemeProvider
@@ -46,7 +46,7 @@ interface NavItem {
     isOrange?: boolean;
 }
 
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const TopNavbar: React.FC<TopNavbarProps> = ({
     onNavigate,

@@ -3,7 +3,7 @@ import { manufacturers } from '@/data/aircraft-manufacturers';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from '@/components/website/components/TopNavbar';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 const ManufacturerExpectationsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

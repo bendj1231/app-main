@@ -1,5 +1,5 @@
 import { PilotShortagePage } from '@/components/website/components/PilotShortagePage';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 export const metadata = {
   title: 'The Truth About the Pilot Shortage | PilotRecognition.com',
   description: 'Everyone talks about a pilot shortage, but airlines aren\'t looking for pilots—they are looking for certainty. Learn why thousands of applications sit unread and how a PR Score makes you the candidate they want.',

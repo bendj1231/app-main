@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAccountTier } from '../../../../src/hooks/useAccountTier';
 import { 

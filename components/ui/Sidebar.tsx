@@ -21,7 +21,7 @@ import {
     Settings
 } from 'lucide-react';
 // import { ChevronRight } from './Icons';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const LOGO_URL = "https://cdn.shopify.com/s/files/1/0807/5801/4243/files/logo_3.png?v=1738739665";
 

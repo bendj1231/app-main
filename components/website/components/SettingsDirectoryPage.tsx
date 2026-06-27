@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2, Download } from 'lucide-react';
 import { StorageEngineCard } from './StorageEngineCard';
 import { supabase } from '../../../src/lib/supabase';

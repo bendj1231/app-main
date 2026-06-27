@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
+import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import {
   User, Shield, ShieldCheck, Map, Settings, LogOut, Bell, MessageSquare, Menu, ChevronRight,
   CreditCard, BookMarked, RefreshCw, Clock, Eye, Linkedin, Instagram, Youtube, Facebook, Twitter, Globe, ExternalLink,
   CheckCircle2, ArrowRight, ChevronLeft
 } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { useVaultProfile } from '@/src/hooks/useVaultProfile';
+import { useAuth } from '@/contexts/AuthContext';
+import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { supabase } from '@/shared/lib/supabase';
 import ProfileImage from '../../../src/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';

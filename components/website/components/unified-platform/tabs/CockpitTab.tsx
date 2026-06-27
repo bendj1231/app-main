@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRecognitionScore } from '@/src/hooks/useRecognitionScore';
+import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '@/lib/pilot-recognition-score';
 import { ScoreOptimizationGuide } from '../../../../ScoreOptimizationGuide';
 import { VeremarkVerifiedBadge } from '../../pilot-recognition/VeremarkVerifiedBadge';

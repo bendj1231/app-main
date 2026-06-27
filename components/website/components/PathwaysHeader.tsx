@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { ArrowLeft, Bell, User, Settings, LogOut, Building2 } from 'lucide-react';
 import { useAuth } from '../../../src/contexts/AuthContext';
 

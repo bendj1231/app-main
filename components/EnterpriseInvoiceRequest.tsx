@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 interface EnterpriseInvoiceRequestProps {
   onSubmitted?: () => void;

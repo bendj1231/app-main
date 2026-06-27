@@ -10,10 +10,10 @@ import {
   FileText, TrendingUp,
   Sparkles, UserCheck, Plane, Briefcase, ChevronRight
 } from 'lucide-react';
-import { uploadProfileImage } from '@/src/lib/cloudinaryClient';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { uploadProfileImage } from '@/lib/cloudinaryClient';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { supabase } from '@/shared/lib/supabase';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import type { TabId } from '../types';
 import VerificationDashboardGrid from '../VerificationDashboardGrid';
 

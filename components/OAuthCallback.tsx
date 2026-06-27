@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '@/src/lib/d1-api';
+import { api } from '@/lib/d1-api';
 import { useTheme } from '@/components/website/context/ThemeContext';
 
 /** Cache profile data in sessionStorage to reduce API calls */

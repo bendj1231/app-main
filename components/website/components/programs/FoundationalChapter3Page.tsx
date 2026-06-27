@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Shield, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 
 interface FoundationalChapter3PageProps {

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { sanitizeHtml } from '@/src/lib/sanitize-html';
+import { sanitizeHtml } from '@/lib/sanitize-html';
 
 // Pillar Accordion Table Component
 function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {

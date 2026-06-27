@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
-import { logAuditAction } from '@/src/lib/auditLog';
-import { type AdminPermissions, type PermissionSet, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/src/lib/permissions';
+import { logAuditAction } from '@/lib/auditLog';
+import { type AdminPermissions, type PermissionSet, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/lib/permissions';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 

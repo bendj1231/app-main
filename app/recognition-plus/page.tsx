@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight, X } from 'lucide-react';
 import { detectRegionalPricing, formatPrice, type RegionalPrice } from '../../lib/regionalPricing';

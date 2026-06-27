@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from './components/AdminSidebar';
 import AdminNotificationBell from './components/AdminNotificationBell';
 import { cachedFetch, invalidateCache } from './lib/cache';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { shouldEnable3DEffects } from '@/src/lib/device-detection';
+import { shouldEnable3DEffects } from '@/lib/device-detection';
 
 const Background = ({ children }: { children: React.ReactNode }) => {
   const [enableShader, setEnableShader] = useState(false);

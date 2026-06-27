@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
-import { logAuditAction } from '@/src/lib/auditLog';
-import { canEdit, canDelete, canVerify, type AdminPermissions } from '@/src/lib/permissions';
-import { TableSkeleton } from '@/src/components/admin/LoadingSpinner';
+import { logAuditAction } from '@/lib/auditLog';
+import { canEdit, canDelete, canVerify, type AdminPermissions } from '@/lib/permissions';
+import { TableSkeleton } from '@/components/admin/LoadingSpinner';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 

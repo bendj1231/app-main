@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';

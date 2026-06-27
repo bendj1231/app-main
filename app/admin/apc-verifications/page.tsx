@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 import { Search, FileText, ShieldCheck, AlertTriangle, Clock, User, Mail, Phone, Globe, Award, Briefcase } from 'lucide-react';

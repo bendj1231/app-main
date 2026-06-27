@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { motion, Variants, Transition, TargetAndTransition, VariantLabels, ViewportOptions } from 'framer-motion';
-import { shouldReduceMotion, getDevicePerformanceTier } from '@/src/lib/device-detection';
+import { shouldReduceMotion, getDevicePerformanceTier } from '@/lib/device-detection';
 
 type MotionValue = VariantLabels | TargetAndTransition | undefined;
 

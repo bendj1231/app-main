@@ -1,5 +1,5 @@
 import React from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 
 export const BusinessPlanPage = ({ onBack }: { onBack: () => void }) => (
     <div className="fade-in-up">

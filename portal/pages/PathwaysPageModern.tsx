@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useToast } from '@/src/components/ui/toast';
+import { useToast } from '@/components/ui/toast';
 import { 
   TrendingUp, 
   ChevronLeft,

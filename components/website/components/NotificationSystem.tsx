@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import {
   Bell, BellRing, Check, Clock, AlertTriangle,
   FileCheck, Calendar, X, ChevronRight, ShieldCheck,

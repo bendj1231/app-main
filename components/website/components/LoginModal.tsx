@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ArrowRight } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
-import { useToast } from '@/src/components/ui/toast';
-import { validateEmail } from '@/src/lib/validation';
+import { useToast } from '@/components/ui/toast';
+import { validateEmail } from '@/lib/validation';
 
 // Google SVG icon
 const GoogleIcon = () => (

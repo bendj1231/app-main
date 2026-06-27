@@ -78,10 +78,10 @@ export { DirectEnrollmentLoadingScreen } from '@/components/website/components/h
 export { DirectPlatformLoadingScreen } from '@/components/website/components/home/DirectPlatformLoadingScreen';
 
 // Auth
-export { OAuthCallback } from '@/src/components/OAuthCallback';
+export { OAuthCallback } from '@/components/OAuthCallback';
 
 // Protected Route
-export { ProtectedRoute } from '@/src/components/ProtectedRoute';
+export { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // Enterprise (temporarily disabled due to star export issues)
 // export { default as EnterpriseLoginPage } from '@/components/enterprise/EnterpriseLoginPage';

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap, Smartphone, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { supabase } from '@/src/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { FoundationLoadingScreen } from '@/components/website/components/programs/FoundationLoadingScreen';
-import { shouldEnableHeavyAnimations, shouldEnable3DEffects } from '@/src/lib/device-detection';
+import { shouldEnableHeavyAnimations, shouldEnable3DEffects } from '@/lib/device-detection';
 
 // Social Media Icons
 const TikTokIcon = ({ className }: { className?: string }) => (

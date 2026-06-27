@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RecognitionAchievementPage } from './RecognitionAchievementPage';

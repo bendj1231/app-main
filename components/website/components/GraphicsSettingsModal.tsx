@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Monitor, Zap, Check } from 'lucide-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
+import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 
 type GraphicsQuality = 'auto' | 'low' | 'medium' | 'high';
 

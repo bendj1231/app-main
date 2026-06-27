@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { CareerPathwaysNavbar } from './layout/CareerPathwaysNavbar';
-import { OAuthCallback } from '@/src/components/OAuthCallback';
+import { OAuthCallback } from '@/components/OAuthCallback';
 
 // Lazy load page components - using actual platform pathways content as main page
 import type { PathwaysPageModernProps } from '../../portal/pages/PathwaysPageModern';
@@ -15,7 +15,7 @@ const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ 
 const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').then(m => ({ default: m.PathwayDashboardPage })));
 const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
-const ProfilePage = lazy(() => import('@/src/app/profile/page.tsx'));
+const ProfilePage = lazy(() => import('@/app/profile/page.tsx'));
 
 // Unified platform pages
 const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign } from 'lucide-react';
 
 interface PilotReferralShareProps {

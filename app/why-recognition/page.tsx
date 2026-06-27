@@ -1,5 +1,5 @@
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 export const metadata = {
   title: 'Why Every Pilot Needs a Recognition Profile | PilotRecognition.com',
   description: 'In a rapidly evolving industry, a paper logbook and standard CV are no longer enough. Discover why being "Recognized" is the new aviation standard for students, hobbyists, and active pilots.',

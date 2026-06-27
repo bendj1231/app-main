@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Lock, Key, AlertTriangle, CheckCircle2, X, RefreshCw } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { useToast } from '@/src/components/ui/toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/components/ui/toast';
 import { MFASetup } from './MFASetup';
 import { MFADisable } from './MFADisable';
 import { MFABackupCodes } from './MFABackupCodes';

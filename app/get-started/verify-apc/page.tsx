@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
+import { getHomepageGraphicsConfig } from '@/lib/device-detection';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import {
   ArrowRight, ShieldCheck, Briefcase, BadgeCheck, UserCheck, IdCard, Award, Radio, ExternalLink,
   Globe, Star, Lock, CheckCircle,

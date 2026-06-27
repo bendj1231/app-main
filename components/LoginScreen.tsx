@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Lock, ArrowRight, AlertCircle, Mail, Shield } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { useToast } from '@/src/components/ui/toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/components/ui/toast';
 import { MFAVerify } from './website/components/portal/MFAVerify';
 
 interface LoginScreenProps {

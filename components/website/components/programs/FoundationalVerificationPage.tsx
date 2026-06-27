@@ -3,8 +3,8 @@ import {
     User, MapPin, School, Phone, Clock, Award, Upload, Plus, Trash2, Plane, FileText, CheckCircle2, Loader2
 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { supabase } from '@/src/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface FoundationalVerificationPageProps {
     onBack: () => void;

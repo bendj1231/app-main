@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { AlertCircle, X } from 'lucide-react';
 
 interface ExamTerminalProps {

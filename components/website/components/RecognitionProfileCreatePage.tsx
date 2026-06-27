@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { api } from '@/src/lib/d1-api';
+import { api } from '@/lib/d1-api';
 
 export const RecognitionProfileCreatePage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { shouldEnableHeavyAnimations } from '@/src/lib/device-detection';
+import { shouldEnableHeavyAnimations } from '@/lib/device-detection';
 
 interface RevealOnScrollProps {
     children: React.ReactNode;

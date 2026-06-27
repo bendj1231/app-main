@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
+import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import { supabase } from '@/shared/lib/supabase';
 import {
   ArrowRight, UserCheck, ShieldCheck, Plane, Briefcase, BadgeCheck

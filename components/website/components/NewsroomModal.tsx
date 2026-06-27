@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Home as HomeIcon, X, CheckCircle2 } from 'lucide-react';
-import { IMAGES } from '@/src/lib/website-constants';
+import { IMAGES } from '@/lib/website-constants';
 
 interface NewsroomItem {
     id: string;

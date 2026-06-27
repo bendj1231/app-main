@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
-import { safeRedirect } from '@/src/lib/url-validator';
-import { HomePage } from '@/src/routes';
+import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { safeRedirect } from '@/lib/url-validator';
+import { HomePage } from '@/routes';
 import { CookieConsent } from '@/components/CookieConsent';
 import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
-import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
+import { initializeAnalyticsServices } from '@/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
 import { ThemeProvider } from '@/components/website/context/ThemeContext';
 // Admin components
-import { MoaExecutiveSummary } from '@/src/components/admin/MoaExecutiveSummary';
-import { InvestorPitch } from '@/src/components/admin/InvestorPitch';
-import { GovernmentPromotion } from '@/src/components/admin/GovernmentPromotion';
-import { VeremarkPricing } from '@/src/components/admin/VeremarkPricing';
+import { MoaExecutiveSummary } from '@/components/admin/MoaExecutiveSummary';
+import { InvestorPitch } from '@/components/admin/InvestorPitch';
+import { GovernmentPromotion } from '@/components/admin/GovernmentPromotion';
+import { VeremarkPricing } from '@/components/admin/VeremarkPricing';
 
 const LOGO_URL =
   'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { ChevronLeft, ChevronRight, Plane, MapPin, DollarSign, Clock, Globe, Star, Cpu, Users, Brain, Shield, Target, GraduationCap, CheckCircle2, Search, Briefcase, Zap, TrendingUp, ArrowLeft, Database, Calendar, Bell } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { PilotAptitudeTest } from '../../components/PilotAptitudeTest';

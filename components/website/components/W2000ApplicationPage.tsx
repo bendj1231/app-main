@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
+import { safeRedirect } from '@/lib/url-validator';
 import { TopNavbar } from './TopNavbar';
 
 interface W2000ApplicationPageProps {

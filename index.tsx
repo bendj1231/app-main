@@ -16,12 +16,12 @@ import React, { createContext, useContext } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BrowserRouter, useNavigate } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
-import { Styles } from '@/src/components/ui/Styles';
-import { AuthProvider } from '@/src/contexts/AuthContext';
-import { ToastProvider } from '@/src/components/ui/toast';
-import { AppRoutes } from '@/src/routes/AppRoutes';
-import { ErrorBoundary } from '@/src/components/ErrorBoundary';
-import { getAuth0RedirectUri } from '@/src/lib/auth0';
+import { Styles } from '@/components/ui/Styles';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { ToastProvider } from '@/components/ui/toast';
+import { AppRoutes } from '@/routes/AppRoutes';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { getAuth0RedirectUri } from '@/lib/auth0';
 import { ThemeProvider } from '@/components/website/context/ThemeContext';
 import './index.css';
 

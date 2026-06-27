@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { supabase } from '@/src/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { TrendingUp, Award, Clock, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface FoundationalProgressPageProps {

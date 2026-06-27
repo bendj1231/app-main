@@ -1,5 +1,5 @@
 // TODO: Replace with client-side service (typeRatingService is Next.js server-only)
-// import { typeRatingService, ManufacturerCamel } from '@/src/services/typeRatingService';
+// import { typeRatingService, ManufacturerCamel } from '@/services/typeRatingService';
 
 interface ManufacturerCamel {
   id: string;

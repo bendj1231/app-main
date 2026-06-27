@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { safeRedirect } from '@/lib/url-validator';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight } from 'lucide-react';
-import ProfileImage from '@/src/components/ProfileImage';
+import ProfileImage from '@/components/ProfileImage';
 
 interface PlatformNavbarProps {
   onNavigate: (page: string) => void;
