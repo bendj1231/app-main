@@ -140,12 +140,14 @@ async function verifyAuth0Token(request: Request, env: Env): Promise<JWTPayload>
 
   // Decode header to find kid
   const parts = token.split('.');
-  if (parts.length !== 3) throw new Response(JSON.stringify({ error: 'Invalid JWT' }), { status: 401 });
+  if (parts.length !== 3) {
+    throw new Response(JSON.stringify({ error: `Invalid JWT: expected 3 parts, got ${parts.length}, token length=${token.length}` }), { status: 401 });
+  }
   const headerJson = JSON.parse(atob(parts[0]));
   const kid = headerJson.kid;
 
   const keyData = jwksKeys.find((k) => (k as any).kid === kid);
-  if (!keyData) throw new Response(JSON.stringify({ error: 'Signing key not found' }), { status: 401 });
+  if (!keyData) throw new Response(JSON.stringify({ error: `Signing key not found: kid=${kid}, available=${jwksKeys.map((k: any) => k.kid).join(',')}` }), { status: 401 });
 
   // Build JWK and import
   const jwk: JsonWebKey = {

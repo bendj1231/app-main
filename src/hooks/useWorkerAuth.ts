@@ -10,15 +10,16 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { api, apiBatch, pilotApi } from '../lib/d1-api';
 
 export function useWorkerAuth() {
-  const { getAccessTokenSilently, user: auth0User } = useAuth0();
+  const { getAccessTokenSilently, getIdTokenClaims, user: auth0User } = useAuth0();
   const tokenRef = useRef<string | null>(null);
 
   const getToken = useCallback(async (): Promise<string> => {
     if (tokenRef.current) return tokenRef.current;
-    const token = await getAccessTokenSilently();
+    const claims = await getIdTokenClaims();
+    const token = (claims as { __raw?: string } | undefined)?.__raw || (await getAccessTokenSilently());
     tokenRef.current = token;
     return token;
-  }, [getAccessTokenSilently]);
+  }, [getIdTokenClaims, getAccessTokenSilently]);
 
   const callApi = useCallback(
     async <T>(action: string, params?: Record<string, unknown>): Promise<T> => {

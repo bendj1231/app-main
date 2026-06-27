@@ -5,14 +5,16 @@
  * instead of Supabase. Auth0 still handles login; this handles data.
  *
  * IMPORTANT: Every function requires an accessToken parameter.
- * Use Auth0's getAccessTokenSilently() to get it.
+ * Use Auth0's getIdTokenClaims().__raw to get the ID token JWT.
+ * (Access tokens from Auth0 are opaque and cannot be verified by the Worker.)
  *
  * Usage:
  *   import { useAuth0 } from '@auth0/auth0-react';
  *   import { getProfile } from '@/lib/d1-api';
  *
- *   const { getAccessTokenSilently } = useAuth0();
- *   const token = await getAccessTokenSilently();
+ *   const { getIdTokenClaims } = useAuth0();
+ *   const claims = await getIdTokenClaims();
+ *   const token = claims?.__raw;
  *   const profile = await getProfile(token, auth0Id);
  *
  * Environment:
@@ -48,7 +50,7 @@ async function fetchAPI(
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const msg = (data as any)?.error || `HTTP ${res.status}`;
+        const msg = (data as Record<string, unknown>)?.error || `HTTP ${res.status}`;
         throw new Error(msg);
       }
       return data;

@@ -27,7 +27,7 @@ function setCachedProfile(auth0Id: string, data: unknown): void {
 }
 
 export const OAuthCallback = () => {
-  const { isLoading, isAuthenticated, user, error, getAccessTokenSilently } = useAuth0();
+  const { isLoading, isAuthenticated, user, error, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
   const navigate = useNavigate();
   const [profileCreated, setProfileCreated] = useState(false);
   const { isDarkMode } = useTheme();
@@ -42,20 +42,9 @@ export const OAuthCallback = () => {
     }
   }, []);
 
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [authError, _setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // If we're on /auth/callback with code+state but Auth0 says not authenticated,
-    // the token exchange likely failed (e.g. redirect_uri mismatch in Auth0 dashboard)
-    const url = new URL(window.location.href);
-    const hasCode = url.searchParams.has('code');
-    const hasState = url.searchParams.has('state');
-    if (!isAuthenticated && !isLoading && hasCode && hasState) {
-      console.error('[OAuthCallback] Auth0 callback URL has code+state but isAuthenticated=false. Check Auth0 Allowed Callback URLs include:', window.location.origin + '/auth/callback');
-      setAuthError('Authentication callback failed. Please ensure /auth/callback is in your Auth0 Allowed Callback URLs.');
-      return;
-    }
-
     // Guard: wait for Auth0 to finish processing the redirect before doing anything
     if (!isAuthenticated || !user || profileCreated || isLoading) {
       console.log('[OAuthCallback] Guard blocked — isAuthenticated:', isAuthenticated, 'user:', !!user, 'profileCreated:', profileCreated, 'isLoading:', isLoading);
@@ -80,14 +69,15 @@ export const OAuthCallback = () => {
 
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
 
-        // ─── STEP 1: Get access token + check profile FIRST ───
+        // ─── STEP 1: Get ID token + check profile FIRST ───
         let token: string | null = null;
         try {
-          console.log('[OAuthCallback] Fetching access token...');
-          token = await getAccessTokenSilently();
-          console.log('[OAuthCallback] Access token acquired, length:', token?.length || 0);
+          console.log('[OAuthCallback] Fetching ID token...');
+          const claims = await getIdTokenClaims();
+          token = (claims as { __raw?: string } | undefined)?.__raw || (await getAccessTokenSilently());
+          console.log('[OAuthCallback] Token acquired, length:', token?.length || 0);
         } catch (tokenErr) {
-          console.warn('[OAuthCallback] getAccessTokenSilently failed:', tokenErr);
+          console.warn('[OAuthCallback] Token fetch failed:', tokenErr);
         }
 
         let hasProfile = false;
@@ -101,7 +91,7 @@ export const OAuthCallback = () => {
             try {
               const profile = await api(token, 'getProfile', { auth0_id: user.sub, email: user.email });
               console.log('[OAuthCallback] D1 getProfile response:', profile);
-              if (profile && (profile as any)?.id) {
+              if (profile && (profile as Record<string, unknown>)?.id) {
                 setCachedProfile(user.sub, profile);
                 hasProfile = true;
               }
@@ -146,7 +136,7 @@ export const OAuthCallback = () => {
             try {
               const profile = await api(token, 'getProfile', { auth0_id: user.sub, email: user.email });
               console.log('[OAuthCallback] D1 getProfile response:', profile);
-              if (profile && (profile as any)?.id) {
+              if (profile && (profile as Record<string, unknown>)?.id) {
                 setCachedProfile(user.sub, profile);
                 target = '/platform';
                 console.log('[OAuthCallback] Profile found in D1 — redirecting to /platform');
@@ -176,7 +166,7 @@ export const OAuthCallback = () => {
     handleAuthCallback();
 
     return () => clearTimeout(timeout);
-  }, [isAuthenticated, user, profileCreated, isLoading, navigate, getAccessTokenSilently]);
+  }, [isAuthenticated, user, profileCreated, isLoading, navigate, getAccessTokenSilently, getIdTokenClaims]);
 
   if (error || authError) {
     return (
