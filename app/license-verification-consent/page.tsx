@@ -90,7 +90,24 @@ export default function LicenseVerificationConsentPage() {
           </section>
 
           <section>
-            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">5. Declaration</h2>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">5. Verification Outcomes & Compliance</h2>
+            <p className="text-xs text-gray-600 leading-relaxed mb-3">
+              I understand that verification findings may result in different compliance statuses depending on the document type reviewed. I acknowledge the following terms:
+            </p>
+            <ul className="text-xs text-gray-600 space-y-1.5 list-disc list-inside mb-3">
+              <li><span className="font-semibold text-gray-800">CAA-issued licenses</span> (PPL, CPL, ATPL, type ratings) that are verified as valid and authentic will be marked compliant with no further action required.</li>
+              <li><span className="font-semibold text-gray-800">Logbook & training records</span> are subject to credibility review based on the ATO response. Any discrepancies found — including mismatched hours, missing CFI signatures, incomplete endorsements, or conflicting entries — will be flagged for review.</li>
+              <li>If discrepancies are identified, my account will be <span className="font-semibold text-gray-800">flagged for review for 30 days</span> to allow correction or re-upload of corrected documents. Issues will be underlined throughout the verification report.</li>
+              <li>If the ATO or CFI indicates that a document requires review or re-upload (e.g., illegible signature, incorrect date format, missing page), I must resolve the issue within the 30-day window.</li>
+              <li>The initial verification fee is <span className="font-semibold text-gray-800">non-refundable</span>. If reverification is required due to discrepancies or rejected documents, a <span className="font-semibold text-gray-800">$50 reverification fee</span> will apply, as this involves manual review and compliance processing.</li>
+              <li>While my account is under review, I may still browse pathways and submit applications; however, my profile will display a <span className="font-semibold text-gray-800">verification flag</span> visible to ATOs, operators, and airlines for transparency and pilot safety.</li>
+              <li>Verification flags are shared with pathway operators to ensure compliance and safety standards are maintained across all submissions.</li>
+              <li>After 30 days, if issues remain unresolved, my account may be restricted from submitting to certain pathways until compliance is restored.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-sm font-bold text-gray-900 border-b border-gray-300 pb-1 mb-4">6. Declaration</h2>
             <p className="text-xs text-gray-600 leading-relaxed mb-4">
               I confirm that all information and documents provided are accurate, complete, and authentic to the best of my knowledge. I understand that providing false or misleading information may result in the rejection of my verification request, revocation of my PilotRecognition profile, and potential legal consequences.
             </p>
