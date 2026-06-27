@@ -153,6 +153,8 @@ export default function VerifyApcPage() {
     atoName: '', atoLocation: '',
     atoDataNeeded: 'total_flight_hours',
     additionalRatings: [] as string[],
+    hasAviationDegree: false,
+    aviationDegreeDetails: '',
   });
   const [additionalATOs, setAdditionalATOs] = useState<{ name: string; location: string }[]>([]);
   const [ratingInput, setRatingInput] = useState('');
@@ -690,6 +692,49 @@ export default function VerifyApcPage() {
               ))}
             </select>
           </div>
+
+          {/* Aviation Degree Question */}
+          <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.12)' }}>
+            <p className="text-[10px] font-black text-gray-900 uppercase tracking-wider mb-2">Aviation Education</p>
+            <p className="text-[10px] text-gray-700 mb-2">Do you hold an aviation graduation degree?</p>
+            <div className="flex gap-2 mb-2">
+              <button
+                type="button"
+                onClick={() => setApcFormData(p => ({ ...p, hasAviationDegree: true }))}
+                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
+                style={{
+                  background: apcFormData.hasAviationDegree ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                  color: apcFormData.hasAviationDegree ? '#fff' : '#374151',
+                  border: `1px solid ${apcFormData.hasAviationDegree ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                }}
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                onClick={() => setApcFormData(p => ({ ...p, hasAviationDegree: false, aviationDegreeDetails: '' }))}
+                className="flex-1 py-2 rounded-xl text-[10px] font-bold transition-all"
+                style={{
+                  background: !apcFormData.hasAviationDegree ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(0,0,0,0.03)',
+                  color: !apcFormData.hasAviationDegree ? '#fff' : '#374151',
+                  border: `1px solid ${!apcFormData.hasAviationDegree ? 'transparent' : 'rgba(0,0,0,0.08)'}`,
+                }}
+              >
+                No
+              </button>
+            </div>
+            {apcFormData.hasAviationDegree && (
+              <input
+                type="text"
+                placeholder="University / Institution, Year, Degree type..."
+                value={apcFormData.aviationDegreeDetails}
+                onChange={(e) => setApcFormData(p => ({ ...p, aviationDegreeDetails: e.target.value }))}
+                className="w-full rounded-xl px-3 py-2 text-xs text-gray-900 placeholder-gray-500 outline-none"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}
+              />
+            )}
+          </div>
+
           <p className="text-[10px] text-gray-500 leading-relaxed mt-2">
             This email will be the recipient for your verification report, covering account status, logbook status, and license status. This report can and will be used for international personal identification during pathway submission of interests to operators, and can also be used outside of the platform as a form of verification.
           </p>
