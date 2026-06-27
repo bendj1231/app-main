@@ -167,6 +167,7 @@ export default function VerifyApcPage() {
     hasNotFlown: false,
     hasNoMedical: false,
     hasRadioLicense: false,
+    hasNoLicense: false,
   });
   const [additionalATOs, setAdditionalATOs] = useState<{ name: string; location: string }[]>([]);
   const [ratingInput, setRatingInput] = useState('');
@@ -178,8 +179,8 @@ export default function VerifyApcPage() {
   const [step, setStep] = useState(1);
   const [showLogbookModal, setShowLogbookModal] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const totalSteps = 8;
-  const stepTitles = ['Personal Details', 'Background & Experience', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit'];
+  const totalSteps = 9;
+  const stepTitles = ['Personal Details', 'Background & Experience', 'License & Medical', 'Core Documents', 'Aircraft Ratings', 'Type Ratings & Endorsements', 'Flight Hours & Logbook', 'Authorization & Submit', 'Not Eligible'];
   const stepDescriptions = [
     'Provide your identity, contact information, nationality, and home base for the verification record.',
     'Tell us about your education, flight experience, and the career pathway you are pursuing.',
@@ -189,6 +190,7 @@ export default function VerifyApcPage() {
     'Add your type rating endorsements with certification, licensure, and training center details.',
     'Enter your flight hours summary, upload your logbook, and sign the logbook audit consent.',
     'Review all details, select your ATO, confirm privacy consent, and submit your verification request to APC.',
+    'You do not yet meet the minimum requirements for verification. Explore Recognition+ features while you work toward your first license.',
   ];
 
   // Dynamically scale card to fit viewport without scrolling
@@ -220,6 +222,7 @@ export default function VerifyApcPage() {
       case 2:
         return true;
       case 3:
+        if (apcFormData.hasNoLicense) return true;
         const hasValidLicense = !!apcFormData.licenseNumber && (apcFormData.hasNoLicenseExpiry || !!apcFormData.licenseExpiryDate);
         const hasValidMedical = !apcFormData.hasNoMedical && !!apcFormData.medicalClass && !!apcFormData.medicalExpiry;
         return hasValidLicense && (apcFormData.hasNotFlown || true) && (apcFormData.hasNoMedical || hasValidMedical);
@@ -644,9 +647,9 @@ export default function VerifyApcPage() {
             {/* Progress Bar */}
             {(() => {
               const shouldHideExtras = apcFormData.hasNotFlown || !apcFormData.hasFlightExperience;
-              const visibleStepIdxs = shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
+              const visibleStepIdxs = apcFormData.hasNoLicense ? [0, 1, 2, 8] : shouldHideExtras ? [0, 1, 2, 3, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
               const visibleTotal = visibleStepIdxs.length;
-              const visualStep = shouldHideExtras ? (step <= 4 ? step : 5) : step;
+              const visualStep = apcFormData.hasNoLicense ? (step <= 3 ? step : 4) : shouldHideExtras ? (step <= 4 ? step : 5) : step;
               return (
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
@@ -1154,6 +1157,18 @@ export default function VerifyApcPage() {
               <span className="text-[9px] text-gray-600">I don't hold a radio license</span>
             </label>
           </div>
+          {/* No license checkbox (only for zero-experience pilots) */}
+          {!apcFormData.hasFlightExperience && (
+            <label className="flex items-center gap-2 mt-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={apcFormData.hasNoLicense}
+                onChange={(e) => setApcFormData(p => ({ ...p, hasNoLicense: e.target.checked, licenseNumber: e.target.checked ? '' : p.licenseNumber, licenseExpiryDate: e.target.checked ? '' : p.licenseExpiryDate, hasNoLicenseExpiry: false }))}
+                className="w-3.5 h-3.5 rounded border-gray-300 text-amber-500 cursor-pointer"
+              />
+              <span className="text-[10px] text-gray-700">I don't have a pilot license yet</span>
+            </label>
+          )}
         </motion.div>
 
         <div className="flex justify-between">
@@ -1167,12 +1182,12 @@ export default function VerifyApcPage() {
           </button>
           <button
             type="button"
-            onClick={() => canProceed(3) && setStep(4)}
+            onClick={() => canProceed(3) && setStep(apcFormData.hasNoLicense ? 9 : 4)}
             disabled={!canProceed(3)}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
           >
-            Next: Core Documents <ArrowRight size={14} />
+            {apcFormData.hasNoLicense ? 'Continue' : 'Next: Core Documents'} <ArrowRight size={14} />
           </button>
         </div>
         </motion.div>)}
@@ -2108,6 +2123,58 @@ export default function VerifyApcPage() {
             <ArrowRight size={14} className="rotate-180" /> Back
           </button>
         </div>
+        </motion.div>)}
+
+        {/* ── Step 9: Not Eligible ── */}
+        {step === 9 && (<motion.div
+          key="step9"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          <motion.div className="mb-5 text-center" variants={fadeUp} custom={2}>
+            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.08)' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <p className="text-xs font-black text-gray-900 uppercase tracking-wider mb-2">Not Eligible for Verification</p>
+            <p className="text-[10px] text-gray-600 mb-4 leading-relaxed max-w-sm mx-auto">
+              Sorry, unfortunately you are not eligible for verification yet. However, you may enjoy <strong className="text-gray-900">Recognition+</strong> features such as career alignment AI tools and viewing pathways as a Recognition+ member.
+            </p>
+            <div className="rounded-xl p-4 mb-4 text-left" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+              <p className="text-[10px] font-bold text-gray-900 mb-1">What you can do now:</p>
+              <ul className="text-[9px] text-gray-600 space-y-1 list-disc pl-4">
+                <li>Explore career pathways and see what airlines are looking for</li>
+                <li>Use AI career alignment tools to plan your training</li>
+                <li>Track your progress toward your first license</li>
+              </ul>
+            </div>
+            <div className="rounded-xl p-4 text-left" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
+              <p className="text-[10px] font-bold text-gray-900 mb-1">When you'll be eligible:</p>
+              <p className="text-[9px] text-gray-600 leading-relaxed">
+                Once you have your <strong className="text-gray-900">SPL license</strong> (or any pilot license), you'll be eligible for verification. Or once you start your flight training and receive at least an SPL, we can contact your ATO and verify you.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={() => setStep(3)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider text-gray-600 transition-all hover:bg-gray-100"
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <ArrowRight size={14} className="rotate-180" /> Back
+            </button>
+            <button
+              type="button"
+              onClick={() => window.location.href = '/get-started'}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+            >
+              Explore Recognition+ <ArrowRight size={14} />
+            </button>
+          </div>
         </motion.div>)}
         </AnimatePresence>
         )}
