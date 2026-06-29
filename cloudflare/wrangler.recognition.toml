@@ -1,0 +1,20 @@
+# Cloudflare Worker configuration for Recognition+ Trace Data API
+# Handles sensitive aviation trace: licenses, credentials, verification, logbook
+name = "recognition-plus-api"
+main = "recognition-plus-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "recognition-plus-trace"
+database_id = "4ca6354b-fc0b-4bfd-86cf-532babf74af9"
+
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "pilot-encrypted-vault"
+
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"

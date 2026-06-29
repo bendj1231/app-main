@@ -1,0 +1,36 @@
+# Cloudflare Worker configuration for Public Pathway API
+# Handles public reads: manufacturers, aircraft, ATOs, airlines, pathways, search
+name = "pilot-public-api"
+main = "pathway-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pilotrecognition-reference-data"
+database_id = "1a59c397-fa2a-4a5f-b557-87b54230b202"
+
+[[d1_databases]]
+binding = "DB_OPS"
+database_name = "pilotrecognition-d1"
+database_id = "0652ca22-adb0-4642-8658-ccc3ad74d263"
+
+[[d1_databases]]
+binding = "DB_PROFILES"
+database_name = "pilotrecognition-profiles"
+database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
+
+[[d1_databases]]
+binding = "DB_TRACE"
+database_name = "recognition-plus-trace"
+database_id = "4ca6354b-fc0b-4bfd-86cf-532babf74af9"
+
+[[d1_databases]]
+binding = "DB_DOCS"
+database_name = "apc-document-metadata"
+database_id = "4ffbd2f3-c424-437a-80ea-b3d75b896afb"
+
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
