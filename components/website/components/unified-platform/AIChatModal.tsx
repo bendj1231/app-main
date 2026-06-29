@@ -11,9 +11,10 @@ interface AIChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   profile?: any;
+  pathways?: any[];
 }
 
-export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profile }) => {
+export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profile, pathways }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -59,6 +60,11 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profi
               elp_level: profile?.elp_level,
               career_goal: profile?.career_goal,
             },
+            pathways_context: pathways?.map((p: any) => ({
+              id: p.id,
+              title: p.title,
+              requirements: p.requirements,
+            })),
           },
         }),
       });

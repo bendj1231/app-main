@@ -821,13 +821,21 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
     // ── AI Chat (OpenRouter) ───────────────────────────────
     case 'aiChat': {
-      const { message, profile_context } = params || {};
+      const { message, profile_context, pathways_context } = params || {};
       if (!message) throw new Error('message required');
 
       const apiKey = env.OPENROUTER_API_KEY;
       if (!apiKey) throw new Error('OpenRouter API key not configured');
 
       // Build system prompt with career pathway context
+      let pathwaysInfo = '';
+      if (pathways_context && Array.isArray(pathways_context)) {
+        pathwaysInfo = '\n\nAvailable Pathways:\n' + pathways_context.map((p: any) => {
+          const req = p.requirements || {};
+          return `- ${p.title}: Min ${req.min_hours || 'N/A'} hrs, ${req.license_type || 'N/A'}, ${req.medical_class || 'N/A'}, ${req.elp_level || 'N/A'}, Ratings: ${req.type_ratings?.join(', ') || 'N/A'}`;
+        }).join('\n');
+      }
+
       const systemPrompt = `You are an AI career coach for pilots on PilotRecognition. Your role is to help pilots find their best-fit career pathways (airlines, cargo, corporate aviation, etc.) based on their profile.
 
 ${profile_context ? `Pilot Profile Context:
@@ -835,15 +843,14 @@ ${profile_context ? `Pilot Profile Context:
 - Total Hours: ${profile_context.total_flight_hours || 0}
 - Medical: ${profile_context.medical_class || 'Not specified'}
 - English Level: ${profile_context.elp_level || 'Not specified'}
-- Career Goal: ${profile_context.career_goal || 'Not specified'}
-
-Use this information to provide personalized pathway recommendations.` : ''}
+- Career Goal: ${profile_context.career_goal || 'Not specified'}` : ''}${pathwaysInfo}
 
 Guidelines:
 - Be concise and direct
 - Focus on actionable advice
-- Mention specific pathway types (regional airline, cargo, corporate, charter, etc.)
-- Highlight skill gaps when relevant
+- Compare pilot profile against pathway requirements
+- Highlight skill gaps (hours, type ratings, medical, etc.)
+- Suggest specific pathways that match or are close to matching
 - If hours are low, suggest building time through instructing or other roles
 - Keep responses under 150 words`;
 

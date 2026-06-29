@@ -106,18 +106,45 @@ const FEATURED_PATHWAYS = [
     title: 'Airline First Officer',
     subtitle: 'CPL → Type Rating → Line Training',
     image: '/foundation.png',
+    requirements: {
+      min_hours: 1500,
+      license_type: 'CPL',
+      medical_class: 'Class 1',
+      elp_level: 'Level 4',
+      type_ratings: ['A320', 'B737'],
+      age_limit: 65,
+      citizenship: 'Any',
+    },
   },
   {
     id: 'cargo-captain',
     title: 'Cargo Captain',
     subtitle: 'Heavy freight and long-haul operations',
     image: '/program1.png',
+    requirements: {
+      min_hours: 3000,
+      license_type: 'ATPL',
+      medical_class: 'Class 1',
+      elp_level: 'Level 5',
+      type_ratings: ['B747', 'B777', 'A330'],
+      age_limit: 65,
+      citizenship: 'Any',
+    },
   },
   {
     id: 'corporate-pilot',
     title: 'Corporate Pilot',
     subtitle: 'Business aviation and VIP charter',
     image: '/theintervew.png',
+    requirements: {
+      min_hours: 500,
+      license_type: 'CPL',
+      medical_class: 'Class 2',
+      elp_level: 'Level 4',
+      type_ratings: ['Citation', 'Gulfstream', 'Hawker'],
+      age_limit: 60,
+      citizenship: 'Preferred: UAE/US/EU',
+    },
   },
 ];
 
@@ -500,7 +527,7 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
         </div>
       </section>
 
-      <AIChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} profile={profile} />
+      <AIChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} profile={profile} pathways={FEATURED_PATHWAYS} />
     </div>
   );
 };
