@@ -168,6 +168,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     // MSFS 2024 Style Sidebar Navigation
     const [activeSection, setActiveSection] = useState<ProfileSection>('overview');
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // Check subscription status from Worker profile (subscription_tier)
     useEffect(() => {
@@ -847,7 +848,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 {!embedded && (
                     <motion.aside
                         initial={{ opacity: 0, x: -32 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -280 }}
                         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                         style={{
                         width: '280px',
@@ -864,6 +865,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         overflowY: 'auto',
                         overflowX: 'hidden',
                         boxSizing: 'border-box',
+                        pointerEvents: sidebarOpen ? 'auto' : 'none',
                     }}>
                         {/* Header with chevron like MSFS */}
                         <div style={{
@@ -875,9 +877,27 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             overflow: 'hidden',
                             width: '100%'
                         }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
+                            <button
+                                onClick={() => setSidebarOpen((v) => !v)}
+                                aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    padding: 0,
+                                    margin: 0,
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                    transition: 'transform 0.3s ease',
+                                    transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)',
+                                }}
+                            >
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
                             <div style={{ overflow: 'hidden', minWidth: 0 }}>
                                 <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
                                 <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
@@ -978,15 +998,83 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </motion.aside>
                 )}
 
+                {/* Floating sidebar toggle when collapsed */}
+                {!embedded && !sidebarOpen && (
+                    <div
+                        className="group"
+                        style={{
+                            position: 'fixed',
+                            top: '50%',
+                            left: '1rem',
+                            transform: 'translateY(-50%)',
+                            zIndex: 50,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.75rem',
+                        }}
+                    >
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            aria-label="Show sidebar"
+                            style={{
+                                background: 'rgba(255,255,255,0.08)',
+                                border: '1px solid rgba(255,255,255,0.12)',
+                                backdropFilter: 'blur(10px)',
+                                WebkitBackdropFilter: 'blur(10px)',
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                padding: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                            }}
+                        >
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                        <span
+                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                color: 'rgba(255,255,255,0.85)',
+                                letterSpacing: '0.05em',
+                                textTransform: 'uppercase',
+                                whiteSpace: 'nowrap',
+                                textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+                                pointerEvents: 'none',
+                            }}
+                        >
+                            Open sidebar
+                        </span>
+                    </div>
+                )}
+
                 <main style={{ 
                     position: 'relative', 
                     zIndex: 10, 
                     flex: 1, 
                     maxWidth: embedded ? '100%' : 'none', 
-                    margin: embedded ? '0' : '0 0 0 280px', 
+                    margin: embedded ? '0' : (sidebarOpen ? '0 0 0 280px' : '0'), 
                     minHeight: embedded ? 'auto' : '100vh', 
                     overflowY: 'auto', 
-                    paddingTop: embedded ? 0 : '1rem'
+                    paddingTop: 0,
+                    transition: 'margin 0.45s ease',
+                    transform: 'scale(0.8)',
+                    transformOrigin: 'top center',
                 }}>
 
                 {/* Recognition Score Display */}
@@ -994,7 +1082,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ padding: '1rem 1.5rem 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+                    style={{ padding: '0.5rem 1.5rem 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
                         {recognitionScoreData ? (
                             <ScoreOptimizationGuide
                                 currentScore={calculateRecognitionScore({
@@ -1116,8 +1204,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {/* Verification Dashboard */}
                         <VerificationStatusTab
                             profile={profileData}

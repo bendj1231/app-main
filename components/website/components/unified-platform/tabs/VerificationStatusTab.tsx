@@ -5,76 +5,118 @@ import { motion } from 'framer-motion';
 import {
   ShieldCheck, AlertCircle, Clock, CheckCircle2, ArrowRight,
   Award, Settings,
-  BookOpen, ChevronDown, ChevronUp, Download,
-  Flag, MinusCircle, Info, Camera,
+  BookOpen,
+  Flag, MinusCircle, Camera,
   FileText, TrendingUp,
   Sparkles, UserCheck, Plane, Briefcase, ChevronRight
 } from 'lucide-react';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { supabase } from '@/lib/shared/supabase';
 import { safeRedirect } from '@/lib/url-validator';
 import type { TabId } from '../types';
-import VerificationDashboardGrid from '../VerificationDashboardGrid';
+import { CockpitFlightHoursDashboard } from '../CockpitFlightHoursDashboard';
 
 // ─── DASHBOARD LEGEND BANNER ────────────────────────────────────────────────
 const DashboardLegendBanner: React.FC<{ isFreeUser: boolean }> = ({ isFreeUser }) => {
+  const [showModal, setShowModal] = React.useState(false);
+
   return (
-    <div
-      className="rounded-2xl p-4 md:p-5"
-      style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.92))', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
-    >
-      <div className="flex items-center gap-3 mb-3">
-        <Info size={16} className="text-sky-400 flex-shrink-0" />
-        <div>
-          <p className="text-[11px] font-black uppercase tracking-wider text-white/80">Dashboard Overview</p>
-          <p className="text-[11px] text-white/70 mt-1 leading-relaxed max-w-2xl">
-            This panel gives you a real-time overview of your pilot licenses and credentials.
-            You can see what is currently valid, what is under review, and if anything has been flagged or expired.
-          </p>
-        </div>
+    <>
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[10px] font-black tracking-[0.25em] uppercase text-white/90 whitespace-nowrap">
+          Dashboard
+        </span>
+        <button
+          onClick={() => setShowModal(true)}
+          className="text-[10px] font-bold tracking-wider uppercase text-white/70 hover:text-white transition-colors"
+        >
+          Learn more
+        </button>
       </div>
+      <div
+        className="w-full h-px rounded-full"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.65) 20%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.65) 80%, transparent 100%)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.25), 0 1px 2px rgba(255,255,255,0.15)',
+        }}
+      />
 
-      {isFreeUser && (
-        <div className="mb-4 rounded-xl p-3 flex items-center gap-2" style={{ background: 'rgba(107,114,128,0.12)', border: '1px solid rgba(107,114,128,0.25)' }}>
-          <MinusCircle size={14} className="text-gray-400 flex-shrink-0" />
-          <p className="text-[11px] text-white/60 leading-relaxed">
-            <span className="font-bold text-white/80">Free tier:</span> Credential statuses are hidden. Upgrade to <span style={{ color: '#dc2626' }}>Recognition+</span> to view live validity tracking.
-          </p>
-        </div>
+      {showModal && ReactDOM.createPortal(
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center px-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div
+            className="relative z-10 w-full max-w-2xl rounded-2xl p-5 md:p-6"
+            style={{
+              background: 'linear-gradient(135deg, rgba(15,23,42,0.95), rgba(0,0,0,0.9))',
+              border: '1px solid rgba(255,255,255,0.12)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-black uppercase tracking-wider text-white/90">Dashboard Overview</p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-7 h-7 flex items-center justify-center rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm"
+              >
+                ×
+              </button>
+            </div>
+
+            <p className="text-[11px] text-white/70 leading-relaxed mb-4">
+              This panel gives you a real-time overview of your pilot licenses and credentials.
+              You can see what is currently valid, what is under review, and if anything has been flagged or expired.
+            </p>
+
+            {isFreeUser && (
+              <div className="mb-4 rounded-xl p-3 flex items-center gap-2" style={{ background: 'rgba(107,114,128,0.12)', border: '1px solid rgba(107,114,128,0.25)' }}>
+                <MinusCircle size={14} className="text-gray-400 flex-shrink-0" />
+                <p className="text-[11px] text-white/60 leading-relaxed">
+                  <span className="font-bold text-white/80">Free tier:</span> Credential statuses are hidden. Upgrade to <span style={{ color: '#dc2626' }}>Recognition+</span> to view live validity tracking.
+                </p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400 leading-tight">Valid</p>
+                  <p className="text-[9px] text-white/60 leading-tight mt-0.5">Credential is active</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                <Flag size={14} className="text-amber-400 flex-shrink-0" />
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-amber-400 leading-tight">Under Review</p>
+                  <p className="text-[9px] text-white/60 leading-tight mt-0.5">Check your email</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                <Flag size={14} className="text-red-500 flex-shrink-0" />
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-red-400 leading-tight">Flagged / Expired</p>
+                  <p className="text-[9px] text-white/60 leading-tight mt-0.5">Fraud suspicion or expired</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
+                <MinusCircle size={14} className="text-gray-400 flex-shrink-0" />
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-gray-400 leading-tight">N/A</p>
+                  <p className="text-[9px] text-white/60 leading-tight mt-0.5">Not verified or free tier</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body,
       )}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-          <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
-          <div className="flex flex-col justify-center">
-            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-400 leading-tight">Valid</p>
-            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Credential is active</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-          <Flag size={14} className="text-amber-400 flex-shrink-0" />
-          <div className="flex flex-col justify-center">
-            <p className="text-[10px] font-black uppercase tracking-wider text-amber-400 leading-tight">Under Review</p>
-            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Check your email</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
-          <Flag size={14} className="text-red-500 flex-shrink-0" />
-          <div className="flex flex-col justify-center">
-            <p className="text-[10px] font-black uppercase tracking-wider text-red-400 leading-tight">Flagged / Expired</p>
-            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Fraud suspicion or expired</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
-          <MinusCircle size={14} className="text-gray-400 flex-shrink-0" />
-          <div className="flex flex-col justify-center">
-            <p className="text-[10px] font-black uppercase tracking-wider text-gray-400 leading-tight">N/A</p>
-            <p className="text-[9px] text-white/60 leading-tight mt-0.5">Not verified or free tier</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
@@ -140,48 +182,13 @@ export const VerificationStatusTab: React.FC<{
   const returnUrl = `${baseUrl}/get-started`;
   const cancelUrl = `${baseUrl}/platform?tab=verification&checkout=cancelled`;
 
-  const [logsExpanded, setLogsExpanded] = React.useState(false);
-  const [logbookFormatsExpanded, setLogbookFormatsExpanded] = React.useState(false);
-  const [logbook, setLogbook] = React.useState<any[]>([]);
-  const [logbookLoading, setLogbookLoading] = React.useState(false);
   const [showLogbookModal, setShowLogbookModal] = React.useState(false);
   const [selectedProvider, setSelectedProvider] = React.useState<string | null>(null);
   const [expandedCats, setExpandedCats] = React.useState<Record<string, boolean>>({});
   const [tooltip, setTooltip] = React.useState<{ title: string; items: any[]; x: number; y: number; w: number } | null>(null);
   const catRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
 
-  React.useEffect(() => {
-    const id = profile?.id;
-    if (!id) return;
-    let active = true;
-    setLogbookLoading(true);
-    supabase.from('pilot_flight_logs').select('id, date, hours, aircraft_type, registration, pic_hours, cross_country_hours, dual_hours, night_hours, simulated_instrument_hours, actual_instrument_hours, simulator_hours, landings, route').eq('user_id', id).order('date', { ascending: false }).limit(50).then(({ data, error }) => {
-      if (!active) return;
-      if (error) console.error('[logbook] fetch error:', error);
-      setLogbook(data ?? []);
-      setLogbookLoading(false);
-    });
-    return () => { active = false; };
-  }, [profile?.id]);
-
   const logbookConnected = !!profile?.logbook_sync_valid;
-
-  // Format decimal hours as aviation H+MM (e.g. 2.5 → "2+30", 0 → "0+00")
-  const fmtHrs = (decimalHours: number): string => {
-    const h = Math.floor(decimalHours);
-    const m = Math.round((decimalHours - h) * 60);
-    return `${h}+${m.toString().padStart(2, '0')}`;
-  };
-
-  const totalTime = logbook.reduce((sum, l) => sum + (l.hours || 0), hours || (profile?.total_hours || 0));
-  const picTime = logbook.reduce((sum, l) => sum + (l.pic_hours || l.pic || 0), profile?.pic_hours || 0);
-  const xcTime = logbook.reduce((sum, l) => sum + (l.cross_country_hours || l.xc || 0), profile?.cross_country_hours || 0);
-  const dualTime = logbook.reduce((sum, l) => sum + (l.dual_hours || l.dual || 0), profile?.dual_hours || 0);
-  const nightTime = logbook.reduce((sum, l) => sum + (l.night_hours || l.night || 0), profile?.night_hours || 0);
-  const simInstTime = logbook.reduce((sum, l) => sum + (l.simulated_instrument_hours || l.simulated_instrument || 0), profile?.simulated_instrument_hours || 0);
-  const actualInstTime = logbook.reduce((sum, l) => sum + (l.actual_instrument_hours || l.actual_instrument || 0), profile?.actual_instrument_hours || 0);
-  const simTime = logbook.reduce((sum, l) => sum + (l.simulator_hours || l.sim || 0), profile?.simulator_hours || 0);
-  const landings = logbook.reduce((sum, l) => sum + (l.landings || l.total_landings || 0), profile?.landings || 0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -228,7 +235,7 @@ export const VerificationStatusTab: React.FC<{
       */}
 
       {/* Advert / upgrade banner */}
-      <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl px-6 pt-6 pb-9 pr-8 md:pr-10" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
+      <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl px-6 pt-3 pb-9 pr-8 md:pr-10" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
         <div className="absolute bottom-5 right-5 text-right z-10">
           <p className="text-[9px] font-black uppercase tracking-wider" style={{ color: '#111827' }}>supported by Pilot<span style={{ color: '#dc2626' }}>shortage</span>.org</p>
           <p className="text-[9px] font-medium tracking-wide" style={{ color: '#6b7280' }}>recognition · pathways · advocacy · mission</p>
@@ -768,103 +775,13 @@ export const VerificationStatusTab: React.FC<{
       {/* Recency & Currency Tracker moved to Licensure & Currency tab */}
 
 
-      {/* Digital Dashboard */}
-      <motion.div variants={itemVariants} className="space-y-5 max-w-3xl mx-auto">
-        {/* Header text bar */}
-        <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-          <div className="flex items-center gap-2.5">
-            <BookOpen size={20} className="text-sky-400" />
-            <span className="text-xs font-black tracking-widest uppercase text-white">Digital Dashboard</span>
-          </div>
-          <span className="text-[11px] font-black text-amber-400 pr-1">{logbookConnected ? `${logbook.length} entries synced` : 'Not connected'}</span>
-        </div>
-
-        {/* Floating hours cards with collapse reveal */}
-        <div className="relative mb-4">
-          <div className={`overflow-hidden transition-all duration-500 ease-in-out ${logsExpanded ? 'max-h-[600px]' : 'max-h-[110px]'}`}>
-            {/* High-level telemetry — always visible */}
-            <div className="grid grid-cols-3 gap-3 mb-3">
-              {[
-                { label: 'Total Time', value: fmtHrs(totalTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : 'unverified' },
-                { label: 'PIC', value: fmtHrs(picTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'DUAL', value: fmtHrs(dualTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-              ].map(({ label, value, color, sub }) => (
-                <div key={label} className="rounded-xl p-4 text-center flex flex-col items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                  <p className="text-3xl font-black text-white text-center w-full" style={{ color }}>{value}</p>
-                  <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-1 text-center w-full">{label}</p>
-                  {sub && <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2 text-center w-full">{sub}</p>}
-                </div>
-              ))}
-            </div>
-
-            {/* Detailed telemetry — revealed on View More */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: 'Cross Country', value: fmtHrs(xcTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'Night Time', value: fmtHrs(nightTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'Simulated Instrument', value: fmtHrs(simInstTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'Total Landings', value: landings, color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'SIM Time', value: fmtHrs(simTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-                { label: 'Actual Instrument', value: fmtHrs(actualInstTime), color: '#ffffff', sub: isFreeUser ? 'UNVERIFIED' : '' },
-              ].map(({ label, value, color, sub }) => (
-                <div key={label} className="rounded-xl p-4 text-center flex flex-col items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                  <p className="text-2xl font-black text-white text-center w-full" style={{ color }}>{value}</p>
-                  <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-1 text-center w-full">{label}</p>
-                  {sub && <p className="text-[9px] font-black text-white/50 uppercase tracking-wider mt-0.5 underline decoration-white/20 underline-offset-2 text-center w-full">{sub}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Free user sync prompt */}
-        {isFreeUser && !logbookConnected && (
-          <div className="rounded-xl p-4 text-center mb-3" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.35)' }}>
-            <p className="text-[10px] text-white/90 leading-relaxed">
-              <span className="font-black text-white">UNVERIFIED</span> — Hours pulled from profile. Please sync a logbook to confirm total count and ensure it is ready for verification.
-            </p>
-          </div>
-        )}
-
-        {/* Floating View More button */}
-        <button
-          onClick={() => setLogsExpanded(v => !v)}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black tracking-wider text-white/60 transition-all hover:bg-white/10"
-          style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-        >
-          {logsExpanded ? 'SHOW LESS' : 'VIEW MORE'} <span className="inline-flex items-center justify-center ml-2 leading-none">{logsExpanded ? <ChevronUp size={12} className="block" /> : <ChevronDown size={12} className="block" />}</span>
-        </button>
-
-        {/* Floating Access Logbook — only visible when synced */}
-        {logbookConnected && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-            <button
-              onClick={() => setLogbookFormatsExpanded(v => !v)}
-              className="w-full flex items-center justify-between mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Download size={14} className="text-white/50" />
-                <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Access Logbook</span>
-              </div>
-              {logbookFormatsExpanded ? <ChevronUp size={14} className="text-white/40" /> : <ChevronDown size={14} className="text-white/40" />}
-            </button>
-            {logbookFormatsExpanded && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {['EASA', 'CAAP', 'FAA', 'ICAO'].map(format => (
-                  <button
-                    key={format}
-                    className="py-2.5 rounded-xl text-[10px] font-black tracking-wider text-white transition-all hover:bg-white/10"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                    onClick={() => { /* export handler placeholder */ }}
-                  >
-                    {format}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </motion.div>
+      {/* Digital Dashboard — cockpit 6-pack style */}
+      <CockpitFlightHoursDashboard
+        userId={profile?.id as string | undefined}
+        profile={profile as Record<string, unknown> | undefined}
+        isFreeUser={isFreeUser}
+        logbookConnected={logbookConnected}
+      />
 
       {/* Connect a digital logbook */}
       <button

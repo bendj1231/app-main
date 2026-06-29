@@ -824,7 +824,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             { id: 'home', label: 'Home' },
             { id: 'profile', label: 'Profile' },
             { id: 'pathways', label: 'Pathways' },
-            { id: 'programs', label: 'Programs' },
+            { id: 'foundation-welcome', label: 'Programs' },
+            { id: 'recognition-plus-tab', label: 'Recognition+' },
           ].map(({ id, label }) => {
             const isActive = activeTab === id;
             return (

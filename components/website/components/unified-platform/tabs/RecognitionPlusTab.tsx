@@ -42,22 +42,27 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ onNaviga
       {/* ═══════════════════════════════════════════════════
           HERO — Full viewport, cinematic, massive type
       ═══════════════════════════════════════════════════ */}
-      <SectionStrip
-        className="relative flex items-center justify-center"
-        style={{ minHeight: '92vh' }}
+      <section
+        className="relative flex items-center justify-center overflow-visible"
+        style={{
+          minHeight: 'calc(92vh + 120px)',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
       >
-        {/* Background image with dark overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url(/universal-pilot-gap.jpg)',
-          }}
+        {/* Background image with dark overlay — extends up under the nav bar */}
+        <img
+          src="/universal-pilot-gap.jpg"
+          alt="Universal pilot gap"
+          className="absolute w-full h-full object-cover"
+          style={{ top: '-120px', left: 0, right: 0, bottom: 0 }}
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.75) 50%, rgba(2,6,23,0.95) 100%)',
+              'linear-gradient(to bottom, rgba(2,6,23,0.15) 0%, rgba(2,6,23,0.25) 25%, rgba(2,6,23,0.45) 45%, rgba(2,6,23,0.70) 70%, rgba(2,6,23,0.92) 100%)',
           }}
         />
 
@@ -68,14 +73,6 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ onNaviga
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           >
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 mb-6">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">
-                Verification Now Open
-              </span>
-            </div>
-
             {/* Massive headline */}
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-6">
               RECOGNITION
@@ -135,7 +132,7 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ onNaviga
           </span>
           <div className="w-px h-8 bg-gradient-to-b from-slate-500 to-transparent" />
         </motion.div>
-      </SectionStrip>
+      </section>
 
       {/* ═══════════════════════════════════════════════════
           STRIP 1 — The Problem (full-width image left)
