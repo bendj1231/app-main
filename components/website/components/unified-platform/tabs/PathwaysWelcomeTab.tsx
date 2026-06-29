@@ -11,6 +11,7 @@ import {
   MapPin,
   ArrowRight,
   TrendingUp,
+  Sparkles,
 } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 import type { TabId } from '../types';
@@ -377,6 +378,106 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          AI CAREER ALIGNMENT MOCKUP
+      ═══════════════════════════════════════════════════ */}
+      <section
+        className="relative py-8 px-4 md:px-8 pb-16"
+        style={{
+          background: '#0b0b0b',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles size={14} className="text-emerald-400" />
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400">
+                AI Powered
+              </p>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+              Career Alignment Matching
+            </h2>
+            <p className="text-sm text-white/50 mt-2 max-w-2xl">
+              Mockup of the AI system that compares your live profile against airline requirements and surfaces your best-fit pathways.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Profile snapshot */}
+            <div
+              className="rounded-2xl p-5"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              <h3 className="text-sm font-black text-white mb-4">Your Profile Snapshot</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">License</span>
+                  <span className="text-white font-bold">{profile?.license_type || 'CPL'}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">Total Hours</span>
+                  <span className="text-white font-bold">{profile?.total_flight_hours || profile?.total_hours || '240'} hrs</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">Medical</span>
+                  <span className="text-emerald-400 font-bold">Class 1 Valid</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">English</span>
+                  <span className="text-white font-bold">ICAO Level 5</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">Last Flown</span>
+                  <span className="text-white font-bold">{profile?.last_flown || '2 weeks ago'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Match results */}
+            <div
+              className="lg:col-span-2 rounded-2xl p-5"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              <h3 className="text-sm font-black text-white mb-4">Top Pathway Matches</h3>
+              <div className="space-y-4">
+                {[
+                  { name: 'Regional Airline First Officer', score: 87, gaps: ['Type Rating', '500 hrs'] },
+                  { name: 'Cargo First Officer', score: 72, gaps: ['ATP license'] },
+                  { name: 'Corporate Pilot', score: 64, gaps: ['Multi-engine', 'Jet time'] },
+                ].map((match) => (
+                  <div key={match.name} className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold text-white">{match.name}</span>
+                        <span className="text-xs font-black text-emerald-400">{match.score}%</span>
+                      </div>
+                      <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500"
+                          style={{ width: `${match.score}%` }}
+                        />
+                      </div>
+                      <p className="text-[10px] text-white/40 mt-1">Gaps: {match.gaps.join(', ')}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <h4 className="text-[11px] font-black text-white/70 uppercase tracking-wider mb-3">AI Recommendation</h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  Focus on completing your type rating and building 500 additional hours to reach a 95% match for Regional Airline First Officer roles.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
