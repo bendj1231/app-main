@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
@@ -29,6 +29,10 @@ const cardVariants: any = {
     transition: { delay: i * 0.1, duration: 0.4, ease: 'easeOut' },
   }),
 };
+
+// Viewport-locked reference frame: M4 Air 13-inch content area below the nav.
+const BASE_WIDTH = 1470;
+const BASE_HEIGHT = 888;
 
 export const HomeTab: React.FC<{
   profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
@@ -75,6 +79,27 @@ export const HomeTab: React.FC<{
   const [copiedUrl, setCopiedUrl] = React.useState(false);
   const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
   const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
+
+  // ── Viewport-locked scaling: keep the M4 Air 13-inch reference frame on every screen ──
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [wrapperSize, setWrapperSize] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const cr = entries[0].contentRect;
+      setWrapperSize({ width: cr.width, height: cr.height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const viewportScale = Math.min(
+    wrapperSize.width / BASE_WIDTH,
+    wrapperSize.height / BASE_HEIGHT
+  );
 
   // ── Pilot Career Status (pilotshortage.org compliant) ──
   const [obEmploymentStatus, setObEmploymentStatus] = React.useState<'employed' | 'unemployed' | 'transitioning' | 'graduate' | ''>(profile?.employment_status ?? '');
@@ -427,13 +452,21 @@ export const HomeTab: React.FC<{
   };
 
   return (
-    <motion.div
-      className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden h-full w-full"
-      style={{ maxWidth: '1400px', maxHeight: '720px' }}
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <div ref={wrapperRef} className="w-full h-full flex items-start justify-center overflow-hidden">
+      <motion.div
+        ref={frameRef}
+        className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden"
+        style={{
+          width: BASE_WIDTH,
+          height: BASE_HEIGHT,
+          transform: `scale(${viewportScale})`,
+          transformOrigin: 'top center',
+          flexShrink: 0,
+        }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
       <motion.div variants={itemVariants}>
         <GettingStartedBar
           steps={steps}
@@ -1844,5 +1877,6 @@ export const HomeTab: React.FC<{
       )}
 
     </motion.div>
-  );
+  </div>
+);
 };

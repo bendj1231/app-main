@@ -244,7 +244,7 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
           <div className="absolute inset-0 flex items-stretch">
             <div className="relative w-[55%] h-full flex flex-col justify-end pl-14 pr-8 pb-8 pt-4">
               <div className="relative z-10">
-                <h2 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl'}`}>
+                <h2 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-4xl' : 'text-5xl'}`}>
                   <span className={slide.textDark ? 'text-slate-900' : 'text-white'}>{slide.titleWhite}</span>
                   <span className="text-red-500"> {slide.titleAccent}</span>
                   {slide.titleSuffix && (
@@ -252,7 +252,7 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
                   )}
                 </h2>
                 {slide.subtitleWhite && (
-                  <h3 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>
+                  <h3 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-2xl' : 'text-3xl'}`}>
                     <span className={slide.textDark ? 'text-slate-900' : 'text-white'}>{slide.subtitleWhite}</span>
                     <span className="text-red-500"> {slide.subtitleAccent}</span>
                     {slide.subtitleSuffix && (

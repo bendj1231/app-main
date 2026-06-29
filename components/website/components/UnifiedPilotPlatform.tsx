@@ -1925,7 +1925,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       <main
         className={`flex-1 pt-[68px] ${activeTab === 'home' ? 'overflow-hidden' : 'overflow-y-auto'}`}
       >
-        <div className={`max-w-[1400px] mx-auto p-3 lg:p-5 h-full ${activeTab === 'home' ? 'flex items-center justify-center' : ''}`} style={{ position: 'relative' }}>
+        <div className={`h-full ${activeTab === 'home' ? 'max-w-none mx-0 p-0' : 'max-w-[1400px] mx-auto p-3 lg:p-5'}`} style={{ position: 'relative' }}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               className="h-full"

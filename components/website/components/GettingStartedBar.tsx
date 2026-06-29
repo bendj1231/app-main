@@ -85,7 +85,7 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
               </p>
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <span className="text-[10px] font-bold text-white/50">{Math.round((completedCount / total) * 100)}%</span>
             <div className="flex items-center gap-1.5 h-2 w-32 rounded-full bg-white/20 overflow-hidden">
               <div
