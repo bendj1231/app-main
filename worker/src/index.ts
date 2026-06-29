@@ -6,6 +6,7 @@
 export interface Env {
   pilotrecognition_profiles: D1Database;
   AUTH0_DOMAIN: string;
+  OPENROUTER_API_KEY: string;
 }
 
 const corsHeaders = {
@@ -816,6 +817,68 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
     case 'createMentorshipRequest': {
       return { success: true, id: crypto.randomUUID() };
+    }
+
+    // ── AI Chat (OpenRouter) ───────────────────────────────
+    case 'aiChat': {
+      const { message, profile_context } = params || {};
+      if (!message) throw new Error('message required');
+
+      const apiKey = env.OPENROUTER_API_KEY;
+      if (!apiKey) throw new Error('OpenRouter API key not configured');
+
+      // Build system prompt with career pathway context
+      const systemPrompt = `You are an AI career coach for pilots on PilotRecognition. Your role is to help pilots find their best-fit career pathways (airlines, cargo, corporate aviation, etc.) based on their profile.
+
+${profile_context ? `Pilot Profile Context:
+- License: ${profile_context.license_type || 'Not specified'}
+- Total Hours: ${profile_context.total_flight_hours || 0}
+- Medical: ${profile_context.medical_class || 'Not specified'}
+- English Level: ${profile_context.elp_level || 'Not specified'}
+- Career Goal: ${profile_context.career_goal || 'Not specified'}
+
+Use this information to provide personalized pathway recommendations.` : ''}
+
+Guidelines:
+- Be concise and direct
+- Focus on actionable advice
+- Mention specific pathway types (regional airline, cargo, corporate, charter, etc.)
+- Highlight skill gaps when relevant
+- If hours are low, suggest building time through instructing or other roles
+- Keep responses under 150 words`;
+
+      try {
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+            'HTTP-Referer': 'https://pilotrecognition.com',
+            'X-Title': 'PilotRecognition AI Career Coach',
+          },
+          body: JSON.stringify({
+            model: 'google/gemma-2-9b-it:free',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: message },
+            ],
+            max_tokens: 300,
+            temperature: 0.7,
+          }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          console.error('[OpenRouter] error:', data);
+          throw new Error(data.error?.message || 'AI request failed');
+        }
+
+        const aiMessage = data.choices?.[0]?.message?.content || 'Sorry, I could not generate a response.';
+        return { message: aiMessage, model: 'google/gemma-2-9b-it:free' };
+      } catch (err: any) {
+        console.error('[OpenRouter] exception:', err.message);
+        throw new Error(err.message || 'AI request failed');
+      }
     }
 
     default:
