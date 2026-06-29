@@ -21,6 +21,7 @@ export type TabId =
   | 'verification'
   | 'advanced-profile'
   | 'foundation-welcome'
+  | 'pathways-directory'
   | 'recognition-plus-tab'
   | 'pilot-shortage-support';
 

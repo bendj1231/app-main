@@ -48,7 +48,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'profile', label: 'My Profile', icon: User },
   { id: 'wallet', label: 'Credential Vault', icon: Shield },
-  { id: 'pathways', label: 'Pathways', icon: Map },
+  { id: 'pathways-directory', label: 'Pathways', icon: Map },
   { id: 'programs', label: 'Programs', icon: BookOpen },
   { id: 'airlines', label: 'Airlines', icon: Plane },
   { id: 'manufacturers', label: 'Manufacturers', icon: Wrench },

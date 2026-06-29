@@ -90,6 +90,7 @@ import { ScoreTab } from './unified-platform/tabs/ScoreTab';
 import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
 import { FoundationWelcomeTab } from './unified-platform/tabs/FoundationWelcomeTab';
+import { PathwaysWelcomeTab } from './unified-platform/tabs/PathwaysWelcomeTab';
 import { RecognitionPlusTab } from './unified-platform/tabs/RecognitionPlusTab';
 import { PilotShortageSupportPage } from './PilotShortageSupportPage';
 
@@ -661,6 +662,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         );
       case 'pathways':
         return <PathwaysTab onNavigate={onNavigate} />;
+      case 'pathways-directory':
+        return <PathwaysWelcomeTab setTab={setTab} onNavigate={onNavigate} />;
       case 'programs':
         return <ProgramsTab onNavigate={onNavigate} />;
       case 'foundation-welcome':
@@ -823,7 +826,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           {[
             { id: 'home', label: 'Home' },
             { id: 'profile', label: 'Profile' },
-            { id: 'pathways', label: 'Pathways' },
+            { id: 'pathways-directory', label: 'Pathways' },
             { id: 'foundation-welcome', label: 'Programs' },
             { id: 'recognition-plus-tab', label: 'Recognition+' },
           ].map(({ id, label }) => {
