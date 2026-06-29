@@ -40,10 +40,14 @@ const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
 };
 
 const FlightDeckOverlay = lazy(() =>
-  import('@/components/website/components/FlightDeckOverlay').then((m) => ({ default: m.FlightDeckOverlay }))
+  import('@/components/website/components/FlightDeckOverlay').then((m) => ({
+    default: m.FlightDeckOverlay,
+  }))
 );
 const BecomeMemberOverlay = lazy(() =>
-  import('@/components/website/components/BecomeMemberOverlay').then((m) => ({ default: m.BecomeMemberOverlay }))
+  import('@/components/website/components/BecomeMemberOverlay').then((m) => ({
+    default: m.BecomeMemberOverlay,
+  }))
 );
 const HomePage = lazy(() =>
   import('@/components/website/components/home/HomePage').then((m) => ({ default: m.HomePage }))
@@ -193,7 +197,9 @@ const GetStartedPage = lazy(() => import('@/app/get-started/page'));
 const VerifyApcPage = lazy(() => import('@/app/get-started/verify-apc/page'));
 const AboutVerificationPage = lazy(() => import('@/app/about-verification/page'));
 const ConsentFormPage = lazy(() => import('@/app/consent-form/page'));
-const LicenseVerificationConsentPage = lazy(() => import('@/app/license-verification-consent/page'));
+const LicenseVerificationConsentPage = lazy(
+  () => import('@/app/license-verification-consent/page')
+);
 const LogbookConsentPage = lazy(() => import('@/app/logbook-consent/page'));
 const FlightHoursLogbookPage = lazy(() => import('@/app/logbook-upload/page'));
 const PublicPilotCardPage = lazy(() => import('@/app/verify/[token]/page'));
@@ -271,9 +277,9 @@ const PilotRecognitionPage = lazy(() =>
   }))
 );
 const PilotRecognitionProfilePage = lazy(() =>
-  import('@/components/website/pages/PilotRecognitionProfilePage').then(
-    (m) => ({ default: m.PilotRecognitionProfilePage })
-  )
+  import('@/components/website/pages/PilotRecognitionProfilePage').then((m) => ({
+    default: m.PilotRecognitionProfilePage,
+  }))
 );
 const PilotLicensureExperiencePage = lazy(() =>
   import('@/components/website/components/pilot-recognition/PilotLicensureExperiencePage').then(
@@ -482,11 +488,6 @@ const PathwaysPageModern = lazy(() =>
 const SpecializedPathwaysIndex = lazy(() => import('@/portal/pages/SpecializedPathwaysIndex'));
 const SpecializedOperationsIndex = lazy(() => import('@/portal/pages/SpecializedOperationsIndex'));
 const CareerPathwaysIndex = lazy(() => import('@/portal/pages/CareerPathwaysIndex'));
-const AccessPortal2Page = lazy(() =>
-  import('@/components/website/components/AccessPortal2Page').then((m) => ({
-    default: m.AccessPortal2Page,
-  }))
-);
 const UnifiedPilotPlatform = lazy(() =>
   import('@/components/website/components/UnifiedPilotPlatform').then((m) => ({
     default: m.UnifiedPilotPlatform,
@@ -522,12 +523,19 @@ const PilotShortagePage = lazy(() =>
     default: m.PilotShortagePage,
   }))
 );
+const PilotShortageSupportPage = lazy(() =>
+  import('@/components/website/components/PilotShortageSupportPage').then((m) => ({
+    default: m.PilotShortageSupportPage,
+  }))
+);
 const WhyRecognitionPage = lazy(() =>
   import('@/components/website/components/WhyRecognitionPage').then((m) => ({
     default: m.WhyRecognitionPage,
   }))
 );
-const GlobalAviationAuthoritiesPage = lazy(() => import('@/components/pages/GlobalAviationAuthoritiesPage'));
+const GlobalAviationAuthoritiesPage = lazy(
+  () => import('@/components/pages/GlobalAviationAuthoritiesPage')
+);
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const BlogPostPage = lazy(() => import('@/app/blog/[slug]/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
@@ -552,7 +560,9 @@ const AdminEnterprisesPage = lazy(() => import('@/app/admin/enterprises/page'));
 const AdminEventsPage = lazy(() => import('@/app/admin/events/page'));
 const AdminInvoicesPage = lazy(() => import('@/app/admin/invoices/page'));
 const AdminSettingsPage = lazy(() => import('@/app/admin/settings/page'));
-const AdminVerificationManagementPage = lazy(() => import('@/app/admin/verification-management/page'));
+const AdminVerificationManagementPage = lazy(
+  () => import('@/app/admin/verification-management/page')
+);
 const AdminApcVerificationsPage = lazy(() => import('@/app/admin/apc-verifications/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
@@ -607,9 +617,7 @@ const PilotTerminalHome = lazy(() =>
 
 // Invisible fallback — AnimatePresence handles all transitions visually.
 // The old page stays visible (blurred) while the new lazy chunk loads.
-const LoadingFallback = () => (
-  <div className="min-h-screen bg-transparent" aria-hidden="true" />
-);
+const LoadingFallback = () => <div className="min-h-screen bg-transparent" aria-hidden="true" />;
 
 const CareerPathwaysLoadingFallback = () => (
   <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
@@ -735,7 +743,15 @@ export const AppRoutes = () => {
         <div className="text-center px-6">
           {/* Brand mark */}
           <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/20">
-            <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              className="h-8 w-8 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M2 12h20" />
               <path d="M2 12l4-4" />
               <path d="M2 12l4 4" />
@@ -745,19 +761,19 @@ export const AppRoutes = () => {
           </div>
 
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">Signing in</h2>
-            <p className="text-sm mt-2 text-slate-500">
-              Checking your account and preparing your profile
-            </p>
+          <p className="text-sm mt-2 text-slate-500">
+            Checking your account and preparing your profile
+          </p>
 
-            {/* Animated spinner */}
-            <div className="mt-8 flex justify-center">
-              <div className="relative h-10 w-10">
-                <div className="absolute inset-0 rounded-full border-2 border-slate-200" />
-                <div className="absolute inset-0 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
-              </div>
+          {/* Animated spinner */}
+          <div className="mt-8 flex justify-center">
+            <div className="relative h-10 w-10">
+              <div className="absolute inset-0 rounded-full border-2 border-slate-200" />
+              <div className="absolute inset-0 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
             </div>
           </div>
         </div>
+      </div>
     );
   }
 
@@ -866,7 +882,8 @@ export const AppRoutes = () => {
   const isAuthCallbackPath = ['/callback', '/auth/callback', '/auth/logbook/callback'].includes(
     window.location.pathname
   );
-  const shouldRenderCareerPathways = careerPathwaysMode && !isLocalOnboardingPath && !isAuthCallbackPath;
+  const shouldRenderCareerPathways =
+    careerPathwaysMode && !isLocalOnboardingPath && !isAuthCallbackPath;
 
   if (shouldRenderCareerPathways) {
     return (
@@ -889,7 +906,7 @@ export const AppRoutes = () => {
             exit={{
               opacity: 0,
               scale: 1.05,
-              transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
+              transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
             }}
           >
             <motion.div
@@ -900,7 +917,7 @@ export const AppRoutes = () => {
                 opacity: 0,
                 y: -40,
                 scale: 0.92,
-                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const }
+                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
               }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
               style={{ willChange: 'transform, opacity' }}
@@ -933,859 +950,901 @@ export const AppRoutes = () => {
         style={{
           position: 'relative',
           zIndex: 1,
-          transition: 'opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition:
+            'opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
           opacity: isLoginModalOpen || isBecomeMemberOpen ? 0 : 1,
           transform: isLoginModalOpen || isBecomeMemberOpen ? 'scale(0.96)' : 'none',
-          filter: isLoginModalOpen || isBecomeMemberOpen ? 'blur(12px) brightness(0.3)' : 'blur(0px) brightness(1)',
+          filter:
+            isLoginModalOpen || isBecomeMemberOpen
+              ? 'blur(12px) brightness(0.3)'
+              : 'blur(0px) brightness(1)',
         }}
       >
         <Routes location={location} key={location.pathname}>
-            {/* Home route */}
-        <Route
-          path="/"
-          element={
-            <HomePage
-              onJoinUs={() => setIsBecomeMemberOpen(true)}
-              onLogin={() => setIsLoginModalOpen(true)}
-              onNavigate={handleNavigate}
-              onLoginModalOpen={() => setIsLoginModalOpen(true)}
-              onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
-              onGoToProgramDetail={() => delayedNavigate('/programs')}
-            />
-          }
-        />
-        <Route
-          path="/home"
-          element={
-            <HomePage
-              onJoinUs={() => setIsBecomeMemberOpen(true)}
-              onLogin={() => setIsLoginModalOpen(true)}
-              onNavigate={handleNavigate}
-              onLoginModalOpen={() => setIsLoginModalOpen(true)}
-              onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
-              onGoToProgramDetail={() => delayedNavigate('/programs')}
-            />
-          }
-        />
+          {/* Home route */}
+          <Route
+            path="/"
+            element={
+              <HomePage
+                onJoinUs={() => setIsBecomeMemberOpen(true)}
+                onLogin={() => setIsLoginModalOpen(true)}
+                onNavigate={handleNavigate}
+                onLoginModalOpen={() => setIsLoginModalOpen(true)}
+                onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
+                onGoToProgramDetail={() => delayedNavigate('/programs')}
+              />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <HomePage
+                onJoinUs={() => setIsBecomeMemberOpen(true)}
+                onLogin={() => setIsLoginModalOpen(true)}
+                onNavigate={handleNavigate}
+                onLoginModalOpen={() => setIsLoginModalOpen(true)}
+                onBecomeMemberOpen={() => setIsBecomeMemberOpen(true)}
+                onGoToProgramDetail={() => delayedNavigate('/programs')}
+              />
+            }
+          />
 
-        {/* Auth routes */}
-        <Route path="/callback" element={<OAuthCallback />} />
-        <Route path="/auth/callback" element={<OAuthCallback />} />
+          {/* Auth routes */}
+          <Route path="/callback" element={<OAuthCallback />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
 
-        {/* Portal route */}
-        <Route
-          path="/portal"
-          element={
-            <ProtectedRoute>
-              <PortalWrapper onNavigate={() => {}} onBack={() => {}} />
-            </ProtectedRoute>
-          }
-        />
+          {/* Portal route */}
+          <Route
+            path="/portal"
+            element={
+              <ProtectedRoute>
+                <PortalWrapper onNavigate={() => {}} onBack={() => {}} />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Main website routes */}
-        <Route
-          path="/about"
-          element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} />} />
-        <Route
-          path="/about-industry"
-          element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/technical-index"
-          element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route path="/technical-architecture" element={<TechnicalArchitecturePage />} />
-        <Route
-          path="/faq"
-          element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/pilot-shortage"
-          element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/pilotshortage"
-          element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        {/* New pilotshortage.org sub-pages */}
-        <Route path="/pilotshortage/about" element={<ShortageAboutPage />} />
-        <Route path="/pilotshortage/advocacy" element={<ShortageAdvocacyPage />} />
-        <Route path="/pilotshortage/benefits" element={<ShortageBenefitsPage />} />
-        <Route path="/pilotshortage/news" element={<ShortageNewsPage />} />
-        <Route path="/pilotshortage/join" element={<ShortageJoinPage />} />
-        <Route path="/pilotshortage/pilotgap" element={<ShortagePilotGapPage />} />
-        <Route path="/pilotshortage/coalition" element={<ShortageCoalitionPage />} />
-        <Route
-          path="/why-recognition"
-          element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/mission-vision"
-          element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/industry-stewardship"
-          element={
-            <IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/contact-support"
-          element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route path="/become-member-stage1" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-        <Route path="/become-member/confirm" element={<BecomeMemberConfirmPage />} />
-        <Route
-          path="/become-member"
-          element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route path="/recognition-profile/create" element={<RecognitionProfileCreatePage />} />
-        <Route
-          path="/terms-of-service"
-          element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/privacy-policy"
-          element={<PrivacyPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/issuer-policy"
-          element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/data-controller-agreement"
-          element={<DataControllerAgreementPage _onBack={() => handleBack()} _onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/email-confirmation"
-          element={<EmailSignupConfirmPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/account-confirmation"
-          element={
-            <AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/passkey-recovery"
-          element={<PasskeyRecoveryPage onNavigate={handleNavigate} />}
-        />
+          {/* Main website routes */}
+          <Route
+            path="/about"
+            element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} />} />
+          <Route
+            path="/about-industry"
+            element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/technical-index"
+            element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route path="/technical-architecture" element={<TechnicalArchitecturePage />} />
+          <Route
+            path="/faq"
+            element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/pilot-shortage"
+            element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/pilotshortage"
+            element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          {/* New pilotshortage.org sub-pages */}
+          <Route
+            path="/pilot-shortage-support"
+            element={
+              <PilotShortageSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route path="/pilotshortage/about" element={<ShortageAboutPage />} />
+          <Route path="/pilotshortage/advocacy" element={<ShortageAdvocacyPage />} />
+          <Route path="/pilotshortage/benefits" element={<ShortageBenefitsPage />} />
+          <Route path="/pilotshortage/news" element={<ShortageNewsPage />} />
+          <Route path="/pilotshortage/join" element={<ShortageJoinPage />} />
+          <Route path="/pilotshortage/pilotgap" element={<ShortagePilotGapPage />} />
+          <Route path="/pilotshortage/coalition" element={<ShortageCoalitionPage />} />
+          <Route
+            path="/why-recognition"
+            element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/mission-vision"
+            element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/industry-stewardship"
+            element={
+              <IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/contact-support"
+            element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/become-member-stage1"
+            element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route path="/become-member/confirm" element={<BecomeMemberConfirmPage />} />
+          <Route
+            path="/become-member"
+            element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route path="/recognition-profile/create" element={<RecognitionProfileCreatePage />} />
+          <Route
+            path="/terms-of-service"
+            element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/privacy-policy"
+            element={<PrivacyPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/issuer-policy"
+            element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/data-controller-agreement"
+            element={
+              <DataControllerAgreementPage
+                _onBack={() => handleBack()}
+                _onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/email-confirmation"
+            element={<EmailSignupConfirmPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/account-confirmation"
+            element={
+              <AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/passkey-recovery"
+            element={<PasskeyRecoveryPage onNavigate={handleNavigate} />}
+          />
 
-        {/* Onboarding routes */}
-        <Route
-          path="/onboarding-pilot-portal"
-          element={
-            <OnboardingPilotPortal onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/onboarding-programs"
-          element={<OnboardingPrograms onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/onboarding-recognition"
-          element={
-            <OnboardingRecognition onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
+          {/* Onboarding routes */}
+          <Route
+            path="/onboarding-pilot-portal"
+            element={
+              <OnboardingPilotPortal onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/onboarding-programs"
+            element={<OnboardingPrograms onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/onboarding-recognition"
+            element={
+              <OnboardingRecognition onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
 
-        {/* Pathways routes */}
-        <Route
-          path="/emirates-atpl"
-          element={<EmiratesAtplPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/emerging-air-taxi"
-          element={<EmergingAirTaxiPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/piloted-drones"
-          element={<PilotedDronesPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/air-taxi-pathways"
-          element={
-            <AirTaxiPathwaysPage
-              onBack={() => handleBack('/pathways-modern')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/cadet-pathways"
-          element={
-            <CadetProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/private-charter-pathways"
-          element={
-            <PrivateCharterPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/cargo-transportation"
-          element={
-            <CargoTransportationPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
+          {/* Pathways routes */}
+          <Route
+            path="/emirates-atpl"
+            element={<EmiratesAtplPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/emerging-air-taxi"
+            element={
+              <EmergingAirTaxiPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/piloted-drones"
+            element={<PilotedDronesPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/air-taxi-pathways"
+            element={
+              <AirTaxiPathwaysPage
+                onBack={() => handleBack('/pathways-modern')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/cadet-pathways"
+            element={
+              <CadetProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/private-charter-pathways"
+            element={
+              <PrivateCharterPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/cargo-transportation"
+            element={
+              <CargoTransportationPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
 
-        {/* Program routes */}
-        <Route
-          path="/about_programs"
-          element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/programs"
-          element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/benefits"
-          element={<ProgramBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/news-updates"
-          element={<NewsUpdatesPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/foundational-program"
-          element={
-            <FoundationalProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/transition-program"
-          element={
-            <TransitionProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/ebt-cbta"
-          element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/airbus-aligned-ebt-cbta-programs"
-          element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
+          {/* Program routes */}
+          <Route
+            path="/about_programs"
+            element={
+              <ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/programs"
+            element={
+              <ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/benefits"
+            element={
+              <ProgramBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/news-updates"
+            element={<NewsUpdatesPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/foundational-program"
+            element={
+              <FoundationalProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/transition-program"
+            element={
+              <TransitionProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/ebt-cbta"
+            element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/airbus-aligned-ebt-cbta-programs"
+            element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
 
-        {/* Platform routes */}
-        <Route
-          path="/foundational-platform"
-          element={
-            <EnrolledFoundationalPage
-              onBack={() => handleBack('access-portal-2?tab=programs')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/foundational-modules"
-          element={
-            <FoundationalModulesPage
-              onBack={() => handleBack('/foundational-platform')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/pilot-gap-module"
-          element={
-            <PilotGapModulePage
-              onBack={() => handleBack('/foundational-modules')}
-              onNavigateToMentorModules={() => handleNavigate('foundational-modules')}
-              onNavigateToExaminationPortal={() => handleNavigate('foundational-progress')}
-            />
-          }
-        />
-        <Route
-          path="/foundational-chapter-1"
-          element={
-            <FoundationalChapter1Page
-              onBack={() => handleBack('/foundational-modules')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/foundational-chapter-2"
-          element={
-            <FoundationalChapter2Page
-              onBack={() => handleBack('/foundational-modules')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/foundational-chapter-3"
-          element={
-            <FoundationalChapter3Page
-              onBack={() => handleBack('/foundational-modules')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/foundational-progress"
-          element={
-            <FoundationalProgressPage
-              onBack={() => handleBack('/foundational-platform')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/foundational-logbook"
-          element={
-            <FoundationalLogbookPage
-              onBack={() => handleBack('/foundational-platform')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/transition-platform"
-          element={<PlatformTransitionProgramPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/emirates-atpl-platform"
-          element={<PlatformEmiratesAtplPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/air-taxi-platform"
-          element={<PlatformAirTaxiPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/private-charter-platform"
-          element={<PlatformPrivateCharterPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/piloted-drones-platform"
-          element={<PlatformPilotedDronesPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/foundational-verification"
-          element={
-            <FoundationalVerificationPage
-              onBack={() => handleBack('/foundational-platform')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
+          {/* Platform routes */}
+          <Route
+            path="/foundational-platform"
+            element={
+              <EnrolledFoundationalPage
+                onBack={() => handleBack('access-portal-2?tab=programs')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/foundational-modules"
+            element={
+              <FoundationalModulesPage
+                onBack={() => handleBack('/foundational-platform')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/pilot-gap-module"
+            element={
+              <PilotGapModulePage
+                onBack={() => handleBack('/foundational-modules')}
+                onNavigateToMentorModules={() => handleNavigate('foundational-modules')}
+                onNavigateToExaminationPortal={() => handleNavigate('foundational-progress')}
+              />
+            }
+          />
+          <Route
+            path="/foundational-chapter-1"
+            element={
+              <FoundationalChapter1Page
+                onBack={() => handleBack('/foundational-modules')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/foundational-chapter-2"
+            element={
+              <FoundationalChapter2Page
+                onBack={() => handleBack('/foundational-modules')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/foundational-chapter-3"
+            element={
+              <FoundationalChapter3Page
+                onBack={() => handleBack('/foundational-modules')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/foundational-progress"
+            element={
+              <FoundationalProgressPage
+                onBack={() => handleBack('/foundational-platform')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/foundational-logbook"
+            element={
+              <FoundationalLogbookPage
+                onBack={() => handleBack('/foundational-platform')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/transition-platform"
+            element={<PlatformTransitionProgramPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/emirates-atpl-platform"
+            element={<PlatformEmiratesAtplPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/air-taxi-platform"
+            element={<PlatformAirTaxiPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/private-charter-platform"
+            element={<PlatformPrivateCharterPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/piloted-drones-platform"
+            element={<PlatformPilotedDronesPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/foundational-verification"
+            element={
+              <FoundationalVerificationPage
+                onBack={() => handleBack('/foundational-platform')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
 
-        {/* Pilot recognition routes */}
-        <Route
-          path="/pilot-recognition"
-          element={
-            <PilotRecognitionPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-              onLogin={() => setIsLoginModalOpen(true)}
-            />
-          }
-        />
-        <Route
-          path="/what-is-recognition"
-          element={
-            <WhatIsPilotRecognitionPage
-              onNavigate={handleNavigate}
-              onLogin={() => setIsLoginModalOpen(true)}
-              onJoinUs={() => setIsBecomeMemberOpen(true)}
-            />
-          }
-        />
-        <Route path="/recognition-plus" element={<RecognitionPlusPage />} />
-        <Route path="/recognition-plus/free" element={<RecognitionPlusFreePage />} />
-        <Route path="/recognition-plus/verified" element={<RecognitionPlusVerifiedPage />} />
-        <Route path="/recognition-plus/livetalk" element={<RecognitionPlusLiveTalkPage />} />
-        <Route path="/recognition-plus-comparison" element={<RecognitionPlusComparisonPage />} />
-        <Route
-          path="/pilot-recognition-profile"
-          element={<PilotRecognitionProfilePage />}
-        />
-        <Route
-          path="/pilot-licensure-experience"
-          element={
-            <PilotLicensureExperiencePage onBack={() => handleBack('/pilot-recognition-profile')} />
-          }
-        />
-        <Route
-          path="/verification"
-          element={
-            <VerificationInitiatePage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/ato-attestation"
-          element={
-            <ATOAttestationPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/verification-conflicts"
-          element={
-            <ConflictResolutionDashboard
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/logbook-upload"
-          element={
-            <LogbookUploadPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/efb-upload"
-          element={
-            <EFBUploadPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/sim-session"
-          element={
-            <SimSessionUploadPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/ato-register"
-          element={<ATORegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/sim-center-register"
-          element={
-            <SimCenterRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/military-transition"
-          element={
-            <MilitaryTransitionPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/ame-register"
-          element={<AMERegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/medical-certificate"
-          element={
-            <MedicalCertUploadPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/mentor-profile"
-          element={
-            <MentorProfilePage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/oem-register"
-          element={
-            <OEMPartnerRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/ato-dashboard"
-          element={<ATODashboardPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/for-flight-schools"
-          element={<ATOLaunchKitPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/score-optimization"
-          element={
-            <ScoreOptimizationPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/recognition-score-info"
-          element={
-            <RecognitionScoreInfoPage
-              onBack={() => handleBack('/pilot-recognition-profile')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/recognition-career-matches"
-          element={
-            <RecognitionCareerMatchesPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/atlas-cv"
-          element={<ATLASCVPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
+          {/* Pilot recognition routes */}
+          <Route
+            path="/pilot-recognition"
+            element={
+              <PilotRecognitionPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+                onLogin={() => setIsLoginModalOpen(true)}
+              />
+            }
+          />
+          <Route
+            path="/what-is-recognition"
+            element={
+              <WhatIsPilotRecognitionPage
+                onNavigate={handleNavigate}
+                onLogin={() => setIsLoginModalOpen(true)}
+                onJoinUs={() => setIsBecomeMemberOpen(true)}
+              />
+            }
+          />
+          <Route path="/recognition-plus" element={<RecognitionPlusPage />} />
+          <Route path="/recognition-plus/free" element={<RecognitionPlusFreePage />} />
+          <Route path="/recognition-plus/verified" element={<RecognitionPlusVerifiedPage />} />
+          <Route path="/recognition-plus/livetalk" element={<RecognitionPlusLiveTalkPage />} />
+          <Route path="/recognition-plus-comparison" element={<RecognitionPlusComparisonPage />} />
+          <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage />} />
+          <Route
+            path="/pilot-licensure-experience"
+            element={
+              <PilotLicensureExperiencePage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+              />
+            }
+          />
+          <Route
+            path="/verification"
+            element={
+              <VerificationInitiatePage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/ato-attestation"
+            element={
+              <ATOAttestationPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/verification-conflicts"
+            element={
+              <ConflictResolutionDashboard
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/logbook-upload"
+            element={
+              <LogbookUploadPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/efb-upload"
+            element={
+              <EFBUploadPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/sim-session"
+            element={
+              <SimSessionUploadPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/ato-register"
+            element={<ATORegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/sim-center-register"
+            element={
+              <SimCenterRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/military-transition"
+            element={
+              <MilitaryTransitionPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/ame-register"
+            element={<AMERegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/medical-certificate"
+            element={
+              <MedicalCertUploadPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/mentor-profile"
+            element={
+              <MentorProfilePage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/oem-register"
+            element={
+              <OEMPartnerRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/ato-dashboard"
+            element={<ATODashboardPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/for-flight-schools"
+            element={<ATOLaunchKitPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/score-optimization"
+            element={
+              <ScoreOptimizationPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/recognition-score-info"
+            element={
+              <RecognitionScoreInfoPage
+                onBack={() => handleBack('/pilot-recognition-profile')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/recognition-career-matches"
+            element={
+              <RecognitionCareerMatchesPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/atlas-cv"
+            element={<ATLASCVPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
 
-        {/* Directory routes */}
-        <Route path="/accreditation" element={<Navigate to="/about" replace />} />
-        <Route
-          path="/insights"
-          element={
-            <AviationInsightsDirectoryPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/applications_systems"
-          element={
-            <ApplicationsSystemsDirectoryPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/applications-systems"
-          element={
-            <ApplicationsSystemsDirectoryPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/membership"
-          element={
-            <MembershipDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/hinfact"
-          element={<HinfactPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/w1000"
-          element={<W1000Page onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/w1000-suite"
-          element={<W1000SuitePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/w1000/w2000"
-          element={<W2000ApplicationPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/membership-benefits"
-          element={
-            <MembershipBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/examination-results"
-          element={
-            <ExaminationResultsDirectoryPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/examination-results-directory"
-          element={
-            <ExaminationResultsDirectoryPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/official-examination-board"
-          element={
-            <OfficialExaminationBoardPage
-              onBack={() => handleBack('access-portal-2?tab=programs')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/digital-logbook-directory"
-          element={
-            <DigitalLogbookDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/digital-logbook"
-          element={<DigitalLogbookPage onBack={() => handleBack()} userProfile={null} />}
-        />
+          {/* Directory routes */}
+          <Route path="/accreditation" element={<Navigate to="/about" replace />} />
+          <Route
+            path="/insights"
+            element={
+              <AviationInsightsDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/applications_systems"
+            element={
+              <ApplicationsSystemsDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/applications-systems"
+            element={
+              <ApplicationsSystemsDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/membership"
+            element={
+              <MembershipDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/hinfact"
+            element={<HinfactPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/w1000"
+            element={<W1000Page onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/w1000-suite"
+            element={<W1000SuitePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/w1000/w2000"
+            element={
+              <W2000ApplicationPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/membership-benefits"
+            element={
+              <MembershipBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/examination-results"
+            element={
+              <ExaminationResultsDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/examination-results-directory"
+            element={
+              <ExaminationResultsDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/official-examination-board"
+            element={
+              <OfficialExaminationBoardPage
+                onBack={() => handleBack('access-portal-2?tab=programs')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/digital-logbook-directory"
+            element={
+              <DigitalLogbookDirectoryPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/digital-logbook"
+            element={<DigitalLogbookPage onBack={() => handleBack()} userProfile={null} />}
+          />
 
-        {/* Blog routes */}
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogPostPage />} />
+          {/* Blog routes */}
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
 
-        {/* Other routes */}
-        <Route
-          path="/pilot-gap"
-          element={
-            <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/what-is-the-pilot-gap"
-          element={
-            <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/pilot-gap-about"
-          element={
-            <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/airline-expectations"
-          element={
-            <PortalAirlineExpectationsPage
-              onBack={() => handleBack()}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/portal-airline-expectations"
-          element={
-            <PortalAirlineExpectationsPage
-              onBack={() => handleBack('/pathways-modern')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/type-rating-search"
-          element={<TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => handleBack()} />}
-        />
-        <Route path="/global-aviation-authorities" element={<GlobalAviationAuthoritiesPage />} />
-        <Route path="/job-listings" element={<JobListingsPage onNavigate={handleNavigate} />} />
-        <Route
-          path="/download"
-          element={<DownloadPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/settings"
-          element={
-            <SettingsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />
-          }
-        />
-        <Route
-          path="/subscription"
-          element={<SubscriptionPage onBack={() => handleBack('/settings')} />}
-        />
-        <Route
-          path="/pathways-modern"
-          element={
-            <PathwaysPageModern
-              isDarkMode={false}
-              onNavigate={handleNavigate}
-              onNavigateToPathway={(pathwayId) => {
-                if (pathwayId.includes('air-taxi') || pathwayId.includes('wingmentor')) {
-                  delayedNavigate('/air-taxi-pathways');
-                } else {
-                  delayedNavigate(`/pathways-detail/${pathwayId}`);
-                }
-              }}
-            />
-          }
-        />
-        <Route
-          path="/licensure-type-rating-pathways"
-          element={
-            <SpecializedPathwaysIndex
-              onBack={() => handleBack('/pathways-modern')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/specialized-operations"
-          element={
-            <SpecializedOperationsIndex
-              onBack={() => handleBack('/pathways-modern')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/career-pathways"
-          element={
-            <CareerPathwaysIndex
-              onBack={() => handleBack('/pathways-modern')}
-              onNavigate={handleNavigate}
-            />
-          }
-        />
-        <Route
-          path="/access-portal-2"
-          element={<AccessPortal2Page onNavigate={handleNavigate} />}
-        />
-        <Route path="/platform/career-progress" element={<CareerProgressDashboard />} />
-        <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
-        <Route
-          path="/flight-deck-login"
-          element={<FlightDeckLoginPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/flight-deck-verify"
-          element={<FlightDeckVerifyPage onNavigate={handleNavigate} />}
-        />
-        <Route
-          path="/examination-portal"
-          element={
-            <ProtectedRoute>
-              <ExaminationPortal />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/verification-service" element={<VerificationServicePage />} />
-        <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
-        <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
-        <Route path="/enterprise-access/pricing" element={<EnterprisePricingPage />} />
-        <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
-        <Route
-          path="/enterprise/verification-dashboard"
-          element={<EnterpriseVerificationDashboard />}
-        />
-        <Route path="/enterprise-login" element={<EnterpriseLoginPage />} />
-        <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
+          {/* Other routes */}
+          <Route
+            path="/pilot-gap"
+            element={
+              <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/what-is-the-pilot-gap"
+            element={
+              <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/pilot-gap-about"
+            element={
+              <PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/airline-expectations"
+            element={
+              <PortalAirlineExpectationsPage
+                onBack={() => handleBack()}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/portal-airline-expectations"
+            element={
+              <PortalAirlineExpectationsPage
+                onBack={() => handleBack('/pathways-modern')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/type-rating-search"
+            element={
+              <TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => handleBack()} />
+            }
+          />
+          <Route path="/global-aviation-authorities" element={<GlobalAviationAuthoritiesPage />} />
+          <Route path="/job-listings" element={<JobListingsPage onNavigate={handleNavigate} />} />
+          <Route
+            path="/download"
+            element={<DownloadPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/settings"
+            element={
+              <SettingsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />
+            }
+          />
+          <Route
+            path="/subscription"
+            element={<SubscriptionPage onBack={() => handleBack('/settings')} />}
+          />
+          <Route
+            path="/pathways-modern"
+            element={
+              <PathwaysPageModern
+                isDarkMode={false}
+                onNavigate={handleNavigate}
+                onNavigateToPathway={(pathwayId) => {
+                  if (pathwayId.includes('air-taxi') || pathwayId.includes('wingmentor')) {
+                    delayedNavigate('/air-taxi-pathways');
+                  } else {
+                    delayedNavigate(`/pathways-detail/${pathwayId}`);
+                  }
+                }}
+              />
+            }
+          />
+          <Route
+            path="/licensure-type-rating-pathways"
+            element={
+              <SpecializedPathwaysIndex
+                onBack={() => handleBack('/pathways-modern')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/specialized-operations"
+            element={
+              <SpecializedOperationsIndex
+                onBack={() => handleBack('/pathways-modern')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route
+            path="/career-pathways"
+            element={
+              <CareerPathwaysIndex
+                onBack={() => handleBack('/pathways-modern')}
+                onNavigate={handleNavigate}
+              />
+            }
+          />
+          <Route path="/platform/career-progress" element={<CareerProgressDashboard />} />
+          <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
+          <Route
+            path="/flight-deck-login"
+            element={<FlightDeckLoginPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/flight-deck-verify"
+            element={<FlightDeckVerifyPage onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/examination-portal"
+            element={
+              <ProtectedRoute>
+                <ExaminationPortal />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/verification-service" element={<VerificationServicePage />} />
+          <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
+          <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
+          <Route path="/enterprise-access/pricing" element={<EnterprisePricingPage />} />
+          <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
+          <Route
+            path="/enterprise/verification-dashboard"
+            element={<EnterpriseVerificationDashboard />}
+          />
+          <Route path="/enterprise-login" element={<EnterpriseLoginPage />} />
+          <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
 
-        {/* Partner pages */}
-        <Route path="/partners/flight-schools" element={<FlightSchoolsPage />} />
+          {/* Partner pages */}
+          <Route path="/partners/flight-schools" element={<FlightSchoolsPage />} />
 
-        {/* Pathways pages */}
-        <Route path="/discover-pathways" element={<DiscoverPathwaysPage />} />
-        <Route path="/discover-programs" element={<DiscoverProgramsPage />} />
+          {/* Pathways pages */}
+          <Route path="/discover-pathways" element={<DiscoverPathwaysPage />} />
+          <Route path="/discover-programs" element={<DiscoverProgramsPage />} />
 
-        {/* New category pages */}
-        <Route path="/learn-about" element={<LearnAboutPage />} />
-        <Route path="/general" element={<GeneralPage />} />
-        <Route path="/professional-profile" element={<ProfessionalProfilePage />} />
-        <Route path="/profile" element={<Navigate to="/professional-profile" replace />} />
-        <Route path="/background-check" element={<BackgroundCheckPage />} />
-        <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
-        <Route path="/banking-finance" element={<BankingFinancePage />} />
-        <Route path="/career-tools" element={<CareerToolsPage />} />
-        <Route path="/get-started" element={<GetStartedPage />} />
-        <Route path="/get-started/verify-apc" element={<VerifyApcPage />} />
-        <Route path="/about-verification" element={<AboutVerificationPage />} />
-        <Route path="/consent-form" element={<ConsentFormPage />} />
-        <Route path="/license-verification-consent" element={<LicenseVerificationConsentPage />} />
-        <Route path="/logbook-consent" element={<LogbookConsentPage />} />
-        <Route path="/flight-hours-logbook" element={<FlightHoursLogbookPage />} />
-        <Route path="/verify/:token" element={<PublicPilotCardPage />} />
+          {/* New category pages */}
+          <Route path="/learn-about" element={<LearnAboutPage />} />
+          <Route path="/general" element={<GeneralPage />} />
+          <Route path="/professional-profile" element={<ProfessionalProfilePage />} />
+          <Route path="/profile" element={<Navigate to="/professional-profile" replace />} />
+          <Route path="/background-check" element={<BackgroundCheckPage />} />
+          <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
+          <Route path="/banking-finance" element={<BankingFinancePage />} />
+          <Route path="/career-tools" element={<CareerToolsPage />} />
+          <Route path="/get-started" element={<GetStartedPage />} />
+          <Route path="/get-started/verify-apc" element={<VerifyApcPage />} />
+          <Route path="/about-verification" element={<AboutVerificationPage />} />
+          <Route path="/consent-form" element={<ConsentFormPage />} />
+          <Route
+            path="/license-verification-consent"
+            element={<LicenseVerificationConsentPage />}
+          />
+          <Route path="/logbook-consent" element={<LogbookConsentPage />} />
+          <Route path="/flight-hours-logbook" element={<FlightHoursLogbookPage />} />
+          <Route path="/verify/:token" element={<PublicPilotCardPage />} />
 
-        {/* Blog & Store */}
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/store" element={<StorePage />} />
+          {/* Blog & Store */}
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/store" element={<StorePage />} />
 
-        {/* Framework routes - /framework/full moved to enterprise.pilotrecognition.com */}
-        <Route path="/framework" element={<FrameworkPage />} />
-        <Route
-          path="/framework/full"
-          element={<ExternalRedirect to="https://enterprise.pilotrecognition.com/framework/full" />}
-        />
-        <Route path="/framework/full-local" element={<FrameworkFullPage />} />
-        <Route path="/ucf" element={<UCFPage />} />
-        <Route path="/ucf/official-release" element={<UCFOfficialReleasePage />} />
+          {/* Framework routes - /framework/full moved to enterprise.pilotrecognition.com */}
+          <Route path="/framework" element={<FrameworkPage />} />
+          <Route
+            path="/framework/full"
+            element={
+              <ExternalRedirect to="https://enterprise.pilotrecognition.com/framework/full" />
+            }
+          />
+          <Route path="/framework/full-local" element={<FrameworkFullPage />} />
+          <Route path="/ucf" element={<UCFPage />} />
+          <Route path="/ucf/official-release" element={<UCFOfficialReleasePage />} />
 
-        {/* Referral invite code route */}
-        <Route path="/ref/:code" element={<ReferralLandingPage />} />
+          {/* Referral invite code route */}
+          <Route path="/ref/:code" element={<ReferralLandingPage />} />
 
-        {/* Auth0 callback route */}
-        <Route path="/auth/callback" element={<OAuthCallback />} />
-        {/* MyFlightBook logbook OAuth callback */}
-        <Route path="/auth/logbook/callback" element={<LogbookCallback />} />
+          {/* Auth0 callback route */}
+          <Route path="/auth/callback" element={<OAuthCallback />} />
+          {/* MyFlightBook logbook OAuth callback */}
+          <Route path="/auth/logbook/callback" element={<LogbookCallback />} />
 
-        {/* Admin routes */}
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/verification" element={<AdminVerificationQueue />} />
-        <Route path="/admin/objectives" element={<AdminObjectivesPage />} />
-        <Route path="/admin/emails" element={<AdminEmailsPage />} />
-        <Route path="/admin/meetings" element={<AdminMeetingsPage />} />
-        <Route path="/admin/planning" element={<AdminPlanningPage />} />
-        <Route path="/admin/bot" element={<AdminBotPage />} />
-        <Route path="/admin/messages" element={<AdminMessagesPage />} />
-        <Route path="/admin/support" element={<AdminSupportPage />} />
-        <Route path="/admin/blogs" element={<AdminBlogsPage />} />
-        <Route path="/admin/prospects" element={<AdminProspectsPage />} />
-        <Route path="/admin/pilots" element={<AdminPilotsPage />} />
-        <Route path="/admin/enterprises" element={<AdminEnterprisesPage />} />
-        <Route path="/admin/events" element={<AdminEventsPage />} />
-        <Route path="/admin/invoices" element={<AdminInvoicesPage />} />
-        <Route path="/admin/settings" element={<AdminSettingsPage />} />
-        <Route path="/admin/verification-management" element={<AdminVerificationManagementPage />} />
-        <Route path="/admin/apc-verifications" element={<AdminApcVerificationsPage />} />
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/verification" element={<AdminVerificationQueue />} />
+          <Route path="/admin/objectives" element={<AdminObjectivesPage />} />
+          <Route path="/admin/emails" element={<AdminEmailsPage />} />
+          <Route path="/admin/meetings" element={<AdminMeetingsPage />} />
+          <Route path="/admin/planning" element={<AdminPlanningPage />} />
+          <Route path="/admin/bot" element={<AdminBotPage />} />
+          <Route path="/admin/messages" element={<AdminMessagesPage />} />
+          <Route path="/admin/support" element={<AdminSupportPage />} />
+          <Route path="/admin/blogs" element={<AdminBlogsPage />} />
+          <Route path="/admin/prospects" element={<AdminProspectsPage />} />
+          <Route path="/admin/pilots" element={<AdminPilotsPage />} />
+          <Route path="/admin/enterprises" element={<AdminEnterprisesPage />} />
+          <Route path="/admin/events" element={<AdminEventsPage />} />
+          <Route path="/admin/invoices" element={<AdminInvoicesPage />} />
+          <Route path="/admin/settings" element={<AdminSettingsPage />} />
+          <Route
+            path="/admin/verification-management"
+            element={<AdminVerificationManagementPage />}
+          />
+          <Route path="/admin/apc-verifications" element={<AdminApcVerificationsPage />} />
 
-        {/* Redirect removed pages */}
-        <Route path="/board" element={<Navigate to="/about" replace />} />
-        <Route path="/committees" element={<Navigate to="/about" replace />} />
-        <Route path="/governance" element={<Navigate to="/about" replace />} />
-        <Route path="/core-values" element={<Navigate to="/about#mission" replace />} />
-        <Route path="/mission-vision" element={<Navigate to="/about#mission" replace />} />
-        <Route path="/why-recognition" element={<Navigate to="/about#why-recognition" replace />} />
-        <Route
-          path="/industry-stewardship"
-          element={<Navigate to="/about#stewardship" replace />}
-        />
-        <Route path="/pilot-shortage" element={<Navigate to="/pilot-gap-about" replace />} />
-        <Route
-          path="/recognition-profile-live"
-          element={<Navigate to="/recognition-plus?section=live-profile" replace />}
-        />
-        <Route
-          path="/recognition-ai"
-          element={<Navigate to="/recognition-plus?section=ai-features" replace />}
-        />
-        <Route
-          path="/priority-matching"
-          element={<Navigate to="/recognition-plus?section=priority-matching" replace />}
-        />
-        <Route
-          path="/ebt-fast-track"
-          element={<Navigate to="/recognition-plus?section=ebt-cbta" replace />}
-        />
-        <Route
-          path="/medical-alerts"
-          element={<Navigate to="/recognition-plus?section=medical-alerts" replace />}
-        />
-        <Route
-          path="/program-discounts"
-          element={<Navigate to="/recognition-plus?section=program-discounts" replace />}
-        />
-          </Routes>
-        </div>
+          {/* Redirect removed pages */}
+          <Route path="/board" element={<Navigate to="/about" replace />} />
+          <Route path="/committees" element={<Navigate to="/about" replace />} />
+          <Route path="/governance" element={<Navigate to="/about" replace />} />
+          <Route path="/core-values" element={<Navigate to="/about#mission" replace />} />
+          <Route path="/mission-vision" element={<Navigate to="/about#mission" replace />} />
+          <Route
+            path="/why-recognition"
+            element={<Navigate to="/about#why-recognition" replace />}
+          />
+          <Route
+            path="/industry-stewardship"
+            element={<Navigate to="/about#stewardship" replace />}
+          />
+          <Route path="/pilot-shortage" element={<Navigate to="/pilot-gap-about" replace />} />
+          <Route
+            path="/recognition-profile-live"
+            element={<Navigate to="/recognition-plus?section=live-profile" replace />}
+          />
+          <Route
+            path="/recognition-ai"
+            element={<Navigate to="/recognition-plus?section=ai-features" replace />}
+          />
+          <Route
+            path="/priority-matching"
+            element={<Navigate to="/recognition-plus?section=priority-matching" replace />}
+          />
+          <Route
+            path="/ebt-fast-track"
+            element={<Navigate to="/recognition-plus?section=ebt-cbta" replace />}
+          />
+          <Route
+            path="/medical-alerts"
+            element={<Navigate to="/recognition-plus?section=medical-alerts" replace />}
+          />
+          <Route
+            path="/program-discounts"
+            element={<Navigate to="/recognition-plus?section=program-discounts" replace />}
+          />
+        </Routes>
+      </div>
 
       <FlightDeckOverlay
         isOpen={isLoginModalOpen}

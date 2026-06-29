@@ -1,10 +1,28 @@
 import React from 'react';
 
 export type TabId =
-  | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
-  | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance'
-  | 'cockpit' | 'verification' | 'advanced-profile' | 'foundation-welcome' | 'recognition-plus-tab';
+  | 'home'
+  | 'profile'
+  | 'wallet'
+  | 'pathways'
+  | 'programs'
+  | 'airlines'
+  | 'manufacturers'
+  | 'atlas-cv'
+  | 'logbook'
+  | 'events'
+  | 'newsroom'
+  | 'settings'
+  | 'score'
+  | 'dashboard'
+  | 'market-intel'
+  | 'data-provenance'
+  | 'cockpit'
+  | 'verification'
+  | 'advanced-profile'
+  | 'foundation-welcome'
+  | 'recognition-plus-tab'
+  | 'pilot-shortage-support';
 
 export interface NavItem {
   id: TabId;

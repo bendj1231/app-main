@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { BookOpen, Award, Users, Clock, ChevronRight, Star, GraduationCap, Plane } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import type { TabId } from '../types';
 
 interface FoundationWelcomeTabProps {
@@ -8,185 +8,510 @@ interface FoundationWelcomeTabProps {
   onNavigate: (page: string) => void;
 }
 
-export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({ setTab, onNavigate }) => {
-  const features = [
-    {
-      icon: BookOpen,
-      title: 'Foundation Program',
-      desc: '$49 · Pilot development, thinking, leadership skills, behaviorism, cognitive skills.',
-      color: 'from-sky-500 to-blue-600',
-    },
-    {
-      icon: GraduationCap,
-      title: 'Transition Program',
-      desc: '$299 · Airline transition, industry alignment. 9 core competencies, Airbus HINFACT applications.',
-      color: 'from-indigo-500 to-purple-600',
-    },
-    {
-      icon: Award,
-      title: 'EBT Video Scoring',
-      desc: 'Recorded interview after 50-hour mentorship. Cognitive behaviorism and constructivism alignment.',
-      color: 'from-amber-500 to-orange-600',
-    },
-    {
-      icon: Users,
-      title: 'Mentorship Network',
-      desc: 'One-to-one CRM skills through consultation and support. Become a mentor yourself.',
-      color: 'from-emerald-500 to-teal-600',
-    },
-  ];
+/* ─── Rockstar Games homepage style: card grid, minimal text, image-driven ─── */
 
-  const steps = [
-    { num: '01', title: 'Enroll', desc: 'Start with the Foundation Program ($49)' },
-    { num: '02', title: 'Learn', desc: 'Complete modules at your own pace' },
-    { num: '03', title: 'Mentor', desc: 'Help 50 pilots under supervision' },
-    { num: '04', title: 'Verify', desc: 'EBT video scoring for airlines' },
-  ];
+const GameCard: React.FC<{
+  image: string;
+  title: React.ReactNode;
+  subtitle?: string;
+  price?: string;
+  onClick?: () => void;
+  className?: string;
+}> = ({ image, title, subtitle, price, onClick, className = '' }) => (
+  <motion.div
+    className={`group relative cursor-pointer overflow-hidden ${className}`}
+    whileHover={{ scale: 1.02 }}
+    transition={{ duration: 0.4, ease: 'easeOut' }}
+    onClick={onClick}
+  >
+    <div className="absolute inset-0">
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+    </div>
+    <div
+      className="absolute inset-0 transition-opacity duration-500"
+      style={{
+        background:
+          'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.1) 100%)',
+      }}
+    />
+    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+    <div className="relative z-10 flex flex-col justify-end h-full p-6 md:p-8">
+      {subtitle && (
+        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/60 mb-2">
+          {subtitle}
+        </p>
+      )}
+      <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight">
+        {title}
+      </h3>
+      {price && <p className="text-sm font-bold text-sky-400 mt-2">{price}</p>}
+    </div>
+  </motion.div>
+);
+
+const SectionHeader: React.FC<{
+  label: string;
+  title: string;
+  className?: string;
+  light?: boolean;
+}> = ({ label, title, className = '', light = false }) => (
+  <div className={`mb-8 ${className}`}>
+    <p
+      className={`text-[10px] font-black uppercase tracking-[0.3em] mb-3 ${light ? 'text-black/40' : 'text-white/40'}`}
+    >
+      {label}
+    </p>
+    <h2
+      className={`text-2xl md:text-3xl font-black tracking-tight ${light ? 'text-black' : 'text-white'}`}
+    >
+      {title}
+    </h2>
+  </div>
+);
+
+/* ─── Hero Carousel: full-bleed edge-to-edge slides ─── */
+
+const slides = [
+  {
+    image: '/foundation.png',
+    label: 'Foundation Program',
+    title: 'Your CPL Is\nNot Enough',
+    subtitle: 'Airlines hire on judgment, leadership, and CRM. Skills flight school never taught.',
+    cta: 'Enroll Now',
+    link: 'foundational-program',
+  },
+  {
+    image: '/program1.png',
+    label: 'Transition Program',
+    title: 'Airline Ready\nIn 12 Weeks',
+    subtitle: '9 core competencies. Airbus HINFACT. Atlas resume format. Internship placement.',
+    cta: 'Enroll Now',
+    link: 'transition-program',
+  },
+  {
+    image: '/theintervew.png',
+    label: 'EBT Video Scoring',
+    title: 'Prove Your\nCompetency',
+    subtitle: 'Recorded interview scored by cognitive alignment. Airlines view it directly.',
+    cta: 'Enroll Now',
+    link: 'ebt-scoring',
+  },
+  {
+    image: '/instructor vs wing mentor -2.png',
+    label: 'Mentorship Network',
+    title: 'Help 50.\nBecome One.',
+    subtitle: 'One-to-one CRM skills. Earn Recognition+ priority status through effort.',
+    cta: 'Enroll Now',
+    link: 'mentorship',
+  },
+];
+
+const HeroCarousel: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
+  const [active, setActive] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const slide = slides[active];
 
   return (
-    <div className="relative z-10 flex flex-col items-center min-h-screen px-4 py-8">
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center max-w-2xl mx-auto mb-12"
-      >
-        {/* WingMentor Logo */}
-        <div className="flex justify-center mb-6">
-          <img
-            src="/logo.png"
-            alt="WingMentor"
-            className="h-16 w-auto object-contain"
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-          />
-        </div>
-
-        <p className="text-[10px] font-black tracking-[0.25em] uppercase text-sky-400 mb-3">
-          Programs
-        </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
-          FOUNDATION<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">PROGRAM</span>
-        </h1>
-        <p className="text-sm text-slate-300 leading-relaxed max-w-lg mx-auto mb-6">
-          Don't let your investment crash. Bridge the gap between flight school and airline cockpit
-          with structured mentorship, behavioral scoring, and industry-aligned competencies.
-        </p>
-        <div className="flex items-center justify-center gap-3">
-          <button
-            onClick={() => onNavigate('foundational-program')}
-            className="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all hover:brightness-110 hover:scale-105 flex items-center gap-2"
-          >
-            Start Foundation Program
-            <ChevronRight size={14} />
-          </button>
-          <button
-            onClick={() => setTab('programs' as TabId)}
-            className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider rounded-xl border border-white/20 transition-all hover:bg-white/10 flex items-center gap-2"
-          >
-            Browse All Programs
-          </button>
-        </div>
-      </motion.div>
-
-      {/* 4-Step Journey */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="w-full max-w-4xl mx-auto mb-12"
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {steps.map((s, i) => (
-            <div
-              key={s.num}
-              className="relative p-4 rounded-xl text-left"
-              style={{
-                background: 'rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-              }}
-            >
-              <span className="text-[10px] font-black text-sky-400 tracking-wider">{s.num}</span>
-              <h3 className="text-sm font-bold text-white mt-1">{s.title}</h3>
-              <p className="text-[10px] text-slate-400 mt-1 leading-snug">{s.desc}</p>
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-2 w-4 h-[1px] bg-white/20" />
-              )}
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Feature Cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="w-full max-w-4xl mx-auto mb-12"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {features.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div
-                key={f.title}
-                className="group relative p-5 rounded-xl transition-all hover:scale-[1.02] cursor-pointer"
-                style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                }}
-                onClick={() => onNavigate('foundational-program')}
-              >
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${f.color} flex items-center justify-center mb-3`}>
-                  <Icon size={18} className="text-white" />
-                </div>
-                <h3 className="text-sm font-bold text-white mb-1">{f.title}</h3>
-                <p className="text-[11px] text-slate-400 leading-relaxed">{f.desc}</p>
-                <div className="mt-3 flex items-center gap-1 text-[10px] font-bold text-sky-400 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
-                  Learn more <ChevronRight size={10} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </motion.div>
-
-      {/* Recognition Score CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full max-w-4xl mx-auto"
-      >
+    <section
+      className="relative"
+      style={{
+        width: '100vw',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        height: '75vh',
+        minHeight: '550px',
+      }}
+    >
+      {/* Slides — edge to edge, extended up to cover nav */}
+      {slides.map((s, i) => (
         <div
-          className="relative p-6 rounded-2xl text-center overflow-hidden"
+          key={i}
+          className="absolute transition-opacity duration-1000"
           style={{
-            background: 'rgba(255,255,255,0.06)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.12)',
+            opacity: i === active ? 1 : 0,
+            top: '-120px',
+            left: 0,
+            right: 0,
+            bottom: 0,
           }}
         >
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-sky-400 via-blue-500 to-purple-500" />
-          <Star size={20} className="text-amber-400 mx-auto mb-3" />
-          <h3 className="text-lg font-black text-white mb-2">Your Recognition Score is Your Currency</h3>
-          <p className="text-xs text-slate-300 max-w-md mx-auto mb-4">
-            Complete programs, log hours, and verify credentials to build your score.
-            Airlines pull from our database — your score unlocks pathway access.
-          </p>
-          <button
-            onClick={() => setTab('score' as TabId)}
-            className="px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white rounded-lg border border-white/20 transition-all hover:bg-white/10"
-          >
-            View Score Breakdown
-          </button>
+          <img src={s.image} alt={s.label} className="w-full h-full object-cover" />
         </div>
-      </motion.div>
+      ))}
+
+      {/* Gradient overlay — also extended up */}
+      <div
+        className="absolute z-10"
+        style={{
+          top: '-120px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background:
+            'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.2) 30%, rgba(11,11,11,0.88) 85%, #0b0b0b 100%)',
+        }}
+      />
+
+      {/* Slide content — logo left, text+CTAs to its right, bottom area */}
+      <div className="relative z-20 h-full w-full px-6 md:px-12">
+        <div className="max-w-7xl mx-auto w-full h-full relative flex items-end pb-24 md:pb-28">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col md:flex-row items-start md:items-end gap-6 md:gap-8"
+            >
+              {/* Logo — left */}
+              <img
+                src="/logo.png"
+                alt="Pilot Recognition"
+                className="hidden md:block w-40 h-40 lg:w-52 lg:h-52 object-contain flex-shrink-0"
+                style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))' }}
+              />
+
+              {/* Text + CTAs — right of logo */}
+              <div className="flex flex-col items-start text-left">
+                {/* Label */}
+                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/70 mb-2">
+                  {slide.label}
+                </p>
+
+                {/* Title */}
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95] mb-4 max-w-2xl whitespace-pre-line">
+                  {slide.title}
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-sm md:text-base text-white/50 max-w-md mb-6 leading-relaxed">
+                  {slide.subtitle}
+                </p>
+
+                {/* CTAs */}
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => onNavigate(slide.link)}
+                    className="px-8 py-3 bg-red-600 text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-red-700 transition-colors flex items-center gap-2"
+                  >
+                    {slide.cta}
+                  </button>
+                  <button
+                    onClick={() => onNavigate(slide.link)}
+                    className="px-8 py-3 border-2 border-white text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    Learn More
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Carousel dots — bottom center */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className="transition-all duration-300"
+            style={{
+              width: i === active ? '32px' : '8px',
+              height: '8px',
+              borderRadius: '4px',
+              background: i === active ? '#fff' : 'rgba(255,255,255,0.3)',
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
+  setTab,
+  onNavigate,
+}) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = React.useState(true);
+
+  return (
+    <div className="relative z-10 flex flex-col w-full" style={{ background: '#0b0b0b' }}>
+      {/* ═══════════════════════════════════════════════════
+          HERO CAROUSEL — Full-bleed edge-to-edge, Rockstar style
+      ═══════════════════════════════════════════════════ */}
+      <HeroCarousel onNavigate={onNavigate} />
+
+      {/* ═══════════════════════════════════════════════════
+          NEWS GRID — Rockstar-style: large featured left, stacked cards right
+      ═══════════════════════════════════════════════════ */}
+      <section
+        className="relative py-8 px-4 md:px-8"
+        style={{
+          background: '#0b0b0b',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* LEFT — Featured card (large), image only */}
+            <motion.div
+              className="group cursor-pointer flex flex-col w-full"
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => onNavigate('foundational-program')}
+            >
+              <div className="relative overflow-hidden aspect-[4/3] w-full">
+                <img
+                  src="/foundationprogram.png"
+                  alt="Foundation Program"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            </motion.div>
+
+            {/* RIGHT — Stack of news cards */}
+            <div className="flex flex-col gap-3">
+              {[
+                {
+                  img: '/program1.png',
+                  label: 'Transition Program',
+                  title: 'Airline Ready in 12 Weeks',
+                  date: '$299',
+                  link: 'transition-program',
+                },
+                {
+                  img: '/theintervew.png',
+                  label: 'EBT Video Scoring',
+                  title: 'Prove Your Competency',
+                  date: 'Included',
+                  link: 'ebt-scoring',
+                },
+                {
+                  img: '/instructor vs wing mentor -2.png',
+                  label: 'Mentorship Network',
+                  title: 'Help 50. Become One.',
+                  date: 'Earned',
+                  link: 'mentorship',
+                },
+                {
+                  img: '/pilotcenter.png',
+                  label: 'Recognition+',
+                  title: 'Get Verified. Get Seen.',
+                  date: '$120',
+                  link: 'recognition-plus',
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.label}
+                  className="group flex gap-4 cursor-pointer bg-[#111] hover:bg-[#1a1a1a] transition-colors p-3"
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => onNavigate(item.link)}
+                >
+                  {/* Thumbnail */}
+                  <div className="w-24 h-16 md:w-32 md:h-20 flex-shrink-0 overflow-hidden">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  {/* Text */}
+                  <div className="flex flex-col justify-center">
+                    <p className="text-[9px] font-black uppercase tracking-[0.15em] text-sky-400 mb-1">
+                      {item.label}
+                    </p>
+                    <p className="text-sm font-black text-white leading-snug mb-1">{item.title}</p>
+                    <p className="text-[10px] text-white/30">{item.date}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom quote — centered */}
+          <div className="text-center mt-6">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-2">
+              Foundation Program
+            </p>
+            <p className="text-lg md:text-xl font-black text-white tracking-tight">
+              "Start Your Journey. From CPL to Cockpit."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED STRIP — Video background only */}
+      <section
+        className="relative h-[60vh] md:h-[70vh] overflow-hidden"
+        style={{
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="absolute inset-0">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/FINAL.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.3)' }} />
+        </div>
+
+        {/* Mute toggle — bottom right */}
+        <button
+          onClick={() => {
+            if (videoRef.current) {
+              videoRef.current.muted = !videoRef.current.muted;
+              setIsMuted(videoRef.current.muted);
+            }
+          }}
+          className="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-white/80 bg-black/40 border border-white/20 hover:bg-black/60 hover:text-white transition-all"
+        >
+          {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          {isMuted ? 'Unmute' : 'Mute'}
+        </button>
+      </section>
+
+      {/* DESCRIPTION SECTION — The Pipeline */}
+      <section
+        className="relative py-16 md:py-24 px-6"
+        style={{
+          background: '#ffffff',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-red-500 mb-4">
+              In Support Of
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-black tracking-tight leading-[1] mb-6">
+              pilot<span className="text-red-600">shortage</span>.org
+            </h2>
+            <p className="text-sm text-black/60 max-w-lg mx-auto leading-relaxed mb-8">
+              The WingMentor Program is fully aligned with and in support of pilots undergoing a
+              program aimed to educate and prepare them on leadership skills through self-initiated
+              action. This involves 50 hours of helping fellow pilots, building the leadership
+              mindset we need in aviation today. Not waiting for permission. Creating the solution.
+            </p>
+            <button
+              onClick={() => setTab('pilot-shortage-support' as TabId)}
+              className="text-xs font-black uppercase tracking-wider text-black/70 hover:text-black transition-colors flex items-center gap-2 mx-auto"
+            >
+              Learn More <ChevronRight size={14} />
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECOND CARD ROW — Two larger cards */}
+      <section
+        className="relative py-8 px-4 md:px-8"
+        style={{
+          background: '#ffffff',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader label="Pathways" title="Discover" light />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <GameCard
+              image="/pathwaysplatform.png"
+              title={
+                <>
+                  pilotcareer<span className="text-red-500">pathways</span>.com
+                </>
+              }
+              subtitle="Submit interests to Career Matching Pathways"
+              onClick={() => setTab('pathways' as TabId)}
+              className="aspect-[16/9]"
+            />
+            <GameCard
+              image="/construct.png"
+              title={
+                <>
+                  pilot<span className="text-red-500">shortage</span>.org
+                </>
+              }
+              subtitle="Connecting pilots to the industry"
+              onClick={() => setTab('pathways' as TabId)}
+              className="aspect-[16/9]"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER CTA */}
+      <section
+        className="relative py-16 md:py-24 px-6"
+        style={{
+          background: '#ffffff',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 mb-4">
+              Get Started
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-black tracking-tight mb-6">
+              Free to start.
+            </h2>
+            <p className="text-sm text-black/50 max-w-md mx-auto mb-8">
+              Until certification of recognition. $49 for full recognition status. Scholarships
+              available. Effort-based. Your EBT score shows on your live profile.
+            </p>
+            <button
+              onClick={() => onNavigate('foundational-program')}
+              className="px-10 py-4 bg-red-600 text-white text-xs font-black uppercase tracking-wider hover:bg-red-700 transition-colors"
+            >
+              Enroll Now
+            </button>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };
