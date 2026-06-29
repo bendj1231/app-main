@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Plane,
@@ -15,6 +15,7 @@ import {
   Radar,
 } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
+import { AIChatModal } from '../AIChatModal';
 import type { TabId } from '../types';
 
 interface PathwaysWelcomeTabProps {
@@ -125,6 +126,8 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
   onNavigate,
   profile,
 }) => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <div className="relative z-10 flex flex-col w-full" style={{ background: '#0b0b0b' }}>
       {/* ═══════════════════════════════════════════════════
@@ -266,7 +269,7 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
               Need help finding your pathway? Ask AI
             </div>
             <button
-              onClick={() => setTab('advanced-profile' as TabId)}
+              onClick={() => setIsChatOpen(true)}
               className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
               style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}
             >
@@ -496,6 +499,8 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
           </div>
         </div>
       </section>
+
+      <AIChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} profile={profile} />
     </div>
   );
 };
