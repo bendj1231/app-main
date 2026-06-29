@@ -12,6 +12,7 @@ import {
   ArrowRight,
   TrendingUp,
   Sparkles,
+  Bot,
 } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 import type { TabId } from '../types';
@@ -257,6 +258,20 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
                 </div>
               )}
             </div>
+          </div>
+
+          {/* AI chatbot icon + message */}
+          <div className="absolute bottom-6 right-6 md:right-12 z-30 flex items-center gap-3">
+            <div className="hidden sm:block text-[10px] font-bold text-white/90 bg-black/50 px-3 py-2 rounded-xl backdrop-blur-sm border border-white/10">
+              Need help finding your pathway? Ask AI
+            </div>
+            <button
+              onClick={() => setTab('advanced-profile' as TabId)}
+              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+              style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}
+            >
+              <Bot size={22} className="text-white" />
+            </button>
           </div>
         </div>
       </section>
