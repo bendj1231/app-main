@@ -12,7 +12,7 @@ import {
   ArrowRight,
   TrendingUp,
   Sparkles,
-  Bot,
+  Radar,
 } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 import type { TabId } from '../types';
@@ -270,7 +270,7 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
               className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
               style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}
             >
-              <Bot size={22} className="text-white" />
+              <Radar size={22} className="text-white" />
             </button>
           </div>
         </div>
