@@ -825,6 +825,22 @@ export const HomeTab: React.FC<{
               </div>
             )}
 
+            {/* Profile Strength */}
+            <div className="px-4 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Profile Strength</span>
+                <span className="text-[9px] font-black text-white/70">{matchPct}%</span>
+              </div>
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${matchPct}%`, background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)' }} />
+              </div>
+              {matchPct < 100 && (
+                <p className="text-[8px] text-white/40 mt-1.5 leading-snug">
+                  Complete your profile, log hours, and verify credentials to unlock pathways.
+                </p>
+              )}
+            </div>
+
             {/* Actions */}
             <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
               {profile?.license_number ? (
