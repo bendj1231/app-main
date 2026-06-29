@@ -10,12 +10,15 @@ import {
   GraduationCap,
   MapPin,
   ArrowRight,
+  TrendingUp,
 } from 'lucide-react';
+import ProfileImage from '@/components/ProfileImage';
 import type { TabId } from '../types';
 
 interface PathwaysWelcomeTabProps {
   setTab: (tab: TabId) => void;
   onNavigate: (page: string) => void;
+  profile?: any;
 }
 
 const categoryCard = {
@@ -118,6 +121,7 @@ const FEATURED_PATHWAYS = [
 export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
   setTab,
   onNavigate,
+  profile,
 }) => {
   return (
     <div className="relative z-10 flex flex-col w-full" style={{ background: '#0b0b0b' }}>
@@ -155,31 +159,102 @@ export const PathwaysWelcomeTab: React.FC<PathwaysWelcomeTabProps> = ({
         />
         <div className="relative z-20 h-full w-full px-6 md:px-12">
           <div className="max-w-7xl mx-auto w-full h-full relative flex items-end pb-20 md:pb-24">
-            <div className="flex flex-col items-start text-left">
-              <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/70 mb-2">
-                Pathway Directory
-              </p>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95] mb-4 max-w-2xl whitespace-pre-line">
-                Find Your Next
-                {'\n'}Cockpit
-              </h1>
-              <p className="text-sm md:text-base text-white/50 max-w-md mb-6 leading-relaxed">
-                Structured career pathways from CPL to airline cockpit. Compare requirements, timelines, and eligibility across carriers worldwide.
-              </p>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setTab('pathways' as TabId)}
-                  className="px-8 py-3 bg-red-600 text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-red-700 transition-colors flex items-center gap-2"
-                >
-                  Browse All Pathways
-                </button>
-                <button
-                  onClick={() => onNavigate('about-verification')}
-                  className="px-8 py-3 border-2 border-white text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-white/10 transition-colors"
-                >
-                  How It Works
-                </button>
+            <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between w-full gap-8 lg:gap-12">
+              {/* Left — headline + CTAs */}
+              <div className="flex flex-col items-start text-left">
+                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/70 mb-2">
+                  Pathway Directory
+                </p>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95] mb-4 max-w-2xl whitespace-pre-line">
+                  Find Your Next
+                  {'\n'}Cockpit
+                </h1>
+                <p className="text-sm md:text-base text-white/50 max-w-md mb-6 leading-relaxed">
+                  Structured career pathways from CPL to airline cockpit. Compare requirements, timelines, and eligibility across carriers worldwide.
+                </p>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => setTab('pathways' as TabId)}
+                    className="px-8 py-3 bg-red-600 text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-red-700 transition-colors flex items-center gap-2"
+                  >
+                    Browse All Pathways
+                  </button>
+                  <button
+                    onClick={() => onNavigate('about-verification')}
+                    className="px-8 py-3 border-2 border-white text-white text-xs font-black uppercase tracking-wider rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    How It Works
+                  </button>
+                </div>
               </div>
+
+              {/* Right — compact pilot profile card */}
+              {profile && (
+                <div
+                  className="w-full lg:w-80 flex-shrink-0 rounded-2xl p-5 overflow-hidden relative"
+                  style={{
+                    background: 'rgba(15,22,35,0.95)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(12px)',
+                  }}
+                >
+                  <div className="absolute inset-0 pointer-events-none opacity-30">
+                    <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(56,189,248,0.18), transparent 45%), radial-gradient(circle at 70% 80%, rgba(99,102,241,0.14), transparent 45%)' }} />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="relative">
+                        <ProfileImage
+                          url={profile?.profile_image_url}
+                          publicId={profile?.profile_image_public_id}
+                          name={profile?.display_name || profile?.full_name || profile?.email || 'Pilot'}
+                          size={56}
+                          className="rounded-full border-2 border-[rgba(15,22,35,0.95)]"
+                          fallbackClassName="rounded-full bg-blue-500 text-white text-lg"
+                        />
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[rgba(15,22,35,0.95)]" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-black text-white truncate">{profile?.display_name || profile?.full_name || profile?.email?.split('@')[0] || 'Pilot'}</p>
+                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider">
+                          {profile?.license_type || profile?.current_occupation || 'Pilot Profile'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                      <div className="text-center py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <p className="text-base font-black text-white">{profile?.pic_hours || '0'}</p>
+                        <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">PIC</p>
+                      </div>
+                      <div className="text-center py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <p className="text-base font-black text-white">{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
+                        <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Total</p>
+                      </div>
+                      <div className="text-center py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <p className="text-base font-black text-white">{profile?.dual_hours || '0'}</p>
+                        <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Dual</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)' }}>
+                        <TrendingUp size={10} className="text-emerald-400" />
+                        <span className="text-[9px] font-black text-emerald-400 uppercase tracking-wider">Recognition Active</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setTab('profile' as TabId)}
+                      className="w-full py-2.5 text-[10px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600"
+                      style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))' }}
+                    >
+                      VIEW FULL PROFILE →
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

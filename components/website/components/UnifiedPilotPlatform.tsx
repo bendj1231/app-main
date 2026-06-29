@@ -663,7 +663,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'pathways':
         return <PathwaysTab onNavigate={onNavigate} />;
       case 'pathways-directory':
-        return <PathwaysWelcomeTab setTab={setTab} onNavigate={onNavigate} />;
+        return <PathwaysWelcomeTab setTab={setTab} onNavigate={onNavigate} profile={profileData} />;
       case 'programs':
         return <ProgramsTab onNavigate={onNavigate} />;
       case 'foundation-welcome':
