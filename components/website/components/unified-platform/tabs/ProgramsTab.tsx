@@ -46,7 +46,7 @@ export const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onN
                 <div className="h-full flex flex-col">
                   <div className="relative h-[70%] overflow-hidden bg-slate-900">
                     <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-80">
-                      <source src="/images/My Movie 3 - 720WebShareName.mov" type="video/mp4" />
+                      <source src="https://pub-7d91692145fd4db8ad180eaf345568f7.r2.dev/videos/My-Movie-3-720WebShareName.mov" type="video/mp4" />
                     </video>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                     <div className="absolute top-4 right-4">

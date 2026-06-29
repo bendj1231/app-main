@@ -428,8 +428,8 @@ export const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden h-full"
-      style={{ maxWidth: '1500px', transform: 'scale(0.9)', transformOrigin: 'top center' }}
+      className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden h-full w-full"
+      style={{ maxWidth: '1400px', maxHeight: '720px' }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"

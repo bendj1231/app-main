@@ -189,7 +189,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     programs: [
         {
             id: 'foundation',
-            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
+            videoUrl: 'https://pub-7d91692145fd4db8ad180eaf345568f7.r2.dev/videos/My-Movie-3-720WebShareName.mov',
             title: 'Foundation Program',
             enrolledTitle: 'Foundation Program Access',
             subtitle: 'Start your pilot journey with structured mentorship and guidance',
@@ -278,7 +278,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     'pilot-recognition': [
         {
             id: 'pilot-recognition',
-            videoUrl: '/fp.mp4',
+            videoUrl: 'https://pub-7d91692145fd4db8ad180eaf345568f7.r2.dev/videos/fp.mp4',
             title: 'Discover Recognition+',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,

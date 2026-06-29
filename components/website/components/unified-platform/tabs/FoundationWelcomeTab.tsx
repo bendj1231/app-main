@@ -376,7 +376,7 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
             playsInline
             className="w-full h-full object-cover"
           >
-            <source src="/FINAL.mp4" type="video/mp4" />
+            <source src="https://pub-7d91692145fd4db8ad180eaf345568f7.r2.dev/videos/FINAL.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.3)' }} />

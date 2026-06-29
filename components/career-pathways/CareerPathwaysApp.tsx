@@ -15,7 +15,7 @@ const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ 
 const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').then(m => ({ default: m.PathwayDashboardPage })));
 const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
-const ProfilePage = lazy(() => import('@/app/profile/page.tsx'));
+const ProfilePage = lazy(() => import('@/app/professional-profile/page.tsx'));
 
 // Unified platform pages
 const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
