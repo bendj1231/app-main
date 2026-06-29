@@ -92,22 +92,22 @@ export const NotificationSystem: React.FC<{ userId: string }> = ({ userId }) => 
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.96 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 top-11 w-80 sm:w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl z-50 overflow-hidden"
+              className="absolute right-0 top-11 w-80 sm:w-96 bg-white/95 backdrop-blur-xl border border-black/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-                <h3 className="text-sm font-semibold text-white">Notifications</h3>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-black/5">
+                <h3 className="text-sm font-semibold text-black">Notifications</h3>
                 <div className="flex items-center gap-1">
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllRead}
-                      className="text-xs text-blue-400 hover:text-blue-300 px-2 py-1 rounded-lg hover:bg-blue-500/10 transition-colors"
+                      className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded-lg hover:bg-blue-50 transition-colors"
                     >
                       Mark all read
                     </button>
                   )}
                   <button
                     onClick={loadNotifications}
-                    className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-black/5 text-slate-400 hover:text-black transition-colors"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                   </button>
@@ -117,37 +117,42 @@ export const NotificationSystem: React.FC<{ userId: string }> = ({ userId }) => 
               <div className="max-h-80 overflow-y-auto">
                 {notifications.length === 0 ? (
                   <div className="py-8 text-center space-y-2">
-                    <Bell className="w-8 h-8 text-slate-600 mx-auto" />
-                    <p className="text-sm text-slate-500">No notifications yet</p>
+                    <Bell className="w-8 h-8 text-slate-300 mx-auto" />
+                    <p className="text-sm text-slate-400">No notifications yet</p>
                   </div>
                 ) : (
                   notifications.map((n) => {
                     const cfg = typeConfig[n.type] || typeConfig.default;
                     const isUnread = !n.read_at;
                     return (
-                      <button
-                        key={n.id}
-                        onClick={() => { if (isUnread) markRead(n.id); }}
-                        className={`w-full text-left px-4 py-3 flex items-start gap-3 border-b border-slate-800/50 last:border-0 hover:bg-slate-800/40 transition-colors ${
-                          isUnread ? 'bg-slate-800/20' : ''
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${cfg.bg} ${cfg.color}`}>
-                          {cfg.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm ${isUnread ? 'text-white font-medium' : 'text-slate-300'}`}>
-                            {n.title}
-                          </p>
-                          {n.message && (
-                            <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.message}</p>
-                          )}
-                          <p className="text-[10px] text-slate-600 mt-1">
-                            {new Date(n.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        {isUnread && <div className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />}
-                      </button>
+                      <div className="px-3 py-2">
+                        <button
+                          key={n.id}
+                          onClick={() => { if (isUnread) markRead(n.id); }}
+                          className={`w-full text-left px-3 py-3 flex items-start gap-3 rounded-xl transition-all duration-200 hover:shadow-md ${
+                            isUnread
+                              ? 'bg-white/60 border border-black/15 hover:bg-white/80'
+                              : 'bg-white/30 border border-black/10 hover:bg-white/50'
+                          }`}
+                          style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+                        >
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${cfg.bg} ${cfg.color}`}>
+                            {cfg.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm ${isUnread ? 'text-black font-semibold' : 'text-slate-600'}`}>
+                              {n.title}
+                            </p>
+                            {n.message && (
+                              <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.message}</p>
+                            )}
+                            <p className="text-[10px] text-slate-400 mt-1">
+                              {new Date(n.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          {isUnread && <div className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />}
+                        </button>
+                      </div>
                     );
                   })
                 )}

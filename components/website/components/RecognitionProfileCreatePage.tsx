@@ -5,7 +5,7 @@ import { api } from '@/lib/d1-api';
 
 export const RecognitionProfileCreatePage: React.FC = () => {
   const navigate = useNavigate();
-  const { getAccessTokenSilently } = useAuth0();
+  const { getIdTokenClaims } = useAuth0();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [errorMsg, setErrorMsg] = useState<string>('');
 
@@ -18,7 +18,16 @@ export const RecognitionProfileCreatePage: React.FC = () => {
         return;
       }
       const payload = JSON.parse(raw);
-      const token = await getAccessTokenSilently();
+      // Remove fields that may not exist in the D1 schema
+      delete (payload as Record<string, unknown>).aircraft_rated_on;
+      let claims: { __raw?: string } | undefined;
+      for (let i = 0; i < 20; i++) {
+        claims = await getIdTokenClaims() as { __raw?: string } | undefined;
+        if (claims?.__raw) break;
+        await new Promise((r) => setTimeout(r, 300));
+      }
+      const token = claims?.__raw;
+      if (!token) throw new Error('Auth0 ID token not available');
       await api(token, 'upsertProfile', payload);
       sessionStorage.removeItem('pr_profile_payload');
       setStatus('success');

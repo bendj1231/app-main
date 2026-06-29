@@ -189,6 +189,32 @@ CREATE INDEX IF NOT EXISTS idx_access_log_employee ON verification_employee_acce
 CREATE INDEX IF NOT EXISTS idx_access_log_target ON verification_employee_access_log(target_account_number);
 CREATE INDEX IF NOT EXISTS idx_access_log_created ON verification_employee_access_log(created_at);
 
+-- Pilot Logbook CSV uploads (per-user CSV file storage)
+CREATE TABLE IF NOT EXISTS pilot_logbook_csv (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES profiles(id),
+  filename TEXT,
+  csv_data TEXT NOT NULL, -- raw CSV content
+  row_count INTEGER DEFAULT 0,
+  uploaded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_logbook_csv_user ON pilot_logbook_csv(user_id);
+
+-- Pilot notifications (in-app messages)
+CREATE TABLE IF NOT EXISTS pilot_notifications (
+  id TEXT PRIMARY KEY,
+  pilot_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  type TEXT NOT NULL DEFAULT 'default',
+  title TEXT NOT NULL,
+  message TEXT,
+  data TEXT,
+  is_read INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  read_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_pilot_notifications_pilot ON pilot_notifications(pilot_id);
+CREATE INDEX IF NOT EXISTS idx_pilot_notifications_unread ON pilot_notifications(pilot_id, is_read);
+
 -- Index for auth0 lookups
 CREATE INDEX IF NOT EXISTS idx_profiles_auth0_id ON profiles(auth0_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);

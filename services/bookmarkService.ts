@@ -1,6 +1,8 @@
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+
 /**
  * Bookmark Service
- * 
+ *
  * Handles all bookmark-related database operations using Supabase
  */
 

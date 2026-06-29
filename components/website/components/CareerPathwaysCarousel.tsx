@@ -10,13 +10,22 @@ interface Slide {
   eyebrow: string;
   titleWhite: string;
   titleAccent: string;
+  titleSuffix?: string;
+  subtitleWhite?: string;
+  subtitleAccent?: string;
+  subtitleSuffix?: string;
   description: string;
   cta: string;
   ctaAction: () => void;
   rightLabel: string;
   rightText: string;
   image: string;
+  rightImage?: string;
   accent: string;
+  bgPosition?: string;
+  overlay?: string;
+  textDark?: boolean;
+  smallTitle?: boolean;
 }
 
 interface CareerPathwaysCarouselProps {
@@ -35,17 +44,84 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
 
   const slides: Slide[] = [
     {
+      id: 'airline-pathways',
+      eyebrow: 'Airline Pathways',
+      titleWhite: 'DISCOVER CAREER',
+      titleAccent: 'PATHWAYS',
+      description: 'Explore structured pathways from CPL to airline cockpit. Compare requirements, timelines, and eligibility across carriers worldwide.',
+      cta: 'Browse Pathways',
+      ctaAction: () => setTab('pathways'),
+      rightLabel: 'Pathway Database',
+      rightText: 'Explore',
+      image: '/expect.png',
+      accent: '#6366f1',
+    },
+    {
+      id: 'cadet-programs',
+      eyebrow: 'Cadet Programs',
+      titleWhite: 'AIRLINE CADET',
+      titleAccent: 'PROGRAMS',
+      description: 'Zero-to-hero programs sponsored by major airlines. Full funding, guaranteed placement, and structured training from day one.',
+      cta: 'View Cadet Gates',
+      ctaAction: () => setTab('pathways'),
+      rightLabel: 'Cadet Database',
+      rightText: 'Explore',
+      image: '/images/airline-operations.png',
+      accent: '#06b6d4',
+    },
+    {
+      id: 'corporate-aviation',
+      eyebrow: 'Corporate Aviation',
+      titleWhite: 'PRIVATE & CORPORATE',
+      titleAccent: 'AVIATION',
+      description: 'Charter, VIP transport, and business jet careers. Higher flexibility, premium compensation, and direct operator relationships.',
+      cta: 'Explore Corporate',
+      ctaAction: () => setTab('pathways'),
+      rightLabel: 'Corporate Ops',
+      rightText: 'Explore',
+      image: '/type.png',
+      accent: '#f59e0b',
+    },
+    {
+      id: 'flight-instructor',
+      eyebrow: 'Flight Instruction',
+      titleWhite: 'BECOME A FLIGHT',
+      titleAccent: 'INSTRUCTOR',
+      description: 'Build hours while teaching the next generation. ATO partnerships, instructor ratings, and pathway-to-airline programs.',
+      cta: 'Find ATO Partners',
+      ctaAction: () => setTab('pathways'),
+      rightLabel: 'ATO Network',
+      rightText: 'Explore',
+      image: '/cessna.png',
+      accent: '#10b981',
+    },
+    {
       id: 'type-rating',
       eyebrow: 'Training',
-      titleWhite: 'TYPE RATING',
-      titleAccent: 'SEARCH',
+      titleWhite: 'DISCOVER',
+      titleAccent: 'TYPE RATINGS',
       description: 'Find approved type rating centers worldwide. Compare costs, locations, and airline partnerships.',
-      cta: 'Search Centers',
+      cta: 'Discover Type Ratings',
       ctaAction: () => safeRedirect('/type-rating-search'),
       rightLabel: 'Training Network',
-      rightText: '200+ Approved Centers',
-      image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1920&q=90',
-      accent: '#6366f1',
+      rightText: 'Coming Soon',
+      image: '/type.png',
+      bgPosition: '30% center',
+      accent: '#ef4444',
+      overlay: 'linear-gradient(to right, rgba(15,23,42,0.70) 0%, rgba(15,23,42,0.50) 35%, rgba(15,23,42,0.25) 55%, rgba(15,23,42,0.08) 70%, transparent 100%)',
+    },
+    {
+      id: 'programs',
+      eyebrow: 'Programs',
+      titleWhite: 'DISCOVER',
+      titleAccent: 'PROGRAMS',
+      description: 'New graduated pilots are eligible for the Wingmentor program in partnership with pilotshortage.org, pilotrecognition.com',
+      cta: 'Explore Programs',
+      ctaAction: () => safeRedirect('/programs'),
+      rightLabel: 'Partnership',
+      rightText: 'Wingmentor Program',
+      image: '/Program.png',
+      accent: '#06b6d4',
     },
     {
       id: 'discover',
@@ -64,21 +140,48 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       },
       rightLabel: 'Airline Database',
       rightText: airlinesCount > 0 ? `${airlinesCount}+ Operators` : 'Coming Soon',
-      image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=1920&q=90',
+      image: '/expect.png',
       accent: '#06b6d4',
     },
     {
       id: 'ai-match',
-      eyebrow: 'Matching',
-      titleWhite: 'AI-POWERED PILOT',
-      titleAccent: 'PROFILE MATCH',
-      description: 'Match your hours, ratings, and career goals to the right airline pathways instantly.',
-      cta: 'Get Matched',
+      eyebrow: 'Recognition+',
+      titleWhite: 'GET',
+      titleAccent: 'RECOGNITION+',
+      subtitleWhite: 'INTERNATIONAL',
+      subtitleAccent: 'VERIFIED',
+      description: 'Independent verification of license, medical, and ratings by authorised providers. Flight hours are audited against logbook records. Operators receive a standardised risk profile per candidate, readable across jurisdictions without re-verification.',
+      cta: 'Get Recognition+',
       ctaAction: () => setTab('pathways'),
       rightLabel: 'Smart Matching',
-      rightText: 'Coming Soon',
-      image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1920&q=90',
-      accent: '#10b981',
+      rightText: 'Learn more',
+      image: '',
+      rightImage: '/shortage2.png',
+      bgPosition: 'center',
+      accent: '#ef4444',
+      overlay: '#ffffff',
+      textDark: true,
+    },
+    {
+      id: 'pilotshortage',
+      eyebrow: 'Advocacy',
+      titleWhite: 'PILOT',
+      titleAccent: 'SHORTAGE',
+      titleSuffix: '.ORG',
+      subtitleWhite: 'connecting pilots',
+      subtitleAccent: 'to the industry',
+      description: 'The aviation industry is experiencing a measurable gap between trained pilots and available positions. Career pathways remain fragmented, with limited standardisation in licensing recognition, logbook verification, and employer-to-pilot communication. PilotShortage.org documents these structural factors and works toward practical solutions — transparent career mapping, standardised credential portability, and direct pilot representation in industry policy. A neutral platform built by pilots, for pilots.',
+      cta: 'Become an associate member',
+      ctaAction: () => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer'),
+      rightLabel: 'Community',
+      rightText: 'Learn More',
+      image: '',
+      rightImage: '/construct.png',
+      bgPosition: 'center',
+      accent: '#ef4444',
+      overlay: '#ffffff',
+      textDark: true,
+      smallTitle: true,
     },
   ];
 
@@ -94,50 +197,70 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-none cursor-pointer group"
-      style={{ height: '420px', flexShrink: 0 }}
+      className="relative w-full overflow-hidden rounded-none cursor-pointer group h-full"
+      style={{ flexShrink: 0 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key={slide.id}
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.02 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
           <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-            style={{ backgroundImage: `url('${slide.image}')` }}
+            className="absolute inset-0 bg-cover transition-transform duration-700 group-hover:scale-105"
+            style={{ backgroundImage: slide.image ? `url('${slide.image}')` : 'none', backgroundPosition: slide.bgPosition ?? 'center', backgroundSize: 'cover', backgroundColor: slide.rightImage ? '#ffffff' : undefined }}
           />
-          {/* Seamless blur + fade overlay — no hard edge */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to right, rgba(2,6,23,0.88) 0%, rgba(2,6,23,0.65) 35%, rgba(2,6,23,0.25) 55%, rgba(2,6,23,0.05) 70%, transparent 100%)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              maskImage: 'linear-gradient(to right, black 0%, black 55%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, black 55%, transparent 100%)',
-            }}
-          />
+          {slide.rightImage && (
+            <div className="absolute inset-0">
+              <div
+                className="absolute inset-y-0 right-0 w-[55%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                style={{ backgroundImage: `url('${slide.rightImage}')` }}
+              />
+              {/* White-to-transparent gradient between text and image */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(to right, #ffffff 0%, #ffffff 45%, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.6) 58%, rgba(255,255,255,0.15) 68%, transparent 78%)',
+                }}
+              />
+            </div>
+          )}
+          {/* Tint overlay (skipped when rightImage handles its own layering) */}
+          {!slide.rightImage && (
+            <div
+              className="absolute inset-0"
+              style={{
+                background: slide.overlay ?? 'linear-gradient(to right, rgba(10,12,16,0.80) 0%, rgba(10,12,16,0.60) 35%, rgba(10,12,16,0.35) 55%, rgba(10,12,16,0.12) 70%, transparent 100%)',
+              }}
+            />
+          )}
 
           {/* Left content panel */}
           <div className="absolute inset-0 flex items-stretch">
-            <div className="relative w-[55%] h-full flex flex-col justify-center pl-14 pr-8 py-10">
+            <div className="relative w-[55%] h-full flex flex-col justify-end pl-14 pr-8 pb-8 pt-4">
               <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-cyan-400 text-xs">&#8811;</span>
-                  <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">{slide.eyebrow}</p>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight leading-[1.05] mb-4">
-                  <span className="text-white">{slide.titleWhite}</span>
-                  <br />
-                  <span className="text-red-500">{slide.titleAccent}</span>
+                <h2 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl'}`}>
+                  <span className={slide.textDark ? 'text-slate-900' : 'text-white'}>{slide.titleWhite}</span>
+                  <span className="text-red-500"> {slide.titleAccent}</span>
+                  {slide.titleSuffix && (
+                    <span className={slide.textDark ? 'text-slate-900' : 'text-white'}> {slide.titleSuffix}</span>
+                  )}
                 </h2>
-                <p className="text-sm text-slate-300 max-w-md leading-relaxed mb-8">
+                {slide.subtitleWhite && (
+                  <h3 className={`font-black uppercase tracking-tight leading-[1.05] mb-2 ${slide.smallTitle ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>
+                    <span className={slide.textDark ? 'text-slate-900' : 'text-white'}>{slide.subtitleWhite}</span>
+                    <span className="text-red-500"> {slide.subtitleAccent}</span>
+                    {slide.subtitleSuffix && (
+                      <span className={slide.textDark ? 'text-slate-900' : 'text-white'}> {slide.subtitleSuffix}</span>
+                    )}
+                  </h3>
+                )}
+                <p className={`text-sm max-w-md leading-relaxed mb-4 ${slide.textDark ? 'text-slate-600' : 'text-slate-300'}`}>
                   {slide.description}
                 </p>
                 <div className="flex items-center gap-3">
@@ -150,7 +273,12 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); slide.ctaAction(); }}
-                    className="px-6 py-3 text-white text-xs font-black uppercase tracking-wider border border-white/30 hover:bg-white/10 transition-all duration-200 flex items-center justify-center"
+                    className={`px-6 py-3 text-xs font-black uppercase tracking-wider border transition-all duration-200 flex items-center justify-center ${slide.textDark ? 'text-slate-700 border-slate-300/60' : 'text-white border-white/30'}`}
+                    style={slide.textDark ? { background: 'rgba(0,0,0,0.04)' } : {
+                      background: 'rgba(255,255,255,0.08)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                    }}
                   >
                     {slide.rightText}
                   </button>
@@ -164,32 +292,30 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
 
       {/* Prev / Next arrows */}
       <button
-        onClick={(e) => { e.stopPropagation(); if (current > 0) setCurrent((prev) => prev - 1); }}
-        className={`absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all ${current > 0 ? 'hover:scale-110' : ''}`}
+        onClick={(e) => { e.stopPropagation(); setCurrent((prev) => (prev > 0 ? prev - 1 : slides.length - 1)); }}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
         style={{
-          background: current > 0 ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.2)',
+          background: 'rgba(0,0,0,0.45)',
           backdropFilter: 'blur(4px)',
-          border: current > 0 ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.08)',
-          cursor: current > 0 ? 'pointer' : 'default',
-          opacity: current > 0 ? 1 : 0.35,
+          border: '1px solid rgba(255,255,255,0.2)',
+          cursor: 'pointer',
+          opacity: 1,
         }}
         aria-label="Previous slide"
-        disabled={current === 0}
       >
         <ChevronLeft size={20} className="text-white" />
       </button>
       <button
-        onClick={(e) => { e.stopPropagation(); if (current < slides.length - 1) setCurrent((prev) => prev + 1); }}
-        className={`absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all ${current < slides.length - 1 ? 'hover:scale-110' : ''}`}
+        onClick={(e) => { e.stopPropagation(); setCurrent((prev) => (prev < slides.length - 1 ? prev + 1 : 0)); }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
         style={{
-          background: current < slides.length - 1 ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.2)',
+          background: 'rgba(0,0,0,0.45)',
           backdropFilter: 'blur(4px)',
-          border: current < slides.length - 1 ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.08)',
-          cursor: current < slides.length - 1 ? 'pointer' : 'default',
-          opacity: current < slides.length - 1 ? 1 : 0.35,
+          border: '1px solid rgba(255,255,255,0.2)',
+          cursor: 'pointer',
+          opacity: 1,
         }}
         aria-label="Next slide"
-        disabled={current === slides.length - 1}
       >
         <ChevronRight size={20} className="text-white" />
       </button>

@@ -190,7 +190,7 @@ const OCCUPATIONS = [
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { user: auth0User, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+    const { user: auth0User, getIdTokenClaims, loginWithRedirect } = useAuth0();
     const { callApi } = useWorkerAuth();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
@@ -219,6 +219,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [displayName, setDisplayName] = useState('');
     const [hoursWhole, setHoursWhole] = useState('');
     const [hoursMinutes, setHoursMinutes] = useState('');
+    const [hasFlown, setHasFlown] = useState(true);
     const [occupation, setOccupation] = useState('');
     const [dob, setDob] = useState('');
     const [nationality, setNationality] = useState('');
@@ -229,6 +230,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [aircraftCategory, setAircraftCategory] = useState('');
     const [typeRatings, setTypeRatings] = useState<string[]>([]);
     const [typeRatingInput, setTypeRatingInput] = useState('');
+    const [licenseNumber, setLicenseNumber] = useState('');
     const [elpLevel, setElpLevel] = useState('');
     const [medicalClass, setMedicalClass] = useState('');
     const [radioLicense, setRadioLicense] = useState(false);
@@ -458,7 +460,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedWallet(savedWallet);
             // Unlock Commit card if we have logbook + wallet
             if (logbookSynced || sessionStorage.getItem('mfb_total_hours')) {
-                setSetupStage(5);
+                setSetupStage(2);
             }
         }
 
@@ -469,9 +471,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
 
-            // If returning from logbook OAuth, land on Stage 3 (Hours + PIC)
+            // If returning from logbook OAuth, land on final step
             if (logbookSynced) {
-                setSetupStage(5);
+                setSetupStage(2);
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
@@ -502,62 +504,54 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (!cleanLast || cleanLast.length < 1) { setSaveError('Last name is required.'); return; }
         if (!cleanName || cleanName.length < 2) { setSaveError('Callsign is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
-        if (!issuingAuthority || issuingAuthority.trim() === '') { setSaveError('License issuing authority is required.'); return; }
-        const wholeHrs = parseInt(hoursWhole);
-        const mins = parseInt(hoursMinutes || '0');
-        if (hoursWhole && (isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999)) { setSaveError('Please enter valid flight hours.'); return; }
-        if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
-        const hours = wholeHrs + mins / 60;
+        if (!pilotStage) { setSaveError('Please select your current stage.'); return; }
+        if (occupation !== 'None / No Licence') {
+            if (!issuingAuthority || issuingAuthority.trim() === '') { setSaveError('License issuing authority is required.'); return; }
+        }
         setSaving(true);
         setSaveError('');
         try {
             const dcaAgreed = sessionStorage.getItem('dca_agreed') === 'true';
             const dcaAgreedAt = sessionStorage.getItem('dca_agreed_at') || null;
 
+            const wholeHrs = parseInt(hoursWhole || '0');
+            const mins = parseInt(hoursMinutes || '0');
+            const hours = hasFlown ? wholeHrs + mins / 60 : 0;
+
             const workerPayload = {
+                auth0_id: auth0User.sub,
                 email: auth0User.email || '',
                 role: isVisitor ? 'visitor' : 'pilot',
                 is_visitor: isVisitor,
                 name: `${cleanFirst} ${cleanLast}`.trim(),
+                full_name: `${cleanFirst} ${cleanLast}`.trim(),
                 display_name: cleanName,
                 first_name: cleanFirst,
                 last_name: cleanLast,
                 current_occupation: occupation,
                 license_type: occupation || null,
+                license_number: licenseNumber.trim() || null,
+                license_id: licenseNumber.trim() || null,
                 other_licence: otherLicence || null,
                 date_of_birth: dob || null,
                 nationality: nationality || null,
-                current_flight_hours: hours || null,
-                total_flight_hours: hours || null,
+                current_flight_hours: hours,
+                total_flight_hours: hours,
                 hours_whole: hoursWhole || null,
                 hours_minutes: hoursMinutes || null,
-                aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null,
-                aircraft_rated_on: aircraftTypes.length > 0 ? aircraftTypes.join(', ') : null,
-                aircraft_category: aircraftCategory || null,
                 license_issuing_authority: issuingAuthority || null,
                 country_of_license: issuingAuthority || null,
                 origin_jurisdiction: issuingAuthority || null,
-                ratings: ratings.filter(r => r !== '__none__').length > 0 ? ratings.filter(r => r !== '__none__') : null,
-                type_ratings: typeRatings.filter(r => r !== '__none__').length > 0 ? typeRatings.filter(r => r !== '__none__') : (occupation ? [occupation] : null),
-                type_rating_input: typeRatingInput || null,
-                elp_level: elpLevel || null,
-                medical_class: medicalClass || null,
-                radio_license: radioLicense,
-                employment_status: employmentStatus || null,
-                current_job: currentRole || null,
-                career_goal: careerGoal || null,
                 pilot_stage: pilotStage || null,
-                immediate_available: immediateAvailable,
-                unemployed_duration: unemployedDuration || null,
                 phone: phone || null,
-                hours_certified: hoursCertified,
                 data_controller_agreement_accepted: dcaAgreed ? 1 : 0,
                 data_controller_agreement_accepted_at: dcaAgreedAt,
             };
-            console.log('[DEBUG][Worker] Full profile save payload:', JSON.stringify(workerPayload, null, 2));
+            console.log('[DEBUG][Worker] Minimal profile save payload:', JSON.stringify(workerPayload, null, 2));
 
-            sessionStorage.setItem('pr_profile_payload', JSON.stringify(workerPayload));
-            onNavigate('recognition-profile/create');
+            await callApi('upsertProfile', workerPayload);
+            sessionStorage.removeItem('dashboard_cache');
+            onNavigate('platform');
         } catch (err) {
             console.error('🔴 [handleSaveProfile] outer catch:', err);
             setSaveError('Failed to save. Please try again.');
@@ -597,7 +591,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         workerRequestCountRef.current += 1;
         const count = workerRequestCountRef.current;
         console.log(`[DEBUG][Worker] Request #${count}: action="${action}" base="${baseUrl === PILOT_API_URL ? 'pilot' : 'platform'}"`);
-        const token = await getAccessTokenSilently();
+        let claims: { __raw?: string } | undefined;
+        for (let i = 0; i < 20; i++) {
+          claims = await getIdTokenClaims() as { __raw?: string } | undefined;
+          if (claims?.__raw) break;
+          await new Promise((r) => setTimeout(r, 300));
+        }
+        const token = claims?.__raw;
+        if (!token) throw new Error('Auth0 ID token not available');
         const res = await fetch(`${baseUrl}/api`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -672,26 +673,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%)' }} />
                 </div>
 
-                <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                    <h1 className="text-base font-bold tracking-tight">
-                        <span className="text-white">PILOT</span><span className="text-red-400">RECOGNITION</span>
-                    </h1>
-                    <button
-                        onClick={() => onNavigate('home')}
-                        className="px-4 py-2 rounded-lg text-white/50 hover:text-white text-xs font-semibold tracking-wide transition-all mr-2"
-                    >
-                        ← Cancel
-                    </button>
-                </div>
-                <div style={{ flex: 1, overflowY: 'auto', padding: '48px 24px 64px', position: 'relative', zIndex: 10 }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '48px 24px 64px', position: 'relative', zIndex: 10, zoom: 0.75 }}>
                     <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
-                        {/* Header */}
-                        <div style={{ marginBottom: '40px' }}>
-                            <p style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>Account Created</p>
-                            <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 8px 0' }}>Complete your pilot profile</h2>
-                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Set up your profile to unlock pathway access</p>
-                        </div>
-
                         <style>{`
                             @keyframes stepIn {
                                 0%   { opacity: 0; transform: translateY(16px); }
@@ -987,19 +970,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         `}</style>
 
                         {/* Unified Profile Card */}
-                        <div className="bg-slate-900/40 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/50" style={{ maxWidth: '720px', margin: '0 auto', height: 'auto', overflow: 'hidden', animation: 'materializeCard 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' }}>
-                            <div className="p-6">
+                        <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto' }}>
+                            <button
+                                onClick={() => onNavigate('home')}
+                                className="absolute -top-3 -left-3 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-slate-800/90 border border-white/10 text-white/70 hover:text-white hover:bg-slate-700/90 transition-all shadow-lg backdrop-blur-sm"
+                                aria-label="Back"
+                            >
+                                ←
+                            </button>
+                            <div className="bg-slate-900/40 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/50" style={{ height: 'auto', overflow: 'hidden', animation: 'materializeCard 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' }}>
+                                <div className="p-6">
                                 {/* Stage indicator */}
                                 <div className="mb-8">
                                     <div className="flex gap-2 mb-3">
-                                        {[1, 2, 3, 4, 5, 6].map(s => (
+                                        {[1, 2].map(s => (
                                             <div key={s} className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${setupStage >= s ? 'bg-red-500' : 'bg-white/20'}`} />
                                         ))}
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-white/60 uppercase tracking-wider leading-none">Step {setupStage} of 6</span>
+                                        <span className="text-xs font-bold text-white/60 uppercase tracking-wider leading-none">Step {setupStage} of 2</span>
                                         <span className="text-xs font-medium text-white/40 leading-none">
-                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Licensure and Type Ratings' : setupStage === 4 ? 'Pilot Status' : setupStage === 5 ? 'Flight Hours' : 'Create Profile'}
+                                            {setupStage === 1 ? 'Identity' : 'License Basics'}
                                         </span>
                                     </div>
                                 </div>
@@ -1008,6 +999,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div key={setupStage} className="materialize-stage" style={{ animation: stageTransition === 'exiting' ? 'stageBlurOut 0.28s cubic-bezier(0.55, 0, 0.45, 1) forwards' : undefined }}>
                                 {setupStage === 1 && (
                                 <>
+                                {/* ── STEP 1 HEADER ── */}
+                                <div className="mb-6 materialize-child stagger-1">
+                                    <p style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>Account Created</p>
+                                    <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 8px 0' }}>Complete your pilot profile</h2>
+                                    <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Set up your profile to unlock pathway access</p>
+                                </div>
                                 {/* ── SECTION 1: Identity ── */}
                                 <div className="border-b border-white/10 pb-4 materialize-child stagger-1" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     <h3 className="text-lg font-bold text-white mb-0 materialize-child stagger-1">Identity</h3>
@@ -1067,20 +1064,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '8px 12px', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
                                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
                                             <span style={{ fontSize: '11px', flexShrink: 0 }}>🔓</span>
-                                            <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.4 }}>Email / callsign is <strong style={{ color: '#ffffff' }}>public</strong> and visible to other operators.</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-                                            <span style={{ fontSize: '11px', flexShrink: 0 }}>🔒</span>
-                                            <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.4 }}>Real name, date of birth, and nationality are stored under your full sovereign control as the data controller record on pilotrecognition.com, used solely for verification, and can be deleted or exported at any time under our GDPR-compliant process. <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>Article 2</a>.</span>
-                                        </div>
-                                        <div style={{ fontSize: '10px', color: '#9ca3af', lineHeight: 1.3, paddingLeft: '18px' }}>
-                                            Notice: account information will be displayed across pilotrecognition.com, pilotcareerpathways.com, pilotshortage.org
+                                            <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.4 }}>Nickname and first name are <strong style={{ color: '#ffffff' }}>public</strong>. Other identity data is stored securely.</span>
                                         </div>
                                         <div style={{ fontSize: '10px', color: '#38bdf8', lineHeight: 1.3, paddingLeft: '18px' }}>
-                                            <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>📄 Data Controller Agreement</a>
-                                        </div>
-                                        <div style={{ fontSize: '10px', color: '#9ca3af', lineHeight: 1.3, paddingLeft: '18px' }}>
-                                            Aviation Pathways Ltd will not sell or transfer this information outside the agreed jurisdiction, except as required for verification with approved providers under the Data Controller Agreement.
+                                            <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>Data Controller Agreement</a>
                                         </div>
                                     </div>
                                 </div>{/* end Section 1 */}
@@ -1088,7 +1075,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <button
                                         type="button"
                                         onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(2); setStageTransition('idle'); }, 280); }}
-                                        disabled={!firstName.trim() || !lastName.trim() || !dob || !nationality}
+                                        disabled={!firstName.trim() || !lastName.trim() || !displayName.trim() || !dob || !nationality}
                                         className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 btn-ripple hover-lift glow-active"
                                     >Next →</button>
                                 </div>
@@ -1152,22 +1139,125 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     {/* Pilot licence upload slot */}
 
                                     {/* ── PILOT GATE ── */}
+                                    {(() => {
+                                        const stageOptions: Record<string, { label: string; options: { value: string; label: string }[] }[]> = {
+                                            'Student Pilot': [
+                                                { label: '🎓 Student Pilot Path', options: [
+                                                    { value: 'ground_school', label: 'Ground School / Theory only' },
+                                                    { value: 'first_solo', label: 'First Solo completed — building hours' },
+                                                    { value: 'cross_country', label: 'Cross-country training' },
+                                                    { value: 'pre_checkride', label: 'Pre-checkride preparation' },
+                                                    { value: 'ready_ppl', label: 'Ready for PPL checkride' },
+                                                ]},
+                                            ],
+                                            'Private Pilot (PPL)': [
+                                                { label: '🛩️ PPL Holder', options: [
+                                                    { value: 'recently_certified_ppl', label: 'Recently certified PPL' },
+                                                    { value: 'building_cpl_hours', label: 'Building hours toward CPL' },
+                                                    { value: 'ir_training', label: 'Instrument Rating (IR) training' },
+                                                    { value: 'time_building', label: 'Time-building / hour building' },
+                                                    { value: 'ready_cpl', label: 'Ready for CPL training' },
+                                                ]},
+                                            ],
+                                            'Commercial Pilot (CPL)': [
+                                                { label: '✈️ CPL Holder', options: [
+                                                    { value: 'recently_certified_cpl', label: 'Recently certified CPL' },
+                                                    { value: 'low_hour_cpl', label: 'Low-hour CPL (under 500 hrs)' },
+                                                    { value: 'building_atpl_hours', label: 'Building hours toward ATPL/airline' },
+                                                    { value: 'cfi_training', label: 'CFI / Flight Instructor training' },
+                                                    { value: 'ready_airline', label: 'Ready for airline application' },
+                                                ]},
+                                            ],
+                                            'Airline Pilot (ATPL)': [
+                                                { label: '🏢 ATPL / Airline Track', options: [
+                                                    { value: 'atpl_theory', label: 'ATPL theory completed' },
+                                                    { value: 'mcc_course', label: 'Multi-Crew Cooperation (MCC) course' },
+                                                    { value: 'type_rating_training', label: 'Type Rating training' },
+                                                    { value: 'fo_line_training', label: 'First Officer line training' },
+                                                    { value: 'recently_upgraded_captain', label: 'Recently upgraded to Captain' },
+                                                ]},
+                                            ],
+                                            'Flight Instructor (CFI)': [
+                                                { label: '👨‍🏫 Instructor Track', options: [
+                                                    { value: 'newly_qualified_cfi', label: 'Newly qualified CFI' },
+                                                    { value: 'building_instructional_hours', label: 'Building instructional hours' },
+                                                    { value: 'check_airman_track', label: 'Check Airman / Examiner track' },
+                                                    { value: 'multi_engine_instructor', label: 'Multi-Engine Instructor (MEI) rating' },
+                                                    { value: 'chief_flight_instructor', label: 'Chief Flight Instructor (CFI)' },
+                                                ]},
+                                            ],
+                                            'First Officer': [
+                                                { label: '🛫 First Officer', options: [
+                                                    { value: 'fo_junior', label: 'Junior FO — first airline role' },
+                                                    { value: 'fo_experienced', label: 'Experienced FO (3+ years)' },
+                                                    { value: 'fo_upgrade_prep', label: 'Preparing for Captain upgrade' },
+                                                    { value: 'fo_type_transition', label: 'Transitioning to new aircraft type' },
+                                                ]},
+                                            ],
+                                            'Captain': [
+                                                { label: '👨‍✈️ Captain', options: [
+                                                    { value: 'captain_junior', label: 'Junior Captain — recently upgraded' },
+                                                    { value: 'captain_experienced', label: 'Experienced Captain (5+ years)' },
+                                                    { value: 'captain_trainer', label: 'Training Captain / TRE' },
+                                                    { value: 'captain_transitioning', label: 'Transitioning operator / region' },
+                                                ]},
+                                            ],
+                                            'Cadet': [
+                                                { label: '🎓 Cadet Program', options: [
+                                                    { value: 'cadet_applied', label: 'Applied — awaiting selection' },
+                                                    { value: 'cadet_selected', label: 'Selected — ground school phase' },
+                                                    { value: 'cadet_flight_training', label: 'Flight training phase' },
+                                                    { value: 'cadet_type_rating', label: 'Type Rating / Line training' },
+                                                    { value: 'cadet_graduated', label: 'Graduated — awaiting placement' },
+                                                ]},
+                                            ],
+                                            'Fast Track Pilot Program': [
+                                                { label: '⚡ Fast Track', options: [
+                                                    { value: 'fast_track_enrolled', label: 'Enrolled — ground phase' },
+                                                    { value: 'fast_track_flying', label: 'Flight training phase' },
+                                                    { value: 'fast_track_cpl_done', label: 'CPL completed — time building' },
+                                                    { value: 'fast_track_job_ready', label: 'Job-ready / airline prep' },
+                                                ]},
+                                            ],
+                                            'Other': [
+                                                { label: '✈️ Other / Specialized', options: [
+                                                    { value: 'specialized_rating', label: 'Working toward specialized rating' },
+                                                    { value: 'career_transition', label: 'Career transition / retraining' },
+                                                    { value: 'rusty_pilot', label: 'Rusty pilot — returning to flying' },
+                                                    { value: 'military_transition', label: 'Military to civilian transition' },
+                                                ]},
+                                            ],
+                                            'None / No Licence': [
+                                                { label: '🎓 Pre-Licensed / Aspirant', options: [
+                                                    { value: 'aspirant', label: 'Interested in aviation — exploring' },
+                                                    { value: 'researching_schools', label: 'Researching flight schools' },
+                                                    { value: 'ground_school', label: 'Ground School only — no flight hours' },
+                                                    { value: 'about_to_start', label: 'About to start flight training' },
+                                                ]},
+                                            ],
+                                        };
+                                        const groups = stageOptions[occupation] || stageOptions['None / No Licence'];
+                                        const label = occupation === 'None / No Licence' ? 'Where are you starting?' : 'What stage are you at?';
+                                        return (
+                                            <>
+                                            <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(148,163,184,0.6)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginTop: '4px' }}>Training Stage</div>
+                                            <div>
+                                                <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{label}</div>
+                                                <select className="fic-select" value={pilotStage} onChange={e => { const val = e.target.value; setPilotStage(val); setShowRedirect(NON_PILOT_STAGES.includes(val)); }} style={{ color: pilotStage ? '#ffffff' : '#94a3b8' }}>
+                                                    <option value="" disabled>Select your current career stage...</option>
+                                                    {groups.map(g => (
+                                                        <optgroup key={g.label} label={g.label}>
+                                                            {g.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                                                        </optgroup>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            </>
+                                        );
+                                    })()}
+
                                     {occupation && occupation !== 'None / No Licence' && (
                                     <>
-                                    <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(148,163,184,0.6)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginTop: '4px' }}>Training Stage</div>
-                                    <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>What stage are you at?</div>
-                                        <select className="fic-select" value={pilotStage} onChange={e => { const val = e.target.value; setPilotStage(val); setShowRedirect(NON_PILOT_STAGES.includes(val)); }} style={{ color: pilotStage ? '#ffffff' : '#94a3b8' }}>
-                                            <option value="" disabled>Select your current career stage...</option>
-                                            <optgroup label="✈️ Licensed Pilots">
-                                                <option value="bachelor_degree">Graduated with Bachelor of Commercial Flying</option>
-                                                <option value="fast_track">Completed Fast-Track Pilot Course</option>
-                                                <option value="licensed_no_hours">Licensed but low/no hours (CPL/PPL)</option>
-                                                <option value="current_training">Currently in flight training</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-
                                     {/* Issuing Authority */}
                                     <div>
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Issuing Authority / State of Issue</div>
@@ -1180,26 +1270,41 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <option value="" disabled>Select issuing authority...</option>
                                             {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
                                         </select>
-                                        {/* Medical certificate upload slot */}
                                     </div>
-                                    </>
-                                    )}
-
-                                    {occupation === 'None / No Licence' && (
-                                    <>
-                                    <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(148,163,184,0.6)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginTop: '4px' }}>Training Stage</div>
+                                    {/* Total Hours — optional */}
                                     <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>What stage are you at?</div>
-                                        <select className="fic-select" value={pilotStage} onChange={e => { const val = e.target.value; setPilotStage(val); setShowRedirect(NON_PILOT_STAGES.includes(val)); }} style={{ color: pilotStage ? '#ffffff' : '#94a3b8' }}>
-                                            <option value="" disabled>Select your current career stage...</option>
-                                            <optgroup label="🎓 Pre-Licensed / Aspirants">
-                                                <option value="student_no_license">Student Pilot — no license yet</option>
-                                                <option value="ground_school">Ground School only — no flight hours</option>
-                                                <option value="aspirant">Interested in aviation — no pilot qualifications</option>
-                                            </optgroup>
-                                        </select>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Total Flight Hours <span style={{ color: '#64748b', fontWeight: 400, textTransform: 'none', fontSize: '9px' }}>(optional)</span></div>
+                                        {hasFlown ? (
+                                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                                                    <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="0" style={{ width: '100%', lineHeight: '1.5', color: hoursWhole ? '#ffffff' : '#94a3b8' }} />
+                                                </div>
+                                                <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0, display: 'flex', alignItems: 'center', paddingTop: '3px' }}>HRS</span>
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <input className="fic-input" type="number" min="0" max="59" value={hoursMinutes} onChange={e => setHoursMinutes(e.target.value)} placeholder="00" style={{ maxWidth: '70px', textAlign: 'center', lineHeight: '1.5', color: hoursMinutes ? '#ffffff' : '#94a3b8' }} />
+                                                </div>
+                                                <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0, display: 'flex', alignItems: 'center', paddingTop: '3px' }}>MIN</span>
+                                            </div>
+                                        ) : (
+                                            <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                                <span style={{ fontSize: '12px', color: '#9ca3af' }}>No hours logged yet — that's fine, we'll help you build them.</span>
+                                            </div>
+                                        )}
                                     </div>
-
+                                    {/* Haven't flown yet toggle */}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setHasFlown(!hasFlown);
+                                            if (hasFlown) { setHoursWhole(''); setHoursMinutes(''); }
+                                        }}
+                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', width: '100%', background: !hasFlown ? 'rgba(255,255,255,0.08)' : 'transparent', border: `1px solid ${!hasFlown ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)'}`, borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                    >
+                                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '18px', height: '18px', borderRadius: '5px', border: `1.5px solid ${!hasFlown ? '#ffffff' : 'rgba(255,255,255,0.3)'}`, background: !hasFlown ? 'rgba(255,255,255,0.2)' : 'transparent', transition: 'all 0.15s', flexShrink: 0 }}>
+                                            {!hasFlown && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+                                        </span>
+                                        <span style={{ fontSize: '12px', fontWeight: !hasFlown ? 600 : 500, color: !hasFlown ? '#ffffff' : 'rgba(255,255,255,0.6)', transition: 'all 0.15s' }}>Haven't flown yet — just starting out</span>
+                                    </button>
                                     </>
                                     )}
 
@@ -1212,14 +1317,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 </div>
                                 </div>{/* end Section 2 */}
+                                {saveError && <p style={{ color: '#dc2626', fontSize: '12px', margin: '8px 0 0', textAlign: 'center', fontWeight: 600 }}>{saveError}</p>}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                                     <button type="button" onClick={() => setSetupStage(1)} className="px-6 py-2.5 h-10 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-xl text-sm transition-colors btn-ripple hover-lift">← Back</button>
-                                    <button type="button" onClick={() => { setStageTransition('exiting'); setTimeout(() => { setSetupStage(occupation && occupation !== 'None / No Licence' ? 3 : 4); setStageTransition('idle'); }, 280); }} disabled={!occupation || !pilotStage || (occupation !== 'None / No Licence' && (!issuingAuthority || (occupation === 'Other' && !otherLicence.trim())))} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">Next →</button>
+                                    <button type="button" onClick={handleSaveProfile} disabled={saving} className="px-6 py-2.5 h-10 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-600 text-white font-bold rounded-xl text-sm tracking-wide transition-colors shadow-lg shadow-red-600/20 btn-ripple hover-lift glow-active">{saving ? 'Saving...' : 'Complete & Enter Platform →'}</button>
                                 </div>
                                 </>
                                 )}
 
-                                {setupStage === 3 && (
+                                {false && setupStage === 3 && (
                                 <>
                                 {step3Subview === 'overview' && (
                                 <>
@@ -1593,7 +1699,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 )}
 
                                 
-                                {setupStage === 4 && (
+                                {false && setupStage === 4 && (
                                 <>
                                 {occupation === 'None / No Licence' ? (
                                 <>
@@ -1848,7 +1954,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 )}
 
-                                {setupStage === 5 && (
+                                {false && setupStage === 5 && (
                                 <>
                                 {occupation === 'None / No Licence' ? (
                                 <>
@@ -2000,7 +2106,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </>
                                 )}
 
-                                {setupStage === 6 && (
+                                {false && setupStage === 6 && (
                                 <>
                                 <div className="pb-6 mb-6 materialize-child stagger-1" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     {occupation === 'None / No Licence' ? (
@@ -2058,6 +2164,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>{/* end materialize-stage wrapper */}
                             </div>{/* end card inner */}
                         </div>{/* end card outer */}
+                        </div>{/* end card wrapper */}
 
                         {saveError && <p style={{ color: '#dc2626', fontSize: '11px', margin: '8px 0 0', textAlign: 'center' }}>{saveError}</p>}
 
@@ -2467,7 +2574,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         setVcCredentialUrl(credentialUrl);
                                         setWalletConnected(true);
                                         setSelectedWallet('pilot');
-                                        setSetupStage(5);
+                                        setSetupStage(2);
                                         setShowWalletFirst(false);
                                     }}
                                 />

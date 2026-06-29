@@ -1,6 +1,8 @@
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+
 /**
  * Recognition Score Service
- * 
+ *
  * Handles real-time score calculation and updates for pilot recognition system
  */
 

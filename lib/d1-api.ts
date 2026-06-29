@@ -68,6 +68,7 @@ async function fetchAPI(
 
 const PROFILE_ACTIONS = new Set([
   'getProfile', 'createProfile', 'updateProfile', 'upsertProfile', 'deleteProfile',
+  'getDashboardData',
   'getVerificationStatus', 'getRecognitionScore', 'saveRecognitionScore',
   'createDid', 'getDid', 'createCredential', 'getCredentials',
   'getVerificationReceipts', 'submitVerification', 'getVerificationByAccountNumber', 'updateVerificationStatus',

@@ -1,6 +1,5 @@
-// STUB — Supabase client removed. Migrate to Worker API.
-// This file exists to prevent build errors while other files are being migrated.
-// TODO: Remove after all imports are replaced with Worker calls.
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+// This stub exists to prevent build errors while other files are being migrated.
 
 const noopChannel = {
   on: () => noopChannel,

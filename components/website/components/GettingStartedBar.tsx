@@ -70,11 +70,11 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
         boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
       }}
     >
-      <div className="px-5 py-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center">
-              <span className="text-white text-[10px] font-black">{completedCount}/{total}</span>
+      <div className="px-4 py-2">
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-slate-900 flex items-center justify-center">
+              <span className="text-white text-[9px] font-black">{completedCount}/{total}</span>
             </div>
             <div>
               <p className="text-[11px] font-black tracking-[0.12em] uppercase text-white">
@@ -103,7 +103,7 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
             return (
               <div
                 key={s.step}
-                className={`flex-1 min-w-[140px] rounded-lg ${
+                className={`flex-1 min-w-[110px] rounded-lg ${
                   isHighlight ? 'p-[1px]' : 'p-0'
                 }`}
                 style={{
@@ -112,7 +112,7 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
               >
                 <button
                   onClick={() => onStepClick(s.tab)}
-                  className={`group relative w-full h-full flex flex-col items-start justify-between px-4 py-3.5 rounded-[7px] text-left transition-all duration-200 ${
+                  className={`group relative w-full h-full flex flex-col items-start justify-between px-3 py-2 rounded-[7px] text-left transition-all duration-200 ${
                     s.done
                       ? 'bg-red-500 hover:bg-red-600'
                       : isHighlight
@@ -123,20 +123,20 @@ export const GettingStartedBar: React.FC<GettingStartedBarProps> = ({ steps, onS
                     border: s.done ? '1px solid rgba(239,68,68,1)' : '1px solid rgba(255,255,255,0.25)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full mb-2">
+                  <div className="flex items-center justify-between w-full mb-1">
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      className={`w-5 h-5 rounded-full flex items-center justify-center ${
                         s.done ? 'bg-white' : isHighlight ? 'bg-red-500' : 'bg-slate-200'
                       }`}
                     >
                       {s.done ? (
-                        <CheckCircle size={13} className="text-red-500" strokeWidth={2.5} />
+                        <CheckCircle size={11} className="text-red-500" strokeWidth={2.5} />
                       ) : (
-                        <Icon size={13} className={isHighlight ? 'text-white' : 'text-slate-600'} />
+                        <Icon size={11} className={isHighlight ? 'text-white' : 'text-slate-600'} />
                       )}
                     </div>
                     {s.done && (
-                      <span className="text-[9px] font-black uppercase tracking-wider text-white">Done</span>
+                      <span className="text-[8px] font-black uppercase tracking-wider text-white">Done</span>
                     )}
                   </div>
 

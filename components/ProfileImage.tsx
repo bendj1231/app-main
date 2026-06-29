@@ -14,7 +14,7 @@
  *   />
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCachedProfileImage, revokeImageUrl } from '../lib/cloudinaryClient';
 import { getProfileImageUrl } from '../lib/cloudinaryConfig';
 
@@ -37,6 +37,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
 }) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const blobUrlRef = useRef<string>('');
 
   const initials = (name || 'Pilot').charAt(0).toUpperCase();
 
@@ -45,19 +46,25 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
     let mounted = true;
 
     const loadImage = async () => {
-      if (!url) {
+      // If we have a public_id but no url, construct the Cloudinary URL from public_id
+      let targetUrl = url || '';
+      if (!targetUrl && publicId) {
+        targetUrl = getProfileImageUrl(publicId);
+      }
+
+      if (!targetUrl) {
         setImageUrl('');
         return;
       }
 
       // If it's already a blob URL, use it directly
-      if (url.startsWith('blob:')) {
-        setImageUrl(url);
+      if (targetUrl.startsWith('blob:')) {
+        setImageUrl(targetUrl);
         return;
       }
 
       // Optimize the URL
-      const optimizedUrl = getProfileImageUrl(url);
+      const optimizedUrl = getProfileImageUrl(targetUrl);
 
       // If we have a public_id, use IndexedDB caching
       if (publicId) {
@@ -66,6 +73,9 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
           const cachedUrl = await getCachedProfileImage(optimizedUrl, publicId);
           if (mounted) {
             setImageUrl(cachedUrl);
+            if (cachedUrl.startsWith('blob:')) {
+              blobUrlRef.current = cachedUrl;
+            }
           }
         } catch (err) {
           console.warn('[ProfileImage] Cache load failed, using direct URL:', err);
@@ -85,14 +95,15 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
 
     loadImage();
 
-    // Cleanup: revoke blob URLs on unmount
+    // Cleanup: revoke previous blob URL when deps change or on unmount
     return () => {
       mounted = false;
-      if (imageUrl.startsWith('blob:')) {
-        revokeImageUrl(imageUrl);
+      if (blobUrlRef.current.startsWith('blob:')) {
+        revokeImageUrl(blobUrlRef.current);
+        blobUrlRef.current = '';
       }
     };
-  }, [url, publicId, imageUrl]);
+  }, [url, publicId]);
 
   if (!imageUrl || isLoading) {
     // Show initials fallback

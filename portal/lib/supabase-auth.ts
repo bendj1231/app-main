@@ -1,4 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+// This stub exists to prevent build errors while other files are being migrated.
+
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
@@ -6,7 +8,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.warn('⚠️ VITE_SUPABASE_URL not set — Portal Supabase client not initialized (migration to Worker API in progress)');
+  console.warn('⚠️ Supabase cutoff — migration to Cloudflare D1 / R2 in progress');
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

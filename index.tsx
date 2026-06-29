@@ -86,6 +86,7 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
     <Auth0Provider
       domain={auth0Config.domain}
       clientId={auth0Config.clientId}
+      cacheLocation="localstorage"
       authorizationParams={{
         redirect_uri: getAuth0RedirectUri(),
         ...(auth0Config.audience ? { audience: auth0Config.audience } : {}),

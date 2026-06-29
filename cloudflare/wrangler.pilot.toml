@@ -1,0 +1,31 @@
+# Cloudflare Worker configuration for Pilot Profile API
+name = "pilot-profile-api"
+main = "pilot-worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pilotrecognition-profiles"
+database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
+
+[[d1_databases]]
+binding = "DB_TRACE"
+database_name = "recognition-plus-trace"
+database_id = "4ca6354b-fc0b-4bfd-86cf-532babf74af9"
+
+[[d1_databases]]
+binding = "DB_DOCS"
+database_name = "apc-document-metadata"
+database_id = "4ffbd2f3-c424-437a-80ea-b3d75b896afb"
+
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
+DODO_PRODUCT_ID_RECOGNITION_PLUS = "pdt_0NhgDLaiGjWD45S1gJmng"
+DODO_ENV = "test"
+
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "pilot-encrypted-vault"

@@ -14,6 +14,7 @@ import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { supabase } from '@/lib/shared/supabase';
+import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import ProfileImage from '@/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
@@ -39,6 +40,8 @@ import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatu
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
 import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
+import { FoundationWelcomeTab } from './unified-platform/tabs/FoundationWelcomeTab';
+import { RecognitionPlusTab } from './unified-platform/tabs/RecognitionPlusTab';
 
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
@@ -74,53 +77,25 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     setAvatarUploading(true);
     setAvatarError('');
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      let accessToken: string | null = (session as any)?.access_token ?? null;
-
-      // Auth0-only users have no Supabase session — use Auth0 access token instead
-      if (!accessToken) {
-        try {
-          accessToken = await getAccessTokenSilently();
-        } catch (err) {
-          console.warn('[avatar] getAccessTokenSilently failed:', err);
-        }
-      }
-      if (!accessToken) throw new Error('Not authenticated — no Supabase or Auth0 token available');
-
-      // Delete old image from Cloudinary first (non-blocking if it fails)
-      const oldPublicId = profileData?.profile_image_public_id;
-      if (oldPublicId) {
-        const delRes = await supabase.functions.invoke('cloudinary-delete', {
-          body: { publicId: oldPublicId, type: 'profile' },
-        });
-      } else {
+      // 1. Upload directly to Cloudinary (no Supabase edge function)
+      const upload = await uploadProfileImage(file, profileData.id);
+      if (!upload.success || !upload.url || !upload.publicId) {
+        throw new Error(upload.error || 'Cloudinary upload failed');
       }
 
-      const canvas = document.createElement('canvas');
-      const imgEl = document.createElement('img') as HTMLImageElement;
-      await new Promise<void>((res, rej) => {
-        imgEl.onload = () => {
-          const max = 400;
-          let w = imgEl.width, h = imgEl.height;
-          if (w > h && w > max) { h = h * max / w; w = max; }
-          else if (h > max) { w = w * max / h; h = max; }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d')!.drawImage(imgEl, 0, 0, w, h);
-          res();
-        };
-        imgEl.onerror = (err) => { console.error('[avatar] image load error:', err); rej(err); };
-        imgEl.src = URL.createObjectURL(file);
-      });
-      const base64 = canvas.toDataURL('image/jpeg', 0.8);
-      const uploadRes = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL as string}/functions/v1/cloudinary-upload`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ file: base64, userId: profileData.id }),
-      });
-      const result = await uploadRes.json();
-      if (!result.success) throw new Error(result.error || 'Upload failed');
-      // Supabase profile update handled server-side in edge fn (service role, bypasses RLS)
-      setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
+      // 2. Update profile via Cloudflare Worker (no Supabase edge function)
+      const updated = await callApi('updateProfile', {
+        id: profileData.id,
+        profile_image_url: upload.url,
+        profile_image_public_id: upload.publicId,
+      }) as any;
+      if (!updated?.id) throw new Error('Profile update failed');
+
+      setProfileData((prev: any) => ({
+        ...prev,
+        profile_image_url: upload.url,
+        profile_image_public_id: upload.publicId,
+      }));
     } catch (err: any) {
       console.error('[avatar] upload error:', err);
       setAvatarError(err.message || 'Upload failed');
@@ -133,6 +108,21 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [resendingSent, setResendingSent] = useState(false);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
+
+  // Lock body scroll when on home tab (layout is viewport-fitted, no scrolling needed)
+  useEffect(() => {
+    if (activeTab === 'home') {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [activeTab]);
 
   // Check email verification status
   useEffect(() => {
@@ -334,7 +324,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       await cacheBatch(`dashboard:${profileId}`, batch);
 
       const rawLicensure = batch.result_0 as Record<string, unknown> | null;
-      const parsedLicensure = rawLicensure?.license_data ? JSON.parse(rawLicensure.license_data as string) : rawLicensure;
+      const parsedLicensure = rawLicensure?.license_data ? JSON.parse(rawLicensure.license_data as string) : null;
       const receipts = batch.result_1 as Array<Record<string, unknown>> | null;
       const notifCountRaw = batch.result_2 as { count: number } | null;
       const verifStatus = batch.result_3 as Record<string, unknown> | null;
@@ -380,7 +370,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               setCredentials(payload.credentials || []);
               setNotifCount(payload.notifCount || 0);
               console.log('[dashboard] loaded from IndexedDB cache');
-              return;
+              // Continue below to fetch fresh data from Worker and update state
             }
           } catch { /* invalid cache, fetch fresh */ }
         }
@@ -400,6 +390,34 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         const licensure = data.licensure as Record<string, unknown> | null;
 
         const profileDataState = { ...profile, ...flightHours, ...(licensure || {}) };
+
+        // Backfill missing name fields from Auth0 so greeting shows correct first name
+        const looksLikeEmailPrefix = (v: string) => /^[a-z0-9_\.]+$/.test(v) && v.length > 3;
+        const rawDbName = profileDataState.display_name || profileDataState.full_name || '';
+        const needsNameBackfill = !profileDataState.first_name || looksLikeEmailPrefix(rawDbName);
+        if (needsNameBackfill && auth0User?.name) {
+          const derivedFirst = auth0User.given_name || auth0User.name.split(' ')[0] || '';
+          const derivedLast = auth0User.family_name || auth0User.name.split(' ').slice(1).join(' ') || '';
+          const derivedFull = auth0User.name || '';
+          if (derivedFirst) {
+            try {
+              await callApi('updateProfile', {
+                id: profile.id,
+                first_name: derivedFirst,
+                last_name: derivedLast,
+                full_name: derivedFull,
+                display_name: derivedFull,
+              });
+              profileDataState.first_name = derivedFirst;
+              profileDataState.last_name = derivedLast;
+              profileDataState.full_name = derivedFull;
+              profileDataState.display_name = derivedFull;
+            } catch (e) {
+              console.warn('[dashboard] name backfill failed:', e);
+            }
+          }
+        }
+
         setProfileData(profileDataState);
         if (receipts) setWalletChecks(receipts);
         if (credentialList) setCredentials(credentialList);
@@ -452,8 +470,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   }, []);
 
   const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+  const looksLikeEmailPrefix = (v: string) => /^[a-z0-9_\.]+$/.test(v) && v.length > 3;
   const rawDisplayName = profileData?.display_name || profileData?.full_name;
-  const displayName = (rawDisplayName && !isCiphertext(rawDisplayName)) ? rawDisplayName : (auth0User?.nickname || auth0User?.name || auth0User?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Pilot');
+  const nameFromProfile = (rawDisplayName && !isCiphertext(rawDisplayName)) ? rawDisplayName : '';
+  const displayName = (nameFromProfile && !looksLikeEmailPrefix(nameFromProfile)) ? nameFromProfile : (auth0User?.name || auth0User?.nickname || auth0User?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Pilot');
   const initials = displayName.charAt(0).toUpperCase();
 
   const updateProfileImage = (url: string, publicId?: string) => {
@@ -469,6 +489,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletPageWithSidebar userId={currentUser?.id || auth0User?.sub} onNavigate={(path) => setTab(path as TabId)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
+      case 'foundation-welcome': return <FoundationWelcomeTab setTab={setTab} onNavigate={onNavigate} />;
+      case 'recognition-plus-tab': return <RecognitionPlusTab setTab={setTab} onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
       case 'market-intel':    return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance': return <DataProvenancePage onNavigate={onNavigate} />;
@@ -497,7 +519,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col font-sans">
+    <div className={`relative flex flex-col font-sans ${activeTab === 'home' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
 
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       <div className="fixed inset-0 z-0">
@@ -540,7 +562,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             { id: 'profile',      label: 'Profile' },
             { id: 'pathways',     label: 'Pathways' },
             { id: 'programs',     label: 'Programs' },
-            { id: 'verification', label: 'Verification' },
           ].map(({ id, label }) => {
             const isActive = activeTab === id;
             return (
@@ -569,8 +590,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               <div className="flex items-center gap-2">
                 {/* Messages tile */}
                 <button
-                  onClick={() => setTab('notifications' as TabId)}
-                  title="Messages"
+                  onClick={() => { setBellOpen(true); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                  onMouseDown={e => e.stopPropagation()}
+                  title="Notifications"
                   className="relative group transition-all duration-150"
                   style={{
                     width: 44, height: 44,
@@ -615,8 +637,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                         <p className="text-sm font-black text-white">Notifications</p>
                       </div>
                       <NotificationsFeedPanel profileId={profileData?.id} profile={profileData} />
-                      <button onClick={() => { setBellOpen(false); setTab('notifications' as TabId); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
-                        VIEW ALL NOTIFICATIONS →
+                      <button onClick={() => setBellOpen(false)} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
+                        CLOSE NOTIFICATIONS →
                       </button>
                     </div>
                   )}
@@ -639,33 +661,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 >
                   <Settings size={20} className="text-white" strokeWidth={2} />
                 </button>
-
-                {/* Verification status tile */}
-                {(() => {
-                  const hasVerified = walletChecks.some(c => c.status === 'verified');
-                  const hasPending = walletChecks.some(c => c.status === 'pending' || c.status === 'in_review');
-                  const vStatus = hasVerified ? 'verified' : hasPending ? 'pending' : 'none';
-                  const vColor = vStatus === 'verified' ? '#10b981' : vStatus === 'pending' ? '#f59e0b' : '#ef4444';
-                  const vTitle = vStatus === 'verified' ? 'Verified' : vStatus === 'pending' ? 'Verification in Progress' : 'Verification Not Started';
-                  return (
-                    <button
-                      onClick={() => setTab('verification')}
-                      title={vTitle}
-                      className="relative transition-all duration-150"
-                      style={{
-                        width: 44, height: 44,
-                        background: activeTab === 'verification' ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
-                        border: activeTab === 'verification' ? '2px solid rgba(255,255,255,0.8)' : `2px solid ${vStatus === 'none' ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.12)'}`,
-                        borderRadius: 10,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                      onMouseEnter={e => { if (activeTab !== 'verification') { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
-                      onMouseLeave={e => { if (activeTab !== 'verification') { (e.currentTarget as HTMLElement).style.borderColor = vStatus === 'none' ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
-                    >
-                      <ShieldCheck size={20} style={{ color: vColor }} strokeWidth={2} />
-                    </button>
-                  );
-                })()}
 
                 {/* Avatar tile + modal */}
                 <div className="relative" onMouseDown={e => e.stopPropagation()}>
@@ -1109,10 +1104,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       </div>
 
       {/* ── MAIN CONTENT (no sidebar) ── */}
-      <main className="flex-1 h-screen overflow-y-auto pt-[68px]">
-        <div className="max-w-[1400px] mx-auto p-5 lg:p-7" style={{ position: 'relative' }}>
+      <main className={`flex-1 pt-[68px] ${activeTab === 'home' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className="max-w-[1400px] mx-auto p-3 lg:p-5 h-full" style={{ position: 'relative' }}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
+              className="h-full"
               key={activeTab}
               initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

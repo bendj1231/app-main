@@ -520,8 +520,8 @@ async function handleAction(
         if (!me || me['role'] !== 'super_admin') throw new Error('Forbidden');
       }
       const allowed = new Set([
-        'display_name', 'first_name', 'last_name', 'phone', 'country_code',
-        'date_of_birth', 'nationality', 'avatar_url', 'profile_image_url',
+        'display_name', 'full_name', 'first_name', 'last_name', 'phone', 'country_code',
+        'date_of_birth', 'nationality', 'avatar_url', 'profile_image_url', 'profile_image_public_id',
         'current_flight_hours', 'total_flight_hours', 'mentorship_hours',
         'foundation_progress', 'overall_recognition_score', 'current_level',
         'current_occupation', 'license_id', 'country_of_license', 'ratings',
@@ -535,6 +535,7 @@ async function handleAction(
       ]);
       for (const key of Object.keys(params)) {
         if (key.startsWith('_')) continue;
+        if (key === 'id') continue;
         if (!allowed.has(key)) throw new Error(`Field '${key}' is not allowed for update`);
       }
       const sets: string[] = [];
@@ -564,7 +565,7 @@ async function handleAction(
 
       // All onboarding fields that can be set
       const onboardingFields = [
-        'display_name', 'full_name', 'current_occupation', 'date_of_birth',
+        'display_name', 'full_name', 'first_name', 'last_name', 'current_occupation', 'date_of_birth',
         'total_flight_hours', 'aircraft_types', 'aircraft_rated_on', 'nationality',
         'license_issuing_authority', 'country_of_license', 'origin_jurisdiction',
         'ratings', 'license_types', 'employment_status', 'unemployed_duration',
@@ -614,6 +615,50 @@ async function handleAction(
 
       return { success: true, pilot_id: profile?.['pilot_id'], profile_id: profile?.['id'], profile };
     }
+
+    // ── Unified dashboard load — one request, all data ─────
+    case 'getDashboardData': {
+      const { user_id, auth0_id, email } = params || {};
+      if (!user_id && !auth0_id) throw new Error('user_id or auth0_id required');
+
+      const id = user_id || auth0_id;
+      const isAuth0 = !user_id && !!auth0_id;
+
+      let profile = null;
+      if (isAuth0) {
+        profile = await getProfileByAuth0Id(db, id as string);
+        if (!profile && email) {
+          profile = await db.prepare('SELECT * FROM profiles WHERE auth0_id = ? OR email = ?').bind(id, email).first() as Record<string, unknown> | null;
+        }
+      } else {
+        profile = await getProfileById(db, id as string);
+      }
+
+      if (!profile) return { profile: null, flight_hours: null, badges: [], verification_receipts: [], credentials: [], licensure: null };
+
+      const profileId = profile['id'] as string;
+
+      const [fh, badges, receipts, credentials, licensure] = await Promise.all([
+        db.prepare('SELECT * FROM flight_hours WHERE user_id = ?').bind(profileId).first().catch(() => null),
+        db.prepare('SELECT * FROM mentorship_badges WHERE user_id = ? ORDER BY earned_at DESC').bind(profileId).all().catch(() => ({ results: [] })),
+        db.prepare('SELECT * FROM verification_receipts WHERE user_id = ? ORDER BY updated_at DESC').bind(profileId).all().catch(() => ({ results: [] })),
+        db.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(profileId).all().catch(() => ({ results: [] })),
+        db.prepare('SELECT * FROM pilot_licensure_experience WHERE user_id = ?').bind(profileId).first().catch(() => null),
+      ]);
+
+      const licensureRow = licensure as Record<string, unknown> | null;
+      const parsedLicensure = licensureRow?.['license_data'] ? JSON.parse(licensureRow['license_data'] as string) : null;
+
+      return {
+        profile,
+        flight_hours: fh || null,
+        badges: (badges as { results?: unknown[] })?.results || [],
+        verification_receipts: (receipts as { results?: unknown[] })?.results || [],
+        credentials: (credentials as { results?: unknown[] })?.results || [],
+        licensure: parsedLicensure,
+      };
+    }
+
     case 'deleteProfile': {
       const id = params.id as string;
       if (!id) throw new Error('Missing id');

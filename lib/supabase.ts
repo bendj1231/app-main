@@ -1,5 +1,4 @@
-// STUB — Supabase client removed. Migrate to Worker API.
-// This file exists to prevent build errors while other files are being migrated.
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+// This stub exists to prevent build errors while other files are being migrated.
 // Re-exports the canonical stub from shared/lib/supabase.ts
-// TODO: Remove after all imports are replaced with Worker calls.
 export { supabase } from './shared/supabase';

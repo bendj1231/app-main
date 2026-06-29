@@ -177,8 +177,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     
                     if (data) {
                         // Safely set values with fallbacks for missing or invalid data
-                        setPilotId(data.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
-                        setProfileImageUrl(data.profile_image_url || null);
+                        setPilotId(data.pilot_id || userProfile?.display_name || userProfile?.full_name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
+                        setProfileImageUrl(data.profile_image_url || userProfile?.profile_image_url || null);
                         setTotalHours(typeof data.total_flight_hours === 'number' ? data.total_flight_hours : 0);
                         setLastFlown(data.last_flown || '');
                         setMentorshipHours(typeof data.mentorship_hours === 'number' ? data.mentorship_hours : 0);
@@ -187,8 +187,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         setOverallRecognitionScore(typeof data.overall_recognition_score === 'number' ? data.overall_recognition_score : 0);
                         setIsEnrolledInFoundation(Array.isArray(data.enrolled_programs) && data.enrolled_programs.includes('Foundational'));
                     } else {
-                        // Profile doesn't exist, set defaults
-                        setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
+                        // Profile doesn't exist in Supabase, fall back to AuthContext userProfile
+                        setPilotId(userProfile?.display_name || userProfile?.full_name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
+                        setProfileImageUrl(userProfile?.profile_image_url || null);
                     }
                 } catch (err) {
                     console.error('Unexpected error fetching profile data:', err);

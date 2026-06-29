@@ -1,3 +1,5 @@
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+
 import React, { useState, useEffect, Suspense, useRef, useCallback } from 'react';
 // CSS import disabled for integration to prevent MIME type errors
 // import './App.css';

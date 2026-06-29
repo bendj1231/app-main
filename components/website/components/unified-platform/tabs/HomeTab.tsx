@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, LogOut, Bell, Search,
-  ChevronRight, ChevronDown, ChevronUp, TrendingUp, Award, Clock,
+  ChevronRight, TrendingUp, Award, Clock,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Star, Target,
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Copy,
@@ -73,8 +73,6 @@ export const HomeTab: React.FC<{
   const [obHoursHashing, setObHoursHashing] = useState(false);
   const [obHoursHashed, setObHoursHashed] = useState(false);
   const [copiedUrl, setCopiedUrl] = React.useState(false);
-  const [profileExpanded, setProfileExpanded] = React.useState(false);
-
   const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
   const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
 
@@ -167,26 +165,33 @@ export const HomeTab: React.FC<{
   }, [profile?.id]);
 
   const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+  const looksLikeEmailPrefix = (v: string) => /^[a-z0-9_\.]+$/.test(v) && v.length > 3;
   const rawName = profile?.display_name || profile?.full_name || profile?.first_name;
   const auth0Name = auth0User?.name || auth0User?.nickname || auth0User?.email?.split('@')[0];
   const currentUserName = currentUser?.display_name || currentUser?.displayName || currentUser?.email?.split('@')[0];
-  const name    = (rawName && !isCiphertext(rawName)) ? rawName : (auth0Name || currentUserName || 'Pilot');
-  const rawLevel = profile?.current_occupation;
+  const nameFromProfile = (rawName && !isCiphertext(rawName)) ? rawName : '';
+  const name    = (nameFromProfile && !looksLikeEmailPrefix(nameFromProfile)) ? nameFromProfile : (auth0Name || currentUserName || 'Pilot');
+  const firstName = profile?.first_name || auth0User?.given_name || (name.includes('@') ? name.split('@')[0] : name).split(/[\s._-]+/)[0];
+  const rawLevel = profile?.current_occupation || profile?.license_type;
   const level   = (rawLevel && !isCiphertext(rawLevel)) ? rawLevel : 'Student Pilot';
   const pilotTierLines = (() => {
-    const fields = [
-      profile?.pilot_stage,
-      profile?.license_type,
-      profile?.current_level,
-      profile?.current_occupation,
-      Array.isArray(profile?.license_types) ? profile.license_types.join(' ') : profile?.license_types,
-      Array.isArray(profile?.ratings) ? profile.ratings.join(' ') : profile?.ratings,
-    ].filter(Boolean).join(' ').toLowerCase();
-    if (fields.includes('atpl') || fields.includes('airline transport') || fields.includes('flight instructor') || fields.includes('cfi') || fields.includes('fi')) return 4;
-    if (fields.includes('cpl') || fields.includes('commercial')) return 3;
-    if (fields.includes('ppl') || fields.includes('private')) return 2;
-    if (fields.includes('spl') || fields.includes('student') || fields.includes('cadet')) return 1;
-    return 1;
+    const rankFromText = (text: string): number => {
+      const t = text.toLowerCase();
+      if (t.includes('atpl') || t.includes('airline transport')) return 4;
+      if (t.includes('cpl') || t.includes('commercial')) return 3;
+      if (t.includes('ppl') || t.includes('private')) return 2;
+      if (t.includes('spl') || t.includes('student') || t.includes('cadet')) return 1;
+      return 0;
+    };
+    const ranks = [
+      rankFromText(profile?.license_type || ''),
+      rankFromText(profile?.current_occupation || ''),
+      rankFromText(profile?.pilot_stage || ''),
+      rankFromText(profile?.current_level || ''),
+      rankFromText(Array.isArray(profile?.license_types) ? profile.license_types.join(' ') : (profile?.license_types || '')),
+      rankFromText(Array.isArray(profile?.ratings) ? profile.ratings.join(' ') : (profile?.ratings || '')),
+    ];
+    return Math.max(1, ...ranks);
   })();
   const initials = name.charAt(0).toUpperCase();
   const certifications = profile?.certifications || profile?.licenses || profile?.ratings || [];
@@ -215,11 +220,12 @@ export const HomeTab: React.FC<{
 
   const isAuthenticated = Boolean(profile || auth0User?.sub || currentUser?.id);
   const isAuthenticatedWithoutProfile = isAuthenticated && !profile;
+  const hasLogbookSync = !!profile?.logbook_sync_valid || !!profile?.logbook_provider || logbookEntries.length > 0;
   const steps = [
     { step: 1, label: 'Account Created',     sublabel: 'Profile activated',          done: !!profile,                                          tab: 'profile'   as TabId, icon: User,       highlight: false },
-    { step: 2, label: 'Sync Logbook',        sublabel: 'Import hours from provider', done: hours > 0,                                          tab: 'logbook'   as TabId, icon: RefreshCw,  highlight: false },
-    { step: 3, label: 'Verify Credentials',    sublabel: 'Recognition+ preferred',     done: walletChecks.some(c => c.status === 'verified'),     tab: 'wallet'    as TabId, icon: Shield,     highlight: true  },
-    { step: 4, label: 'Browse Pathways',     sublabel: 'Submit your interest',       done: score > 0,                                           tab: 'pathways'  as TabId, icon: Map,        highlight: false },
+    { step: 2, label: 'Complete Advanced Profile & Sync Logbook', sublabel: 'Add ratings, hours, and logbook', done: hasLogbookSync, tab: 'advanced-profile' as TabId, icon: RefreshCw,  highlight: false },
+    { step: 3, label: 'Browse Pathways',     sublabel: 'Submit your interest',       done: score > 0,                                           tab: 'pathways'  as TabId, icon: Map,        highlight: false },
+    { step: 4, label: 'Verify Credentials',    sublabel: 'Recognition+ preferred',     done: walletChecks.some(c => c.status === 'verified'),     tab: 'wallet'    as TabId, icon: Shield,     highlight: false },
   ];
   const completedCount = steps.filter(s => s.done).length;
 
@@ -235,7 +241,7 @@ export const HomeTab: React.FC<{
 
   const bCards = [
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
-    { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
+    { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: '/cessna.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
   ];
 
   // MSFS 2024 Style Tiles Data
@@ -422,7 +428,8 @@ export const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex flex-col gap-4 px-4 pt-12 pb-4 mx-auto" style={{ height: 'fit-content', maxWidth: '1500px', zoom: 0.85 }}
+      className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden h-full"
+      style={{ maxWidth: '1500px', transform: 'scale(0.9)', transformOrigin: 'top center' }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -436,12 +443,12 @@ export const HomeTab: React.FC<{
         />
       </motion.div>
 
-      <div className="flex gap-4 items-stretch">
+      <div className="flex gap-3 items-stretch flex-1 min-h-0 overflow-hidden">
         {/* ── LEFT COLUMN ── */}
-        <div className="flex-1 flex flex-col gap-4 min-w-0">
+        <div className="flex-1 flex flex-col gap-3 min-w-0 min-h-0 overflow-hidden">
 
         {/* ── DISCOVER PATHWAYS (auto-rotating carousel) ── */}
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="flex-1 min-h-0 overflow-hidden">
           <CareerPathwaysCarousel
             airlinesCount={airlines.length}
             setTab={(tab) => setTab(tab)}
@@ -450,54 +457,76 @@ export const HomeTab: React.FC<{
         </motion.div>
 
         {/* ── THREE CARDS ROW ── */}
-        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4" style={{ height: '240px' }}>
+        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 h-[120px] flex-shrink-0 overflow-hidden">
 
           {/* ACCESS PROFILE */}
-          <div
+          <motion.div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
             onClick={() => setTab('profile' as TabId)}
+            variants={{ hidden: {}, visible: {} }}
+            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(99,102,241,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
+            whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(99,102,241,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
-            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#6366f1' }} />
-
-            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
+            <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
+            <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+              }}>
               <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(165,180,252,0.85)' }}>Profile</p>
               <h3 className="text-lg font-black text-white tracking-tight leading-tight">ACCESS<br/>PROFILE</h3>
             </div>
-          </div>
+            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#6366f1' }} />
+          </motion.div>
 
           {/* DISCOVER PROGRAMS */}
           <div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => safeRedirect('/programs')}
+            onClick={() => setTab('foundation-welcome' as TabId)}
           >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80')" }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
-            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#06b6d4' }} />
-
-            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/cessna.png')" }} />
+            <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
+            <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+              }}>
               <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(103,232,249,0.85)' }}>Programs</p>
               <h3 className="text-lg font-black text-white tracking-tight leading-tight">DISCOVER<br/>PROGRAMS</h3>
             </div>
+            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#06b6d4' }} />
           </div>
 
           {/* GET RECOGNITION+ */}
           <div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => safeRedirect('/recognition-plus')}
+            onClick={() => setTab('recognition-plus-tab' as TabId)}
           >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-900/30" />
-            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: '#10b981' }} />
-
-            <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%)' }}>
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
+            <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
+            <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+              }}>
               <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(52,211,153,0.85)' }}>Upgrade</p>
               <h3 className="text-lg font-black text-white tracking-tight leading-tight">GET<br/>RECOGNITION+</h3>
             </div>
+            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#10b981' }} />
 
             {walletChecks.some(c => c.status === 'verified') && (
-              <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-0.5" style={{ background: 'rgba(16,185,129,0.85)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5" style={{ background: 'rgba(16,185,129,0.85)', border: '1px solid rgba(255,255,255,0.2)' }}>
                 <div className="w-1.5 h-1.5 bg-white" />
                 <span className="text-[8px] font-black text-white">VERIFIED</span>
               </div>
@@ -508,7 +537,7 @@ export const HomeTab: React.FC<{
       </div>
 
       {/* ── RIGHT PROFILE CARD ── */}
-      <motion.div variants={itemVariants} className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)] relative" style={{ background: 'rgba(15,22,35,0.97)', height: '676px' }}>
+      <motion.div variants={itemVariants} className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)] relative h-full" style={{ background: 'rgba(15,22,35,0.97)' }}>
         {/* Premium dark-blue metallic shimmer background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
           <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(56,189,248,0.18), transparent 45%), radial-gradient(circle at 70% 80%, rgba(99,102,241,0.14), transparent 45%), radial-gradient(circle at 50% 50%, rgba(15,23,42,0.6), transparent 70%)' }} />
@@ -533,54 +562,65 @@ export const HomeTab: React.FC<{
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <p className="text-[10px] font-black tracking-[0.15em] uppercase text-[#00b4d8]">Pilot Platform</p>
-              </div>
-              <h2 className="text-[15px] font-black text-white tracking-tight">Profile Card</h2>
+              <h2 className="text-[15px] font-black text-white tracking-tight">Welcome Capt, {firstName || 'Pilot'}</h2>
             </div>
-            <button
-              onClick={() => setTab('profile' as TabId)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:bg-white/10"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
-              title="Edit Profile"
-            >
-              <Edit3 size={14} className="text-white/60" />
-            </button>
           </div>
         </div>
 
-        {profile ? (
-          <div className="flex flex-col flex-1 overflow-y-auto">
+        {profile || auth0User?.sub || currentUser?.id ? (
+          <div className="flex flex-col flex-1 overflow-hidden">
             {/* Game-style profile header */}
-            <div className="relative h-24 bg-gradient-to-br from-blue-900/40 to-slate-900/60 group/header">
-              {profile?.profile_image_url && (
-                <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{ backgroundImage: `url('${profile.profile_image_url}')` }} />
-              )}
-              {(() => {
-                const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
-                const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
-                return isPremium ? (
-                  <button
-                    className="absolute top-2 right-2 w-7 h-7 rounded-md flex items-center justify-center opacity-0 group-hover/header:opacity-100 transition-opacity"
-                    style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.2)' }}
-                    title="Customize background"
-                    onClick={() => {/* TODO: open background picker */}}
-                  >
-                    <Camera size={12} className="text-white/70" />
-                  </button>
-                ) : null;
-              })()}
-            </div>
+            {(() => {
+              const occ = (profile?.current_occupation || profile?.license_type || '').toLowerCase();
+              const isSplOrPpl = /spl|ppl|student|private/i.test(occ);
+              const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
+              const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
+              const premiumButton = isPremium ? (
+                <button
+                  className="absolute top-2 right-2 w-7 h-7 rounded-md flex items-center justify-center opacity-0 group-hover/header:opacity-100 transition-opacity"
+                  style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.2)' }}
+                  title="Customize background"
+                  onClick={() => {/* TODO: open background picker */}}
+                >
+                  <Camera size={12} className="text-white/70" />
+                </button>
+              ) : null;
+              if (isSplOrPpl) {
+                return (
+                  <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/images.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-900/70" />
+                    {premiumButton}
+                  </div>
+                );
+              }
+              return (
+                <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/Captain-Paperwork-Medium.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                  <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-900/70" />
+                  {premiumButton}
+                </div>
+              );
+            })()}
 
             {/* Avatar + identity */}
             <div className="flex flex-col items-center px-4 -mt-10 pb-4">
               {(() => {
-                const occ = (profile?.current_occupation || profile?.pilot_stage || '').toLowerCase();
-                const stripes = occ.includes('captain') || occ.includes('commander') ? 4
-                  : occ.includes('first officer') || occ.includes('co-pilot') || occ.includes('airline') ? 3
-                  : occ.includes('commercial') || occ.includes('cpl') ? 2
-                  : occ.includes('private') || occ.includes('ppl') || occ.includes('student') ? 1
-                  : 2;
+                // Check each field independently and use the highest rank found
+                const rankFromText = (text: string): number => {
+                  const t = text.toLowerCase();
+                  if (t.includes('atpl') || t.includes('airline transport')) return 4;
+                  if (t.includes('cpl') || t.includes('commercial')) return 3;
+                  if (t.includes('ppl') || t.includes('private')) return 2;
+                  if (t.includes('spl') || t.includes('student') || t.includes('cadet')) return 1;
+                  return 0;
+                };
+                const ranks = [
+                  rankFromText(profile?.license_type || ''),
+                  rankFromText(profile?.current_occupation || ''),
+                  rankFromText(profile?.pilot_stage || ''),
+                  rankFromText(Array.isArray(profile?.license_types) ? profile.license_types.join(' ') : (profile?.license_types || '')),
+                  rankFromText(Array.isArray(profile?.ratings) ? profile.ratings.join(' ') : (profile?.ratings || '')),
+                ];
+                const stripes = Math.max(1, ...ranks); // minimum 1 stripe (student)
                 return (
                   <div className="relative mb-3">
                     {/* Epaulet stripes behind avatar */}
@@ -659,54 +699,77 @@ export const HomeTab: React.FC<{
                   <span className="flex items-center justify-center leading-none">{copiedUrl ? <CheckCircle size={15} className="text-emerald-400" /> : <Copy size={15} className="text-white/70" />}</span>
                 </button>
               </div>
+
+              {/* Account tier & invite code */}
+              {(() => {
+                const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
+                const isFree = tier === 'free' || tier === 'bronze';
+                const inviteCode = profile?.referral_code || (profile?.id ? profile.id.slice(0, 8).toUpperCase() : '');
+                return isFree ? (
+                  <div className="flex items-center gap-2 mt-3">
+                    <button
+                      onClick={() => setTab('settings' as TabId)}
+                      className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:bg-blue-500/20"
+                      style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.4)', color: '#60a5fa' }}
+                    >
+                      Get Recognition+
+                    </button>
+                    {inviteCode && (
+                      <span className="text-[9px] font-mono text-white/40 tracking-wider">{inviteCode}</span>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mt-3">
+                    <span className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', color: '#34d399' }}>
+                      {tier === 'plus' || tier === 'silver' ? 'Recognition+' : tier === 'enterprise' || tier === 'gold' ? 'Enterprise' : tier.charAt(0).toUpperCase() + tier.slice(1)}
+                    </span>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Compact stat row */}
-            {(() => {
-              const hasVerified = walletChecks.some((c: any) => c.status === 'verified');
-              const hasPending = walletChecks.some((c: any) => c.status === 'pending');
-              const status = hasVerified ? 'Verified' : hasPending ? 'Pending' : 'Unverified';
-              const statusColor = hasVerified ? '#10b981' : hasPending ? '#f59e0b' : '#ef4444';
-              const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
-              const tierLabel = tier === 'free' || tier === 'bronze' ? 'Free Account' : tier === 'plus' || tier === 'silver' ? 'Recognition+' : tier === 'enterprise' || tier === 'gold' ? 'Enterprise' : tier.charAt(0).toUpperCase() + tier.slice(1);
-              return (
-                <div className="grid grid-cols-3 gap-2 px-4 mb-4">
-                  <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                    <p className="text-base font-black text-white tracking-tight">{hours > 0 ? hours : '0'}</p>
-                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Hours</p>
-                  </div>
-                  <button
-                    onClick={() => !hasVerified && setTab('verification' as TabId)}
-                    className={`text-center py-2.5 flex flex-col items-center justify-center rounded-xl transition-all ${!hasVerified ? 'hover:bg-white/10 cursor-pointer' : ''}`}
-                    style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: `1px solid ${hasVerified ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.12)'}` }}
-                  >
-                    <div className="flex items-center justify-center gap-1.5">
-                      {hasVerified ? (
-                        <CheckCircle size={13} style={{ color: statusColor }} />
-                      ) : (
-                        <Lock size={12} style={{ color: statusColor }} />
-                      )}
-                      <span className="text-[11px] font-black tracking-tight uppercase" style={{ color: statusColor }}>{status}</span>
-                    </div>
-                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">{hasVerified ? tierLabel : 'Verify Now →'}</p>
-                  </button>
-                  <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                    <p className="text-base font-black text-white tracking-tight">{walletChecks.filter(c => c.status === 'verified').length || '0'}</p>
-                    <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Creds</p>
-                  </div>
-                </div>
-              );
-            })()}
+            <div className="grid grid-cols-3 gap-2 px-4 mb-2">
+              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black text-white tracking-tight">{profile?.pic_hours || '0'}</p>
+                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">PIC Time</p>
+              </div>
+              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black text-white tracking-tight">{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
+                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Total Hours</p>
+                {!profile?.license_number && (
+                  <p className="text-[8px] font-bold mt-0.5" style={{ color: '#f59e0b', textDecoration: 'underline' }}>unverified</p>
+                )}
+              </div>
+              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black text-white tracking-tight">{profile?.dual_hours || '0'}</p>
+                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Dual Time</p>
+              </div>
+            </div>
 
             {/* Recent activity / last flown */}
             <div className="px-4 mb-4">
-              <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <div className="flex items-center gap-2">
-                  <Clock size={12} className="text-white/30" />
-                  <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Last Flown</span>
+              {hasLogbookSync ? (
+                <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                  <div className="flex items-center gap-2">
+                    <Clock size={12} className="text-white/30" />
+                    <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Last Flown</span>
+                  </div>
+                  <span className="text-[11px] font-black text-white">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</span>
                 </div>
-                <span className="text-[11px] font-black text-white">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</span>
-              </div>
+              ) : (
+                <button
+                  onClick={() => setTab('wallet' as TabId)}
+                  className="w-full rounded-xl px-3 py-2.5 flex items-center justify-between transition-all hover:bg-white/10"
+                  style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}
+                >
+                  <div className="flex items-center gap-2">
+                    <RefreshCw size={12} className="text-blue-400" />
+                    <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Connect Logbook</span>
+                  </div>
+                  <span className="text-[11px] font-black text-blue-400">→</span>
+                </button>
+              )}
             </div>
 
             {/* Airport tags */}
@@ -729,173 +792,39 @@ export const HomeTab: React.FC<{
               </div>
             )}
 
-            {/* ── Expandable Details Accordion ── */}
-            {profileExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="px-4 mb-3 space-y-2 overflow-hidden"
-              >
-                {/* Regulatory & Flight Readiness */}
-                <div className="rounded-xl px-3 py-2.5 space-y-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Shield size={12} className="text-white/40" />
-                    <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Flight Readiness</span>
-                  </div>
-                  {/* Takeoff/Landing Currency */}
-                  {(() => {
-                    const currencyDate = profile?.landing_currency_date;
-                    const isCurrent = currencyDate ? (Date.now() - new Date(currencyDate).getTime()) / 86400000 < 90 : false;
-                    return (
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-white/60">T/O &amp; Landing Currency</span>
-                        <span className="flex items-center gap-1.5 text-[10px] font-black" style={{ color: isCurrent ? '#10b981' : '#ef4444' }}>
-                          <span className="w-1.5 h-1.5 rounded-full" style={{ background: isCurrent ? '#10b981' : '#ef4444' }} />
-                          {isCurrent ? 'Current' : 'Expired'}
-                        </span>
-                      </div>
-                    );
-                  })()}
-                  {/* English Proficiency */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/60">English Proficiency</span>
-                    <span className="px-1.5 py-0.5 rounded text-[9px] font-black text-white" style={{ background: 'rgba(56,189,248,0.25)', border: '1px solid rgba(56,189,248,0.4)' }}>
-                      ICAO {profile?.english_proficiency_level || '—'}
-                    </span>
-                  </div>
-                  {/* Visa / Work Rights */}
-                  {profile?.work_eligibility && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] text-white/60">Work Rights</span>
-                      <span className="text-[10px] font-black text-white">{profile.work_eligibility}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Career & Employment */}
-                <div className="rounded-xl px-3 py-2.5 space-y-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Briefcase size={12} className="text-white/40" />
-                    <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Career</span>
-                  </div>
-                  {/* Job Seeking Toggle */}
-                  {(() => {
-                    const seeking = profile?.actively_seeking;
-                    return (
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-white/60">Status</span>
-                        <span className="flex items-center gap-1.5 text-[10px] font-black" style={{ color: seeking ? '#10b981' : '#f59e0b' }}>
-                          <span className="w-1.5 h-1.5 rounded-full" style={{ background: seeking ? '#10b981' : '#f59e0b' }} />
-                          {seeking ? 'Actively Seeking' : 'Not Looking'}
-                        </span>
-                      </div>
-                    );
-                  })()}
-                  {/* Current Employer */}
-                  {profile?.current_employer && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] text-white/60">Employer</span>
-                      <span className="text-[10px] font-black text-white truncate max-w-[120px]">{profile.current_employer}</span>
-                    </div>
-                  )}
-                  {/* Flight Experience Bar */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] text-white/60">ATP Benchmark</span>
-                      <span className="text-[9px] font-black text-white/50">{hours > 0 ? hours : 0} / 1,500 hrs</span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
-                      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${Math.min((hours / 1500) * 100, 100)}%`, background: 'linear-gradient(90deg, #6366f1, #8b5cf6)' }} />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Community & Social Proof */}
-                <div className="rounded-xl px-3 py-2.5 space-y-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Users size={12} className="text-white/40" />
-                    <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Network</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/60">Connections</span>
-                    <span className="text-[10px] font-black text-white">{profile?.connection_count || 0}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/60">Endorsements</span>
-                    <span className="text-[10px] font-black text-white">{profile?.endorsement_count || 0}</span>
-                  </div>
-                </div>
-
-                {/* Membership Tier Badge */}
-                {(() => {
-                  const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
-                  if (userTier === 'free' || userTier === 'bronze') return null;
-                  const tierLabel = userTier === 'plus' || userTier === 'silver' ? 'RECOGNITION+' : userTier === 'enterprise' || userTier === 'gold' ? 'ENTERPRISE' : userTier.toUpperCase();
-                  const tierColor = userTier === 'plus' || userTier === 'silver' ? '#f59e0b' : userTier === 'enterprise' || userTier === 'gold' ? '#ec4899' : '#6366f1';
-                  return (
-                    <div className="flex items-center justify-center py-1">
-                      <span className="px-3 py-1 rounded-full text-[9px] font-black tracking-widest uppercase" style={{ background: `${tierColor}22`, border: `1px solid ${tierColor}55`, color: tierColor }}>
-                        {tierLabel} MEMBER
-                      </span>
-                    </div>
-                  );
-                })()}
-              </motion.div>
-            )}
-
-            {/* See More / Less toggle */}
-            <div className="px-4 mb-3 flex justify-center">
-              <button
-                onClick={() => setProfileExpanded(v => !v)}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all hover:bg-white/10"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-              >
-                <span className="text-[9px] font-bold text-white/50 uppercase tracking-wider">{profileExpanded ? 'See Less' : 'See More'}</span>
-                {profileExpanded ? <ChevronUp size={12} className="text-white/50" /> : <ChevronDown size={12} className="text-white/50" />}
-              </button>
-            </div>
-
             {/* Actions */}
             <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
-              <button onClick={() => setTab('verification' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600 shadow-lg shadow-blue-600/20" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
-                VIEW DASHBOARD →
-              </button>
+              {profile?.license_number ? (
+                <button onClick={() => setTab('profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600 shadow-lg shadow-blue-600/20" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                  VIEW DASHBOARD →
+                </button>
+              ) : (
+                <button onClick={() => setTab('advanced-profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-amber-600 shadow-lg shadow-amber-600/20" style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.9), rgba(217,119,6,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                  COMPLETE ADVANCED PROFILE →
+                </button>
+              )}
             </div>
           </div>
         ) : (
+          /* Not logged in */
           <div className="flex flex-col flex-1 items-center justify-center px-6 gap-5">
             <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <User size={28} className="text-white/25" />
             </div>
             <div className="text-center">
-              <p className="text-[15px] font-black text-white tracking-tight mb-1">{isAuthenticatedWithoutProfile ? `Welcome, ${name}` : 'Welcome Aboard'}</p>
+              <p className="text-[15px] font-black text-white tracking-tight mb-1">Welcome Aboard</p>
               <p className="text-[10px] text-white/30 leading-snug max-w-[200px]">
-                {isAuthenticatedWithoutProfile
-                  ? 'You are signed in. Complete your pilot profile to activate your account.'
-                  : 'Sign in to activate your pilot profile.'}
+                Sign in to activate your pilot profile.
               </p>
             </div>
-            {isAuthenticatedWithoutProfile ? (
-              <div className="w-full flex flex-col gap-2">
-                <button onClick={() => setTab('profile')} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
-                  Complete Profile
-                </button>
-                <button onClick={() => setTab('settings' as TabId)} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  Account Settings
-                </button>
-              </div>
-            ) : (
-              <div className="w-full flex flex-col gap-2">
-                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600" style={{ background: 'rgba(220,38,38,0.85)' }}>
-                  Get Recognition Free
-                </button>
-                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
-                  Pilot Sign In
-                </button>
-              </div>
-            )}
+            <div className="w-full flex flex-col gap-2">
+              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600" style={{ background: 'rgba(220,38,38,0.85)' }}>
+                Get Recognition Free
+              </button>
+              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
+                Pilot Sign In
+              </button>
+            </div>
           </div>
         )}
 

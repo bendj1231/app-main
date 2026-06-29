@@ -260,10 +260,10 @@ export const PathwaysSidebar: React.FC<PathwaysSidebarProps> = ({
           </svg>
           <div style={{ overflow: 'hidden', minWidth: 0 }}>
             <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#111827', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              <span style={{ color: '#111827' }}>Access </span>
-              <span style={{ color: '#dc2626' }}>Wallet</span>
+              <span style={{ color: '#111827' }}>Public </span>
+              <span style={{ color: '#dc2626' }}>profile</span>
             </p>
-            <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#6b7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Pilot Credential Wallet</p>
+            <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#6b7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Operator-facing profile view</p>
           </div>
         </button>
       </div>

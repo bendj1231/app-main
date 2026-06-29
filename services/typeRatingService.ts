@@ -1,3 +1,5 @@
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+
 /**
  * Service for fetching type rating and manufacturer data from Supabase
  */

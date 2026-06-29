@@ -27,7 +27,7 @@ function setCachedProfile(auth0Id: string, data: unknown): void {
 }
 
 export const OAuthCallback = () => {
-  const { isLoading, isAuthenticated, user, error, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { isLoading, user, error, getIdTokenClaims } = useAuth0();
   const navigate = useNavigate();
   const [profileCreated, setProfileCreated] = useState(false);
   const { isDarkMode } = useTheme();
@@ -46,17 +46,8 @@ export const OAuthCallback = () => {
 
   useEffect(() => {
     // Guard: wait for Auth0 to finish processing the redirect before doing anything
-    if (!isAuthenticated || !user || profileCreated || isLoading) {
-      console.log('[OAuthCallback] Guard blocked — isAuthenticated:', isAuthenticated, 'user:', !!user, 'profileCreated:', profileCreated, 'isLoading:', isLoading);
-
-      // Fallback: Auth0 settled but user is not authenticated — redirect to login
-      if (!isLoading && !isAuthenticated) {
-        console.warn('[OAuthCallback] Auth0 settled but not authenticated — redirecting to login');
-        const timer = setTimeout(() => {
-          navigate('/login', { replace: true });
-        }, 2000);
-        return () => clearTimeout(timer);
-      }
+    if (profileCreated || isLoading) {
+      console.log('[OAuthCallback] Guard blocked — profileCreated:', profileCreated, 'isLoading:', isLoading);
       return;
     }
 
@@ -78,30 +69,39 @@ export const OAuthCallback = () => {
 
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
 
-        // ─── STEP 1: Get ID token + check profile FIRST ───
+        // ─── STEP 1: Get ID token claims + check profile FIRST ───
         let token: string | null = null;
+        let auth0Id: string | null = user?.sub || null;
+        let userEmail: string | null = user?.email || null;
         try {
           console.log('[OAuthCallback] Fetching ID token...');
-          const claims = await getIdTokenClaims();
-          token = (claims as { __raw?: string } | undefined)?.__raw || (await getAccessTokenSilently());
-          console.log('[OAuthCallback] Token acquired, length:', token?.length || 0);
+          let claims: { __raw?: string; sub?: string; email?: string } | undefined;
+          for (let i = 0; i < 20; i++) {
+            claims = await getIdTokenClaims() as { __raw?: string; sub?: string; email?: string } | undefined;
+            if (claims?.__raw) break;
+            await new Promise((r) => setTimeout(r, 300));
+          }
+          token = claims?.__raw || null;
+          if (!auth0Id && claims?.sub) auth0Id = claims.sub;
+          if (!userEmail && claims?.email) userEmail = claims.email;
+          console.log('[OAuthCallback] Token acquired, length:', token?.length || 0, 'sub:', auth0Id);
         } catch (tokenErr) {
           console.warn('[OAuthCallback] Token fetch failed:', tokenErr);
         }
 
         let hasProfile = false;
-        if (token && user?.sub) {
-          const cached = getCachedProfile(user.sub);
+        if (token && auth0Id) {
+          const cached = getCachedProfile(auth0Id);
           if (cached?.id) {
             hasProfile = true;
             console.log('[OAuthCallback] Cached profile found');
           } else {
-            console.log('[OAuthCallback] No cached profile, calling D1 getProfile for auth0_id:', user.sub);
+            console.log('[OAuthCallback] No cached profile, calling D1 getProfile for auth0_id:', auth0Id);
             try {
-              const profile = await api(token, 'getProfile', { auth0_id: user.sub, email: user.email });
+              const profile = await api(token, 'getProfile', { auth0_id: auth0Id, email: userEmail });
               console.log('[OAuthCallback] D1 getProfile response:', profile);
               if (profile && (profile as Record<string, unknown>)?.id) {
-                setCachedProfile(user.sub, profile);
+                setCachedProfile(auth0Id, profile);
                 hasProfile = true;
               }
             } catch (apiErr) {
@@ -175,7 +175,7 @@ export const OAuthCallback = () => {
     handleAuthCallback();
 
     return () => clearTimeout(timeout);
-  }, [isAuthenticated, user, profileCreated, isLoading, navigate, getAccessTokenSilently, getIdTokenClaims]);
+  }, [user, profileCreated, isLoading, navigate, getIdTokenClaims]);
 
   if (error || authError) {
     return (

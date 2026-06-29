@@ -1,3 +1,4 @@
+// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
 // Pathway Matching Hook - Browser-Based Calculation
 // All matching happens locally in the browser for privacy and speed
 

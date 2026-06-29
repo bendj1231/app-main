@@ -433,6 +433,16 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         Object.keys(onboardingMeta).length > 0 ? JSON.stringify(onboardingMeta) : null,
         now, now
       ).run();
+      // Welcome notification for new pilots
+      await db.prepare(`
+        INSERT INTO pilot_notifications (id, pilot_id, type, title, message, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(
+        crypto.randomUUID(), newId, 'welcome',
+        'Welcome to PilotRecognition',
+        'Complete your advanced profile to unlock pathway matching. Add your ratings, medical, and verify your credentials to get recognized by airlines.',
+        now
+      ).run();
       return { id: newId, created: true };
     }
 
@@ -532,6 +542,31 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       return { error: 'Unsupported operation' };
     }
 
+    // ── Notifications ───────────────────────────────────
+    case 'getNotifications': {
+      const { user_id, limit } = params || {};
+      const { results } = await db.prepare(`
+        SELECT id, pilot_id as user_id, type, title, message, data, is_read as read_at, created_at
+        FROM pilot_notifications
+        WHERE pilot_id = ?
+        ORDER BY created_at DESC
+        LIMIT ?
+      `).bind(user_id, limit || 50).all();
+      // Convert is_read integer to read_at string for frontend compatibility
+      return (results || []).map((n: any) => ({
+        ...n,
+        read_at: n.read_at ? new Date().toISOString() : undefined,
+      }));
+    }
+
+    case 'markNotificationRead': {
+      const { id } = params || {};
+      await db.prepare(`
+        UPDATE pilot_notifications SET is_read = 1, read_at = ? WHERE id = ?
+      `).bind(new Date().toISOString(), id).run();
+      return { success: true };
+    }
+
     // ── Mentorship badges ────────────────────────────────
     case 'getMentorshipBadges': {
       const { user_id } = params || {};
@@ -616,6 +651,36 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           instrument_hours = excluded.instrument_hours,
           last_updated = excluded.last_updated
       `).bind(crypto.randomUUID(), user_id, total_hours || 0, pic_hours || 0, instrument_hours || 0, new Date().toISOString()).run();
+      return { success: true };
+    }
+
+    // ── Logbook CSV ──────────────────────────────────────
+    case 'uploadLogbookCSV': {
+      const { user_id, csv_data, filename } = params || {};
+      if (!user_id || !csv_data) throw new Error('user_id and csv_data required');
+      const now = new Date().toISOString();
+      const rowCount = (csv_data.split('\n').filter((r: string) => r.trim()).length) - 1; // minus header
+      // Delete existing CSV for this user (one per user)
+      await db.prepare('DELETE FROM pilot_logbook_csv WHERE user_id = ?').bind(user_id).run();
+      const id = crypto.randomUUID();
+      await db.prepare(`
+        INSERT INTO pilot_logbook_csv (id, user_id, filename, csv_data, row_count, uploaded_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(id, user_id, filename || 'logbook.csv', csv_data, Math.max(0, rowCount), now).run();
+      return { success: true, id, row_count: Math.max(0, rowCount) };
+    }
+
+    case 'getLogbookCSV': {
+      const { user_id } = params || {};
+      if (!user_id) throw new Error('user_id required');
+      const result = await db.prepare('SELECT * FROM pilot_logbook_csv WHERE user_id = ? ORDER BY uploaded_at DESC LIMIT 1').bind(user_id).first();
+      return result || null;
+    }
+
+    case 'deleteLogbookCSV': {
+      const { user_id } = params || {};
+      if (!user_id) throw new Error('user_id required');
+      await db.prepare('DELETE FROM pilot_logbook_csv WHERE user_id = ?').bind(user_id).run();
       return { success: true };
     }
 

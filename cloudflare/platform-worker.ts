@@ -530,7 +530,7 @@ async function handleAction(
       }
       const allowed = new Set([
         'display_name', 'first_name', 'last_name', 'phone', 'country_code',
-        'date_of_birth', 'nationality', 'avatar_url', 'profile_image_url',
+        'date_of_birth', 'nationality', 'avatar_url', 'profile_image_url', 'profile_image_public_id',
         'current_flight_hours', 'total_flight_hours', 'mentorship_hours',
         'foundation_progress', 'overall_recognition_score', 'current_level',
         'current_occupation', 'license_id', 'country_of_license', 'ratings',
@@ -544,6 +544,7 @@ async function handleAction(
       ]);
       for (const key of Object.keys(params)) {
         if (key.startsWith('_')) continue;
+        if (key === 'id') continue;
         if (!allowed.has(key)) throw new Error(`Field '${key}' is not allowed for update`);
       }
       const sets: string[] = [];

@@ -5,21 +5,27 @@
  * All hooks that previously imported `supabase` should use this instead.
  */
 
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { api, apiBatch, pilotApi } from '../lib/d1-api';
 
 export function useWorkerAuth() {
-  const { getAccessTokenSilently, getIdTokenClaims, user: auth0User } = useAuth0();
-  const tokenRef = useRef<string | null>(null);
+  const { getIdTokenClaims, user: auth0User } = useAuth0();
 
   const getToken = useCallback(async (): Promise<string> => {
-    if (tokenRef.current) return tokenRef.current;
-    const claims = await getIdTokenClaims();
-    const token = (claims as { __raw?: string } | undefined)?.__raw || (await getAccessTokenSilently());
-    tokenRef.current = token;
+    // ID token (__raw) is always a standard JWT (3 parts).
+    // getAccessTokenSilently() returns an opaque token when no audience is set,
+    // which the Worker cannot validate. We ONLY use the ID token.
+    let claims: { __raw?: string } | undefined;
+    for (let i = 0; i < 12; i++) {
+      claims = await getIdTokenClaims() as { __raw?: string } | undefined;
+      if (claims?.__raw) break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    const token = claims?.__raw;
+    if (!token) throw new Error('Auth0 ID token not available — user may not be fully authenticated yet');
     return token;
-  }, [getIdTokenClaims, getAccessTokenSilently]);
+  }, [getIdTokenClaims]);
 
   const callApi = useCallback(
     async <T>(action: string, params?: Record<string, unknown>): Promise<T> => {
