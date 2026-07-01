@@ -29,7 +29,7 @@ const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: delay * 0.1 }}
-      className="flex flex-col items-center"
+      className="flex flex-col items-stretch w-full h-full"
     >
       <div
         style={{

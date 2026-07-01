@@ -24,7 +24,7 @@ export type TabId =
   | 'pathways-directory'
   | 'recognition-plus-tab'
   | 'pilot-shortage-support'
-  | 'bookmarks'
+  | 'inbox'
   | 'recognition-plus';
 
 export interface NavItem {

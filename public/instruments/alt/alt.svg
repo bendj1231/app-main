@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- Background face -->
+    <radialGradient id="altFace" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a2234"/>
+      <stop offset="70%" stop-color="#0f1522"/>
+      <stop offset="100%" stop-color="#080c14"/>
+    </radialGradient>
+
+    <!-- Inner bezel ring -->
+    <linearGradient id="bezelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3a3f4a"/>
+      <stop offset="50%" stop-color="#1e232e"/>
+      <stop offset="100%" stop-color="#0a0e16"/>
+    </linearGradient>
+
+    <!-- Glass reflection -->
+    <linearGradient id="glassGlare" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.08)"/>
+      <stop offset="40%" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.04)"/>
+    </linearGradient>
+
+    <!-- Hand shadow filter -->
+    <filter id="handShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0.5" dy="1" stdDeviation="1.5" flood-color="rgba(0,0,0,0.6)"/>
+    </filter>
+
+    <!-- Background blur so digits/hands read clearly -->
+    <filter id="bgBlur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- Background group -->
+  <g>
+
+  <!-- Outer case -->
+  <circle cx="100" cy="100" r="98" fill="#0d1117" stroke="#2a2f3a" stroke-width="2"/>
+  <circle cx="100" cy="100" r="94" fill="url(#bezelGrad)"/>
+
+  <!-- Main face -->
+  <circle cx="100" cy="100" r="88" fill="url(#altFace)"/>
+
+  <!-- Sub-dial for 10,000 ft hand (bottom center) -->
+  <circle cx="100" cy="138" r="14" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+  <text x="100" y="133" fill="rgba(255,255,255,0.35)" font-size="3.5" font-weight="700" text-anchor="middle" letter-spacing="0.5">x10k</text>
+
+  <!-- Main scale ticks and numbers (0-9, each = 1000 ft) -->
+  <g id="mainScale">
+    <!-- Major ticks and numbers -->
+    <g transform="translate(100,100)">
+      <!-- 0 -->
+      <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle">0</text>
+      <!-- 1 -->
+      <g transform="rotate(36)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-36)">1</text>
+      </g>
+      <!-- 2 -->
+      <g transform="rotate(72)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-72)">2</text>
+      </g>
+      <!-- 3 -->
+      <g transform="rotate(108)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-108)">3</text>
+      </g>
+      <!-- 4 -->
+      <g transform="rotate(144)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-144)">4</text>
+      </g>
+      <!-- 5 -->
+      <g transform="rotate(180)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-180)">5</text>
+      </g>
+      <!-- 6 -->
+      <g transform="rotate(216)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-216)">6</text>
+      </g>
+      <!-- 7 -->
+      <g transform="rotate(252)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-252)">7</text>
+      </g>
+      <!-- 8 -->
+      <g transform="rotate(288)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-288)">8</text>
+      </g>
+      <!-- 9 -->
+      <g transform="rotate(324)">
+        <line x1="0" y1="-78" x2="0" y2="-68" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="0" y="-56" fill="#fff" font-size="10" font-weight="900" text-anchor="middle" transform="rotate(-324)">9</text>
+      </g>
+    </g>
+
+    <!-- Minor ticks (every 200 ft / 1/5 of major) -->
+    <g transform="translate(100,100)" stroke="rgba(255,255,255,0.4)" stroke-width="0.8" stroke-linecap="round">
+      <g transform="rotate(7.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(14.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(21.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(28.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(43.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(50.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(57.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(64.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(79.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(86.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(93.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(100.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(115.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(122.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(129.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(136.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(151.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(158.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(165.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(172.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(187.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(194.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(201.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(208.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(223.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(230.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(237.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(244.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(259.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(266.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(273.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(280.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(295.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(302.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(309.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(316.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+
+      <g transform="rotate(331.2)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(338.4)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(345.6)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+      <g transform="rotate(352.8)"><line x1="0" y1="-78" x2="0" y2="-72"/></g>
+    </g>
+  </g>
+
+  <!-- Sharp foreground elements -->
+
+  <!-- Kohlsman window (barometric setting) -->
+  <rect x="76" y="156" width="48" height="14" rx="2" fill="rgba(0,0,0,0.35)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+  <text x="100" y="166" fill="rgba(255,255,255,0.5)" font-size="5.5" font-weight="700" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" letter-spacing="0.5">29.92 IN</text>
+
+  <!-- Label -->
+  <text x="100" y="148" fill="rgba(148,163,184,0.6)" font-size="5" font-weight="800" text-anchor="middle" letter-spacing="2">ALT</text>
+
+  <!-- 10,000 ft hand (thin, long, points from sub-dial) -->
+  <g transform="translate(100,100)" filter="url(#handShadow)">
+    <!-- Rotated to point at ~0 -->
+    <g transform="rotate(0)">
+      <line x1="0" y1="15" x2="0" y2="-55" stroke="#a3a3a3" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="3" fill="#a3a3a3"/>
+    </g>
+  </g>
+
+  <!-- 1,000 ft hand (triangle tip, medium length) -->
+  <g transform="translate(100,100)" filter="url(#handShadow)">
+    <g transform="rotate(0)">
+      <polygon points="0,-62 -3,-50 3,-50" fill="#fff"/>
+      <line x1="0" y1="-50" x2="0" y2="12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="3.5" fill="#fff"/>
+    </g>
+  </g>
+
+  <!-- 100 ft hand (short, thick, white with red tip) -->
+  <g transform="translate(100,100)" filter="url(#handShadow)">
+    <g transform="rotate(0)">
+      <line x1="0" y1="10" x2="0" y2="-42" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="-32" x2="0" y2="-42" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="4" fill="#fff"/>
+      <circle cx="0" cy="0" r="1.5" fill="#0f1522"/>
+    </g>
+  </g>
+
+  <!-- Center cap -->
+  <circle cx="100" cy="100" r="5" fill="#1e232e" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+  <circle cx="100" cy="100" r="2.5" fill="#0d1117"/>
+
+  <!-- Drum/counter window area (centered on face) — rendered ON TOP of hands -->
+  <rect x="66" y="84" width="68" height="24" rx="3" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+  <rect x="68" y="86" width="64" height="20" rx="2" fill="rgba(10,15,25,0.85)"/>
+
+  <!-- Counter digits — boxed for perfect centering -->
+  <g transform="translate(100, 96)">
+    <defs>
+      <linearGradient id="digitShine" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.18)"/>
+        <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+      </linearGradient>
+    </defs>
+    <!-- 5 digit boxes — centered at x=0 so absolute center is x=100 -->
+    <rect x="-34" y="-8" width="12" height="16" rx="2" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+    <text x="-28" y="2" fill="#fff" font-size="11" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif">0</text>
+    <rect x="-34" y="-8" width="12" height="8" rx="2" fill="url(#digitShine)"/>
+
+    <rect x="-20" y="-8" width="12" height="16" rx="2" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+    <text x="-14" y="2" fill="#fff" font-size="11" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif">0</text>
+    <rect x="-20" y="-8" width="12" height="8" rx="2" fill="url(#digitShine)"/>
+
+    <rect x="-6" y="-8" width="12" height="16" rx="2" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+    <text x="0" y="2" fill="#fff" font-size="11" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif">0</text>
+    <rect x="-6" y="-8" width="12" height="8" rx="2" fill="url(#digitShine)"/>
+
+    <rect x="8" y="-8" width="12" height="16" rx="2" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+    <text x="14" y="2" fill="#fff" font-size="11" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif">0</text>
+    <rect x="8" y="-8" width="12" height="8" rx="2" fill="url(#digitShine)"/>
+
+    <rect x="22" y="-8" width="12" height="16" rx="2" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+    <text x="28" y="2" fill="#fff" font-size="11" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif">0</text>
+    <rect x="22" y="-8" width="12" height="8" rx="2" fill="url(#digitShine)"/>
+  </g>
+
+  <!-- Counter shine -->
+  <rect x="68" y="86" width="64" height="8" rx="2" fill="url(#glassGlare)"/>
+
+  <!-- Dual time label below counter window -->
+  <text x="100" y="114" fill="rgba(255,255,255,0.4)" font-size="5" font-weight="800" text-anchor="middle" letter-spacing="2">DUAL TIME</text>
+
+  <!-- Glass glare overlay -->
+  <ellipse cx="100" cy="55" rx="60" ry="35" fill="url(#glassGlare)" pointer-events="none"/>
+</svg>

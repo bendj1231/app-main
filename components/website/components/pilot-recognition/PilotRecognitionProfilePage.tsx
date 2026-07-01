@@ -1321,9 +1321,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 const objectives = [
                                   { done: hasLicense, label: 'License on file', action: 'Add license', path: 'advanced-profile' },
                                   { done: hasMedical, label: 'Medical current', action: 'Upload medical', path: '/get-started/verify-apc' },
-                                  { done: hasHours, label: 'Flight hours logged', action: 'Connect logbook', path: '/platform?tab=logbook' },
-                                  { done: isCurrent, label: '90-day recency met', action: 'Log a flight', path: '/platform?tab=logbook' },
-                                  { done: hasLogbook, label: 'Logbook connected', action: 'Sync logbook', path: '/platform?tab=logbook' },
+                                  { done: hasHours, label: 'Flight hours logged', action: 'Connect logbook', path: '/platform?tab=logbook#logbook-providers' },
+                                  { done: isCurrent, label: '90-day recency met', action: 'Log a flight', path: '/platform?tab=logbook#logbook-providers' },
+                                  { done: hasLogbook, label: 'Logbook connected', action: 'Sync logbook', path: '/platform?tab=logbook#logbook-providers' },
                                 ];
                                 const completed = objectives.filter(o => o.done).length;
                                 const pct = Math.round((completed / objectives.length) * 100);
@@ -1820,45 +1820,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: isPremium ? '#22c55e' : '#ecc94b', flexShrink: 0, display: 'inline-block' }} />
                                 <span style={{ fontSize: '0.7rem', fontWeight: 700, color: isPremium ? '#22c55e' : '#ecc94b', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{isPremium ? 'Verified Profile' : 'Unverified — Upgrade to Recognition+'}</span>
                             </div>
-                        </div>
-
-                        {/* Operator preview card */}
-                        <div style={{ ...baseCardStyle, border: '2px solid rgba(59,130,246,0.25)', position: 'relative' }}>
-                            <div style={{ position: 'absolute', top: 12, right: 14, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 6, padding: '3px 10px' }}>
-                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                <span style={{ fontSize: '0.6rem', fontWeight: 700, color: '#60a5fa', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operator View</span>
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.25rem' }}>
-                                <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg,#1e3a5f,#2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)' }}>
-                                    {profileData?.profile_image_url
-                                        ? <img src={profileData.profile_image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                        : <span style={{ fontSize: '1.4rem', fontWeight: 700, color: '#fff' }}>{(profileData?.full_name || 'P').charAt(0).toUpperCase()}</span>
-                                    }
-                                </div>
-                                <div>
-                                    <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.full_name || profileData?.display_name || 'Pilot Name'}</p>
-                                    <p style={{ margin: '3px 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>{profileData?.license_type || profileData?.current_occupation || 'Commercial Pilot License'} · {profileData?.country_of_license || profileData?.nationality || 'Unknown Authority'}</p>
-                                    <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: '#64748b' }}>{profileData?.total_hours || 0} total hours · {profileData?.license_number || profileData?.license_id || 'License pending'}</p>
-                                </div>
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
-                                {[
-                                    { label: 'License', value: profileData?.license_type || profileData?.current_occupation || '—' },
-                                    { label: 'Authority', value: profileData?.license_issuing_authority || profileData?.country_of_license || '—' },
-                                    { label: 'ELP', value: profileData?.language_proficiency || profileData?.elp_level || '—' },
-                                    { label: 'Hours', value: profileData?.total_hours ? `${profileData.total_hours} hrs` : '—' },
-                                    { label: 'Medical', value: profileData?.medical_class || '—' },
-                                    { label: 'Home Base', value: profileData?.domicile || profileData?.country || '—' },
-                                ].map(f => (
-                                    <div key={f.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: '8px 12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.58rem', color: '#64748b', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{f.label}</p>
-                                        <p style={{ margin: '3px 0 0', fontSize: '0.82rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0' }}>{f.value}</p>
-                                    </div>
-                                ))}
-                            </div>
-                            {profileData?.bio && (
-                                <p style={{ margin: '1rem 0 0', fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.6, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.75rem' }}>{profileData.bio}</p>
-                            )}
                         </div>
 
                         {/* Editable fields */}

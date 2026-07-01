@@ -14,7 +14,7 @@ import { SectionCard } from '../shared';
 import type { TabId } from '../types';
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
-export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void }> = ({ onLogout, getToken, profileId, onAuth0Logout }) => {
+export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile }) => {
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
@@ -25,6 +25,37 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     program: any | null; interview: any | null;
   }>({ vcs: [], hourTokens: [], resume: null, program: null, interview: null });
   const [downloaded, setDownloaded] = React.useState<Record<string, boolean>>({});
+
+  // Sub-page states
+  const [activeSubPage, setActiveSubPage] = React.useState<string | null>(null);
+  const [profileImage, setProfileImage] = React.useState<string | null>((profile?.profile_image_url as string) || null);
+  const [uploadingPhoto, setUploadingPhoto] = React.useState(false);
+
+  // Toggle states for notification settings
+  const [notifSettings, setNotifSettings] = React.useState({
+    pathwaysAlerts: true,
+    pathwaysEmails: false,
+    pathwaysPush: true,
+    recognitionAlerts: true,
+    recognitionEmails: true,
+    recognitionPush: true,
+    shortageAlerts: false,
+    shortageEmails: false,
+    shortagePush: false,
+  });
+
+  const isPlus = (profile?.subscription_tier as string) === 'plus' || (profile?.subscription_tier as string) === 'enterprise';
+  const hasLogbook = !!(profile?.total_flight_hours as number) || (profile?.logbook_provider as string);
+  const hasProfilePhoto = !!profileImage;
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    const reader = new FileReader();
+    reader.onload = () => { setProfileImage(reader.result as string); setUploadingPhoto(false); };
+    reader.readAsDataURL(file);
+  };
 
   const loadExportData = async () => {
     setLoadingExport(true);
@@ -191,19 +222,145 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
 
   const handleCancel = () => { setDeleteStep(null); setDeleteError(''); setDownloaded({}); };
 
-  const sections = [
-    { title: 'Account', items: ['Edit Profile', 'Change Password', 'Email Preferences'] },
-    { title: 'Consent & Privacy', items: ['Manage Vault Consent', 'Manage Veremark Consent', 'Operator Access Log', 'Download My Data'] },
-    { title: 'Notifications', items: ['Pathway Alerts', 'Credential Expiry Warnings', 'News & Updates', 'Operator Interest Notifications'] },
-    { title: 'Subscription', items: ['View Plan', 'Upgrade to Recognition Plus', 'Billing History'] },
-  ];
+  const toggleSetting = (key: keyof typeof notifSettings) => {
+    setNotifSettings(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const NotifToggle: React.FC<{ label: string; active: boolean; onClick: () => void }> = ({ label, active, onClick }) => (
+    <div className="flex items-center justify-between px-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <span className="text-xs font-bold text-white/65 tracking-wider">{label}</span>
+      <button
+        onClick={onClick}
+        className="relative w-10 h-5 rounded-full transition-all"
+        style={{ background: active ? '#dc2626' : 'rgba(255,255,255,0.12)' }}
+      >
+        <span
+          className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all"
+          style={{ left: active ? '1.25rem' : '0.125rem' }}
+        />
+      </button>
+    </div>
+  );
+
+  if (activeSubPage === 'notifications') {
+    return (
+      <div className="space-y-5 max-w-2xl mx-auto w-full">
+        <div className="flex items-center gap-3 mb-4">
+          <button onClick={() => setActiveSubPage(null)} className="p-2 rounded-lg hover:bg-white/5 transition-colors"><ChevronRight size={16} className="text-white/40 rotate-180" /></button>
+          <p className="text-sm font-black text-white tracking-wide">Notification Settings</p>
+        </div>
+        <SectionCard title="Pathways">
+          <NotifToggle label="In-app alerts" active={notifSettings.pathwaysAlerts} onClick={() => toggleSetting('pathwaysAlerts')} />
+          <NotifToggle label="Email notifications" active={notifSettings.pathwaysEmails} onClick={() => toggleSetting('pathwaysEmails')} />
+          <NotifToggle label="Push notifications" active={notifSettings.pathwaysPush} onClick={() => toggleSetting('pathwaysPush')} />
+        </SectionCard>
+        <SectionCard title="Recognition+">
+          <NotifToggle label="In-app alerts" active={notifSettings.recognitionAlerts} onClick={() => toggleSetting('recognitionAlerts')} />
+          <NotifToggle label="Email notifications" active={notifSettings.recognitionEmails} onClick={() => toggleSetting('recognitionEmails')} />
+          <NotifToggle label="Push notifications" active={notifSettings.recognitionPush} onClick={() => toggleSetting('recognitionPush')} />
+        </SectionCard>
+        <SectionCard title="Shortage.org">
+          <NotifToggle label="In-app alerts" active={notifSettings.shortageAlerts} onClick={() => toggleSetting('shortageAlerts')} />
+          <NotifToggle label="Email notifications" active={notifSettings.shortageEmails} onClick={() => toggleSetting('shortageEmails')} />
+          <NotifToggle label="Push notifications" active={notifSettings.shortagePush} onClick={() => toggleSetting('shortagePush')} />
+        </SectionCard>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5 max-w-2xl mx-auto w-full">
-      {sections.map(s => (
-        <SectionCard key={s.title} title={s.title}>
+      {/* Account */}
+      <SectionCard title="Account">
+        <div className="space-y-0.5">
+          {/* Profile Photo */}
+          <div className="px-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-white/65 tracking-wider">PROFILE PHOTO</span>
+              {hasProfilePhoto ? (
+                <div className="flex items-center gap-2">
+                  <img src={profileImage!} alt="Profile" className="w-8 h-8 rounded-full object-cover" style={{ border: '1px solid rgba(255,255,255,0.15)' }} />
+                  <label className="cursor-pointer px-2 py-1 rounded-md text-[9px] font-black tracking-wider text-white/70 hover:text-white transition-colors" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    REPLACE
+                    <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                  </label>
+                </div>
+              ) : (
+                <label className="cursor-pointer px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider text-white transition-colors hover:brightness-110" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)', color: '#ef4444' }}>
+                  {uploadingPhoto ? 'UPLOADING…' : 'UPLOAD PHOTO'}
+                  <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                </label>
+              )}
+            </div>
+          </div>
+
+          {/* Logbook Management */}
+          <div className="px-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-white/65 tracking-wider">LOGBOOK MANAGEMENT</span>
+              {hasLogbook ? (
+                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)', color: '#34d399' }}>
+                  <CheckCircle size={10} /> VIEW HISTORY
+                </button>
+              ) : (
+                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.25)', color: '#ef4444' }}>
+                  <Upload size={10} /> SYNC LOGBOOK
+                </button>
+              )}
+            </div>
+            {hasLogbook && (
+              <p className="text-[10px] text-white/30 mt-1.5">
+                {isPlus ? 'Recognition+ verified · Logbook synced' : 'Logbook synced · Upgrade to verify hours'}
+              </p>
+            )}
+          </div>
+
+          {['Change Password', 'Email Preferences'].map(item => (
+            <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              {item.toUpperCase()}
+              <ChevronRight size={12} className="text-white/25" />
+            </button>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Consent & Privacy */}
+      <SectionCard title="Consent & Privacy">
+        <div className="space-y-0.5">
+          {['Operator Access Log', 'Download My Data'].map(item => (
+            <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              {item.toUpperCase()}
+              <ChevronRight size={12} className="text-white/25" />
+            </button>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Notifications */}
+      <SectionCard title="Notifications">
+        <button
+          onClick={() => setActiveSubPage('notifications')}
+          className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        >
+          MANAGE NOTIFICATIONS
+          <ChevronRight size={12} className="text-white/25" />
+        </button>
+      </SectionCard>
+
+      {/* Subscription */}
+      <SectionCard title="Subscription">
+        {isPlus ? (
           <div className="space-y-0.5">
-            {s.items.map(item => (
+            {['View Plan', 'Billing History'].map(item => (
               <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
@@ -212,9 +369,53 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
                 <ChevronRight size={12} className="text-white/25" />
               </button>
             ))}
+            <div className="px-3 py-3 mt-1">
+              <span className="text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.25)' }}>
+                ACTIVE · RECOGNITION+
+              </span>
+            </div>
           </div>
-        </SectionCard>
-      ))}
+        ) : (
+          <div className="p-4 space-y-4">
+            <p className="text-xs text-white/50 leading-relaxed">
+              Subscribe to <span className="text-red-400 font-bold">Recognition+</span> to unlock verified hours, automated credential tracking, and priority airline pathway access.
+            </p>
+            <div className="space-y-2">
+              {[
+                'Recognition AI — unlimited career strategy queries',
+                'Pathways exclusive access — priority pilot pool listing',
+                'Recommended in pathway submissions — operator visibility boost',
+                'Priority listings — rank higher in airline recruiter pulls',
+              ].map((f, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <CheckCircle size={12} className="text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-white/60">{f}</p>
+                </div>
+              ))}
+            </div>
+            <button className="w-full py-2.5 rounded-lg text-xs font-black tracking-wider text-white transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
+              SUBSCRIBE TO RECOGNITION+ →
+            </button>
+          </div>
+        )}
+      </SectionCard>
+
+      {/* Contact Support */}
+      <SectionCard title="Contact Support">
+        <div className="p-4 space-y-3">
+          <p className="text-xs text-white/50 leading-relaxed">
+            Need help with your profile, verification, or subscription? Reach out to our pilot support team.
+          </p>
+          <div className="flex gap-2">
+            <a href="mailto:support@pilotrecognition.com" className="flex-1 text-center py-2.5 rounded-lg text-xs font-black tracking-wider transition-all hover:brightness-110" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.8)' }}>
+              EMAIL SUPPORT
+            </a>
+            <a href="https://wa.me/639123456789" target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2.5 rounded-lg text-xs font-black tracking-wider transition-all hover:brightness-110" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)', color: '#34d399' }}>
+              WHATSAPP
+            </a>
+          </div>
+        </div>
+      </SectionCard>
 
       {/* Delete Account */}
       <SectionCard title="Danger Zone">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { CareerPathwaysNavbar } from './layout/CareerPathwaysNavbar';
 import { OAuthCallback } from '@/components/OAuthCallback';
 
@@ -143,29 +144,32 @@ interface CareerPathwaysAppProps {
 
 export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin }) => {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user, isLoading: isAuth0Loading } = useAuth0();
+  const { currentUser, userProfile } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string>('');
   const [userAvatar, setUserAvatar] = useState<string>('');
 
   useEffect(() => {
-    
-    // Use Auth0 state
-    if (isAuthenticated && user) {
+    // AuthContext is the source of truth; Auth0 is the underlying provider.
+    // If either says we're logged in, treat the user as authenticated.
+    const loggedIn = (isAuthenticated && !!user) || !!currentUser;
+    if (loggedIn) {
       setIsLoggedIn(true);
-      setUserName(user.name || user.email?.split('@')[0] || 'Pilot');
-      setUserAvatar(user.picture || '');
+      // Prefer AuthContext profile image (Cloudflare D1) over Auth0/Google picture
+      setUserName(
+        userProfile?.display_name ||
+        userProfile?.full_name ||
+        currentUser?.email?.split('@')[0] ||
+        'Pilot'
+      );
+      setUserAvatar(userProfile?.profile_image_url || user?.picture || '');
     } else {
-      // Fallback to sessionStorage (not localStorage — reduces XSS persistence)
-      const token = sessionStorage.getItem('auth_token');
-      if (token) {
-        setIsLoggedIn(true);
-        setUserName(sessionStorage.getItem('user_name') || 'Pilot');
-      }
+      setIsLoggedIn(false);
+      setUserName('');
+      setUserAvatar('');
     }
-  }, [isAuthenticated, user]);
-
-  const { isLoading: isAuth0Loading } = useAuth0();
+  }, [isAuthenticated, user, currentUser, userProfile]);
   
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -240,11 +244,6 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
                 )
               } 
             />
-            <Route 
-              path="/platform" 
-              element={<Navigate to="/dashboard" replace />} 
-            />
-            
             {/* Unified Platform Pages - from pilotrecognition.com */}
             <Route 
               path="/airline-expectations" 

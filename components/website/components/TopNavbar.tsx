@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo, useContext } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { supabase } from '@/lib/supabase';
-import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink, Moon, Sun } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink, Moon, Sun, MessageSquare, LogOut, ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
 import { GraphicsSettingsModal } from './GraphicsSettingsModal';
@@ -87,6 +87,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
+    const [hamburgerOpen, setHamburgerOpen] = useState(false);
+    const hamburgerRef = useRef<HTMLDivElement>(null);
     const [isAuthRestoring, setIsAuthRestoring] = useState(true);
     const [isGraphicsModalOpen, setIsGraphicsModalOpen] = useState(false);
     const [isEnterpriseModalOpen, setIsEnterpriseModalOpen] = useState(false);
@@ -275,13 +277,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target as Node)) {
                 setIsNotificationDropdownOpen(false);
             }
+            if (hamburgerRef.current && !hamburgerRef.current.contains(event.target as Node)) {
+                setHamburgerOpen(false);
+            }
         };
 
-        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen) {
+        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen || hamburgerOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
+    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen, hamburgerOpen]);
 
     useEffect(() => {
         if (forceScrolled) return;

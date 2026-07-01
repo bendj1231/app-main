@@ -3550,6 +3550,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, [showMilitaryPathwaysPage]);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const isCarouselHovered = useRef(false);
+  const [autoCarouselIndex, setAutoCarouselIndex] = useState(0);
   const stage2Ref = useRef<HTMLDivElement>(null);
   const stage2CardsRef = useRef<PathwayData[]>([]);
   const [stage2Index, setStage2Index] = useState(0);
@@ -3565,6 +3567,28 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [flightSchoolCardData, setFlightSchoolCardData] = useState<Record<string, any>>({});
   const [flightSchoolEngagement, setFlightSchoolEngagement] = useState<Record<string, any>>({});
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Auto-carousel for Stage 1 — scrolls every 4s, pauses on hover
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isCarouselHovered.current) return;
+      const el = carouselRef.current;
+      if (!el) return;
+      const firstCard = el.querySelector<HTMLElement>(':scope > div');
+      if (!firstCard) return;
+      const cardWidth = firstCard.offsetWidth + 16; // 16 = gap
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const nextScroll = el.scrollLeft + cardWidth;
+      if (nextScroll >= maxScroll - 10) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+        setAutoCarouselIndex(0);
+      } else {
+        el.scrollTo({ left: nextScroll, behavior: 'smooth' });
+        setAutoCarouselIndex(i => i + 1);
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Cycle flight school images on the Stage 1 card based on IP region
   useEffect(() => {
@@ -4902,7 +4926,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <div
               ref={carouselRef}
               className="pathways-carousel flex overflow-x-auto pb-4"
-              style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '300px', scrollSnapType: 'x mandatory' }}
+              style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '200px', scrollSnapType: 'x mandatory' }}
+              onMouseEnter={() => { isCarouselHovered.current = true; }}
+              onMouseLeave={() => { isCarouselHovered.current = false; }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
                 if (!el) return;
@@ -4999,7 +5025,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       <div
                         key={rec.id}
                         className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
-                        style={{ width: '100vw', height: '380px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${recIdx * 0.08}s` }}
+                        style={{ width: '520px', height: '200px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${recIdx * 0.08}s` }}
                         onClick={() => {
                           setStage1Index(recIdx);
                           setStage2Index(0);
@@ -5020,16 +5046,20 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           setSelectedCarouselPathway(null);
                         }}
                       >
-                        <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                          <img src={rec.image} alt={rec.name} className="w-full h-full object-cover block" loading="lazy"
-                            onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                          <div className="absolute top-3 left-3">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${rec.tagColor}`}>{rec.tag}</span>
+                        <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800 flex" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                          {/* Left — image */}
+                          <div className="relative w-[55%] h-full flex-shrink-0 overflow-hidden">
+                            <img src={rec.image} alt={rec.name} className="w-full h-full object-cover block" loading="lazy"
+                              onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-800/80" />
+                            <div className="absolute top-3 left-3">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${rec.tagColor}`}>{rec.tag}</span>
+                            </div>
                           </div>
-                          <div className="absolute bottom-0 left-0 right-0 p-5">
-                            <h4 className="text-xl font-serif font-normal text-white leading-tight mb-1">{rec.name}</h4>
-                            <p className="text-white/60 text-sm leading-snug line-clamp-2">{rec.description}</p>
+                          {/* Right — description */}
+                          <div className="flex-1 flex flex-col justify-center p-5">
+                            <h4 className="text-base font-semibold text-white leading-tight mb-2">{rec.name}</h4>
+                            <p className="text-white/60 text-sm leading-snug line-clamp-3">{rec.description}</p>
                           </div>
                           {isSelected && (
                             <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
@@ -5073,7 +5103,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     <div
                       key={item.id}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
-                      style={{ width: '100vw', height: '380px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${itemIdx * 0.08}s` }}
+                      style={{ width: '520px', height: '200px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${itemIdx * 0.08}s` }}
                       onClick={() => {
                         if (discoveryKey) {
                           setStage1Index(itemIdx);
@@ -5096,22 +5126,26 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         }
                       }}
                     >
-                      <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                        <img
-                          key={imgSrc}
-                          src={imgSrc}
-                          alt={item.name}
-                          className="w-full h-full object-cover block"
-                          loading="lazy"
-                          style={{ transition: 'opacity 0.6s ease', animation: isFlightSchools ? 'fadeIn 0.6s ease' : undefined }}
-                          onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-5">
-                          <h4 className="text-xl font-serif font-normal text-white leading-tight mb-1">{item.name}</h4>
-                          <p className="text-white/60 text-sm leading-snug line-clamp-2">{item.description}</p>
+                      <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800 flex" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                        {/* Left — image */}
+                        <div className="relative w-[55%] h-full flex-shrink-0 overflow-hidden">
+                          <img
+                            key={imgSrc}
+                            src={imgSrc}
+                            alt={item.name}
+                            className="w-full h-full object-cover block"
+                            loading="lazy"
+                            style={{ transition: 'opacity 0.6s ease', animation: isFlightSchools ? 'fadeIn 0.6s ease' : undefined }}
+                            onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-800/80" />
+                        </div>
+                        {/* Right — description */}
+                        <div className="flex-1 flex flex-col justify-center p-5">
+                          <h4 className="text-base font-semibold text-white leading-tight mb-2">{item.name}</h4>
+                          <p className="text-white/60 text-sm leading-snug line-clamp-3">{item.description}</p>
                           {stage2Count > 0 && (
-                            <p className="text-sky-400 text-xs mt-1.5 font-semibold">{stage2Count} pathways →</p>
+                            <p className="text-sky-400 text-xs mt-2 font-semibold">{stage2Count} pathways →</p>
                           )}
                         </div>
                         {isSelected && (

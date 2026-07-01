@@ -492,14 +492,10 @@ export const HomeTab: React.FC<{
         {/* ── THREE CARDS ROW ── */}
         <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 h-[120px] flex-shrink-0 overflow-hidden">
 
-          {/* ACCESS RECOGNITION — conditional on tier */}
+          {/* ACCESS RECOGNITION — goes to profile */}
           <motion.div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => {
-              const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
-              const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
-              setTab(isPremium ? 'wallet' as TabId : 'recognition-plus-tab' as TabId);
-            }}
+            onClick={() => setTab('profile' as TabId)}
             variants={{ hidden: {}, visible: {} }}
             whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(220,38,38,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
             whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(220,38,38,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
@@ -762,7 +758,7 @@ export const HomeTab: React.FC<{
                       className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:bg-blue-500/20"
                       style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.4)', color: '#60a5fa' }}
                     >
-                      Get Recognition+
+                      Get Invite Code With Recognition+
                     </button>
                     {inviteCode && (
                       <span className="text-[9px] font-mono text-white/40 tracking-wider">{inviteCode}</span>
@@ -810,14 +806,14 @@ export const HomeTab: React.FC<{
               ) : (
                 <button
                   onClick={() => setTab('wallet' as TabId)}
-                  className="w-full rounded-xl px-3 py-2.5 flex items-center justify-between transition-all hover:bg-white/10"
-                  style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}
+                  className="w-full rounded-full px-4 py-2.5 flex items-center justify-between transition-all hover:brightness-110"
+                  style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.15)' }}
                 >
                   <div className="flex items-center gap-2">
-                    <RefreshCw size={12} className="text-blue-400" />
-                    <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Connect Logbook</span>
+                    <RefreshCw size={12} className="text-white" />
+                    <span className="text-[10px] font-bold text-white uppercase tracking-wider">Connect Logbook</span>
                   </div>
-                  <span className="text-[11px] font-black text-blue-400">→</span>
+                  <span className="text-[11px] font-black text-white">→</span>
                 </button>
               )}
             </div>
@@ -865,7 +861,7 @@ export const HomeTab: React.FC<{
                   VIEW DASHBOARD →
                 </button>
               ) : (
-                <button onClick={() => setTab('advanced-profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-amber-600 shadow-lg shadow-amber-600/20" style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.9), rgba(217,119,6,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                <button onClick={() => setTab('advanced-profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600 shadow-lg shadow-red-600/20" style={{ background: 'linear-gradient(135deg, rgba(220,38,38,0.9), rgba(185,28,28,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
                   COMPLETE ADVANCED PROFILE →
                 </button>
               )}

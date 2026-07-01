@@ -251,16 +251,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [currentUser, IDLE_TIMEOUT_MS]);
 
-  // Article 5 — Session cleanup on tab close
-  useEffect(() => {
-    const handleUnload = () => {
-      setCurrentUser(null);
-      setUserProfile(null);
-    };
-    window.addEventListener('beforeunload', handleUnload);
-    return () => window.removeEventListener('beforeunload', handleUnload);
-  }, []);
-
   // Sync Auth0 user into currentUser when there is no Supabase session
   useEffect(() => {
     if (auth0Loading) return;

@@ -6,7 +6,7 @@ import { ArrowLeft, Download, Share2 } from 'lucide-react';
 
 // Demo data - in production this would come from Supabase
 const DEMO_VERIFICATION = {
-  pilotName: "Benjamin Tiger Bowler",
+  pilotName: "Pete Mitchell",
   pilotId: "792250be-00fc-4bbf-b4a5-8673de7484f3",
   verificationId: "ver_7a8f9e2d4c6b5a1",
   status: 'VERIFIED' as const,

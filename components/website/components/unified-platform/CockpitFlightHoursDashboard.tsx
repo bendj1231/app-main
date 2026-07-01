@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, BookOpen, User, MessageSquare } from 'lucide-react';
+import { RecognitionAIChat } from './RecognitionAIChat';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import AttitudeIndicator from './AttitudeIndicator';
+import ASIHoursGauge from './ASIHoursGauge';
+// @ts-ignore — Vite raw import
+import altSvg from '/instruments/alt/alt.svg?raw';
 
 interface CockpitFlightHoursDashboardProps {
   userId: string | undefined;
@@ -194,206 +197,6 @@ const InstrumentCard: React.FC<{
   );
 };
 
-const ASIHoursGauge: React.FC<{
-  value: string;
-  rawHours: number;
-  label: string;
-  sub?: string;
-  started: boolean;
-  delay: number;
-}> = ({ value, rawHours, label, sub, started, delay }) => {
-  const maxScale = 1500;
-  const clampedHours = Math.min(rawHours, maxScale);
-  const needleDeg = 45 + (clampedHours / maxScale) * 270;
-  const majorTicks = [0, 250, 500, 750, 1000, 1250, 1500];
-  const labelMap: Record<number, string> = {
-    250: '50',
-    500: '200',
-    750: '500',
-  };
-
-  const tickToCoord = (tick: number, radius: number) => {
-    const a = -45 + (tick / maxScale) * 270;
-    const r = (a * Math.PI) / 180;
-    return { x: 100 + radius * Math.cos(r), y: 100 + radius * Math.sin(r) };
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.5, delay: delay * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative"
-    >
-      <div className="relative w-full" style={{ aspectRatio: '1 / 1' }}>
-        {/* Layer 1: dark glassy dial */}
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: 'radial-gradient(circle at 50% 55%, rgba(30,40,55,0.95) 0%, rgba(10,15,25,0.98) 60%, rgba(5,8,14,1) 100%)',
-            boxShadow: 'inset 0 0 40px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.08)',
-          }}
-        />
-
-        {/* Layer 2: SVG scale */}
-        <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full">
-          <defs>
-            <linearGradient id="boxShine" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.25)" />
-              <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-            </linearGradient>
-            <filter id="screwShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="rgba(0,0,0,0.5)" />
-            </filter>
-            <style>{`
-              @keyframes gaugeBlink {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.15; }
-              }
-            `}</style>
-          </defs>
-          {/* Thick arcs — airspeed indicator style, fitted inside bezel */}
-          <path d={`M ${tickToCoord(0,82).x.toFixed(1)} ${tickToCoord(0,82).y.toFixed(1)} A 82 82 0 0 1 ${tickToCoord(500,82).x.toFixed(1)} ${tickToCoord(500,82).y.toFixed(1)}`} fill="none" stroke="#fff" strokeWidth="14" opacity="0.9" />
-          <path d={`M ${tickToCoord(600,82).x.toFixed(1)} ${tickToCoord(600,82).y.toFixed(1)} A 82 82 0 0 1 ${tickToCoord(1000,82).x.toFixed(1)} ${tickToCoord(1000,82).y.toFixed(1)}`} fill="none" stroke="#fff" strokeWidth="14" opacity="0.9" />
-
-          {/* Inner sub-arc — green from 20 to 1k */}
-          <path d={`M ${tickToCoord(20,74).x.toFixed(1)} ${tickToCoord(20,74).y.toFixed(1)} A 74 74 0 0 1 ${tickToCoord(1000,74).x.toFixed(1)} ${tickToCoord(1000,74).y.toFixed(1)}`} fill="none" stroke="#22c55e" strokeWidth="6" opacity="0.85" />
-
-          {/* Yellow sub-arc — from 1k to 1.25k */}
-          <path d={`M ${tickToCoord(1000,74).x.toFixed(1)} ${tickToCoord(1000,74).y.toFixed(1)} A 74 74 0 0 1 ${tickToCoord(1250,74).x.toFixed(1)} ${tickToCoord(1250,74).y.toFixed(1)}`} fill="none" stroke="#FFD700" strokeWidth="6" opacity="0.9" />
-
-          {/* Minor ticks — fitted inside bezel, skip gap between white arcs */}
-          {Array.from({ length: 31 }, (_, i) => i * 50).filter(t => !majorTicks.includes(t) && !(t > 500 && t < 600)).map(tick => {
-            const { x: x1, y: y1 } = tickToCoord(tick, 68);
-            const { x: x2, y: y2 } = tickToCoord(tick, 82);
-            return <line key={tick} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.85)" strokeWidth="1.2" />;
-          })}
-
-          {/* Major ticks + numbers — fitted inside bezel */}
-          {majorTicks.map(tick => {
-            const { x: x1, y: y1 } = tickToCoord(tick, 66);
-            const { x: x2, y: y2 } = tickToCoord(tick, 82);
-            const { x: tx, y: ty } = tickToCoord(tick, 54);
-            return (
-              <g key={tick}>
-                <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={tick === 1250 ? '#dc2626' : '#fff'} strokeWidth="2.5" strokeLinecap="round" />
-                <text x={tx} y={ty} fill="#fff" fontSize="10" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" dominantBaseline="middle" letterSpacing="0.5">
-                  {labelMap[tick] ?? (tick >= 1000 ? `${tick / 1000}k` : tick)}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* Readout — segmented digit boxes */}
-          {(() => {
-            const chars = value.split('');
-            const boxW = 15;
-            const boxH = 20;
-            const gap = 2;
-            const totalW = chars.length * boxW + (chars.length - 1) * gap;
-            const startX = 100 - totalW / 2;
-            const baseY = 96;
-            return (
-              <g>
-                {chars.map((ch, i) => {
-                  const x = startX + i * (boxW + gap);
-                  return (
-                    <g key={i}>
-                      {/* Box */}
-                      <rect x={x} y={baseY} width={boxW} height={boxH} rx="3" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
-                      {/* Digit */}
-                      <text x={x + boxW / 2} y={baseY + boxH / 2 + 1} fill="#fff" fontSize="14" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" dominantBaseline="middle" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{ch}</text>
-                      {/* Shine overlay */}
-                      <rect x={x} y={baseY} width={boxW} height={boxH / 2} rx="3" fill="url(#boxShine)" opacity="0.15" />
-                    </g>
-                  );
-                })}
-                {/* HOURS */}
-                <text x="100" y="134" fill="rgba(255,255,255,0.4)" fontSize="6.5" fontWeight="700" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="2.5">HOURS</text>
-                {/* UNVERIFIED — faded red static */}
-                {sub && (
-                  <text x="100" y="36" fill="#dc2626" fontSize="7" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="3" opacity="0.55">{sub}</text>
-                )}
-                {/* TOTAL TIME */}
-                <text x="100" y="76" fill="rgba(255,255,255,0.45)" fontSize="6" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="2">{label.toUpperCase()}</text>
-              </g>
-            );
-          })()}
-
-          {/* Glassy screws */}
-          {[
-            { cx: 20, cy: 20, rot: 34 },
-            { cx: 180, cy: 20, rot: -52 },
-            { cx: 20, cy: 180, rot: 78 },
-            { cx: 180, cy: 180, rot: 12 },
-          ].map((s, i) => (
-            <g key={i} transform={`rotate(${s.rot}, ${s.cx}, ${s.cy})`}>
-              {/* Screw head — translucent dark glass */}
-              <circle cx={s.cx} cy={s.cy} r="7" fill="rgba(20,25,35,0.45)" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" filter="url(#screwShadow)" />
-              {/* Inner glass ring */}
-              <circle cx={s.cx} cy={s.cy} r="5.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6" />
-              {/* Phillips cross */}
-              <line x1={s.cx - 3} y1={s.cy} x2={s.cx + 3} y2={s.cy} stroke="rgba(255,255,255,0.55)" strokeWidth="1.2" strokeLinecap="round" />
-              <line x1={s.cx} y1={s.cy - 3} x2={s.cx} y2={s.cy + 3} stroke="rgba(255,255,255,0.55)" strokeWidth="1.2" strokeLinecap="round" />
-              {/* Center dot */}
-              <circle cx={s.cx} cy={s.cy} r="1.5" fill="rgba(255,255,255,0.3)" />
-              {/* Glassy shine highlight (top-left) */}
-              <circle cx={s.cx - 2} cy={s.cy - 2} r="2.5" fill="rgba(255,255,255,0.15)" />
-            </g>
-          ))}
-        </svg>
-
-        {/* Layer 3: needle shadow */}
-        <div
-          className="absolute group/needle cursor-pointer"
-          style={{
-            top: '5%', left: '5%', width: '90%', height: '90%',
-            transform: `rotate(${needleDeg}deg)`,
-            transformOrigin: 'center center',
-            transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
-          }}
-        >
-          <img
-            src="/instruments/asi/needle_shadow.png"
-            alt=""
-            className="w-full h-full opacity-50 group-hover/needle:opacity-15 transition-opacity duration-200"
-            style={{ pointerEvents: 'none' }}
-          />
-        </div>
-
-        {/* Layer 4: needle */}
-        <div
-          className="absolute group/needle cursor-pointer"
-          style={{
-            top: '5%', left: '5%', width: '90%', height: '90%',
-            transform: `rotate(${needleDeg}deg)`,
-            transformOrigin: 'center center',
-            transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
-          }}
-        >
-          <img
-            src="/instruments/asi/needle.png"
-            alt=""
-            className="w-full h-full group-hover/needle:opacity-25 transition-opacity duration-200"
-            style={{ pointerEvents: 'none' }}
-          />
-        </div>
-
-        {/* Layer 5: glass glare */}
-        <img src="/instruments/asi/glass_glare.png" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" style={{ transform: 'rotate(-100deg)', opacity: 0.25, pointerEvents: 'none', mixBlendMode: 'screen' }} />
-
-        {/* Layer 6: bezel */}
-        <img src="/instruments/asi/bezel.png" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" style={{ pointerEvents: 'none' }} />
-
-        {/* Glassy SVG screws — inside the main SVG overlay */}
-      </div>
-
-      {/* Sub label now rendered inside the dial */}
-    </motion.div>
-  );
-};
-
 export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardProps> = ({
   userId,
   profile,
@@ -402,6 +205,7 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
   onCompleteProfile,
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const [viewMode, setViewMode] = useState<'analog' | 'glass'>('analog');
   const [hours, setHours] = useState<FlightHoursData>(DEFAULT_HOURS);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.25 });
@@ -454,12 +258,24 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
   }, [isInView, userId, callApi, profile]);
 
   const secondaryInstruments = [
+    { label: 'PIC', value: fmtHrs(hours.picTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
     { label: 'Cross Country', value: fmtHrs(hours.xcTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
     { label: 'Night Time', value: fmtHrs(hours.nightTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
     { label: 'Sim. Instrument', value: fmtHrs(hours.simInstTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
     { label: 'Total Landings', value: String(hours.landings), sub: isFreeUser ? 'UNVERIFIED' : '' },
-    { label: 'SIM Time', value: fmtHrs(hours.simTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
     { label: 'Actual Inst.', value: fmtHrs(hours.actualInstTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+  ];
+
+  const glassInstruments = [
+    { label: 'Total Time', value: fmtHrs(hours.totalTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'PIC', value: fmtHrs(hours.picTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Dual', value: fmtHrs(hours.dualTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Cross Country', value: fmtHrs(hours.xcTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Night Time', value: fmtHrs(hours.nightTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Sim. Instrument', value: fmtHrs(hours.simInstTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Total Landings', value: String(hours.landings), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Actual Inst.', value: fmtHrs(hours.actualInstTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
+    { label: 'Sim Time', value: fmtHrs(hours.simTime), sub: isFreeUser ? 'UNVERIFIED' : '' },
   ];
 
   return (
@@ -481,6 +297,32 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
         />
       </div>
 
+      {/* View mode toggle */}
+      <div className="flex items-center justify-center gap-1">
+        <button
+          onClick={() => setViewMode('analog')}
+          className={`px-4 py-1.5 rounded-lg text-[10px] font-black tracking-wider uppercase transition-all ${
+            viewMode === 'analog'
+              ? 'text-white border border-white/20'
+              : 'text-white/30 hover:text-white/50'
+          }`}
+          style={viewMode === 'analog' ? { background: 'rgba(255,255,255,0.08)' } : {}}
+        >
+          Analog
+        </button>
+        <button
+          onClick={() => setViewMode('glass')}
+          className={`px-4 py-1.5 rounded-lg text-[10px] font-black tracking-wider uppercase transition-all ${
+            viewMode === 'glass'
+              ? 'text-white border border-white/20'
+              : 'text-white/30 hover:text-white/50'
+          }`}
+          style={viewMode === 'glass' ? { background: 'rgba(255,255,255,0.08)' } : {}}
+        >
+          Glass Cockpit
+        </button>
+      </div>
+
       {/* Free user notice */}
       {isFreeUser && !logbookConnected && (
         <div
@@ -493,98 +335,342 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
         </div>
       )}
 
-      {/* 6-pack primary instruments */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 items-start justify-items-center">
-        <div className="w-full self-start" style={{ transform: 'scale(0.70)', transformOrigin: 'center top' }}>
-          <ASIHoursGauge
-            value={fmtHrs(hours.totalTime)}
-            rawHours={hours.totalTime}
-            label="Total Time"
-            sub={isFreeUser ? 'UNVERIFIED' : ''}
-            started={isInView}
-            delay={0}
-          />
-        </div>
-        <div className="w-full self-start" style={{ transform: 'scale(0.70)', transformOrigin: 'center top', marginTop: '-28px' }}>
-          <AttitudeIndicator
-            progress={Math.min(100, (hours.totalTime / 1500) * 100)}
-            deviation={0}
-            label="Career Horizon"
-            sub={isFreeUser ? 'UNVERIFIED' : ''}
-            started={isInView}
-            delay={1}
-          />
-        </div>
-        <div className="w-full self-start" style={{ transform: 'scale(0.70)', transformOrigin: 'center top' }}>
-          <InstrumentCard
-            label="PIC"
-            value={fmtHrs(hours.picTime)}
-            sub={isFreeUser ? 'UNVERIFIED' : ''}
-            started={isInView}
-            delay={2}
-          />
-        </div>
-      </div>
+      {viewMode === 'analog' && (
+        <div className="relative">
+          {/* Main flight hours gauge */}
+          <div className="flex justify-center items-center gap-4 py-4">
+            <div className="w-56 h-56 flex-shrink-0 relative overflow-hidden">
+              <div className="absolute inset-0">
+                <ASIHoursGauge
+                  value={fmtHrs(hours.totalTime)}
+                  rawHours={hours.totalTime}
+                  label="Total Time"
+                  sub={isFreeUser ? 'UNVERIFIED' : ''}
+                  started={isInView}
+                  delay={0}
+                />
+              </div>
+            </div>
+            <div
+              className="w-56 h-56 flex-shrink-0 relative overflow-hidden rounded-full"
+              style={{
+                background: 'radial-gradient(circle at 50% 55%, rgba(30,40,55,0.95) 0%, rgba(10,15,25,0.98) 60%, rgba(5,8,14,1) 100%)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: 'inset 0 0 40px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.35)',
+              }}
+            >
+              <img
+                src="/instruments/ai/ai.svg"
+                alt="Attitude Indicator"
+                className="w-full h-full object-contain"
+                style={{ opacity: 0.9 }}
+              />
+              <img src="/instruments/asi/glass_glare.png" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" style={{ transform: 'rotate(-100deg)', opacity: 0.25, pointerEvents: 'none', mixBlendMode: 'screen' }} />
 
-      {/* Expandable secondary instruments */}
-      <div className="relative">
-        <div
-          className="overflow-hidden transition-all duration-500 ease-in-out"
-          style={{ maxHeight: expanded ? '600px' : '0px', opacity: expanded ? 1 : 0 }}
-        >
+              {/* Center frosted glass hours window */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div
+                  className="flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-xl"
+                  style={{
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    background: 'rgba(0,0,0,0.45)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
+                    transform: 'translateY(-8%)',
+                  }}
+                >
+                  {isFreeUser && (
+                    <span className="text-[6px] font-black text-red-500 tracking-[0.25em] opacity-60">UNVERIFIED</span>
+                  )}
+                  <div className="flex gap-[2px]">
+                    {fmtHrs(hours.picTime).split('').map((ch, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-center rounded-sm"
+                        style={{
+                          width: '17px',
+                          height: '21px',
+                          background: 'rgba(0,0,0,0.55)',
+                          border: '1px solid rgba(255,255,255,0.15)',
+                          fontSize: '12px',
+                          fontWeight: 900,
+                          color: '#fff',
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {ch}
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-[6.5px] font-black text-white/40 tracking-[0.25em]">PIC TIME</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Altimeter — alt.svg decorative instrument */}
+            <div
+              className="w-56 h-56 flex-shrink-0 relative overflow-hidden rounded-full"
+              style={{
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+              }}
+              dangerouslySetInnerHTML={{ __html: altSvg }}
+            />
+          </div>
+
+          {/* Expandable secondary instruments */}
+          <div className="relative">
+            <div
+              className="overflow-hidden transition-all duration-500 ease-in-out"
+              style={{ maxHeight: expanded ? '600px' : '0px', opacity: expanded ? 1 : 0 }}
+            >
+              <div className="relative grid grid-cols-3 gap-2 sm:gap-3 pt-2">
+                {secondaryInstruments.map((instrument, i) => (
+                  <InstrumentCard
+                    key={instrument.label}
+                    label={instrument.label}
+                    value={instrument.value}
+                    sub={instrument.sub}
+                    started={isInView}
+                    delay={i + 3}
+                  />
+                ))}
+
+              </div>
+            </div>
+          </div>
+
+          {/* View More toggle */}
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black tracking-wider text-white/60 transition-all hover:bg-white/10"
+            style={{
+              background: 'rgba(0,0,0,0.55)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+            }}
+          >
+            {expanded ? 'SHOW LESS' : 'VIEW MORE'}
+            <span className="inline-flex items-center justify-center ml-2 leading-none">
+              {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+            </span>
+          </button>
+
+          {/* Glassy overlay — connect logbook */}
+          {!logbookConnected && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0 z-20 flex items-center justify-center p-6"
+              style={{
+                background: 'rgba(15,23,42,0.35)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
+            >
+              <div
+                className="flex flex-col items-center justify-center text-center p-6 rounded-2xl"
+                style={{
+                  width: '280px',
+                  height: '280px',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,250,240,0.88) 100%)',
+                  border: '1px solid rgba(255,255,255,0.5)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)',
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+                  style={{
+                    background: 'rgba(220,38,38,0.1)',
+                    border: '1px solid rgba(220,38,38,0.2)',
+                  }}
+                >
+                  <BookOpen size={20} className="text-red-500" />
+                </div>
+                <p className="text-sm font-black text-slate-800 mb-1">Connect Your Logbook</p>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-4">
+                  Sync your digital logbook to display analog & digital flight hours on your dashboard.
+                </p>
+                <button
+                  onClick={() => onCompleteProfile?.()}
+                  className="px-5 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                  style={{ background: '#dc2626' }}
+                >
+                  CONNECT LOGBOOK →
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {viewMode === 'glass' && (
+        <div className="relative">
           <div className="relative grid grid-cols-3 gap-2 sm:gap-3 pt-2">
-            {secondaryInstruments.map((instrument, i) => (
+            {glassInstruments.map((instrument, i) => (
               <InstrumentCard
                 key={instrument.label}
                 label={instrument.label}
                 value={instrument.value}
                 sub={instrument.sub}
                 started={isInView}
-                delay={i + 3}
+                delay={i}
               />
             ))}
 
-            {/* Blur gate for incomplete profiles */}
-            {isFreeUser && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-2xl" style={{ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', background: 'rgba(15,23,42,0.75)' }}>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                  <span className="text-white text-xl font-black">PR°</span>
+          </div>
+
+          {/* Glassy overlay — connect logbook */}
+          {!logbookConnected && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0 z-20 flex items-center justify-center p-6"
+              style={{
+                background: 'rgba(15,23,42,0.35)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
+            >
+              <div
+                className="flex flex-col items-center justify-center text-center p-6 rounded-2xl"
+                style={{
+                  width: '280px',
+                  height: '280px',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,250,240,0.88) 100%)',
+                  border: '1px solid rgba(255,255,255,0.5)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)',
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+                  style={{
+                    background: 'rgba(220,38,38,0.1)',
+                    border: '1px solid rgba(220,38,38,0.2)',
+                  }}
+                >
+                  <BookOpen size={20} className="text-red-500" />
                 </div>
-                <div className="text-center px-6 max-w-sm">
-                  <p className="text-lg font-black text-white tracking-tight">Complete Your Advanced Profile</p>
-                  <p className="text-sm text-white/60 mt-2 leading-relaxed">Unlock your full flight time breakdown, AI pathway matching, and recurrency alerts.</p>
-                </div>
-                {onCompleteProfile && (
-                  <button
-                    onClick={onCompleteProfile}
-                    className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white transition-all hover:brightness-110"
-                    style={{ background: '#dc2626' }}
-                  >
-                    COMPLETE PROFILE →
-                  </button>
-                )}
+                <p className="text-sm font-black text-slate-800 mb-1">Connect Your Logbook</p>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-4">
+                  Sync your digital logbook to display analog & digital flight hours on your dashboard.
+                </p>
+                <button
+                  onClick={() => onCompleteProfile?.()}
+                  className="px-5 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                  style={{ background: '#dc2626' }}
+                >
+                  CONNECT LOGBOOK →
+                </button>
               </div>
-            )}
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {/* ─── PILOT BIO & INTERESTS ─── */}
+      <div className="space-y-4 pt-2">
+        {/* Divider */}
+        <div
+          className="w-full h-px"
+          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.2) 80%, transparent 100%)' }}
+        />
+
+        {/* Header row */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <User size={14} className="text-sky-400" />
+            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Pilot Bio & Interests</span>
+          </div>
+          {onCompleteProfile && (
+            <button
+              onClick={onCompleteProfile}
+              className="text-[9px] font-black tracking-wider text-white/40 hover:text-white/70 transition-colors flex items-center gap-1"
+            >
+              Complete Profile →
+            </button>
+          )}
+        </div>
+
+        {/* Pathway interests — wired from profile / getDashboardData */}
+        {(() => {
+          const interests = [
+            { label: 'Career Goal', value: profile?.career_goal },
+            { label: 'Pilot Stage', value: profile?.pilot_stage },
+            { label: 'Target Role', value: profile?.target_role },
+            { label: 'Preferred Region', value: profile?.preferred_region },
+            { label: 'Current Occupation', value: profile?.current_occupation },
+            { label: 'Employment Status', value: profile?.employment_status },
+          ].filter((i) => !!i.value);
+
+          if (interests.length === 0) {
+            return (
+              <div
+                className="rounded-xl p-4 text-center"
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}
+              >
+                <p className="text-[11px] text-white/25">No interests or goals set yet.</p>
+                <p className="text-[10px] text-white/20 mt-1">
+                  Complete your advanced profile to unlock pathway matching.
+                </p>
+              </div>
+            );
+          }
+
+          return (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {interests.map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="rounded-xl p-3"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  <p className="text-[8px] font-black tracking-wider uppercase text-white/30">{label}</p>
+                  <p className="text-[11px] font-bold text-white/80 mt-0.5 truncate">{String(value)}</p>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+
+        {/* Recognition AI — compact chat CTA */}
+        <div
+          className="rounded-xl p-4"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+        >
+          <div className="mb-3">
+            <p className="text-[11px] font-bold text-white/80">Ask Recognition AI</p>
+            <p className="text-[10px] text-white/40">Get advice on your pathways, career goals, and interests.</p>
+          </div>
+          <div className="max-h-[240px] overflow-hidden rounded-lg">
+            <RecognitionAIChat profile={profile} />
           </div>
         </div>
       </div>
 
-      {/* View More toggle */}
-      <button
-        onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black tracking-wider text-white/60 transition-all hover:bg-white/10"
-        style={{
-          background: 'rgba(0,0,0,0.55)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-        }}
-      >
-        {expanded ? 'SHOW LESS' : 'VIEW MORE'}
-        <span className="inline-flex items-center justify-center ml-2 leading-none">
-          {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-        </span>
-      </button>
+      {/* Free user prompt below instruments */}
+      {isFreeUser && (
+        <div className="flex flex-col items-center gap-2 py-4 text-center">
+          <p className="text-xs font-black text-white/50 tracking-wider uppercase">Complete Your Advanced Profile</p>
+          <p className="text-[10px] text-white/30">Unlock full flight time breakdown, AI pathway matching, and recurrency alerts.</p>
+          {onCompleteProfile && (
+            <button
+              onClick={onCompleteProfile}
+              className="mt-1 px-5 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+              style={{ background: '#dc2626' }}
+            >
+              COMPLETE PROFILE →
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

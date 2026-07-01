@@ -8,7 +8,7 @@ import {
   BookOpen,
   Flag, MinusCircle, Camera,
   FileText, TrendingUp,
-  Sparkles, UserCheck, Plane, Briefcase, ChevronRight
+  Sparkles, UserCheck, User, Plane, Briefcase, ChevronRight
 } from 'lucide-react';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -443,7 +443,7 @@ export const VerificationStatusTab: React.FC<{
 
             {/* Edit Button */}
             <button
-              onClick={() => onNavigate('profile')}
+              onClick={() => setTab('profile')}
               className="mt-3 w-full group flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[10px] font-black tracking-wider uppercase transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)',
@@ -455,7 +455,7 @@ export const VerificationStatusTab: React.FC<{
               }}
             >
               <Settings size={13} className="text-sky-400 transition-transform duration-300 group-hover:rotate-90" />
-              Edit About Page
+              Edit Public Profile
               <ArrowRight size={13} className="text-white/40 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5" />
             </button>
 
@@ -483,124 +483,130 @@ export const VerificationStatusTab: React.FC<{
             <ShieldCheck size={16} className="text-sky-400" />
             <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Current Credentials Validity</span>
           </div>
-          {(() => {
-            const now = Date.now();
-            const findCredential = (type: string) => credentials.find(c => String(c?.credential_type || '').toLowerCase() === type);
-            const licenseCred = findCredential('license');
-            const medicalCred = findCredential('medical');
-            const elpCred = findCredential('english_proficiency') || findCredential('elp');
-            const radioCred = findCredential('radio_license');
+          {isFreeUser ? (
+            /* ─── FREE USER: clean list, no status column ─── */
+            <div className="space-y-2">
+              {[
+                { label: 'Pilot License', value: profile?.license_type },
+                { label: 'Medical Class', value: profile?.medical_class },
+                { label: 'ICAO ELP', value: profile?.elp_level },
+                { label: 'Radio License', value: profile?.other_licence },
+              ].map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between px-4 py-3 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  <span className="text-[11px] font-bold text-white/70 leading-tight">{label}</span>
+                  <span className={`text-[11px] font-bold leading-tight ${value ? 'text-emerald-400' : 'text-white/25'}`}>
+                    {value || 'Not provided'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* ─── RECOGNITION+ MEMBER: full status UI ─── */
+            (() => {
+              const now = Date.now();
+              const findCredential = (type: string) => credentials.find(c => String(c?.credential_type || '').toLowerCase() === type);
+              const licenseCred = findCredential('license');
+              const medicalCred = findCredential('medical');
+              const elpCred = findCredential('english_proficiency') || findCredential('elp');
+              const radioCred = findCredential('radio_license');
 
-            const statusBadge = (cred: any, claimed: any) => {
-              if (isFreeUser) {
-                if (claimed) {
+              const statusBadge = (cred: any) => {
+                if (!cred) {
                   return {
-                    icon: <Clock size={14} className="text-amber-400" />,
-                    label: 'UNVERIFIED',
-                    color: '#d97706',
-                    bg: 'rgba(245,158,11,0.08)',
-                    border: 'rgba(245,158,11,0.2)',
+                    icon: <MinusCircle size={14} className="text-gray-400" />,
+                    label: 'NOT VERIFIED',
+                    color: '#6b7280',
+                    bg: 'rgba(107,114,128,0.08)',
+                    border: 'rgba(107,114,128,0.2)',
+                  };
+                }
+                const status = String(cred.status || '').toLowerCase();
+                const expires = cred.expires_at ? new Date(cred.expires_at).getTime() : null;
+                const daysLeft = expires ? Math.ceil((expires - now) / (1000 * 60 * 60 * 24)) : null;
+
+                if (status === 'expired' || status === 'revoked') {
+                  return {
+                    icon: <Flag size={14} className="text-red-500" />,
+                    label: 'EXPIRED',
+                    color: '#dc2626',
+                    bg: 'rgba(220,38,38,0.08)',
+                    border: 'rgba(220,38,38,0.2)',
+                  };
+                }
+                if (status === 'flagged' || status === 'suspicious' || status === 'fraudulent') {
+                  return {
+                    icon: <Flag size={14} className="text-red-500" />,
+                    label: 'FLAGGED',
+                    color: '#dc2626',
+                    bg: 'rgba(220,38,38,0.08)',
+                    border: 'rgba(220,38,38,0.2)',
+                  };
+                }
+                if (expires && daysLeft !== null && daysLeft <= 30) {
+                  return {
+                    icon: <Flag size={14} className="text-white/50" />,
+                    label: `EXPIRES IN ${daysLeft}D`,
+                    color: 'rgba(255,255,255,0.55)',
+                    bg: 'rgba(255,255,255,0.04)',
+                    border: 'rgba(255,255,255,0.12)',
+                  };
+                }
+                if (status === 'active' || status === 'verified' || status === 'valid') {
+                  return {
+                    icon: <CheckCircle2 size={14} className="text-emerald-400" />,
+                    label: 'VALID',
+                    color: '#16a34a',
+                    bg: 'rgba(16,185,129,0.08)',
+                    border: 'rgba(16,185,129,0.2)',
                   };
                 }
                 return {
-                  icon: <MinusCircle size={14} className="text-gray-400" />,
-                  label: 'NOT PROVIDED',
-                  color: '#6b7280',
-                  bg: 'rgba(107,114,128,0.08)',
-                  border: 'rgba(107,114,128,0.2)',
-                };
-              }
-              if (!cred) {
-                return {
-                  icon: <MinusCircle size={14} className="text-gray-400" />,
-                  label: 'NOT VERIFIED',
-                  color: '#6b7280',
-                  bg: 'rgba(107,114,128,0.08)',
-                  border: 'rgba(107,114,128,0.2)',
-                };
-              }
-              const status = String(cred.status || '').toLowerCase();
-              const expires = cred.expires_at ? new Date(cred.expires_at).getTime() : null;
-              const daysLeft = expires ? Math.ceil((expires - now) / (1000 * 60 * 60 * 24)) : null;
-
-              if (status === 'expired' || status === 'revoked') {
-                return {
-                  icon: <Flag size={14} className="text-red-500" />,
-                  label: 'EXPIRED',
-                  color: '#dc2626',
-                  bg: 'rgba(220,38,38,0.08)',
-                  border: 'rgba(220,38,38,0.2)',
-                };
-              }
-              if (status === 'flagged' || status === 'suspicious' || status === 'fraudulent') {
-                return {
-                  icon: <Flag size={14} className="text-red-500" />,
-                  label: 'FLAGGED',
-                  color: '#dc2626',
-                  bg: 'rgba(220,38,38,0.08)',
-                  border: 'rgba(220,38,38,0.2)',
-                };
-              }
-              if (expires && daysLeft !== null && daysLeft <= 30) {
-                return {
                   icon: <Flag size={14} className="text-white/50" />,
-                  label: `EXPIRES IN ${daysLeft}D`,
+                  label: 'UNDER REVIEW',
                   color: 'rgba(255,255,255,0.55)',
                   bg: 'rgba(255,255,255,0.04)',
                   border: 'rgba(255,255,255,0.12)',
                 };
-              }
-              if (status === 'active' || status === 'verified' || status === 'valid') {
-                return {
-                  icon: <CheckCircle2 size={14} className="text-emerald-400" />,
-                  label: 'VALID',
-                  color: '#16a34a',
-                  bg: 'rgba(16,185,129,0.08)',
-                  border: 'rgba(16,185,129,0.2)',
-                };
-              }
-              return {
-                icon: <Flag size={14} className="text-white/50" />,
-                label: 'UNDER REVIEW',
-                color: 'rgba(255,255,255,0.55)',
-                bg: 'rgba(255,255,255,0.04)',
-                border: 'rgba(255,255,255,0.12)',
               };
-            };
 
-            const items = [
-              { label: 'Pilot License', claimed: profile?.license_type, cred: licenseCred },
-              { label: 'Class 1 Medical', claimed: profile?.medical_class, cred: medicalCred },
-              { label: 'ICAO ELP', claimed: profile?.elp_level, cred: elpCred },
-              { label: 'Radio License', claimed: profile?.other_licence, cred: radioCred },
-            ];
+              const items = [
+                { label: 'Pilot License', claimed: profile?.license_type, cred: licenseCred },
+                { label: 'Class 1 Medical', claimed: profile?.medical_class, cred: medicalCred },
+                { label: 'ICAO ELP', claimed: profile?.elp_level, cred: elpCred },
+                { label: 'Radio License', claimed: profile?.other_licence, cred: radioCred },
+              ];
 
-            return (
-              <div className="space-y-2">
-                {items.map(({ label, claimed, cred }) => {
-                  const badge = statusBadge(cred, claimed);
-                  return (
-                    <div
-                      key={label}
-                      className="flex items-center justify-between px-4 py-3 rounded-xl"
-                      style={{ background: badge.bg, border: `1px solid ${badge.border}` }}
-                    >
-                      <div className="flex flex-col min-w-0 flex-1 mr-3">
-                        <span className="text-[11px] font-bold text-white leading-tight">{label}</span>
-                        {claimed && (
-                          <span className="text-[10px] font-bold text-emerald-400 leading-tight mt-0.5">{claimed}</span>
-                        )}
+              return (
+                <div className="space-y-2">
+                  {items.map(({ label, claimed, cred }) => {
+                    const badge = statusBadge(cred);
+                    return (
+                      <div
+                        key={label}
+                        className="flex items-center justify-between px-4 py-3 rounded-xl"
+                        style={{ background: badge.bg, border: `1px solid ${badge.border}` }}
+                      >
+                        <div className="flex flex-col min-w-0 flex-1 mr-3">
+                          <span className="text-[11px] font-bold text-white leading-tight">{label}</span>
+                          {claimed && (
+                            <span className="text-[10px] font-bold text-emerald-400 leading-tight mt-0.5">{claimed}</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                          {badge.icon}
+                          <span className="text-[9px] font-black tracking-wider whitespace-nowrap" style={{ color: badge.color }}>{badge.label}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5 flex-shrink-0">
-                        {badge.icon}
-                        <span className="text-[9px] font-black tracking-wider whitespace-nowrap" style={{ color: badge.color }}>{badge.label}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
+                    );
+                  })}
+                </div>
+              );
+            })()
+          )}
           {isFreeUser && (
             <div className="mt-5 rounded-xl p-4 text-center" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
               <p className="text-[11px] text-white/80 leading-relaxed">
@@ -784,14 +790,14 @@ export const VerificationStatusTab: React.FC<{
         onCompleteProfile={() => setTab('advanced-profile')}
       />
 
-      {/* Connect a digital logbook */}
+      {/* Shortcut to Logbook tab */}
       <button
-        onClick={() => { setSelectedProvider(null); setShowLogbookModal(true); }}
+        onClick={() => setTab('logbook')}
         className="w-full flex items-center justify-center gap-2.5 px-6 py-[18px] text-[10px] font-black tracking-wider uppercase text-white/50 transition-all hover:bg-white/5 leading-none"
         style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         <BookOpen size={16} className="text-white/40 block" />
-        <span className="leading-none">Connect digital logbook</span>
+        <span className="leading-none">GO TO LOGBOOK →</span>
       </button>
 
       {/* Logbook Provider Modal */}
@@ -861,7 +867,7 @@ export const VerificationStatusTab: React.FC<{
                 const providerName = selectedProvider.toLowerCase();
                 if (providerName.includes('myflightbook')) {
                   const redirectUri = 'https://pilotrecognition.com/auth/logbook/callback';
-                  const clientId = import.meta.env.VITE_MFB_CLIENT_ID || 'PilotRecognition';
+                  const clientId = (import.meta as any).env?.VITE_MFB_CLIENT_ID || 'PilotRecognition';
                   const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals`;
                   safeRedirect(url);
                 } else {
@@ -886,30 +892,50 @@ export const VerificationStatusTab: React.FC<{
         </div>
       )}
 
-      {/* Career Progress Dashboard CTA */}
+      {/* Recognition+ CTA */}
       <motion.div
         variants={itemVariants}
-        className="rounded-2xl p-6 cursor-pointer group"
+        className="rounded-2xl p-6"
         style={{
-          background: 'linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.92))',
-          border: '1px solid rgba(255,255,255,0.12)',
+          background: 'linear-gradient(135deg, rgba(220,38,38,0.22) 0%, rgba(15,23,42,0.95) 100%)',
+          border: '1px solid rgba(220,38,38,0.25)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)'
         }}
-        onClick={() => onNavigate('platform/career-progress')}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(56,189,248,0.15)', border: '1px solid rgba(56,189,248,0.3)' }}>
-              <TrendingUp size={18} className="text-sky-400 block" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <Sparkles size={18} className="text-red-400 block" />
             </div>
             <div>
-              <p className="text-[10px] font-black tracking-wider uppercase text-sky-400 mb-1">Career Progress</p>
-              <p className="text-sm font-black text-white">View Career Progress Dashboard</p>
-              <p className="text-xs text-white/80 mt-0.5">Track your pathway to airline readiness</p>
+              <p className="text-[10px] font-black tracking-wider uppercase text-red-400 mb-1">Recognition+</p>
+              <p className="text-sm font-black text-white">Unlock Your Full Career Potential</p>
             </div>
           </div>
-          <ArrowRight size={18} className="text-white/30 group-hover:text-white transition-colors" />
+
+          <ul className="space-y-2">
+            {[
+              'Access Recognition AI',
+              'Track Pathways',
+              'Check Recurrencies',
+              'Align your profile with manufacturer expectations and requirements',
+              'Find out what you\'re missing in your aviation career profile',
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-white/70">
+                <span className="text-red-400 mt-0.5 flex-shrink-0">●</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            onClick={() => setTab('recognition-plus')}
+            className="w-full py-3 rounded-xl text-xs font-black tracking-wider text-red-600 transition-all hover:brightness-105"
+            style={{ background: '#ffffff', border: '1px solid rgba(220,38,38,0.3)' }}
+          >
+            GET RECOGNITION+ →
+          </button>
         </div>
       </motion.div>
     </motion.div>

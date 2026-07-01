@@ -9,7 +9,7 @@ import {
   Wrench,
   FileText,
   BookMarked,
-  Bookmark,
+  Inbox,
   Calendar,
   Newspaper,
   Settings,
@@ -24,6 +24,7 @@ import {
   Star,
   BadgeCheck,
   Target,
+  X,
 } from 'lucide-react';
 import { supabase } from '@/lib/shared/supabase';
 import type { NavItem } from './types';
@@ -48,7 +49,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'logbook', label: 'Logbook', icon: BookMarked },
-  { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
+  { id: 'inbox', label: 'Inbox', icon: Inbox },
   { id: 'recognition-plus', label: 'Recognition+', icon: BadgeCheck },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
@@ -297,9 +298,10 @@ export const CredentialRequestCard: React.FC<{
   );
 };
 
-export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Profile }> = ({
+export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Profile; onClose?: () => void }> = ({
   profileId,
   profile,
+  onClose,
 }) => {
   const [notifs, setNotifs] = React.useState<Record<string, unknown>[]>([]);
   React.useEffect(() => {
@@ -404,110 +406,190 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
       : null;
 
   const markRead = async (id: string) => {
-    await supabase.from('pilot_notifications').update({ is_read: true }).eq('id', id);
+    if (!id.startsWith('rp-')) {
+      await supabase.from('pilot_notifications').update({ is_read: true }).eq('id', id);
+    }
     setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
   };
 
-  const iconFor = (type: string) => {
+  const avatarFor = (type: string) => {
+    const userPic = (profile as Record<string, unknown>)?.profile_image_url as string | undefined;
+    if (type === 'pr_system')
+      return { src: null, badge: 'pr', color: '#dc2626', bg: 'rgba(0,0,0,0.06)', label: 'PR' };
+    if (type === 'recognition_plus')
+      return { src: null, badge: 'rplus', color: '#dc2626', bg: 'rgba(220,38,38,0.08)', label: 'Recognition+' };
     if (type === 'credential_request')
-      return { icon: Building2, color: '#f97316', bg: 'rgba(249,115,22,0.12)' };
+      return { src: 'https://i.pravatar.cc/150?u=operator', badge: null, color: '#f97316', bg: 'rgba(249,115,22,0.12)', label: 'Operator' };
     if (type === 'credential_expiry')
-      return { icon: AlertTriangle, color: '#ef4444', bg: 'rgba(239,68,68,0.1)' };
+      return { src: 'https://i.pravatar.cc/150?u=authority', badge: null, color: '#ef4444', bg: 'rgba(239,68,68,0.1)', label: 'CAA' };
     if (type === 'tc_update')
-      return { icon: FileText, color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' };
+      return { src: 'https://i.pravatar.cc/150?u=legal', badge: null, color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', label: 'Legal' };
     if (type === 'subscription_expiry')
-      return { icon: Star, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' };
+      return { src: 'https://i.pravatar.cc/150?u=premium', badge: null, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', label: 'Recognition+' };
     if (type === 'pathway_reminder')
-      return { icon: Target, color: '#38bdf8', bg: 'rgba(56,189,248,0.12)' };
+      return { src: userPic || 'https://i.pravatar.cc/150?u=pathway', badge: null, color: '#38bdf8', bg: 'rgba(56,189,248,0.12)', label: 'Pathways' };
     if (type === 'flight_school_reminder')
-      return { icon: Plane, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' };
-    return { icon: Bell, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' };
+      return { src: 'https://i.pravatar.cc/150?u=ato', badge: null, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', label: 'ATO' };
+    return { src: userPic || 'https://i.pravatar.cc/150?u=system', badge: null, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', label: 'System' };
   };
 
+  const isPlus = (profile as Record<string, unknown>)?.subscription_tier === 'plus' || (profile as Record<string, unknown>)?.subscription_tier === 'enterprise';
+  const profileComplete = !!(profile?.license_type || profile?.pilot_stage);
+
+  const recognitionPlusWelcome = profileComplete
+    ? {
+        id: 'rp-welcome',
+        title: 'Welcome to Recognition+',
+        body: 'Your profile is verified and active. Get started with automated compliance tracking, credential expiry alerts, and priority pathway access to airline recruiters.',
+        type: 'recognition_plus',
+        is_read: false,
+      }
+    : {
+        id: 'rp-get-started',
+        title: 'Complete your profile to unlock Recognition+',
+        body: 'Your verification form has been received. Complete your pilot profile — add your license type, ratings, and total hours — to activate your Recognition+ status and start getting pulled by operators.',
+        type: 'recognition_plus',
+        is_read: false,
+      };
+
+  const verificationPending = {
+    id: 'rp-verification-pending',
+    title: 'Verification pending — hang tight',
+    body: 'Your verification documents have been submitted and are under review by our compliance team. You will receive an update within 24–48 hours. No further action is required.',
+    type: 'pr_system',
+    is_read: false,
+  };
+
+  const upgradePrompt = !isPlus
+    ? {
+        id: 'rp-upgrade',
+        title: 'Upgrade to Recognition+',
+        body: 'Unlock verified hours, automated credential tracking, expiry alerts, and priority airline pathway access. Your profile score increases by 40% with Recognition+.',
+        type: 'recognition_plus',
+        is_read: false,
+      }
+    : null;
+
   const allNotifs = [
+    upgradePrompt,
+    recognitionPlusWelcome,
+    ...(profileComplete ? [] : [verificationPending]),
     pathwayReminder,
     ...(flightSchoolReminder ? [flightSchoolReminder] : []),
     ...notifs,
-  ];
+  ].filter(Boolean);
+
+  const unreadCount = notifs.filter((n) => !n.is_read).length;
 
   return (
-    <div
-      style={{
-        background: 'rgba(15,23,42,0.75)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(8px)',
-      }}
-    >
-      <div className="flex items-center justify-between px-5 pt-4 pb-3">
+    <div className="bg-white/80 backdrop-blur-xl">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-slate-200/60">
         <div>
-          <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
-          <p className="text-sm font-black text-white tracking-wide">Notifications</p>
+          <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">Activity</p>
+          <p className="text-sm font-black text-slate-900 tracking-wide">Notifications</p>
         </div>
-        {notifs.some((n) => !n.is_read) && (
-          <span
-            className="text-[9px] font-black px-2 py-0.5 rounded-full"
-            style={{
-              background: 'rgba(239,68,68,0.15)',
-              color: '#f87171',
-              border: '1px solid rgba(239,68,68,0.25)',
-            }}
-          >
-            {notifs.filter((n) => !n.is_read).length} UNREAD
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {unreadCount > 0 && (
+            <span className="flex items-center gap-1.5 text-[9px] font-black px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+              {unreadCount} UNREAD
+            </span>
+          )}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+            >
+              <X size={14} className="text-slate-400" />
+            </button>
+          )}
+        </div>
       </div>
-      <div className="px-5 pb-4">
+
+      {/* Notification list */}
+      <div className="px-3 py-3 max-h-[380px] overflow-y-auto">
         {allNotifs.length === 0 ? (
-          <div className="flex items-center justify-center py-4">
-            <p className="text-[10px] text-white/20">No notifications</p>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <Bell size={24} className="text-slate-200 mx-auto mb-2" />
+              <p className="text-sm text-slate-400">No notifications yet</p>
+              <p className="text-[11px] text-slate-300 mt-1">New activity will appear here</p>
+            </div>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-2.5">
             {allNotifs.map((n) => {
-              const cfg = iconFor(n.type);
-              const Icon = cfg.icon;
+              const cfg = avatarFor(n.type);
               return (
                 <div
                   key={n.id ?? n.type}
-                  className="flex items-start gap-3 px-3 py-2.5 cursor-pointer hover:brightness-110 transition-all"
+                  className={`flex items-start gap-3 px-3.5 py-3.5 rounded-xl cursor-pointer transition-all ${
+                    n.is_read
+                      ? 'hover:bg-white/40'
+                      : 'hover:bg-white/60'
+                  }`}
                   style={{
-                    background: n.is_read ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)',
-                    border: `1px solid ${n.is_read ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)'}`,
+                    background: n.is_read
+                      ? 'linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 100%)'
+                      : 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.5)',
+                    boxShadow: n.is_read
+                      ? '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)'
+                      : '0 4px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
                   }}
                   onClick={() => n.id && !n.is_read && markRead(n.id)}
                 >
-                  <div
-                    className="w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: cfg.bg, border: `1px solid ${cfg.color}30` }}
-                  >
-                    <Icon size={10} style={{ color: cfg.color }} />
+                  <div className="relative flex-shrink-0 mt-0.5">
+                    {cfg.badge ? (
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black"
+                        style={{ background: cfg.bg, border: `2px solid ${cfg.color}30` }}
+                      >
+                        {cfg.badge === 'pr' ? (
+                          <span><span className="text-black">P</span><span className="text-red-600">R</span></span>
+                        ) : cfg.badge === 'rplus' ? (
+                          <span className="text-red-600">R+</span>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <img
+                        src={cfg.src || ''}
+                        alt={cfg.label}
+                        className="w-10 h-10 rounded-full object-cover"
+                        style={{ border: `2px solid ${cfg.color}40` }}
+                      />
+                    )}
+                    {!n.is_read && (
+                      <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-white" />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p
-                      className={`text-[10px] font-black truncate ${n.is_read ? 'text-white/50' : 'text-white'}`}
-                    >
-                      {n.title}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className={`text-[12px] font-bold truncate ${n.is_read ? 'text-slate-500' : 'text-slate-900'}`}>
+                        {n.title}
+                      </p>
+                      <span className="text-[8px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}30` }}>
+                        {cfg.label}
+                      </span>
+                    </div>
                     {n.body && (
-                      <p className="text-[9px] text-white/30 mt-0.5 leading-relaxed line-clamp-2">
+                      <p className={`text-[11px] mt-1 leading-relaxed line-clamp-2 ${n.is_read ? 'text-slate-400' : 'text-slate-500'}`}>
                         {n.body}
                       </p>
                     )}
                     {n.action && (
-                      <div className="mt-2 flex flex-wrap gap-1">
+                      <div className="mt-2.5 flex flex-wrap gap-1.5">
                         {n.action.schools.map((school: string) => (
                           <button
                             key={school}
-                            className="px-2 py-1 rounded-md text-[8px] font-black tracking-wider text-white transition-all hover:brightness-110"
-                            style={{
-                              background:
-                                'linear-gradient(135deg, rgba(245,158,11,0.9), rgba(217,119,6,0.9))',
-                            }}
+                            className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                            style={{ background: cfg.color }}
                             onClick={(e) => {
                               e.stopPropagation();
-                              alert(
-                                `Booking request for ${school} — contact integration placeholder`
-                              );
+                              alert(`Booking request for ${school} — contact integration placeholder`);
                             }}
                           >
                             {n.action.label} {school}
@@ -516,7 +598,7 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
                       </div>
                     )}
                     {n.created_at && (
-                      <p className="text-[8px] text-white/20 mt-1">
+                      <p className="text-[10px] text-slate-400 mt-1.5">
                         {new Date(n.created_at).toLocaleDateString('en-GB', {
                           day: 'numeric',
                           month: 'short',
@@ -526,14 +608,20 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
                       </p>
                     )}
                   </div>
-                  {!n.is_read && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0 mt-1.5" />
-                  )}
                 </div>
               );
             })}
           </div>
         )}
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 py-3 border-t border-slate-200/60 bg-slate-50/50">
+        <button
+          className="w-full text-center text-[11px] font-black text-slate-500 hover:text-slate-700 transition-colors"
+        >
+          View all in Inbox →
+        </button>
       </div>
     </div>
   );

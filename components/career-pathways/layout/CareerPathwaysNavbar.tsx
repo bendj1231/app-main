@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/shared/supabase';
+import ProfileImage from '@/components/ProfileImage';
+import { MessagesPanel } from '@/components/website/components/unified-platform/MessagesPanel';
+import { NotificationsFeedPanel } from '@/components/website/components/unified-platform/shared';
 import {
   Target,
   User,
@@ -12,7 +18,12 @@ import {
   Settings,
   Wallet,
   ShieldCheck,
-  MessageSquare
+  MessageSquare,
+  Home,
+  LogOut,
+  ChevronRight,
+  Shield,
+  Map,
 } from 'lucide-react';
 
 interface CareerPathwaysNavbarProps {
@@ -26,14 +37,81 @@ interface CareerPathwaysNavbarProps {
 export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   onLogin,
   isLoggedIn = false,
-  userName,
-  userAvatar,
   isVerified = false
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { currentUser, userProfile, logout } = useAuth();
+  const displayName = userProfile?.display_name || userProfile?.full_name || currentUser?.email?.split('@')[0] || 'Pilot';
+
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnterpriseModalOpen, setIsEnterpriseModalOpen] = useState(false);
+
+  const [chatOpen, setChatOpen] = useState(false);
+  const [bellOpen, setBellOpen] = useState(false);
+  const [profileDropOpen, setProfileDropOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [notifCount, setNotifCount] = useState(0);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [tcUpdatePending, setTcUpdatePending] = useState(false);
+  const [emailVerified, setEmailVerified] = useState<boolean>(true);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const bellRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }: { data: { session: any } }) => {
+      if (session?.user) setEmailVerified(!!session.user.email_confirmed_at);
+    });
+  }, []);
+
+  useEffect(() => {
+    const CURRENT_TC_VERSION = 'v2-2026';
+    if (userProfile?.consent_version && userProfile.consent_version !== CURRENT_TC_VERSION) {
+      setTcUpdatePending(true);
+    }
+  }, [userProfile?.consent_version]);
+
+  useEffect(() => {
+    const profileId = userProfile?.id;
+    if (!profileId) return;
+    const fetchNotifs = async () => {
+      const countResult = await supabase.from('pilot_notifications').select('id', { count: 'exact', head: true }).eq('pilot_id', profileId).eq('is_read', false);
+      const dataResult = await supabase.from('pilot_notifications').select('*').eq('pilot_id', profileId).order('created_at', { ascending: false }).limit(10);
+      if (countResult.count !== null) setNotifCount(countResult.count);
+      if (dataResult.data) setNotifications(dataResult.data);
+    };
+    fetchNotifs();
+    const interval = setInterval(fetchNotifs, 60000);
+    return () => clearInterval(interval);
+  }, [userProfile?.id]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (chatRef.current && !chatRef.current.contains(e.target as Node)) setChatOpen(false);
+      if (bellRef.current && !bellRef.current.contains(e.target as Node)) setBellOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileDropOpen(false);
+      if (hamburgerRef.current && !hamburgerRef.current.contains(e.target as Node)) setHamburgerOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleNavClick = (id: string) => {
+    const toPlatform = (tab: string) => {
+      localStorage.removeItem('careerpathways_mode');
+      window.location.href = `${window.location.origin}/platform?tab=${tab}`;
+    };
+    if (id === 'home') toPlatform('home');
+    else if (id === 'profile') toPlatform('profile');
+    else if (id === 'logbook') toPlatform('logbook');
+    else if (id === 'bookmarks') toPlatform('bookmarks');
+    else if (id === 'recognition-plus') toPlatform('recognition-plus');
+    else if (id === 'settings') toPlatform('settings');
+    else if (id === 'notifications') navigate('/notifications');
+    else navigate(id);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -42,13 +120,18 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   }, []);
 
   const navLinks = [
+    { label: 'Home', path: '/', icon: Home, tier: 'public', external: '/platform?tab=home' },
     { label: 'Expectations', path: '/airline-expectations', icon: Building2, tier: 'public' },
     { label: 'type-ratings', path: '/type-ratings', icon: Target, tier: 'public' },
     { label: 'pathways', path: '/discover', icon: Target, tier: 'public' },
-    { label: 'recognition+', path: '/authorities', icon: Building2, tier: 'public', external: 'http://localhost:3000/platform?tab=recognition-plus-tab' },
+    { label: 'Recognition+', path: '/authorities', icon: Building2, tier: 'public', external: '/platform?tab=recognition-plus-tab' },
   ];
 
   const isActive = (path: string) => {
+    if (path === '/') {
+      // Home is an external link to the unified platform — never "active" here
+      return false;
+    }
     if (path === '/discover') {
       return location.pathname === '/discover' || location.pathname === '/' || location.pathname === '/pathways';
     }
@@ -146,7 +229,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
 
           {/* Desktop Navigation — center island style */}
           <nav className="hidden lg:flex items-center gap-1 rounded-2xl bg-white/5 border border-white/10 px-2 py-1.5 backdrop-blur-md">
-            {navLinks.map((link) => {
+            {navLinks.map((link, index) => {
               const active = isActive(link.path);
               const baseClass = `relative px-4 py-2 rounded-xl text-sm font-bold tracking-wide transition-all select-none flex items-center gap-1.5 ${
                 active
@@ -154,143 +237,278 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                   : 'text-white/60 hover:text-white hover:bg-white/5'
               }`;
 
-              return link.external ? (
-                <a
-                  key={link.path}
-                  href={link.external}
-                  onClick={(e) => { e.preventDefault(); window.location.href = link.external!; }}
-                  className={baseClass}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={baseClass}
-                >
-                  {link.label}
-                  {active && (
-                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+              return (
+                <React.Fragment key={link.path}>
+                  {index === 1 && (
+                    <div
+                      className="w-px h-5 self-center mx-1"
+                      style={{
+                        background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.25), transparent)',
+                      }}
+                    />
                   )}
-                </Link>
+                  {link.external ? (
+                    <a
+                      href={link.external.startsWith('/') ? `${window.location.origin}${link.external}` : link.external}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('careerpathways_mode');
+                        const url = link.external!.startsWith('/') ? `${window.location.origin}${link.external}` : link.external;
+                        window.location.href = url;
+                      }}
+                      className={baseClass}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      className={baseClass}
+                    >
+                      {link.label}
+                      {active && (
+                        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+                      )}
+                    </Link>
+                  )}
+                </React.Fragment>
               );
             })}
           </nav>
 
-          {/* CTA / User */}
-          <div className="flex items-center gap-3 shrink-0">
-            {isLoggedIn ? (
-              <div className="flex items-center gap-2">
-                {/* Chat */}
-                <button className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
-                  <MessageSquare className="w-5 h-5" />
-                </button>
-                {/* Notifications */}
-                <button className="relative w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full" />
-                </button>
-                {/* Settings */}
-                <button className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
-                  <Settings className="w-5 h-5" />
-                </button>
-                {/* Profile */}
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 px-2 py-1.5 pr-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-all"
-                >
-                  {userAvatar ? (
-                    <img 
-                      src={userAvatar} 
-                      alt="Profile" 
-                      className="w-8 h-8 rounded-full object-cover border border-white/20"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
+          {/* Right — MSFS-style square tile icon toolbar (mirrors PlatformNavbar exactly) */}
+          <div className="flex items-center gap-2 flex-shrink-0" style={{ transform: 'translateY(-2px)' }}>
+            {currentUser ? (
+              <>
+                <div className="flex items-center gap-2">
+                  {/* Messages tile */}
+                  <button
+                    onClick={() => { setChatOpen(v => !v); setBellOpen(false); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    title="Messages"
+                    className="relative group transition-all duration-150"
+                    style={{
+                      width: 44, height: 44,
+                      background: chatOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                      border: chatOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                      borderRadius: 10,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                    onMouseEnter={e => { if (!chatOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                    onMouseLeave={e => { if (!chatOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                  >
+                    <MessageSquare size={20} className="text-white" strokeWidth={2} />
+                  </button>
+
+                  <div ref={chatRef}>
+                    <MessagesPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+                  </div>
+
+                  {/* Notification bell tile */}
+                  <div className="relative" ref={bellRef}>
+                    <button
+                      title="Notifications"
+                      onClick={() => { setBellOpen(v => !v); setProfileDropOpen(false); setHamburgerOpen(false); setChatOpen(false); }}
+                      className="relative transition-all duration-150"
+                      style={{
+                        width: 44, height: 44,
+                        background: bellOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                        border: bellOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                        borderRadius: 10,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}
+                      onMouseEnter={e => { if (!bellOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                      onMouseLeave={e => { if (!bellOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                    >
+                      <Bell size={20} className="text-white" strokeWidth={2} />
+                      {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
+                        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white" style={{ background: '#f59e0b', border: '1.5px solid rgba(15,22,35,0.9)' }}>
+                          {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
+                        </span>
+                      )}
+                    </button>
+                    <AnimatePresence>
+                      {bellOpen && (
+                        <>
+                          <motion.div
+                            className="fixed inset-0 z-[60]"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            style={{ background: 'rgba(2,6,23,0.35)' }}
+                            onClick={() => setBellOpen(false)}
+                          />
+                          <motion.div
+                            className="absolute right-0 top-12 w-[24rem] z-[70] shadow-2xl rounded-2xl overflow-hidden"
+                            initial={{ opacity: 0, scale: 0.92, y: -8, filter: 'blur(8px)' }}
+                            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, scale: 0.95, y: -4, filter: 'blur(6px)' }}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            style={{
+                              background: 'rgba(255,255,255,0.92)',
+                              border: '1px solid rgba(255,255,255,0.6)',
+                              backdropFilter: 'blur(32px) saturate(1.6)',
+                              WebkitBackdropFilter: 'blur(32px) saturate(1.6)',
+                              boxShadow: '0 24px 64px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.4)',
+                            }}
+                          >
+                            <NotificationsFeedPanel
+                              profileId={userProfile?.id}
+                              profile={userProfile as any}
+                              onClose={() => setBellOpen(false)}
+                            />
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Settings tile */}
+                  <button
+                    onClick={() => handleNavClick('settings')}
+                    title="Settings"
+                    className="transition-all duration-150"
+                    style={{
+                      width: 44, height: 44,
+                      background: 'rgba(55,65,81,0.85)',
+                      border: '2px solid rgba(255,255,255,0.12)',
+                      borderRadius: 10,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}
+                  >
+                    <Settings size={20} className="text-white" strokeWidth={2} />
+                  </button>
+
+                  {/* Avatar + Hamburger unified island */}
+                  <div className="relative flex items-center" ref={profileRef} onMouseDown={(e) => e.stopPropagation()}>
+                    <div
+                      className="flex items-center transition-all duration-150 overflow-hidden"
+                      style={{
+                        height: 44,
+                        background: profileDropOpen || hamburgerOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                        border: profileDropOpen || hamburgerOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                        borderRadius: 10,
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!profileDropOpen && !hamburgerOpen) {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)';
+                          (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!profileDropOpen && !hamburgerOpen) {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)';
+                          (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)';
+                        }
+                      }}
+                    >
+                      {/* Profile side */}
+                      <button
+                        onClick={() => { setProfileDropOpen((v) => !v); setBellOpen(false); setHamburgerOpen(false); setChatOpen(false); }}
+                        className="flex items-center gap-2 px-2 h-full transition-colors hover:bg-white/5"
+                      >
+                        <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}>
+                          <ProfileImage url={userProfile?.profile_image_url} publicId={userProfile?.profile_image_public_id} name={displayName} size={28} className="w-full h-full" fallbackClassName="rounded-full text-[10px]" />
+                        </div>
+                        <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
+                      </button>
+
+                      {/* Divider */}
+                      <div className="w-px h-5" style={{ background: 'rgba(255,255,255,0.15)' }} />
+
+                      {/* Hamburger side */}
+                      <button
+                        onClick={() => { setHamburgerOpen((v) => !v); setBellOpen(false); setProfileDropOpen(false); setChatOpen(false); }}
+                        className="px-2 h-full transition-colors hover:bg-white/5 flex items-center justify-center"
+                        style={{ width: 40 }}
+                      >
+                        <Menu size={20} className="text-white" strokeWidth={2} />
+                      </button>
                     </div>
-                  )}
-                  <span className="max-w-[100px] truncate hidden md:block">{userName || 'Pilot'}</span>
-                </Link>
-                {/* Hamburger */}
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all"
-                >
-                  {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </button>
-              </div>
+
+                    {/* Profile dropdown */}
+                    {profileDropOpen && (
+                      <div className="absolute right-0 top-12 w-72 z-50 shadow-2xl overflow-hidden rounded-xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                        <div className="px-4 pt-3 pb-2.5 border-b border-white/5">
+                          <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
+                          <p className="text-sm font-black text-white truncate">{displayName}</p>
+                          <p className="text-[10px] text-white/40 truncate leading-relaxed">{userProfile?.email || currentUser?.email}</p>
+                        </div>
+                        <div className="py-1">
+                          {[
+                            { label: 'Edit Profile', tab: 'profile', icon: User },
+                            { label: 'Logbook', tab: 'logbook', icon: Shield },
+                            { label: 'Bookmarks', tab: 'bookmarks', icon: Map },
+                            { label: 'Recognition+', tab: 'recognition-plus', icon: Settings },
+                            { label: 'Settings', tab: 'settings', icon: Settings },
+                          ].map(({ label, tab, icon: Icon }) => (
+                            <button key={tab} onClick={() => { handleNavClick(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
+                              <div className="flex items-center gap-3">
+                                <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
+                                <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
+                              </div>
+                              <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
+                            </button>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/5 py-1">
+                          <button onClick={() => { setProfileDropOpen(false); logout(); handleNavClick('home'); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
+                            <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
+                            <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hamburger dropdown */}
+                    {hamburgerOpen && (
+                      <div className="absolute right-0 top-12 w-56 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                        <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                          <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Navigation</p>
+                        </div>
+                        <div className="py-1">
+                          {navLinks.map(link => (
+                            <button key={link.path} onClick={() => { link.external ? window.location.href = link.external : navigate(link.path); setHamburgerOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group">
+                              <span className="text-[11px] font-black text-white/60 group-hover:text-white tracking-wide transition-colors">{link.label.toUpperCase()}</span>
+                            </button>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/5 py-1">
+                          <button onClick={() => { setHamburgerOpen(false); logout(); handleNavClick('home'); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
+                            <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
+                            <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
             ) : (
               <>
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-                  className="hidden sm:block px-4 py-2 rounded-lg bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-200 text-sm font-medium hover:bg-slate-800/70 hover:border-slate-600/50 transition-all"
+                  className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
+                  style={{ background: 'rgba(59,130,246,0.8)', border: '1px solid rgba(59,130,246,0.5)' }}
                 >
-                  Sign In
+                  LOGIN
                 </button>
-                <Link
-                  to="/get-started"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-bold uppercase tracking-wider shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transition-all"
+                <button
+                  onClick={() => { safeRedirect('/become-member'); }}
+                  className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
+                  style={{ background: 'rgba(239,68,68,0.8)', border: '1px solid rgba(239,68,68,0.5)' }}
                 >
-                  <span className="hidden sm:inline">Get Started</span>
-                  <span className="sm:hidden">Start</span>
-                </Link>
+                  BECOME A MEMBER
+                </button>
               </>
             )}
-
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-slate-950/98 backdrop-blur-lg border-b border-slate-800/50 shadow-xl">
-          <div className="px-4 py-4 space-y-1">
-            {navLinks.map((link) => {
-              const baseClass = `block w-full px-4 py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-between ${
-                isActive(link.path)
-                  ? 'text-white bg-blue-900/60'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-              }`;
-
-              return link.external ? (
-                <a
-                  key={link.path}
-                  href={link.external}
-                  onClick={(e) => { e.preventDefault(); window.location.href = link.external!; setIsMobileMenuOpen(false); }}
-                  className={baseClass}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={baseClass}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            {!isLoggedIn && (
-              <div className="pt-3 border-t border-slate-800/50 mt-3">
-                <button
-                  onClick={() => {
-                    onLogin?.();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all"
-                >
-                  <User className="w-5 h-5" />
-                  Sign In
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </header>
 
       {/* Enterprise Modal */}

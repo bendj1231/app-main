@@ -13,6 +13,8 @@ import {
   Bell,
   MessageSquare,
   Menu,
+  X,
+  Send,
   ChevronRight,
   CreditCard,
   BookMarked,
@@ -27,6 +29,13 @@ import {
   CheckCircle2,
   ArrowRight,
   ChevronLeft,
+  Info,
+  AlertCircle,
+  Monitor,
+  Award,
+  Target,
+  TrendingUp,
+  Star,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -39,7 +48,9 @@ import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import { LogbookHub } from './pilot-recognition/LogbookHub';
 import { CockpitFlightHoursDashboard } from './unified-platform/CockpitFlightHoursDashboard';
+import { RecognitionAIChat } from './unified-platform/RecognitionAIChat';
 import { WalletPageWithSidebar } from './wallet/WalletPageWithSidebar';
+import { MessagesPanel } from './unified-platform/MessagesPanel';
 
 import { NAV_ITEMS, EmailVerifyGate, NotificationsFeedPanel } from './unified-platform/shared';
 import type { TabId, UnifiedPilotPlatformProps } from './unified-platform/types';
@@ -94,6 +105,7 @@ import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
 import { FoundationWelcomeTab } from './unified-platform/tabs/FoundationWelcomeTab';
 import { PathwaysWelcomeTab } from './unified-platform/tabs/PathwaysWelcomeTab';
 import { RecognitionPlusTab } from './unified-platform/tabs/RecognitionPlusTab';
+import { InboxTab } from './unified-platform/tabs/InboxTab';
 import { PilotShortageSupportPage } from './PilotShortageSupportPage';
 
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
@@ -122,6 +134,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [profileModalView, setProfileModalView] = useState<'menu' | 'recognition-profile'>('menu');
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [upgradePrompt, setUpgradePrompt] = useState<string | null>(null);
+  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 400);
@@ -214,10 +228,32 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   }, [profileData?.consent_version]);
 
-  // Sync URL with active tab
+  // Sync URL with active tab — preserve hash for scroll targets
   useEffect(() => {
+    const hash = window.location.hash;
     setSearchParams({ tab: activeTab }, { replace: true });
+    if (hash) {
+      // Restore hash after searchParams update strips it
+      window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+    }
   }, [activeTab, setSearchParams]);
+
+  // Scroll to hash target after tab content mounts
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const id = hash.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      // Delay to allow tab content to render
+      const timer = setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Optionally clear hash after scrolling
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [activeTab]);
 
   // Sync incoming URL param
   useEffect(() => {
@@ -695,7 +731,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
       case 'logbook':
         return (
-          <div className="space-y-6">
+          <div className="max-w-7xl mx-auto space-y-6">
+            {/* Recognition AI — aviation career strategist */}
+            <RecognitionAIChat profile={profileData ?? null} />
+
             {/* Profile completeness gate for AI insights */}
             {(!profileData?.license_type || !profileData?.current_occupation) && (
               <div className="rounded-xl p-4" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
@@ -727,61 +766,14 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               profile={profileData}
               isFreeUser={!profileData?.verified_account}
               logbookConnected={false}
-              onCompleteProfile={() => setTab('profile')}
+              onCompleteProfile={() => setTab('advanced-profile' as TabId)}
             />
-            <LogbookHub profile={profileData} onNavigate={onNavigate} />
+            <LogbookHub profile={profileData} onNavigate={onNavigate} onCompleteProfile={() => setTab('advanced-profile' as TabId)} />
 
-            {/* Recognition+ CTA */}
+            {/* Recognition+ Compliance Grid — visible to all, verification gated */}
             {(() => {
               const isPlus = profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise' || profileData?.verified_account;
 
-              // Locked state for non-Recognition+ members
-              if (!isPlus) {
-                return (
-                  <div className="rounded-2xl overflow-hidden relative" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-                      <div>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
-                        <p className="text-sm font-black text-white">Recognition+</p>
-                      </div>
-                    </div>
-                    <div className="relative p-8">
-                      {/* Blurred placeholder rows */}
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 blur-sm opacity-30">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                          <div key={i} className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                            <div className="w-8 h-8 rounded-lg flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                            <div className="flex-1 min-w-0">
-                              <div className="h-2.5 rounded w-20 mb-1" style={{ background: 'rgba(255,255,255,0.1)' }} />
-                              <div className="h-2 rounded w-14" style={{ background: 'rgba(255,255,255,0.06)' }} />
-                            </div>
-                            <div className="h-4 rounded-full w-14 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                          </div>
-                        ))}
-                      </div>
-                      {/* Lock overlay */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)' }}>
-                          <span className="text-red-500 text-lg font-black">🔒</span>
-                        </div>
-                        <div className="text-center px-6">
-                          <p className="text-sm font-black text-white">Recognition+ Required</p>
-                          <p className="text-xs text-white/50 mt-1 max-w-xs">Upgrade to track credential expiry, recurrency alerts, and verification status in real-time.</p>
-                        </div>
-                        <button
-                          onClick={() => onNavigate('/get-started')}
-                          className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white transition-all hover:brightness-110"
-                          style={{ background: '#dc2626' }}
-                        >
-                          GET RECOGNITION+ →
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              // Full data for Recognition+ members
               const now = Date.now();
               const findCred = (type: string) => credentials.find(c => String(c?.credential_type || '').toLowerCase() === type);
               const licenseCred = findCred('license');
@@ -803,64 +795,192 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 return { ...fallback, expiry: expiryStr, status: 'warning' };
               };
 
+              const authority = (profileData?.caa as string) || (profileData?.authority as string) || (profileData?.country as string) || 'CAAP';
+              const ato = (profileData?.ato as string) || (profileData?.training_provider as string) || 'your ATO';
+              const operator = (profileData?.current_employer as string) || (profileData?.operator as string) || 'your operator';
+
+              const getAdvisory = (type: string) => {
+                const advisories: Record<string, string> = {
+                  medical: `Renew via a CAAP-accredited DME. ${operator} requires a copy 14 days before expiry.`,
+                  license: `Verify ratings are current with ${authority}. IR/ME recurrencies must be logged before next commercial flight.`,
+                  ir: `Approach minima reset required. Contact ${ato} to schedule IPC or SMS refresher before expiry.`,
+                  me: `Multi-engine currency check due. ${ato} can validate via training records or logbook cross-check.`,
+                  elp: `Level 5 is indefinite. Some operators require re-assessment every 6 years — confirm with ${operator}.`,
+                  radio: `NTC license must be active for IFR and controlled airspace. Renewal window opens 60 days before expiry.`,
+                };
+                return advisories[type] || '';
+              };
+
               const items = [
-                computeStatus(medicalCred, 'Medical', { label: 'Medical Class 1', expiry: '02 May 2026', status: 'expired', icon: '⚕️' }),
-                computeStatus(licenseCred, 'License', { label: 'CAAP CPL', expiry: '23 Oct 2030', status: 'valid', icon: '🪪' }),
-                { label: 'IR Recurrency', expiry: '15 Aug 2026', status: 'warning', icon: '🔄' },
-                { label: 'ME Recurrency', expiry: '22 Jul 2026', status: 'warning', icon: '✈️' },
-                computeStatus(elpCred, 'ELP', { label: 'ELP Level 5', expiry: '24 Oct 2030', status: 'valid', icon: '🗣️' }),
-                computeStatus(radioCred, 'Radio', { label: 'NTC Radio', expiry: '30 Jul 2028', status: 'valid', icon: '📡' }),
-              ];
+                computeStatus(medicalCred, 'Medical', { label: 'Medical Class 1', expiry: '02 May 2026', status: 'expired' }),
+                computeStatus(licenseCred, 'License', { label: 'CAAP CPL', expiry: '23 Oct 2030', status: 'valid' }),
+                { label: 'IR Recurrency', expiry: '15 Aug 2026', status: 'warning' },
+                { label: 'ME Recurrency', expiry: '22 Jul 2026', status: 'warning' },
+                computeStatus(elpCred, 'ELP', { label: 'ELP Level 5', expiry: '24 Oct 2030', status: 'valid' }),
+                computeStatus(radioCred, 'Radio', { label: 'NTC Radio', expiry: '30 Jul 2028', status: 'valid' }),
+              ].map((item) => ({
+                ...item,
+                detail: {
+                  'Medical Class 1': 'Valid medical required for all commercial operations. Night, IFR, and multi-crew privileges suspended if expired.',
+                  'CAAP CPL': 'Commercial license must match current ratings. IR and ME endorsements must be reflected in the ATO training record.',
+                  'IR Recurrency': 'Instrument rating recurrency includes 6 approaches, hold, and tracking within preceding 6 months.',
+                  'ME Recurrency': 'Multi-engine privileges require 3 takeoffs and landings within 90 days or a PC/IPC check.',
+                  'ELP Level 5': 'ICAO English Level 5 is valid indefinitely. Some airlines accept Level 4 for domestic routes only.',
+                  'NTC Radio': 'Radio telephony license authorizes use of ATC frequencies. Required for IFR, Class C and above.',
+                }[item.label] || '',
+                advisory: getAdvisory({
+                  'Medical Class 1': 'medical',
+                  'CAAP CPL': 'license',
+                  'IR Recurrency': 'ir',
+                  'ME Recurrency': 'me',
+                  'ELP Level 5': 'elp',
+                  'NTC Radio': 'radio',
+                }[item.label] || ''),
+              }));
 
               const expiredCount = items.filter(i => i.status === 'expired').length;
               const warningCount = items.filter(i => i.status === 'warning').length;
 
+              const handleItemClick = (label: string) => {
+                if (isPlus) {
+                  setTab('recognition-plus');
+                } else {
+                  setUpgradePrompt(label);
+                }
+              };
+
               return (
-                <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-                    <div>
-                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
-                      <p className="text-sm font-black text-white">Recognition+</p>
+                <>
+                  <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+                      <div>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
+                        <p className="text-sm font-black text-white">Recognition+</p>
+                        <p className="text-[9px] font-black text-red-400 tracking-wider mt-0.5">Recognition+ Preview</p>
+                      </div>
+                      <button
+                        onClick={() => setTab('recognition-plus')}
+                        className="px-4 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                        style={{ background: '#dc2626' }}
+                      >
+                        {isPlus ? 'VIEW STATUS →' : 'GET RECOGNITION+'}
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setTab('recognition-plus')}
-                      className="px-4 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
-                      style={{ background: '#dc2626' }}
-                    >
-                      VIEW STATUS →
-                    </button>
-                  </div>
-                  <div className="p-5 grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {items.map((item) => {
-                      const statusColor = item.status === 'expired' ? '#ef4444' : item.status === 'warning' ? '#f59e0b' : '#34d399';
-                      const statusBg = item.status === 'expired' ? 'rgba(239,68,68,0.1)' : item.status === 'warning' ? 'rgba(245,158,11,0.1)' : 'rgba(52,211,153,0.1)';
-                      const statusBorder = item.status === 'expired' ? 'rgba(239,68,68,0.2)' : item.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(52,211,153,0.2)';
-                      return (
-                        <div key={item.label} className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                          <span className="text-xl">{item.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[10px] font-black tracking-wider text-white/40 uppercase truncate">{item.label}</p>
-                            <p className="text-xs font-black text-white mt-0.5">{item.expiry}</p>
-                          </div>
-                          <span className="text-[9px] font-black px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: statusBg, color: statusColor, border: `1px solid ${statusBorder}` }}>
-                            {item.status.toUpperCase()}
-                          </span>
+                    {/* Intro & tooltips */}
+                    <div className="px-5 pt-4 pb-2">
+                      <div className="rounded-xl p-4" style={{ background: '#ffffff', border: '1px solid rgba(220,38,38,0.15)' }}>
+                        <div className="flex items-start gap-2 mb-3">
+                          <Info size={14} className="text-red-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-[10px] text-slate-600 leading-relaxed">
+                            <span className="font-black text-red-600">Recognition+ Verification</span> cross-checks your credentials against your issuing Civil Aviation Authority. Each item below is reviewed for expiry, endorsement validity, and recurrency currency. Pilots with fully verified profiles rank higher in airline pulls and skip manual screening.
+                          </p>
                         </div>
-                      );
-                    })}
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { label: 'Medical', tip: 'Class 1 medical drives ALL commercial privileges. No medical = no hire.' },
+                            { label: 'License', tip: 'CPL must reflect current IR/ME ratings. Mismatched ratings void insurance.' },
+                            { label: 'IR Recurrency', tip: '6 approaches + hold within 6 months. Not 12 months — do not confuse with biennial.' },
+                            { label: 'ME Recurrency', tip: '3 T/O & landings in 90 days OR a PC check. Day/night does not matter for currency.' },
+                            { label: 'ELP', tip: 'Level 5 is indefinite. Some operators demand re-test every 6 years.' },
+                            { label: 'Radio', tip: 'NTC license must be active for IFR and Class C+. No radio = no IFR clearance.' },
+                          ].map((t) => (
+                            <div key={t.label} className="group relative">
+                              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-black tracking-wider text-white border border-red-400/40 cursor-help transition-colors hover:bg-red-600" style={{ background: '#dc2626' }}>
+                                <Info size={10} /> {t.label}
+                              </span>
+                              <div className="absolute left-0 bottom-full mb-2 w-56 p-2.5 rounded-lg text-[10px] text-white/90 leading-relaxed opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-20" style={{ background: 'rgba(5,8,14,0.95)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
+                                {t.tip}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-3 flex items-start gap-2 rounded-lg p-2.5" style={{ background: 'rgba(220,38,38,0.04)', border: '1px solid rgba(220,38,38,0.15)' }}>
+                          <AlertCircle size={13} className="text-red-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-[9px] text-slate-500 leading-relaxed">
+                            <span className="font-black text-red-600">Details to catch:</span> Expired medicals void CPL privileges immediately — there is no grace period. IR recurrency is 6 months, not 12. Logbook entries for dual instruction must match your ATO training records or verification will flag a mismatch. Always keep your radio license active; a lapsed NTC license blocks IFR renewals.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {items.map((item) => {
+                        const statusColor = item.status === 'expired' ? '#ef4444' : item.status === 'warning' ? '#f59e0b' : '#34d399';
+                        const statusBg = item.status === 'expired' ? 'rgba(239,68,68,0.1)' : item.status === 'warning' ? 'rgba(245,158,11,0.1)' : 'rgba(52,211,153,0.1)';
+                        const statusBorder = item.status === 'expired' ? 'rgba(239,68,68,0.2)' : item.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(52,211,153,0.2)';
+                        return (
+                          <button
+                            key={item.label}
+                            onClick={() => handleItemClick(item.label)}
+                            className="rounded-xl p-4 text-left transition-all hover:bg-white/5 flex flex-col gap-2"
+                            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', cursor: 'pointer' }}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="min-w-0">
+                                <p className="text-[10px] font-black tracking-wider text-white/40 uppercase">{item.label}</p>
+                                <p className="text-xs font-black text-white mt-0.5">{item.expiry}</p>
+                              </div>
+                              <span className="text-[9px] font-black px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: statusBg, color: statusColor, border: `1px solid ${statusBorder}` }}>
+                                {item.status.toUpperCase()}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-white/50 leading-relaxed">{item.detail}</p>
+                            {item.advisory && (
+                              <p className="text-[9px] text-white/30 leading-relaxed italic border-t border-white/5 pt-2 mt-1">
+                                Advisory: {item.advisory}
+                              </p>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {(expiredCount > 0 || warningCount > 0) && (
+                      <div className="px-5 pb-4">
+                        <div className="rounded-lg p-3 flex items-center gap-3" style={{ background: expiredCount > 0 ? 'rgba(220,38,38,0.08)' : 'rgba(245,158,11,0.08)', border: `1px solid ${expiredCount > 0 ? 'rgba(220,38,38,0.15)' : 'rgba(245,158,11,0.15)'}` }}>
+                          <span className="text-lg">{expiredCount > 0 ? '⚠' : '⏰'}</span>
+                          <p className="text-xs text-white/70">
+                            <span className="font-black text-white">{expiredCount > 0 ? `${expiredCount} item${expiredCount > 1 ? 's' : ''} expired` : `${warningCount} item${warningCount > 1 ? 's' : ''} expiring soon`}</span>
+                            {' — '}{expiredCount > 0 ? 'Your Class 1 Medical has expired. CPL is invalid for commercial operations until renewed.' : 'Review your upcoming recurrencies before they lapse.'}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {(expiredCount > 0 || warningCount > 0) && (
-                    <div className="px-5 pb-4">
-                      <div className="rounded-lg p-3 flex items-center gap-3" style={{ background: expiredCount > 0 ? 'rgba(220,38,38,0.08)' : 'rgba(245,158,11,0.08)', border: `1px solid ${expiredCount > 0 ? 'rgba(220,38,38,0.15)' : 'rgba(245,158,11,0.15)'}` }}>
-                        <span className="text-lg">{expiredCount > 0 ? '⚠' : '⏰'}</span>
-                        <p className="text-xs text-white/70">
-                          <span className="font-black text-white">{expiredCount > 0 ? `${expiredCount} item${expiredCount > 1 ? 's' : ''} expired` : `${warningCount} item${warningCount > 1 ? 's' : ''} expiring soon`}</span>
-                          {' — '}{expiredCount > 0 ? 'Your Class 1 Medical has expired. CPL is invalid for commercial operations until renewed.' : 'Review your upcoming recurrencies before they lapse.'}
+
+                  {/* Upgrade prompt modal for non-plus users */}
+                  {upgradePrompt && (
+                    <div className="fixed inset-0 z-[999] flex items-center justify-center px-4" onClick={() => setUpgradePrompt(null)}>
+                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+                      <div className="relative z-10 w-full max-w-md rounded-2xl p-6 text-center" style={{ background: 'rgba(15,23,42,0.98)', border: '1px solid rgba(220,38,38,0.3)' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)' }}>
+                          <span className="text-red-500 text-xl font-black">🔒</span>
+                        </div>
+                        <p className="text-base font-black text-white mb-1">Verification Requires Recognition+</p>
+                        <p className="text-xs text-white/50 mb-5 max-w-xs mx-auto">
+                          {upgradePrompt === 'Recognition+'
+                            ? 'Upgrade to Recognition+ to begin verification of your licenses and logbook.'
+                            : `Upgrade to Recognition+ to verify your ${upgradePrompt}.`}
                         </p>
+                        <div className="flex items-center gap-3 justify-center">
+                          <button
+                            onClick={() => onNavigate('/get-started')}
+                            className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white transition-all hover:brightness-110"
+                            style={{ background: '#dc2626' }}
+                          >
+                            GET RECOGNITION+ →
+                          </button>
+                          <button
+                            onClick={() => setUpgradePrompt(null)}
+                            className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white/50 transition-all hover:text-white"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                          >
+                            MAYBE LATER
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
-                </div>
+                </>
               );
             })()}
           </div>
@@ -889,6 +1009,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               }
             }}
             profileId={profileData?.id ?? null}
+            profile={profileData}
             onAuth0Logout={() => {
               localStorage.clear();
               sessionStorage.clear();
@@ -917,22 +1038,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             onNavigate={onNavigate}
           />
         );
-      case 'bookmarks':
-        return (
-          <div className="max-w-6xl mx-auto px-6 pt-24 pb-12">
-            <div className="mb-8">
-              <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">Saved</p>
-              <h1 className="text-3xl font-serif font-normal text-white mb-2">Bookmarks</h1>
-              <p className="text-sm text-white/50">Your saved pathways, airlines, and opportunities.</p>
-            </div>
-            <div className="flex items-center justify-center py-20 border border-dashed border-white/10 rounded-2xl">
-              <div className="text-center">
-                <p className="text-white/30 text-sm">No bookmarks yet</p>
-                <p className="text-white/20 text-xs mt-1">Save pathways and opportunities to see them here</p>
-              </div>
-            </div>
-          </div>
-        );
+      case 'inbox':
+        return <InboxTab profile={profileData} onNavigate={onNavigate} />;
       case 'advanced-profile':
         return <AdvancedProfileTab setTab={setTab} profile={profileData} />;
       default:
@@ -1003,15 +1110,23 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       >
         {/* Left — wordmark */}
         <div className="flex items-center min-w-0 flex-1">
-          <span
-            className="text-2xl tracking-tight leading-none cursor-pointer"
-            style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
-            onClick={() => onNavigate('home')}
-          >
-            <span className={scrolled ? 'text-black' : 'text-white'}>pilot</span>
-            <span className="text-red-500">recognition</span>
-            <span className={scrolled ? 'text-black' : 'text-white'}>.com</span>
-          </span>
+          <AnimatePresence>
+            {!scrolled && (
+              <motion.span
+                className="text-2xl tracking-tight leading-none cursor-pointer"
+                style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
+                onClick={() => onNavigate('home')}
+                initial={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -20, scale: 0.9, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="text-white">pilot</span>
+                <span className="text-red-500">recognition</span>
+                <span className="text-white">.com</span>
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Centre — island nav container */}
@@ -1027,7 +1142,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             { id: 'home', label: 'Home' },
             { id: 'profile', label: 'Profile' },
             { id: 'logbook', label: 'Logbook' },
-            { id: 'bookmarks', label: 'Bookmarks' },
+            { id: 'inbox', label: 'Inbox' },
             { id: 'recognition-plus', label: 'Recognition+' },
           ].map(({ id, label }) => {
             const isActive = activeTab === id;
@@ -1058,34 +1173,43 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 {/* Messages tile */}
                 <button
                   onClick={() => {
-                    setBellOpen(true);
+                    setChatOpen((v) => !v);
+                    setBellOpen(false);
                     setProfileDropOpen(false);
                     setHamburgerOpen(false);
                   }}
                   onMouseDown={(e) => e.stopPropagation()}
-                  title="Notifications"
+                  title="Messages"
                   className="relative group transition-all duration-150"
                   style={{
                     width: 44,
                     height: 44,
-                    background: 'rgba(0,0,0,0.25)',
-                    border: '2px solid rgba(255,255,255,0.15)',
+                    background: chatOpen ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.25)',
+                    border: chatOpen
+                      ? '2px solid rgba(255,255,255,0.8)'
+                      : '2px solid rgba(255,255,255,0.15)',
                     borderRadius: 10,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
+                    if (!chatOpen) {
+                      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
+                      (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
+                    if (!chatOpen) {
+                      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                      (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
+                    }
                   }}
                 >
                   <MessageSquare size={20} className="text-white" strokeWidth={2} />
                 </button>
+
+                <MessagesPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} />
 
                 {/* Notification bell tile */}
                 <div className="relative" onMouseDown={(e) => e.stopPropagation()}>
@@ -1095,6 +1219,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                       setBellOpen((v) => !v);
                       setProfileDropOpen(false);
                       setHamburgerOpen(false);
+                      setChatOpen(false);
                     }}
                     className="relative transition-all duration-150"
                     style={{
@@ -1127,34 +1252,52 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     <Bell size={20} className="text-white" strokeWidth={2} />
                     {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
                       <span
-                        className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center text-[8px] font-black text-white"
+                        className="absolute -top-1.5 -right-1.5 min-w-[20px] h-[20px] px-1 rounded-full flex items-center justify-center text-[9px] font-black text-white"
                         style={{
-                          background: '#ef4444',
+                          background: '#dc2626',
                           border: '2px solid rgba(15,22,35,0.95)',
-                          boxShadow: '0 0 0 1px rgba(255,255,255,0.35)',
+                          boxShadow: '0 0 0 1px rgba(255,255,255,0.5), 0 2px 8px rgba(220,38,38,0.5)',
                         }}
                       >
                         {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
                       </span>
                     )}
                   </button>
-                  {bellOpen && (
-                    <div
-                      className="absolute right-0 top-12 w-[22rem] z-50 shadow-2xl rounded-2xl overflow-hidden"
-                      style={{
-                        background: 'rgba(255,255,255,0.08)',
-                        border: '1px solid rgba(255,255,255,0.15)',
-                        backdropFilter: 'blur(24px) saturate(1.4)',
-                        WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
-                      }}
-                    >
-                      <NotificationsFeedPanel
-                        profileId={profileData?.id}
-                        profile={profileData}
-                        onClose={() => setBellOpen(false)}
-                      />
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {bellOpen && (
+                      <>
+                        <motion.div
+                          className="fixed inset-0 z-[60]"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          style={{ background: 'rgba(2,6,23,0.35)' }}
+                          onClick={() => setBellOpen(false)}
+                        />
+                        <motion.div
+                          className="absolute right-0 top-12 w-[24rem] z-[70] shadow-2xl rounded-2xl overflow-hidden"
+                          initial={{ opacity: 0, scale: 0.92, y: -8, filter: 'blur(8px)' }}
+                          animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                          exit={{ opacity: 0, scale: 0.95, y: -4, filter: 'blur(6px)' }}
+                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                          style={{
+                            background: 'rgba(255,255,255,0.92)',
+                            border: '1px solid rgba(255,255,255,0.6)',
+                            backdropFilter: 'blur(32px) saturate(1.6)',
+                            WebkitBackdropFilter: 'blur(32px) saturate(1.6)',
+                            boxShadow: '0 24px 64px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.4)',
+                          }}
+                        >
+                          <NotificationsFeedPanel
+                            profileId={profileData?.id}
+                            profile={profileData}
+                            onClose={() => setBellOpen(false)}
+                          />
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Settings tile */}
@@ -1191,55 +1334,146 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   <Settings size={20} className="text-white" strokeWidth={2} />
                 </button>
 
-                {/* Avatar tile + modal */}
-                <div className="relative" onMouseDown={(e) => e.stopPropagation()}>
-                  <button
-                    onClick={() => {
-                      setProfileDropOpen((v) => !v);
-                      setBellOpen(false);
-                      setHamburgerOpen(false);
-                    }}
-                    className="transition-all duration-150 flex items-center gap-2 px-2"
+                {/* Avatar + Hamburger unified island */}
+                <div className="relative flex items-center" onMouseDown={(e) => e.stopPropagation()}>
+                  <div
+                    className="flex items-center transition-all duration-150 overflow-hidden"
                     style={{
                       height: 44,
-                      background: profileDropOpen ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.25)',
-                      border: profileDropOpen
+                      background: profileDropOpen || hamburgerOpen ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.25)',
+                      border: profileDropOpen || hamburgerOpen
                         ? '2px solid rgba(255,255,255,0.8)'
                         : '2px solid rgba(255,255,255,0.15)',
                       borderRadius: 10,
                     }}
                     onMouseEnter={(e) => {
-                      if (!profileDropOpen) {
-                        (e.currentTarget as HTMLElement).style.borderColor =
-                          'rgba(255,255,255,0.6)';
+                      if (!profileDropOpen && !hamburgerOpen) {
+                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if (!profileDropOpen) {
-                        (e.currentTarget as HTMLElement).style.borderColor =
-                          'rgba(255,255,255,0.15)';
+                      if (!profileDropOpen && !hamburgerOpen) {
+                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
                       }
                     }}
                   >
-                    <div
-                      className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0"
-                      style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}
+                    {/* Profile side */}
+                    <button
+                      onClick={() => {
+                        setProfileDropOpen((v) => !v);
+                        setBellOpen(false);
+                        setHamburgerOpen(false);
+                        setChatOpen(false);
+                      }}
+                      className="flex items-center gap-2 px-2 h-full transition-colors hover:bg-white/5"
                     >
-                      <ProfileImage
-                        url={profileData?.profile_image_url}
-                        publicId={profileData?.profile_image_public_id}
-                        name={displayName}
-                        size={28}
-                        className="w-full h-full"
-                        fallbackClassName="rounded-full text-[10px]"
-                      />
+                      <div
+                        className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0"
+                        style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}
+                      >
+                        <ProfileImage
+                          url={profileData?.profile_image_url}
+                          publicId={profileData?.profile_image_public_id}
+                          name={displayName}
+                          size={28}
+                          className="w-full h-full"
+                          fallbackClassName="rounded-full text-[10px]"
+                        />
+                      </div>
+                      <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">
+                        {displayName.split(' ')[0]}
+                      </span>
+                    </button>
+
+                    {/* Divider */}
+                    <div className="w-px h-5" style={{ background: 'rgba(255,255,255,0.15)' }} />
+
+                    {/* Hamburger side */}
+                    <button
+                      onClick={() => {
+                        setHamburgerOpen((v) => !v);
+                        setBellOpen(false);
+                        setProfileDropOpen(false);
+                        setChatOpen(false);
+                      }}
+                      className="flex items-center justify-center w-10 h-full transition-colors hover:bg-white/5"
+                    >
+                      <Menu size={18} className="text-white" strokeWidth={2} />
+                    </button>
+                  </div>
+
+                  {/* Navigation dropdown — anchored to unified island */}
+                  {hamburgerOpen && (
+                    <div
+                      className="absolute right-0 top-12 w-56 z-50 shadow-2xl"
+                      style={{
+                        background: 'rgba(15,23,42,0.97)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        backdropFilter: 'blur(16px)',
+                      }}
+                    >
+                      <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">
+                          Navigation
+                        </p>
+                      </div>
+                      <div className="py-1">
+                        {[
+                          { label: 'Pilot Terminal', url: 'https://pilotterminal.com' },
+                          { label: 'Recognition Profile', url: '/recognition-plus' },
+                          { label: 'Career Pathways', url: 'https://pilotcareerpathways.com' },
+                          { label: 'Pilot Shortage', url: 'https://pilotshortage.org' },
+                        ].map((item) => (
+                          <button
+                            key={item.label}
+                            onClick={() => {
+                              setHamburgerOpen(false);
+                              if (item.url.startsWith('http')) {
+                                window.open(item.url, '_blank', 'noopener,noreferrer');
+                              } else {
+                                safeRedirect(item.url);
+                              }
+                            }}
+                            className="w-full flex items-center px-4 py-2.5 transition-colors group hover:bg-white/5"
+                          >
+                            <span className="text-[11px] font-black tracking-wide text-white/60 group-hover:text-white transition-colors">
+                              {item.label.toUpperCase()}
+                            </span>
+                          </button>
+                        ))}
+                        <div className="px-3 py-2 mt-1">
+                          <button
+                            onClick={() => {
+                              setHamburgerOpen(false);
+                              safeRedirect('/recognition-plus');
+                            }}
+                            className="w-full flex items-center justify-center px-3 py-2.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                            style={{ background: '#dc2626' }}
+                          >
+                            GET RECOGNITION+
+                          </button>
+                        </div>
+                      </div>
+                      {currentUser && (
+                        <div className="border-t border-white/5 py-1">
+                          <button
+                            onClick={() => {
+                              setHamburgerOpen(false);
+                              logout();
+                            }}
+                            className="w-full flex items-center px-4 py-2.5 hover:bg-red-500/10 transition-colors group"
+                          >
+                            <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">
+                              SIGN OUT
+                            </span>
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">
-                      {displayName.split(' ')[0]}
-                    </span>
-                  </button>
+                  )}
+
                   <AnimatePresence>
                     {profileDropOpen && (
                       <>
@@ -2020,107 +2254,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               </button>
             </>
           )}
-          {/* Hamburger dropdown — always on the far right */}
-          <div className="relative" onMouseDown={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => {
-                setHamburgerOpen((v) => !v);
-                setBellOpen(false);
-                setProfileDropOpen(false);
-              }}
-              className="transition-all duration-150"
-              style={{
-                width: 44,
-                height: 44,
-                background: hamburgerOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
-                border: hamburgerOpen
-                  ? '2px solid rgba(255,255,255,0.8)'
-                  : '2px solid rgba(255,255,255,0.12)',
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onMouseEnter={(e) => {
-                if (!hamburgerOpen) {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!hamburgerOpen) {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)';
-                }
-              }}
-            >
-              <Menu size={20} className="text-white" strokeWidth={2} />
-            </button>
-            {hamburgerOpen && (
-              <div
-                className="absolute right-0 top-10 w-56 z-50 shadow-2xl"
-                style={{
-                  background: 'rgba(15,23,42,0.97)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  backdropFilter: 'blur(16px)',
-                }}
-              >
-                <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                  <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">
-                    Navigation
-                  </p>
-                </div>
-                <div className="py-1">
-                  {NAV_ITEMS.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeTab === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setTab(item.id);
-                          setHamburgerOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-2.5 transition-colors group ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
-                      >
-                        <Icon
-                          size={13}
-                          className={`transition-colors ${isActive ? 'text-red-400' : 'text-white/40 group-hover:text-white/70'}`}
-                        />
-                        <span
-                          className={`text-[11px] font-black tracking-wide transition-colors ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}
-                        >
-                          {item.label.toUpperCase()}
-                        </span>
-                        {isActive && (
-                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-red-500" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                {currentUser && (
-                  <div className="border-t border-white/5 py-1">
-                    <button
-                      onClick={() => {
-                        setHamburgerOpen(false);
-                        logout();
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group"
-                    >
-                      <LogOut
-                        size={13}
-                        className="text-red-400/60 group-hover:text-red-400 transition-colors"
-                      />
-                      <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">
-                        SIGN OUT
-                      </span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 

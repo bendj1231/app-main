@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Target, TrendingUp, Award, Compass, Zap, BarChart3, Route, Star } from 'lucide-react';
 
 export interface PathwaysSidebarProps {
-  activeSection: 'airline-expectations' | 'type-ratings' | 'pilot-pathways' | 'aviation-authorities' | 'wallet';
+  activeSection: 'home' | 'airline-expectations' | 'type-ratings' | 'pilot-pathways' | 'aviation-authorities' | 'wallet';
   onNavigate: (page: string) => void;
   prScore?: number;
   matchPercentage?: number;
@@ -32,6 +32,7 @@ export const PathwaysSidebar: React.FC<PathwaysSidebarProps> = ({
   };
 
   const navItems = [
+    { id: 'home' as const, label: 'Home', page: '/' },
     { id: 'airline-expectations' as const, label: 'Airline Expectations', page: currentUser ? 'portal-airline-expectations' : 'airline-expectations' },
     { id: 'type-ratings' as const, label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
     { id: 'pilot-pathways' as const, label: 'Pilot Pathways', page: 'pathways-modern' },
