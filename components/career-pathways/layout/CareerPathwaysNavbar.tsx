@@ -11,7 +11,8 @@ import {
   Bell,
   Settings,
   Wallet,
-  ShieldCheck
+  ShieldCheck,
+  MessageSquare
 } from 'lucide-react';
 
 interface CareerPathwaysNavbarProps {
@@ -42,11 +43,9 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
 
   const navLinks = [
     { label: 'Expectations', path: '/airline-expectations', icon: Building2, tier: 'public' },
-    { label: 'Type-Rating Search', path: '/type-ratings', icon: Target, tier: 'public' },
-    { label: 'Career Pathways', path: '/discover', icon: Target, tier: 'public' },
-    { label: 'Civil Aviation Authorities', path: '/authorities', icon: Building2, tier: 'public' },
-    { label: 'Exclusive Pathways', path: '/premium-pathways', icon: ShieldCheck, tier: 'premium', requiresVerification: true },
-    { label: 'Wallet', path: '/wallet', icon: Wallet, tier: 'premium', requiresVerification: true },
+    { label: 'type-ratings', path: '/type-ratings', icon: Target, tier: 'public' },
+    { label: 'pathways', path: '/discover', icon: Target, tier: 'public' },
+    { label: 'recognition+', path: '/authorities', icon: Building2, tier: 'public', external: 'http://localhost:3000/platform?tab=recognition-plus-tab' },
   ];
 
   const isActive = (path: string) => {
@@ -58,72 +57,76 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
 
   return (
     <>
-      {/* Cross-domain Partner Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-gray-900 border-b border-gray-700 flex items-center justify-center gap-8 px-4">
-        {/* PilotShortage */}
-        <div className="relative group">
-          <a
-            href="https://pilotshortage.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
-          >
-            Pilot<span className="text-red-500">Shortage</span>.org
-            <ExternalLink className="w-3 h-3 text-gray-500" />
-          </a>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
-            <div className="p-3">
-              <p className="text-xs text-gray-400 mb-2">Industry Partner</p>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Working together to address the global pilot shortage. Connecting qualified pilots with airlines worldwide.
-              </p>
+      {/* Cross-domain Partner Navigation — hidden when logged in */}
+      {!isLoggedIn && (
+        <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-gray-900 border-b border-gray-700 flex items-center justify-center gap-8 px-4">
+          {/* PilotShortage */}
+          <div className="relative group">
+            <a
+              href="https://pilotshortage.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+            >
+              Pilot<span className="text-red-500">Shortage</span>.org
+              <ExternalLink className="w-3 h-3 text-gray-500" />
+            </a>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+              <div className="p-3">
+                <p className="text-xs text-gray-400 mb-2">Industry Partner</p>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  Working together to address the global pilot shortage. Connecting qualified pilots with airlines worldwide.
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* PilotRecognition */}
+          <div className="relative group">
+            <a
+              href="https://pilotrecognition.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+            >
+              pilot<span className="text-red-500">recognition</span>.com
+              <ExternalLink className="w-3 h-3 text-gray-500" />
+            </a>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+              <div className="p-3">
+                <p className="text-xs text-gray-400 mb-2">Verified Recognition</p>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  Turn your logbook into a verified credential meeting international standards from operators and ATOs.
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* PilotTerminal */}
+          <div className="relative group">
+            <a
+              href="https://pilotterminal.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+            >
+              Pilot<span className="text-red-500">Terminal</span>.com
+              <ExternalLink className="w-3 h-3 text-gray-500" />
+            </a>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+              <div className="p-3">
+                <p className="text-xs text-gray-400 mb-2">Community Forum</p>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  Real-time discussions with verified pilots worldwide. No bots, no recruiters — just aviators.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        {/* PilotRecognition */}
-        <div className="relative group">
-          <a
-            href="https://pilotrecognition.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
-          >
-            pilot<span className="text-red-500">recognition</span>.com
-            <ExternalLink className="w-3 h-3 text-gray-500" />
-          </a>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
-            <div className="p-3">
-              <p className="text-xs text-gray-400 mb-2">Verified Recognition</p>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Turn your logbook into a verified credential meeting international standards from operators and ATOs.
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* PilotTerminal */}
-        <div className="relative group">
-          <a
-            href="https://pilotterminal.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
-          >
-            Pilot<span className="text-red-500">Terminal</span>.com
-            <ExternalLink className="w-3 h-3 text-gray-500" />
-          </a>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
-            <div className="p-3">
-              <p className="text-xs text-gray-400 mb-2">Community Forum</p>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Real-time discussions with verified pilots worldwide. No bots, no recruiters — just aviators.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
 
       <header
-        className={`fixed top-10 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+          isLoggedIn ? 'top-0' : 'top-10'
+        } ${
           isScrolled
             ? 'bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-900/90 backdrop-blur-lg border-b border-slate-800/50 shadow-lg shadow-black/20'
             : 'bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-transparent backdrop-blur-md'
@@ -141,85 +144,67 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
             </h1>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop Navigation — center island style */}
+          <nav className="hidden lg:flex items-center gap-1 rounded-2xl bg-white/5 border border-white/10 px-2 py-1.5 backdrop-blur-md">
             {navLinks.map((link) => {
-              // Check if this link requires verification
-              const requiresVerification = link.requiresVerification;
-              const isLocked = requiresVerification && !isVerified && isLoggedIn;
-              
-              return (
-                <Link
+              const active = isActive(link.path);
+              const baseClass = `relative px-4 py-2 rounded-xl text-sm font-bold tracking-wide transition-all select-none flex items-center gap-1.5 ${
+                active
+                  ? 'text-white bg-white/10'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`;
+
+              return link.external ? (
+                <a
                   key={link.path}
-                  to={isLocked ? '/verify?redirect=' + encodeURIComponent(link.path) : link.path}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all select-none flex items-center gap-1.5 ${
-                    isActive(link.path)
-                      ? 'text-white bg-blue-900/60'
-                      : isLocked
-                        ? 'text-slate-500 hover:text-slate-400 cursor-not-allowed'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-                  }`}
-                  title={isLocked ? 'Verification required for exclusive pathways' : undefined}
+                  href={link.external}
+                  onClick={(e) => { e.preventDefault(); window.location.href = link.external!; }}
+                  className={baseClass}
                 >
                   {link.label}
-                  {/* Tier indicator */}
-                  {link.tier === 'premium' && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                      {isLocked ? '🔒' : '✓'}
-                    </span>
+                </a>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={baseClass}
+                >
+                  {link.label}
+                  {active && (
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
                   )}
                 </Link>
               );
             })}
-            {/* Enterprise - styled like TopNavbar */}
-            <button
-              onClick={() => setIsEnterpriseModalOpen(true)}
-              className="px-3 py-2 rounded-lg text-sm font-bold uppercase tracking-wider text-red-500 hover:text-red-400 transition-all"
-            >
-              Enterprise
-            </button>
           </nav>
 
           {/* CTA / User */}
           <div className="flex items-center gap-3 shrink-0">
             {isLoggedIn ? (
-              <div className="hidden sm:flex items-center gap-2">
-                {/* Verification Badge - Only show if verified */}
-                {isVerified && (
-                  <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-green-500/20 border border-green-500/30">
-                    <ShieldCheck className="w-4 h-4 text-green-400" />
-                    <span className="text-xs font-medium text-green-400">Verified</span>
-                  </div>
-                )}
-                {/* Get Verified CTA - Only show if NOT verified */}
-                {!isVerified && (
-                  <Link
-                    to="/verify"
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 text-xs font-medium hover:bg-amber-500/30 transition-all"
-                  >
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>Get Verified</span>
-                  </Link>
-                )}
+              <div className="flex items-center gap-2">
+                {/* Chat */}
+                <button className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
+                  <MessageSquare className="w-5 h-5" />
+                </button>
                 {/* Notifications */}
-                <button className="relative p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all">
+                <button className="relative w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
                   <Bell className="w-5 h-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full" />
                 </button>
                 {/* Settings */}
-                <button className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all">
+                <button className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all">
                   <Settings className="w-5 h-5" />
                 </button>
                 {/* Profile */}
                 <Link
                   to="/dashboard"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-slate-200 text-sm font-medium transition-all"
+                  className="flex items-center gap-2 px-2 py-1.5 pr-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-all"
                 >
                   {userAvatar ? (
                     <img 
                       src={userAvatar} 
                       alt="Profile" 
-                      className="w-8 h-8 rounded-full object-cover border border-slate-600"
+                      className="w-8 h-8 rounded-full object-cover border border-white/20"
                     />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
@@ -228,6 +213,13 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                   )}
                   <span className="max-w-[100px] truncate hidden md:block">{userName || 'Pilot'}</span>
                 </Link>
+                {/* Hamburger */}
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all"
+                >
+                  {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
               </div>
             ) : (
               <>
@@ -247,13 +239,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
               </>
             )}
 
-            {/* Mobile toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
         </div>
       </div>
@@ -263,46 +248,32 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
         <div className="lg:hidden absolute top-full left-0 right-0 bg-slate-950/98 backdrop-blur-lg border-b border-slate-800/50 shadow-xl">
           <div className="px-4 py-4 space-y-1">
             {navLinks.map((link) => {
-              const requiresVerification = link.requiresVerification;
-              const isLocked = requiresVerification && !isVerified && isLoggedIn;
-              
-              return (
+              const baseClass = `block w-full px-4 py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-between ${
+                isActive(link.path)
+                  ? 'text-white bg-blue-900/60'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+              }`;
+
+              return link.external ? (
+                <a
+                  key={link.path}
+                  href={link.external}
+                  onClick={(e) => { e.preventDefault(); window.location.href = link.external!; setIsMobileMenuOpen(false); }}
+                  className={baseClass}
+                >
+                  {link.label}
+                </a>
+              ) : (
                 <Link
                   key={link.path}
-                  to={isLocked ? '/verify?redirect=' + encodeURIComponent(link.path) : link.path}
-                  onClick={() => !isLocked && setIsMobileMenuOpen(false)}
-                  className={`block w-full px-4 py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-between ${
-                    isActive(link.path)
-                      ? 'text-white bg-blue-900/60'
-                      : isLocked
-                        ? 'text-slate-500'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-                  }`}
+                  to={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={baseClass}
                 >
-                  <span className="flex items-center gap-2">
-                    {link.label}
-                    {link.tier === 'premium' && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                        {isLocked ? '🔒 Verify' : '✓'}
-                      </span>
-                    )}
-                  </span>
-                  {isLocked && (
-                    <span className="text-xs text-slate-500">Verification required</span>
-                  )}
+                  {link.label}
                 </Link>
               );
             })}
-            {/* Enterprise Mobile */}
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsEnterpriseModalOpen(true);
-              }}
-              className="block w-full px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
-            >
-              Enterprise
-            </button>
             {!isLoggedIn && (
               <div className="pt-3 border-t border-slate-800/50 mt-3">
                 <button

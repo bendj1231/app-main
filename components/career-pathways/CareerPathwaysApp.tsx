@@ -16,6 +16,7 @@ const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').t
 const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
 const ProfilePage = lazy(() => import('@/app/professional-profile/page.tsx'));
+const DiscoverPathwaysPage = lazy(() => import('@/app/discover-pathways/page'));
 
 // Unified platform pages
 const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
@@ -180,7 +181,7 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
         userAvatar={userAvatar}
       />
       
-      <main className="pt-16">
+      <main className={`${isLoggedIn ? 'pt-16' : 'pt-24'}`}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Auth callback routes */}

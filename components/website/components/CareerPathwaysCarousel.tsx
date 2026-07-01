@@ -50,7 +50,10 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'PATHWAYS',
       description: 'Explore structured pathways from CPL to airline cockpit. Compare requirements, timelines, and eligibility across carriers worldwide.',
       cta: 'Browse Pathways',
-      ctaAction: () => setTab('pathways'),
+      ctaAction: () => {
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/?product=careerpathways`;
+      },
       rightLabel: 'Pathway Database',
       rightText: 'Explore',
       image: '/expect.png',
@@ -63,7 +66,10 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'PROGRAMS',
       description: 'Zero-to-hero programs sponsored by major airlines. Full funding, guaranteed placement, and structured training from day one.',
       cta: 'View Cadet Gates',
-      ctaAction: () => setTab('pathways'),
+      ctaAction: () => {
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/?product=careerpathways`;
+      },
       rightLabel: 'Cadet Database',
       rightText: 'Explore',
       image: '/images/airline-operations.png',
@@ -76,7 +82,10 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'AVIATION',
       description: 'Charter, VIP transport, and business jet careers. Higher flexibility, premium compensation, and direct operator relationships.',
       cta: 'Explore Corporate',
-      ctaAction: () => setTab('pathways'),
+      ctaAction: () => {
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/?product=careerpathways`;
+      },
       rightLabel: 'Corporate Ops',
       rightText: 'Explore',
       image: '/type.png',
@@ -89,7 +98,10 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'INSTRUCTOR',
       description: 'Build hours while teaching the next generation. ATO partnerships, instructor ratings, and pathway-to-airline programs.',
       cta: 'Find ATO Partners',
-      ctaAction: () => setTab('pathways'),
+      ctaAction: () => {
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/?product=careerpathways`;
+      },
       rightLabel: 'ATO Network',
       rightText: 'Explore',
       image: '/cessna.png',
@@ -102,9 +114,12 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'TYPE RATINGS',
       description: 'Find approved type rating centers worldwide. Compare costs, locations, and airline partnerships.',
       cta: 'Discover Type Ratings',
-      ctaAction: () => safeRedirect('/type-rating-search'),
+      ctaAction: () => {
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/type-ratings?product=careerpathways`;
+      },
       rightLabel: 'Training Network',
-      rightText: 'Coming Soon',
+      rightText: 'Explore',
       image: '/type.png',
       bgPosition: '30% center',
       accent: '#ef4444',
@@ -130,13 +145,10 @@ export const CareerPathwaysCarousel: React.FC<CareerPathwaysCarouselProps> = ({
       titleAccent: 'EXPECTATIONS',
       description: 'Compare airline requirements, salaries, and fleet types before you apply.',
       cta: 'Explore Airlines',
-      ctaAction: async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        const baseUrl = 'https://www.pilotcareerpathways.com/type-ratings';
-        const url = session
-          ? `${baseUrl}?access_token=${encodeURIComponent(session.access_token)}&refresh_token=${encodeURIComponent(session.refresh_token || '')}`
-          : baseUrl;
-        window.open(url, '_blank', 'noopener,noreferrer');
+      ctaAction: () => {
+        // Switch to career pathways mode on same domain — preserves SSO session
+        localStorage.setItem('careerpathways_mode', 'true');
+        window.location.href = `${window.location.origin}/airline-expectations?product=careerpathways`;
       },
       rightLabel: 'Airline Database',
       rightText: airlinesCount > 0 ? `${airlinesCount}+ Operators` : 'Coming Soon',

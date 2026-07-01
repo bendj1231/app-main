@@ -38,6 +38,7 @@ import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import { LogbookHub } from './pilot-recognition/LogbookHub';
+import { CockpitFlightHoursDashboard } from './unified-platform/CockpitFlightHoursDashboard';
 import { WalletPageWithSidebar } from './wallet/WalletPageWithSidebar';
 
 import { NAV_ITEMS, EmailVerifyGate, NotificationsFeedPanel } from './unified-platform/shared';
@@ -86,6 +87,7 @@ import { EventsTab } from './unified-platform/tabs/EventsTab';
 import { NewsroomTab } from './unified-platform/tabs/NewsroomTab';
 import { SettingsTab } from './unified-platform/tabs/SettingsTab';
 import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatusTab';
+import { VerificationRecurrencyTab } from './unified-platform/tabs/VerificationRecurrencyTab';
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
 import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
@@ -692,7 +694,177 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'atlas-cv':
         return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
       case 'logbook':
-        return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
+        return (
+          <div className="space-y-6">
+            {/* Profile completeness gate for AI insights */}
+            {(!profileData?.license_type || !profileData?.current_occupation) && (
+              <div className="rounded-xl p-4" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                    <span className="text-red-600 text-sm font-black">PR°</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[10px] font-black tracking-wider text-red-600 uppercase">RECOGNITION+ — Pilot Verification</p>
+                      <button
+                        onClick={() => setTab('profile')}
+                        className="px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 flex-shrink-0"
+                        style={{ background: '#dc2626' }}
+                      >
+                        GO TO PROFILE →
+                      </button>
+                    </div>
+                    <p className="text-base font-black text-slate-900 mt-0.5">Complete Your Profile for AI Pathway Matching</p>
+                    <p className="text-xs text-slate-500 mt-0.5 leading-relaxed truncate">
+                      Unlock AI-powered pathway recommendations, verification alerts, and recurrency monitoring.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            <CockpitFlightHoursDashboard
+              userId={profileData?.id}
+              profile={profileData}
+              isFreeUser={!profileData?.verified_account}
+              logbookConnected={false}
+              onCompleteProfile={() => setTab('profile')}
+            />
+            <LogbookHub profile={profileData} onNavigate={onNavigate} />
+
+            {/* Recognition+ CTA */}
+            {(() => {
+              const isPlus = profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise' || profileData?.verified_account;
+
+              // Locked state for non-Recognition+ members
+              if (!isPlus) {
+                return (
+                  <div className="rounded-2xl overflow-hidden relative" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+                      <div>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
+                        <p className="text-sm font-black text-white">Recognition+</p>
+                      </div>
+                    </div>
+                    <div className="relative p-8">
+                      {/* Blurred placeholder rows */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 blur-sm opacity-30">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <div key={i} className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                            <div className="w-8 h-8 rounded-lg flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                            <div className="flex-1 min-w-0">
+                              <div className="h-2.5 rounded w-20 mb-1" style={{ background: 'rgba(255,255,255,0.1)' }} />
+                              <div className="h-2 rounded w-14" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                            </div>
+                            <div className="h-4 rounded-full w-14 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                          </div>
+                        ))}
+                      </div>
+                      {/* Lock overlay */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)' }}>
+                          <span className="text-red-500 text-lg font-black">🔒</span>
+                        </div>
+                        <div className="text-center px-6">
+                          <p className="text-sm font-black text-white">Recognition+ Required</p>
+                          <p className="text-xs text-white/50 mt-1 max-w-xs">Upgrade to track credential expiry, recurrency alerts, and verification status in real-time.</p>
+                        </div>
+                        <button
+                          onClick={() => onNavigate('/get-started')}
+                          className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white transition-all hover:brightness-110"
+                          style={{ background: '#dc2626' }}
+                        >
+                          GET RECOGNITION+ →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // Full data for Recognition+ members
+              const now = Date.now();
+              const findCred = (type: string) => credentials.find(c => String(c?.credential_type || '').toLowerCase() === type);
+              const licenseCred = findCred('license');
+              const medicalCred = findCred('medical');
+              const elpCred = findCred('english_proficiency') || findCred('elp');
+              const radioCred = findCred('radio_license');
+
+              const computeStatus = (cred: any, label: string, fallback: any) => {
+                if (!cred) return fallback;
+                const status = String(cred.status || '').toLowerCase();
+                const expires = cred.expires_at ? new Date(cred.expires_at).getTime() : null;
+                const daysLeft = expires ? Math.ceil((expires - now) / (1000 * 60 * 60 * 24)) : null;
+                const expiryStr = expires ? new Date(expires).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : fallback.expiry;
+
+                if (status === 'expired' || status === 'revoked') return { ...fallback, expiry: expiryStr, status: 'expired' };
+                if (status === 'flagged' || status === 'fraudulent') return { ...fallback, expiry: expiryStr, status: 'expired' };
+                if (expires && daysLeft !== null && daysLeft <= 90) return { ...fallback, expiry: expiryStr, status: 'warning', label: `${label} · ${daysLeft}d left` };
+                if (status === 'active' || status === 'verified' || status === 'valid') return { ...fallback, expiry: expiryStr, status: 'valid' };
+                return { ...fallback, expiry: expiryStr, status: 'warning' };
+              };
+
+              const items = [
+                computeStatus(medicalCred, 'Medical', { label: 'Medical Class 1', expiry: '02 May 2026', status: 'expired', icon: '⚕️' }),
+                computeStatus(licenseCred, 'License', { label: 'CAAP CPL', expiry: '23 Oct 2030', status: 'valid', icon: '🪪' }),
+                { label: 'IR Recurrency', expiry: '15 Aug 2026', status: 'warning', icon: '🔄' },
+                { label: 'ME Recurrency', expiry: '22 Jul 2026', status: 'warning', icon: '✈️' },
+                computeStatus(elpCred, 'ELP', { label: 'ELP Level 5', expiry: '24 Oct 2030', status: 'valid', icon: '🗣️' }),
+                computeStatus(radioCred, 'Radio', { label: 'NTC Radio', expiry: '30 Jul 2028', status: 'valid', icon: '📡' }),
+              ];
+
+              const expiredCount = items.filter(i => i.status === 'expired').length;
+              const warningCount = items.filter(i => i.status === 'warning').length;
+
+              return (
+                <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+                    <div>
+                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
+                      <p className="text-sm font-black text-white">Recognition+</p>
+                    </div>
+                    <button
+                      onClick={() => setTab('recognition-plus')}
+                      className="px-4 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                      style={{ background: '#dc2626' }}
+                    >
+                      VIEW STATUS →
+                    </button>
+                  </div>
+                  <div className="p-5 grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {items.map((item) => {
+                      const statusColor = item.status === 'expired' ? '#ef4444' : item.status === 'warning' ? '#f59e0b' : '#34d399';
+                      const statusBg = item.status === 'expired' ? 'rgba(239,68,68,0.1)' : item.status === 'warning' ? 'rgba(245,158,11,0.1)' : 'rgba(52,211,153,0.1)';
+                      const statusBorder = item.status === 'expired' ? 'rgba(239,68,68,0.2)' : item.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(52,211,153,0.2)';
+                      return (
+                        <div key={item.label} className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                          <span className="text-xl">{item.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-black tracking-wider text-white/40 uppercase truncate">{item.label}</p>
+                            <p className="text-xs font-black text-white mt-0.5">{item.expiry}</p>
+                          </div>
+                          <span className="text-[9px] font-black px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: statusBg, color: statusColor, border: `1px solid ${statusBorder}` }}>
+                            {item.status.toUpperCase()}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {(expiredCount > 0 || warningCount > 0) && (
+                    <div className="px-5 pb-4">
+                      <div className="rounded-lg p-3 flex items-center gap-3" style={{ background: expiredCount > 0 ? 'rgba(220,38,38,0.08)' : 'rgba(245,158,11,0.08)', border: `1px solid ${expiredCount > 0 ? 'rgba(220,38,38,0.15)' : 'rgba(245,158,11,0.15)'}` }}>
+                        <span className="text-lg">{expiredCount > 0 ? '⚠' : '⏰'}</span>
+                        <p className="text-xs text-white/70">
+                          <span className="font-black text-white">{expiredCount > 0 ? `${expiredCount} item${expiredCount > 1 ? 's' : ''} expired` : `${warningCount} item${warningCount > 1 ? 's' : ''} expiring soon`}</span>
+                          {' — '}{expiredCount > 0 ? 'Your Class 1 Medical has expired. CPL is invalid for commercial operations until renewed.' : 'Review your upcoming recurrencies before they lapse.'}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+        );
       case 'events':
         return <EventsTab />;
       case 'newsroom':
@@ -735,6 +907,32 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             onProfileImageUpdate={updateProfileImage}
           />
         );
+      case 'recognition-plus':
+        return (
+          <VerificationRecurrencyTab
+            profile={profileData}
+            walletChecks={walletChecks}
+            credentials={credentials}
+            setTab={setTab}
+            onNavigate={onNavigate}
+          />
+        );
+      case 'bookmarks':
+        return (
+          <div className="max-w-6xl mx-auto px-6 pt-24 pb-12">
+            <div className="mb-8">
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">Saved</p>
+              <h1 className="text-3xl font-serif font-normal text-white mb-2">Bookmarks</h1>
+              <p className="text-sm text-white/50">Your saved pathways, airlines, and opportunities.</p>
+            </div>
+            <div className="flex items-center justify-center py-20 border border-dashed border-white/10 rounded-2xl">
+              <div className="text-center">
+                <p className="text-white/30 text-sm">No bookmarks yet</p>
+                <p className="text-white/20 text-xs mt-1">Save pathways and opportunities to see them here</p>
+              </div>
+            </div>
+          </div>
+        );
       case 'advanced-profile':
         return <AdvancedProfileTab setTab={setTab} profile={profileData} />;
       default:
@@ -764,7 +962,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       className={`relative flex flex-col font-sans ${activeTab === 'home' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}
     >
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
-      <div className="fixed inset-0 z-0">
+      {activeTab !== 'pilot-shortage-support' && (
+        <div className="fixed inset-0 z-0">
         {graphicsConfig.enableMeshGradient ? (
           <MeshGradient
             className="w-full h-full"
@@ -795,6 +994,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           }}
         />
       </div>
+      )}
 
       {/* ── TOP NAV BAR ── */}
       <div
@@ -826,9 +1026,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           {[
             { id: 'home', label: 'Home' },
             { id: 'profile', label: 'Profile' },
-            { id: 'pathways-directory', label: 'Pathways' },
-            { id: 'foundation-welcome', label: 'Programs' },
-            { id: 'recognition-plus-tab', label: 'Recognition+' },
+            { id: 'logbook', label: 'Logbook' },
+            { id: 'bookmarks', label: 'Bookmarks' },
+            { id: 'recognition-plus', label: 'Recognition+' },
           ].map(({ id, label }) => {
             const isActive = activeTab === id;
             return (
@@ -1928,7 +2128,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       <main
         className={`flex-1 pt-[68px] ${activeTab === 'home' ? 'overflow-hidden' : 'overflow-y-auto'}`}
       >
-        <div className={`h-full ${activeTab === 'home' ? 'max-w-none mx-0 p-0' : 'max-w-[1400px] mx-auto p-3 lg:p-5'}`} style={{ position: 'relative' }}>
+        <div className={`h-full ${activeTab === 'home' ? 'max-w-none mx-0 p-0' : 'max-w-none mx-auto p-3 lg:p-4'}`} style={{ position: 'relative' }}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               className="h-full"

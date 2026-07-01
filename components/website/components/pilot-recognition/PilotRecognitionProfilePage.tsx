@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle } from 'lucide-react';
 
 type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -52,6 +52,14 @@ const CategorySection: React.FC<{ title: string; description?: string; children:
         {children}
     </div>
 );
+
+function daysUntil(dateStr: string | null | undefined): number | null {
+  if (!dateStr) return null;
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = target.getTime() - now.getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
 
 export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePageProps> = ({
     onNavigate,
@@ -1234,29 +1242,175 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         {/* Licenses and Ratings Validity */}
                         <VerificationDashboardGrid profile={profileData} setTab={() => {}} />
 
-                        {/* Recency & Currency Tracker */}
-                        <div className="rounded-2xl p-6" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                            <div className="flex items-center gap-2 mb-4">
-                                <Award size={16} className="text-sky-400 mt-[2px]" />
-                                <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Recency & Currency Tracker</span>
+                        {/* Recurrency & Hours */}
+                        {(() => {
+                          const profile = profileData;
+                          const totalHours = (profile?.total_flight_hours as number) || (profile?.total_hours as number) || 0;
+                          const picHours = (profile?.pic_hours as number) || 0;
+                          const nightHours = (profile?.night_hours as number) || (profile?.total_night_hours as number) || 0;
+                          const lastFlown = (profile?.last_flown as string) || null;
+                          const lastFlownDays = lastFlown ? daysUntil(lastFlown) : null;
+                          return (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div className="md:col-span-2 rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm">
+                                <div className="flex items-center gap-2 mb-5">
+                                  <Plane size={16} className="text-white/40" />
+                                  <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Recurrency & Hours</p>
+                                </div>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                  <div className="text-center">
+                                    <p className="text-3xl font-black text-white">{totalHours.toLocaleString()}</p>
+                                    <p className="text-[11px] text-white/40 mt-1">Total Hours</p>
+                                  </div>
+                                  <div className="text-center">
+                                    <p className="text-3xl font-black text-white">
+                                      {lastFlownDays !== null ? `${Math.abs(lastFlownDays)}` : '—'}
+                                    </p>
+                                    <p className="text-[11px] text-white/40 mt-1">Days Since Flown</p>
+                                  </div>
+                                  <div className="text-center">
+                                    <p className="text-3xl font-black text-white">{picHours}</p>
+                                    <p className="text-[11px] text-white/40 mt-1">PIC Hours</p>
+                                  </div>
+                                  <div className="text-center">
+                                    <p className="text-3xl font-black text-white">{nightHours}</p>
+                                    <p className="text-[11px] text-white/40 mt-1">Night Hours</p>
+                                  </div>
+                                </div>
+                                <div className="mt-6 pt-5 border-t border-white/5">
+                                  <div className="flex items-center justify-between mb-3">
+                                    <p className="text-xs font-bold text-white/60">Flight Recency (90-day rule)</p>
+                                    <span className={`text-[11px] font-black px-2 py-0.5 rounded ${
+                                      lastFlownDays !== null && lastFlownDays >= -90
+                                        ? 'bg-emerald-500/10 text-emerald-400'
+                                        : 'bg-red-500/10 text-red-400'
+                                    }`}>
+                                      {lastFlownDays !== null && lastFlownDays >= -90 ? 'Current' : 'Overdue'}
+                                    </span>
+                                  </div>
+                                  <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                                    <div
+                                      className={`h-full rounded-full transition-all ${
+                                        lastFlownDays !== null && lastFlownDays >= -90 ? 'bg-emerald-500' : 'bg-red-500'
+                                      }`}
+                                      style={{
+                                        width: `${Math.max(
+                                          0,
+                                          Math.min(100, lastFlownDays !== null ? ((90 + lastFlownDays) / 90) * 100 : 0)
+                                        )}%`,
+                                      }}
+                                    />
+                                  </div>
+                                  <p className="text-[11px] text-white/30 mt-2">
+                                    {lastFlownDays !== null && lastFlownDays >= -90
+                                      ? `${90 + lastFlownDays} days remaining before currency review required`
+                                      : 'Currency lapsed. Schedule proficiency check or sim session.'}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Auto-Pilot AI Objectives */}
+                              {(() => {
+                                const p = profileData || {};
+                                const hasLicense = !!p.license_type;
+                                const hasMedical = !!p.medical_expiry && daysUntil(p.medical_expiry as string)! > 0;
+                                const hasHours = ((p.total_flight_hours as number) || (p.total_hours as number) || 0) > 0;
+                                const hasLogbook = !!p.logbook_provider;
+                                const isCurrent = lastFlownDays !== null && lastFlownDays >= -90;
+
+                                const objectives = [
+                                  { done: hasLicense, label: 'License on file', action: 'Add license', path: 'advanced-profile' },
+                                  { done: hasMedical, label: 'Medical current', action: 'Upload medical', path: '/get-started/verify-apc' },
+                                  { done: hasHours, label: 'Flight hours logged', action: 'Connect logbook', path: '/platform?tab=logbook' },
+                                  { done: isCurrent, label: '90-day recency met', action: 'Log a flight', path: '/platform?tab=logbook' },
+                                  { done: hasLogbook, label: 'Logbook connected', action: 'Sync logbook', path: '/platform?tab=logbook' },
+                                ];
+                                const completed = objectives.filter(o => o.done).length;
+                                const pct = Math.round((completed / objectives.length) * 100);
+                                const nextObj = objectives.find(o => !o.done);
+
+                                let aiMessage = '';
+                                if (pct === 100) {
+                                  aiMessage = 'Profile complete. You are visible to airline recruiters. Keep credentials current.';
+                                } else if (nextObj) {
+                                  aiMessage = `Next: ${nextObj.label}. ${nextObj.action} to stay cleared to fly.`;
+                                } else {
+                                  aiMessage = 'Complete your profile to unlock airline matching.';
+                                }
+
+                                return (
+                                  <div className="rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm flex flex-col">
+                                    {/* AI Header */}
+                                    <div className="flex items-center gap-3 mb-5">
+                                      <div className="relative">
+                                        <div className="p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">
+                                          <Bot size={18} className="text-sky-400" />
+                                        </div>
+                                        <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-950" />
+                                      </div>
+                                      <div>
+                                        <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Auto-Pilot AI</p>
+                                        <p className="text-xs font-bold text-white/70">Profile Objectives</p>
+                                      </div>
+                                      <div className="ml-auto flex items-center gap-1.5">
+                                        <div className="w-8 h-8 rounded-full border-2 border-sky-500/30 flex items-center justify-center">
+                                          <span className="text-[10px] font-black text-sky-400">{pct}%</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* AI Chat Bubble */}
+                                    <div className="rounded-xl p-4 bg-sky-500/[0.06] border border-sky-500/10 mb-5">
+                                      <div className="flex items-start gap-2">
+                                        <Sparkles size={12} className="text-sky-400 mt-1 flex-shrink-0" />
+                                        <p className="text-[11px] text-white/60 leading-relaxed">{aiMessage}</p>
+                                      </div>
+                                    </div>
+
+                                    {/* Objectives List */}
+                                    <div className="space-y-2 flex-1">
+                                      {objectives.map((o, i) => (
+                                        <button
+                                          key={i}
+                                          onClick={() => o.path.startsWith('/') ? onNavigate(o.path) : setActiveSection(o.path as ProfileSection)}
+                                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.04] hover:border-white/10 transition-all group text-left"
+                                        >
+                                          <div className={`p-1 rounded-md ${o.done ? 'bg-emerald-500/10' : 'bg-white/5'}`}>
+                                            {o.done ? (
+                                              <CheckCircle2 size={12} className="text-emerald-400" />
+                                            ) : (
+                                              <AlertCircle size={12} className="text-amber-400" />
+                                            )}
+                                          </div>
+                                          <span className={`text-[11px] font-bold flex-1 ${o.done ? 'text-white/40 line-through' : 'text-white/70'}`}>
+                                            {o.label}
+                                          </span>
+                                          {!o.done && (
+                                            <span className="text-[10px] font-black text-sky-400 group-hover:text-sky-300 transition-colors">{o.action} →</span>
+                                          )}
+                                        </button>
+                                      ))}
+                                    </div>
+
+                                    {/* Progress Bar */}
+                                    <div className="mt-4 pt-4 border-t border-white/5">
+                                      <div className="flex items-center justify-between mb-1.5">
+                                        <span className="text-[10px] font-black text-white/30 uppercase tracking-wider">Completion</span>
+                                        <span className="text-[10px] font-black text-sky-400">{completed}/{objectives.length}</span>
+                                      </div>
+                                      <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                        <div
+                                          className="h-full rounded-full bg-sky-500 transition-all"
+                                          style={{ width: `${pct}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })()}
                             </div>
-                            <div className="rounded-2xl px-4 pt-4 pb-5 text-center" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                                <p className="text-[11px] font-bold text-white/60">No endorsements or ratings added yet.</p>
-                                <p className="text-[10px] text-white/80 mt-1">Complete your advanced profile to add license endorsements, aircraft type ratings, and approach authorizations.</p>
-                                <button
-                                    onClick={() => onNavigate('advanced-profile')}
-                                    className="mt-4 mb-1 px-4 py-[9px] rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 leading-none"
-                                    style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-                                >
-                                    ADD ENDORSEMENTS
-                                </button>
-                            </div>
-                            <div className="mt-4 rounded-xl p-4 text-center" style={{ background: 'rgba(107,114,128,0.08)', border: '1px solid rgba(107,114,128,0.2)' }}>
-                                <p className="text-[11px] text-white/60 leading-relaxed">
-                                    Upgrade to <span className="font-black" style={{ color: '#dc2626' }}>Recognition+</span> to unlock recency tracking, proficiency check countdown, and international compliance alerts.
-                                </p>
-                            </div>
-                        </div>
+                          );
+                        })()}
                     </div>
                 </motion.section>
                 )}

@@ -23,7 +23,9 @@ export type TabId =
   | 'foundation-welcome'
   | 'pathways-directory'
   | 'recognition-plus-tab'
-  | 'pilot-shortage-support';
+  | 'pilot-shortage-support'
+  | 'bookmarks'
+  | 'recognition-plus';
 
 export interface NavItem {
   id: TabId;

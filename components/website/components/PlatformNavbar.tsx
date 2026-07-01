@@ -11,18 +11,11 @@ interface PlatformNavbarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Recognition Board' },
   { id: 'home', label: 'Home' },
-  { id: 'profile', label: 'My Profile' },
-  { id: 'wallet', label: 'Credential Wallet' },
-  { id: 'pathways', label: 'Pathways' },
-  { id: 'programs', label: 'Programs' },
-  { id: 'airlines', label: 'Airlines' },
-  { id: 'manufacturers', label: 'Manufacturers' },
-  { id: 'atlas-cv', label: 'Atlas CV' },
+  { id: 'profile', label: 'Profile' },
   { id: 'logbook', label: 'Logbook' },
-  { id: 'events', label: 'Events' },
-  { id: 'newsroom', label: 'Newsroom' },
+  { id: 'bookmarks', label: 'Bookmarks' },
+  { id: 'recognition-plus', label: 'Recognition+' },
   { id: 'settings', label: 'Settings' },
 ];
 
@@ -88,14 +81,16 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
   }, []);
 
   const handleNavClick = (id: string) => {
-    if (id === 'pathways') {
-      onNavigate('pathways-modern');
-    } else if (id === 'home') {
+    if (id === 'home') {
       onNavigate('access-portal-2');
     } else if (id === 'profile') {
-      onNavigate('recognition-plus');
-    } else if (id === 'programs') {
-      onNavigate('programs');
+      onNavigate('profile');
+    } else if (id === 'logbook') {
+      onNavigate('logbook');
+    } else if (id === 'bookmarks') {
+      onNavigate('bookmarks');
+    } else if (id === 'recognition-plus') {
+      onNavigate('/platform?tab=recognition-plus');
     } else {
       onNavigate(id);
     }
@@ -129,8 +124,9 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
         {[
           { id: 'home', label: 'Home' },
           { id: 'profile', label: 'Profile' },
-          { id: 'pathways', label: 'Pathways' },
-          { id: 'programs', label: 'Programs' },
+          { id: 'logbook', label: 'Logbook' },
+          { id: 'bookmarks', label: 'Bookmarks' },
+          { id: 'recognition-plus', label: 'Recognition+' },
         ].map(({ id, label }) => (
           <button
             key={id}
@@ -273,8 +269,9 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
                     <div className="py-1">
                       {[
                         { label: 'Edit Profile', tab: 'profile', icon: User },
-                        { label: 'My Wallet', tab: 'wallet', icon: Shield },
-                        { label: 'Pathways', tab: 'pathways', icon: Map },
+                        { label: 'Logbook', tab: 'logbook', icon: Shield },
+                        { label: 'Bookmarks', tab: 'bookmarks', icon: Map },
+                        { label: 'Recognition+', tab: 'recognition-plus', icon: Settings },
                         { label: 'Settings', tab: 'settings', icon: Settings },
                       ].map(({ label, tab, icon: Icon }) => (
                         <button key={tab} onClick={() => { handleNavClick(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">

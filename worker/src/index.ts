@@ -113,7 +113,8 @@ async function handleApiAction(request: Request, env: Env): Promise<Response> {
     return jsonResponse(result);
   } catch (err: any) {
     console.error(`[Worker single] action=${action} error:`, err.message, 'params:', params);
-    return jsonResponse({ error: err.message }, 500);
+    const isRateLimit = err.message?.includes('limit reached');
+    return jsonResponse({ error: err.message }, isRateLimit ? 429 : 500);
   }
 }
 
@@ -821,11 +822,27 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
     // ── AI Chat (OpenRouter) ───────────────────────────────
     case 'aiChat': {
-      const { message, profile_context, pathways_context } = params || {};
+      const { message, profile_context, pathways_context, user_id } = params || {};
       if (!message) throw new Error('message required');
 
       const apiKey = env.OPENROUTER_API_KEY;
       if (!apiKey) throw new Error('OpenRouter API key not configured');
+
+      // Rate limit: 3 AI chat requests per user per day
+      const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+      const userIdentifier = user_id || 'anonymous';
+      const limit = 3;
+
+      // Check current count
+      const { results: rateResults } = await db.prepare(
+        `SELECT request_count FROM rate_limits
+         WHERE user_identifier = ? AND action = ? AND request_date = ?`
+      ).bind(userIdentifier, 'aiChat', today).all();
+
+      const currentCount = Number((rateResults?.[0] as any)?.request_count || 0);
+      if (currentCount >= limit) {
+        throw new Error('Daily AI chat limit reached (3/3). Please try again tomorrow.');
+      }
 
       // Build system prompt with career pathway context
       let pathwaysInfo = '';
@@ -864,7 +881,7 @@ Guidelines:
             'X-Title': 'PilotRecognition AI Career Coach',
           },
           body: JSON.stringify({
-            model: 'google/gemma-2-9b-it:free',
+            model: 'poolside/laguna-xs.2:free',
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: message },
@@ -876,12 +893,25 @@ Guidelines:
 
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
-          console.error('[OpenRouter] error:', data);
-          throw new Error(data.error?.message || 'AI request failed');
+          console.error('[OpenRouter] HTTP', res.status, 'error:', JSON.stringify(data));
+          throw new Error(data.error?.message || `AI request failed (${res.status})`);
         }
 
-        const aiMessage = data.choices?.[0]?.message?.content || 'Sorry, I could not generate a response.';
-        return { message: aiMessage, model: 'google/gemma-2-9b-it:free' };
+        const aiMessage = data.choices?.[0]?.message?.content;
+        if (!aiMessage) {
+          console.error('[OpenRouter] empty response:', JSON.stringify(data));
+          throw new Error('Empty AI response');
+        }
+
+        // Increment rate limit count on success
+        await db.prepare(
+          `INSERT INTO rate_limits (user_identifier, action, request_date, request_count)
+           VALUES (?, ?, ?, 1)
+           ON CONFLICT(user_identifier, action, request_date) DO UPDATE SET
+             request_count = request_count + 1`
+        ).bind(userIdentifier, 'aiChat', today).run();
+
+        return { message: aiMessage, model: 'poolside/laguna-xs.2:free', remaining: limit - currentCount - 1 };
       } catch (err: any) {
         console.error('[OpenRouter] exception:', err.message);
         throw new Error(err.message || 'AI request failed');

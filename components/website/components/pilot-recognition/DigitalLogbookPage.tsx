@@ -1129,6 +1129,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
               )}
             </div>
           )}
+
           {/* Table - Standard Format */}
           {logbookFormat === 'standard' && (
             <div style={{ overflowX: 'auto' }}>

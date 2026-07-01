@@ -9,6 +9,7 @@ import {
   Wrench,
   FileText,
   BookMarked,
+  Bookmark,
   Calendar,
   Newspaper,
   Settings,
@@ -44,19 +45,11 @@ interface Profile {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'Recognition Board', icon: BarChart3 },
   { id: 'home', label: 'Home', icon: Home },
-  { id: 'profile', label: 'My Profile', icon: User },
-  { id: 'wallet', label: 'Credential Vault', icon: Shield },
-  { id: 'pathways-directory', label: 'Pathways', icon: Map },
-  { id: 'programs', label: 'Programs', icon: BookOpen },
-  { id: 'airlines', label: 'Airlines', icon: Plane },
-  { id: 'manufacturers', label: 'Manufacturers', icon: Wrench },
-  { id: 'atlas-cv', label: 'Atlas CV', icon: FileText },
-  { id: 'verification', label: 'Verification', icon: BadgeCheck },
+  { id: 'profile', label: 'Profile', icon: User },
   { id: 'logbook', label: 'Logbook', icon: BookMarked },
-  { id: 'events', label: 'Events', icon: Calendar },
-  { id: 'newsroom', label: 'Newsroom', icon: Newspaper },
+  { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
+  { id: 'recognition-plus', label: 'Recognition+', icon: BadgeCheck },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 

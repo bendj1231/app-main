@@ -53,6 +53,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profi
           action: 'aiChat',
           params: {
             message: userMessage,
+            user_id: profile?.id || profile?.user_id || null,
             profile_context: {
               license_type: profile?.license_type,
               total_flight_hours: profile?.total_flight_hours || profile?.total_hours,
@@ -70,6 +71,9 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profi
       });
 
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || `Request failed (${response.status})`);
+      }
       const aiMessage = data.message || 'Sorry, I could not generate a response.';
 
       setMessages((prev) => [
@@ -78,9 +82,10 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profi
       ]);
     } catch (err: any) {
       console.error('AI chat error:', err);
+      const errorMessage = err?.message || 'Sorry, something went wrong. Please try again.';
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: 'Sorry, something went wrong. Please try again.', timestamp: new Date().toISOString() },
+        { role: 'assistant', content: errorMessage, timestamp: new Date().toISOString() },
       ]);
     } finally {
       setIsLoading(false);
@@ -114,7 +119,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose, profi
             </div>
             <div>
               <h3 className="text-sm font-black text-white">AI Career Coach</h3>
-              <p className="text-[10px] text-white/50">Powered by Gemma 2</p>
+              <p className="text-[10px] text-white/50">Powered by Gemma 2 (OpenRouter)</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/10 transition-colors">

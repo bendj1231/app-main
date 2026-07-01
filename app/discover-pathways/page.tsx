@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { TopNavbar } from '@/components/website/components/TopNavbar';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { Search, ChevronRight, Plane, Globe, GraduationCap, Package, Briefcase, Zap, Star, Shield, Users, MapPin, TrendingUp } from 'lucide-react';
@@ -110,6 +111,25 @@ const STATS = [
   { value: '40+', label: 'Countries', icon: MapPin },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+  },
+};
+
 export default function DiscoverPathwaysPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -135,12 +155,17 @@ export default function DiscoverPathwaysPage() {
         currentPage="pathways"
       />
 
-      <div className="relative z-10">
+      <motion.div
+        className="relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Spacer for fixed navbar */}
         <div className="h-20" />
 
         {/* ── STATS BAR ── */}
-        <section className="px-6 pb-8">
+        <motion.section variants={itemVariants} className="px-6 pb-8">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {STATS.map(({ value, label, icon: Icon }) => (
@@ -158,10 +183,10 @@ export default function DiscoverPathwaysPage() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* ── MAIN HERO + AIRCRAFT CARD ── */}
-        <section className="px-6 pb-10">
+        <motion.section variants={itemVariants} className="px-6 pb-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left: Hero Content - Floating, no background */}
@@ -256,10 +281,10 @@ export default function DiscoverPathwaysPage() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* ── CATEGORY CARDS ── */}
-        <section className="px-6 pb-16">
+        <motion.section variants={itemVariants} className="px-6 pb-16">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
             <div className="flex items-center justify-between mb-6">
@@ -350,17 +375,17 @@ export default function DiscoverPathwaysPage() {
               })}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* ── FOOTER ── */}
-        <footer className="px-6 pb-10 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <motion.footer variants={itemVariants} className="px-6 pb-10 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="max-w-6xl mx-auto pt-8">
             <p className="text-white/20 text-xs">
               © 2026 PilotRecognition.com — Discover Pathways
             </p>
           </div>
-        </footer>
-      </div>
+        </motion.footer>
+      </motion.div>
     </div>
   );
 }

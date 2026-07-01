@@ -533,6 +533,7 @@ const WhyRecognitionPage = lazy(() =>
     default: m.WhyRecognitionPage,
   }))
 );
+const WingMentorLearnMorePage = lazy(() => import('@/app/wingmentor-learn-more/page'));
 const GlobalAviationAuthoritiesPage = lazy(
   () => import('@/components/pages/GlobalAviationAuthoritiesPage')
 );
@@ -1047,6 +1048,10 @@ export const AppRoutes = () => {
           <Route
             path="/why-recognition"
             element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          />
+          <Route
+            path="/wingmentor-learn-more"
+            element={<WingMentorLearnMorePage />}
           />
           <Route
             path="/mission-vision"

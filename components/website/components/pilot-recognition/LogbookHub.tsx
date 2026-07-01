@@ -3,6 +3,7 @@ import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
+import { CockpitFlightHoursDashboard } from '../unified-platform/CockpitFlightHoursDashboard';
 
 interface LogbookHubProps {
   profile: any;
@@ -160,38 +161,48 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
     <button
       disabled={isComing}
       onClick={() => !isComing && onSelect(providerKey)}
-      className="relative group flex flex-row items-center gap-4 px-5 py-5 rounded-xl border text-left w-full transition-all"
+      className="relative group flex flex-row items-center gap-4 px-0 rounded-lg text-left w-full transition-all overflow-hidden"
       style={{
-        background: selected ? 'rgba(255,255,255,0.95)' : isComing ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.05)',
-        border: `1px solid ${selected ? 'rgba(255,255,255,0.6)' : isComing ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.12)'}`,
+        background: isComing ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.06)',
         cursor: isComing ? 'not-allowed' : 'pointer',
-        backdropFilter: 'blur(8px)',
       }}
     >
-      <span className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-lg overflow-hidden" style={{ background: selected ? 'transparent' : meta.bg }}>
+      {/* Left colored icon block — Epic Games style */}
+      <span
+        className="flex-shrink-0 w-16 h-14 flex items-center justify-center"
+        style={{ background: meta.bg }}
+      >
         {meta.logoImg
-          ? <img src={meta.logoImg} alt={meta.name} className="w-14 h-14 object-contain rounded" />
-          : <span className="text-3xl">{meta.logo}</span>
+          ? <img src={meta.logoImg} alt={meta.name} className="w-8 h-8 object-contain" />
+          : <span className="text-2xl">{meta.logo}</span>
         }
       </span>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className={`text-sm font-black leading-tight ${selected ? 'text-slate-800' : 'text-white'} group-hover:text-slate-800 transition-colors`}>{meta.name}</span>
-          {meta.badge && (
-            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full transition-colors ${selected ? 'bg-emerald-500/30 text-emerald-700' : 'bg-emerald-500/15 text-emerald-400'}`}>{meta.badge}</span>
-          )}
-        </div>
-        <span className={`text-[10px] transition-colors ${selected ? 'text-slate-500' : 'text-white/35 group-hover:text-slate-500'}`}>
-          {meta.region}{providerKey === 'myflightbook' ? ' · Default logbook' : ''}
-        </span>
+
+      {/* Middle text */}
+      <div className="flex-1 min-w-0 py-3.5">
+        <span className="text-sm font-black text-white tracking-wide">{meta.name.toUpperCase()}</span>
+        {meta.badge && (
+          <span className="ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400">{meta.badge}</span>
+        )}
+        <p className="text-[10px] text-white/30 mt-0.5">{meta.region}{providerKey === 'myflightbook' ? ' · Default logbook' : ''}</p>
       </div>
-      <span className="text-[10px] font-semibold flex-shrink-0 transition-colors" style={{ color: selected ? '#64748b' : meta.methodColor }}>{meta.method}</span>
+
+      {/* Right chevron / method */}
+      <span className="pr-4 text-[10px] font-black tracking-wider text-white/20 flex-shrink-0">
+        {isComing ? 'COMING SOON' : selected ? 'SELECTED' : meta.method.toUpperCase()}
+      </span>
+
+      {/* Selected indicator bar */}
+      {selected && (
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: '#00b4d8' }} />
+      )}
+
+      {/* Coming Soon overlay */}
       {isComing && (
-        <div className="absolute inset-0 rounded-xl flex items-center justify-center" style={{ background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(2px)' }}>
-          <span className="text-[10px] font-black tracking-widest text-white/50 uppercase">Coming Soon</span>
+        <div className="absolute inset-0 flex items-center justify-end pr-4" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(15,23,42,0.4) 100%)' }}>
+          <span className="text-[10px] font-black tracking-widest text-white/40 uppercase">Coming Soon</span>
         </div>
       )}
-      {selected && <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#00b4d8' }} />}
     </button>
   );
 };
@@ -279,37 +290,248 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
         <p className="text-sm text-white/40 mt-0.5">Verified Flight Record Registry</p>
       </div>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard
-          label="Total Hours"
-          value={totalHours > 0 ? totalHours.toLocaleString(undefined, { maximumFractionDigits: 1 }) : '—'}
-          sub="across all providers"
-          icon={<Clock size={16} style={{ color: '#38bdf8' }} />}
-          accent="#38bdf8"
-        />
-        <StatCard
-          label="Total Flights"
-          value={totalFlights > 0 ? totalFlights.toLocaleString() : '—'}
-          sub="logged entries"
-          icon={<Plane size={16} style={{ color: '#818cf8' }} />}
-          accent="#818cf8"
-        />
-        <StatCard
-          label="Providers Synced"
-          value={providers.length}
-          sub={providers.length === 0 ? 'connect one below' : `${providers.filter(p => p.status === 'active').length} active`}
-          icon={<Link size={16} style={{ color: '#34d399' }} />}
-          accent="#34d399"
-        />
-        <StatCard
-          label="Verification Status"
-          value={providers.length > 0 ? 'LINKED' : 'UNVERIFIED'}
-          sub={providers.length > 0 ? 'provider connected' : 'sync to verify'}
-          icon={<Award size={16} style={{ color: '#f59e0b' }} />}
-          accent="#f59e0b"
-        />
+      {/* Recent Aircraft Carousel */}
+      {/* Connect logbook overlay disabled for now — always show carousel */}
+      {false ? (
+        <div className="relative rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          {/* Blurred dashboard preview */}
+          <div className="absolute inset-0 z-0 opacity-60" style={{ filter: 'blur(6px)', transform: 'scale(1.05)' }}>
+            <CockpitFlightHoursDashboard
+              userId={undefined}
+              profile={{
+                total_flight_hours: 847.5,
+                pic_hours: 432,
+                dual_hours: 215,
+                cross_country_hours: 198,
+                night_hours: 67,
+                simulated_instrument_hours: 45,
+                actual_instrument_hours: 32,
+                sim_time: 12,
+                total_landings: 342,
+              }}
+              isFreeUser={false}
+              logbookConnected={false}
+            />
+          </div>
+
+          {/* Overlay */}
+          <div className="relative z-10 flex flex-col items-center justify-center py-14 px-6" style={{ background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)' }}>
+            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.2)' }}>
+              <span className="text-2xl">✈️</span>
+            </div>
+            <p className="text-sm font-black text-white mb-2">Sync Your Logbook</p>
+            <p className="text-xs text-white/50 max-w-sm mx-auto leading-relaxed">
+              Connect your logbook to track, verify and align your pathway career with AutoPilot AI
+            </p>
+            <button
+              onClick={() => setSubPage('logbook')}
+              className="mt-4 px-6 py-2.5 rounded-full text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+              style={{ background: '#dc2626' }}
+            >
+              CONNECT LOGBOOK →
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="relative overflow-hidden rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+            <div>
+              <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Recent Activity</p>
+              <p className="text-sm font-black text-white">Last Flown Aircraft</p>
+            </div>
+            <span className="text-[10px] font-black text-white/30">{totalHours > 0 ? `${totalHours.toFixed(1)}h total` : '—'}</span>
+          </div>
+          <div className="relative overflow-hidden py-4">
+          <style>{`
+            @keyframes aircraftScroll {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .aircraft-carousel {
+              animation: aircraftScroll 40s linear infinite;
+            }
+            .aircraft-carousel:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+          <div className="aircraft-carousel flex gap-3 px-4" style={{ width: 'max-content' }}>
+            {[
+              { name: 'Cessna 172S', type: 'C172', hours: 3.2, date: '28 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 4, grade: 'A-', instructor: 'Capt. Reyes', remarks: 'Smooth short-field landing. Wind correction on final was precise.' },
+              { name: 'Piper PA-44', type: 'PA44', hours: 2.5, date: '25 Jun 2026', color: '#818cf8', img: 'https://resources.globalair.com/specs/images/Twin%20Pistons/Piper/Seminole/PA-44-180/Exterior/Seminole%20PA-44-180%204.jpg?w=650&h=430&mode=max', tail: 'RP-S8820', landings: 3, grade: 'B+', instructor: 'Capt. Dela Cruz', remarks: 'Good engine-out procedures. Maintain heading during single-engine ops.' },
+              { name: 'Cessna 152', type: 'C152', hours: 1.8, date: '22 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 6, grade: 'A', instructor: 'Capt. Santos', remarks: 'Excellent stall recovery. Student solo-ready for pattern work.' },
+              { name: 'Tecnam P2008', type: 'P2008', hours: 4.0, date: '20 Jun 2026', color: '#f59e0b', img: 'https://tecnam.com/wp-content/uploads/2026/02/P2008-JC-NG-blue-Large.jpeg', tail: 'RP-T7721', landings: 2, grade: 'B', instructor: 'Capt. Lim', remarks: 'Cross-country navigation solid. Fuel planning needs attention.' },
+              { name: 'Diamond DA40', type: 'DA40', hours: 3.5, date: '18 Jun 2026', color: '#f472b6', img: 'https://upload.wikimedia.org/wikipedia/commons/8/87/OH-DAC_Tour_de_Sky_Oulu_20140810_02.JPG', tail: 'RP-D4405', landings: 3, grade: 'A-', instructor: 'Capt. Tan', remarks: 'Glass cockpit proficiency improving. Autopilot coupling smooth.' },
+              { name: 'Cessna 172S', type: 'C172', hours: 2.1, date: '15 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 5, grade: 'B+', instructor: 'Capt. Reyes', remarks: 'Night flying session. Instrument scan disciplined.' },
+              { name: 'Piper PA-28', type: 'PA28', hours: 1.5, date: '12 Jun 2026', color: '#a78bfa', img: 'https://placehold.co/200x200/2a1e3a/a78bfa?text=PA28', tail: 'RP-P2810', landings: 4, grade: 'A', instructor: 'Capt. Dela Cruz', remarks: 'Soft-field takeoff and landing mastery. Ready for checkride.' },
+              { name: 'Cessna 152', type: 'C152', hours: 2.8, date: '10 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 8, grade: 'A-', instructor: 'Capt. Santos', remarks: 'Circuit practice. Consistent approach speeds maintained.' },
+            ].map((ac, i) => (
+              <div
+                key={`${ac.name}-${i}`}
+                className="flex-shrink-0 w-[28rem] h-48 rounded-xl overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer relative flex"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}
+              >
+                {/* Left: Aircraft Image */}
+                <div className="relative w-[45%] h-full flex-shrink-0">
+                  <img
+                    src={ac.img}
+                    alt={ac.type}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  {/* Gradient fade to right */}
+                  <div
+                    className="absolute inset-y-0 right-0 w-16"
+                    style={{ background: 'linear-gradient(to right, transparent, rgba(15,23,42,0.95))' }}
+                  />
+                </div>
+
+                {/* Right: Glassmorphism Flight Story */}
+                <div
+                  className="flex-1 h-full p-4 flex flex-col justify-between relative"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.85) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                  }}
+                >
+                  {/* Top: Aircraft identity */}
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-black text-white leading-tight">{ac.name}</p>
+                        <p className="text-[10px] text-white/40">{ac.type} · {ac.tail}</p>
+                      </div>
+                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${ac.color}15`, color: ac.color, border: `1px solid ${ac.color}30` }}>
+                        {ac.grade}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Middle: Flight metrics */}
+                  <div className="flex items-center gap-4 mt-2">
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Duration</p>
+                      <p className="text-base font-black text-white">{ac.hours}h</p>
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Landings</p>
+                      <p className="text-base font-black text-white">{ac.landings}</p>
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Date</p>
+                      <p className="text-xs font-black text-white/70">{ac.date}</p>
+                    </div>
+                  </div>
+
+                  {/* Bottom: CFI remarks */}
+                  <div className="mt-2">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-[8px] font-black tracking-wider text-white/30 uppercase">CFI</span>
+                      <span className="text-[9px] text-white/50">{ac.instructor}</span>
+                    </div>
+                    <p className="text-[10px] text-white/50 leading-relaxed line-clamp-2">{ac.remarks}</p>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="mt-2 w-full h-0.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                    <div className="h-full rounded-full" style={{ width: `${Math.min((ac.hours / 5) * 100, 100)}%`, background: ac.color }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {[
+              { name: 'Cessna 172S', type: 'C172', hours: 3.2, date: '28 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 4, grade: 'A-', instructor: 'Capt. Reyes', remarks: 'Smooth short-field landing. Wind correction on final was precise.' },
+              { name: 'Piper PA-44', type: 'PA44', hours: 2.5, date: '25 Jun 2026', color: '#818cf8', img: 'https://resources.globalair.com/specs/images/Twin%20Pistons/Piper/Seminole/PA-44-180/Exterior/Seminole%20PA-44-180%204.jpg?w=650&h=430&mode=max', tail: 'RP-S8820', landings: 3, grade: 'B+', instructor: 'Capt. Dela Cruz', remarks: 'Good engine-out procedures. Maintain heading during single-engine ops.' },
+              { name: 'Cessna 152', type: 'C152', hours: 1.8, date: '22 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 6, grade: 'A', instructor: 'Capt. Santos', remarks: 'Excellent stall recovery. Student solo-ready for pattern work.' },
+              { name: 'Tecnam P2008', type: 'P2008', hours: 4.0, date: '20 Jun 2026', color: '#f59e0b', img: 'https://tecnam.com/wp-content/uploads/2026/02/P2008-JC-NG-blue-Large.jpeg', tail: 'RP-T7721', landings: 2, grade: 'B', instructor: 'Capt. Lim', remarks: 'Cross-country navigation solid. Fuel planning needs attention.' },
+              { name: 'Diamond DA40', type: 'DA40', hours: 3.5, date: '18 Jun 2026', color: '#f472b6', img: 'https://upload.wikimedia.org/wikipedia/commons/8/87/OH-DAC_Tour_de_Sky_Oulu_20140810_02.JPG', tail: 'RP-D4405', landings: 3, grade: 'A-', instructor: 'Capt. Tan', remarks: 'Glass cockpit proficiency improving. Autopilot coupling smooth.' },
+              { name: 'Cessna 172S', type: 'C172', hours: 2.1, date: '15 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 5, grade: 'B+', instructor: 'Capt. Reyes', remarks: 'Night flying session. Instrument scan disciplined.' },
+              { name: 'Piper PA-28', type: 'PA28', hours: 1.5, date: '12 Jun 2026', color: '#a78bfa', img: 'https://placehold.co/200x200/2a1e3a/a78bfa?text=PA28', tail: 'RP-P2810', landings: 4, grade: 'A', instructor: 'Capt. Dela Cruz', remarks: 'Soft-field takeoff and landing mastery. Ready for checkride.' },
+              { name: 'Cessna 152', type: 'C152', hours: 2.8, date: '10 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 8, grade: 'A-', instructor: 'Capt. Santos', remarks: 'Circuit practice. Consistent approach speeds maintained.' },
+            ].map((ac, i) => (
+              <div
+                key={`dup-${ac.name}-${i}`}
+                className="flex-shrink-0 w-[28rem] h-48 rounded-xl overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer relative flex"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}
+              >
+                {/* Left: Aircraft Image */}
+                <div className="relative w-[45%] h-full flex-shrink-0">
+                  <img
+                    src={ac.img}
+                    alt={ac.type}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  {/* Gradient fade to right */}
+                  <div
+                    className="absolute inset-y-0 right-0 w-16"
+                    style={{ background: 'linear-gradient(to right, transparent, rgba(15,23,42,0.95))' }}
+                  />
+                </div>
+
+                {/* Right: Glassmorphism Flight Story */}
+                <div
+                  className="flex-1 h-full p-4 flex flex-col justify-between relative"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.85) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                  }}
+                >
+                  {/* Top: Aircraft identity */}
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-black text-white leading-tight">{ac.name}</p>
+                        <p className="text-[10px] text-white/40">{ac.type} · {ac.tail}</p>
+                      </div>
+                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${ac.color}15`, color: ac.color, border: `1px solid ${ac.color}30` }}>
+                        {ac.grade}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Middle: Flight metrics */}
+                  <div className="flex items-center gap-4 mt-2">
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Duration</p>
+                      <p className="text-base font-black text-white">{ac.hours}h</p>
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Landings</p>
+                      <p className="text-base font-black text-white">{ac.landings}</p>
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Date</p>
+                      <p className="text-xs font-black text-white/70">{ac.date}</p>
+                    </div>
+                  </div>
+
+                  {/* Bottom: CFI remarks */}
+                  <div className="mt-2">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-[8px] font-black tracking-wider text-white/30 uppercase">CFI</span>
+                      <span className="text-[9px] text-white/50">{ac.instructor}</span>
+                    </div>
+                    <p className="text-[10px] text-white/50 leading-relaxed line-clamp-2">{ac.remarks}</p>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="mt-2 w-full h-0.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                    <div className="h-full rounded-full" style={{ width: `${Math.min((ac.hours / 5) * 100, 100)}%`, background: ac.color }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+      )}
 
       {/* Action buttons */}
       <div className="flex items-center gap-2 flex-wrap">
@@ -349,7 +571,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
           </div>
         ) : providers.length === 0 ? (
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
               {Object.keys(PROVIDER_META).map(key => (
                 <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} />
               ))}
@@ -376,7 +598,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
             <p className="text-center text-[10px] text-white/20">Read-only access only. We never modify your logbook data.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="flex flex-col gap-3">
             {providers.map(p => (
               <ProviderCard key={p.id} provider={p} onOpenLogbook={() => setSubPage('logbook')} />
             ))}
@@ -392,7 +614,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
             <p className="text-sm font-black text-white">Add Another Provider</p>
           </div>
           <div className="space-y-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
               {availableToConnect.map(key => (
                 <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} />
               ))}

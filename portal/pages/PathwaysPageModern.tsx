@@ -4598,6 +4598,67 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         />
       </div>
 
+      {/* Global materialization animation styles */}
+      <style>{`
+        @keyframes materialize {
+          from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            filter: blur(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+          }
+        }
+        .materialize {
+          animation: materialize 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          opacity: 0;
+        }
+        .materialize-delay-1 { animation-delay: 0.05s; }
+        .materialize-delay-2 { animation-delay: 0.10s; }
+        .materialize-delay-3 { animation-delay: 0.15s; }
+        .materialize-delay-4 { animation-delay: 0.20s; }
+        .materialize-delay-5 { animation-delay: 0.25s; }
+        .materialize-delay-6 { animation-delay: 0.30s; }
+        .materialize-delay-7 { animation-delay: 0.35s; }
+        .materialize-delay-8 { animation-delay: 0.40s; }
+        .materialize-delay-9 { animation-delay: 0.45s; }
+        .materialize-delay-10 { animation-delay: 0.50s; }
+
+        /* 3D edge-to-edge pathway cards */
+        .pathway-card-3d {
+          transform-style: preserve-3d;
+          transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
+          border-radius: 1rem;
+          overflow: hidden;
+        }
+        .pathway-card-3d:hover {
+          transform: perspective(1000px) rotateY(4deg) rotateX(2deg) scale(1.03) translateY(-8px);
+          box-shadow: 0 35px 70px -12px rgba(0, 0, 0, 0.8);
+        }
+        .pathway-card-3d::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.2) 100%);
+          pointer-events: none;
+          z-index: 2;
+          opacity: 0.6;
+          transition: opacity 0.5s ease;
+        }
+        .pathway-card-3d:hover::before {
+          opacity: 0.9;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .materialize { animation: none; opacity: 1; }
+          .pathway-card-3d { transform: none; }
+          .pathway-card-3d:hover { transform: none; }
+        }
+      `}</style>
+
       {/* Frosted glass blur overlay */}
       <div className="fixed inset-0 z-0 bg-white/5 backdrop-blur-md"></div>
 
@@ -4626,7 +4687,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: embedded ? '0' : '340px' }}>
           <div className="max-w-[calc(100vw-360px)] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Branding */}
-        <div className="mb-4 text-center">
+        <div className="mb-4 text-center materialize materialize-delay-1">
           <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
             pilotcareer<span className="text-red-500">pathways</span>.com
           </h1>
@@ -4636,14 +4697,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
 
         {/* Search Bar */}
-        <div className="mb-3 flex justify-center">
+        <div className="mb-3 flex justify-center materialize materialize-delay-2">
           <div className="w-full max-w-2xl relative">
             <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
           </div>
         </div>
 
         {/* Filter Pills - Replaceable */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 px-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 px-4 materialize materialize-delay-3">
           {!selectedPrimaryPill ? (
             // Primary pills
             <>
@@ -4821,7 +4882,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
 
         {/* Results count */}
-        <div className="w-full mb-4 text-center">
+        <div className="w-full mb-4 text-center materialize materialize-delay-4">
           <p className={`${subText} text-sm`}>
             {filteredPathways.length} pathways available
           </p>
@@ -4840,7 +4901,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             {/* Stage 1 Carousel */}
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-8"
+              className="pathways-carousel flex overflow-x-auto pb-4"
               style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '300px', scrollSnapType: 'x mandatory' }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
@@ -4937,8 +4998,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     return (
                       <div
                         key={rec.id}
-                        className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
-                        style={{ width: '720px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
+                        className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
+                        style={{ width: '100vw', height: '380px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${recIdx * 0.08}s` }}
                         onClick={() => {
                           setStage1Index(recIdx);
                           setStage2Index(0);
@@ -5011,8 +5072,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
-                      style={{ width: '720px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
+                      style={{ width: '100vw', height: '380px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${itemIdx * 0.08}s` }}
                       onClick={() => {
                         if (discoveryKey) {
                           setStage1Index(itemIdx);
@@ -5161,7 +5222,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
           {/* Stage 2: Pathways Carousel - Shows when a category is selected */}
           {selectedPathwayCard && (
-            <div className="mt-12 w-full">
+            <div className="mt-12 w-full materialize materialize-delay-5">
               <div className="mb-6">
                 <h3
                   className="text-2xl md:text-3xl font-normal text-white mb-2"
@@ -5311,7 +5372,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                 <div 
                   ref={stage2Ref}
-                  className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-8"
+                  className="pathways-carousel flex overflow-x-auto pb-4"
                   style={{
                     WebkitOverflowScrolling: 'touch',
                     scrollSnapType: 'x mandatory',
@@ -5478,11 +5539,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     <div
                       key={`${pathway.id}-${idx}`}
                       id={`pathway-card-${pathway.id}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-2xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500 scale-[1.02]' : 'hover:scale-[1.01]'}`}
+                      className={`flex-shrink-0 cursor-pointer rounded-2xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500 scale-[1.02]' : 'hover:scale-[1.01]'} materialize pathway-card-3d`}
                       style={{ 
-                        width: '720px', 
-                        height: '340px',
+                        width: '100vw', 
+                        height: '380px',
                         scrollSnapAlign: 'center',
+                        animationDelay: `${idx * 0.08}s`,
                       }}
                       onClick={() => {
                         setSelectedCarouselPathway(pathway);
@@ -5490,8 +5552,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         const el = stage2Ref.current;
                         if (el) {
                           const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                          const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
-                          const scrollTarget = idx * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
+                          const cardWidth = firstCard ? firstCard.offsetWidth : 736;
+                          const scrollTarget = idx * cardWidth - (el.clientWidth / 2) + (cardWidth / 2);
                           el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
                         }
                         setStage2Index(idx);
@@ -7027,7 +7089,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* Job Position Filter - Only show in jobs mode */}
         {mode === 'jobs' && (
-          <div className="flex items-center gap-3 justify-center mt-6">
+          <div className="flex items-center gap-3 justify-center mt-6 materialize materialize-delay-6">
             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Position:</span>
             <div className="relative">
               <button
@@ -7083,23 +7145,27 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         )}
 
         {mode === 'jobs' && currentUser && (
-          <JobIntelligenceBanner
-            jobMatches={intelligence.jobMatches}
-            loading={intelligence.loadingJobs}
-            isDarkMode={isDarkMode}
-          />
+          <div className="materialize materialize-delay-7">
+            <JobIntelligenceBanner
+              jobMatches={intelligence.jobMatches}
+              loading={intelligence.loadingJobs}
+              isDarkMode={isDarkMode}
+            />
+          </div>
         )}
 
         {mode === 'jobs' && currentUser && intelligence.jobMatches?.blindSpotPicks && (
-          <BlindSpotPicksRow
-            blindSpots={intelligence.jobMatches.blindSpotPicks}
-            loading={intelligence.loadingJobs}
-            isDarkMode={isDarkMode}
-          />
+          <div className="materialize materialize-delay-8">
+            <BlindSpotPicksRow
+              blindSpots={intelligence.jobMatches.blindSpotPicks}
+              loading={intelligence.loadingJobs}
+              isDarkMode={isDarkMode}
+            />
+          </div>
         )}
 
         {/* Testimonials Section - Build Trust */}
-        <section className={`py-12 px-6 ${isDarkMode ? 'bg-slate-800/30 border-y border-slate-700/50' : 'bg-slate-50/50 border-y border-slate-200'} mt-12`}>
+        <section className={`py-12 px-6 ${isDarkMode ? 'bg-slate-800/30 border-y border-slate-700/50' : 'bg-slate-50/50 border-y border-slate-200'} mt-12 materialize materialize-delay-7`}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">Success Stories</p>
@@ -7208,7 +7274,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </section>
 
         {/* Footer */}
-        <footer className={`py-8 px-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} mt-12`}>
+        <footer className={`py-8 px-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} mt-12 materialize materialize-delay-9`}>
           <div className="mx-auto max-w-[1800px]">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -7292,7 +7358,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
       {/* Align Profile Tools - Floating Button (only when logged in) */}
       {userProfile?.id && (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 materialize materialize-delay-10">
         {!isAlignProfileOpen ? (
           <button
             onClick={() => setIsAlignProfileOpen(true)}

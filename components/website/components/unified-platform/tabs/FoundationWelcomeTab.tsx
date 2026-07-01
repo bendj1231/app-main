@@ -78,11 +78,11 @@ const SectionHeader: React.FC<{
 const slides = [
   {
     image: '/foundation.png',
-    label: 'Foundation Program',
-    title: 'Your CPL Is\nNot Enough',
-    subtitle: 'Airlines hire on judgment, leadership, and CRM. Skills flight school never taught.',
-    cta: 'Enroll Now',
-    link: 'foundational-program',
+    label: 'WingMentor Program',
+    title: 'Help 50.\nBecome One.',
+    subtitle: 'Build leadership through action. 50 hours of mentorship. Recognition+ priority status. Not waiting for permission.',
+    cta: 'Learn More',
+    link: '/wingmentor-learn-more',
   },
   {
     image: '/program1.png',
@@ -248,9 +248,52 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
 }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [logoVisible, setLogoVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    // Logo fade-in sequence
+    const logoTimer = setTimeout(() => {
+      setLogoVisible(true);
+    }, 100);
+
+    // Fade out loading screen after logo is visible
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(logoTimer);
+      clearTimeout(loadingTimer);
+    };
+  }, []);
 
   return (
-    <div className="relative z-10 flex flex-col w-full" style={{ background: '#0b0b0b' }}>
+    <>
+      {/* Loading Screen */}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            className="!fixed inset-0 z-[99999] flex items-center justify-center bg-black"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh' }}
+          >
+            <motion.img
+              src="/logo.png"
+              alt="Pilot Recognition"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={logoVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+              className="w-48 h-48 md:w-64 md:h-64 object-contain"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!isLoading && (
+        <div className="relative z-10 flex flex-col w-full" style={{ background: '#0b0b0b' }}>
       {/* ═══════════════════════════════════════════════════
           HERO CAROUSEL — Full-bleed edge-to-edge, Rockstar style
       ═══════════════════════════════════════════════════ */}
@@ -513,6 +556,8 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
         </div>
       </section>
     </div>
+      )}
+    </>
   );
 };
 

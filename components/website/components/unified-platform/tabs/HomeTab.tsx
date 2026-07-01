@@ -492,37 +492,60 @@ export const HomeTab: React.FC<{
         {/* ── THREE CARDS ROW ── */}
         <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 h-[120px] flex-shrink-0 overflow-hidden">
 
-          {/* ACCESS PROFILE */}
+          {/* ACCESS RECOGNITION — conditional on tier */}
           <motion.div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => setTab('profile' as TabId)}
+            onClick={() => {
+              const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
+              const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
+              setTab(isPremium ? 'wallet' as TabId : 'recognition-plus-tab' as TabId);
+            }}
             variants={{ hidden: {}, visible: {} }}
-            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(99,102,241,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
-            whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(99,102,241,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
+            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(220,38,38,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
+            whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(220,38,38,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
-            <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
-            <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
-              }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(165,180,252,0.85)' }}>Profile</p>
-              <h3 className="text-lg font-black text-white tracking-tight leading-tight">ACCESS<br/>PROFILE</h3>
-            </div>
-            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#6366f1' }} />
+            {(() => {
+              const userTier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
+              const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
+              return (
+                <>
+                  <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
+                  <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
+                  <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
+                    style={{
+                      background: 'rgba(255,255,255,0.08)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255,255,255,0.18)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+                    }}>
+                    <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>
+                      {isPremium ? 'Verified' : 'Profile'}
+                    </p>
+                    <h3 className="text-lg font-black text-white tracking-tight leading-tight">ACCESS<br/>RECOGNITION</h3>
+                  </div>
+                  <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
+                  {isPremium && (
+                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5" style={{ background: 'rgba(220,38,38,0.85)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                      <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                      <span className="text-[8px] font-black text-white">RECOGNITION+</span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </motion.div>
 
           {/* DISCOVER PROGRAMS */}
           <div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => setTab('foundation-welcome' as TabId)}
+            onClick={() => {
+              localStorage.setItem('careerpathways_mode', 'true');
+              window.location.href = `${window.location.origin}/?product=careerpathways`;
+            }}
           >
-            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/cessna.png')" }} />
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/airline-operations.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
             <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
               style={{
@@ -532,16 +555,16 @@ export const HomeTab: React.FC<{
                 border: '1px solid rgba(255,255,255,0.18)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(103,232,249,0.85)' }}>Programs</p>
-              <h3 className="text-lg font-black text-white tracking-tight leading-tight">DISCOVER<br/>PROGRAMS</h3>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>Career</p>
+              <h3 className="text-lg font-black text-white tracking-tight leading-tight">DISCOVER<br/>PATHWAYS</h3>
             </div>
-            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#06b6d4' }} />
+            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
           </div>
 
-          {/* GET RECOGNITION+ */}
+          {/* THE PILOT GAP — pilotshortage.org */}
           <div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => setTab('recognition-plus-tab' as TabId)}
+            onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
           >
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
@@ -553,17 +576,11 @@ export const HomeTab: React.FC<{
                 border: '1px solid rgba(255,255,255,0.18)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(52,211,153,0.85)' }}>Upgrade</p>
-              <h3 className="text-lg font-black text-white tracking-tight leading-tight">GET<br/>RECOGNITION+</h3>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>Association</p>
+              <h3 className="text-lg font-black text-white tracking-tight leading-tight">THE PILOT<br/>SHORTAGE</h3>
             </div>
-            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#10b981' }} />
+            <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
 
-            {walletChecks.some(c => c.status === 'verified') && (
-              <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5" style={{ background: 'rgba(16,185,129,0.85)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                <div className="w-1.5 h-1.5 bg-white" />
-                <span className="text-[8px] font-black text-white">VERIFIED</span>
-              </div>
-            )}
           </div>
 
         </motion.div>

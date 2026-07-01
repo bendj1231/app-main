@@ -781,6 +781,7 @@ export const VerificationStatusTab: React.FC<{
         profile={profile as Record<string, unknown> | undefined}
         isFreeUser={isFreeUser}
         logbookConnected={logbookConnected}
+        onCompleteProfile={() => setTab('advanced-profile')}
       />
 
       {/* Connect a digital logbook */}

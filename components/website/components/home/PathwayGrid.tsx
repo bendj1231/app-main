@@ -41,6 +41,9 @@ import { DigitalLogbookAnimation } from './DigitalLogbookAnimation';
 import { EtihadExpectationsAnimation } from './EtihadExpectationsAnimation';
 import { DiscoverPathwaysAnimation } from './DiscoverPathwaysAnimation';
 
+// Viewport-locked reference frame for home view (M4 Air 13-inch default)
+const HOME_BASE_WIDTH = 1470;
+
 export interface Slide {
     image: string;
     title: string;
@@ -582,7 +585,7 @@ const AccessPlatformCard: React.FC<{
             
             {/* Content layer with shuffle animation */}
             <div className="absolute inset-0 flex items-center px-10 py-8">
-                <div className="relative w-[50%] md:w-[46%] lg:w-[44%] overflow-hidden">
+                <div className="relative w-[44%] overflow-hidden">
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={slide.id}
@@ -601,17 +604,17 @@ const AccessPlatformCard: React.FC<{
                             </div>
                             
                             {/* Main headline */}
-                            <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
+                            <h1 className="text-3xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
                                 {slide.title}<span className="text-red-600 font-extrabold uppercase tracking-tight">{slide.titleHighlight}</span><span className="text-white">{slide.titleSuffix}</span>
                             </h1>
                             
                             {/* Body text */}
-                            <p className="text-xs md:text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
+                            <p className="text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
                                 {slide.description}
                             </p>
                             
                             {/* Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-3">
+                            <div className="flex flex-row gap-3">
                                 {!isLoggedIn && (
                                     <button
                                         onClick={() => slide.primaryButtonAction === 'become-member' && onBecomeMemberOpen ? onBecomeMemberOpen() : onNavigate(slide.primaryButtonAction)}
@@ -632,7 +635,7 @@ const AccessPlatformCard: React.FC<{
                 </div>
                 
                 {/* Right side callout with blur gradient overlay */}
-                <div className="hidden md:flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
+                <div className="flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
                     {/* Blur + gradient overlay - dark navy to match left side */}
                     <div
                         className="absolute inset-0"
@@ -654,7 +657,7 @@ const AccessPlatformCard: React.FC<{
                                 transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
                             >
                                 <p className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-2`}>&#8811; {slide.rightMicroHeader}</p>
-                                <h2 className="text-xl lg:text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
+                                <h2 className="text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
                                     {slide.rightTitle}<span className="text-red-500">{slide.rightTitleHighlight}</span>
                                 </h2>
                                 <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
@@ -698,6 +701,18 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     const [viewMode, setViewMode] = useState<'auto' | 'mobile' | 'desktop'>('auto');
     const [direction, setDirection] = useState(0);
     const gridInteractionRef = useRef<HTMLDivElement | null>(null);
+
+    // Viewport-locked scaling for home view (width-only, no height constraint)
+    const [homeViewportScale, setHomeViewportScale] = useState(1);
+    useEffect(() => {
+        const updateScale = () => {
+            const scale = (window.innerWidth - 48) / HOME_BASE_WIDTH;
+            setHomeViewportScale(scale);
+        };
+        updateScale();
+        window.addEventListener('resize', updateScale);
+        return () => window.removeEventListener('resize', updateScale);
+    }, []);
     const isGridHoveredRef = useRef(false);
     const touchStartXRef = useRef<number | null>(null);
     const touchStartYRef = useRef<number | null>(null);
@@ -1176,12 +1191,12 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     return (
         <div 
-            className="relative z-40 flex flex-col items-center justify-start pt-0 pb-10 px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto w-full"
+            className="relative z-40 flex flex-col items-center justify-start pt-0 pb-10 px-16 pointer-events-auto w-full"
         >
 
             <div
                 ref={gridInteractionRef}
-                className="relative w-full max-w-[600px] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1400px] mx-auto"
+                className="relative w-full max-w-[1200px] mx-auto"
                 onMouseEnter={handleGridMouseEnter}
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
@@ -1201,62 +1216,38 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             x: { type: "spring", stiffness: 300, damping: 30 },
                             opacity: { duration: 0.3 },
                         }}
-                        className="w-full max-w-[600px] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1400px] mx-auto"
+                        className="w-full max-w-[1200px] mx-auto"
                     >
                         <motion.div
                             variants={containerVariants}
                             initial="hidden"
                             animate={isVisible ? "visible" : "hidden"}
                         >
-                            {/* Layout 1: Home - Two top cards, three bottom cards */}
+                            {/* Layout 1: Home - Viewport-locked desktop reference frame */}
                             {currentViewKey === 'home' && (
-                                <>
-                                    {/* Mobile: single column stack */}
-                                    {isMobileView && (
-                                        <div className="grid grid-cols-1 gap-2 mb-4">
-                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[220px]">
-                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0].id} onHover={() => setHoveredCard(currentCards[0].id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                            </motion.div>
+                                <div className="w-full flex items-start justify-center">
+                                    <div
+                                        style={{
+                                            width: HOME_BASE_WIDTH,
+                                            transform: `scale(${homeViewportScale})`,
+                                            transformOrigin: 'top center',
+                                            flexShrink: 0,
+                                        }}
+                                    >
+                                        {/* Full-width panoramic hero card */}
+                                        <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[380px]">
+                                            <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                        </motion.div>
+                                        {/* Bottom 3 cards — desktop reference sizes */}
+                                        <div className="grid grid-cols-3 gap-6">
                                             {currentCards.slice(2, 5).map((card) => (
-                                                <motion.div key={card.id} variants={cardVariants} className="h-[220px]">
-                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                                <motion.div key={card.id} variants={cardVariants} className="h-[245px]">
+                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} forceDesktop={true} />
                                                 </motion.div>
                                             ))}
                                         </div>
-                                    )}
-                                    {/* Tablet: full-width hero top, 3-col bottom */}
-                                    {isTabletView && (
-                                        <>
-                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-2.5 h-[240px]">
-                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
-                                            </motion.div>
-                                            <div className="grid grid-cols-3 gap-2 mb-2.5">
-                                                {currentCards.slice(2, 5).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[170px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                    {/* Desktop / Wide: Full-width hero top, 3-col bottom — full size */}
-                                    {!isMobileView && !isTabletView && (
-                                        <>
-                                            {/* Full-width panoramic hero card */}
-                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[280px] lg:h-[320px] xl:h-[340px] 2xl:h-[380px]">
-                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
-                                            </motion.div>
-                                            {/* Bottom 3 cards — larger than before */}
-                                            <div className="grid grid-cols-3 gap-4 md:gap-6">
-                                                {currentCards.slice(2, 5).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[185px] lg:h-[210px] xl:h-[225px] 2xl:h-[245px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </>
+                                    </div>
+                                </div>
                             )}
 
                             {/* Layout 2: Programs - Foundation video hero + 3 stacked info cards */}
@@ -1465,7 +1456,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                 {/* Social Media Section */}
                 <motion.div
-                    className="mt-6 md:mt-8 flex flex-col items-center"
+                    className="mt-8 flex flex-col items-center"
                     variants={{
                         hidden: { opacity: 0, y: 20 },
                         visible: {
@@ -1479,51 +1470,51 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                         }
                     }}
                 >
-                    <div className="flex items-center gap-4 md:gap-5">
+                    <div className="flex items-center gap-5">
                         <a
                             href="https://www.tiktok.com/@pilotrecognition?is_from_webapp=1&sender_device=pc"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
+                            className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="TikTok"
                         >
-                            <TikTokIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
+                            <TikTokIcon className="w-5 h-5" />
                         </a>
                         <a
                             href="https://youtube.com/@pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
+                            className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="YouTube"
                         >
-                            <YouTubeIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
+                            <YouTubeIcon className="w-5 h-5" />
                         </a>
                         <a
                             href="https://instagram.com/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
+                            className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="Instagram"
                         >
-                            <InstagramIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
+                            <InstagramIcon className="w-5 h-5" />
                         </a>
                         <a
                             href="https://facebook.com/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
+                            className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="Facebook"
                         >
-                            <FacebookIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
+                            <FacebookIcon className="w-5 h-5" />
                         </a>
                         <a
                             href="https://linkedin.com/company/pilotrecognition"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
+                            className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300"
                             aria-label="LinkedIn"
                         >
-                            <LinkedInIcon className="w-5 h-5 md:w-5.5 md:h-5.5" />
+                            <LinkedInIcon className="w-5 h-5" />
                         </a>
                     </div>
                 </motion.div>
@@ -1561,6 +1552,7 @@ interface GridCardProps {
     currentViewKey?: string;
     setFoundationNavTarget?: (target: string) => void;
     setShowFoundationLoading?: (show: boolean) => void;
+    forceDesktop?: boolean;
 }
 
 const GridCard: React.FC<GridCardProps> = ({
@@ -1577,7 +1569,8 @@ const GridCard: React.FC<GridCardProps> = ({
     isLargeCard = false,
     currentViewKey = '',
     setFoundationNavTarget,
-    setShowFoundationLoading
+    setShowFoundationLoading,
+    forceDesktop = false
 }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
@@ -1814,7 +1807,7 @@ const GridCard: React.FC<GridCardProps> = ({
             onClick={handleCardClick}
         >
             {/* MOBILE DIRECTORY-STYLE CARD - Text on left with right-side image wallpaper */}
-            {isMobileViewCard && (
+            {!forceDesktop && isMobileViewCard && (
                 <div className={`
                     relative w-full h-full rounded-xl overflow-hidden
                     bg-white cursor-pointer
@@ -1862,7 +1855,7 @@ const GridCard: React.FC<GridCardProps> = ({
             )}
             
             {/* DESKTOP/TABLET CARD - Regular rendering */}
-            {!isMobileViewCard && (
+            {(forceDesktop || !isMobileViewCard) && (
                 <>
                     {/* Directory Card - Simple text with arrow */}
                     {card.isDirectory ? (
