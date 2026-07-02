@@ -21,16 +21,16 @@ interface ChatContact {
 
 const CHAT_CONTACTS: ChatContact[] = [
   { id: 0, name: 'Recognition AI', role: 'Aviation Career Strategist', org: 'Pilot Recognition', type: 'ai', avatar: null, online: true, isAI: true },
-  { id: 1, name: 'Capt. Reyes', role: 'Flight Instructor', org: 'AirAsia Academy', type: 'pilots', avatar: 'https://i.pravatar.cc/150?u=reyes', online: true, username: '@capt_reyes', linkedinUrl: 'https://linkedin.com/in/captreyes', instagramUrl: 'https://instagram.com/captreyes', totalHours: 4200, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 2, name: 'Capt. Santos', role: 'Line Captain', org: 'Cebu Pacific', type: 'pilots', avatar: 'https://i.pravatar.cc/150?u=santos', online: false, username: '@santos_aviation', linkedinUrl: 'https://linkedin.com/in/captsantos', instagramUrl: 'https://instagram.com/santos_aviation', totalHours: 8900, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 3, name: 'Capt. Dela Cruz', role: 'Check Airman', org: 'Philippine Airlines', type: 'pilots', avatar: 'https://i.pravatar.cc/150?u=delacruz', online: true, username: '@delacruz_flying', linkedinUrl: 'https://linkedin.com/in/delacruz', instagramUrl: 'https://instagram.com/delacruz_flying', totalHours: 12500, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 4, name: 'Emirates Recruitment', role: 'Pilot Recruitment', org: 'Dubai', type: 'airlines', avatar: 'https://i.pravatar.cc/150?u=emirates', online: true, username: '@emirates_pilots', linkedinUrl: 'https://linkedin.com/company/emirates', instagramUrl: 'https://instagram.com/emirates', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 5, name: 'Qatar Airways HR', role: 'HR — Flight Ops', org: 'Doha', type: 'airlines', avatar: 'https://i.pravatar.cc/150?u=qatar', online: false, username: '@qatar_crew', linkedinUrl: 'https://linkedin.com/company/qatar-airways', instagramUrl: 'https://instagram.com/qatarairways', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 6, name: 'AirAsia Academy', role: 'Training Organization', org: 'Philippines', type: 'operators', avatar: 'https://i.pravatar.cc/150?u=airasia', online: true, username: '@airasia_academy', linkedinUrl: 'https://linkedin.com/company/airasia', instagramUrl: 'https://instagram.com/airasia', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 7, name: 'CAE Training', role: 'Type Rating Centre', org: 'Singapore', type: 'training', avatar: 'https://i.pravatar.cc/150?u=cae', online: true, username: '@cae_training', linkedinUrl: 'https://linkedin.com/company/cae', instagramUrl: 'https://instagram.com/caepilot', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 8, name: 'Lufthansa Technik', role: 'Maintenance & Ops', org: 'Germany', type: 'manufacturers', avatar: 'https://i.pravatar.cc/150?u=lufthansa', online: false, username: '@lht_technik', linkedinUrl: 'https://linkedin.com/company/lufthansa-technik', instagramUrl: 'https://instagram.com/lufthansa', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 9, name: 'Boeing Training', role: 'Manufacturer Training', org: 'USA', type: 'manufacturers', avatar: 'https://i.pravatar.cc/150?u=boeing', online: true, username: '@boeing_training', linkedinUrl: 'https://linkedin.com/company/boeing', instagramUrl: 'https://instagram.com/boeing', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
-  { id: 10, name: 'AirAsia Academy', role: 'Training Organization', org: 'Philippines', type: 'operators', avatar: 'https://i.pravatar.cc/150?u=airasia', online: true, username: '@airasia_ops', linkedinUrl: 'https://linkedin.com/company/airasia', instagramUrl: 'https://instagram.com/airasia', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 1, name: 'Capt. Reyes', role: 'Flight Instructor', org: 'AirAsia Academy', type: 'pilots', avatar: 'https://i.pravatar.cc/150?img=11', online: true, username: '@capt_reyes', linkedinUrl: 'https://linkedin.com/in/captreyes', instagramUrl: 'https://instagram.com/captreyes', totalHours: 4200, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 2, name: 'Capt. Santos', role: 'Line Captain', org: 'Cebu Pacific', type: 'pilots', avatar: 'https://i.pravatar.cc/150?img=12', online: false, username: '@santos_aviation', linkedinUrl: 'https://linkedin.com/in/captsantos', instagramUrl: 'https://instagram.com/santos_aviation', totalHours: 8900, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 3, name: 'Capt. Dela Cruz', role: 'Check Airman', org: 'Philippine Airlines', type: 'pilots', avatar: 'https://i.pravatar.cc/150?img=5', online: true, username: '@delacruz_flying', linkedinUrl: 'https://linkedin.com/in/delacruz', instagramUrl: 'https://instagram.com/delacruz_flying', totalHours: 12500, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 4, name: 'Emirates Recruitment', role: 'Pilot Recruitment', org: 'Dubai', type: 'airlines', avatar: 'https://i.pravatar.cc/150?img=9', online: true, username: '@emirates_pilots', linkedinUrl: 'https://linkedin.com/company/emirates', instagramUrl: 'https://instagram.com/emirates', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 5, name: 'Qatar Airways HR', role: 'HR — Flight Ops', org: 'Doha', type: 'airlines', avatar: 'https://i.pravatar.cc/150?img=20', online: false, username: '@qatar_crew', linkedinUrl: 'https://linkedin.com/company/qatar-airways', instagramUrl: 'https://instagram.com/qatarairways', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 6, name: 'AirAsia Academy', role: 'Training Organization', org: 'Philippines', type: 'operators', avatar: 'https://i.pravatar.cc/150?img=15', online: true, username: '@airasia_academy', linkedinUrl: 'https://linkedin.com/company/airasia', instagramUrl: 'https://instagram.com/airasia', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 7, name: 'CAE Training', role: 'Type Rating Centre', org: 'Singapore', type: 'training', avatar: 'https://i.pravatar.cc/150?img=33', online: true, username: '@cae_training', linkedinUrl: 'https://linkedin.com/company/cae', instagramUrl: 'https://instagram.com/caepilot', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 8, name: 'Lufthansa Technik', role: 'Maintenance & Ops', org: 'Germany', type: 'manufacturers', avatar: 'https://i.pravatar.cc/150?img=60', online: false, username: '@lht_technik', linkedinUrl: 'https://linkedin.com/company/lufthansa-technik', instagramUrl: 'https://instagram.com/lufthansa', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 9, name: 'Boeing Training', role: 'Manufacturer Training', org: 'USA', type: 'manufacturers', avatar: 'https://i.pravatar.cc/150?img=68', online: true, username: '@boeing_training', linkedinUrl: 'https://linkedin.com/company/boeing', instagramUrl: 'https://instagram.com/boeing', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
+  { id: 10, name: 'AirAsia Academy', role: 'Training Organization', org: 'Philippines', type: 'operators', avatar: 'https://i.pravatar.cc/150?img=24', online: true, username: '@airasia_ops', linkedinUrl: 'https://linkedin.com/company/airasia', instagramUrl: 'https://instagram.com/airasia', totalHours: 0, needsConnectPermission: true, twoWayFriendRequestApproved: false },
 ];
 
 interface MessagesPanelProps {
@@ -58,24 +58,36 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 8 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed right-4 top-16 z-[100] flex flex-col rounded-2xl overflow-hidden shadow-2xl"
-          style={{
-            width: 720,
-            maxWidth: 'calc(100vw - 2rem)',
-            height: 520,
-            maxHeight: 'calc(100vh - 6rem)',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,250,240,0.92) 100%)',
-            border: '1px solid rgba(218,165,32,0.3)',
-            backdropFilter: 'blur(24px)',
-            boxShadow: '0 20px 60px rgba(184,134,11,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
-          }}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
+        <>
+          {/* Backdrop — click anywhere outside the panel to close */}
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(2px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[99]"
+            style={{ background: 'rgba(2, 6, 23, 0.35)' }}
+            onClick={onClose}
+          />
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 12, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.88, y: 20, filter: 'blur(16px)' }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed right-4 top-16 z-[100] flex flex-col rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              width: 720,
+              maxWidth: 'calc(100vw - 2rem)',
+              height: 520,
+              maxHeight: 'calc(100vh - 6rem)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,250,240,0.92) 100%)',
+              border: '1px solid rgba(218,165,32,0.3)',
+              backdropFilter: 'blur(24px)',
+              boxShadow: '0 20px 60px rgba(184,134,11,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
           {/* Red top bar */}
           <div className="flex items-center justify-between px-4 py-3" style={{ background: '#dc2626', borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
             <div className="flex items-center gap-2">
@@ -106,14 +118,13 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
                     {contacts.map((c) => {
                       const msgs = chatMessages[c.id] || [];
                       const isActive = selectedChatContact === c.id;
-                      const isLocked = !c.isAI;
                       return (
                         <motion.button
                           key={c.id}
                           onClick={() => setSelectedChatContact(c.id)}
-                          whileHover={isLocked ? {} : { x: 2 }}
-                          whileTap={isLocked ? {} : { scale: 0.98 }}
-                          className={`w-full flex items-center gap-2 px-3 py-2 transition-all ${isActive && !isLocked ? 'bg-amber-500/10' : isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-500/5'}`}
+                          whileHover={{ x: 2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`w-full flex items-center gap-2 px-3 py-2 transition-all cursor-pointer ${isActive ? 'bg-amber-500/10' : 'hover:bg-amber-500/5'}`}
                           style={{ borderLeft: isActive ? `3px solid ${cat.color}` : '3px solid transparent' }}
                         >
                           <div className="relative flex-shrink-0">
@@ -122,28 +133,18 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
                                 <span className="text-red-600">PR</span>
                               </div>
                             ) : (
-                              <>
-                                <img src={c.avatar || undefined} alt={c.name} className="w-8 h-8 rounded-full object-cover" style={{ border: `1.5px solid ${isActive ? cat.color : 'rgba(0,0,0,0.08)'}` }} />
-                                {isLocked && (
-                                  <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white/60">
-                                    <Lock size={10} className="text-slate-500" />
-                                  </div>
-                                )}
-                              </>
+                              <img src={c.avatar || undefined} alt={c.name} className="w-8 h-8 rounded-full object-cover" style={{ border: `1.5px solid ${isActive ? cat.color : 'rgba(0,0,0,0.08)'}` }} />
                             )}
-                            {c.online && !isLocked && (
+                            {c.online && (
                               <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
                             )}
                           </div>
                           <div className="text-left min-w-0">
-                            <p className={`text-[10px] font-bold truncate ${isActive && !isLocked ? 'text-slate-900' : 'text-slate-500'}`}>{c.name}</p>
+                            <p className={`text-[10px] font-bold truncate ${isActive ? 'text-slate-900' : 'text-slate-500'}`}>{c.name}</p>
                             <p className="text-[9px] text-slate-400 truncate">{c.role}</p>
                           </div>
                           {c.isAI && msgs.length > 0 && (
                             <span className="ml-auto text-[9px] font-black px-1.5 py-0.5 rounded-full bg-red-500 text-white">{msgs.length}</span>
-                          )}
-                          {isLocked && (
-                            <Lock size={12} className="ml-auto text-slate-300 flex-shrink-0" />
                           )}
                         </motion.button>
                       );
@@ -343,7 +344,8 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
             </div>
           </div>
         </motion.div>
-      )}
-    </AnimatePresence>
+      </>
+    )}
+  </AnimatePresence>
   );
 };

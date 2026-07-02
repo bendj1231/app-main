@@ -623,7 +623,17 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const setTab = (t: TabId) => {
     prevTabRef.current = activeTab;
     setActiveTab(t);
+    setSearchParams({ tab: t });
   };
+
+  // Sync activeTab with URL ?tab= query param when it changes externally
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab') as TabId;
+    if (tabFromUrl && tabFromUrl !== activeTab) {
+      prevTabRef.current = activeTab;
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
 
   // Listen for tab-switch events fired from embedded child components (e.g. profile page wallet CTA)
   useEffect(() => {
@@ -1109,11 +1119,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         style={{ background: 'transparent', height: '68px' }}
       >
         {/* Left — wordmark */}
-        <div className="flex items-center min-w-0 flex-1">
+        <div className="flex items-center flex-shrink-0 min-w-0">
           <AnimatePresence>
             {!scrolled && (
               <motion.span
-                className="text-2xl tracking-tight leading-none cursor-pointer"
+                className="text-lg md:text-xl lg:text-2xl tracking-tight leading-none cursor-pointer whitespace-nowrap truncate"
                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                 onClick={() => onNavigate('home')}
                 initial={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
@@ -1129,40 +1139,78 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           </AnimatePresence>
         </div>
 
-        {/* Centre — island nav container */}
-        <div
-          className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 px-2 py-1.5 rounded-2xl"
-          style={{
-            background: 'rgba(0,0,0,0.35)',
-            border: '1px solid rgba(255,255,255,0.15)',
-            backdropFilter: 'blur(12px)',
-          }}
-        >
-          {[
-            { id: 'home', label: 'Home' },
-            { id: 'profile', label: 'Profile' },
-            { id: 'logbook', label: 'Logbook' },
-            { id: 'inbox', label: 'Inbox' },
-            { id: 'recognition-plus', label: 'Recognition+' },
-          ].map(({ id, label }) => {
-            const isActive = activeTab === id;
-            return (
-              <button
-                key={id}
-                onClick={() => setTab(id as TabId)}
-                className={`relative px-5 py-2 rounded-xl text-sm font-bold tracking-wide transition-all ${
-                  isActive
-                    ? 'text-white bg-white/10'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {label}
-                {isActive && (
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
-                )}
-              </button>
-            );
-          })}
+        {/* Centre — full island nav container (lg+ only) */}
+        <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2">
+          <div
+            className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
+            style={{
+              background: 'rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'profile', label: 'Profile' },
+              { id: 'logbook', label: 'Logbook' },
+              { id: 'inbox', label: 'Inbox' },
+              { id: 'recognition-plus', label: 'Recognition+' },
+            ].map(({ id, label }) => {
+              const isActive = activeTab === id;
+              return (
+                <button
+                  key={id}
+                  onClick={() => setTab(id as TabId)}
+                  className={`relative px-3 lg:px-5 py-2 rounded-xl text-xs lg:text-sm font-bold tracking-wide transition-all whitespace-nowrap ${
+                    isActive
+                      ? 'text-white bg-white/10'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {label}
+                  {isActive && (
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Compact island nav for medium screens where full nav won't fit */}
+        <div className="hidden md:flex lg:hidden flex-1 items-center justify-center min-w-0 mx-2">
+          <div
+            className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
+            style={{
+              background: 'rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'logbook', label: 'Logbook' },
+              { id: 'recognition-plus', label: 'Recognition+' },
+            ].map(({ id, label }) => {
+              const isActive = activeTab === id;
+              return (
+                <button
+                  key={id}
+                  onClick={() => setTab(id as TabId)}
+                  className={`relative px-3 py-2 rounded-xl text-xs font-bold tracking-wide transition-all whitespace-nowrap ${
+                    isActive
+                      ? 'text-white bg-white/10'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {label}
+                  {isActive && (
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Right — MSFS-style square tile icon toolbar */}

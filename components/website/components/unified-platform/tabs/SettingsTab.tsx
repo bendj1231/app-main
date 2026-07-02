@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, LogOut, Bell, Search,
@@ -15,6 +16,7 @@ import type { TabId } from '../types';
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile }) => {
+  const navigate = useNavigate();
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
@@ -299,11 +301,11 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-white/65 tracking-wider">LOGBOOK MANAGEMENT</span>
               {hasLogbook ? (
-                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)', color: '#34d399' }}>
+                <button onClick={() => console.log('[DEBUG] VIEW HISTORY clicked')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)', color: '#34d399' }}>
                   <CheckCircle size={10} /> VIEW HISTORY
                 </button>
               ) : (
-                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.25)', color: '#ef4444' }}>
+                <button onClick={() => console.log('[DEBUG] SYNC LOGBOOK clicked')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-colors hover:brightness-110" style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.25)', color: '#ef4444' }}>
                   <Upload size={10} /> SYNC LOGBOOK
                 </button>
               )}
@@ -316,7 +318,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
           </div>
 
           {['Change Password', 'Email Preferences'].map(item => (
-            <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+            <button key={item} onClick={() => console.log(`[DEBUG] ${item} clicked`)} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
@@ -331,7 +333,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
       <SectionCard title="Consent & Privacy">
         <div className="space-y-0.5">
           {['Operator Access Log', 'Download My Data'].map(item => (
-            <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+            <button key={item} onClick={() => console.log(`[DEBUG] ${item} clicked`)} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
@@ -345,7 +347,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
       {/* Notifications */}
       <SectionCard title="Notifications">
         <button
-          onClick={() => setActiveSubPage('notifications')}
+          onClick={() => { console.log('[DEBUG] MANAGE NOTIFICATIONS clicked'); setActiveSubPage('notifications'); }}
           className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white"
           style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
           onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
@@ -361,7 +363,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
         {isPlus ? (
           <div className="space-y-0.5">
             {['View Plan', 'Billing History'].map(item => (
-              <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              <button key={item} onClick={() => console.log(`[DEBUG] ${item} clicked`)} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
@@ -393,7 +395,10 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
                 </div>
               ))}
             </div>
-            <button className="w-full py-2.5 rounded-lg text-xs font-black tracking-wider text-white transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
+            <button
+              onClick={() => { console.log('[DEBUG] SUBSCRIBE TO RECOGNITION+ clicked'); navigate('/platform?tab=recognition-plus'); }}
+              className="w-full py-2.5 rounded-lg text-xs font-black tracking-wider text-white transition-all hover:brightness-110" style={{ background: '#dc2626' }}
+            >
               SUBSCRIBE TO RECOGNITION+ →
             </button>
           </div>
@@ -421,7 +426,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
       <SectionCard title="Danger Zone">
         {deleteStep === null && (
           <button
-            onClick={handleOpenExport}
+            onClick={() => { console.log('[DEBUG] DELETE ACCOUNT clicked'); handleOpenExport(); }}
             className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-red-400 rounded-lg transition-all font-bold tracking-wider hover:text-red-300"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.08)')}
@@ -549,13 +554,13 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
 
             <div className="flex gap-2 pt-1">
               <button
-                onClick={() => setDeleteStep('confirm')}
+                onClick={() => { console.log('[DEBUG] CONTINUE TO DELETE clicked'); setDeleteStep('confirm'); }}
                 className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all"
                 style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}
               >
                 CONTINUE TO DELETE →
               </button>
-              <button onClick={handleCancel} className="px-4 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)' }}>
+              <button onClick={() => { console.log('[DEBUG] CANCEL clicked'); handleCancel(); }} className="px-4 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)' }}>
                 CANCEL
               </button>
             </div>
@@ -579,14 +584,14 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
             {deleteError && <p className="text-xs text-red-400">{deleteError}</p>}
             <div className="flex gap-2">
               <button
-                onClick={handleDeleteAccount}
+                onClick={() => { console.log('[DEBUG] YES, DELETE EVERYTHING clicked'); handleDeleteAccount(); }}
                 disabled={deleting}
                 className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all disabled:opacity-50"
                 style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)', color: '#f87171' }}
               >
                 {passkeyPending ? '🔑 WAITING FOR PASSKEY…' : deleting ? 'DELETING...' : 'YES, DELETE EVERYTHING'}
               </button>
-              <button onClick={handleCancel} disabled={deleting} className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+              <button onClick={() => { console.log('[DEBUG] CANCEL clicked'); handleCancel(); }} disabled={deleting} className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
                 CANCEL
               </button>
             </div>
@@ -594,7 +599,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
         )}
       </SectionCard>
 
-      <button onClick={onLogout} className="flex items-center gap-2 text-xs text-red-400 font-bold hover:text-red-300 transition-colors px-3 py-2 tracking-wider">
+      <button onClick={() => { console.log('[DEBUG] SIGN OUT clicked'); onLogout(); }} className="flex items-center gap-2 text-xs text-red-400 font-bold hover:text-red-300 transition-colors px-3 py-2 tracking-wider">
         <LogOut size={14} /> SIGN OUT
       </button>
     </div>

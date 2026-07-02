@@ -143,6 +143,28 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     });
   };
 
+  const handleYahooLogin = async () => {
+    setError('');
+    console.log('[FlightDeckLogin] Yahoo sign-in button clicked — using Auth0');
+
+    await loginWithRedirect({
+      authorizationParams: {
+        connection: 'yahoo',
+      },
+    });
+  };
+
+  const handleOutlookLogin = async () => {
+    setError('');
+    console.log('[FlightDeckLogin] Outlook sign-in button clicked — using Auth0');
+
+    await loginWithRedirect({
+      authorizationParams: {
+        connection: 'windowslive',
+      },
+    });
+  };
+
   const googleBtnDisabled = checkingOAuth || oauthAccountCheck.checking;
 
   const oauthInProgress = checkingOAuth || oauthAccountCheck.checking || checkingAccount;
@@ -496,6 +518,84 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             />
           </svg>
           Continue with Google
+        </button>
+
+        {/* Yahoo Sign In */}
+        <button
+          onClick={handleYahooLogin}
+          disabled={googleBtnDisabled}
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            background: googleBtnDisabled ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 6,
+            fontSize: 14,
+            fontWeight: 500,
+            color: 'rgba(255,255,255,0.9)',
+            cursor: googleBtnDisabled ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            marginBottom: 10,
+          }}
+          onMouseEnter={(e) => {
+            if (!googleBtnDisabled) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!googleBtnDisabled) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+            }
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12.03 2C6.5 2 2 6.5 2 12s4.5 10 10.03 10C17.5 22 22 17.5 22 12S17.5 2 12.03 2zm4.2 15.5h-2.3l-1.8-3.2-1.8 3.2H7.8l2.8-4.7-2.6-4.6h2.3l1.6 2.9 1.6-2.9h2.3l-2.6 4.6 2.6 4.7z" fill="#6001D2"/>
+          </svg>
+          Continue with Yahoo
+        </button>
+
+        {/* Outlook Sign In */}
+        <button
+          onClick={handleOutlookLogin}
+          disabled={googleBtnDisabled}
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            background: googleBtnDisabled ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 6,
+            fontSize: 14,
+            fontWeight: 500,
+            color: 'rgba(255,255,255,0.9)',
+            cursor: googleBtnDisabled ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            marginBottom: 10,
+          }}
+          onMouseEnter={(e) => {
+            if (!googleBtnDisabled) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!googleBtnDisabled) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+            }
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 21 21" fill="none">
+            <path d="M10.5 0L0 5.8v9.4l10.5 5.8 10.5-5.8V5.8L10.5 0z" fill="#0078D4"/>
+            <path d="M10.5 1.2L1.3 6.3v8.4l9.2 5.1 9.2-5.1V6.3L10.5 1.2z" fill="#fff"/>
+            <path d="M10.5 2.3L2.5 6.8v7.4l8 4.4 8-4.4V6.8l-8-4.5z" fill="#0078D4"/>
+            <path d="M10.5 3.4L3.7 7.2v6.6l6.8 3.8 6.8-3.8V7.2l-6.8-3.8z" fill="#fff"/>
+            <path d="M10.5 4.5L4.9 7.6v5.8l5.6 3.1 5.6-3.1V7.6l-5.6-3.1z" fill="#0078D4"/>
+          </svg>
+          Continue with Outlook
         </button>
 
         {/* Sign up link */}

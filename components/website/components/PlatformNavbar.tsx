@@ -107,10 +107,10 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
       }}
     >
       {/* Left — wordmark */}
-      <div className="flex items-center flex-shrink-0">
+      <div className="flex items-center flex-shrink-0 min-w-0">
         <a
           href="/"
-          className="text-base sm:text-lg md:text-xl lg:text-2xl font-black cursor-pointer whitespace-nowrap inline-block pl-1"
+          className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-black cursor-pointer whitespace-nowrap inline-block pl-1 truncate"
           style={{ fontFamily: 'Arial, Helvetica Neue, sans-serif', letterSpacing: '0.05em' }}
         >
           <span className="text-white inline">pilot</span>
@@ -119,27 +119,52 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
         </a>
       </div>
 
-      {/* Centre — primary nav links */}
-      <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-        {[
-          { id: 'home', label: 'Home' },
-          { id: 'profile', label: 'Profile' },
-          { id: 'logbook', label: 'Logbook' },
-          { id: 'bookmarks', label: 'Bookmarks' },
-          { id: 'recognition-plus', label: 'Recognition+' },
-        ].map(({ id, label }) => (
-          <button
-            key={id}
-            onClick={() => handleNavClick(id)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-              currentPage === id
-                ? 'bg-white/15 text-white'
-                : 'text-white/60 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      {/* Center — primary nav links (full size on lg+ only to avoid overlap) */}
+      <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2 md:mx-4">
+        <div className="flex items-center gap-1 overflow-hidden">
+          {[
+            { id: 'home', label: 'Home' },
+            { id: 'profile', label: 'Profile' },
+            { id: 'logbook', label: 'Logbook' },
+            { id: 'bookmarks', label: 'Bookmarks' },
+            { id: 'recognition-plus', label: 'Recognition+' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              onClick={() => handleNavClick(id)}
+              className={`px-2 md:px-3 lg:px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${
+                currentPage === id
+                  ? 'bg-white/15 text-white'
+                  : 'text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Compact center nav for medium screens where full nav won't fit */}
+      <div className="hidden md:flex lg:hidden flex-1 items-center justify-center min-w-0 mx-2">
+        <div className="flex items-center gap-1 overflow-hidden">
+          {[
+            { id: 'home', label: 'Home' },
+            { id: 'logbook', label: 'Logbook' },
+            { id: 'recognition-plus', label: 'Recognition+' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              onClick={() => handleNavClick(id)}
+              className={`px-3 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+                currentPage === id
+                  ? 'bg-white/15 text-white'
+                  : 'text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Right — MSFS-style square tile icon toolbar */}
