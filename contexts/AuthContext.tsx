@@ -848,30 +848,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   async function refreshUserProfile() {
     if (!currentUser) return;
     try {
-      const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'pilot_licensure_experience',
-        operation: 'select',
-        where: { user_id: currentUser.id },
-        limit: 1,
-      });
-      const licData = licRows?.[0];
-      if (licData) {
-        setUserProfileData(licData as UserProfile);
+      const [licRows, profileRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'select',
+          where: { user_id: currentUser.id },
+          limit: 1,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { auth0_id: currentUser.id },
+          limit: 1,
+        }),
+      ]);
+      const licData = licRows?.[0] || {};
+      const profileData = profileRows?.[0] || {};
+      const mergedData = { ...profileData, ...licData } as UserProfile;
+      if (Object.keys(mergedData).length > 0) {
+        setUserProfileData(mergedData);
         logProfileUpdate(currentUser.id, {
-          action: 'Profile refreshed after enrollment',
+          action: 'Profile refreshed (merged profiles + licensure)',
           timestamp: new Date().toISOString(),
         });
         return;
       }
-      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+      const fallbackRows = await callApi<Record<string, unknown>[]>('queryTable', {
         table: 'profiles',
         operation: 'select',
         where: { id: currentUser.id },
         limit: 1,
       });
-      const profileData = profileRows?.[0];
-      if (profileData) {
-        setUserProfileData(profileData as UserProfile);
+      const fallbackData = fallbackRows?.[0];
+      if (fallbackData) {
+        setUserProfileData(fallbackData as UserProfile);
         logProfileUpdate(currentUser.id, {
           action: 'Profile refreshed from profiles table',
           timestamp: new Date().toISOString(),
@@ -1036,15 +1046,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setCurrentUser(verifiedUser);
           window.scrollTo(0, 0);
           try {
-            const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-              table: 'pilot_licensure_experience',
-              operation: 'select',
-              where: { user_id: auth0User.sub },
-              limit: 1,
-            });
-            const licData = licRows?.[0];
-            if (licData) {
-              setUserProfileData(licData as UserProfile);
+            // Fetch both licensure data AND profiles table data, then merge
+            const [licRows, profileRows] = await Promise.all([
+              callApi<Record<string, unknown>[]>('queryTable', {
+                table: 'pilot_licensure_experience',
+                operation: 'select',
+                where: { user_id: auth0User.sub },
+                limit: 1,
+              }),
+              callApi<Record<string, unknown>[]>('queryTable', {
+                table: 'profiles',
+                operation: 'select',
+                where: { auth0_id: auth0User.sub },
+                limit: 1,
+              }),
+            ]);
+            const licData = licRows?.[0] || {};
+            const profileData = profileRows?.[0] || {};
+            const mergedData = { ...profileData, ...licData } as UserProfile;
+            if (Object.keys(mergedData).length > 0) {
+              setUserProfileData(mergedData);
             } else {
               setUserProfile(null);
             }

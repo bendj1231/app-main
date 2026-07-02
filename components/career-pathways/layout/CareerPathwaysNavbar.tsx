@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/shared/supabase';
 import ProfileImage from '@/components/ProfileImage';
@@ -42,7 +43,10 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, userProfile, logout } = useAuth();
+  const { user: auth0User } = useAuth0();
   const displayName = userProfile?.display_name || userProfile?.full_name || currentUser?.email?.split('@')[0] || 'Pilot';
+  const profileImageUrl = userProfile?.profile_image_url || auth0User?.picture || undefined;
+  const profileImagePublicId = userProfile?.profile_image_public_id || undefined;
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isEnterpriseModalOpen, setIsEnterpriseModalOpen] = useState(false);
@@ -411,7 +415,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                         className="flex items-center gap-2 px-2 h-full transition-colors hover:bg-white/5"
                       >
                         <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}>
-                          <ProfileImage url={userProfile?.profile_image_url} publicId={userProfile?.profile_image_public_id} name={displayName} size={28} className="w-full h-full" fallbackClassName="rounded-full text-[10px]" />
+                          <ProfileImage url={profileImageUrl} publicId={profileImagePublicId} name={displayName} size={28} className="w-full h-full" fallbackClassName="rounded-full text-[10px]" />
                         </div>
                         <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
                       </button>

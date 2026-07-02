@@ -5,26 +5,39 @@
  * All hooks that previously imported `supabase` should use this instead.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { api, apiBatch, pilotApi } from '../lib/d1-api';
 
 export function useWorkerAuth() {
   const { getIdTokenClaims, user: auth0User } = useAuth0();
+  const tokenRef = useRef<string | null>(null);
+  const tokenPromiseRef = useRef<Promise<string> | null>(null);
 
   const getToken = useCallback(async (): Promise<string> => {
+    // Return cached token immediately if available
+    if (tokenRef.current) return tokenRef.current;
+    // If another call is already fetching the token, wait for it
+    if (tokenPromiseRef.current) return tokenPromiseRef.current;
+
     // ID token (__raw) is always a standard JWT (3 parts).
     // getAccessTokenSilently() returns an opaque token when no audience is set,
     // which the Worker cannot validate. We ONLY use the ID token.
-    let claims: { __raw?: string } | undefined;
-    for (let i = 0; i < 12; i++) {
-      claims = await getIdTokenClaims() as { __raw?: string } | undefined;
-      if (claims?.__raw) break;
-      await new Promise((r) => setTimeout(r, 250));
-    }
-    const token = claims?.__raw;
-    if (!token) throw new Error('Auth0 ID token not available — user may not be fully authenticated yet');
-    return token;
+    const promise = (async (): Promise<string> => {
+      let claims: { __raw?: string } | undefined;
+      for (let i = 0; i < 12; i++) {
+        claims = await getIdTokenClaims() as { __raw?: string } | undefined;
+        if (claims?.__raw) break;
+        await new Promise((r) => setTimeout(r, 250));
+      }
+      const token = claims?.__raw;
+      if (!token) throw new Error('Auth0 ID token not available — user may not be fully authenticated yet');
+      tokenRef.current = token;
+      return token;
+    })();
+
+    tokenPromiseRef.current = promise;
+    return promise;
   }, [getIdTokenClaims]);
 
   const callApi = useCallback(

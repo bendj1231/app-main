@@ -788,6 +788,7 @@ export const VerificationStatusTab: React.FC<{
         isFreeUser={isFreeUser}
         logbookConnected={logbookConnected}
         onCompleteProfile={() => setTab('advanced-profile')}
+        onConnectLogbook={() => setShowLogbookModal(true)}
       />
 
       {/* Shortcut to Logbook tab */}
@@ -801,66 +802,128 @@ export const VerificationStatusTab: React.FC<{
       </button>
 
       {/* Logbook Provider Modal */}
-      {showLogbookModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center px-4 overflow-y-hidden" onClick={() => setShowLogbookModal(false)}>
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          <div className="relative z-10 w-full max-w-4xl bg-white border border-gray-200 rounded-3xl p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
+      {showLogbookModal && ReactDOM.createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" onClick={() => setShowLogbookModal(false)}>
+          <motion.div
+            className="absolute inset-0 bg-black/70 backdrop-blur-xl"
+            style={{ backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+          />
+          <motion.div
+            className="relative z-10 w-full max-w-lg border rounded-2xl p-6 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              background: 'linear-gradient(160deg, rgba(20,20,28,0.92) 0%, rgba(12,12,18,0.96) 100%)',
+              borderColor: 'rgba(220,38,38,0.25)',
+              boxShadow: '0 0 0 1px rgba(220,38,38,0.08), 0 32px 64px -12px rgba(0,0,0,0.5), 0 0 40px -10px rgba(220,38,38,0.15)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+            }}
+          >
+            {/* Ambient glow top */}
+            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full opacity-30 pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(220,38,38,0.4) 0%, transparent 70%)', filter: 'blur(30px)' }} />
+
+            {/* Header */}
+            <div className="relative flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-gray-900 font-black text-lg">Connect Logbook Provider</h3>
-                <p className="text-gray-400 text-sm mt-0.5">Select your digital logbook to verify flight hours</p>
+                <h3 className="text-white font-black text-base tracking-tight">Connect Logbook</h3>
+                <p className="text-white/35 text-xs mt-0.5">Select your digital logbook provider</p>
               </div>
-              <button onClick={() => setShowLogbookModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600 text-xl leading-none transition-all">×</button>
+              <button
+                onClick={() => setShowLogbookModal(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(220,38,38,0.15)'; e.currentTarget.style.borderColor = 'rgba(220,38,38,0.35)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round"/></svg>
+              </button>
             </div>
-            <div className="grid grid-cols-2 gap-3 mb-5">
+
+            {/* Provider list */}
+            <div className="space-y-2.5 mb-5">
               {[
-                { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', logoImg: 'https://myflightbook.com/logbook/Images/mfblogonew.png', badge: 'Free', status: 'available', method: 'OAuth 2.0', methodColor: 'text-sky-500' },
-                { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '✈️', status: 'coming_soon', method: 'API', methodColor: 'text-purple-500' },
-                { id: 'garmin', name: 'Garmin Pilot', region: 'Global', logo: '📍', status: 'coming_soon', method: 'API', methodColor: 'text-orange-500' },
-                { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📓', status: 'coming_soon', method: 'CSV', methodColor: 'text-green-500' },
+                { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', logoImg: 'https://myflightbook.com/logbook/Images/mfblogonew.png', badge: 'Free', status: 'available', method: 'OAuth 2.0', methodColor: '#38bdf8' },
+                { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '✈️', status: 'coming_soon', method: 'API', methodColor: '#a78bfa' },
+                { id: 'garmin', name: 'Garmin Pilot', region: 'Global', logo: '📍', status: 'coming_soon', method: 'API', methodColor: '#fb923c' },
+                { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📓', status: 'coming_soon', method: 'CSV', methodColor: '#4ade80' },
               ].map((p) => (
                 <button
                   key={p.id}
                   disabled={p.status === 'coming_soon'}
-                  onClick={() => setSelectedProvider(p.name)}
-                  className={`group relative flex flex-row items-center gap-4 px-5 py-5 rounded-2xl border transition-all text-left w-full cursor-pointer ${
-                    selectedProvider === p.name
-                      ? 'border-blue-500 bg-blue-50/60 ring-1 ring-blue-500/20'
+                  onClick={() => {
+                    if (p.id === 'myflightbook') {
+                      const redirectUri = 'https://pilotrecognition.com/auth/logbook/callback';
+                      const clientId = (import.meta as any).env?.VITE_MFB_CLIENT_ID || 'PilotRecognition';
+                      const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals`;
+                      safeRedirect(url);
+                    } else {
+                      setSelectedProvider(p.name);
+                    }
+                  }}
+                  className="group relative flex items-center gap-3.5 px-4 py-3.5 rounded-xl border transition-all text-left w-full cursor-pointer"
+                  style={{
+                    background: selectedProvider === p.name
+                      ? 'rgba(220,38,38,0.08)'
                       : p.status === 'coming_soon'
-                      ? 'border-gray-100 bg-gray-50/50 cursor-not-allowed'
-                      : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
+                      ? 'rgba(255,255,255,0.02)'
+                      : 'rgba(255,255,255,0.04)',
+                    borderColor: selectedProvider === p.name
+                      ? 'rgba(220,38,38,0.45)'
+                      : 'rgba(255,255,255,0.06)',
+                    boxShadow: selectedProvider === p.name ? '0 0 20px -8px rgba(220,38,38,0.35), inset 0 1px 0 rgba(255,255,255,0.04)' : 'none',
+                    opacity: p.status === 'coming_soon' ? 0.5 : 1,
+                    cursor: p.status === 'coming_soon' ? 'not-allowed' : 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (p.status !== 'coming_soon' && selectedProvider !== p.name) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedProvider !== p.name) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+                    }
+                  }}
                 >
-                  <span className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-xl bg-white shadow-sm border border-gray-100">
-                    {p.logoImg ? <img src={p.logoImg} alt={p.name} className="w-10 h-10 object-contain" /> : <span className="text-2xl">{p.logo}</span>}
+                  <span className="flex-shrink-0 w-11 h-11 flex items-center justify-center rounded-lg" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    {p.logoImg ? <img src={p.logoImg} alt={p.name} className="w-8 h-8 object-contain" /> : <span className="text-lg">{p.logo}</span>}
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className={`text-[15px] font-bold leading-tight ${selectedProvider === p.name ? 'text-gray-900' : 'text-gray-700'}`}>{p.name}</span>
+                      <span className={`text-sm font-bold leading-tight ${selectedProvider === p.name ? 'text-white' : 'text-white/80'}`}>{p.name}</span>
                       {p.badge && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-600">{p.badge}</span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(34,197,94,0.12)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.2)' }}>{p.badge}</span>
                       )}
                     </div>
-                    <span className={`text-[11px] ${selectedProvider === p.name ? 'text-gray-500' : 'text-gray-400'}`}>
-                      {p.region}{p.id === 'myflightbook' ? ' · Default logbook' : ''}
+                    <span className={`text-[11px] ${selectedProvider === p.name ? 'text-white/50' : 'text-white/35'}`}>
+                      {p.region}{p.id === 'myflightbook' ? ' · Default' : ''}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className={`text-[11px] font-semibold ${p.methodColor}`}>{p.method}</span>
+                    <span className="text-[10px] font-semibold" style={{ color: p.methodColor }}>{p.method}</span>
                     {selectedProvider === p.name && (
-                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#dc2626' }}>
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
                     )}
                   </div>
                   {p.status === 'coming_soon' && (
-                    <div className="absolute inset-0 rounded-2xl bg-white/70 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
-                      <span className="text-[11px] font-bold text-gray-500 tracking-widest uppercase">Coming Soon</span>
+                    <div className="absolute inset-0 rounded-xl flex items-center justify-center pointer-events-none" style={{ background: 'rgba(12,12,18,0.35)', backdropFilter: 'blur(1px)' }}>
+                      <span className="text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>Coming Soon</span>
                     </div>
                   )}
                 </button>
               ))}
             </div>
+
             <button
               onClick={() => {
                 if (!selectedProvider) return;
@@ -875,21 +938,30 @@ export const VerificationStatusTab: React.FC<{
                 }
               }}
               disabled={!selectedProvider}
-              className="w-full py-3.5 bg-gray-900 hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-gray-900 text-white font-black rounded-2xl transition-all text-sm tracking-wide"
+              className="w-full py-3 text-white font-black rounded-xl transition-all text-sm tracking-wide"
+              style={{
+                background: selectedProvider ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(255,255,255,0.06)',
+                border: `1px solid ${selectedProvider ? 'rgba(220,38,38,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                boxShadow: selectedProvider ? '0 8px 24px -6px rgba(220,38,38,0.4), inset 0 1px 0 rgba(255,255,255,0.1)' : 'none',
+                cursor: selectedProvider ? 'pointer' : 'not-allowed',
+                opacity: selectedProvider ? 1 : 0.35,
+              }}
             >
               {selectedProvider ? `Sync with ${selectedProvider}` : 'Select a provider'}
             </button>
-            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-4 mb-1 justify-center">
-              <span className="text-[10px] text-sky-500 font-medium">● OAuth 2.0</span>
-              <span className="text-[10px] text-purple-500 font-medium">● API Passkey</span>
-              <span className="text-[10px] text-green-500 font-medium">● Direct API</span>
-              <span className="text-[10px] text-orange-500 font-medium">● CSV Import</span>
+
+            <div className="flex flex-wrap gap-x-2.5 gap-y-1 mt-3.5 mb-1 justify-center">
+              <span className="text-[9px] font-medium" style={{ color: '#38bdf8' }}>● OAuth 2.0</span>
+              <span className="text-[9px] font-medium" style={{ color: '#a78bfa' }}>● API Passkey</span>
+              <span className="text-[9px] font-medium" style={{ color: '#4ade80' }}>● Direct API</span>
+              <span className="text-[9px] font-medium" style={{ color: '#fb923c' }}>● CSV Import</span>
             </div>
-            <p className="text-gray-300 text-[11px] text-center leading-relaxed mt-1">
+            <p className="text-[10px] text-center leading-relaxed mt-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
               Read-only access only. We never modify your logbook data.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </div>,
+        document.body
       )}
 
       {/* Recognition+ CTA */}

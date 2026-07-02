@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle, User, FileText, Shield, Settings } from 'lucide-react';
 
 type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -90,7 +90,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const { readProfile, updateProfile } = useVaultProfile();
     const { callApi } = useWorkerAuth();
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-    const [isPremium, setIsPremium] = useState(false);
+    const isPremium = useMemo(() => {
+        const tier = profileData?.subscription_tier || profileData?.tier || 'free';
+        return tier !== 'free' && tier !== 'bronze';
+    }, [profileData?.subscription_tier, profileData?.tier]);
     const [showWalletGate, setShowWalletGate] = useState(false);
     const [showWalletView, setShowWalletView] = useState(false);
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -178,29 +181,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [activeSection, setActiveSection] = useState<ProfileSection>('overview');
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    // Check subscription status from Worker profile (subscription_tier)
-    useEffect(() => {
-        if (!currentUser?.email) return;
-
-        let cancelled = false;
-        const checkSubscription = async () => {
-            try {
-                const profile = (await callApi('getProfile', { email: currentUser.email })) as any;
-                if (cancelled) return;
-                const tier = profile?.subscription_tier || 'free';
-                setIsPremium(tier !== 'free' && tier !== 'bronze');
-            } catch (error) {
-                console.error('[DEBUG] Error in checkSubscription:', error);
-            }
-        };
-        checkSubscription();
-
-        return () => { cancelled = true; };
-    }, [currentUser?.email, callApi]);
-
-    // Debug isPremium changes
-    useEffect(() => {
-    }, [isPremium]);
+    // isPremium is derived from profileData above — no extra API call needed
 
     // Load theme from localStorage on mount
     useEffect(() => {
@@ -852,7 +833,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 transition={{ duration: 0.35 }}
                 style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: embedded ? 'auto' : '100vh' }}
             >
-                {/* MSFS 2024 Style Sidebar */}
+                {/* Sidebar Navigation — matches AdvancedProfileTab design */}
                 {!embedded && (
                     <motion.aside
                         initial={{ opacity: 0, x: -32 }}
@@ -861,11 +842,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         style={{
                         width: '280px',
                         flexShrink: 0,
-                        padding: '5rem 1rem 2rem 4rem',
+                        padding: '5rem 1rem 2rem 1.5rem',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.75rem',
-                        background: 'transparent',
+                        background: 'linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(8,10,18,0.98) 100%)',
+                        borderRight: '1px solid rgba(255,255,255,0.06)',
                         position: 'fixed',
                         left: 0,
                         top: 0,
@@ -874,55 +856,26 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         overflowX: 'hidden',
                         boxSizing: 'border-box',
                         pointerEvents: sidebarOpen ? 'auto' : 'none',
+                        zIndex: 40,
                     }}>
-                        {/* Header with chevron like MSFS */}
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            marginBottom: '1.5rem',
-                            paddingLeft: '0.25rem',
-                            overflow: 'hidden',
-                            width: '100%'
-                        }}>
-                            <button
-                                onClick={() => setSidebarOpen((v) => !v)}
-                                aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    padding: 0,
-                                    margin: 0,
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0,
-                                    transition: 'transform 0.3s ease',
-                                    transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)',
-                                }}
-                            >
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                            <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
-                                <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
-                            </div>
+                        {/* Header */}
+                        <div style={{ padding: '0 0.5rem', marginBottom: '1.25rem' }}>
+                            <p style={{ margin: 0, fontSize: '0.625rem', color: 'rgba(255,255,255,0.3)', fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Pilot Profile</p>
+                            <p style={{ margin: '4px 0 0', fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}>My Profile</p>
                         </div>
 
-                        {/* Navigation Items - MSFS 2024 Rectangular Floating Style */}
-                        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
+                        {/* Navigation Items */}
+                        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flexShrink: 0 }}>
                             {[
-                                { id: 'overview',   label: 'Overview' },
-                                { id: 'statistics', label: 'Licensure & Currency' },
-                                { id: 'logbook',    label: 'Digital Flight Logbooks' },
-                                { id: 'photos',     label: 'Certificates & Endorsements' },
-                                { id: 'identity',   label: 'About & Experience' },
-                                { id: 'vault',      label: 'Public profile', isVault: true },
-                                ...(isAdmin ? [{ id: 'admin_dashboard', label: 'Admin Dashboard', isAdmin: true }] : []),
+                                { id: 'overview',   label: 'Overview',         icon: LayoutDashboard },
+                                { id: 'statistics', label: 'Licensure & Currency', icon: FileText },
+                                { id: 'logbook',    label: 'Flight Logbooks',  icon: BookMarked },
+                                { id: 'photos',     label: 'Certificates',     icon: ImageIcon },
+                                { id: 'identity',   label: 'About & Experience', icon: User },
+                                { id: 'vault',      label: 'Public Profile',   icon: Shield, isVault: true },
+                                ...(isAdmin ? [{ id: 'admin_dashboard', label: 'Admin Dashboard', icon: ShieldCheck, isAdmin: true }] : []),
                             ].map((item: any) => {
+                                const Icon = item.icon;
                                 const isAdminItem = item.isAdmin;
                                 const isVaultItem = item.isVault;
                                 const isVaultActive = isVaultItem && (activeSection === 'vault' || showWalletGate || showWalletView);
@@ -935,66 +888,37 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             position: 'relative',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                            padding: '0.875rem 1rem',
-                                            borderRadius: '4px',
-                                            background: isAdminItem
-                                                ? (isActive ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.08)')
-                                                : isVaultItem
-                                                ? (isActive ? '#ffffff' : 'rgba(255,255,255,0.92)')
-                                                : isActive
-                                                ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
-                                                : 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)',
-                                            border: isAdminItem ? `1px solid ${isActive ? 'rgba(239,68,68,0.6)' : 'rgba(239,68,68,0.25)'}` : isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
-                                            color: isAdminItem ? '#f87171' : isVaultItem ? '#111827' : '#ffffff',
+                                            gap: '0.75rem',
+                                            padding: '0.625rem 0.875rem',
+                                            borderRadius: '0.75rem',
+                                            background: isActive ? 'rgba(220,38,38,0.10)' : 'transparent',
+                                            border: isActive ? '1px solid rgba(220,38,38,0.25)' : '1px solid transparent',
+                                            color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
                                             textAlign: 'left',
-                                            fontSize: '0.85rem',
-                                            fontWeight: 500,
-                                            boxShadow: isVaultItem
-                                                ? (isActive ? '0 4px 20px rgba(220,38,38,0.4)' : '0 4px 20px rgba(0,0,0,0.3)')
-                                                : isActive
-                                                ? '0 4px 15px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)'
-                                                : '0 2px 8px rgba(0,0,0,0.2)',
-                                            overflow: 'hidden',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 600,
                                             width: '100%',
                                             minWidth: 0
                                         }}
                                         onMouseEnter={(e) => {
                                             if (!isActive) {
-                                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(29, 78, 216, 0.2) 100%)';
-                                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
+                                                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                                                e.currentTarget.style.color = 'rgba(255,255,255,0.8)';
                                             }
                                         }}
                                         onMouseLeave={(e) => {
                                             if (!isActive) {
-                                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)';
-                                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                                                e.currentTarget.style.background = 'transparent';
+                                                e.currentTarget.style.color = 'rgba(255,255,255,0.55)';
                                             }
                                         }}
                                     >
-                                        {isAdminItem ? (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                                <div>
-                                                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#f87171', lineHeight: 1.2 }}>Admin Dashboard</p>
-                                                    <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#ef4444', fontWeight: 500 }}>Super Admin Only</p>
-                                                </div>
-                                            </div>
-                                        ) : isVaultItem ? (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', minWidth: 0 }}>
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                                                <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                                                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#111827', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#111827' }}>Public </span><span style={{ color: '#dc2626' }}>profile</span></p>
-                                                    <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#6b7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Operator-facing profile view</p>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', minWidth: 0 }}>{item.label}</span>
-                                        )}
+                                        <Icon size={16} style={{ color: isActive ? '#ef4444' : 'rgba(255,255,255,0.35)', flexShrink: 0 }} />
+                                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', minWidth: 0, flex: 1 }}>{item.label}</span>
                                         {isActive && (
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isVaultItem ? '#dc2626' : 'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                                                 <polyline points="20 6 9 17 4 12"></polyline>
                                             </svg>
                                         )}
@@ -1002,6 +926,43 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 );
                             })}
                         </nav>
+
+                        {/* Toggle button at bottom */}
+                        <div style={{ marginTop: 'auto', padding: '1rem 0.5rem 0' }}>
+                            <button
+                                onClick={() => setSidebarOpen((v) => !v)}
+                                aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '0.5rem',
+                                    padding: '0.5rem',
+                                    background: 'rgba(255,255,255,0.04)',
+                                    border: '1px solid rgba(255,255,255,0.06)',
+                                    borderRadius: '0.5rem',
+                                    color: 'rgba(255,255,255,0.4)',
+                                    cursor: 'pointer',
+                                    fontSize: '0.7rem',
+                                    fontWeight: 600,
+                                    transition: 'all 0.2s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+                                }}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.3s ease' }}>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                                {sidebarOpen ? 'Collapse' : ''}
+                            </button>
+                        </div>
 
                     </motion.aside>
                 )}
@@ -1251,8 +1212,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                           const lastFlown = (profile?.last_flown as string) || null;
                           const lastFlownDays = lastFlown ? daysUntil(lastFlown) : null;
                           return (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                              <div className="md:col-span-2 rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm">
+                            <div className="flex flex-col gap-4">
+                              <div className="rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm">
                                 <div className="flex items-center gap-2 mb-5">
                                   <Plane size={16} className="text-white/40" />
                                   <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Recurrency & Hours</p>
@@ -1309,7 +1270,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 </div>
                               </div>
 
-                              {/* Auto-Pilot AI Objectives */}
+                              {/* Auto-Pilot AI Objectives — now below Recurrency & Hours */}
                               {(() => {
                                 const p = profileData || {};
                                 const hasLicense = !!p.license_type;
@@ -1339,15 +1300,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 }
 
                                 return (
-                                  <div className="rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm flex flex-col">
+                                  <div className="rounded-2xl p-6 border border-white/5 bg-slate-950/60 backdrop-blur-sm">
                                     {/* AI Header */}
                                     <div className="flex items-center gap-3 mb-5">
-                                      <div className="relative">
-                                        <div className="p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">
-                                          <Bot size={18} className="text-sky-400" />
-                                        </div>
-                                        <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-950" />
-                                      </div>
                                       <div>
                                         <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Auto-Pilot AI</p>
                                         <p className="text-xs font-bold text-white/70">Profile Objectives</p>
@@ -1368,7 +1323,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
 
                                     {/* Objectives List */}
-                                    <div className="space-y-2 flex-1">
+                                    <div className="space-y-2">
                                       {objectives.map((o, i) => (
                                         <button
                                           key={i}

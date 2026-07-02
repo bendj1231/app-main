@@ -13,6 +13,7 @@ interface CockpitFlightHoursDashboardProps {
   isFreeUser: boolean;
   logbookConnected: boolean;
   onCompleteProfile?: () => void;
+  onConnectLogbook?: () => void;
 }
 
 interface FlightHoursData {
@@ -203,6 +204,7 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
   isFreeUser,
   logbookConnected,
   onCompleteProfile,
+  onConnectLogbook,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [viewMode, setViewMode] = useState<'analog' | 'glass'>('analog');
@@ -498,7 +500,13 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
                   Sync your digital logbook to display analog & digital flight hours on your dashboard.
                 </p>
                 <button
-                  onClick={() => onCompleteProfile?.()}
+                  onClick={() => {
+                    if (onConnectLogbook) {
+                      onConnectLogbook();
+                    } else {
+                      onCompleteProfile?.();
+                    }
+                  }}
                   className="px-5 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
                   style={{ background: '#dc2626' }}
                 >
@@ -563,7 +571,13 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
                   Sync your digital logbook to display analog & digital flight hours on your dashboard.
                 </p>
                 <button
-                  onClick={() => onCompleteProfile?.()}
+                  onClick={() => {
+                    if (onConnectLogbook) {
+                      onConnectLogbook();
+                    } else {
+                      onCompleteProfile?.();
+                    }
+                  }}
                   className="px-5 py-2 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
                   style={{ background: '#dc2626' }}
                 >

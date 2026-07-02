@@ -37,7 +37,10 @@ import {
   ExternalLink,
   Bookmark,
   ArrowLeft,
-  ChevronUp
+  ChevronUp,
+  Compass,
+  PlaneTakeoff,
+  MessageSquare
 } from 'lucide-react';
 import MilitaryPathwaysPage from './MilitaryPathwaysPage';
 import SpecialPathwaysPage from './SpecialPathwaysPage';
@@ -45,6 +48,7 @@ import LicensureTypeRatingPage from './LicensureTypeRatingPage';
 import CommercialPilotPathwayPage from './CommercialPilotPathwayPage';
 import { PathwaysSidebar } from '../../components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '../../components/website/components/PlatformNavbar';
+import { RecognitionAIChat } from '../../components/website/components/unified-platform/RecognitionAIChat';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
@@ -1929,12 +1933,34 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   const inputRef = (ref as React.RefObject<HTMLInputElement>) || localInputRef;
 
   const trendingSearches = [
-    { label: 'Cadet Programs', icon: '✈️', category: 'Entry Level' },
-    { label: 'A320 Type Rating', icon: '🎯', category: 'Training' },
-    { label: 'Low Time Pilot', icon: '🕐', category: '0-500 hrs' },
-    { label: 'Dubai Airlines', icon: '🌏', category: 'Location' },
-    { label: 'Cargo Operations', icon: '📦', category: 'Sector' },
+    { label: 'Cadet Programs', img: '/image_4c913bfc.png', category: 'Entry Level' },
+    { label: 'A320 Type Rating', img: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80', category: 'Training' },
+    { label: 'Low Time Pilot', img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80', category: '0-500 hrs' },
+    { label: 'Dubai Airlines', img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80', category: 'Location' },
+    { label: 'Cargo Operations', img: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80', category: 'Sector' },
   ];
+
+  const filterGroups = [
+    {
+      title: 'Total Hours',
+      options: ['0-500 hrs', '500-1000 hrs', '1000-1500 hrs', '1500+ hrs'],
+    },
+    {
+      title: 'Ratings',
+      options: ['PPL', 'CPL', 'ATPL', 'A320', 'B737', 'B777'],
+    },
+    {
+      title: 'Country',
+      options: ['UAE', 'USA', 'UK', 'Qatar', 'Singapore', 'Canada'],
+    },
+  ];
+
+  const handleFilterClick = (filter: string) => {
+    setInputValue(filter);
+    onSearch(filter);
+    setShowSuggestions(false);
+    if (inputRef.current) inputRef.current.value = filter;
+  };
 
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
@@ -1944,7 +1970,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative w-full">
       <div className={`relative flex items-center transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
         <div className="relative flex-1">
           <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${isFocused ? 'text-blue-500' : isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
@@ -1982,39 +2008,63 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
         <span className={`ml-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Press ⌘K to search</span>
       </p>
 
-      {/* Search Suggestions Dropdown */}
+      {/* Search Suggestions Dropdown - Glassy with image cards and filters */}
       {showSuggestions && (
         <div 
-          className={`absolute top-full left-0 right-0 mt-2 rounded-xl shadow-2xl overflow-hidden z-50 ${
-            isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
-          }`}
+          className="absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl overflow-hidden z-50 bg-white/10 dark:bg-slate-900/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 materialize"
         >
           <div className="p-4">
-            <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-slate-500 dark:text-slate-400">
               Trending Searches
             </p>
-            <div className="space-y-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
               {trendingSearches.map((item, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSuggestionClick(item.label)}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg text-left transition-all ${
-                    isDarkMode 
-                      ? 'hover:bg-slate-700 text-slate-200' 
-                      : 'hover:bg-slate-50 text-slate-700'
-                  }`}
+                  className="group relative h-28 rounded-xl overflow-hidden text-left transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-sky-400/50 focus:outline-none"
+                  style={{ animationDelay: `${idx * 80}ms` }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">{item.icon}</span>
-                    <span className="text-sm font-medium">{item.label}</span>
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-3">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white w-fit mb-1">
+                      {item.category}
+                    </span>
+                    <span className="text-sm font-semibold text-white leading-tight drop-shadow-lg">
+                      {item.label}
+                    </span>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    isDarkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'
-                  }`}>
-                    {item.category}
-                  </span>
                 </button>
               ))}
+            </div>
+
+            <div className="border-t border-white/10 dark:border-slate-700/50 mt-4 pt-4">
+              <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-slate-500 dark:text-slate-400">
+                Filters
+              </p>
+              <div className="space-y-3">
+                {filterGroups.map((group, groupIdx) => (
+                  <div key={groupIdx} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                    <span className="text-sm font-medium text-white min-w-[100px]">{group.title}</span>
+                    <div className="flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                      {group.options.map((option, optionIdx) => (
+                        <button
+                          key={optionIdx}
+                          onClick={() => handleFilterClick(option)}
+                          className="px-3 py-1.5 rounded-full text-sm font-medium transition-all border border-white/20 bg-white/10 text-white hover:bg-white/20 hover:border-white/40 backdrop-blur-md flex-shrink-0"
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -3455,6 +3505,30 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Article 4 — Skybridge T2 legal notice state
   const [skybridgePendingPathway, setSkybridgePendingPathway] = useState<PathwayData | null>(null);
   const [stage1Index, setStage1Index] = useState(0);
+  const [panelIndex, setPanelIndex] = useState(0);
+  const panelCarouselRef = useRef<HTMLDivElement>(null);
+  const [isPanelHovered, setIsPanelHovered] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  // Auto-scroll panel carousel
+  useEffect(() => {
+    if (isPanelHovered) return;
+    const interval = setInterval(() => {
+      setPanelIndex((prev) => {
+        const next = (prev + 1) % 5;
+        const el = panelCarouselRef.current;
+        if (el) {
+          const cardWidth = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth + 16 : 0;
+          el.scrollTo({ left: next * cardWidth, behavior: 'smooth' });
+        }
+        return next;
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isPanelHovered]);
+
+  // Toggle Stage 1 pathway cards visibility
+  const SHOW_STAGE_1_CARDS = false;
 
   // Maps PATHWAYS[] UUID → DISCOVERY_PATHWAYS short-string key
   const PATHWAY_UUID_TO_DISCOVERY_KEY: Record<string, string> = {
@@ -4611,7 +4685,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   }, [isAlignProfileOpen, userProfile?.id]); // Re-run when auth state changes
 
   return (
-    <>
     <div className={`min-h-screen ${bgGradient} relative`}>
       {/* MeshGradient Background */}
       <div className="fixed inset-0 z-0">
@@ -4695,7 +4768,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       )}
 
       {/* Content wrapper with higher z-index to sit above shader */}
-      <div className="relative z-10 flex min-h-screen" style={{ paddingTop: embedded ? '16px' : '80px' }}>
+      <div className="relative z-10 flex min-h-screen">
         {/* MSFS 2024 Style Sidebar - Pathways Navigation - hidden when embedded */}
         {!embedded && (
           <PathwaysSidebar
@@ -4709,3378 +4782,215 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         )}
         {/* Main content area - responsive margin for sidebar (removed when embedded) */}
         <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: embedded ? '0' : '340px' }}>
-          <div className="max-w-[calc(100vw-360px)] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Branding */}
-        <div className="mb-4 text-center materialize materialize-delay-1">
-          <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-            pilotcareer<span className="text-red-500">pathways</span>.com
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            powered by pilot<span className="text-red-500">recognition</span>.com
-          </p>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-3 flex justify-center materialize materialize-delay-2">
-          <div className="w-full max-w-2xl relative">
-            <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
-          </div>
-        </div>
-
-        {/* Filter Pills - Replaceable */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 px-4 materialize materialize-delay-3">
-          {!selectedPrimaryPill ? (
-            // Primary pills
-            <>
-              {[
-                { label: 'Low Timers', filter: 'low-time', key: 'low-timers' },
-                { label: "CFI's", filter: 'cfi', key: 'cfi' },
-                { label: 'Graduates', filter: 'graduate', key: 'graduates' },
-                { label: 'PPL', filter: 'ppl', key: 'ppl' },
-                { label: 'CPL', filter: 'cpl', key: 'cpl' },
-              ].map((pill) => (
-                <button
-                  key={pill.key}
-                  onClick={() => {
-                    setSelectedPrimaryPill(pill.key);
-                    setActiveSubPills([]);
-                    setSearchQuery(pill.filter);
-                    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
-                    if (searchInput) {
-                      searchInput.value = pill.label;
-                      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    }
-                  }}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50"
-                >
-                  {pill.label}
-                </button>
-              ))}
-              <button
-                onClick={() => setShowMorePills(!showMorePills)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                  showMorePills
-                    ? 'border-red-500 bg-red-500 text-white hover:bg-red-600'
-                    : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50'
-                }`}
-              >
-                {showMorePills ? 'Show Less' : 'View More'}
-              </button>
-              {showMorePills && [
-                { label: 'Type Rating', filter: 'type-rating', key: 'type-rating' },
-                { label: 'Cargo', filter: 'cargo', key: 'cargo' },
-                { label: 'Private Sector', filter: 'private', key: 'private-sector' },
-                { label: 'Airline', filter: 'airline', key: 'airline' },
-                { label: 'Military', filter: 'military', key: 'military' },
-                { label: 'Drones / eVTOL', filter: 'drone', key: 'drones' },
-              ].map((pill) => (
-                <button
-                  key={pill.key}
-                  onClick={() => {
-                    setSelectedPrimaryPill(pill.key);
-                    setActiveSubPills([]);
-                    setSearchQuery(pill.filter);
-                    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
-                    if (searchInput) {
-                      searchInput.value = pill.label;
-                      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    }
-                  }}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50 animate-fadeIn"
-                >
-                  {pill.label}
-                </button>
-              ))}
-            </>
-          ) : (
-            // Sub pills replacing primary
-            <>
-              <button
-                onClick={() => {
-                  setSelectedPrimaryPill(null);
-                  setActiveSubPills([]);
-                  setSearchQuery('');
-                  const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
-                  if (searchInput) {
-                    searchInput.value = '';
-                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                  }
-                }}
-                className="px-3 py-2 rounded-full text-sm font-medium transition-all border border-slate-500/30 bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 hover:text-slate-300"
-              >
-                ← Back
-              </button>
-              {selectedPrimaryPill === 'cpl' && ['IR', 'Multi Engine', 'Single Engine', 'Seaplane', 'ATPL'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => {
-                    const isActive = activeSubPills.includes(sub);
-                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
-                    setActiveSubPills(newActive);
-                    setSearchQuery(`cpl ${newActive.map(s => s.toLowerCase()).join(' ')}`.trim());
-                  }}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
-                    activeSubPills.includes(sub)
-                      ? 'border-red-500 bg-red-500 text-white'
-                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-              {selectedPrimaryPill === 'ppl' && ['Recreational', 'Night Rating', 'Tailwheel', 'Aerobatic', 'Glider Towing'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => {
-                    const isActive = activeSubPills.includes(sub);
-                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
-                    setActiveSubPills(newActive);
-                    setSearchQuery(`ppl ${newActive.map(s => s.toLowerCase()).join(' ')}`.trim());
-                  }}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
-                    activeSubPills.includes(sub)
-                      ? 'border-red-500 bg-red-500 text-white'
-                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-              {selectedPrimaryPill === 'low-timers' && ['0-250 hrs', 'Cadet Programs', 'Flight Schools', 'Ground Crew'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => {
-                    const isActive = activeSubPills.includes(sub);
-                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
-                    setActiveSubPills(newActive);
-                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'low-time');
-                  }}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
-                    activeSubPills.includes(sub)
-                      ? 'border-red-500 bg-red-500 text-white'
-                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-              {selectedPrimaryPill === 'cfi' && ['CFI-I', 'MEI', 'Check Airman', 'Part 141', 'Part 61'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => {
-                    const isActive = activeSubPills.includes(sub);
-                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
-                    setActiveSubPills(newActive);
-                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'cfi');
-                  }}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
-                    activeSubPills.includes(sub)
-                      ? 'border-red-500 bg-red-500 text-white'
-                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-              {selectedPrimaryPill === 'graduates' && ['First Job', 'Regional', 'Corporate', 'Cargo', 'Charter'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => {
-                    const isActive = activeSubPills.includes(sub);
-                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
-                    setActiveSubPills(newActive);
-                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'graduate');
-                  }}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
-                    activeSubPills.includes(sub)
-                      ? 'border-red-500 bg-red-500 text-white'
-                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-
-
-        {/* Results count */}
-        <div className="w-full mb-4 text-center materialize materialize-delay-4">
-          <p className={`${subText} text-sm`}>
-            {filteredPathways.length} pathways available
-          </p>
-        </div>
-
-        {/* Stage 1: Pathway Cards — filtered by selected pill */}
-        <div className="relative w-full z-10 -mx-4 sm:-mx-6 lg:-mx-8">
-            <style>{`
-              .pathways-carousel::-webkit-scrollbar { display: none; }
-              .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-snap-align: center; scroll-behavior: smooth; }
-              .pathways-carousel > div { scroll-snap-align: center; }
-              @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-              .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
-            `}</style>
-
-            {/* Stage 1 Carousel */}
+          {/* Pathway Panels Carousel - Full width edge-to-edge */}
+          <div className="py-8">
             <div
-              ref={carouselRef}
-              className="pathways-carousel flex overflow-x-auto pb-4"
-              style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '200px', scrollSnapType: 'x mandatory' }}
-              onMouseEnter={() => { isCarouselHovered.current = true; }}
-              onMouseLeave={() => { isCarouselHovered.current = false; }}
-              onMouseDown={(e) => {
-                const el = carouselRef.current;
-                if (!el) return;
-                el.style.cursor = 'grabbing';
-                const startX = e.pageX - el.offsetLeft;
-                const scrollLeft = el.scrollLeft;
-                const onMove = (me: MouseEvent) => { el.scrollLeft = scrollLeft - (me.pageX - el.offsetLeft - startX); };
-                const onUp = () => {
-                  el.style.cursor = 'grab';
-                  window.removeEventListener('mousemove', onMove);
-                  window.removeEventListener('mouseup', onUp);
-                };
-                window.addEventListener('mousemove', onMove);
-                window.addEventListener('mouseup', onUp);
-              }}
+              ref={panelCarouselRef}
+              className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+              onMouseEnter={() => setIsPanelHovered(true)}
+              onMouseLeave={() => setIsPanelHovered(false)}
             >
-              {(() => {
-                const selectedUUID = hierarchySelection.generalCategory;
-
-                // When no pill selected: show a curated recommended mix from all buckets
-                type RecommendedCard = { id: string; name: string; description: string; image: string; discoveryKey: string; tag: string; tagColor: string; };
-                const RECOMMENDED_MIX: RecommendedCard[] = [
-                  {
-                    id: 'rec-cadet',
-                    name: 'Cathay Pacific Cadet Programme',
-                    description: 'Airline-sponsored pathway from zero hours — full training covered',
-                    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
-                    discoveryKey: 'cadet-programme',
-                    tag: 'Cadet', tagColor: 'bg-blue-600',
-                  },
-                  {
-                    id: 'rec-cargo',
-                    name: 'FedEx Express Pilot',
-                    description: 'Heavy cargo operations — $250K-$350K/year, global network',
-                    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-                    discoveryKey: 'cargo',
-                    tag: 'Cargo', tagColor: 'bg-emerald-600',
-                  },
-                  {
-                    id: 'rec-private-sector',
-                    name: 'NetJets Pilot Career',
-                    description: 'Fractional ownership — home basing, premium pay, largest private fleet',
-                    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-                    discoveryKey: 'privateSector',
-                    tag: 'Private Sector', tagColor: 'bg-amber-600',
-                  },
-                  {
-                    id: 'rec-type-rating',
-                    name: 'Type Rating Pathways',
-                    description: 'A320, B737, B777 type rating routes and approved training centres',
-                    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-                    discoveryKey: 'type-rating',
-                    tag: 'Type Rating', tagColor: 'bg-pink-600',
-                  },
-                  {
-                    id: 'rec-flydubai',
-                    name: 'FlyDubai Cadet Programme',
-                    description: 'Full sponsorship, B737 MAX fleet, Dubai base, career progression',
-                    image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
-                    discoveryKey: 'cadet-programme',
-                    tag: 'Cadet', tagColor: 'bg-blue-600',
-                  },
-                  {
-                    id: 'rec-airtaxi',
-                    name: 'eVTOL & Air Taxi Pathways',
-                    description: 'Emerging urban air mobility — Joby, Archer, Wisk and more',
-                    image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
-                    discoveryKey: 'airtaxi-drones',
-                    tag: 'Emerging', tagColor: 'bg-purple-600',
-                  },
-                  {
-                    id: 'rec-private',
-                    name: 'Private Pilot Pathway',
-                    description: 'From recreational flying to CPL — structured certification route',
-                    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-                    discoveryKey: 'private',
-                    tag: 'Training', tagColor: 'bg-orange-600',
-                  },
-                  {
-                    id: 'rec-ups',
-                    name: 'UPS Airlines Captain',
-                    description: 'Heavy cargo, Teamsters union, $240K-$320K/year — Louisville hub',
-                    image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
-                    discoveryKey: 'cargo',
-                    tag: 'Cargo', tagColor: 'bg-emerald-600',
-                  },
-                ];
-
-                // ── Recommended mix (no pill selected) ──────────────────────
-                if (!selectedUUID) {
-                  return RECOMMENDED_MIX.map((rec, recIdx) => {
-                    const isSelected = selectedStage1PathwayId === rec.id;
-                    return (
-                      <div
-                        key={rec.id}
-                        className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
-                        style={{ width: '520px', height: '200px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${recIdx * 0.08}s` }}
-                        onClick={() => {
-                          setStage1Index(recIdx);
-                          setStage2Index(0);
-                          setSelectedStage1PathwayId(rec.id);
-                          setSelectedPathwayCard({
-                            id: rec.id,
-                            name: rec.name,
-                            description: rec.description,
-                            category: rec.discoveryKey as PathwayData['category'],
-                            airline: 'Multiple Airlines',
-                            locations: ['Global'],
-                            matchProbability: 0.85,
-                            image: rec.image,
-                            aircraftType: '',
-                            interestLevel: 'moderate' as const,
-                            requirements: { totalHours: 0, typeRatings: [] },
-                          });
-                          setSelectedCarouselPathway(null);
-                        }}
-                      >
-                        <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800 flex" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                          {/* Left — image */}
-                          <div className="relative w-[55%] h-full flex-shrink-0 overflow-hidden">
-                            <img src={rec.image} alt={rec.name} className="w-full h-full object-cover block" loading="lazy"
-                              onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-800/80" />
-                            <div className="absolute top-3 left-3">
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${rec.tagColor}`}>{rec.tag}</span>
-                            </div>
-                          </div>
-                          {/* Right — description */}
-                          <div className="flex-1 flex flex-col justify-center p-5">
-                            <h4 className="text-base font-semibold text-white leading-tight mb-2">{rec.name}</h4>
-                            <p className="text-white/60 text-sm leading-snug line-clamp-3">{rec.description}</p>
-                          </div>
-                          {isSelected && (
-                            <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
-                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  });
-                }
-
-                // ── Pill selected: show PATHWAYS[] for that category UUID ────
-                // Pre-compute the cycling image pool for flight-schools once per render
-                const fsRegionSchools = DUMMY_FLIGHT_SCHOOLS.filter(s =>
-                  s.id !== 'wingmentor-intro' &&
-                  s.image &&
-                  !s.image.startsWith('https://images.unsplash') &&
-                  (userCountryCode
-                    ? (COUNTRY_TO_REGION[userCountryCode]?.region
-                        ? s.region === COUNTRY_TO_REGION[userCountryCode].region
-                        : true)
-                    : true)
-                );
-                const fsCycleImg = fsRegionSchools.length > 0
-                  ? fsRegionSchools[flightSchoolCardImgIdx % fsRegionSchools.length].image
-                  : PATHWAY_IMAGES['flight-schools-category'];
-
-                return PATHWAYS.filter(p => p.general_category_id === selectedUUID).map((item, itemIdx) => {
-                  const isFlightSchools = item.id === 'flight-schools-category';
-                  const imgSrc = isFlightSchools
-                    ? (fsCycleImg || PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['flight-schools'])
-                    : (PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png');
-                  const isSelected = selectedStage1PathwayId === item.id;
-                  const discoveryKey = PATHWAY_UUID_TO_DISCOVERY_KEY[item.id];
-                  const stage2Count = discoveryKey ? (DISCOVERY_PATHWAYS[discoveryKey]?.length ?? 0) : 0;
-
-                  return (
-                    <div
-                      key={item.id}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''} materialize pathway-card-3d`}
-                      style={{ width: '520px', height: '200px', scrollSnapAlign: 'center', flexShrink: 0, animationDelay: `${itemIdx * 0.08}s` }}
-                      onClick={() => {
-                        if (discoveryKey) {
-                          setStage1Index(itemIdx);
-                          setStage2Index(0);
-                          setSelectedStage1PathwayId(item.id);
-                          setSelectedPathwayCard({
-                            id: item.id,
-                            name: item.name,
-                            description: item.description,
-                            category: discoveryKey as PathwayData['category'],
-                            airline: 'Multiple Airlines',
-                            locations: ['Global'],
-                            matchProbability: 0.85,
-                            image: imgSrc,
-                            aircraftType: '',
-                            interestLevel: 'moderate' as const,
-                            requirements: { totalHours: 0, typeRatings: [] },
-                          });
-                          setSelectedCarouselPathway(null);
-                        }
-                      }}
-                    >
-                      <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800 flex" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                        {/* Left — image */}
-                        <div className="relative w-[55%] h-full flex-shrink-0 overflow-hidden">
-                          <img
-                            key={imgSrc}
-                            src={imgSrc}
-                            alt={item.name}
-                            className="w-full h-full object-cover block"
-                            loading="lazy"
-                            style={{ transition: 'opacity 0.6s ease', animation: isFlightSchools ? 'fadeIn 0.6s ease' : undefined }}
-                            onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-800/80" />
-                        </div>
-                        {/* Right — description */}
-                        <div className="flex-1 flex flex-col justify-center p-5">
-                          <h4 className="text-base font-semibold text-white leading-tight mb-2">{item.name}</h4>
-                          <p className="text-white/60 text-sm leading-snug line-clamp-3">{item.description}</p>
-                          {stage2Count > 0 && (
-                            <p className="text-sky-400 text-xs mt-2 font-semibold">{stage2Count} pathways →</p>
-                          )}
-                        </div>
-                        {isSelected && (
-                          <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
-
-            {/* Stage 1 Navigation Arrows */}
-            {(() => {
-              const selectedUUID = hierarchySelection.generalCategory;
-              // Build the same ordered list the carousel renders
-              type S1Card = { id: string; name: string; description: string; image: string; discoveryKey: string };
-              const stage1Cards: S1Card[] = selectedUUID
-                ? PATHWAYS.filter(p => p.general_category_id === selectedUUID).map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    description: item.description,
-                    image: PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png',
-                    discoveryKey: PATHWAY_UUID_TO_DISCOVERY_KEY[item.id] || '',
-                  }))
-                : [
-                    { id: 'rec-cadet', name: 'Cathay Pacific Cadet Programme', description: 'Airline-sponsored pathway from zero hours — full training covered', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg', discoveryKey: 'cadet-programme' },
-                    { id: 'rec-cargo', name: 'FedEx Express Pilot', description: 'Heavy cargo operations — $250K-$350K/year, global network', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80', discoveryKey: 'cargo' },
-                    { id: 'rec-airline', name: 'Emirates First Officer', description: 'Long-haul widebody — direct entry, competitive pay package', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.jpg', discoveryKey: 'airline-pathways' },
-                    { id: 'rec-private', name: 'Private Pilot Pathway', description: 'From recreational flying to CPL — structured certification route', image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80', discoveryKey: 'private' },
-                    { id: 'rec-ups', name: 'UPS Airlines Captain', description: 'Heavy cargo, Teamsters union, $240K-$320K/year — Louisville hub', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80', discoveryKey: 'cargo' },
-                  ];
-
-              const selectCardAtIndex = (index: number) => {
-                const card = stage1Cards[index];
-                if (!card || !card.discoveryKey) return;
-                setSelectedStage1PathwayId(card.id);
-                setStage2Index(0);
-                setStage2ViewFilter('All' as const);
-                setStage2TypeRatingFilter('All');
-                setSelectedPathwayCard({
-                  id: card.id,
-                  name: card.name,
-                  description: card.description,
-                  category: card.discoveryKey as PathwayData['category'],
-                  airline: 'Multiple Airlines',
-                  locations: ['Global'],
-                  matchProbability: 0.85,
-                  image: card.image,
-                  aircraftType: '',
-                  interestLevel: 'moderate' as const,
-                  requirements: { totalHours: 0, typeRatings: [] },
-                });
-                setSelectedCarouselPathway(null);
-              };
-
-              const navigate = (dir: 1 | -1) => {
-                const el = carouselRef.current;
-                if (!el) return;
-                const targetIndex = Math.max(0, Math.min(stage1Cards.length - 1, stage1Index + dir));
-                const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
-                // Center the target card in the viewport
-                const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
-                el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
-                setStage1Index(targetIndex);
-                // Select after scroll animation (~400ms)
-                setTimeout(() => selectCardAtIndex(targetIndex), 420);
-              };
-
-              return null;
-            })()}
-          </div>
-
-          {/* Carousel Navigation Arrows - Overlaying cards */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
-            <button
-              onClick={() => {
-                const el = carouselRef.current;
-                if (!el) return;
-                const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
-                el.scrollTo({ left: Math.max(0, el.scrollLeft - cardWidth), behavior: 'smooth' });
-              }}
-              className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/10 text-white hover:bg-white/20 hover:text-white shadow-lg"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20">
-            <button
-              onClick={() => {
-                const el = carouselRef.current;
-                if (!el) return;
-                const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
-                el.scrollTo({ left: el.scrollLeft + cardWidth, behavior: 'smooth' });
-              }}
-              className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/10 text-white hover:bg-white/20 hover:text-white shadow-lg"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Stage 2: Pathways Carousel - Shows when a category is selected */}
-          {selectedPathwayCard && (
-            <div className="mt-12 w-full materialize materialize-delay-5">
-              <div className="mb-6">
-                <h3
-                  className="text-2xl md:text-3xl font-normal text-white mb-2"
-                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+              {[
+                {
+                  img: 'https://i.ytimg.com/vi/hQ3FJIPsT-g/maxresdefault.jpg',
+                  icon: null,
+                  title: 'Cadet Programme',
+                  desc: 'Airline-sponsored zero-to-hero training with guaranteed job placement.',
+                  stat: '50+ Airlines',
+                },
+                {
+                  img: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+                  icon: <Award className="w-6 h-6" />,
+                  title: 'Type Rating',
+                  desc: 'Get your A320 or B737 type rating and transition to the flight deck.',
+                  stat: 'A320 · B737 · B777',
+                },
+                {
+                  img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+                  icon: <Users className="w-6 h-6" />,
+                  title: 'Low Timer',
+                  desc: 'First officer opportunities for pilots building their first 500 hours.',
+                  stat: '250+ Openings',
+                },
+                {
+                  img: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+                  icon: <GraduationCap className="w-6 h-6" />,
+                  title: 'Flight Instructor',
+                  desc: 'Teach the next generation while building hours toward your airline goal.',
+                  stat: '1,200+ Schools',
+                },
+                {
+                  img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+                  icon: <Compass className="w-6 h-6" />,
+                  title: 'Commercial Pilot',
+                  desc: 'The full pathway from zero hours to a multi-crew airline career.',
+                  stat: 'Global Network',
+                },
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  className={`flex-shrink-0 w-[560px] h-[300px] rounded-2xl border-2 transition-all duration-500 relative overflow-hidden group materialize ${
+                    panelIndex === idx
+                      ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl shadow-black/40'
+                      : 'border-white/10 hover:border-white/30 hover:shadow-xl shadow-black/20'
+                  }`}
+                  style={{ animationDelay: `${idx * 120}ms` }}
+                  onClick={() => setPanelIndex(idx)}
                 >
-                  {selectedPathwayCard.name}
-                </h3>
-                <p className={`${subText} text-sm`}>
-                  {selectedPathwayCard.description}
-                </p>
-              </div>
-
-              {/* Type Rating filter pills */}
-              {selectedPathwayCard.category === 'type-rating' && (() => {
-                const TR_FILTERS = [
-                  { label: 'All', group: null },
-                  { label: 'Instrument Rating (IR)', group: 'Licensure' },
-                  { label: 'Multi-Engine (ME)', group: 'Licensure' },
-                  { label: 'ATPL', group: 'Licensure' },
-                  { label: 'MCC / JOC', group: 'Licensure' },
-                  { label: 'UPRT', group: 'Licensure' },
-                  { label: 'Airbus Rating', group: 'Type Rating' },
-                  { label: 'ATR Rating', group: 'Type Rating' },
-                  { label: 'Boeing Rating', group: 'Type Rating' },
-                  { label: 'Widebody', group: 'Type Rating' },
-                  { label: 'Narrowbody', group: 'Type Rating' },
-                ];
-                const licensureFilters = TR_FILTERS.filter(f => f.group === 'Licensure' || f.label === 'All');
-                const typeRatingFilters = TR_FILTERS.filter(f => f.group === 'Type Rating');
-                return (
-                  <div className="flex flex-col gap-3 mb-6">
-                    {/* View toggle — separate pathways from flight schools */}
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Show</span>
-                      {(['All', 'Type Rating Centers', 'Flight School (ATO)', 'Special Ratings'] as const).map(v => (
-                        <button
-                          key={v}
-                          onClick={() => { setStage2ViewFilter(v); setStage2Index(0); }}
-                          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                            stage2ViewFilter === v
-                              ? 'bg-white text-slate-900 border-white'
-                              : 'border-white/15 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'
-                          }`}
-                        >
-                          {v}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {licensureFilters.map(f => (
-                        <button
-                          key={f.label}
-                          onClick={() => { setStage2TypeRatingFilter(f.label); setStage2Index(0); }}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                            stage2TypeRatingFilter === f.label
-                              ? 'bg-pink-500 border-pink-500 text-white'
-                              : 'border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
-                          }`}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2 pl-2 border-l border-pink-500/30">
-                      {typeRatingFilters.map(f => (
-                        <button
-                          key={f.label}
-                          onClick={() => { setStage2TypeRatingFilter(f.label); setStage2Index(0); }}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                            stage2TypeRatingFilter === f.label
-                              ? 'bg-pink-500 border-pink-500 text-white'
-                              : 'border-pink-500/20 bg-pink-500/5 text-pink-300/70 hover:bg-pink-500/10 hover:text-pink-200'
-                          }`}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Region + Country filter — all Stage 2 categories except military */}
-              {selectedPathwayCard.category !== 'military' && (() => {
-                const REGION_COUNTRIES: Record<string, string[]> = {
-                  'Asia': ['All Countries', 'Philippines', 'Singapore'],
-                  'Europe': ['All Countries', 'Germany'],
-                  'Americas': ['All Countries', 'USA'],
-                  'Oceania': ['All Countries', 'Australia'],
-                  'Middle East': ['All Countries', 'UAE'],
-                  'Africa': ['All Countries', 'South Africa'],
-                };
-                const regions = ['All', ...Object.keys(REGION_COUNTRIES)];
-                const countries = stage2RegionFilter !== 'All' ? REGION_COUNTRIES[stage2RegionFilter] || [] : [];
-                const nearestMatch = userCountryCode ? COUNTRY_TO_REGION[userCountryCode] : null;
-                const LISTED_COUNTRIES = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
-                const isNearestActive = stage2NearestSort;
-                return (
-                  <div className="flex flex-wrap items-center gap-3 mb-6">
-                    {/* Nearest to You pill — only shown when IP lat/lng is known */}
-                    {userLatLng && (
-                      <button
-                        onClick={() => {
-                          setStage2NearestSort(true);
-                          const match = userCountryCode ? COUNTRY_TO_REGION[userCountryCode] : null;
-                          const LISTED = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
-                          setStage2RegionFilter(match?.region || 'All');
-                          setStage2CountryFilter(match && LISTED.includes(match.country) ? match.country : 'All');
-                          setStage2Index(0);
-                        }}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${isNearestActive ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300'}`}
-                      >
-                        <span>📍</span> Nearest to You
-                      </button>
-                    )}
-                    {/* Region pills */}
-                    <div className="flex flex-wrap gap-2">
-                      {regions.map(r => (
-                        <button
-                          key={r}
-                          onClick={() => { setStage2RegionFilter(r); setStage2CountryFilter('All'); setStage2NearestSort(false); setStage2Index(0); }}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${stage2RegionFilter === r ? 'bg-sky-500 border-sky-500 text-white' : 'border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'}`}
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
-                    {/* Country sub-filter */}
-                    {stage2RegionFilter !== 'All' && countries.length > 1 && (
-                      <div className="flex flex-wrap gap-2 pl-2 border-l border-white/10">
-                        {countries.map(c => (
-                          <button
-                            key={c}
-                            onClick={() => { setStage2CountryFilter(c === 'All Countries' ? 'All' : c); setStage2NearestSort(false); setStage2Index(0); }}
-                            className={`px-3 py-1.5 rounded-full text-xs transition-all border ${(c === 'All Countries' ? stage2CountryFilter === 'All' : stage2CountryFilter === c) ? 'bg-white/20 border-white/30 text-white' : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
-                          >
-                            {c}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-
-              {/* Stage 2: Individual Pathways for Selected Category */}
-              <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                <div 
-                  ref={stage2Ref}
-                  className="pathways-carousel flex overflow-x-auto pb-4"
-                  style={{
-                    WebkitOverflowScrolling: 'touch',
-                    scrollSnapType: 'x mandatory',
-                    scrollBehavior: 'smooth',
-                  }}
-                >
-                {(() => {
-                  // Pull Stage 2 cards directly from DISCOVERY_PATHWAYS — bypasses the filteredPathways
-                  // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
-                  const discoveryKey = selectedPathwayCard.category;
-                  let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
-                  // Apply type-rating filter + inject matching flight schools
-                  if (discoveryKey === 'type-rating') {
-                    // Inject UUID licensure sub-pathway cards (they are not in DISCOVERY_PATHWAYS)
-                    const LICENSURE_SUB_PATHWAY_CARDS: PathwayJob[] = [
-                      { id: 'a02f4e29-e165-415f-a3b3-669edbd7deb1', title: 'Type Rating Centers', company: 'CAE / FlightSafety / Approved ATOs', matchPercentage: 95, location: 'Clark, Philippines · Dubai, UAE · London, UK', type: 'Type Rating Centers', salary: '$18,000 – $50,000', requirements: ['CPL + IR + ME', 'Class 1 Medical'], tags: ['A320', 'B737', 'A330', 'B777', 'ATR'], postedAt: 'Open Enrollment', image: 'https://www.caepacific.com/wp-content/uploads/2021/03/CAE-Philippines-Training-Center.jpg' },
-                      { id: 'cc996aa7-a075-4be7-beef-f917dd1f41db', title: 'Instrument Rating Pathway', company: 'CAAP-Approved Flight Schools', matchPercentage: 92, location: 'Philippines · USA · Europe', type: 'Licensure', salary: '$10,000 – $18,000', requirements: ['PPL or CPL', 'Class 1 Medical'], tags: ['Instrument Rating', 'IFR', 'IR'], postedAt: 'Open Enrollment', image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg' },
-                      { id: '54655935-92de-4aad-b82b-703152ffce25', title: 'ATPL Pathway', company: 'Various ATOs', matchPercentage: 90, location: 'Philippines · Australia · USA', type: 'Licensure', salary: 'ATPL Theory: $3,000–$8,000', requirements: ['CPL + IR + ME', 'Class 1 Medical'], tags: ['ATPL', 'Hour Building', 'Airline'], postedAt: 'Open Enrollment', image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png' },
-                      { id: 'e94ba893-fa83-47b1-90f9-98905dc6685a', title: 'Multi-Engine Rating', company: 'CAAP-Approved Flight Schools', matchPercentage: 91, location: 'Philippines · USA · Australia', type: 'Licensure', salary: '$8,000 – $15,000', requirements: ['PPL or CPL', 'Class 1 Medical'], tags: ['Multi-Engine', 'MER', 'ME'], postedAt: 'Open Enrollment', image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg' },
-                      { id: '4d4b6568-3759-432e-9193-e0dba88425aa', title: 'CFI Rating Pathway', company: 'CAAP-Approved Flight Schools', matchPercentage: 88, location: 'Philippines · USA · Australia', type: 'Licensure', salary: 'Training: $5,000–$10,000', requirements: ['CPL + IR', 'Class 1 Medical'], tags: ['CFI', 'Instructor', 'Hour Building'], postedAt: 'Open Enrollment', image: 'https://media.pea.com/wp-content/uploads/2023/06/flight-instructor-training-1024x607.jpeg' },
-                      { id: '078eea1a-271f-4392-a802-9a2ea4c36da0', title: 'UPRT Rating', company: 'CAAP-Approved ATOs', matchPercentage: 86, location: 'Philippines · USA · Europe', type: 'Special Rating', salary: '$2,500 – $5,000', requirements: ['CPL or ATPL', 'Class 1 Medical'], tags: ['UPRT', 'Upset Recovery', 'Safety'], postedAt: 'Open Enrollment', image: 'https://www.flight-safety.com/wp-content/uploads/2021/06/uprt-training.jpg' },
-                      { id: 'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8', title: 'Seaplane Rating', company: 'CAAP-Approved Seaplane Operators', matchPercentage: 82, location: 'Philippines · Canada · USA', type: 'Special Rating', salary: '$3,000 – $8,000', requirements: ['PPL or higher', 'Class 2 Medical'], tags: ['Seaplane', 'Floatplane', 'Water Ops'], postedAt: 'Open Enrollment', image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80' },
-                    ];
-                    rawCards = [...rawCards, ...LICENSURE_SUB_PATHWAY_CARDS];
-                    const f = stage2TypeRatingFilter;
-
-                    // Helper: does an offering string match the active filter?
-                    const offeringMatches = (o: string) => {
-                      const ol = o.toLowerCase();
-                      if (f === 'All') return true;
-                      if (f === 'Instrument Rating (IR)') return ol.includes('instrument') || ol.includes(' ir)') || ol.includes('(ir)');
-                      if (f === 'Multi-Engine (ME)') return ol.includes('multi-engine') || ol.includes('multi engine') || ol.includes('mer') || ol.includes('(me)');
-                      if (f === 'ATPL') return ol.includes('atpl');
-                      if (f === 'MCC / JOC') return ol.includes('mcc') || ol.includes('joc') || ol.includes('jet orientation');
-                      if (f === 'UPRT') return ol.includes('uprt') || ol.includes('upset');
-                      if (f === 'Airbus Rating') return ol.includes('a320') || ol.includes('a330') || ol.includes('airbus');
-                      if (f === 'ATR Rating') return ol.includes('atr');
-                      if (f === 'Boeing Rating') return ol.includes('b737') || ol.includes('b777') || ol.includes('b787') || ol.includes('boeing');
-                      if (f === 'Widebody') return ol.includes('b777') || ol.includes('b787') || ol.includes('a330') || ol.includes('widebody');
-                      if (f === 'Narrowbody') return ol.includes('a320') || ol.includes('b737') || ol.includes('narrowbody');
-                      return false;
-                    };
-
-                    // Filter the dedicated type-rating cards
-                    if (f !== 'All') {
-                      rawCards = rawCards.filter(j => {
-                        const allText = j.title.toLowerCase() + ' ' + (j.tags || []).join(' ').toLowerCase();
-                        if (f === 'Instrument Rating (IR)') return allText.includes('instrument') || allText.includes(' ir ');
-                        if (f === 'Multi-Engine (ME)') return allText.includes('multi') || allText.includes('multi-engine') || allText.includes('me rating');
-                        if (f === 'ATPL') return allText.includes('atpl');
-                        if (f === 'MCC / JOC') return allText.includes('mcc') || allText.includes('joc') || allText.includes('jet orientation');
-                        if (f === 'UPRT') return allText.includes('uprt') || allText.includes('upset');
-                        if (f === 'Airbus Rating') return allText.includes('airbus') || allText.includes('a320') || allText.includes('a330');
-                        if (f === 'ATR Rating') return allText.includes('atr');
-                        if (f === 'Boeing Rating') return allText.includes('boeing') || allText.includes('b737') || allText.includes('b777') || allText.includes('b787');
-                        if (f === 'Widebody') return allText.includes('widebody') || allText.includes('b777') || allText.includes('b787') || allText.includes('a330');
-                        if (f === 'Narrowbody') return allText.includes('narrowbody') || allText.includes('a320') || allText.includes('b737');
-                        return true;
-                      });
-                    }
-
-                    // Inject flight schools that offer this rating
-                    const matchingSchools = DUMMY_FLIGHT_SCHOOLS.filter(s =>
-                      s.id !== 'wingmentor-intro' &&
-                      (s.offerings || []).some(o => offeringMatches(o))
-                    );
-                    const schoolCards: PathwayJob[] = matchingSchools.map(s => ({
-                      id: s.id,
-                      title: s.name,
-                      company: s.location,
-                      matchPercentage: Math.round(s.rating * 20),
-                      location: s.location,
-                      type: 'Flight School',
-                      salary: s.price,
-                      requirements: ['Medical Certificate', 'English Proficiency'],
-                      tags: [s.region, f === 'All' ? 'Offers Training' : `Offers ${f}`, 'CAAP Approved'],
-                      postedAt: 'Open Enrollment',
-                      image: s.image || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-                      claimed: s.claimed ?? false,
-                    }));
-                    rawCards = [...rawCards, ...schoolCards];
-
-                    // Apply view filter — separate sub-pathway cards from flight school cards
-                    const TYPE_RATING_CENTER_UUIDS = new Set([
-                      'a02f4e29-e165-415f-a3b3-669edbd7deb1', // Type Rating Centers
-                      'cc996aa7-a075-4be7-beef-f917dd1f41db', // Instrument Rating
-                      '54655935-92de-4aad-b82b-703152ffce25', // ATPL Pathway
-                      'e94ba893-fa83-47b1-90f9-98905dc6685a', // Multi-Engine Rating
-                      '4d4b6568-3759-432e-9193-e0dba88425aa', // CFI Rating
-                    ]);
-                    const SPECIAL_RATING_UUIDS = new Set([
-                      '078eea1a-271f-4392-a802-9a2ea4c36da0', // UPRT
-                      'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8', // Seaplane Rating
-                    ]);
-                    const SPECIAL_RATING_SCHOOL_IDS = new Set([
-                      'flight-school-33', // Camiguin Aviation — UPRT/aerobatics specialist
-                    ]);
-                    const ALL_PATHWAY_UUIDS = new Set([...TYPE_RATING_CENTER_UUIDS, ...SPECIAL_RATING_UUIDS]);
-                    if (stage2ViewFilter === 'Type Rating Centers') {
-                      rawCards = rawCards.filter(j => TYPE_RATING_CENTER_UUIDS.has(j.id));
-                    } else if (stage2ViewFilter === 'Special Ratings') {
-                      rawCards = rawCards.filter(j => SPECIAL_RATING_UUIDS.has(j.id) || SPECIAL_RATING_SCHOOL_IDS.has(j.id));
-                    } else if (stage2ViewFilter === 'Flight School (ATO)') {
-                      rawCards = rawCards.filter(j => !ALL_PATHWAY_UUIDS.has(j.id) && !SPECIAL_RATING_SCHOOL_IDS.has(j.id));
-                    }
-                  }
-                  // Apply region/country/nearest filter for all non-military categories
-                  if (discoveryKey !== 'military') {
-                    if (stage2NearestSort && userLatLng) {
-                      // Haversine distance sort — school cards get real distance, dedicated TR cards (no lat/lng) pushed to end
-                      const haversine = (lat1: number, lng1: number, lat2: number, lng2: number) => {
-                        const R = 6371;
-                        const dLat = (lat2 - lat1) * Math.PI / 180;
-                        const dLng = (lng2 - lng1) * Math.PI / 180;
-                        const a = Math.sin(dLat/2) ** 2 + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLng/2) ** 2;
-                        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                      };
-                      const schoolWithCoords = DUMMY_FLIGHT_SCHOOLS.filter(s => s.id !== 'wingmentor-intro' && s.lat && s.lng);
-                      rawCards = rawCards
-                        .map(j => {
-                          const school = schoolWithCoords.find(s => s.id === j.id);
-                          const dist = school ? haversine(userLatLng.lat, userLatLng.lng, school.lat!, school.lng!) : 99999;
-                          return { ...j, _dist: dist };
-                        })
-                        .sort((a, b) => (a as any)._dist - (b as any)._dist);
-                    } else {
-                      if (stage2RegionFilter !== 'All') {
-                        rawCards = rawCards.filter(j => j.tags?.[0] === stage2RegionFilter);
-                      }
-                      if (stage2CountryFilter !== 'All') {
-                        rawCards = rawCards.filter(j => j.location?.includes(stage2CountryFilter));
-                      }
-                    }
-                  }
-                  // Convert PathwayJob → PathwayData shape for rendering
-                  const stage2Cards: PathwayData[] = rawCards.map(j => ({
-                    id: j.id,
-                    name: j.title,
-                    airline: j.company,
-                    description: j.salary || '',
-                    image: (j.image && !j.image.startsWith('wingmentor')) ? j.image : '',
-                    category: discoveryKey as PathwayData['category'],
-                    matchProbability: j.matchPercentage,
-                    aircraftType: j.image?.startsWith('wingmentor') ? '__wingmentor__' : 'generic',
-                    interestLevel: j.postedAt === 'Active' ? 'high_interest' : j.postedAt === 'Selective' ? 'limited' : 'moderate',
-                    locations: [j.location],
-                    requirements: { totalHours: 0, typeRatings: [] },
-                    claimed: (j as any).claimed ?? false,
-                  }));
-                  // Also include any live enterprise cards matching this category
-                  const enterpriseForCategory = enterprisePathwayCards.filter(p => p.category === discoveryKey);
-                  const allStage2 = [...enterpriseForCategory, ...stage2Cards];
-                  stage2CardsRef.current = allStage2;
-                  return allStage2.length > 0 ? (
-                  allStage2.map((pathway, idx) => {
-                  const cardAirlineLogo = getAirlineLogo(pathway.airline);
-                  const isPilotRecognitionCard = pathway.aircraftType === '__wingmentor__' || pathway.aircraftType === '__intro__';
-                  const isIntroCard = pathway.id === 'recommended-pathways-intro';
-                  const cardAircraftImage = isPilotRecognitionCard
-                    ? '/logo.png'
-                    : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : (FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']));
-                  const isSelected = selectedCarouselPathway?.id === pathway.id;
-                  return (
-                    <div
-                      key={`${pathway.id}-${idx}`}
-                      id={`pathway-card-${pathway.id}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-2xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500 scale-[1.02]' : 'hover:scale-[1.01]'} materialize pathway-card-3d`}
-                      style={{ 
-                        width: '100vw', 
-                        height: '380px',
-                        scrollSnapAlign: 'center',
-                        animationDelay: `${idx * 0.08}s`,
-                      }}
-                      onClick={() => {
-                        setSelectedCarouselPathway(pathway);
-                        // Center this card in the viewport
-                        const el = stage2Ref.current;
-                        if (el) {
-                          const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                          const cardWidth = firstCard ? firstCard.offsetWidth : 736;
-                          const scrollTarget = idx * cardWidth - (el.clientWidth / 2) + (cardWidth / 2);
-                          el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
-                        }
-                        setStage2Index(idx);
-                      }}
-                      onContextMenu={(e) => {
-                        e.preventDefault();
-                        const cardId = `pathway-card-${pathway.id}`;
-                        navigator.clipboard.writeText(cardId);
-                        addToast('success', 'Card ID Copied!', cardId);
-                      }}
-                    >
-                      <div className="relative w-full h-full overflow-hidden rounded-2xl bg-slate-800" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}>
-                        <img
-                          src={cardAircraftImage}
-                          alt={pathway.name}
-                          className="w-full h-full object-cover block"
-                          loading="lazy"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.onerror = null;
-                            target.src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme'];
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                        {/* Claimed / Unclaimed badge */}
-                        {(discoveryKey === 'flight-schools' || discoveryKey === 'type-rating') && (
-                          <div className="absolute top-3 left-3 flex flex-col gap-1">
-                            {pathway.claimed ? (
-                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-600/90 backdrop-blur-sm">
-                                <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                                Claimed
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white/80 bg-black/40 backdrop-blur-sm border border-white/10">
-                                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeLinecap="round" strokeWidth="2" d="M12 8v4m0 4h.01"/></svg>
-                                Unverified
-                              </span>
-                            )}
-                            {pathway.interestLevel === 'high_interest' && (
-                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                Hiring
-                              </span>
-                            )}
-                          </div>
-                        )}
-                        {discoveryKey !== 'flight-schools' && discoveryKey !== 'type-rating' && pathway.interestLevel === 'high_interest' && (
-                          <div className="absolute top-3 left-3">
-                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
-                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                              Hiring
-                            </span>
-                          </div>
-                        )}
-                        <div className="absolute bottom-0 left-0 right-0 p-3">
-                          <h4 className="text-sm font-serif font-normal text-white leading-tight mb-0.5 line-clamp-1">{pathway.name}</h4>
-                          <p className="text-white/70 text-xs line-clamp-1">{pathway.airline}</p>
-                          <p className="text-white/50 text-[10px] line-clamp-1">{pathway.locations?.[0]}</p>
-                        </div>
-                        {isSelected && (
-                          <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>No pathways found for this category</p>
-              );
-                })()}
-            </div>
-            </div>
-
-            {/* Stage 2 navigation arrows */}
-            {(() => {
-              const totalCards = stage2CardsRef.current.length;
-              if (totalCards <= 1) return null;
-              const navigateStage2 = (dir: 1 | -1) => {
-                const el = stage2Ref.current;
-                if (!el) return;
-                const targetIndex = Math.max(0, Math.min(totalCards - 1, stage2Index + dir));
-                const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
-                const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
-                el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
-                setStage2Index(targetIndex);
-                // Also select the card
-                const card = stage2CardsRef.current[targetIndex];
-                if (card) setSelectedCarouselPathway(card);
-              };
-              return (
-                <div className="flex items-center justify-center gap-4 mt-4">
-                  <button
-                    onClick={() => navigateStage2(-1)}
-                    disabled={stage2Index === 0}
-                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <span className="text-white/40 text-xs tabular-nums">{stage2Index + 1} / {totalCards}</span>
-                  <button
-                    onClick={() => navigateStage2(1)}
-                    disabled={stage2Index === totalCards - 1}
-                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              );
-            })()}
-
-            {/* Type Rating / Licensure Detail Panel — appears when a Stage 2 card is selected under type-rating */}
-            {selectedCarouselPathway && selectedPathwayCard?.category === 'type-rating' && (() => {
-              const cardId = selectedCarouselPathway.id;
-              const isSchoolCard = DUMMY_FLIGHT_SCHOOLS.some(s => s.id === cardId);
-              const school = DUMMY_FLIGHT_SCHOOLS.find(s => s.id === cardId);
-
-              // For school cards shown in type-rating context — show what offering matched
-              if (isSchoolCard && school) {
-                const matchedOfferings = (school.offerings || []).filter(o => {
-                  const f = stage2TypeRatingFilter;
-                  const ol = o.toLowerCase();
-                  if (f === 'All') return true;
-                  if (f === 'Instrument Rating (IR)') return ol.includes('instrument') || ol.includes('(ir)');
-                  if (f === 'Multi-Engine (ME)') return ol.includes('multi-engine') || ol.includes('(me)') || ol.includes('mer');
-                  if (f === 'ATPL') return ol.includes('atpl');
-                  if (f === 'MCC / JOC') return ol.includes('mcc') || ol.includes('joc');
-                  if (f === 'UPRT') return ol.includes('uprt') || ol.includes('upset');
-                  if (f === 'Airbus Rating') return ol.includes('a320') || ol.includes('a330') || ol.includes('airbus');
-                  if (f === 'ATR Rating') return ol.includes('atr');
-                  if (f === 'Boeing Rating') return ol.includes('b737') || ol.includes('b777') || ol.includes('b787') || ol.includes('boeing');
-                  if (f === 'Widebody') return ol.includes('b777') || ol.includes('b787') || ol.includes('a330') || ol.includes('widebody');
-                  if (f === 'Narrowbody') return ol.includes('a320') || ol.includes('b737') || ol.includes('narrowbody');
-                  return false;
-                });
-                const hasMultiEngine = (school.fleet || []).some(f => f.toLowerCase().includes('multi') || f.toLowerCase().includes('twin') || f.toLowerCase().includes('seneca') || f.toLowerCase().includes('baron') || f.toLowerCase().includes('aztec') || f.toLowerCase().includes('navajo'));
-                const activeTab = trSchoolTab;
-                const tf = stage2TypeRatingFilter;
-                const isIR = tf.includes('Instrument');
-                const isME = tf.includes('Multi-Engine') || tf.includes('(ME)');
-                const isATR = tf.includes('ATR');
-                const isAirbus = tf.includes('Airbus') || tf.includes('A320');
-                const isBoeing = tf.includes('Boeing') || tf.includes('B737');
-                const isWidebody = tf.includes('Widebody');
-                const isNarrowbody = tf.includes('Narrowbody');
-                const isTypeRating = isAirbus || isBoeing || isATR || isWidebody || isNarrowbody;
-                const isMCC = tf.includes('MCC') || tf.includes('JOC');
-                const isUPRT = tf.includes('UPRT');
-                const isATRL = tf === 'ATPL';
-                const ratingLabel = tf === 'All' ? 'this rating' : tf;
-                const demandDataComputed = isTypeRating ? [
-                  { label: 'Airline Demand', value: 'Type-rated pilots hired 2–3× faster than non-rated', icon: '📈' },
-                  { label: 'Global Shortage', value: 'Boeing forecasts 674,000 new pilots needed by 2042', icon: '🌏' },
-                  { label: `${tf} Demand`, value: 'Narrowbody & widebody demand remains highest in ASEAN', icon: '✈️' },
-                ] : isIR ? [
-                  { label: 'IR Demand', value: 'IR is the gateway to CPL and all IFR operations', icon: '📡' },
-                  { label: 'Career Gate', value: 'Required for all airline and charter employment', icon: '🎯' },
-                  { label: 'Regional Growth', value: 'Instrument-rated pilots preferred by regional operators', icon: '📈' },
-                ] : isME ? [
-                  { label: 'MER Demand', value: 'Multi-engine rating unlocks turboprop & jet pathways', icon: '✈️' },
-                  { label: 'Airline Requirement', value: 'Most Philippine airlines require MER before type rating', icon: '🎯' },
-                  { label: 'Career Step', value: 'Bridges CPL to first officer assessment eligibility', icon: '📈' },
-                ] : isMCC ? [
-                  { label: 'MCC / JOC Demand', value: 'Required by most airlines before type rating assessment', icon: '🎯' },
-                  { label: 'CRM Focus', value: 'Evaluates crew resource management in multi-crew ops', icon: '👥' },
-                  { label: 'Airline Prerequisite', value: 'Most cadet and ab-initio pathways require MCC completion', icon: '📈' },
-                ] : isUPRT ? [
-                  { label: 'UPRT Mandate', value: 'ICAO mandated UPRT for all CPL holders globally', icon: '⚠️' },
-                  { label: 'Safety Critical', value: 'LOC-I is #1 cause of fatal accidents — UPRT addresses this', icon: '🛡️' },
-                  { label: 'Regulatory', value: 'CAAP requires UPRT endorsement for CPL renewal in some categories', icon: '📋' },
-                ] : isATRL ? [
-                  { label: 'ATPL Demand', value: 'ATPL is the pinnacle — required for Airline Captain command', icon: '🏅' },
-                  { label: 'Frozen ATPL', value: 'Airlines hire FO candidates with "Frozen ATPL" while building hours', icon: '❄️' },
-                  { label: 'Philippine Requirement', value: 'CAAP ATPL requires 1,500 hrs total time including 500 hrs PIC', icon: '📋' },
-                ] : [
-                  { label: 'ASEAN Pilot Shortage', value: '~22,000 pilots needed across ASEAN by 2033', icon: '📈' },
-                  { label: 'Philippines Growth', value: 'CAAP targeting 3× pilot output by 2028', icon: '🇵🇭' },
-                  { label: 'Rating Demand', value: `${ratingLabel} holders are in active demand by regional carriers`, icon: '✈️' },
-                ];
-                const demandData = school.aboutDemandData && school.aboutDemandData.length > 0 ? school.aboutDemandData : demandDataComputed;
-                const schoolStatementComputed = isTypeRating
-                  ? `This school offers ${ratingLabel} training aligned with CAAP and ICAO simulator standards. Type rating completions here are recognised by Philippine and regional airlines for direct entry assessment.`
-                  : isME
-                  ? `This school's multi-engine programme uses CAAP-approved aircraft. Completion of MER here directly supports your eligibility for turboprop and jet type rating assessments.`
-                  : isIR
-                  ? `Instrument Rating training at this school prepares candidates for IFR operations on single and multi-engine aircraft. Essential step before any commercial airline pathway.`
-                  : isMCC
-                  ? `MCC/JOC courses here simulate real airline multi-crew operations. Completing MCC is typically a requirement before attending airline type rating assessment centres.`
-                  : isUPRT
-                  ? `UPRT training addresses Loss of Control In-flight — the leading cause of fatal accidents. ICAO-aligned programme that satisfies CAAP endorsement requirements.`
-                  : isATRL
-                  ? `ATPL ground school and flight training at this facility prepares candidates for the CAAP ATPL written exams and flight tests. Required for airline command authority.`
-                  : `Training the next generation of Filipino aviators — from first solo to airline-ready. Transparency in progress, commitment to standards.`;
-                const schoolStatement = school.aboutStatement || schoolStatementComputed;
-                const expectationsTitle = isTypeRating ? `For ${tf} Training` : isME ? 'For Multi-Engine Rating' : isIR ? 'For Instrument Rating' : isMCC ? 'For MCC / JOC Course' : isUPRT ? 'For UPRT Training' : isATRL ? 'For ATPL Training' : `For ${ratingLabel}`;
-                const pilotLabelsComputed = isTypeRating ? [
-                  { label: 'CPL + MER + IR', hrs: 'Pre-requisite', desc: 'You must hold a CPL with Multi-Engine and Instrument Rating before type rating entry.', accent: 'border-red-500/40 bg-red-500/20', badge: 'bg-red-500/30 text-red-200' },
-                  { label: 'Low-Hour FO', hrs: '200–500 hrs', desc: 'Freshly type-rated FO candidates. Most airlines accept directly into assessment.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
-                  { label: 'Experienced FO', hrs: '500–1500 hrs', desc: 'Stronger assessment position. Some airlines require 500 hrs before type rating entry.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
-                ] : isME ? [
-                  { label: 'Low Timer', hrs: '< 200 hrs', desc: 'Too early for MER. Complete CPL + IR first before enrolling.', accent: 'border-red-500/40 bg-red-500/20', badge: 'bg-red-500/30 text-red-200' },
-                  { label: 'CPL Holder', hrs: '200+ hrs', desc: 'Prime candidate for MER. Should hold valid CPL + IR before starting.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
-                  { label: 'CPL + IR', hrs: '250+ hrs', desc: 'Ideal entry point. Can proceed directly to MER and then type rating pathway.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
-                ] : isIR ? [
-                  { label: 'PPL Holder', hrs: '50+ hrs', desc: 'Minimum stage to begin IR training. Requires additional instrument ground hours.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
-                  { label: 'CPL Student', hrs: '100+ hrs', desc: 'Typical stage for IR integration into CPL training programme.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
-                  { label: 'CPL Holder', hrs: '200+ hrs', desc: 'Adding standalone IR — required for all IFR and airline operations.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
-                ] : [
-                  { label: 'Low Timer', hrs: '< 250 hrs', desc: 'Ab-initio or PPL stage. Best suited for full CPL programme entry.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
-                  { label: 'Mid Timer', hrs: '250–500 hrs', desc: 'CPL/IR training stage. Can enter rating courses.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
-                  { label: 'High Timer', hrs: '500+ hrs', desc: 'Rating complete or ATPL eligible. Competitive for airline pathway.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
-                ];
-                const accentMap = ['border-sky-500/40 bg-sky-500/15', 'border-amber-500/40 bg-amber-500/15', 'border-emerald-500/40 bg-emerald-500/15'];
-                const badgeMap = ['bg-sky-500/30 text-sky-200', 'bg-amber-500/30 text-amber-200', 'bg-emerald-500/30 text-emerald-200'];
-                const pilotLabels = school.pilotLabels && school.pilotLabels.length > 0
-                  ? school.pilotLabels.map((p, i) => ({ ...p, accent: accentMap[i % 3], badge: badgeMap[i % 3] }))
-                  : pilotLabelsComputed;
-                return (
-                  <div className="mt-8 mx-4 rounded-2xl overflow-hidden shadow-2xl" style={{ backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                    {/* Dark navy headline bar */}
-                    <div className="px-6 py-4 flex items-center justify-between gap-4" style={{ background: 'linear-gradient(90deg, #0f1e3d 0%, #1a2f5a 100%)' }}>
-                      <div className="flex items-center gap-3 flex-wrap min-w-0">
-                        <h3 className="text-xl font-serif font-semibold text-white leading-tight truncate">{school.name}</h3>
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold text-blue-200 bg-white/10 border border-white/20 flex-shrink-0">Flight School</span>
-                        {stage2TypeRatingFilter !== 'All' && (
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold text-red-900 bg-red-300 border border-red-200 flex-shrink-0">Offers {stage2TypeRatingFilter}</span>
-                        )}
-                      </div>
-                      <div className="flex-shrink-0 text-right">
-                        <p className="text-blue-300/70 text-[9px] uppercase tracking-widest mb-0.5">Tuition</p>
-                        <p className="text-white text-base font-bold leading-tight">{school.price}</p>
-                      </div>
-                    </div>
-                    {/* Tab bar */}
-                    <div className="flex border-b border-white/10" style={{ background: 'rgba(15,30,61,0.60)' }}>
-                      {(['about', 'expectations', 'requirements', 'access'] as const).map(tab => (
-                        <button
-                          key={tab}
-                          onClick={() => setTrSchoolTab(tab)}
-                          className={`px-5 py-3 text-xs font-semibold uppercase tracking-wider transition-all border-b-2 ${activeTab === tab ? 'border-red-400 text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
-                        >
-                          {tab === 'about' ? 'About' : tab === 'expectations' ? 'Expectations' : tab === 'requirements' ? 'Requirements' : 'Access'}
-                        </button>
-                      ))}
-                    </div>
-                    {/* Tab content — glassy body */}
-                    <div style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
-
-                      {/* ── ABOUT ── */}
-                      {activeTab === 'about' && (
-                        <div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                            {/* Col 1 — Offerings + location */}
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Matched Offerings</p>
-                              <div className="flex flex-wrap gap-2 mb-6">
-                                {(matchedOfferings.length > 0 ? matchedOfferings : school.offerings || []).map(o => (
-                                  <span key={o} className="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-white/20">{o}</span>
-                                ))}
-                              </div>
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-2">Location</p>
-                              <p className="text-sm text-white flex items-center gap-1.5">
-                                <svg className="w-3.5 h-3.5 text-white/50 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                {school.location}
-                              </p>
-                            </div>
-                            {/* Col 2 — Fleet */}
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-4">Training Fleet</p>
-                              <ul className="space-y-2">
-                                {(school.fleet || []).map(f => (
-                                  <li key={f} className="flex items-center gap-2 text-sm text-white">
-                                    <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                                    {f}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            {/* Col 3 — Future demand + school statement */}
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Why {ratingLabel === 'this rating' ? 'This Rating' : ratingLabel} Matters</p>
-                              <div className="space-y-2 mb-5">
-                                {demandData.map(d => (
-                                  <div key={d.label} className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                    <span className="text-base leading-none mt-0.5">{d.icon}</span>
-                                    <div>
-                                      <p className="text-[10px] text-white/60 uppercase font-bold">{d.label}</p>
-                                      <p className="text-sm text-white/90">{d.value}</p>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-2">About this Offering</p>
-                              <p className="text-xs text-white/80 leading-relaxed italic">
-                                "{schoolStatement}"
-                              </p>
-                              {school.aboutProTip && (
-                                <div className="mt-3 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                                  <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip — The Clark Advantage</p>
-                                  <p className="text-xs text-white/85 leading-relaxed">{school.aboutProTip}</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          {/* Full-width notice banner */}
-                          <div className="mx-6 mb-5 mt-1 px-4 py-3 rounded-lg border border-amber-500/20 bg-amber-500/8 flex items-start gap-3">
-                            <svg className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <p className="text-xs text-amber-200/80 leading-relaxed">
-                              <span className="font-bold text-amber-300">Data Notice:</span> This information is sourced from public records and may not reflect the latest intake or pricing. Always verify directly with the school before committing to enrolment.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ── EXPECTATIONS ── */}
-                      {activeTab === 'expectations' && (
-                        <div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">What They Expect — {expectationsTitle}</p>
-                              <ul className="space-y-2.5">
-                                {(school.expectations && school.expectations.length > 0 ? school.expectations : [
-                                  'Self-funded training — no sponsorship implied',
-                                  'Consistent flight progress, no extended gaps',
-                                  'Professional conduct at all times on campus',
-                                  'English proficiency to ATC communication standard',
-                                  'Valid CAAP Student Pilot / CPL at the time of enrolment',
-                                  'Punctuality and accountability on all flight bookings',
-                                ]).map(e => (
-                                  <li key={e} className="flex items-start gap-2 text-sm text-white">
-                                    <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-                                    {e}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Pilot Profile — Who Is This For</p>
-                              <div className="space-y-2.5">
-                                {pilotLabels.map(p => (
-                                  <div key={p.label} className={`px-3 py-2.5 rounded-lg border ${p.accent}`} style={{ color: 'white' }}>
-                                    <div className="flex items-center justify-between mb-1">
-                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${p.badge}`} style={{ color: 'inherit' }}>{p.label}</span>
-                                      <span className="text-[10px] font-mono" style={{ color: 'rgba(255,255,255,0.65)' }}>{p.hrs}</span>
-                                    </div>
-                                    <p className="text-[11px] leading-snug" style={{ color: 'rgba(255,255,255,0.9)' }}>{p.desc}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Assessment Criteria — {ratingLabel === 'this rating' ? 'General' : ratingLabel}</p>
-                              <ul className="space-y-2.5 mb-5">
-                                {(school.assessmentCriteria && school.assessmentCriteria.length > 0 ? school.assessmentCriteria : isTypeRating ? [
-                                  { item: 'Simulator type rating exam (SIM check)', weight: 'Critical' },
-                                  { item: 'Aircraft systems oral examination', weight: 'Critical' },
-                                  { item: 'CRM & crew coordination scores', weight: 'High' },
-                                  { item: 'Ground school written exam results', weight: 'High' },
-                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
-                                ] : isME ? [
-                                  { item: 'Multi-engine flight test (CAAP examiner)', weight: 'Critical' },
-                                  { item: 'Engine failure handling & OEI ops', weight: 'Critical' },
-                                  { item: 'Ground school written exam results', weight: 'High' },
-                                  { item: 'Cross-country navigation performance', weight: 'High' },
-                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
-                                ] : isIR ? [
-                                  { item: 'IFR flight test under hood conditions', weight: 'Critical' },
-                                  { item: 'Instrument approach procedures (ILS, VOR)', weight: 'Critical' },
-                                  { item: 'Ground school written exam results', weight: 'High' },
-                                  { item: 'Holding patterns & missed approach', weight: 'High' },
-                                  { item: 'Situational awareness & scan technique', weight: 'Medium' },
-                                ] : [
-                                  { item: 'Ground school written exam results', weight: 'High' },
-                                  { item: 'Simulator performance & CRM scores', weight: 'High' },
-                                  { item: 'Flight test proficiency grades', weight: 'Critical' },
-                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
-                                  { item: 'Safety culture attitude & discipline', weight: 'Medium' },
-                                ]).map(s => (
-                                  <li key={s.item} className="flex items-start justify-between gap-2 text-sm text-white/90">
-                                    <span className="flex-1">{s.item}</span>
-                                    <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded flex-shrink-0 ${s.weight === 'Critical' ? 'bg-red-500/40 text-red-200' : s.weight === 'High' ? 'bg-amber-500/30 text-amber-200' : 'bg-white/15 text-white/70'}`}>{s.weight}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                              <div className="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                                <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Pilot Warning</p>
-                                <p className="text-xs text-white/85 leading-relaxed">{school.pilotWarning || (isTypeRating ? `Failing the ${ratingLabel} sim check requires re-booking and additional fees. Ensure you have completed the full ground school before entering the simulator.` : isME ? 'Failing the multi-engine flight test requires re-testing fees and delays your CAAP endorsement. Confirm aircraft availability before committing to a test date.' : isIR ? 'Failing the IFR flight test delays your CPL/ATPL progression. Ensure you have met minimum instrument hours before booking the CAAP examiner.' : 'Failing a flight test at this school may require re-testing fees and delay your CAAP submission. Plan training hours conservatively.')}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ── REQUIREMENTS ── */}
-                      {activeTab === 'requirements' && (
-                        <div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">
-                                {tf !== 'All' ? `${tf} — Entry Requirements` : 'General Entry Requirements'}
-                              </p>
-                              <ul className="space-y-2.5">
-                                {(school.requirements && school.requirements.length > 0 ? school.requirements : isTypeRating ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'CPL with valid Instrument Rating (IR)',
-                                  'Multi-Engine Rating (MER) completed',
-                                  'Minimum 200 hrs total flight time',
-                                  'MCC completion recommended (some airlines require)',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'No active licence suspension or infringement',
-                                ] : isME ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'CPL or CPL Student (advanced stage)',
-                                  'Valid Instrument Rating (IR) strongly recommended',
-                                  'Minimum 50 hrs PIC cross-country time',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'Passing score on multi-engine ground school exam',
-                                  'Satisfactory pre-solo dual check with instructor',
-                                ] : isIR ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'PPL or CPL student with 50+ total hours',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'Completion of instrument ground school module',
-                                  'Satisfactory instrument proficiency check',
-                                  'Minimum instrument flight hours as per CAAP',
-                                ] : isMCC ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'CPL with valid Instrument Rating (IR)',
-                                  'Multi-Engine Rating (MER) completed',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'Minimum 70 hrs flight time recommended',
-                                ] : isUPRT ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'PPL or CPL holder — any hours',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'No minimum flight hours required for ground UPRT',
-                                  'Flight UPRT requires valid licence + medical',
-                                ] : isATRL ? [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'CPL with valid IR and MER',
-                                  '1,500 total flight hours (ICAO ATPL standard)',
-                                  '500 hrs PIC time minimum',
-                                  '100 hrs night time minimum',
-                                  '75 hrs instrument time minimum',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                ] : [
-                                  'Valid CAAP Class 1 Medical Certificate',
-                                  'PPL or CPL as applicable to programme',
-                                  'Minimum flight hours per programme requirements',
-                                  'ICAO English Proficiency — Level 4 minimum',
-                                  'Passing written ground school exam',
-                                  'Satisfactory simulator competency assessment',
-                                  'No active suspension of any aviation licence',
-                                ]).map(r => (
-                                  <li key={r} className="flex items-start gap-2 text-sm text-white">
-                                    <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                                    {r}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">
-                                {hasMultiEngine ? 'Multi-Engine Rating Details' : 'All Programme Offerings'}
-                              </p>
-                              {hasMultiEngine ? (
-                                <div className="space-y-3">
-                                  <div className="px-3 py-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                                    <p className="text-[10px] uppercase text-red-400 font-bold mb-1">ME Aircraft Available</p>
-                                    <p className="text-sm text-white/80">{(school.fleet || []).filter(f => f.toLowerCase().includes('seneca') || f.toLowerCase().includes('baron') || f.toLowerCase().includes('aztec') || f.toLowerCase().includes('navajo') || f.toLowerCase().includes('twin') || f.toLowerCase().includes('multi')).join(', ') || 'Multi-engine aircraft — contact school'}</p>
-                                  </div>
-                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
-                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Estimated Training Duration</p>
-                                    <p className="text-sm text-white">10–15 hrs dual + solo · Written exam + CAAP flight test</p>
-                                  </div>
-                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
-                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Minimum Pre-Requisites</p>
-                                    <p className="text-sm text-white">CPL + valid IR strongly recommended · Night rating is an advantage</p>
-                                  </div>
-                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
-                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
-                                    <p className="text-sm text-white">CAAP Multi-Engine Rating endorsement on CPL · Qualifies for MER-required airline positions</p>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="space-y-2">
-                                  {(school.offerings || []).map(o => (
-                                    <div key={o} className="px-3 py-2.5 rounded-lg bg-white/8 border border-white/15 text-sm text-white/90 flex items-center gap-2">
-                                      <svg className="w-3 h-3 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                                      {o}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Documents to Prepare</p>
-                              <ul className="space-y-2 mb-5">
-                                {(school.documents && school.documents.length > 0 ? school.documents : [
-                                  'Valid government-issued ID',
-                                  'CAAP licence or student pilot certificate',
-                                  'Class 1 medical certificate (original)',
-                                  'Certified true copy of logbook pages',
-                                  'NBI clearance (some schools require)',
-                                  'Recent 2×2 photos (4 copies)',
-                                  'Proof of payment / tuition arrangement',
-                                ]).map(d => (
-                                  <li key={d} className="flex items-center gap-2 text-sm text-white/90">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/50 flex-shrink-0" />
-                                    {d}
-                                  </li>
-                                ))}
-                              </ul>
-                              <div className="px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                                <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
-                                <p className="text-xs text-white/85 leading-relaxed">{school.proTip || 'Call the school before showing up. Confirm aircraft availability for the rating you need — some schools have 1–2 multi-engine aircraft shared across all students.'}</p>
-                              </div>
-                              {school.requirementsWarning && (
-                                <div className="mt-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                                  <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Document Warning</p>
-                                  <p className="text-xs text-white/85 leading-relaxed">{school.requirementsWarning}</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ── ACCESS ── */}
-                      {activeTab === 'access' && (
-                        <div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Who Can Submit Interest</p>
-                              <div className="space-y-2.5">
-                                {(school.accessEligibility && school.accessEligibility.length > 0 ? school.accessEligibility : [
-                                  { label: 'Open to Outside Applicants', value: 'Yes — not exclusive to own graduates', ok: true },
-                                  { label: 'College Degree Required', value: 'No — aviation licence is sufficient', ok: true },
-                                  { label: 'Foreign Nationals', value: 'Permitted with valid Philippine visa + CAAP validation', ok: true },
-                                  ...(school.contact ? [{ label: 'Contact', value: school.contact, ok: true }] : []),
-                                  ...(school.email ? [{ label: 'Email', value: school.email, ok: true }] : []),
-                                  { label: 'Affiliated Cadet Programme', value: (school.offerings || []).some(o => o.toLowerCase().includes('cadet')) ? 'Cadet pathway available — enquire directly' : 'No affiliated cadet sponsorship programme', ok: (school.offerings || []).some(o => o.toLowerCase().includes('cadet')) },
-                                ]).map(a => (
-                                  <div key={a.label} className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                    <p className="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-0.5">{a.label}</p>
-                                    <p className="text-sm font-semibold text-white">{a.value}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Enrolment & Process</p>
-                              <div className="space-y-2.5">
-                                <div className="px-3 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                                  <p className="text-[10px] uppercase text-emerald-400 font-bold mb-0.5">Intake Status</p>
-                                  {school.intakeNote ? (
-                                    <>
-                                      <p className="text-sm text-white/85 font-semibold">{school.intakeNote.split('.')[0]}</p>
-                                      <p className="text-xs text-white/70 mt-1">{school.intakeNote.split('.').slice(1).join('.').trim()}</p>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <p className="text-sm text-white/85 font-semibold">Open Enrolment — Rolling Intake</p>
-                                      <p className="text-xs text-white/70 mt-1">No fixed semester cutoff. Submit interest any time subject to aircraft availability.</p>
-                                    </>
-                                  )}
-                                </div>
-                                <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
-                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-1">How to Start</p>
-                                  <ol className="text-xs text-white/85 space-y-1 leading-relaxed list-decimal list-inside">
-                                    {(school.enrollmentSteps && school.enrollmentSteps.length > 0 ? school.enrollmentSteps : [
-                                      'Contact school to confirm slot availability',
-                                      'Submit documents + complete assessment',
-                                      'Pay initial fees / training deposit',
-                                      'Receive training schedule from chief instructor',
-                                    ]).map(s => <li key={s}>{s}</li>)}
-                                  </ol>
-                                </div>
-                                <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">Tuition Range</p>
-                                  <p className="text-sm text-red-300 font-semibold">{school.price}</p>
-                                </div>
-                                {school.technology && school.technology.length > 0 && (
-                                  <div className="px-3 py-2.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
-                                    <p className="text-[10px] uppercase text-violet-400 font-bold mb-1">Technology</p>
-                                    {school.technology.map(t => (
-                                      <p key={t} className="text-xs text-white/85 leading-relaxed">{t}</p>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">School Credibility</p>
-                              <div className="space-y-2.5">
-                                <div className={`px-3 py-2.5 rounded-lg border ${school.claimed ? 'bg-sky-500/10 border-sky-500/20' : 'bg-white/5 border-white/10'}`}>
-                                  <p className="text-[10px] uppercase font-bold mb-0.5 text-white/60">Platform Verification</p>
-                                  <p className={`text-sm font-semibold ${school.claimed ? 'text-sky-200' : 'text-white/80'}`}>{school.claimed ? '✓ Claimed & Verified by School' : 'Unverified — sourced from public records'}</p>
-                                </div>
-                                {school.pilotsTrained && (
-                                  <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                    <p className="text-[10px] uppercase text-white/40 font-bold mb-0.5">Total Pilots Trained</p>
-                                    <p className="text-2xl font-bold text-white">{school.pilotsTrained.toLocaleString()}<span className="text-sm text-white/60 font-normal ml-1">pilots</span></p>
-                                  </div>
-                                )}
-                                <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">CAAP Accreditation</p>
-                                  <p className="text-sm text-emerald-300 font-semibold">✓ CAAP-Accredited Flight Training Organisation</p>
-                                </div>
-                                {school.website && (
-                                  <a href={school.website} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-300 hover:text-red-200 font-semibold transition-colors">
-                                    Visit Official Website
-                                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                    </div>
-                  </div>
-                );
-              }
-
-              // For licensure sub-pathway cards — show rich tabbed panel like flight schools
-              const LICENSURE_CARD_DATA: Record<string, { name: string; image: string; description: string; price: string; offerings: string[]; requirements: string[]; documents: string[]; proTip: string; expectations: string[]; pilotLabels: { label: string; hrs: string; desc: string }[]; assessmentCriteria: { item: string; weight: 'Critical' | 'High' | 'Medium' }[]; pilotWarning: string; aboutStatement: string; location: string; website?: string; }> = {
-                'a02f4e29-e165-415f-a3b3-669edbd7deb1': {
-                  name: 'Type Rating Centers',
-                  image: 'https://www.caepacific.com/wp-content/uploads/2021/03/CAE-Philippines-Training-Center.jpg',
-                  description: 'World-class type rating training centers with Level D Full-Flight Simulators for Airbus (A320, A330) and Boeing (B737, B777) aircraft. CAAP-approved for Philippine operators. CAE Rise™ data analytics used for objective performance tracking.',
-                  price: '$18,000 – $50,000 depending on aircraft type and center',
-                  location: 'Clark, Philippines · Dubai, UAE · London, UK · Melbourne, AU',
-                  website: 'https://www.cae.com/civil-aviation/locations/asia-pacific/cae-philippines/',
-                  offerings: ['A320 Type Rating', 'B737 Type Rating', 'A330 Type Rating', 'B777 Type Rating', 'ATR 72-600 Type Rating', 'Jet Orientation Course (JOC)', 'MCC — Multi-Crew Cooperation'],
-                  requirements: ['Valid CAAP Class 1 Medical Certificate', 'CPL with IR + Multi-Engine (ME) endorsement', 'Minimum 200 hrs total flight time', 'ICAO English Proficiency — Level 4 minimum', 'No active licence suspension'],
-                  documents: ['Valid Passport or Government-issued ID', 'CAAP License (CPL/ATPL)', 'Current Class 1 Medical Certificate', 'Certified True Copy of Pilot Logbook', 'NTC Radio Telephony License'],
-                  proTip: 'Book simulator slots at least 4–6 weeks in advance. Airline recurrent training takes priority at most centers — self-funded candidates should confirm slot availability before paying deposits.',
-                  expectations: ['Airline-standard discipline from day one.', 'Ground school exams must be passed before sim access.', 'CRM and SOP adherence are assessed throughout — not just during checkrides.', 'Simulator sessions are expensive; missed slots are typically forfeited without refund.'],
-                  pilotLabels: [
-                    { label: 'Fresh CPL', hrs: '200–500 hrs', desc: 'Completing first type rating to enter the airline market as First Officer.' },
-                    { label: 'Mid Timer', hrs: '500–1,500 hrs', desc: 'Transitioning from regional/turboprop to narrowbody jet operations.' },
-                    { label: 'High Timer', hrs: '1,500+ hrs', desc: 'Adding widebody or additional type rating for career advancement.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Ground School Exam — systems & limitations', weight: 'High' },
-                    { item: 'Simulator Performance — normal & abnormal procedures', weight: 'Critical' },
-                    { item: 'CRM & Multi-crew coordination', weight: 'High' },
-                    { item: 'SOP Adherence', weight: 'Critical' },
-                  ],
-                  pilotWarning: 'Airline partners have priority scheduling at most Type Rating Centers. Self-funded pilots should budget 1–2 weeks of buffer beyond the expected completion date for delays.',
-                  aboutStatement: 'Type Rating Centers provide the bridge between your CPL and an airline cockpit. Completion of a type rating at a CAAP/EASA-approved center is the most direct route to First Officer employment at Philippine and regional airlines.',
-                },
-                'cc996aa7-a075-4be7-beef-f917dd1f41db': {
-                  name: 'Instrument Rating Pathway',
-                  image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg',
-                  description: 'Earn your Instrument Rating to operate legally under IFR in all weather conditions and controlled airspace. Master NDB/VOR/ILS approaches, holding patterns, and ATC communication. Essential gateway for all commercial airline pathways.',
-                  price: '$10,000 – $18,000',
-                  location: 'Philippines · USA · Europe · Australia',
-                  offerings: ['IFR Ground School', 'Instrument Approaches — ILS/VOR/NDB', 'Holding Patterns & Missed Approaches', 'Cross-Country IFR Navigation', 'CAAP Instrument Rating Skill Test'],
-                  requirements: ['Valid PPL or CPL (Student or Full)', 'CAAP Class 1 or Class 2 Medical', '50+ hours cross-country time as PIC', 'ICAO English Proficiency — Level 4 minimum', 'Completion of instrument ground school module'],
-                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Medical Certificate', 'Logbook (certified copy)', 'Ground school completion certificate'],
-                  proTip: 'Train IFR in actual IMC when possible — sim-only training leaves gaps in scan technique. Ask the school how many actual cloud hours are included in the programme.',
-                  expectations: ['Disciplined instrument scan from the first lesson.', 'Expect to fly partial-panel approaches early.', 'Ground knowledge of met, navigation, and regulations is tested rigorously.', 'Achieving the rating takes most students 6–8 weeks of focused effort.'],
-                  pilotLabels: [
-                    { label: 'PPL Holder', hrs: '50+ hrs', desc: 'Adding IR to expand weather capabilities and progress toward CPL.' },
-                    { label: 'CPL Student', hrs: '150+ hrs', desc: 'Completing IR as part of the integrated CPL pathway.' },
-                    { label: 'License Upgrade', hrs: 'Any', desc: 'Existing CPL holders adding IR for commercial employment eligibility.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Instrument Approaches — ILS, VOR, NDB', weight: 'Critical' },
-                    { item: 'Partial Panel Flying', weight: 'High' },
-                    { item: 'ATC Communication — IFR clearances', weight: 'High' },
-                    { item: 'Meteorology & Weather Decision-Making', weight: 'Medium' },
-                  ],
-                  pilotWarning: 'IR training is sequential — rushing instrument scan development leads to checkride failures. Do not compress the programme below the minimum hours. Quality of training matters more than speed.',
-                  aboutStatement: 'The Instrument Rating is the most critical gateway licence in commercial aviation. Without it, no airline pathway is accessible. Train at a school with actual IMC flight time in the programme, not simulation-only.',
-                },
-                '54655935-92de-4aad-b82b-703152ffce25': {
-                  name: 'ATPL Pathway',
-                  image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png',
-                  description: 'Structured hour-building programme to meet the 1,500-hour ATPL requirement. Build hours through instruction, charter, ferry flights, and regional turboprop operations. Frozen ATPL holders can apply to airline FO positions while building toward full ATPL.',
-                  price: 'Hour Building: Variable | ATPL Theory: $3,000–$8,000',
-                  location: 'Philippines · Australia · USA · Europe',
-                  offerings: ['ATPL Theory Ground School (14 subjects)', 'Flight Instruction Hour Building', 'Charter & Regional Turboprop Hour Building', 'Frozen ATPL Application Support', 'Airline Interview Preparation'],
-                  requirements: ['CPL with IR and Multi-Engine Rating', 'CAAP Class 1 Medical', '500 hrs total time minimum to begin ATPL theory', 'ICAO English Proficiency — Level 4 minimum', '100 hrs night time (for full ATPL)'],
-                  documents: ['Valid Passport or ID', 'CAAP CPL License', 'Class 1 Medical Certificate', 'Certified logbook pages', 'ATPL Theory exam results'],
-                  proTip: 'Do not wait for 1,500 hours to apply to airlines — most Philippine carriers hire First Officers with Frozen ATPL (CPL + IR + ME) from 200 hours, especially cadet programme graduates.',
-                  expectations: ['ATPL theory covers 14 subjects — treat it like a degree programme, not a test to pass.', 'Hour building quality matters: diverse aircraft types and conditions.', 'The path to command authority is long — plan financially for 3–5 years.', 'Network with line captains during hour building; referrals matter.'],
-                  pilotLabels: [
-                    { label: 'Frozen ATPL', hrs: '200–750 hrs', desc: 'CPL+IR+ME holder applying to airline FO positions while building hours.' },
-                    { label: 'Hour Builder', hrs: '750–1,200 hrs', desc: 'Flight instructor or charter pilot progressing toward full ATPL minimums.' },
-                    { label: 'ATPL Ready', hrs: '1,500+ hrs', desc: 'Applying for CAAP ATPL including 500 PIC and 100 night hours.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'ATPL Theory — 14 written exams (75% pass mark each)', weight: 'Critical' },
-                    { item: 'Flight Hours — quality and diversity of experience', weight: 'High' },
-                    { item: 'Night & IFR Time — CAAP minimums', weight: 'High' },
-                    { item: 'CRM History — airline assessment readiness', weight: 'Medium' },
-                  ],
-                  pilotWarning: 'ATPL theory is valid for 7 years after passing all 14 subjects. If you do not complete flight hour requirements within this period, you must re-sit failed or expired subjects. Plan your timeline carefully.',
-                  aboutStatement: 'The ATPL is the pinnacle pilot certificate — required for Airline Captain command. The journey from CPL to ATPL typically takes 3–6 years in the Philippines. Every hour logged is progress. The Frozen ATPL (CPL+IR+ME with passed theory) is your airline entry ticket.',
-                },
-                'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8': {
-                  name: 'Seaplane Rating',
-                  image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80',
-                  description: 'Add a seaplane (floatplane) rating to your existing pilot licence. Learn water takeoffs and landings, step taxi, dock approaches, and amphibious aircraft handling. Opens access to island-hopping tourism routes and remote area operations across the Philippines.',
-                  price: '$3,000 – $8,000',
-                  location: 'Philippines · Canada · USA · Caribbean',
-                  offerings: ['Water Takeoffs & Landings', 'Step Taxi & Glassy Water Technique', 'Dock & Beach Approaches', 'Seaplane Emergency Procedures', 'CAAP Seaplane Rating Skill Test'],
-                  requirements: ['Valid PPL or higher', 'CAAP Class 2 Medical minimum', '25+ hours total flight time', 'ICAO English Proficiency — Level 4', 'No seaplane-specific hours required prior'],
-                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Medical Certificate', 'Logbook (certified copy)'],
-                  proTip: 'Seaplane ratings are rare in the Philippines — only a handful of CAAP-approved instructors exist. This niche rating commands premium pay in island tourism and NGO/humanitarian operations.',
-                  expectations: ['Expect entirely new handling techniques — water is not a runway.', 'Glassy water approaches require specific altitude judgment; this takes time to learn.', 'Small class sizes mean highly personalized instruction.', 'Typically completed in 1–2 weeks of intensive flying.'],
-                  pilotLabels: [
-                    { label: 'PPL Holder', hrs: '25+ hrs', desc: 'Adding seaplane rating for island tourism or personal aviation diversity.' },
-                    { label: 'CPL/ATPL', hrs: 'Any', desc: 'Professional pilot adding niche rating for specialized operator employment.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Water Takeoff & Landing — normal and crosswind', weight: 'Critical' },
-                    { item: 'Glassy Water Approach', weight: 'Critical' },
-                    { item: 'Emergency Procedures — water-specific', weight: 'High' },
-                    { item: 'Dock Approach & Mooring', weight: 'Medium' },
-                  ],
-                  pilotWarning: 'Seaplane operations carry unique hazards — submerged debris, boat traffic, and weather-driven wave heights can change rapidly. This is a niche rating; ensure your school has recent, relevant instruction experience.',
-                  aboutStatement: 'The Seaplane Rating opens access to a unique aviation niche. In the Philippines, island-hopping seaplane services serve destinations unreachable by conventional aircraft. A rare, premium credential for pilots seeking differentiation.',
-                },
-                'e94ba893-fa83-47b1-90f9-98905dc6685a': {
-                  name: 'Multi-Engine Rating',
-                  image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg',
-                  description: 'Earn your Multi-Engine Rating (MER) to legally operate aircraft with two or more engines. Master Vmc demonstrations, engine-out procedures, asymmetric thrust management, and multi-engine performance planning. Mandatory prerequisite before most Type Rating programmes.',
-                  price: '$8,000 – $15,000',
-                  location: 'Philippines · USA · Australia · Europe',
-                  offerings: ['Multi-Engine Ground School', 'Vmc Demonstrations & Engine-Out Drills', 'Asymmetric Approach & Landing', 'Multi-Engine Performance Planning', 'CAAP Multi-Engine Rating Skill Test'],
-                  requirements: ['Valid PPL or CPL', 'CAAP Class 1 Medical', 'Single-engine flight experience (50+ hrs recommended)', 'ICAO English Proficiency — Level 4', 'IR strongly recommended prior to MER'],
-                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Class 1 Medical Certificate', 'Certified Logbook Pages'],
-                  proTip: 'Pair the MER with your IR in the same training block if possible — most Philippine airlines require CPL + IR + MER as the complete package for type rating eligibility.',
-                  expectations: ['Engine-failure at Vr is the defining maneuver — practice until it is instinctive.', 'Ground school covers engine-failure aerodynamics and Vmc physics in detail.', 'Programme typically 4–6 weeks.', 'Expect checkride to include a simulated single-engine ILS approach.'],
-                  pilotLabels: [
-                    { label: 'PPL to MER', hrs: '50–150 hrs', desc: 'Building multi-engine experience on the path to CPL + IR + MER package.' },
-                    { label: 'CPL Student', hrs: '150–200 hrs', desc: 'Completing MER as the final block before type rating eligibility.' },
-                    { label: 'License Upgrade', hrs: 'Any', desc: 'Adding MER to existing CPL+IR for airline entry assessment.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Engine Failure at V1/Vr — directional control', weight: 'Critical' },
-                    { item: 'Single-Engine ILS Approach', weight: 'Critical' },
-                    { item: 'Multi-Engine Performance Planning', weight: 'High' },
-                    { item: 'Emergency Procedures — engine fire, feathering', weight: 'High' },
-                  ],
-                  pilotWarning: 'Multi-engine training on under-powered twins can create bad habits. Train on a modern aircraft (Piper Seminole or equivalent) with well-maintained engines. Verify the school\'s aircraft is airworthy and legally maintained before committing.',
-                  aboutStatement: 'The Multi-Engine Rating is the final prerequisite before accessing type rating programmes. Combined with CPL and IR, it forms the complete entry package for every Philippine airline\'s First Officer assessment process.',
-                },
-                '078eea1a-271f-4392-a802-9a2ea4c36da0': {
-                  name: 'UPRT Rating',
-                  image: 'https://www.flight-safety.com/wp-content/uploads/2021/06/uprt-training.jpg',
-                  description: 'Upset Prevention and Recovery Training (UPRT) addresses Loss of Control In-flight (LOC-I) — the single leading cause of fatal aviation accidents worldwide. ICAO-aligned programme required for many airline type rating programmes and CAAP CPL renewal endorsements.',
-                  price: '$2,500 – $5,000',
-                  location: 'Philippines · USA · Europe · Australia',
-                  offerings: ['Unusual Attitude Recognition & Recovery', 'Stall Awareness & Prevention', 'Spin Recovery Training', 'Aerobatic-Based Recovery Maneuvers', 'CAAP UPRT Endorsement'],
-                  requirements: ['CPL or ATPL (or advanced CPL student)', 'CAAP Class 1 Medical', 'Spin Awareness endorsement (or completed during UPRT)', 'EASA/ICAO-compliant programme recognition'],
-                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Class 1 Medical Certificate', 'Logbook (certified copy)'],
-                  proTip: 'UPRT is not just a box-ticking exercise — LOC-I kills more pilots than any other accident category. Approach this training with genuine intent to internalize the skills. It could save your life.',
-                  expectations: ['Expect to be uncomfortable — that is the point.', 'Aerobatic maneuvers are used as a training tool, not for spectacle.', 'Both theoretical (ground school) and practical (airborne) components are mandatory.', 'Programme typically 1–2 weeks intensive.'],
-                  pilotLabels: [
-                    { label: 'CPL Candidate', hrs: 'Any', desc: 'Completing UPRT as part of integrated CPL or standalone endorsement.' },
-                    { label: 'Airline Applicant', hrs: '200+ hrs', desc: 'Meeting type rating or airline assessment UPRT prerequisite requirements.' },
-                    { label: 'Active Pilot', hrs: 'Any', desc: 'Recurrent UPRT for enhanced flight safety awareness and skill currency.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Unusual Attitude Recovery — nose high & nose low', weight: 'Critical' },
-                    { item: 'Incipient Spin Entry & Recovery', weight: 'Critical' },
-                    { item: 'Stall Recognition & Prevention', weight: 'High' },
-                    { item: 'Theoretical LOC-I Awareness', weight: 'High' },
-                  ],
-                  pilotWarning: 'UPRT must be conducted in aerobatic-capable aircraft with full-authority dual controls. Do not accept a programme conducted only in a non-aerobatic trainer or simulator. Verify the aircraft\'s aerobatic certification before enrolling.',
-                  aboutStatement: 'LOC-I is the #1 cause of fatal accidents. UPRT is not optional for serious pilots — ICAO, EASA, and CAAP all mandate or strongly recommend it. One well-trained recovery response at altitude could be the difference between a statistic and a survivor.',
-                },
-                '4d4b6568-3759-432e-9193-e0dba88425aa': {
-                  name: 'CFI Rating Pathway',
-                  image: 'https://media.pea.com/wp-content/uploads/2023/06/flight-instructor-training-1024x607.jpeg',
-                  description: 'Certified Flight Instructor (CFI) rating — earn while you build hours toward ATPL minimums. Learn instructional techniques, lesson plan development, student evaluation, and CAAP flight training regulations. Includes CFI (single), CFII (instrument), and MEI (multi-engine) tracks.',
-                  price: 'Training: $5,000 – $10,000 | Earning: PHP 25,000–60,000/month',
-                  location: 'Philippines · USA · Australia',
-                  website: undefined,
-                  offerings: ['CFI — Certified Flight Instructor (Single Engine)', 'CFII — Instrument Flight Instructor', 'MEI — Multi-Engine Instructor', 'CAAP Flight Instructor License (FIL)', 'Ground Instructor Certification'],
-                  requirements: ['Valid CPL with IR (CFII requires IR proficiency)', 'CAAP Class 1 Medical', '250+ hours total flight time', 'Written exam pass — Fundamentals of Instruction (FOI)', 'ICAO English Proficiency — Level 4+'],
-                  documents: ['Valid ID or Passport', 'CAAP CPL License', 'Class 1 Medical Certificate', 'Logbook (certified copy)', 'FOI written exam result'],
-                  proTip: 'Choose your flight school carefully — instructing at a busy ATO with structured syllabi teaches you more than a quiet school with minimal students. Productivity and quality of instruction experience matters for your airline assessment.',
-                  expectations: ['Teaching requires deeper knowledge than flying — you must be able to explain every concept.', 'Student management and lesson preparation are as important as flight skills.', 'High-performing CFIs get airline referrals; complacent ones get overlooked.', 'Plan for at least 12–18 months of instructing before reaching competitive airline hours.'],
-                  pilotLabels: [
-                    { label: 'New CFI', hrs: '250–500 hrs', desc: 'Freshly rated instructor building hours on the path to Frozen ATPL airline entry.' },
-                    { label: 'Experienced CFI', hrs: '500–1,200 hrs', desc: 'Building toward ATPL minimums while developing leadership and mentorship skills.' },
-                    { label: 'Senior Instructor', hrs: '1,200+ hrs', desc: 'Transitioning to airline career with rich instructional background valued by recruiters.' },
-                  ],
-                  assessmentCriteria: [
-                    { item: 'Fundamentals of Instruction (FOI) — teaching theory', weight: 'High' },
-                    { item: 'Flight Demonstration Standards — precision & explanation', weight: 'Critical' },
-                    { item: 'Student Evaluation — identifying & correcting errors', weight: 'High' },
-                    { item: 'Ground Lesson Delivery — met, nav, regulations', weight: 'Medium' },
-                  ],
-                  pilotWarning: 'Instructing at an underfunded school with poorly maintained aircraft builds bad habits and creates safety risks. Verify the school\'s CAAP ATO certification and aircraft maintenance records before accepting an instructing position.',
-                  aboutStatement: 'The CFI rating is the most efficient hour-building pathway in Philippine aviation. You earn a salary while progressing toward ATPL minimums, and you develop the communication, discipline, and leadership skills that airline recruiters actively look for.',
-                },
-              };
-
-              const licensureData = LICENSURE_CARD_DATA[cardId];
-              if (licensureData) {
-                const school = {
-                  id: cardId,
-                  name: licensureData.name,
-                  description: licensureData.description,
-                  location: licensureData.location,
-                  rating: 4.7,
-                  price: licensureData.price,
-                  image: licensureData.image,
-                  region: 'Asia' as const,
-                  fleet: [] as string[],
-                  offerings: licensureData.offerings,
-                  pilotsTrained: undefined as number | undefined,
-                  established: undefined as number | undefined,
-                  website: licensureData.website,
-                  pathwayScore: undefined as number | undefined,
-                  claimed: false,
-                  requirements: licensureData.requirements,
-                  documents: licensureData.documents,
-                  proTip: licensureData.proTip,
-                  technology: [] as string[],
-                  expectations: licensureData.expectations,
-                  pilotLabels: licensureData.pilotLabels,
-                  assessmentCriteria: licensureData.assessmentCriteria,
-                  pilotWarning: licensureData.pilotWarning,
-                  aboutStatement: licensureData.aboutStatement,
-                };
-                const fsName = school.name;
-                const fsLocation = school.location;
-                const fsPrice = school.price;
-                const fsOfferings = school.offerings;
-                const fsWebsite = school.website;
-                const fsDescription = school.description;
-
-                return (
-                  <div className="mt-8 mx-4 rounded-2xl overflow-hidden border border-white/8 bg-white/4 backdrop-blur-sm opacity-100">
-                    {/* Header strip */}
-                    <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.98)_0%,rgba(0,0,0,0.98)_45%,rgba(0,0,0,0.75)_60%,rgba(0,0,0,0.3)_75%,transparent_90%)] pointer-events-none" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.2)_60%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
+                  <div className="relative z-10 h-full flex flex-col justify-end p-6 text-left transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+                    <div className="flex items-end justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h3 className="text-lg font-serif font-normal text-white leading-tight">{fsName}</h3>
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-700/80">Training Pathway</span>
-                        </div>
-                        <div className="flex items-center gap-3 flex-wrap mt-1">
-                          <span className="flex items-center gap-1 text-white/55 text-xs">
-                            <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            {fsLocation}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="text-white/40 text-[9px] uppercase tracking-widest mb-0.5">Estimated Cost</p>
-                        <p className="text-white text-sm font-bold leading-tight max-w-[200px] text-right">{fsPrice}</p>
-                      </div>
-                    </div>
-
-                    {/* Tab bar — add comparison tab for UPRT card */}
-                    <div className="flex border-b border-white/8" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                      {(['about', 'expectations', 'requirements', 'access', ...(cardId === '078eea1a-271f-4392-a802-9a2ea4c36da0' ? ['comparison'] as const : [])] as const).map(t => (
-                        <button key={t} onClick={() => setTrSchoolTab(t)} className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-colors ${trSchoolTab === t ? 'text-white border-b-2 border-white' : 'text-white/40 hover:text-white/70'}`}>
-                          {t === 'comparison' ? 'Comparison' : t}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* ABOUT tab */}
-                    {trSchoolTab === 'about' && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Offerings</p>
-                          <ul className="space-y-1.5">
-                            {fsOfferings.map(o => (
-                              <li key={o} className="flex items-start gap-2 text-sm text-white/85">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0 mt-1.5" />
-                                {o}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">About</p>
-                          <p className="text-xs text-white/70 leading-relaxed">{fsDescription}</p>
-                        </div>
-                        <div className="px-6 py-6 space-y-3">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Why This Rating Matters</p>
-                          <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                            <p className="text-[10px] uppercase text-white/60 font-bold mb-1">About this Pathway</p>
-                            <p className="text-xs text-white/80 leading-relaxed italic">"{school.aboutStatement}"</p>
-                          </div>
-                          {school.proTip && (
-                            <div className="mt-3 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                              <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
-                              <p className="text-xs text-white/85 leading-relaxed">{school.proTip}</p>
+                        <div className="flex items-center gap-2 mb-2 transform transition-transform duration-500 group-hover:translate-x-1">
+                          {item.icon && (
+                            <div className="p-2 rounded-lg bg-sky-500/20 backdrop-blur-md text-sky-300 group-hover:bg-sky-500/30 transition-colors duration-300">
+                              {item.icon}
                             </div>
                           )}
+                          <span className="text-xs font-semibold uppercase tracking-wider text-sky-300/80">{item.stat}</span>
                         </div>
+                        <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg transform transition-transform duration-500 group-hover:translate-x-1">{item.title}</h3>
+                        <p className="text-sm text-slate-200/90 leading-relaxed max-w-sm drop-shadow-md transform transition-all duration-500 group-hover:translate-x-1 group-hover:text-white">{item.desc}</p>
                       </div>
-                    )}
-
-                    {/* EXPECTATIONS tab */}
-                    {trSchoolTab === 'expectations' && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">What They Expect</p>
-                          <ul className="space-y-2">
-                            {school.expectations.map(e => (
-                              <li key={e} className="text-xs text-white/85 leading-relaxed border-l-2 border-red-500/40 pl-3">{e}</li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Pilot Profile — Who Is This For</p>
-                          <div className="space-y-2.5">
-                            {school.pilotLabels.map(p => (
-                              <div key={p.label} className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                                <div className="flex items-center justify-between mb-1">
-                                  <p className="text-[11px] font-bold text-white">{p.label}</p>
-                                  <span className="text-[10px] text-white/60 font-mono">{p.hrs}</span>
-                                </div>
-                                <p className="text-xs text-white/70">{p.desc}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Assessment Criteria</p>
-                          <div className="space-y-2 mb-4">
-                            {school.assessmentCriteria.map(a => (
-                              <div key={a.item} className="flex items-start gap-2">
-                                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0 mt-0.5 ${a.weight === 'Critical' ? 'bg-red-500/20 text-red-300' : a.weight === 'High' ? 'bg-amber-500/20 text-amber-300' : 'bg-white/10 text-white/50'}`}>{a.weight}</span>
-                                <p className="text-xs text-white/85">{a.item}</p>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-3 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                            <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Pilot Warning</p>
-                            <p className="text-xs text-white/85 leading-relaxed">{school.pilotWarning}</p>
-                          </div>
-                        </div>
+                      <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/30 text-white text-sm font-medium transition-all duration-300 group-hover:bg-white/20 group-hover:border-white/50 group-hover:scale-105 shadow-lg shadow-black/20 group-hover:shadow-xl flex-shrink-0">
+                        Discover
+                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
-                    )}
-
-                    {/* REQUIREMENTS tab */}
-                    {trSchoolTab === 'requirements' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Entry Requirements</p>
-                          <ul className="space-y-2.5">
-                            {school.requirements.map(r => (
-                              <li key={r} className="flex items-start gap-2 text-sm text-white/90">
-                                <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                                {r}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Documents to Prepare</p>
-                          <ul className="space-y-2.5">
-                            {school.documents.map(d => (
-                              <li key={d} className="flex items-center gap-2 text-sm text-white/90">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white/50 flex-shrink-0" />
-                                {d}
-                              </li>
-                            ))}
-                          </ul>
-                          <div className="mt-4 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                            <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
-                            <p className="text-xs text-white/85 leading-relaxed">{school.proTip}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* COMPARISON tab — UPRT vs Standard Type Rating */}
-                    {trSchoolTab === 'comparison' && cardId === '078eea1a-271f-4392-a802-9a2ea4c36da0' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-violet-400 font-bold mb-3">UPRT — Special Rating</p>
-                          <div className="space-y-3">
-                            <div className="px-3 py-2.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
-                              <p className="text-[10px] uppercase text-violet-300 font-bold mb-1">Purpose</p>
-                              <p className="text-xs text-white/85">Upset Prevention & Recovery Training — addresses LOC-I (Loss of Control In-flight), the #1 cause of fatal aviation accidents.</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Duration</p>
-                              <p className="text-sm text-white font-semibold">1–2 weeks intensive</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Cost</p>
-                              <p className="text-sm text-white font-semibold">₱36,000–₱120,000 ($2,500–$5,000)</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Training Method</p>
-                              <p className="text-xs text-white/85">• Aerobatic-capable aircraft (Super Decathlon, Cessna Aerobat)<br/>• Real-world unusual attitude recovery<br/>• Spin entry & recovery (actual spins, not sim)</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
-                              <p className="text-xs text-white/85">CAAP UPRT endorsement required for CPL renewal and many airline type ratings.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="px-6 py-6">
-                          <p className="text-[10px] uppercase tracking-widest text-sky-400 font-bold mb-3">Standard Type Rating — A320/B737/etc.</p>
-                          <div className="space-y-3">
-                            <div className="px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                              <p className="text-[10px] uppercase text-sky-300 font-bold mb-1">Purpose</p>
-                              <p className="text-xs text-white/85">Qualification to operate specific aircraft type (A320, B737, A330, B777, ATR) as First Officer.</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Duration</p>
-                              <p className="text-sm text-white font-semibold">4–12 weeks (ground + sim + line training)</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Cost</p>
-                              <p className="text-sm text-white font-semibold">$18,000–$50,000+ depending on type</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Training Method</p>
-                              <p className="text-xs text-white/85">• Level D Full-Flight Simulators (FFFS)<br/>• Systems & procedures training<br/>• Multi-crew cooperation (MCC)<br/>• Line Oriented Flight Training (LOFT)</p>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
-                              <p className="text-xs text-white/85">Type Rating Certificate — airline entry ticket. No manual handling in actual aircraft.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-span-1 md:col-span-2 px-6 py-4 border-t border-white/10 bg-white/5">
-                          <p className="text-[10px] uppercase text-white/60 font-bold mb-2">Key Insight — Why Both Matter</p>
-                          <p className="text-xs text-white/85 leading-relaxed">Standard type ratings teach you to operate an airline jet. UPRT teaches you to survive when automation fails and the aircraft enters an unusual attitude. ASEAN needs <strong>22,000 pilots by 2033</strong>; CAAP targets <strong>3x pilot output by 2028</strong>. Airlines want both qualifications — the type rating for the job, UPRT for the survival skills that prevent becoming a statistic.</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ACCESS tab */}
-                    {trSchoolTab === 'access' && (
-                      <div className="px-6 py-6 space-y-3">
-                        <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Enrollment & Access</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div className="px-3 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                            <p className="text-[10px] uppercase text-emerald-400 font-bold mb-0.5">Intake Status</p>
-                            <p className="text-sm text-white/85 font-semibold">Open Enrolment — Rolling Intake</p>
-                            <p className="text-xs text-white/70 mt-1">Training programmes are offered year-round. Contact training centres directly to confirm slot availability.</p>
-                          </div>
-                          <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
-                            <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">Estimated Cost</p>
-                            <p className="text-sm text-red-300 font-semibold">{fsPrice}</p>
-                          </div>
-                          <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10 md:col-span-2">
-                            <p className="text-[10px] uppercase text-white/60 font-bold mb-1">How to Start</p>
-                            <ol className="text-xs text-white/85 space-y-1 leading-relaxed list-decimal list-inside">
-                              <li>Confirm you meet the entry requirements listed above</li>
-                              <li>Contact 2–3 CAAP-approved training centres to compare slot availability and pricing</li>
-                              <li>Submit documents (licence, medical, logbook) and complete any required pre-entry assessment</li>
-                              <li>Pay training fees and receive your training schedule</li>
-                              <li>Complete ground school before gaining simulator/aircraft access</li>
-                            </ol>
-                          </div>
-                          {fsWebsite && (
-                            <a href={fsWebsite} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-300 hover:text-red-200 font-semibold transition-colors md:col-span-2">
-                              Visit Official Website
-                              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              // For dedicated type-rating cards (A320, B737, etc.)
-              const trCard = (DISCOVERY_PATHWAYS['type-rating'] || []).find((j: PathwayJob) => j.id === cardId);
-              if (!trCard) return null;
-              const reqs: string[] = trCard.requirements || [];
-              const tags: string[] = trCard.tags || [];
-              const CATEGORY_COLOR: Record<string, string> = {
-                'Narrowbody Type Rating': 'sky',
-                'Widebody Type Rating': 'violet',
-                'Turboprop Type Rating': 'amber',
-                'Pre-Type Rating Course': 'emerald',
-                'Mandatory Safety Rating': 'orange',
-              };
-              const color = CATEGORY_COLOR[trCard.type] || 'sky';
-              const colorMap: Record<string, string> = {
-                sky: 'bg-sky-500/15 text-sky-300 border-sky-500/20',
-                violet: 'bg-violet-500/15 text-violet-300 border-violet-500/20',
-                amber: 'bg-amber-500/15 text-amber-300 border-amber-500/20',
-                emerald: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/20',
-                orange: 'bg-orange-500/15 text-orange-300 border-orange-500/20',
-              };
-              const chipClass = colorMap[color] || colorMap.sky;
-              const colorBarMap: Record<string, string> = {
-                sky: 'linear-gradient(90deg, #0369a1 0%, #075985 100%)',
-                violet: 'linear-gradient(90deg, #6d28d9 0%, #4c1d95 100%)',
-                amber: 'linear-gradient(90deg, #b45309 0%, #92400e 100%)',
-                emerald: 'linear-gradient(90deg, #047857 0%, #065f46 100%)',
-                orange: 'linear-gradient(90deg, #c2410c 0%, #9a3412 100%)',
-              };
-              const barGradient = colorBarMap[color] || colorBarMap.sky;
-              const chipTextColorMap: Record<string, string> = {
-                sky: 'text-sky-900 bg-sky-200',
-                violet: 'text-violet-900 bg-violet-200',
-                amber: 'text-amber-900 bg-yellow-200',
-                emerald: 'text-emerald-900 bg-emerald-200',
-                orange: 'text-orange-900 bg-orange-200',
-              };
-              const badgeClass = chipTextColorMap[color] || chipTextColorMap.sky;
-              return (
-                <div className="mt-8 mx-4 rounded-2xl overflow-hidden shadow-2xl" style={{ backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                  {/* Dark navy headline bar */}
-                  <div className="px-6 py-4 flex items-center justify-between gap-4" style={{ background: 'linear-gradient(90deg, #0f1e3d 0%, #1a2f5a 100%)' }}>
-                    <div className="flex items-center gap-3 flex-wrap min-w-0">
-                      <h3 className="text-xl font-serif font-semibold text-white leading-tight">{trCard.title}</h3>
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex-shrink-0 ${badgeClass}`}>{trCard.type}</span>
-                    </div>
-                    <div className="flex-shrink-0 text-right">
-                      <p className="text-blue-300/70 text-[9px] uppercase tracking-widest mb-0.5">Estimated Cost</p>
-                      <p className="text-white text-base font-bold leading-tight">{trCard.salary}</p>
                     </div>
                   </div>
-                  {/* Sub-header: provider + location — slightly lighter navy */}
-                  <div className="px-6 py-3 flex items-center gap-4 border-b border-white/10" style={{ background: 'rgba(15,30,61,0.60)' }}>
-                    <p className="text-white font-semibold text-sm">{trCard.company}</p>
-                    <span className="w-1 h-1 rounded-full bg-white/30" />
-                    <p className="text-white/60 text-sm flex items-center gap-1">
-                      <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                      {trCard.location}
+                  {panelIndex === idx && (
+                    <div className="absolute top-4 right-4 w-3 h-3 rounded-full bg-sky-400 shadow-lg shadow-sky-400/50 animate-pulse" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            {/* Search and Filter Section */}
+            <div className="mb-8">
+              <div className="max-w-4xl mx-auto">
+                <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
+                {searchQuery.trim().length > 0 && (
+                  <div className="mt-3 flex items-center justify-start gap-2 overflow-x-auto px-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    {[
+                      { label: 'Low Timers', filter: 'low-time', key: 'low-timers' },
+                      { label: "CFI's", filter: 'cfi', key: 'cfi' },
+                      { label: 'Graduates', filter: 'graduate', key: 'graduates' },
+                      { label: 'PPL', filter: 'ppl', key: 'ppl' },
+                      { label: 'CPL', filter: 'cpl', key: 'cpl' },
+                      { label: 'Type Rating', filter: 'type-rating', key: 'type-rating' },
+                      { label: 'Cargo', filter: 'cargo', key: 'cargo' },
+                      { label: 'Private Sector', filter: 'private', key: 'private-sector' },
+                      { label: 'Airline', filter: 'airline', key: 'airline' },
+                      { label: 'Military', filter: 'military', key: 'military' },
+                    ].map((pill, idx) => (
+                      <button
+                        key={pill.key}
+                        onClick={() => {
+                          setSelectedPrimaryPill(pill.key);
+                          setActiveSubPills([]);
+                          setSearchQuery(pill.filter);
+                        }}
+                        className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-md flex-shrink-0 materialize"
+                        style={{ animationDelay: `${idx * 60}ms` }}
+                      >
+                        {pill.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Hero Section - Pathway Selection */}
+            <div className="relative overflow-hidden mb-12 z-10 min-h-[600px]">
+              <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+              
+              <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+                <div className="text-center text-white">
+                  <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
+                    Discover Your Aviation Career Pathway
+                  </h2>
+                  <p className="text-lg md:text-xl text-slate-300 mb-6 max-w-3xl mx-auto">
+                    From cadet programs to type ratings, explore comprehensive pathways that connect your skills to airline opportunities worldwide.
+                  </p>
+                  
+                  <div className="max-w-2xl mx-auto text-slate-400 text-sm leading-relaxed">
+                    <p className="mb-4">
+                      Browse through our comprehensive database of career pathways, including training programs, 
+                      type rating courses, and direct entry opportunities. Our pathways are designed to help pilots 
+                      understand the requirements and progression routes for leading airlines worldwide.
+                    </p>
+                    <p>
+                      From legacy carriers to regional airlines and emerging carriers, find the pathway that matches 
+                      your experience level and career aspirations.
                     </p>
                   </div>
-                  {/* Glassy body */}
-                  <div className="grid grid-cols-1 md:grid-cols-3" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
-                    <div className="px-6 py-5 border-b md:border-b-0 md:border-r border-white/10">
-                      <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Entry Requirements</p>
-                      <ul className="space-y-2">
-                        {reqs.map(r => (
-                          <li key={r} className="flex items-start gap-2 text-sm text-white/85">
-                            <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                            {r}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="px-6 py-5 border-b md:border-b-0 md:border-r border-white/10">
-                      <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-3">Training Locations</p>
-                      <ul className="space-y-2">
-                        {trCard.location.split(' · ').map((loc: string) => (
-                          <li key={loc} className="flex items-center gap-2 text-sm text-white/85">
-                            <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            {loc.trim()}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="px-6 py-5">
-                      <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-3">Tags</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {tags.map(t => (
-                          <span key={t} className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white/80 border border-white/15">{t}</span>
-                        ))}
-                      </div>
-                      <div className="mt-4 pt-3 border-t border-white/10">
-                        <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-2">Enrollment</p>
-                        <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">{trCard.postedAt}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Enterprise Pathway Card Detail Panel — appears when an enterprise card is selected */}
-            {selectedCarouselPathway?.isEnterprise && selectedPathwayCard?.category !== 'flight-schools' && selectedPathwayCard?.category !== 'type-rating' && (() => {
-              const p = selectedCarouselPathway;
-              const alreadySubmitted = interestSubmitted === p.id;
-              const minHours = p.requirements?.totalHours || 0;
-              return (
-                <div className="mt-8 mx-4 rounded-2xl overflow-hidden border border-blue-500/20 bg-blue-950/20 backdrop-blur-sm">
-                  {/* Header */}
-                  <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      {p.enterpriseLogoUrl ? (
-                        <img src={p.enterpriseLogoUrl} alt={p.airline} className="w-12 h-12 rounded-xl object-contain bg-white/10 p-1.5 shrink-0" />
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-blue-600/30 flex items-center justify-center shrink-0">
-                          <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 004 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" /></svg>
-                        </div>
-                      )}
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                          <h3 className="text-lg font-semibold text-white leading-tight">{p.name}</h3>
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-blue-300 bg-blue-600/30 border border-blue-500/30">
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            Airline Posted
-                          </span>
-                        </div>
-                        <p className="text-white/50 text-sm">{p.airline}</p>
-                        {p.description && <p className="text-white/35 text-xs mt-1 line-clamp-2">{p.description}</p>}
-                      </div>
-                    </div>
-                    {/* Interest level badge */}
-                    <div className="shrink-0 text-right">
-                      <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
-                        p.interestLevel === 'high_interest' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                        : p.interestLevel === 'limited' ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                        : 'bg-slate-600/30 text-slate-400 border border-slate-600/30'
-                      }`}>
-                        {p.interestLevel === 'high_interest' ? '● Actively Hiring' : p.interestLevel === 'limited' ? '● Limited Slots' : '● Considering'}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Body grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/8">
-
-                    {/* Requirements */}
-                    <div className="px-6 py-5">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Requirements</p>
-                      <div className="space-y-2.5">
-                        {minHours > 0 && (
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="text-white/50">Min Flight Hours</span>
-                            <span className="text-white font-semibold">{minHours.toLocaleString()}h</span>
-                          </div>
-                        )}
-                        {(p.requirements?.typeRatings || []).length > 0 && (
-                          <div className="flex items-start justify-between text-xs gap-2">
-                            <span className="text-white/50 shrink-0">Type Ratings</span>
-                            <div className="flex flex-wrap gap-1 justify-end">
-                              {(p.requirements.typeRatings || []).map((tr: string) => (
-                                <span key={tr} className="bg-blue-600/20 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded-full text-[10px]">{tr}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {p.locations?.length > 0 && (
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="text-white/50">Base Location</span>
-                            <span className="text-white/80">{p.locations[0]}</span>
-                          </div>
-                        )}
-                        {p.positions && (
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="text-white/50">Positions Available</span>
-                            <span className="text-white font-semibold">{p.positions}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Compensation */}
-                    <div className="px-6 py-5">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Compensation</p>
-                      <div className="space-y-2.5">
-                        {p.salary?.firstYear && (
-                          <div className="flex items-start justify-between text-xs gap-2">
-                            <span className="text-white/50 shrink-0">Package</span>
-                            <span className="text-emerald-400 font-semibold text-right">{p.salary.firstYear}</span>
-                          </div>
-                        )}
-                        {p.salary?.fifthYear && (
-                          <div className="flex items-start justify-between text-xs gap-2">
-                            <span className="text-white/50 shrink-0">Progression</span>
-                            <span className="text-white/70 text-right">{p.salary.fifthYear}</span>
-                          </div>
-                        )}
-                        {p.salary?.bonuses && (
-                          <div className="flex items-start justify-between text-xs gap-2">
-                            <span className="text-white/50 shrink-0">Benefits</span>
-                            <span className="text-white/70 text-right">{p.salary.bonuses}</span>
-                          </div>
-                        )}
-                        {(p.benefits || []).length > 0 && (
-                          <div className="pt-2 border-t border-white/8 space-y-1">
-                            {(p.benefits || []).slice(0, 3).map((b: string, i: number) => (
-                              <div key={i} className="flex items-center gap-1.5 text-xs text-white/50">
-                                <svg className="w-3 h-3 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
-                                {b}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Submit Interest CTA */}
-                    <div className="px-6 py-5 flex flex-col justify-between gap-4">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Pulling System</p>
-                        <p className="text-white/50 text-xs leading-relaxed mb-4">
-                          Submit your verified profile to this airline's interest pool. They pull from candidates — you don't push an application.
-                        </p>
-                        {cadетGateStatus.restricted ? (
-                          <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl px-4 py-3.5">
-                            <div className="flex items-center gap-2 mb-1.5">
-                              <svg className="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-                              <p className="text-amber-400 text-xs font-bold uppercase tracking-widest">Gate Restricted — Cadet Track Mode</p>
-                            </div>
-                            <p className="text-white/50 text-xs leading-relaxed">
-                              {cadетGateStatus.reason === 'minor+student'
-                                ? 'Terminal 3 requires age 18+ and a validated CPL or ATPL. You are currently in Cadet Track Mode as a minor student pilot.'
-                                : cadетGateStatus.reason === 'minor'
-                                ? 'Terminal 3 requires a minimum age of 18. Your profile is saved — gates unlock automatically when you reach eligibility.'
-                                : 'Terminal 3 requires a validated Commercial Pilot License (CPL/ATPL). Student and PPL licenses are restricted to the open pathway lounge.'}
-                            </p>
-                            <p className="text-amber-500/70 text-[10px] mt-2">You can view all pathways and track your progress. Submissions unlock when eligibility requirements are met.</p>
-                          </div>
-                        ) : alreadySubmitted ? (
-                          <div className="flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 rounded-xl px-4 py-3">
-                            <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <div>
-                              <p className="text-emerald-400 text-sm font-semibold">Interest Submitted</p>
-                              <p className="text-emerald-600 text-xs">Your profile is now in their pool</p>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => currentUser && setSkybridgePendingPathway(p)}
-                            disabled={!currentUser || interestSubmitting}
-                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl transition-all text-sm shadow-lg shadow-emerald-500/20"
-                          >
-                            {interestSubmitting ? (
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            ) : (
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/></svg>
-                            )}
-                            {currentUser ? 'Submit Interest' : 'Sign in to Submit Interest'}
-                          </button>
-                        )}
-                      </div>
-                      {!currentUser && (
-                        <p className="text-white/30 text-[10px] text-center">
-                          <a href="/login" className="text-blue-400 hover:text-blue-300 underline">Create a free account</a> to submit interest and be discoverable by this airline.
-                        </p>
-                      )}
-                      {p.url && (
-                        <a href={p.url} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors border border-white/10 rounded-xl py-2">
-                          View Official Posting
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="px-6 py-3 border-t border-white/8">
-                    <p className="text-white/20 text-[10px]">This pathway card was posted directly by the airline via the PilotRecognition Enterprise Portal. Interest submissions are visible only to the posting operator.</p>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Flight School Detail Panel — appears when a Stage 2 card is selected */}
-            {selectedCarouselPathway && selectedPathwayCard?.category === 'flight-schools' && (() => {
-              const cardId = selectedCarouselPathway.id;
-              // Supabase data takes priority; static DUMMY data is fallback while loading
-              const sb = flightSchoolCardData[cardId];
-              const staticFallback = DUMMY_FLIGHT_SCHOOLS.find(s => s.id === cardId);
-              const eng = flightSchoolEngagement[cardId];
-              const isLoading = !sb;
-
-              const name = selectedCarouselPathway.name;
-              const location = sb?.location || selectedCarouselPathway.locations?.[0] || staticFallback?.location || '';
-              const price = sb?.price || staticFallback?.price || selectedCarouselPathway.description || '—';
-              const rating: number = sb?.rating ?? staticFallback?.rating ?? ((selectedCarouselPathway.matchProbability || 0) * 5);
-              const fleet: string[] = sb?.fleet || staticFallback?.fleet || [];
-              const offerings: string[] = sb?.offerings || staticFallback?.offerings || [];
-              const pilotsTrained: number | undefined = sb?.pilots_trained ?? staticFallback?.pilotsTrained;
-              const established: number | undefined = sb?.established ?? staticFallback?.established;
-              const website: string | undefined = sb?.website || staticFallback?.website;
-              const pathwayScore: number = sb?.pathway_score ?? staticFallback?.pathwayScore ?? Math.round(selectedCarouselPathway.matchProbability * 100);
-              const claimed: boolean = sb?.claimed ?? selectedCarouselPathway.claimed ?? false;
-              const description: string = sb?.description || staticFallback?.description || '';
-              // Engagement from DB totals, fallback to score-derived estimates
-              const likeCount: number = eng?.like_count ?? Math.round(pathwayScore * 3.2);
-              const favoriteCount: number = eng?.favorite_count ?? Math.round(pathwayScore * 0.9);
-              const bookmarkCount: number = eng?.bookmark_count ?? Math.round(pathwayScore * 1.8);
-
-              return (
-                <div className={`mt-8 mx-4 rounded-2xl overflow-hidden border border-white/8 bg-white/4 backdrop-blur-sm transition-opacity duration-300 ${isLoading ? 'opacity-70' : 'opacity-100'}`}>
-                  {/* Header strip */}
-                  <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <h3 className="text-lg font-serif font-normal text-white leading-tight">{name}</h3>
-                        {claimed ? (
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-600/80">
-                            <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                            Claimed
-                          </span>
-                        ) : (
-                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold text-white/50 bg-white/8 border border-white/10">Unverified</span>
-                        )}
-                      </div>
-                      <p className="text-white/50 text-xs flex items-center gap-1">
-                        <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        {location}
-                        {established && <><span className="mx-1 opacity-30">·</span>Est. {established}</>}
-                      </p>
-                      {description && <p className="text-white/40 text-xs mt-2 leading-relaxed line-clamp-2">{description}</p>}
-                    </div>
-                    {/* Pathway Score */}
-                    <div className="flex flex-col items-center flex-shrink-0">
-                      <div className="relative w-14 h-14">
-                        <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
-                          <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4"/>
-                          <circle cx="28" cy="28" r="22" fill="none" stroke={pathwayScore >= 90 ? '#22d3ee' : pathwayScore >= 75 ? '#60a5fa' : '#94a3b8'} strokeWidth="4"
-                            strokeDasharray={`${(pathwayScore / 100) * 138.2} 138.2`} strokeLinecap="round"/>
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">{pathwayScore}</span>
-                      </div>
-                      <span className="text-[9px] text-white/40 uppercase tracking-wider mt-1">Pathway Score</span>
-                    </div>
-                  </div>
-
-                  {/* Body grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/8">
-
-                    {/* Location & Meta */}
-                    <div className="px-5 py-4">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Overview</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-white/40">Rating</span>
-                          <span className="text-white flex items-center gap-1">
-                            {'★'.repeat(Math.max(0, Math.min(5, Math.floor(rating || 0))))}<span className="text-white/30">{'★'.repeat(Math.max(0, 5 - Math.min(5, Math.floor(rating || 0))))}</span>
-                            <span className="text-white/60 ml-1">{rating.toFixed(1)}</span>
-                          </span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-white/40">Tuition</span>
-                          <span className="text-white/80 text-right max-w-[120px] leading-tight">{price}</span>
-                        </div>
-                        {pilotsTrained && (
-                          <div className="flex justify-between text-xs">
-                            <span className="text-white/40">Pilots Trained</span>
-                            <span className="text-white/80">{pilotsTrained.toLocaleString()}+</span>
-                          </div>
-                        )}
-                        {established && (
-                          <div className="flex justify-between text-xs">
-                            <span className="text-white/40">Established</span>
-                            <span className="text-white/80">{established}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Training Offerings */}
-                    <div className="px-5 py-4">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Training Offerings</p>
-                      {offerings.length > 0 ? (
-                        <div className="flex flex-wrap gap-1.5">
-                          {offerings.map(o => (
-                            <span key={o} className="px-2 py-0.5 rounded-full text-[10px] bg-sky-500/15 text-sky-300 border border-sky-500/20">{o}</span>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-white/30 text-xs italic">Data pending verification</p>
-                      )}
-                    </div>
-
-                    {/* Fleet */}
-                    <div className="px-5 py-4">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Fleet</p>
-                      {fleet.length > 0 ? (
-                        <ul className="space-y-1.5">
-                          {fleet.map(f => (
-                            <li key={f} className="flex items-center gap-2 text-xs text-white/70">
-                              <svg className="w-3 h-3 text-white/20 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="text-white/30 text-xs italic">Data pending verification</p>
-                      )}
-                    </div>
-
-                    {/* Pathway Score breakdown + engagement */}
-                    <div className="px-5 py-4">
-                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Community Signal</p>
-                      <div className="space-y-2">
-                        {[
-                          { label: 'Liked by pilots', value: likeCount, icon: '♥' },
-                          { label: 'Bookmarked', value: bookmarkCount, icon: '⊞' },
-                          { label: 'Favorited', value: favoriteCount, icon: '★' },
-                        ].map(({ label, value, icon }) => (
-                          <div key={label} className="flex items-center justify-between text-xs">
-                            <span className="text-white/40 flex items-center gap-1.5"><span className="text-white/20">{icon}</span>{label}</span>
-                            <span className="text-white/70 tabular-nums">{value}</span>
-                          </div>
-                        ))}
-                        <div className="mt-3 pt-3 border-t border-white/8">
-                          <div className="flex items-center justify-between text-xs mb-1">
-                            <span className="text-white/40">Pathway Score</span>
-                            <span className={`font-bold ${pathwayScore >= 90 ? 'text-cyan-400' : pathwayScore >= 75 ? 'text-blue-400' : 'text-slate-400'}`}>{pathwayScore}/100</span>
-                          </div>
-                          <div className="h-1.5 rounded-full bg-white/8 overflow-hidden">
-                            <div className={`h-full rounded-full ${pathwayScore >= 90 ? 'bg-cyan-400' : pathwayScore >= 75 ? 'bg-blue-400' : 'bg-slate-400'}`} style={{ width: `${pathwayScore}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Footer */}
-                  {website && (
-                    <div className="px-6 py-3 border-t border-white/8 flex items-center justify-between">
-                      <span className="text-white/30 text-xs">{claimed ? 'Official information provided by the school' : 'Data sourced by PilotRecognition — unverified'}</span>
-                      <a href={website} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 transition-colors">
-                        Visit Website
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
-          </div>
-        )}
-
-        {/* Job Position Filter - Only show in jobs mode */}
-        {mode === 'jobs' && (
-          <div className="flex items-center gap-3 justify-center mt-6 materialize materialize-delay-6">
-            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Position:</span>
-            <div className="relative">
-              <button
-                onClick={() => setIsPositionDropdownOpen(!isPositionDropdownOpen)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
-                  positionFilter !== 'all'
-                    ? 'bg-blue-500 text-white'
-                    : isDarkMode 
-                      ? 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700' 
-                      : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50 border border-slate-300'
-                }`}
-              >
-                <span>{positionFilter === 'all' ? 'All Positions' : positionFilter}</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-
-              {isPositionDropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-50 ${
-                    isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
-                  }`}
-                >
-                  {[
-                    { key: 'all', label: 'All Positions' },
-                    { key: 'Captain', label: 'Captain' },
-                    { key: 'Fighter Pilot', label: 'Fighter Pilot' },
-                    { key: 'First Officer', label: 'First Officer' },
-                    { key: 'Flight Instructor', label: 'Flight Instructor' },
-                    { key: 'Pilot Cadet', label: 'Pilot Cadet' },
-                  ].map((position) => (
-                    <button
-                      key={position.key}
-                      onClick={() => {
-                        setPositionFilter(position.key as typeof positionFilter);
-                        setIsPositionDropdownOpen(false);
-                      }}
-                      className={`w-full px-4 py-2 text-left text-sm font-medium transition-colors ${
-                        positionFilter === position.key
-                          ? 'bg-blue-500 text-white'
-                          : isDarkMode 
-                            ? 'text-slate-300 hover:bg-slate-700' 
-                            : 'text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {position.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {mode === 'jobs' && currentUser && (
-          <div className="materialize materialize-delay-7">
-            <JobIntelligenceBanner
-              jobMatches={intelligence.jobMatches}
-              loading={intelligence.loadingJobs}
-              isDarkMode={isDarkMode}
-            />
-          </div>
-        )}
-
-        {mode === 'jobs' && currentUser && intelligence.jobMatches?.blindSpotPicks && (
-          <div className="materialize materialize-delay-8">
-            <BlindSpotPicksRow
-              blindSpots={intelligence.jobMatches.blindSpotPicks}
-              loading={intelligence.loadingJobs}
-              isDarkMode={isDarkMode}
-            />
-          </div>
-        )}
-
-        {/* Testimonials Section - Build Trust */}
-        <section className={`py-12 px-6 ${isDarkMode ? 'bg-slate-800/30 border-y border-slate-700/50' : 'bg-slate-50/50 border-y border-slate-200'} mt-12 materialize materialize-delay-7`}>
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">Success Stories</p>
-              <h2 className={`text-2xl md:text-3xl font-serif font-normal ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-2`}>
-                Pilots Who Found Their Pathway
-              </h2>
-              <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Real pilots. Real careers. Real results through PilotRecognition.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Testimonial 1 */}
-              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
-                    JM
-                  </div>
-                  <div>
-                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>James Mitchell</p>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>First Officer at Delta Air Lines</p>
-                  </div>
-                </div>
-                <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                  "I was stuck as a CFI with 1,200 hours and no clear path forward. The Recognition Score showed me exactly what I was missing. 8 months later, I'm in a Delta cockpit."
-                </p>
-                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                  <span className="font-semibold text-sky-400">Pathway:</span> Regional Airline → Major Airline
-                </div>
-              </div>
-              
-              {/* Testimonial 2 */}
-              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-semibold">
-                    SC
-                  </div>
-                  <div>
-                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Sarah Chen</p>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Captain at NetJets</p>
-                  </div>
-                </div>
-                <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                  "The pathway cards eliminated guesswork. I could see exactly which corporate operators wanted my 4,000 hours + type rating. No more shotgun applications."
-                </p>
-                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                  <span className="font-semibold text-sky-400">Pathway:</span> Charter Pilot → Corporate Captain
-                </div>
-              </div>
-              
-              {/* Testimonial 3 */}
-              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold">
-                    MR
-                  </div>
-                  <div>
-                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Marcus Rodriguez</p>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Airbus A350 Captain at Cathay Pacific</p>
-                  </div>
-                </div>
-                <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                  "My Recognition Score travelled with me from a US regional to Hong Kong. Airlines saw my verified profile and skipped the guesswork. Cadet to Captain in 6 years."
-                </p>
-                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                  <span className="font-semibold text-sky-400">Pathway:</span> Cadet Program → International Captain
                 </div>
               </div>
             </div>
-            
-            {/* Trust Stats */}
-            <div className={`mt-8 pt-8 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} grid grid-cols-2 md:grid-cols-4 gap-6 text-center`}>
-              <div>
-                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>12,000+</p>
-                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Pilot Profiles</p>
-              </div>
-              <div>
-                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>450+</p>
-                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Active Pathways</p>
-              </div>
-              <div>
-                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>89%</p>
-                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Accuracy</p>
-              </div>
-              <div>
-                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>3,200+</p>
-                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Career Placements</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Footer */}
-        <footer className={`py-8 px-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} mt-12 materialize materialize-delay-9`}>
-          <div className="mx-auto max-w-[1800px]">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                © 2026 WingMentor. All rights reserved.
+            {/* Pathways Grid - Results */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {/* Placeholder for pathway cards */}
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold mb-2">Cadet Programme</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Airline-sponsored training with guaranteed placement</p>
               </div>
-              <div className="flex gap-6">
-                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
-                  Privacy Policy
-                </a>
-                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
-                  Terms of Service
-                </a>
-                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
-                  Contact
-                </a>
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold mb-2">Type Rating</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">A320, B737, B777 type rating courses</p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold mb-2">Low Timer</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">First officer opportunities for building hours</p>
               </div>
             </div>
-          </div>
-        </footer>
           </div>
         </main>
 
-      {/* Match Result Modal */}
-      {selectedPathwayForMatch && (
-        <MatchResultModal
-          pathway={selectedPathwayForMatch}
-          userProfile={userProfile}
-          isDarkMode={isDarkMode}
-          onClose={() => setSelectedPathwayForMatch(null)}
-        />
-      )}
-
-      {/* Military Pathways Page */}
-      {showMilitaryPathwaysPage && (
-        <div className="absolute inset-0 z-[100] bg-white overflow-auto">
-          <MilitaryPathwaysPage
-            pathwayId="military"
-            onBack={() => setShowMilitaryPathwaysPage(false)}
-          />
-        </div>
-      )}
-
-      {/* Special Pathways Page */}
-      {showSpecialPathwaysPage && (
-        <>
-          <div className="absolute inset-0 z-[200] bg-white overflow-auto">
-            <SpecialPathwaysPage
-              pathwayId="d36018dd-a116-4925-83ca-6acb414f4020"
-              onBack={() => setShowSpecialPathwaysPage(false)}
-              onNavigate={onNavigate}
-            />
-          </div>
-        </>
-      )}
-
-      {/* Licensure & Type Rating Page */}
-      {showLicensureTypeRatingPage && (
-        <>
-          <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
-            <LicensureTypeRatingPage
-              pathwayId="aaa44819-37ec-40e7-a6cf-6d1990040d65"
-              onBack={() => setShowLicensureTypeRatingPage(false)}
-            />
-          </div>
-        </>
-      )}
-
-      {/* Commercial Pilot Pathway Page */}
-      {showCommercialPilotPathwayPage && (
-        <>
-          <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
-            <CommercialPilotPathwayPage
-              pathwayId="7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1"
-              onBack={() => setShowCommercialPilotPathwayPage(false)}
-            />
-          </div>
-        </>
-      )}
-      </div>
-    </div>
-
-      {/* Align Profile Tools - Floating Button (only when logged in) */}
-      {userProfile?.id && (
-      <div className="fixed bottom-6 right-6 z-50 materialize materialize-delay-10">
-        {!isAlignProfileOpen ? (
-          <button
-            onClick={() => setIsAlignProfileOpen(true)}
-            className={`flex items-center gap-2 px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border border-indigo-500 hover:from-indigo-500 hover:to-violet-500' 
-                : 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border border-indigo-500 hover:from-indigo-500 hover:to-violet-500'
-            }`}
-            aria-label="Align your profile"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-            </svg>
-            <span className="text-sm font-medium hidden md:inline">Align Profile</span>
-          </button>
-        ) : (
-          <div className={`w-96 rounded-2xl shadow-2xl p-5 ${isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'}`}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                  </svg>
-                </div>
-                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                  Align Profile Tools
-                </h3>
-              </div>
-              <button 
-                onClick={() => setIsAlignProfileOpen(false)}
-                className={`p-1 rounded-full hover:bg-slate-100 ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700' : 'text-slate-500'}`}
+        {/* Floating Recognition AI Chat Widget */}
+        <div className="fixed bottom-6 right-6 z-50">
+          <AnimatePresence>
+            {isChatOpen && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ duration: 0.2 }}
+                className="absolute bottom-20 right-0"
               >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            
-            {/* Engine Stats */}
-            {engineStats ? (
-              <div className={`mb-4 p-3 rounded-lg ${isDarkMode ? 'bg-slate-900/50 border border-indigo-500/30' : 'bg-indigo-50 border border-indigo-200'}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
-                    ⚡ Engine Active
-                  </span>
-                  <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                    v{engineStats.algorithmVersion}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Time</span>
-                    <span className={`font-bold ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>{engineStats.lastCalculationTime}ms</span>
-                  </div>
-                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Pathways</span>
-                    <span className="font-bold text-white">{engineStats.pathwaysLoaded}</span>
-                  </div>
-                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Matches</span>
-                    <span className="font-bold text-white">{engineStats.matchesCalculated}</span>
-                  </div>
-                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Avg Score</span>
-                    <span className={`font-bold ${engineStats.avgMatchScore >= 60 ? 'text-emerald-400' : 'text-amber-400'}`}>{engineStats.avgMatchScore}%</span>
+                <div className="w-[380px] max-h-[500px] overflow-y-auto bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl relative">
+                  <button
+                    onClick={() => setIsChatOpen(false)}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all z-10"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  <div className="p-4">
+                    <RecognitionAIChat profile={userProfile} />
                   </div>
                 </div>
-              </div>
-            ) : null}
-
-            {/* Profile Status */}
-            <div className={`mb-4 p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
-              <div className="flex items-center justify-between mb-2">
-                <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>Profile Completion</span>
-                <span className="text-sm font-medium text-indigo-500">{profileCompletion}%</span>
-              </div>
-              <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-600' : 'bg-slate-200'}`}>
-                <div className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-500" style={{ width: `${profileCompletion}%` }} />
-              </div>
-              {engineProfile && (
-                <div className={`mt-2 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                  {engineProfile.total_flight_hours.toLocaleString()} hrs • {engineProfile.ratings.length} ratings • {engineProfile.type_ratings.length} type ratings
-                </div>
-              )}
-            </div>
-            
-            {/* Top Pathway Matches */}
-            {alignProfileLoading ? (
-              <div className="mb-4 flex items-center justify-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500" />
-                <span className={`ml-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Calculating matches...</span>
-              </div>
-            ) : alignProfileMatches.length > 0 ? (
-              <div className="mb-4">
-                <p className={`text-xs font-medium uppercase tracking-wider mb-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-                  Your Top Matches
-                </p>
-                <div className="space-y-2">
-                  {alignProfileMatches.map((match) => (
-                    <div 
-                      key={match.id}
-                      onClick={() => {
-                        setIsAlignProfileOpen(false);
-                        onNavigate?.(`/pathways-detail/${match.pathway_id}`);
-                      }}
-                      className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                        isDarkMode 
-                          ? 'bg-slate-700/30 hover:bg-slate-700/50' 
-                          : 'bg-slate-50 hover:bg-slate-100'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${
-                            match.match_score >= 85 ? 'bg-emerald-400' :
-                            match.match_score >= 60 ? 'bg-amber-400' : 'bg-red-400'
-                          }`} />
-                          <span className={`text-sm font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>
-                            {match.pathways?.name || 'Pathway'}
-                          </span>
-                        </div>
-                        <span className={`text-sm font-bold ${
-                          match.match_score >= 85 ? 'text-emerald-400' :
-                          match.match_score >= 60 ? 'text-amber-400' : 'text-red-400'
-                        }`}>
-                          {match.match_score}%
-                        </span>
-                      </div>
-                      {match.gaps_count > 0 && (
-                        <div className={`mt-1 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          {match.gaps_count} gaps to close
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-            
-            {/* Quick Actions */}
-            <div className="space-y-2 mb-4">
-              <p className={`text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-                Quick Actions
-              </p>
-              
-              <button
-                onClick={() => {
-                  setIsAlignProfileOpen(false);
-                  onNavigate?.('/dashboard');
-                }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
-                  isDarkMode 
-                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
-                }`}
-              >
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-medium text-sm">View Dashboard</div>
-                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>See your pathway matches</div>
-                </div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setIsAlignProfileOpen(false);
-                  onNavigate?.('/profile');
-                }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
-                  isDarkMode 
-                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
-                }`}
-              >
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-medium text-sm">Update Profile</div>
-                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Add hours, ratings, certificates</div>
-                </div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setIsAlignProfileOpen(false);
-                  onNavigate?.('/discover');
-                }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
-                  isDarkMode 
-                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
-                }`}
-              >
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-medium text-sm">Discover Pathways</div>
-                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Find matching opportunities</div>
-                </div>
-              </button>
-            </div>
-            
-            {/* Recognition Score Preview */}
-            <div className={`p-3 rounded-lg border ${isDarkMode ? 'border-slate-700 bg-slate-700/30' : 'border-slate-200 bg-slate-50'}`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>Recognition Score</span>
-                </div>
-                <span className="text-lg font-bold text-amber-400">{recognitionScore}</span>
-              </div>
-              <div className={`mt-1 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                {recognitionScore >= 70 ? 'Excellent standing' :
-                 recognitionScore >= 50 ? 'Good progress' :
-                 'Build your profile to increase'}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      )}
-
-      {/* Engine Debug Panel — development only */}
-      {process.env.NODE_ENV === 'development' && showEngineDebug && (
-        <div className="fixed top-20 right-4 z-[9998] w-80 max-h-[70vh] overflow-y-auto rounded-xl shadow-2xl border border-indigo-500/30 bg-slate-900/95 backdrop-blur-sm">
-          <div className="sticky top-0 bg-slate-900/95 border-b border-indigo-500/20 px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-sm font-semibold text-white">Engine Debug</span>
-            </div>
-            <button 
-              onClick={() => setShowEngineDebug(false)}
-              className="text-slate-400 hover:text-white"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          
-          <div className="p-4 space-y-4">
-            {/* Engine Status */}
-            <div className="space-y-2">
-              <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Status</p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className={`p-2 rounded ${engineStats ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-                  {engineStats ? '✓ Active' : '○ Idle'}
-                </div>
-                <div className="p-2 rounded bg-slate-700/50 text-slate-300">
-                  v1.0.0-browser
-                </div>
-              </div>
-            </div>
-
-            {/* Calculation Stats */}
-            {engineStats && (
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Last Calculation</p>
-                <div className="space-y-1 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Time:</span>
-                    <span className="text-emerald-400">{engineStats.lastCalculationTime}ms</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Pathways:</span>
-                    <span className="text-white">{engineStats.pathwaysLoaded}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Matches:</span>
-                    <span className="text-white">{engineStats.matchesCalculated}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Avg Score:</span>
-                    <span className={engineStats.avgMatchScore >= 60 ? 'text-emerald-400' : 'text-amber-400'}>
-                      {engineStats.avgMatchScore}%
-                    </span>
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             )}
-
-            {/* Profile Factors */}
-            {engineStats?.profileFactors && (
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Profile Inputs</p>
-                <div className="space-y-1 text-xs">
-                  {Object.entries(engineStats.profileFactors).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-slate-400 capitalize">{key.replace(/_/g, ' ')}:</span>
-                      <span className="text-white font-mono">{typeof value === 'number' ? value.toLocaleString() : value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Top Matches Preview */}
-            {alignProfileMatches.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Top Matches</p>
-                <div className="space-y-1">
-                  {alignProfileMatches.map((match, i) => (
-                    <div key={match.id} className="flex items-center justify-between p-2 rounded bg-slate-700/30">
-                      <span className="text-xs text-slate-300 truncate w-32">{match.pathways?.name || `Match ${i+1}`}</span>
-                      <span className={`text-xs font-bold ${
-                        match.match_score >= 85 ? 'text-emerald-400' :
-                        match.match_score >= 60 ? 'text-amber-400' : 'text-red-400'
-                      }`}>
-                        {match.match_score}%
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Algorithm Weights Reference */}
-            <div className="space-y-2">
-              <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Weights</p>
-              <div className="text-xs text-slate-400 space-y-0.5">
-                <div>Hours: 35% | Medical: 20%</div>
-                <div>Ratings: 20% | English: 15%</div>
-                <div>Recognition: 10%</div>
-              </div>
-            </div>
-
-            <p className="text-[10px] text-slate-500 text-center pt-2 border-t border-slate-700">
-              Press Ctrl+Shift+E to toggle
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Article 4 — Skybridge T2 Legal Notice Modal */}
-      {skybridgePendingPathway && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSkybridgePendingPathway(null)} />
-          <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            {/* Header */}
-            <div className="px-5 py-4 border-b border-white/8 flex items-start gap-3">
-              <span className="text-xl leading-none mt-0.5">🛃</span>
-              <div>
-                <p className="text-white font-bold text-sm">Skybridge Clearance — Terminal 2</p>
-                <p className="text-white/40 text-xs mt-0.5">Article 4 — PR-DCA-001 v1.6</p>
-              </div>
-            </div>
-            {/* Pathway being submitted */}
-            <div className="px-5 py-3 bg-white/5 border-b border-white/8">
-              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Routing cargo to</p>
-              <p className="text-white font-semibold text-sm">{skybridgePendingPathway.airline || skybridgePendingPathway.name}</p>
-              {skybridgePendingPathway.locations?.[0] && (
-                <p className="text-white/40 text-xs">{skybridgePendingPathway.locations[0]}</p>
-              )}
-            </div>
-            {/* Legal notice body */}
-            <div className="px-5 py-4">
-              <p className="text-white/70 text-xs leading-relaxed">
-                By submitting your self-declared credentials to this gate, you instruct the platform to open a pass-through skybridge to the operator.
-                The receiving entity acts as an <span className="text-white font-semibold">Independent Data Controller</span> of this cargo.
-                Benjamin Bowler (pending Aviation Pathways Ltd) does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
-              </p>
-              <div className="mt-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-[10px] text-white/35 leading-relaxed">
-                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by Benjamin Bowler (pending Aviation Pathways Ltd).
-              </div>
-            </div>
-            {/* Actions */}
-            <div className="px-5 pb-5 flex gap-3">
-              <button
-                onClick={() => setSkybridgePendingPathway(null)}
-                className="flex-1 py-2.5 rounded-xl border border-white/10 text-white/60 font-semibold text-sm hover:bg-white/5 transition-all"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  const pathway = skybridgePendingPathway;
-                  setSkybridgePendingPathway(null);
-                  handleSubmitInterest(pathway);
-                }}
-                disabled={interestSubmitting}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {interestSubmitting ? 'Submitting...' : 'Open Skybridge — Confirm'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-
-// Match Result Modal Component
-interface MatchResultModalProps {
-  pathway: PathwayData;
-  userProfile: any;
-  isDarkMode: boolean;
-  onClose: () => void;
-}
-
-const MatchResultModal: React.FC<MatchResultModalProps> = ({ pathway, userProfile, isDarkMode, onClose }) => {
-  const [saved, setSaved] = useState(false);
-
-  // Calculate match between user profile and job requirements
-  const calculateMatch = () => {
-    const userHours = userProfile?.current_flight_hours || 0;
-    const requiredHours = pathway.requirements.totalHours || 1500;
-    
-    const userLicenses = userProfile?.ratings || [];
-    const requiredLicenses = pathway.requirements.typeRatings || [];
-    
-    // Calculate hours match
-    const hoursMet = userHours >= requiredHours;
-    const hoursScore = Math.min(100, (userHours / requiredHours) * 100);
-    
-    // Calculate licenses match
-    const licensesMet = requiredLicenses.every(license =>
-      userLicenses.some(userLicense =>
-        (userLicense || '').toLowerCase().includes(license.toLowerCase())
-      )
-    );
-    const licensesScore = licensesMet ? 100 : 50;
-    
-    // Overall match score
-    const overallMatch = Math.round((hoursScore + licensesScore) / 2);
-
-    return {
-      overallMatch,
-      hoursMet,
-      hoursScore,
-      licensesMet,
-      licensesScore,
-      userHours,
-      requiredHours
-    };
-  };
-
-  const matchResult = calculateMatch();
-
-  const handleSave = () => {
-    setSaved(true);
-    // Would save to Firebase in production
-    setTimeout(() => setSaved(false), 2000);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className={`${isDarkMode ? 'bg-slate-900' : 'bg-white'} rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl`}>
-        {/* Header */}
-        <div className={`p-6 border-b ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} flex items-center justify-between`}>
-          <div>
-            <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-              REQUIREMENTS & PROFILE ALIGNMENT
-            </h2>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} mt-1`}>
-              Updated: {new Date().toLocaleDateString()}
-            </p>
-          </div>
-          <button 
-            onClick={onClose}
-            className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-500'}`}
+          </AnimatePresence>
+          <motion.button
+            onClick={() => setIsChatOpen(!isChatOpen)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-14 h-14 rounded-full bg-gradient-to-br from-red-600 to-red-500 shadow-lg shadow-red-500/30 flex items-center justify-center text-white border-2 border-white/20"
           >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Job Info */}
-          <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-            <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium mb-2">
-              <Building2 className="w-4 h-4" />
-              Source: Pathway Directory
-              <span className="mx-2">•</span>
-              <span>Airline Verified</span>
-            </div>
-            <h3 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-              {pathway.name}
-            </h3>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-              {pathway.airline}
-            </p>
-          </div>
-
-          {/* Flight Hours */}
-          <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-            <h4 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-3`}>
-              FLIGHT HOURS
-            </h4>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} mb-4`}>
-              Your account shows: {matchResult.userHours} total flight hours
-            </p>
-            <div className={`overflow-hidden rounded-lg ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
-              <table className="w-full">
-                <thead>
-                  <tr className={`${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      REQUIREMENT
-                    </th>
-                    <th className={`text-center p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      STATUS
-                    </th>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      DETAILS
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className={`${isDarkMode ? 'border-slate-700' : 'border-slate-200'} border-t`}>
-                    <td className={`p-3 text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                      {matchResult.requiredHours}+ hours
-                    </td>
-                    <td className="p-3 text-center">
-                      {matchResult.hoursMet ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-400 font-medium">
-                          <span className="text-lg">✓</span> Met
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-red-400 font-medium">
-                          <span className="text-lg">✗</span> Not Met
-                        </span>
-                      )}
-                    </td>
-                    <td className={`p-3 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {matchResult.hoursMet 
-                        ? 'You have sufficient hours' 
-                        : `Need ${matchResult.requiredHours - matchResult.userHours} more hours`}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Licenses */}
-          <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-            <h4 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-3`}>
-              LICENSES
-            </h4>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} mb-4`}>
-              Your account shows: {userProfile?.ratings?.join(', ') || 'None'}
-            </p>
-            <div className={`overflow-hidden rounded-lg ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
-              <table className="w-full">
-                <thead>
-                  <tr className={`${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      REQUIREMENT
-                    </th>
-                    <th className={`text-center p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      STATUS
-                    </th>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      DETAILS
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pathway.requirements.typeRatings.map((license, index) => {
-                    const hasLicense = userProfile?.ratings?.some(r =>
-                      (r || '').toLowerCase().includes(license.toLowerCase())
-                    );
-                    return (
-                      <tr key={index} className={`${isDarkMode ? 'border-slate-700' : 'border-slate-200'} border-t`}>
-                        <td className={`p-3 text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                          {license}
-                        </td>
-                        <td className="p-3 text-center">
-                          {hasLicense ? (
-                            <span className="inline-flex items-center gap-1 text-emerald-400 font-medium">
-                              <span className="text-lg">✓</span> Met
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 text-red-400 font-medium">
-                              <span className="text-lg">✗</span> Not Met
-                            </span>
-                          )}
-                        </td>
-                        <td className={`p-3 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          {hasLicense ? 'License requirement met' : 'Missing required license'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Certifications */}
-          <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-            <h4 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-3`}>
-              CERTIFICATIONS
-            </h4>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} mb-4`}>
-              Your account shows: 0 certifications on file
-            </p>
-            <div className={`overflow-hidden rounded-lg ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
-              <table className="w-full">
-                <thead>
-                  <tr className={`${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      REQUIREMENT
-                    </th>
-                    <th className={`text-center p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      STATUS
-                    </th>
-                    <th className={`text-left p-3 text-sm font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      DETAILS
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className={`${isDarkMode ? 'border-slate-700' : 'border-slate-200'} border-t`}>
-                    <td className={`p-3 text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                      Swim test
-                    </td>
-                    <td className="p-3 text-center">
-                      <span className="inline-flex items-center gap-1 text-red-400 font-medium">
-                        <span className="text-lg">✗</span> Not Met
-                      </span>
-                    </td>
-                    <td className={`p-3 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Missing Swim test
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Why Your Profile Matches */}
-          <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-            <h4 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-3`}>
-              WHY YOUR PROFILE MATCHES
-            </h4>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="text-4xl font-bold text-emerald-400">
-                {matchResult.overallMatch}%
-              </div>
-              <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Match based on your profile and job requirements
-              </div>
-            </div>
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-              Your profile shows a {matchResult.overallMatch}% match based on your flight hours, licenses, and certifications. 
-              {matchResult.overallMatch < 80 && ' Consider building more flight hours and completing required type ratings to improve your match score.'}
-              {matchResult.overallMatch >= 80 && ' You have a strong profile for this position.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className={`p-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} flex gap-3`}>
-          <button
-            onClick={handleSave}
-            disabled={saved}
-            className={`flex-1 py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
-              saved 
-                ? 'bg-emerald-600 text-white' 
-                : 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white shadow-lg shadow-emerald-500/25'
-            }`}
-          >
-            {saved ? (
-              <>
-                <span className="text-lg">✓</span> Saved
-              </>
-            ) : (
-              <>
-                <Bookmark className="w-5 h-5" />
-                Save Match Result
-              </>
-            )}
-          </button>
-          <button
-            onClick={onClose}
-            className={`px-6 py-3 rounded-xl font-semibold transition-colors ${isDarkMode ? 'bg-slate-700 hover:bg-slate-600 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-900'}`}
-          >
-            Close
-          </button>
+            <MessageSquare className="w-6 h-6" />
+          </motion.button>
         </div>
       </div>
     </div>
