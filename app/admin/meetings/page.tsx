@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -48,17 +49,25 @@ export default function MeetingsPage() {
     attendees: '',
   });
 
+  const { callApi } = useWorkerAuth();
+  const { getIdTokenClaims } = useAuth0();
+
   const loadMeetings = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('meetings')
-      .select('*')
-      .order('start_time', { ascending: true });
-
-    if (error) {
-      console.error('Error loading meetings:', error);
-    } else {
-      setMeetings(data || []);
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'meetings',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const sa = a.start_time || '';
+        const sb = b.start_time || '';
+        return sa.localeCompare(sb);
+      });
+      setMeetings(data as any);
+    } catch (err) {
+      console.error('Error loading meetings:', err);
     }
     setLoading(false);
   };
@@ -71,13 +80,13 @@ export default function MeetingsPage() {
     if (!newMeeting.title || !newMeeting.start_time || !newMeeting.end_time) return null;
     setGeneratingMeet(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const edgeUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-meeting`;
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
+      const edgeUrl = `${import.meta.env.VITE_PILOT_API_URL}/api/google-calendar-meeting`;
       const res = await fetch(edgeUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -121,24 +130,30 @@ export default function MeetingsPage() {
       }
     }
 
-    const { error } = await supabase.from('meetings').insert({
-      title: newMeeting.title,
-      description: newMeeting.description || null,
-      meeting_type: newMeeting.meeting_type,
-      status: 'scheduled',
-      start_time: new Date(newMeeting.start_time).toISOString(),
-      end_time: newMeeting.end_time ? new Date(newMeeting.end_time).toISOString() : null,
-      meet_link: meetLink || null,
-      attendees: newMeeting.attendees ? newMeeting.attendees.split(',').map((s) => s.trim()) : [],
-      created_by: currentUser?.id,
-      calendar_event_id: calendarEventId || null,
-    });
-
-    setCreating(false);
-    if (error) {
-      alert('Failed to create meeting: ' + error.message);
+    try {
+      await callApi('queryTable', {
+        table: 'meetings',
+        operation: 'insert',
+        data: {
+          title: newMeeting.title,
+          description: newMeeting.description || null,
+          meeting_type: newMeeting.meeting_type,
+          status: 'scheduled',
+          start_time: new Date(newMeeting.start_time).toISOString(),
+          end_time: newMeeting.end_time ? new Date(newMeeting.end_time).toISOString() : null,
+          meet_link: meetLink || null,
+          attendees: newMeeting.attendees ? newMeeting.attendees.split(',').map((s) => s.trim()) : [],
+          created_by: currentUser?.id,
+          calendar_event_id: calendarEventId || null,
+        },
+      });
+    } catch (err: any) {
+      setCreating(false);
+      alert('Failed to create meeting: ' + (err?.message || 'Unknown error'));
       return;
     }
+
+    setCreating(false);
 
     setShowCreateModal(false);
     setNewMeeting({
@@ -155,12 +170,24 @@ export default function MeetingsPage() {
 
   const deleteMeeting = async (id: string) => {
     if (!confirm('Delete this meeting?')) return;
-    const { error } = await supabase.from('meetings').delete().eq('id', id);
-    if (error) {
-      alert('Failed to delete: ' + error.message);
-      return;
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'meetings',
+        operation: 'select',
+        where: { id },
+        limit: 1,
+      });
+      if (rows?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'meetings',
+          operation: 'delete',
+          id: rows[0].id as string,
+        });
+      }
+      loadMeetings();
+    } catch (err: any) {
+      alert('Failed to delete: ' + (err?.message || 'Unknown error'));
     }
-    loadMeetings();
   };
 
   const generateMeetLink = async () => {

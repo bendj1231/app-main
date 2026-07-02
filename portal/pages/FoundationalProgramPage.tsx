@@ -3,7 +3,7 @@ import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RestrictionPage } from './RestrictionPage';
 import { EnrolledFoundationalCard } from '../components/EnrolledFoundationalCard';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Module {
     id: string;
@@ -76,18 +76,22 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     // Check if user is enrolled in Foundational Program from Supabase
     const [userHasFoundationalEnrollment, setUserHasFoundationalEnrollment] = useState<boolean | null>(null);
     
+    const { callApi } = useWorkerAuth();
+
     useEffect(() => {
         const checkEnrollment = async () => {
             if (userProfile?.id || userProfile?.uid) {
                 const userId = userProfile?.id || userProfile?.uid;
-                const { data: profileData } = await supabase
-                    .from('profiles')
-                    .select('enrolled_programs')
-                    .eq('id', userId)
-                    .maybeSingle();
-                
+                const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'profiles',
+                    operation: 'select',
+                    where: { id: userId },
+                    limit: 1,
+                });
+                const profileData = rows?.[0];
+
                 if (profileData?.enrolled_programs && Array.isArray(profileData.enrolled_programs)) {
-                    const isEnrolled = profileData.enrolled_programs.some((p: string) => 
+                    const isEnrolled = (profileData.enrolled_programs as string[]).some((p: string) =>
                         p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
                     );
                     setUserHasFoundationalEnrollment(isEnrolled);
@@ -99,7 +103,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
             }
         };
         checkEnrollment();
-    }, [userProfile?.id, userProfile?.uid]);
+    }, [userProfile?.id, userProfile?.uid, callApi]);
 
     // Video Player Helpers
     const toggleHeroVideoPlayback = () => {

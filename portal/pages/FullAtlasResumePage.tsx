@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 
 interface FullAtlasResumePageProps {
@@ -27,14 +27,14 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
       }
 
       try {
-        const { data, error } = await supabase
-          .from('pilot_flight_logs')
-          .select('hours')
-          .eq('user_id', userProfile.uid);
-
-        if (error) throw error;
-
-        const hoursSum = (data || []).reduce((sum, log) => sum + Number(log.hours || 0), 0);
+        const { callApi } = useWorkerAuth();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_flight_logs',
+          operation: 'select',
+          where: { user_id: userProfile.uid },
+          limit: 500,
+        });
+        const hoursSum = (rows || []).reduce((sum: number, log: any) => sum + Number(log.hours || 0), 0);
         setDigitalLogbookTotal(hoursSum);
       } catch (error) {
         console.error('Failed to sync atlas resume logbook totals:', error);
@@ -46,14 +46,16 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
       if (!userProfile?.uid) return;
       
       try {
-        const { data, error } = await supabase
-          .from('pilot_licensure_experience')
-          .select('*')
-          .eq('user_id', userProfile.uid)
-          .single();
-        
-        if (!error && data) {
-          setPilotData(data);
+        const { callApi } = useWorkerAuth();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'select',
+          where: { user_id: userProfile.uid },
+          limit: 1,
+        });
+        const data = rows?.[0];
+        if (data) {
+          setPilotData(data as any);
         }
       } catch (error) {
         console.error('Failed to fetch pilot data:', error);

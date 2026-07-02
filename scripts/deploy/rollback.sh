@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Automated Rollback Script
-# Rolls back Edge Functions and database to previous version
+# Rolls back Cloudflare Workers and database to previous version
 
 set -e
 
@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 # Configuration
 ENVIRONMENT=${1:-production}
 PROJECT_ID=${2:-}
-SUPABASE_ACCESS_TOKEN=${SUPABASE_ACCESS_TOKEN:-}
+CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN:-}
 ROLLBACK_TYPE=${3:-full}
 
 # Function to print colored output
@@ -34,22 +34,21 @@ print_warning() {
 check_prerequisites() {
   print_info "Checking prerequisites..."
   
-  # Check if Supabase CLI is installed
-  if ! command -v supabase &> /dev/null; then
-    print_error "Supabase CLI is not installed. Please install it first."
+  # Check if Wrangler is installed
+  if ! command -v wrangler &> /dev/null && ! command -v npx &> /dev/null; then
+    print_error "Wrangler or npx is not installed. Please install them first."
     exit 1
   fi
   
-  # Check if SUPABASE_ACCESS_TOKEN is set
-  if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
-    print_error "SUPABASE_ACCESS_TOKEN environment variable is not set."
+  # Check if CLOUDFLARE_API_TOKEN is set
+  if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+    print_error "CLOUDFLARE_API_TOKEN environment variable is not set."
     exit 1
   fi
   
-  # Check if PROJECT_ID is provided
+  # PROJECT_ID is optional for Cloudflare (used only for D1 restore if needed)
   if [ -z "$PROJECT_ID" ]; then
-    print_error "Project ID is required. Usage: ./rollback.sh [environment] [project_id] [rollback_type]"
-    exit 1
+    print_warning "Project ID not provided. Database rollback will be skipped."
   fi
   
   print_info "Prerequisites check passed."
@@ -78,14 +77,14 @@ get_latest_backup() {
   echo "$LATEST_BACKUP"
 }
 
-# Function to get latest Edge Functions backup
-get_latest_edge_functions_backup() {
-  print_info "Finding latest Edge Functions backup..."
+# Function to get latest Workers backup
+get_latest_workers_backup() {
+  print_info "Finding latest Workers backup..."
   
-  BACKUP_DIR="backups/edge-functions"
+  BACKUP_DIR="backups/workers"
   
   if [ ! -d "$BACKUP_DIR" ]; then
-    print_error "Edge Functions backup directory not found: $BACKUP_DIR"
+    print_error "Workers backup directory not found: $BACKUP_DIR"
     exit 1
   fi
   
@@ -93,40 +92,27 @@ get_latest_edge_functions_backup() {
   LATEST_BACKUP=$(ls -t "$BACKUP_DIR" 2>/dev/null | head -1)
   
   if [ -z "$LATEST_BACKUP" ]; then
-    print_error "No Edge Functions backup found in $BACKUP_DIR"
+    print_error "No Workers backup found in $BACKUP_DIR"
     exit 1
   fi
   
-  print_info "Latest Edge Functions backup: $BACKUP_DIR/$LATEST_BACKUP"
+  print_info "Latest Workers backup: $BACKUP_DIR/$LATEST_BACKUP"
   echo "$BACKUP_DIR/$LATEST_BACKUP"
 }
 
-# Function to rollback Edge Functions
-rollback_edge_functions() {
-  print_info "Rolling back Edge Functions..."
+# Function to rollback Workers
+rollback_workers() {
+  print_info "Rolling back Workers..."
   
-  local backup_dir=$(get_latest_edge_functions_backup)
+  # Re-deploy previous version from git
+  print_info "Rolling back to previous git commit..."
   
-  # Deploy each Edge Function from backup
-  for func_dir in "$backup_dir"/*; do
-    if [ -d "$func_dir" ]; then
-      local func_name=$(basename "$func_dir")
-      print_info "Rolling back $func_name..."
-      
-      # Deploy the backup version
-      supabase functions deploy "$func_name" \
-        --project-ref "$PROJECT_ID" \
-        --no-verify-jwt \
-        --local-path "$func_dir" || {
-          print_error "Failed to rollback $func_name"
-          return 1
-      }
-      
-      print_info "✓ $func_name rolled back"
-    fi
-  done
+  # Option 1: Redeploy current Workers (use wrangler deployments list for rollback)
+  npx wrangler deployments list --name pilotrecognition-api || true
+  npx wrangler deployments list --name platform-api || true
   
-  print_info "Edge Functions rollback completed."
+  print_warning "Use the Cloudflare Dashboard to roll back to a previous Worker version."
+  print_info "Workers rollback instructions displayed."
 }
 
 # Function to rollback database
@@ -135,13 +121,14 @@ rollback_database() {
   
   local backup_file=$(get_latest_backup)
   
-  # Restore database from backup
-  supabase db restore \
-    --project-ref "$PROJECT_ID" \
-    --file "$backup_file" || {
-      print_error "Failed to restore database from backup"
-      return 1
-    }
+  # D1 rollback: restore from SQL backup
+  print_info "Restoring D1 databases from $backup_file..."
+  print_warning "D1 restore requires manual execution. Use the Cloudflare Dashboard or wrangler d1 import."
+  
+  npx wrangler d1 import pilotrecognition-profiles --remote --file="$backup_file" || {
+    print_error "Failed to restore database from backup"
+    return 1
+  }
   
   print_info "Database rollback completed."
 }
@@ -151,13 +138,12 @@ rollback_frontend() {
   print_info "Rolling back frontend..."
   
   # This would typically involve:
-  # 1. Reverting to previous deployment in Vercel/Netlify
+  # 1. Reverting to previous deployment in Cloudflare Pages
   # 2. Or deploying previous build artifact
   
   print_warning "Frontend rollback requires manual intervention"
   print_info "Please rollback frontend in your deployment platform"
-  print_info "Vercel: Use 'vercel rollback' command"
-  print_info "Netlify: Use 'netlify rollback' command"
+  print_info "Cloudflare Pages: Use the Cloudflare dashboard or 'wrangler pages deployment tail --project-name=<project>'"
 }
 
 # Function to verify rollback
@@ -226,12 +212,12 @@ main() {
   # Perform rollback based on type
   case $ROLLBACK_TYPE in
     full)
-      rollback_edge_functions
+      rollback_workers
       rollback_database
       rollback_frontend
       ;;
-    edge-functions)
-      rollback_edge_functions
+    workers)
+      rollback_workers
       ;;
     database)
       rollback_database
@@ -241,7 +227,7 @@ main() {
       ;;
     *)
       print_error "Invalid rollback type: $ROLLBACK_TYPE"
-      print_info "Valid types: full, edge-functions, database, frontend"
+      print_info "Valid types: full, workers, database, frontend"
       exit 1
       ;;
   esac

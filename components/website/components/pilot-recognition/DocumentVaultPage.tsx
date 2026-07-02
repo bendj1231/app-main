@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { uploadDocument } from '@/lib/cloudinaryClient';
 import { useAccountTier } from '@/hooks/useAccountTier';
 import { 
   Upload, FileText, Check, AlertCircle, X, Camera, FileCheck, Shield, 
@@ -111,15 +112,22 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
   const [showOCRConfirm, setShowOCRConfirm] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [history, setHistory] = useState<VerificationHistory[]>([]);
+  const { callApi } = useWorkerAuth();
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
   const loadDocuments = useCallback(async () => {
     if (!userProfile?.id) return;
-    const { data } = await supabase
-      .from('pilot_documents')
-      .select('*')
-      .eq('pilot_id', userProfile.id)
-      .order('uploaded_at', { ascending: false });
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_documents',
+      operation: 'select',
+      where: { pilot_id: userProfile.id },
+      limit: 500,
+    });
+    const data = (rows || []).sort((a: any, b: any) => {
+      const ua = a.uploaded_at || '';
+      const ub = b.uploaded_at || '';
+      return ub.localeCompare(ua);
+    });
     if (data) {
       const mapped: UploadedDocument[] = data.map((d: Record<string, unknown>) => ({
         id: d.id as string,
@@ -193,35 +201,28 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
     setDocuments(prev => [...prev, newDoc]);
 
     try {
-      const ext = file.name.split('.').pop() ?? 'bin';
-      const storagePath = `${userProfile.id}/${docType}/${Date.now()}.${ext}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('pilot-documents')
-        .upload(storagePath, file, { upsert: false });
-
-      if (uploadError) throw uploadError;
+      const uploadResult = await uploadDocument(file, userProfile.id, docType);
+      if (!uploadResult.success) throw new Error(uploadResult.error || 'Upload failed');
 
       setDocuments(prev => prev.map(d => d.id === tempId ? { ...d, status: 'processing' } : d));
 
-      const { data: row, error: dbError } = await supabase
-        .from('pilot_documents')
-        .insert({
+      const insertedRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_documents',
+        operation: 'insert',
+        data: {
           pilot_id: userProfile.id,
           doc_type: docType,
           file_name: file.name,
           file_size_bytes: file.size,
-          storage_path: storagePath,
-          storage_bucket: 'pilot-documents',
+          storage_url: uploadResult.url,
+          storage_public_id: uploadResult.publicId,
           status: 'pending_review',
-        })
-        .select('id')
-        .single();
-
-      if (dbError) throw dbError;
+        },
+      });
+      const row = insertedRows?.[0];
 
       setDocuments(prev => prev.map(d =>
-        d.id === tempId ? { ...d, id: row.id, status: 'pending_review' } : d
+        d.id === tempId ? { ...d, id: (row?.id as string) || tempId, status: 'pending_review' } : d
       ));
       setLastSync(new Date());
     } catch (err) {

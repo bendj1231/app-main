@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getUserSubscription, checkFeatureAccess } from '@/lib/subscription-gating';
 import { 
@@ -14,7 +15,7 @@ import {
   AviationRole,
   ResumeTemplate 
 } from '@/types/atlas-resume';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { 
   FileText, 
   Download, 
@@ -37,6 +38,8 @@ interface AtlasResumeBuilderProps {
 
 const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
   const { currentUser } = useAuth();
+  const { getIdTokenClaims } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [recognitionScore, setRecognitionScore] = useState<number | null>(null);
   const [scoreLoading, setScoreLoading] = useState(true);
   const [subscription, setSubscription] = useState<any>(null);
@@ -91,22 +94,26 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
   useEffect(() => {
     const loadData = async () => {
       if (currentUser?.uid) {
+        const claims = await getIdTokenClaims();
+        const token = claims?.__raw;
+        if (!token) return;
         // Check subscription
-        const sub = await getUserSubscription(currentUser.uid);
+        const sub = await getUserSubscription(token, currentUser.uid);
         setSubscription(sub);
         const canAccess = checkFeatureAccess(sub, 'premium');
         setHasPremiumAccess(canAccess);
         
         // Load recognition score
         try {
-          const { data, error } = await supabase
-            .from('pilot_recognition_scores')
-            .select('overall_score')
-            .eq('user_id', currentUser.uid)
-            .single();
-          
-          if (!error && data) {
-            setRecognitionScore(data.overall_score);
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_recognition_scores',
+            operation: 'select',
+            where: { user_id: currentUser.uid },
+            limit: 1,
+          });
+          const data = rows?.[0];
+          if (data) {
+            setRecognitionScore((data.overall_score as number) || null);
           }
         } catch (err) {
           console.error('Error loading recognition score:', err);
@@ -123,14 +130,15 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
 
   const loadResumeData = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('atlas_resumes')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-
-      if (data && !error) {
-        setResumeData(data);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'atlas_resumes',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const data = rows?.[0];
+      if (data) {
+        setResumeData(data as AtlasResumeData);
       }
     } catch (error) {
       console.error('Error loading resume data:', error);
@@ -139,18 +147,19 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
 
   const loadAnalytics = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('resume_analytics')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-
-      if (data && !error) {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'resume_analytics',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const data = rows?.[0];
+      if (data) {
         setAnalytics({
-          views: data.views || 0,
-          downloads: data.downloads || 0,
-          shares: data.shares || 0,
-          applications: data.applications || 0,
+          views: (data.views as number) || 0,
+          downloads: (data.downloads as number) || 0,
+          shares: (data.shares as number) || 0,
+          applications: (data.applications as number) || 0,
         });
       }
     } catch (error) {
@@ -162,15 +171,26 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
     if (!currentUser?.uid) return;
 
     try {
-      const { error } = await supabase
-        .from('atlas_resumes')
-        .upsert({
-          user_id: currentUser.uid,
-          ...resumeData,
-          updated_at: new Date(),
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'atlas_resumes',
+        operation: 'select',
+        where: { user_id: currentUser.uid },
+        limit: 1,
+      });
+      if (existing?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'update',
+          id: existing[0].id as string,
+          data: { ...resumeData, updated_at: new Date().toISOString() },
         });
-
-      if (error) throw error;
+      } else {
+        await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'insert',
+          data: { user_id: currentUser.uid, ...resumeData, updated_at: new Date().toISOString() },
+        });
+      }
       alert('Resume saved successfully!');
     } catch (error) {
       console.error('Error saving resume:', error);
@@ -185,30 +205,43 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
       const shareToken = Math.random().toString(36).substring(2, 15);
       const shareUrl = `${window.location.origin}/resume/${shareToken}`;
 
-      const { error } = await supabase
-        .from('resume_shares')
-        .insert({
+      await callApi('queryTable', {
+        table: 'resume_shares',
+        operation: 'insert',
+        data: {
           resume_id: resumeData.id || crypto.randomUUID(),
           user_id: currentUser.uid,
           share_token: shareToken,
           share_url: shareUrl,
           is_public: false,
-          created_at: new Date(),
-        });
-
-      if (error) throw error;
+          created_at: new Date().toISOString(),
+        },
+      });
 
       await navigator.clipboard.writeText(shareUrl);
       alert('Share link copied to clipboard!');
-      
+
       // Update analytics
-      await supabase
-        .from('resume_analytics')
-        .upsert({
-          user_id: currentUser.uid,
-          shares: analytics.shares + 1,
-          updated_at: new Date(),
+      const existingAnalytics = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'resume_analytics',
+        operation: 'select',
+        where: { user_id: currentUser.uid },
+        limit: 1,
+      });
+      if (existingAnalytics?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'resume_analytics',
+          operation: 'update',
+          id: existingAnalytics[0].id as string,
+          data: { shares: analytics.shares + 1, updated_at: new Date().toISOString() },
         });
+      } else {
+        await callApi('queryTable', {
+          table: 'resume_analytics',
+          operation: 'insert',
+          data: { user_id: currentUser.uid, shares: analytics.shares + 1, updated_at: new Date().toISOString() },
+        });
+      }
     } catch (error) {
       console.error('Error generating share link:', error);
       alert('Failed to generate share link');
@@ -226,17 +259,36 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
     }
 
     try {
-      const { error } = await supabase
-        .from('atlas_resumes')
-        .update({
-          is_certified: true,
-          certification_date: new Date(),
-          updated_at: new Date(),
-        })
-        .eq('user_id', currentUser?.uid);
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'atlas_resumes',
+        operation: 'select',
+        where: { user_id: currentUser?.uid },
+        limit: 1,
+      });
+      if (existing?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'update',
+          id: existing[0].id as string,
+          data: {
+            is_certified: true,
+            certification_date: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        });
+      } else {
 
-      if (error) throw error;
-
+        await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'insert',
+          data: {
+            user_id: currentUser?.uid,
+            is_certified: true,
+            certification_date: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        });
+      }
       setResumeData(prev => ({
         ...prev,
         isCertified: true,
@@ -255,53 +307,86 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
 
     try {
       // First save the resume if not saved
-      const { data: savedResume, error: saveError } = await supabase
-        .from('atlas_resumes')
-        .upsert({
-          user_id: currentUser.uid,
-          ...resumeData,
-          updated_at: new Date(),
-        })
-        .select()
-        .single();
-
-      if (saveError) throw saveError;
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'atlas_resumes',
+        operation: 'select',
+        where: { user_id: currentUser.uid },
+        limit: 1,
+      });
+      let savedResumeId = existing?.[0]?.id as string | undefined;
+      if (savedResumeId) {
+        await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'update',
+          id: savedResumeId,
+          data: { ...resumeData, updated_at: new Date().toISOString() },
+        });
+      } else {
+        const inserted = await callApi('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'insert',
+          data: { user_id: currentUser.uid, ...resumeData, updated_at: new Date().toISOString() },
+        });
+        savedResumeId = (inserted as any)?.id || resumeData.id;
+      }
 
       // Get airline details
-      const { data: airlines, error: airlinesError } = await supabase
-        .from('enterprise_accounts')
-        .select('id, airline_name')
-        .in('id', selectedAirlines);
-
-      if (airlinesError) throw airlinesError;
+      const airlineRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'enterprise_accounts',
+        operation: 'select',
+        where: { id: selectedAirlines[0] },
+        limit: 500,
+      });
+      const airlines = (airlineRows || []) as any[];
 
       // Create applications for each selected airline
       const applications = airlines.map(airline => ({
-        resume_id: savedResume.id,
+        resume_id: savedResumeId,
         user_id: currentUser.uid,
         airline_id: airline.id,
         airline_name: airline.airline_name,
         status: 'submitted',
         application_status: 'pending',
-        applied_at: new Date(),
-        updated_at: new Date(),
+        applied_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       }));
 
-      const { error: appError } = await supabase
-        .from('resume_airline_applications')
-        .insert(applications);
-
-      if (appError) throw appError;
+      await callApi('queryTable', {
+        table: 'resume_airline_applications',
+        operation: 'insert',
+        data: applications,
+      });
 
       // Update analytics
-      await supabase
-        .from('resume_analytics')
-        .upsert({
-          user_id: currentUser.uid,
-          resume_id: savedResume.id,
-          applications: analytics.applications + selectedAirlines.length,
-          updated_at: new Date(),
+      const existingAnalytics = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'resume_analytics',
+        operation: 'select',
+        where: { user_id: currentUser.uid },
+        limit: 1,
+      });
+      if (existingAnalytics?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'resume_analytics',
+          operation: 'update',
+          id: existingAnalytics[0].id as string,
+          data: {
+            resume_id: savedResumeId,
+            applications: analytics.applications + selectedAirlines.length,
+            updated_at: new Date().toISOString(),
+          },
         });
+      } else {
+        await callApi('queryTable', {
+          table: 'resume_analytics',
+          operation: 'insert',
+          data: {
+            user_id: currentUser.uid,
+            resume_id: savedResumeId,
+            applications: analytics.applications + selectedAirlines.length,
+            updated_at: new Date().toISOString(),
+          },
+        });
+      }
 
       alert(`Successfully shared your résumé with ${selectedAirlines.length} airline(s)!`);
     } catch (error) {

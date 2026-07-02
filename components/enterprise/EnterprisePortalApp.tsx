@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useEnterprisePortal } from './hooks/useEnterprisePortal';
 import { useAuth0 } from '@auth0/auth0-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useDb } from './hooks/useDb';
 import { InterviewerDashboard } from './InterviewerDashboard';
 import { InterviewHistoryPage } from './InterviewHistoryPage';
 import { FlightSchoolPortal } from './FlightSchoolPortal';
@@ -330,6 +330,7 @@ function StatCard({ label, value, icon: Icon, color, sub }: { label: string; val
 
 // ─── Applications Page ───────────────────────────────────────────────────────
 function ApplicationsPage({ user, account }: { user: any; account: any }) {
+  const db = useDb();
   const [applications, setApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
@@ -344,7 +345,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
     if (!account?.id) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('pilot_applications')
         .select('*')
         .eq('enterprise_account_id', account.id)
@@ -373,9 +374,9 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
     if (!account?.id) return;
     setInterestsLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('pathway_card_interests')
-        .select('*, profiles(full_name, email, total_flight_hours, overall_recognition_score, nationality, license_id, profile_image_url, medical_expiry, license_expiry)')
+        .select('*')
         .eq('enterprise_account_id', account.id)
         .order('submitted_at', { ascending: false });
       if (error) throw error;
@@ -392,7 +393,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
   }, [account?.id, activeTab]);
 
   const updateInterestStatus = async (interestId: string, newStatus: string) => {
-    await supabase.from('pathway_card_interests').update({ status: newStatus }).eq('id', interestId);
+    await db.from('pathway_card_interests').update({ status: newStatus }).eq('id', interestId);
     loadInterests();
   };
 
@@ -755,6 +756,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
 
 // ─── Analytics Page ───────────────────────────────────────────────────────────
 function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user: any; account: any; isFlightSchool?: boolean; flightSchoolId?: string }) {
+  const db = useDb();
   const [analytics, setAnalytics] = useState<any[]>([]);
   const [referralMetrics, setReferralMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -764,7 +766,7 @@ function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user
     if (!account?.id) return;
     setLoading(true);
     try {
-      const { data: cards, error } = await supabase
+      const { data: cards, error } = await db
         .from('enterprise_pathway_cards')
         .select('*')
         .eq('enterprise_account_id', account.id)
@@ -796,7 +798,7 @@ function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user
   const loadReferralMetrics = async () => {
     if (!isFlightSchool || !flightSchoolId) return;
     try {
-      const { data } = await supabase
+      const { data } = await db
         .from('referral_analytics')
         .select('*')
         .eq('flight_school_id', flightSchoolId)
@@ -1061,6 +1063,7 @@ function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 function Dashboard({ user, account }: { user: any; account: any }) {
+  const db = useDb();
   const [stats, setStats] = useState({ cards: 0, jobs: 0, published: 0, drafts: 0 });
   const [recentCards, setRecentCards] = useState<any[]>([]);
   const accountType: AccountType = account?.account_type || 'airline';
@@ -1074,16 +1077,16 @@ function Dashboard({ user, account }: { user: any; account: any }) {
 
   useEffect(() => {
     if (!account?.id) return;
-    supabase.from('enterprise_pathway_cards').select('id, is_published', { count: 'exact' })
+    db.from('enterprise_pathway_cards').select('id, is_published', { count: 'exact' })
       .eq('enterprise_account_id', account.id)
       .then(({ data, count }) => {
         const published = data?.filter(c => c.is_published).length || 0;
         setStats(s => ({ ...s, cards: count || 0, published, drafts: (count || 0) - published }));
       });
-    supabase.from('job_opportunities').select('id', { count: 'exact' })
+    db.from('job_opportunities').select('id', { count: 'exact' })
       .eq('enterprise_account_id', account.id)
       .then(({ count }) => setStats(s => ({ ...s, jobs: count || 0 })));
-    supabase.from('enterprise_pathway_cards').select('id, title, position_type, is_published, created_at')
+    db.from('enterprise_pathway_cards').select('id, title, position_type, is_published, created_at')
       .eq('enterprise_account_id', account.id)
       .order('created_at', { ascending: false }).limit(5)
       .then(({ data }) => setRecentCards(data || []));
@@ -1142,6 +1145,7 @@ function Dashboard({ user, account }: { user: any; account: any }) {
 
 // ─── Pathway Cards ─────────────────────────────────────────────────────────────
 function PathwayCardsPage({ user, account }: { user: any; account: any }) {
+  const db = useDb();
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -1160,7 +1164,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
   const load = async () => {
     if (!account?.id) return;
     setLoading(true);
-    const { data } = await supabase.from('enterprise_pathway_cards').select('*')
+    const { data } = await db.from('enterprise_pathway_cards').select('*')
       .eq('enterprise_account_id', account.id).order('created_at', { ascending: false });
     setCards(data || []);
     setLoading(false);
@@ -1196,7 +1200,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
       },
     };
     if (editing) {
-      await supabase.from('enterprise_pathway_cards').update({
+      await db.from('enterprise_pathway_cards').update({
         ...payload.cardData,
         updated_at: new Date().toISOString(),
         published_at: form.is_published && !editing.is_published ? new Date().toISOString() : editing.published_at,
@@ -1212,7 +1216,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
   };
 
   const togglePublish = async (c: any) => {
-    await supabase.from('enterprise_pathway_cards').update({
+    await db.from('enterprise_pathway_cards').update({
       is_published: !c.is_published,
       published_at: !c.is_published ? new Date().toISOString() : null,
     }).eq('id', c.id);
@@ -1221,7 +1225,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
 
   const deleteCard = async (id: string) => {
     if (!confirm('Delete this pathway card?')) return;
-    await supabase.from('enterprise_pathway_cards').delete().eq('id', id);
+    await db.from('enterprise_pathway_cards').delete().eq('id', id);
     load();
   };
 
@@ -1413,6 +1417,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
 
 // ─── Job Listings ─────────────────────────────────────────────────────────────
 function JobListingsPage({ user, account }: { user: any; account: any }) {
+  const db = useDb();
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -1430,7 +1435,7 @@ function JobListingsPage({ user, account }: { user: any; account: any }) {
   const load = async () => {
     if (!account?.id) return;
     setLoading(true);
-    const { data } = await supabase.from('job_opportunities').select('*')
+    const { data } = await db.from('job_opportunities').select('*')
       .eq('enterprise_account_id', account.id).order('posting_date', { ascending: false });
     setJobs(data || []);
     setLoading(false);
@@ -1442,7 +1447,7 @@ function JobListingsPage({ user, account }: { user: any; account: any }) {
     if (!user?.id) return;
     setSaving(true);
     if (editing) {
-      await supabase.from('job_opportunities').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editing.id);
+      await db.from('job_opportunities').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editing.id);
     } else {
       await fetch(`${FIREBASE_BASE}/postEnterpriseJobListing`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -1455,13 +1460,13 @@ function JobListingsPage({ user, account }: { user: any; account: any }) {
   };
 
   const toggleActive = async (j: any) => {
-    await supabase.from('job_opportunities').update({ is_active: !j.is_active, status: !j.is_active ? 'active' : 'closed' }).eq('id', j.id);
+    await db.from('job_opportunities').update({ is_active: !j.is_active, status: !j.is_active ? 'active' : 'closed' }).eq('id', j.id);
     load();
   };
 
   const deleteJob = async (id: string) => {
     if (!confirm('Delete this job listing?')) return;
-    await supabase.from('job_opportunities').delete().eq('id', id);
+    await db.from('job_opportunities').delete().eq('id', id);
     load();
   };
 
@@ -1568,6 +1573,7 @@ function JobListingsPage({ user, account }: { user: any; account: any }) {
 
 // ─── Airline Expectations ──────────────────────────────────────────────────────
 function AirlineExpectationsPage({ user, account }: { user: any; account: any }) {
+  const db = useDb();
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -1584,7 +1590,7 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
 
   useEffect(() => {
     if (!account?.id) return;
-    supabase.from('airline_expectations').select('*').eq('enterprise_account_id', account.id).single()
+    db.from('airline_expectations').select('*').eq('enterprise_account_id', account.id).single()
       .then(({ data }) => {
         if (data) {
           setRecord(data);
@@ -1621,7 +1627,7 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
     try {
       if (record?.id) {
         // Update existing record
-        const { error } = await supabase
+        const { error } = await db
           .from('airline_expectations')
           .update({ ...form, airline_name: account?.airline_name })
           .eq('id', record.id);
@@ -1629,7 +1635,7 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
         if (error) throw error;
       } else {
         // Create new record
-        const { error } = await supabase
+        const { error } = await db
           .from('airline_expectations')
           .insert([{ 
             ...form, 
@@ -1719,22 +1725,24 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
 
 // ─── Verification Chips ───────────────────────────────────────────────────────
 function VerificationChips({ pilotId }: { pilotId: string }) {
+  const db = useDb();
   const [chips, setChips] = useState<{ label: string; color: string; bg: string }[]>([]);
   useEffect(() => {
     Promise.all([
-      supabase.from('medical_certificate_records')
+      db.from('medical_certificate_records')
         .select('certificate_class, expiry_date, status')
         .eq('user_id', pilotId)
         .order('expiry_date', { ascending: false })
         .limit(1).maybeSingle(),
-      supabase.from('verification_records')
+      db.from('verification_records')
         .select('document_type, verification_status')
         .eq('user_id', pilotId)
         .eq('verification_status', 'verified')
         .limit(5),
-      supabase.from('profiles')
+      db.from('profiles')
         .select('pre_cleared')
-        .eq('id', pilotId).maybeSingle(),
+        .eq('id', pilotId).maybeSingle()
+        .dbName('DB_PROFILES'),
     ]).then(([medRes, verRes, profileRes]) => {
       const result: { label: string; color: string; bg: string }[] = [];
       if (profileRes.data?.pre_cleared) {
@@ -1767,6 +1775,7 @@ function VerificationChips({ pilotId }: { pilotId: string }) {
 
 // ─── Pilot Search ─────────────────────────────────────────────────────────────
 function PilotSearchPage({ user, account }: { user: any; account?: any }) {
+  const db = useDb();
   const [filters, setFilters] = useState({
     minHours: '', maxHours: '', icaoLevel: '', nationality: '',
     typeRating: '', availabilityStatus: '', licenseType: '',
@@ -1785,7 +1794,7 @@ function PilotSearchPage({ user, account }: { user: any; account?: any }) {
     setLoading(true);
     setSearched(true);
     try {
-      let query = supabase.from('profiles').select('*');
+      let query = db.from('profiles').select('*').dbName('DB_PROFILES');
       if (filters.nationality) query = query.ilike('nationality', `%${filters.nationality}%`);
       if (filters.licenseType) query = query.ilike('license_type', `%${filters.licenseType}%`);
       if (filters.minHours) query = query.gte('total_flight_hours', parseFloat(filters.minHours));
@@ -2515,6 +2524,7 @@ PilotRecognition Platform Support`}</div>
 
 // ─── Admin Panel ───────────────────────────────────────────────────────────────
 function AdminPanel({ user }: { user: any }) {
+  const db = useDb();
   const [tab, setTab] = useState<'requests' | 'users' | 'overview'>('requests');
   const [requests, setRequests] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
@@ -2522,11 +2532,11 @@ function AdminPanel({ user }: { user: any }) {
   const [actioning, setActioning] = useState<string | null>(null);
 
   const loadRequests = async () => {
-    const { data } = await supabase.from('enterprise_access_requests').select('*').order('created_at', { ascending: false });
+    const { data } = await db.from('enterprise_access_requests').select('*').order('created_at', { ascending: false });
     setRequests(data || []);
   };
   const loadUsers = async () => {
-    const { data } = await supabase.from('profiles').select('id, email, display_name, enterprise_access, is_enterprise_manager, created_at').eq('enterprise_access', true).order('created_at', { ascending: false });
+    const { data } = await db.from('profiles').select('id, email, display_name, enterprise_access, is_enterprise_manager, created_at').eq('enterprise_access', true).order('created_at', { ascending: false }).dbName('DB_PROFILES');
     setUsers(data || []);
   };
 
@@ -2539,8 +2549,8 @@ function AdminPanel({ user }: { user: any }) {
     setActioning(req.id);
     try {
       // Grant enterprise access
-      await supabase.from('profiles').update({ enterprise_access: true }).eq('email', req.email);
-      await supabase.from('enterprise_access_requests').update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
+      await db.from('profiles').update({ enterprise_access: true }).eq('email', req.email).dbName('DB_PROFILES');
+      await db.from('enterprise_access_requests').update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
       await loadRequests();
       await loadUsers();
     } finally { setActioning(null); }
@@ -2549,7 +2559,7 @@ function AdminPanel({ user }: { user: any }) {
   const rejectRequest = async (req: any) => {
     setActioning(req.id);
     try {
-      await supabase.from('enterprise_access_requests').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
+      await db.from('enterprise_access_requests').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
       await loadRequests();
     } finally { setActioning(null); }
   };
@@ -2558,7 +2568,7 @@ function AdminPanel({ user }: { user: any }) {
     if (!confirm(`Revoke enterprise access for ${u.email}?`)) return;
     setActioning(u.id);
     try {
-      await supabase.from('profiles').update({ enterprise_access: false }).eq('id', u.id);
+      await db.from('profiles').update({ enterprise_access: false }).eq('id', u.id).dbName('DB_PROFILES');
       await loadUsers();
     } finally { setActioning(null); }
   };
@@ -2566,7 +2576,7 @@ function AdminPanel({ user }: { user: any }) {
   const toggleManager = async (u: any) => {
     setActioning(u.id);
     try {
-      await supabase.from('profiles').update({ is_enterprise_manager: !u.is_enterprise_manager }).eq('id', u.id);
+      await db.from('profiles').update({ is_enterprise_manager: !u.is_enterprise_manager }).eq('id', u.id).dbName('DB_PROFILES');
       await loadUsers();
     } finally { setActioning(null); }
   };
@@ -2678,6 +2688,7 @@ function AdminPanel({ user }: { user: any }) {
 export function EnterprisePortalApp() {
   const { auth0User, account, hasAccess, loading, error, refreshAccount, updateAccount, callApi } = useEnterprisePortal();
   const { logout } = useAuth0();
+  const db = useDb();
   const [page, setPage] = useState<Page>('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [flightSchoolExists, setFlightSchoolExists] = useState<boolean | null>(null);

@@ -6,7 +6,7 @@ import {
   Send, FileText, Star, ChevronRight, Info, Lock,
   ExternalLink, Upload, Download, Eye
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface AirbusReviewWorkflowProps {
   interviewId: string;
@@ -21,6 +21,7 @@ export function AirbusReviewWorkflow({
   pilotName,
   onComplete
 }: AirbusReviewWorkflowProps) {
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<'not_submitted' | 'submitted' | 'under_review' | 'approved' | 'rejected'>('not_submitted');
   const [reviewNotes, setReviewNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,16 +34,16 @@ export function AirbusReviewWorkflow({
 
     try {
       // Update interview with Airbus review status
-      const { error: updateError } = await supabase
-        .from('interviews')
-        .update({
+      await callApi('queryTable', {
+        table: 'interviews',
+        operation: 'update',
+        id: interviewId,
+        data: {
           airbus_review_status: 'submitted',
           airbus_review_notes: reviewNotes,
-          airbus_reviewed_at: new Date().toISOString()
-        })
-        .eq('id', interviewId);
-
-      if (updateError) throw updateError;
+          airbus_reviewed_at: new Date().toISOString(),
+        },
+      });
 
       setStatus('submitted');
       setIsSubmitted(true);

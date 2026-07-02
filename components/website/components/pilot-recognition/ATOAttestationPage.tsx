@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, CheckCircle2, XCircle, Clock, Loader2, Send, AlertCircle, ShieldCheck } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props {
   onBack: () => void;
@@ -63,6 +63,7 @@ const labelStyle: React.CSSProperties = {
 
 export function ATOAttestationPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [requests, setRequests] = useState<ATORequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -84,12 +85,18 @@ export function ATOAttestationPage({ onBack, onNavigate }: Props) {
   const loadRequests = useCallback(async () => {
     if (!currentUser?.id) { setLoading(false); return; }
     setLoading(true);
-    const { data, error: err } = await supabase
-      .from('ato_attestation_requests')
-      .select('*')
-      .eq('pilot_id', currentUser.id)
-      .order('created_at', { ascending: false });
-    if (!err) setRequests(data ?? []);
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'ato_attestation_requests',
+      operation: 'select',
+      where: { pilot_id: currentUser.id },
+      limit: 500,
+    });
+    const sorted = (rows || []).sort((a: any, b: any) => {
+      const ca = a.created_at || '';
+      const cb = b.created_at || '';
+      return cb.localeCompare(ca);
+    });
+    setRequests((sorted as unknown) as ATORequest[]);
     setLoading(false);
   }, [currentUser?.id]);
 
@@ -101,11 +108,13 @@ export function ATOAttestationPage({ onBack, onNavigate }: Props) {
     setSubmitting(true);
     setError(null);
 
-    const { data: wallet } = await supabase
-      .from('pilot_verification_wallet')
-      .select('id')
-      .eq('pilot_id', currentUser.id)
-      .maybeSingle();
+    const walletRows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_verification_wallet',
+      operation: 'select',
+      where: { pilot_id: currentUser.id },
+      limit: 1,
+    });
+    const wallet = walletRows?.[0];
 
     if (!wallet) {
       setError('You must initiate your Verification Wallet before submitting an ATO request. Go to Verification → Begin Verification first.');
@@ -113,30 +122,32 @@ export function ATOAttestationPage({ onBack, onNavigate }: Props) {
       return;
     }
 
-    const { error: insertErr } = await supabase
-      .from('ato_attestation_requests')
-      .insert({
-        pilot_id: currentUser.id,
-        wallet_id: wallet.id,
-        ato_name: form.ato_name,
-        ato_contact_email: form.ato_contact_email || null,
-        country: form.country,
-        course_name: form.course_name,
-        course_type: form.course_type,
-        completion_date: form.completion_date,
-        certificate_number: form.certificate_number || null,
-        submitted_hours: form.submitted_hours ? parseFloat(form.submitted_hours) : null,
+    try {
+      await callApi('queryTable', {
+        table: 'ato_attestation_requests',
+        operation: 'insert',
+        data: {
+          pilot_id: currentUser.id,
+          wallet_id: wallet.id,
+          ato_name: form.ato_name,
+          ato_contact_email: form.ato_contact_email || null,
+          country: form.country,
+          course_name: form.course_name,
+          course_type: form.course_type,
+          completion_date: form.completion_date,
+          certificate_number: form.certificate_number || null,
+          submitted_hours: form.submitted_hours ? parseFloat(form.submitted_hours) : null,
+        },
       });
-
-    if (insertErr) {
-      setError(insertErr.message);
-    } else {
       setSuccess(true);
       setShowForm(false);
       setForm({ ato_name:'', ato_contact_email:'', country:'PH', course_name:'', course_type:'CPL', completion_date:'', certificate_number:'', submitted_hours:'' });
       await loadRequests();
+    } catch (err: any) {
+      setError(err?.message || 'Failed to submit request.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   }
 
   return (

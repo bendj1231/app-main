@@ -1,5 +1,6 @@
 import React from 'react';
 import { Zap, Crown, ArrowRight } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { getUserSubscription } from '@/lib/subscription-gating';
 
 interface UpgradeCTAProps {
@@ -12,15 +13,22 @@ interface UpgradeCTAProps {
 export default function UpgradeCTA({ userId, onUpgrade, compact = false, variant = 'card' }: UpgradeCTAProps) {
   const [subscription, setSubscription] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
+  const { getIdTokenClaims } = useAuth0();
 
   React.useEffect(() => {
     async function loadSubscription() {
-      const sub = await getUserSubscription(userId);
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      const sub = await getUserSubscription(token, userId);
       setSubscription(sub);
       setLoading(false);
     }
     loadSubscription();
-  }, [userId]);
+  }, [userId, getIdTokenClaims]);
 
   if (loading || subscription?.isPremium) {
     return null;

@@ -12,7 +12,7 @@ import {
   Award,
   Loader2
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface CareerPathwaysHomePageProps {
   onNavigate?: (path: string) => void;
@@ -34,6 +34,7 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = ({
   pilotId
 }) => {
   const navigate = useNavigate();
+  const { callApi } = useWorkerAuth();
   const [stats, setStats] = useState<RealTimeStats>({
     totalPathways: 0,
     activeAirlines: 0,
@@ -49,35 +50,38 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = ({
     const fetchStats = async () => {
       try {
         // Get pathways count
-        const { count: pathwaysCount } = await supabase
-          .from('pathways')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'active');
+        const pathwaysRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pathways',
+          operation: 'select',
+          where: { status: 'active' },
+          limit: 1000,
+        });
+        const pathwaysCount = pathwaysRows?.length ?? 0;
 
         // Get active airlines (pathways operators)
-        const { data: airlines } = await supabase
-          .from('pathways')
-          .select('operator_name')
-          .eq('status', 'active')
-          .eq('hiring_status', 'open');
+        const airlines = pathwaysRows?.filter((p: any) => p.hiring_status === 'open') ?? [];
 
         // Get total pilots
-        const { count: pilotsCount } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true });
+        const profilesRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 1,
+        });
+        const pilotsCount = profilesRows?.length ?? 0;
 
         // Get average match score if pilot is logged in
         let avgScore = 0;
         if (pilotId) {
-          const { data: matches } = await supabase
-            .from('pathway_matches')
-            .select('match_score')
-            .eq('pilot_id', pilotId)
-            .gte('match_score', 0);
-          
-          if (matches && matches.length > 0) {
+          const matches = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pathway_matches',
+            operation: 'select',
+            where: { pilot_id: pilotId },
+            limit: 500,
+          });
+          const validMatches = (matches || []).filter((m: any) => (m.match_score || 0) >= 0);
+          if (validMatches.length > 0) {
             avgScore = Math.round(
-              matches.reduce((sum: number, m: any) => sum + (m.match_score || 0), 0) / matches.length
+              validMatches.reduce((sum: number, m: any) => sum + (m.match_score || 0), 0) / validMatches.length
             );
           }
         }
@@ -108,15 +112,14 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = ({
   // Fetch featured pathways
   useEffect(() => {
     const fetchFeaturedPathways = async () => {
-      const { data } = await supabase
-        .from('pathways')
-        .select('*')
-        .eq('status', 'active')
-        .eq('featured', true)
-        .order('display_order', { ascending: true })
-        .limit(4);
-      
-      setFeaturedPathways(data || []);
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pathways',
+        operation: 'select',
+        where: { status: 'active', featured: true },
+        limit: 50,
+      });
+      const sorted = (data || []).sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0)).slice(0, 4);
+      setFeaturedPathways(sorted);
     };
 
     fetchFeaturedPathways();
@@ -127,17 +130,29 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = ({
     if (!pilotId) return;
 
     const fetchTopMatches = async () => {
-      const { data } = await supabase
-        .from('pathway_matches')
-        .select(`
-          *,
-          pathways (*)
-        `)
-        .eq('pilot_id', pilotId)
-        .order('match_score', { ascending: false })
-        .limit(3);
-      
-      setTopMatches(data || []);
+      const matchRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pathway_matches',
+        operation: 'select',
+        where: { pilot_id: pilotId },
+        limit: 50,
+      });
+      const sortedMatches = (matchRows || []).sort((a: any, b: any) => (b.match_score || 0) - (a.match_score || 0)).slice(0, 3);
+
+      // Fetch related pathways
+      const pathwayIds = sortedMatches.map((m: any) => m.pathway_id).filter(Boolean);
+      let pathways: Record<string, Record<string, unknown>> = {};
+      if (pathwayIds.length) {
+        const pathwayRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pathways',
+          operation: 'select',
+          where: { id: pathwayIds[0] },
+          limit: 50,
+        });
+        (pathwayRows || []).forEach((p: any) => { if (p.id) pathways[p.id] = p; });
+      }
+
+      const merged = sortedMatches.map((m: any) => ({ ...m, pathways: pathways[m.pathway_id] || null }));
+      setTopMatches(merged);
     };
 
     fetchTopMatches();

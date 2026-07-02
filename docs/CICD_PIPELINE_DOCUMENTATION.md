@@ -36,9 +36,9 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `scripts/deploy-edge-functions.sh` | Deploy Edge Functions | `./scripts/deploy-edge-functions.sh [environment] [project_id]` |
-| `scripts/migrate-database.sh` | Run database migrations | `./scripts/migrate-database.sh [environment] [project_id] [migration_dir]` |
-| `scripts/rollback.sh` | Rollback deployment | `./scripts/rollback.sh [environment] [project_id] [rollback_type]` |
+| `scripts/d1-apply-migrations.sh` | Apply D1 migrations | `./scripts/d1-apply-migrations.sh` |
+| `scripts/deploy/rollback.sh` | Rollback deployment | `./scripts/deploy/rollback.sh [environment]` |
+| `wrangler deploy` | Deploy Cloudflare Workers | `cd worker && npx wrangler deploy` / `cd cloudflare && npx wrangler deploy` |
 
 ### Verification Tests
 
@@ -60,8 +60,8 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
 
 **Configuration:**
 - Environment: `development`
-- Database: Development database
-- Edge Functions: Development functions
+- Database: Development D1 databases
+- Workers: Development Workers
 - Frontend: Development URL
 
 ---
@@ -77,15 +77,14 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
 
 **Configuration:**
 - Environment: `staging`
-- Database: Staging database
-- Edge Functions: Staging functions
+- Database: Staging D1 databases
+- Workers: Staging Workers
 - Frontend: Staging URL
 
 **Required Secrets:**
-- `SUPABASE_STAGING_PROJECT_ID`
-- `SUPABASE_STAGING_URL`
-- `SUPABASE_STAGING_ANON_KEY`
-- `SUPABASE_STAGING_EDGE_FUNCTION_URL`
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_PAGES_STAGING_PROJECT`
 - `STAGING_FRONTEND_URL`
 
 ---
@@ -101,19 +100,16 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
 
 **Configuration:**
 - Environment: `production`
-- Database: Production database
-- Edge Functions: Production functions
+- Database: Production D1 databases
+- Workers: Production Workers
 - Frontend: Production URL
 
 **Required Secrets:**
-- `SUPABASE_PRODUCTION_PROJECT_ID`
-- `SUPABASE_PRODUCTION_URL`
-- `SUPABASE_PRODUCTION_ANON_KEY`
-- `SUPABASE_PRODUCTION_EDGE_FUNCTION_URL`
 - `PRODUCTION_FRONTEND_URL`
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_PAGES_STAGING_PROJECT`
+- `CLOUDFLARE_PAGES_PRODUCTION_PROJECT`
 - `SLACK_WEBHOOK_URL`
 
 ---
@@ -237,7 +233,7 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
    - Verify deployment
 
 4. **Deploy Frontend**
-   - Deploy frontend to Vercel staging
+   - Deploy frontend to Cloudflare Pages staging
 
 5. **Database Migrations**
    - Run database migrations
@@ -295,7 +291,7 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
    - Verify deployment
 
 7. **Deploy Frontend**
-   - Deploy frontend to Vercel production
+   - Deploy frontend to Cloudflare Pages production
 
 8. **Database Migrations**
    - Run database migrations
@@ -329,97 +325,95 @@ This document describes the Continuous Integration/Continuous Deployment (CI/CD)
 
 ## Deployment Scripts
 
-### Edge Functions Deployment Script
+### Cloudflare Workers Deployment Script
 
-**File:** `scripts/deploy-edge-functions.sh`
+**File:** `wrangler deploy` (or `npx wrangler deploy`)
 
 **Usage:**
 ```bash
-./scripts/deploy-edge-functions.sh [environment] [project_id]
+cd worker
+npx wrangler deploy
+
+cd ../cloudflare
+npx wrangler deploy
 ```
 
 **Environment Variables:**
-- `SUPABASE_ACCESS_TOKEN` - Supabase access token
+- `CLOUDFLARE_API_TOKEN` - Cloudflare API token
 
 **Functions:**
-- Validates Edge Function files
-- Backs up current Edge Functions
-- Deploys all Edge Functions
+- Validates Worker files
+- Deploys Workers to Cloudflare
 - Verifies deployment
 - Runs health checks
 
 **Example:**
 ```bash
-export SUPABASE_ACCESS_TOKEN=your-token
-./scripts/deploy-edge-functions.sh staging your-project-id
+export CLOUDFLARE_API_TOKEN=your-token
+cd worker && npx wrangler deploy
+cd ../cloudflare && npx wrangler deploy
 ```
 
 ---
 
 ### Database Migration Script
 
-**File:** `scripts/migrate-database.sh`
+**File:** `scripts/d1-apply-migrations.sh`
 
 **Usage:**
 ```bash
-./scripts/migrate-database.sh [environment] [project_id] [migration_dir]
+./scripts/d1-apply-migrations.sh
 ```
 
 **Environment Variables:**
-- `SUPABASE_ACCESS_TOKEN` - Supabase access token
+- `CLOUDFLARE_API_TOKEN` - Cloudflare API token
 
 **Functions:**
-- Validates migration files
-- Creates database backup
-- Applies pending migrations
+- Validates D1 migration files
+- Applies pending migrations to all D1 databases
 - Records migrations
 - Verifies migrations
 
-**Rollback Mode:**
-```bash
-./scripts/migrate-database.sh rollback [environment] [project_id]
-```
-
 **Example:**
 ```bash
-export SUPABASE_ACCESS_TOKEN=your-token
-./scripts/migrate-database.sh staging your-project-id supabase/migrations
+export CLOUDFLARE_API_TOKEN=your-token
+./scripts/d1-apply-migrations.sh
 ```
 
 ---
 
 ### Rollback Script
 
-**File:** `scripts/rollback.sh`
+**File:** `scripts/deploy/rollback.sh`
 
 **Usage:**
 ```bash
-./scripts/rollback.sh [environment] [project_id] [rollback_type]
+./scripts/deploy/rollback.sh [environment]
 ```
 
 **Rollback Types:**
-- `full` - Rollback everything (Edge Functions, database, frontend)
-- `edge-functions` - Rollback only Edge Functions
-- `database` - Rollback only database
+- `full` - Rollback everything (Workers, database, frontend)
+- `workers` - Rollback only Workers
+- `database` - Rollback only database (from D1 backup)
 - `frontend` - Rollback only frontend
 
 **Environment Variables:**
-- `SUPABASE_ACCESS_TOKEN` - Supabase access token
+- `CLOUDFLARE_API_TOKEN` - Cloudflare API token
 - `SLACK_WEBHOOK_URL` - Slack webhook for notifications
 
 **Functions:**
 - Finds latest backup
-- Rolls back Edge Functions
-- Rolls back database
+- Rolls back Workers via Wrangler
+- Rolls back database from D1 backup
 - Rolls back frontend (manual)
 - Verifies rollback
 - Notifies team
 
 **Example:**
 ```bash
-export SUPABASE_ACCESS_TOKEN=your-token
+export CLOUDFLARE_API_TOKEN=your-token
 export SLACK_WEBHOOK_URL=your-webhook-url
-./scripts/rollback.sh production your-project-id full
+./scripts/deploy/rollback.sh production full
 ```
 
 ---
@@ -462,9 +456,8 @@ export SLACK_WEBHOOK_URL=your-webhook-url
 
 **Usage:**
 ```bash
-export EDGE_FUNCTION_URL=https://your-project.supabase.co/functions/v1
-export SUPABASE_URL=https://your-project.supabase.co
-export SUPABASE_ANON_KEY=your-anon-key
+export PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev
+export PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev
 npx ts-node tests/deployment-verification.ts
 ```
 
@@ -475,26 +468,18 @@ npx ts-node tests/deployment-verification.ts
 ### Required GitHub Secrets
 
 **General:**
-- `SUPABASE_ACCESS_TOKEN` - Supabase access token for deployments
+- `CLOUDFLARE_API_TOKEN` - Cloudflare API token for Workers/Pages deployments
+- `CLOUDFLARE_ACCOUNT_ID` - Cloudflare account ID
 - `SNYK_TOKEN` - Snyk API token for security scanning
 - `SLACK_WEBHOOK_URL` - Slack webhook for notifications
 
 **Staging:**
-- `SUPABASE_STAGING_PROJECT_ID` - Staging Supabase project ID
-- `SUPABASE_STAGING_URL` - Staging Supabase URL
-- `SUPABASE_STAGING_ANON_KEY` - Staging Supabase anon key
-- `SUPABASE_STAGING_EDGE_FUNCTION_URL` - Staging Edge Function URL
+- `CLOUDFLARE_PAGES_STAGING_PROJECT` - Cloudflare Pages staging project name
 - `STAGING_FRONTEND_URL` - Staging frontend URL
 
 **Production:**
-- `SUPABASE_PRODUCTION_PROJECT_ID` - Production Supabase project ID
-- `SUPABASE_PRODUCTION_URL` - Production Supabase URL
-- `SUPABASE_PRODUCTION_ANON_KEY` - Production Supabase anon key
-- `SUPABASE_PRODUCTION_EDGE_FUNCTION_URL` - Production Edge Function URL
+- `CLOUDFLARE_PAGES_PRODUCTION_PROJECT` - Cloudflare Pages production project name
 - `PRODUCTION_FRONTEND_URL` - Production frontend URL
-- `VERCEL_TOKEN` - Vercel API token
-- `VERCEL_ORG_ID` - Vercel organization ID
-- `VERCEL_PROJECT_ID` - Vercel project ID
 
 **Testing:**
 - `TEST_EMAIL` - Test email for auth tests
@@ -546,7 +531,7 @@ npx ts-node tests/deployment-verification.ts
 ### Monitoring Tools
 
 **Recommended Tools:**
-- Supabase Dashboard (built-in)
+- Cloudflare Dashboard (Workers, Pages, D1 logs)
 - Grafana + Prometheus
 - Datadog
 - New Relic
@@ -651,14 +636,14 @@ After rollback:
 **Issue: Deployment fails at test stage**
 - **Solution:** Check test logs, fix failing tests locally, push fix
 
-**Issue: Edge Functions deployment fails**
-- **Solution:** Check Supabase CLI version, verify project ID, check access token
+**Issue: Workers deployment fails**
+- **Solution:** Check Wrangler version, verify `wrangler.toml` bindings, check Cloudflare API token permissions
 
 **Issue: Database migration fails**
 - **Solution:** Check migration syntax, verify database connection, check for conflicts
 
 **Issue: Deployment verification fails**
-- **Solution:** Check Edge Function health, verify security headers, check CSRF protection
+- **Solution:** Check Worker health endpoints, verify security headers, check Auth0 configuration
 
 **Issue: Rollback fails**
 - **Solution:** Check backup availability, verify backup integrity, manual rollback
@@ -857,8 +842,8 @@ git push origin main
 
 ```bash
 # Execute rollback script
-export SUPABASE_ACCESS_TOKEN=your-token
-./scripts/rollback.sh production your-project-id full
+export CLOUDFLARE_API_TOKEN=your-token
+./scripts/deploy/rollback.sh production full
 
 # Or trigger via GitHub Actions
 # Go to "Deploy to Production" workflow
@@ -874,14 +859,15 @@ export SUPABASE_ACCESS_TOKEN=your-token
 ### Common Commands
 
 ```bash
-# Deploy Edge Functions
-./scripts/deploy-edge-functions.sh staging your-project-id
+# Deploy Workers
+cd worker && npx wrangler deploy
+cd ../cloudflare && npx wrangler deploy
 
 # Run database migrations
-./scripts/migrate-database.sh staging your-project-id supabase/migrations
+./scripts/d1-apply-migrations.sh
 
 # Rollback deployment
-./scripts/rollback.sh production your-project-id full
+./scripts/deploy/rollback.sh production full
 
 # Run deployment verification
 npx ts-node tests/deployment-verification.ts
@@ -899,13 +885,13 @@ npm run build
 ### Environment Variables
 
 ```bash
-# Supabase
-export SUPABASE_ACCESS_TOKEN=your-token
-export SUPABASE_URL=your-url
-export SUPABASE_ANON_KEY=your-anon-key
+# Cloudflare
+export CLOUDFLARE_API_TOKEN=your-token
+export CLOUDFLARE_ACCOUNT_ID=your-account-id
 
-# Edge Functions
-export EDGE_FUNCTION_URL=your-edge-function-url
+# Worker API endpoints
+export PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev
+export PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev
 
 # Notifications
 export SLACK_WEBHOOK_URL=your-webhook-url

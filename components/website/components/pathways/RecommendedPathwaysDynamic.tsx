@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Target, Plane, GraduationCap, Briefcase, ArrowRight, Lock, ChevronRight, Star, DollarSign, Clock, Award } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface RecommendedPathwaysDynamicProps {
     onNavigate?: (page: string) => void;
@@ -50,6 +50,7 @@ interface Manufacturer {
 
 export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProps> = ({ onNavigate }) => {
     const { currentUser, userProfile } = useAuth();
+    const { callApi } = useWorkerAuth();
     const isAuthenticated = !!currentUser;
     
     // Data states
@@ -96,29 +97,29 @@ export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProp
         return Math.min(score, 100);
     };
     
-    // Fetch data from Supabase
+    // Fetch data from D1
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 // Fetch aircraft type ratings
-                const { data: aircraftData } = await supabase
-                    .from('aircraft_type_ratings')
-                    .select('*')
-                    .limit(10);
-                
+                const aircraftData = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'aircraft_type_ratings',
+                    operation: 'select',
+                    limit: 10,
+                });
                 if (aircraftData) {
-                    setAircraftTypeRatings(aircraftData);
+                    setAircraftTypeRatings((aircraftData as unknown) as AircraftTypeRating[]);
                 }
                 
                 // Fetch manufacturers
-                const { data: manufacturerData } = await supabase
-                    .from('manufacturers')
-                    .select('*')
-                    .limit(10);
-                
+                const manufacturerData = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'manufacturers',
+                    operation: 'select',
+                    limit: 10,
+                });
                 if (manufacturerData) {
-                    setManufacturers(manufacturerData);
+                    setManufacturers((manufacturerData as unknown) as Manufacturer[]);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);

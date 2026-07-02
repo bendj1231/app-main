@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { db, collection } from '../lib/firebase-stub';
 import { Icons } from '../icons';
 
@@ -94,23 +94,20 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
   const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
   const [examData, setExamData] = useState<any>(null);
   const [licensureData, setLicensureData] = useState<any>(null);
+  const { callApi } = useWorkerAuth();
 
-  // Fetch mentorship hours from Supabase
+  // Fetch mentorship hours
   const fetchMentorshipHours = async (uid: string) => {
     try {
-      const { data, error } = await supabase
-        .from('study_sessions')
-        .select('duration')
-        .eq('user_id', uid)
-        .eq('session_type', 'mentorship');
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'study_sessions',
+        operation: 'select',
+        where: { user_id: uid, session_type: 'mentorship' },
+        limit: 500,
+      });
 
-      if (error) {
-        console.warn('Unable to fetch mentor hours:', error);
-        return 0;
-      }
-
-      if (data && data.length > 0) {
-        const totalMinutes = data.reduce((sum, session) => sum + (session.duration || 0), 0);
+      if (rows && rows.length > 0) {
+        const totalMinutes = rows.reduce((sum: number, session: any) => sum + ((session.duration as number) || 0), 0);
         return Math.round(totalMinutes / 60);
       }
 
@@ -121,19 +118,16 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     }
   };
 
-  // Fetch enrollment status from Supabase
+  // Fetch enrollment status
   const fetchEnrollmentStatus = async (uid: string) => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('enrolled_programs')
-        .eq('id', uid)
-        .maybeSingle();
-
-      if (error) {
-        console.warn('Unable to fetch enrollment status:', error);
-        return [];
-      }
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { id: uid },
+        limit: 1,
+      });
+      const data = rows?.[0];
 
       if (data && data.enrolled_programs) {
         return data.enrolled_programs;
@@ -146,75 +140,58 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     }
   };
 
-  // Fetch exam data from Supabase
+  // Fetch exam data
   const fetchExamData = async (uid: string) => {
     try {
-      const { data, error } = await supabase
-        .from('exam_results')
-        .select('*')
-        .eq('user_id', uid)
-        .order('exam_date', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'exam_results',
+        operation: 'select',
+        where: { user_id: uid },
+        limit: 1,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (b.exam_date || '').localeCompare(a.exam_date || ''))[0];
 
-      if (error) {
-        console.warn('Unable to fetch exam data:', error);
-        return null;
-      }
-
-      return data;
+      return data || null;
     } catch (error) {
       console.warn('Error fetching exam data:', error);
       return null;
     }
   };
 
-  // Fetch licensure data from Supabase
+  // Fetch licensure data
   const fetchLicensureData = async (uid: string) => {
     try {
-      const { data, error } = await supabase
-        .from('pilot_licensure_experience')
-        .select('*')
-        .eq('user_id', uid)
-        .maybeSingle();
-
-      if (error) {
-        console.warn('Unable to fetch licensure data:', error);
-        return null;
-      }
-
-      return data;
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_licensure_experience',
+        operation: 'select',
+        where: { user_id: uid },
+        limit: 1,
+      });
+      return rows?.[0] || null;
     } catch (error) {
       console.warn('Error fetching licensure data:', error);
       return null;
     }
   };
 
-  // Fetch program progress from Supabase
+  // Fetch program progress
   useEffect(() => {
     const fetchProgramProgress = async () => {
       if (!userProfile?.uid) return;
-      
-      try {
-        if (!db) {
-          console.error('Firestore not initialized');
-          setLoading(false);
-          return;
-        }
-        const achievementsRef = collection(db, 'achievements');
-        const userId = userProfile?.id || userProfile?.uid;
-        const { data, error } = await supabase
-          .from('program_progress')
-          .select('*')
-          .eq('user_id', userId)
-          .eq('program_type', 'Foundational')
-          .maybeSingle();
 
-        if (error) {
-        } else if (data) {
-          // Update progress with real data from Supabase
+      try {
+        const userId = userProfile?.id || userProfile?.uid;
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'program_progress',
+          operation: 'select',
+          where: { user_id: userId, program_type: 'Foundational' },
+          limit: 1,
+        });
+        const data = rows?.[0];
+
+        if (data) {
           setProgress({
-            foundational: data.completion_percentage || 0
+            foundational: (data.completion_percentage as number) || 0
           });
         }
       } catch (err) {
@@ -223,7 +200,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     };
 
     fetchProgramProgress();
-  }, [userProfile?.uid]);
+  }, [userProfile?.uid, callApi]);
 
   useEffect(() => {
     if (preloadedAchievements && preloadedPortfolio) {
@@ -247,7 +224,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
   useEffect(() => {
     if (userProfile?.uid) {
       fetchEnrollmentStatus(userProfile.uid).then(programs => {
-        setEnrolledPrograms(programs);
+        setEnrolledPrograms(programs as string[]);
       });
       fetchExamData(userProfile.uid).then(data => {
         setExamData(data);
@@ -304,23 +281,23 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     try {
       setLoading(true);
       
-      // Fetch achievements from Supabase
-      const { data: achievementData, error: achievementError } = await supabase
-        .from('achievements')
-        .select('*')
-        .eq('user_id', userProfile.uid)
-        .order('achievement_date', { ascending: false });
-
-      if (achievementError) {
-        throw achievementError;
-      }
+      // Fetch achievements
+      const achievementRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'achievements',
+        operation: 'select',
+        where: { user_id: userProfile.uid },
+        limit: 500,
+      });
+      const achievementData = (achievementRows || []).sort((a: any, b: any) => (b.achievement_date || '').localeCompare(a.achievement_date || ''));
 
       // Fetch portfolio for stats
-      const { data: portfolioData } = await supabase
-        .from('pilot_portfolio_data')
-        .select('*')
-        .eq('user_id', userProfile.uid)
-        .maybeSingle();
+      const portfolioRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userProfile.uid },
+        limit: 1,
+      });
+      const portfolioData = portfolioRows?.[0];
 
       processAchievementData(achievementData || [], portfolioData || {});
     } catch (error) {

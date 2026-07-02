@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, Eye, Clock, Plane, Award, MapPin, Mail, Phone, Calendar, GraduationCap, Briefcase, Shield, ChevronDown, ChevronUp, FileText, Send } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ResumeViewerProps {
   isOpen: boolean;
@@ -107,6 +107,7 @@ const ResumeViewer: React.FC<ResumeViewerProps> = ({
   applicationId,
   enterpriseAccountId
 }) => {
+  const { callApi } = useWorkerAuth();
   const [application, setApplication] = useState<ApplicationData | null>(null);
   const [resume, setResume] = useState<ResumeData | null>(null);
   const [recognitionScore, setRecognitionScore] = useState<number | null>(null);
@@ -125,38 +126,39 @@ const ResumeViewer: React.FC<ResumeViewerProps> = ({
     setLoading(true);
     try {
       // Load application
-      const { data: appData, error: appError } = await supabase
-        .from('resume_airline_applications')
-        .select('*')
-        .eq('id', applicationId)
-        .single();
-
-      if (appError) throw appError;
+      const appRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'resume_airline_applications',
+        operation: 'select',
+        where: { id: applicationId },
+        limit: 1,
+      });
+      const appData = appRows?.[0] as unknown as ApplicationData | undefined;
+      if (!appData) throw new Error('Application not found');
       setApplication(appData);
       setNotes(appData.notes || '');
 
       // Load resume
       if (appData.resume_id) {
-        const { data: resumeData, error: resumeError } = await supabase
-          .from('atlas_resumes')
-          .select('*')
-          .eq('id', appData.resume_id)
-          .single();
-
-        if (resumeError) throw resumeError;
-        setResume(resumeData);
+        const resumeRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'atlas_resumes',
+          operation: 'select',
+          where: { id: appData.resume_id },
+          limit: 1,
+        });
+        setResume(resumeRows?.[0] as any);
       }
 
       // Load recognition score
       if (appData.user_id) {
-        const { data: scoreData } = await supabase
-          .from('pilot_recognition_scores')
-          .select('overall_score')
-          .eq('user_id', appData.user_id)
-          .single();
-
+        const scoreRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_recognition_scores',
+          operation: 'select',
+          where: { user_id: appData.user_id },
+          limit: 1,
+        });
+        const scoreData = scoreRows?.[0];
         if (scoreData) {
-          setRecognitionScore(scoreData.overall_score);
+          setRecognitionScore(scoreData.overall_score as number);
         }
       }
     } catch (error) {
@@ -169,16 +171,15 @@ const ResumeViewer: React.FC<ResumeViewerProps> = ({
   const updateStatus = async (newStatus: string) => {
     setUpdatingStatus(true);
     try {
-      const { error } = await supabase
-        .from('resume_airline_applications')
-        .update({
+      await callApi('queryTable', {
+        table: 'resume_airline_applications',
+        operation: 'update',
+        id: applicationId,
+        data: {
           status: newStatus,
-          updated_at: new Date(),
-        })
-        .eq('id', applicationId);
-
-      if (error) throw error;
-
+          updated_at: new Date().toISOString(),
+        },
+      });
       setApplication(prev => prev ? { ...prev, status: newStatus } : null);
     } catch (error) {
       console.error('Error updating status:', error);
@@ -189,16 +190,15 @@ const ResumeViewer: React.FC<ResumeViewerProps> = ({
 
   const saveNotes = async () => {
     try {
-      const { error } = await supabase
-        .from('resume_airline_applications')
-        .update({
+      await callApi('queryTable', {
+        table: 'resume_airline_applications',
+        operation: 'update',
+        id: applicationId,
+        data: {
           notes,
-          updated_at: new Date(),
-        })
-        .eq('id', applicationId);
-
-      if (error) throw error;
-
+          updated_at: new Date().toISOString(),
+        },
+      });
       setApplication(prev => prev ? { ...prev, notes } : null);
       alert('Notes saved');
     } catch (error) {
@@ -209,14 +209,16 @@ const ResumeViewer: React.FC<ResumeViewerProps> = ({
   const recordView = async () => {
     // Record that the airline viewed this resume
     try {
-      await supabase
-        .from('resume_analytics')
-        .upsert({
+      await callApi('queryTable', {
+        table: 'resume_analytics',
+        operation: 'insert',
+        data: {
           resume_id: application?.resume_id,
           user_id: application?.user_id,
-          last_viewed_at: new Date(),
-          updated_at: new Date(),
-        });
+          last_viewed_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      });
     } catch (error) {
       console.error('Error recording view:', error);
     }

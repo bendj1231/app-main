@@ -4,7 +4,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/lib/device-detection';
-import { supabase } from '@/lib/shared/supabase';
 import {
   ArrowRight, UserCheck, ShieldCheck, Plane, Briefcase, BadgeCheck
 } from 'lucide-react';
@@ -49,20 +48,15 @@ export default function GetStartedPage() {
   }, [location.state]);
 
   useEffect(() => {
-    // Try Auth0 name first, then Supabase profile
+    // Use Auth0 name
     if (auth0User?.name) {
       setUserName(auth0User.name.split(' ')[0].trim());
     } else if (auth0User?.given_name) {
       setUserName(auth0User.given_name.trim());
     } else if (auth0User?.nickname) {
       setUserName(auth0User.nickname.trim());
-    } else {
-      // Fallback to Supabase profile
-      supabase.auth.getUser().then(({ data }) => {
-        const meta = data.user?.user_metadata;
-        const name = meta?.full_name || meta?.first_name || meta?.display_name;
-        if (name) setUserName(name.split(' ')[0].trim());
-      });
+    } else if (auth0User?.email) {
+      setUserName(auth0User.email.split('@')[0]);
     }
   }, [auth0User]);
 

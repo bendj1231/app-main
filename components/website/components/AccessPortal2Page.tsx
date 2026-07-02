@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { NewsroomModal } from './NewsroomModal';
 import { MeshGradient } from '@paper-design/shaders-react';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
@@ -44,6 +44,7 @@ const PilotBadge = () => (
 
 export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate }) => {
     const { userProfile, currentUser } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [searchParams] = useSearchParams();
     const [activeView, setActiveView] = useState(() => {
         const viewParam = searchParams.get('view');
@@ -349,42 +350,37 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         return () => clearInterval(interval);
     }, [activeTab, filteredNews.length]);
 
-    // Fetch profile data from Supabase (same approach as TopNavbar)
+    // Fetch profile data from D1 via Worker API (same approach as TopNavbar)
     useEffect(() => {
         const fetchProfileData = async () => {
             if (currentUser) {
                 try {
-                    const { data, error } = await supabase
-                        .from('profiles')
-                        .select('profile_image_url, total_flight_hours, overall_recognition_score, enrolled_programs')
-                        .eq('id', currentUser.uid)
-                        .maybeSingle();
+                    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                        table: 'profiles',
+                        operation: 'select',
+                        where: { id: currentUser.uid },
+                        limit: 1,
+                    });
+                    const data = rows?.[0];
                     
-                    if (data && !error) {
-                        setProfileImageUrl(data.profile_image_url || '');
+                    if (data) {
+                        setProfileImageUrl((data.profile_image_url as string) || '');
                         
-                        // Debug enrolled programs data structure
-                        
-                        if (data.enrolled_programs) {
-                            if (Array.isArray(data.enrolled_programs)) {
-                                setEnrolledPrograms(data.enrolled_programs);
+                        const enrolled = data.enrolled_programs;
+                        if (enrolled) {
+                            if (Array.isArray(enrolled)) {
+                                setEnrolledPrograms(enrolled);
                             } else {
-                                // Try to parse if it's a string
                                 try {
-                                    const parsed = JSON.parse(data.enrolled_programs);
-                                    if (Array.isArray(parsed)) {
-                                        setEnrolledPrograms(parsed);
-                                    } else {
-                                        setEnrolledPrograms([]);
-                                    }
-                                } catch (e) {
+                                    const parsed = JSON.parse(enrolled as string);
+                                    setEnrolledPrograms(Array.isArray(parsed) ? parsed : []);
+                                } catch {
                                     setEnrolledPrograms([]);
                                 }
                             }
                         } else {
                             setEnrolledPrograms([]);
                         }
-                        
                     } else {
                         setProfileImageUrl('');
                         setEnrolledPrograms([]);

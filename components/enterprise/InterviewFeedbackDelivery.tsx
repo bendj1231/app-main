@@ -6,7 +6,7 @@ import {
   FileText, Star, TrendingUp, Target, Download,
   ChevronRight, AlertCircle, Plus, X, ExternalLink
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 /** Escape HTML special characters to prevent XSS in document.write */
 function escapeHtml(str: string): string {
@@ -35,6 +35,7 @@ export function InterviewFeedbackDelivery({
   assessmentId,
   onComplete
 }: InterviewFeedbackDeliveryProps) {
+  const { callApi } = useWorkerAuth();
   const [feedbackData, setFeedbackData] = useState({
     summary: '',
     keyTakeaways: [] as string[],
@@ -52,22 +53,22 @@ export function InterviewFeedbackDelivery({
   useEffect(() => {
     const loadAssessment = async () => {
       try {
-        const { data, error } = await supabase
-          .from('interview_assessments')
-          .select('*')
-          .eq('id', assessmentId)
-          .single();
-
-        if (error) throw error;
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'interview_assessments',
+          operation: 'select',
+          where: { id: assessmentId },
+          limit: 1,
+        });
+        const data = rows?.[0];
         setAssessment(data);
 
         // Auto-generate summary from assessment
         if (data) {
           setFeedbackData(prev => ({
             ...prev,
-            summary: generateAutoSummary(data),
-            keyTakeaways: data.strengths || [],
-            recommendedActions: data.areas_for_improvement || []
+            summary: generateAutoSummary(data as Record<string, unknown>),
+            keyTakeaways: (data.strengths as string[]) || [],
+            recommendedActions: (data.areas_for_improvement as string[]) || []
           }));
         }
       } catch (err) {
@@ -178,13 +179,13 @@ export function InterviewFeedbackDelivery({
         resources: feedbackData.resources.filter(r => r.title && r.url)
       };
 
-      const { data: feedbackDataResult, error: feedbackError } = await supabase
-        .from('interview_feedback')
-        .insert(feedbackRecord)
-        .select()
-        .single();
-
-      if (feedbackError) throw feedbackError;
+      const feedbackRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'interview_feedback',
+        operation: 'insert',
+        data: feedbackRecord,
+      });
+      const feedbackDataResult = feedbackRows?.[0];
+      if (!feedbackDataResult) throw new Error('Failed to insert feedback');
 
       // If delivery method includes email, send email notification
       if (deliveryMethod === 'email' || deliveryMethod === 'both') {
@@ -211,7 +212,7 @@ export function InterviewFeedbackDelivery({
       // - Firebase Cloud Function for email
       // - Resend API
       // - SendGrid API
-      // - Supabase Auth email
+      // - Worker API email endpoint
 
 
       // Simulate email send

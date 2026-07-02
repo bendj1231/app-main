@@ -474,6 +474,20 @@ export const VerificationStatusTab: React.FC<{
                 </div>
               </div>
             </div>
+
+            {/* Invite Code */}
+            {(() => {
+              const inviteCode = profile?.referral_code || (profile?.id ? profile.id.slice(0, 8).toUpperCase() : '');
+              return inviteCode ? (
+                <a
+                  href="/platform?tab=profile"
+                  onClick={(e) => { e.preventDefault(); setTab('profile'); }}
+                  className="mt-3 block w-full text-center text-[10px] font-mono font-bold tracking-wider text-white/40 hover:text-blue-400 transition-colors"
+                >
+                  Invite Code: {inviteCode}
+                </a>
+              ) : null;
+            })()}
           </div>
         </div>
 

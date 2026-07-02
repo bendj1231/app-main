@@ -6,9 +6,10 @@ import {
   Filter, Search, ChevronRight, CheckCircle, Download,
   Eye, Plane, Shield, Award, BarChart3, ArrowUpRight, Video
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export function InterviewHistoryPage({ user }: { user: any }) {
+  const { callApi } = useWorkerAuth();
   const [interviews, setInterviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,39 +26,68 @@ export function InterviewHistoryPage({ user }: { user: any }) {
   const loadInterviews = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('interviews')
-        .select(`
-          *,
-          interview_assessments (
-            overall_score,
-            overall_grade,
-            recommendation,
-            strengths,
-            areas_for_improvement
-          ),
-          interview_feedback (
-            summary,
-            key_takeaways,
-            recommended_actions,
-            feedback_delivered,
-            viewed_by_pilot
-          )
-        `)
-        .eq('pilot_profile_id', user.id)
-        .order('scheduled_at', { ascending: false });
+      const interviewRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'interviews',
+        operation: 'select',
+        where: { pilot_profile_id: user.id },
+        limit: 500,
+      });
+      const data = (interviewRows || []).sort((a: any, b: any) => {
+        const da = a.scheduled_at || '';
+        const db = b.scheduled_at || '';
+        return db.localeCompare(da);
+      });
 
-      if (error) throw error;
-      setInterviews(data || []);
+      // Fetch assessments and feedback in parallel
+      const interviewIds = data.map((i: any) => i.id);
+      const [assessmentRows, feedbackRows] = await Promise.all([
+        interviewIds.length
+          ? callApi<Record<string, unknown>[]>('queryTable', {
+              table: 'interview_assessments',
+              operation: 'select',
+              where: { interview_id: interviewIds[0] },
+              limit: 500,
+            })
+          : Promise.resolve([]),
+        interviewIds.length
+          ? callApi<Record<string, unknown>[]>('queryTable', {
+              table: 'interview_feedback',
+              operation: 'select',
+              where: { interview_id: interviewIds[0] },
+              limit: 500,
+            })
+          : Promise.resolve([]),
+      ]);
+
+      // Build lookup maps
+      const assessmentsByInterview: Record<string, any[]> = {};
+      (assessmentRows as any[] || []).forEach((a: any) => {
+        const id = a.interview_id;
+        if (!assessmentsByInterview[id]) assessmentsByInterview[id] = [];
+        assessmentsByInterview[id].push(a);
+      });
+      const feedbackByInterview: Record<string, any> = {};
+      (feedbackRows as any[] || []).forEach((f: any) => {
+        feedbackByInterview[f.interview_id] = f;
+      });
+
+      // Merge related data
+      const merged = data.map((i: any) => ({
+        ...i,
+        interview_assessments: assessmentsByInterview[i.id] || [],
+        interview_feedback: feedbackByInterview[i.id] || null,
+      }));
+
+      setInterviews(merged);
 
       // Calculate stats
-      const completed = data?.filter(i => i.status === 'completed' && i.interview_assessments?.length > 0) || [];
-      const totalScore = completed.reduce((sum, i) => sum + (i.interview_assessments?.[0]?.overall_score || 0), 0);
+      const completed = merged.filter((i: any) => i.status === 'completed' && i.interview_assessments?.length > 0);
+      const totalScore = completed.reduce((sum: number, i: any) => sum + (i.interview_assessments?.[0]?.overall_score || 0), 0);
       const avgScore = completed.length > 0 ? Math.round(totalScore / completed.length) : 0;
-      const pendingFeedback = data?.filter(i => i.status === 'completed' && (!i.interview_feedback || !i.interview_feedback.feedback_delivered)).length || 0;
+      const pendingFeedback = merged.filter((i: any) => i.status === 'completed' && (!i.interview_feedback || !i.interview_feedback.feedback_delivered)).length;
 
       setStats({
-        total: data?.length || 0,
+        total: merged.length,
         averageScore: avgScore,
         completed: completed.length,
         pendingFeedback

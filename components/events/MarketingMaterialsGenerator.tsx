@@ -5,7 +5,7 @@ import {
   Image as ImageIcon, FileText, Share2, Download, Plus, X, Edit2, Trash2,
   Save, Search, Filter, CheckCircle, AlertCircle, Wand2, Copy, ExternalLink
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface MarketingMaterialsGeneratorProps {
   eventId: string;
@@ -30,6 +30,7 @@ interface MarketingMaterial {
 }
 
 export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose }: MarketingMaterialsGeneratorProps) {
+  const { callApi } = useWorkerAuth();
   const [materials, setMaterials] = useState<MarketingMaterial[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -65,14 +66,18 @@ export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose
   const loadMaterials = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('event_marketing_materials')
-        .select('*')
-        .eq('event_id', eventId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setMaterials(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_marketing_materials',
+        operation: 'select',
+        where: { event_id: eventId },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      setMaterials((sorted as unknown) as MarketingMaterial[]);
     } catch (err) {
       console.error('Error loading materials:', err);
       setError('Failed to load materials');
@@ -161,18 +166,18 @@ export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose
       };
 
       if (editingMaterial) {
-        const { error } = await supabase
-          .from('event_marketing_materials')
-          .update(materialData)
-          .eq('id', editingMaterial.id);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_marketing_materials',
+          operation: 'update',
+          id: editingMaterial.id,
+          data: materialData,
+        });
       } else {
-        const { error } = await supabase
-          .from('event_marketing_materials')
-          .insert(materialData);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_marketing_materials',
+          operation: 'insert',
+          data: materialData,
+        });
       }
 
       await loadMaterials();
@@ -191,12 +196,11 @@ export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose
     if (!confirm('Are you sure you want to delete this material?')) return;
 
     try {
-      const { error } = await supabase
-        .from('event_marketing_materials')
-        .delete()
-        .eq('id', materialId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'event_marketing_materials',
+        operation: 'delete',
+        id: materialId,
+      });
       await loadMaterials();
     } catch (err) {
       console.error('Error deleting material:', err);
@@ -242,12 +246,12 @@ export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose
 
   const updateStatus = async (materialId: string, newStatus: string) => {
     try {
-      const { error } = await supabase
-        .from('event_marketing_materials')
-        .update({ status: newStatus })
-        .eq('id', materialId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'event_marketing_materials',
+        operation: 'update',
+        id: materialId,
+        data: { status: newStatus },
+      });
       await loadMaterials();
     } catch (err) {
       console.error('Error updating status:', err);

@@ -5,9 +5,10 @@ import {
   Calendar, MapPin, Clock, Users, Filter, Search, ChevronRight,
   Plane, Building2, Plus, Star, ExternalLink, TrendingUp
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export function EventCalendarPage({ user }: { user?: any }) {
+  const { callApi } = useWorkerAuth();
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<'all' | 'airshow' | 'career_fair' | 'pilot_expo'>('all');
@@ -24,14 +25,18 @@ export function EventCalendarPage({ user }: { user?: any }) {
   const loadEvents = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('is_public', true)
-        .order('start_date', { ascending: true });
-
-      if (error) throw error;
-      setEvents(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        where: { is_public: true },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const sa = a.start_date || '';
+        const sb = b.start_date || '';
+        return sa.localeCompare(sb);
+      });
+      setEvents(sorted as any[]);
     } catch (err) {
       console.error('Error loading events:', err);
     } finally {

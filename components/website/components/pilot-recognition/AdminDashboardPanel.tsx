@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 type Tab = 'payments' | 'team' | 'veremark';
 
@@ -11,6 +11,7 @@ const card: React.CSSProperties = {
 };
 
 export function AdminDashboardPanel() {
+    const { callApi } = useWorkerAuth();
     const [events, setEvents] = useState<any[]>([]);
     const [teamPerf, setTeamPerf] = useState<any[]>([]);
     const [checks, setChecks] = useState<any[]>([]);
@@ -21,26 +22,59 @@ export function AdminDashboardPanel() {
     const load = async () => {
         setRefreshing(true);
         try {
-            const [eventsRes, perfRes, checksRes] = await Promise.all([
-                supabase
-                    .from('team_referral_events')
-                    .select('*')
-                    .order('created_at', { ascending: false })
-                    .limit(50),
-                supabase
-                    .from('team_monthly_performance')
-                    .select('*, team_members(name, referral_code, role)')
-                    .order('period_start', { ascending: false })
-                    .limit(30),
-                supabase
-                    .from('pilot_credentials')
-                    .select('id, user_id, check_type, status, created_at, result_data')
-                    .order('created_at', { ascending: false })
-                    .limit(30),
+            const [eventsRows, perfRows, checksRows] = await Promise.all([
+                callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'team_referral_events',
+                    operation: 'select',
+                    limit: 50,
+                }),
+                callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'team_monthly_performance',
+                    operation: 'select',
+                    limit: 30,
+                }),
+                callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'pilot_credentials',
+                    operation: 'select',
+                    limit: 30,
+                }),
             ]);
-            setEvents(eventsRes.data || []);
-            setTeamPerf(perfRes.data || []);
-            setChecks(checksRes.data || []);
+            const eventsData = (eventsRows || []).sort((a: any, b: any) => {
+                const ca = a.created_at || '';
+                const cb = b.created_at || '';
+                return cb.localeCompare(ca);
+            });
+            const perfData = (perfRows || []).sort((a: any, b: any) => {
+                const pa = a.period_start || '';
+                const pb = b.period_start || '';
+                return pb.localeCompare(pa);
+            });
+            const checksData = (checksRows || []).sort((a: any, b: any) => {
+                const ca = a.created_at || '';
+                const cb = b.created_at || '';
+                return cb.localeCompare(ca);
+            });
+
+            // Manual join for team_members
+            const memberIds = perfData.map((p: any) => p.member_id || p.team_member_id).filter(Boolean);
+            let memberMap: Record<string, Record<string, unknown>> = {};
+            if (memberIds.length) {
+                const memberRows = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'team_members',
+                    operation: 'select',
+                    where: { id: memberIds[0] },
+                    limit: 500,
+                });
+                (memberRows || []).forEach((m: any) => { if (m.id) memberMap[m.id] = m; });
+            }
+            const perfJoined = perfData.map((p: any) => {
+                const memberId = p.member_id || p.team_member_id;
+                return { ...p, team_members: memberMap[memberId] || null };
+            });
+
+            setEvents(eventsData);
+            setTeamPerf(perfJoined);
+            setChecks(checksData);
         } catch (e) {
             console.error('[AdminDashboard]', e);
         } finally {

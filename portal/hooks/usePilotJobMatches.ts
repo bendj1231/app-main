@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export interface JobMatchRequirement {
   label: string;
@@ -180,6 +180,8 @@ export const usePilotJobMatches = ({
   const [totalJobs, setTotalJobs] = useState(0);
   const channelRef = useRef<any>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchMatches = useCallback(async () => {
     if (!userId) {
       setLoading(false);
@@ -191,40 +193,50 @@ export const usePilotJobMatches = ({
 
     try {
       // First, check if user has a pilot profile
-      const { data: profile, error: profileError } = await supabase
-        .from('pilot_recognition_matches')
-        .select('id, total_hours, licenses, type_ratings')
-        .eq('user_id', userId)
-        .single();
+      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const profile = profileRows?.[0];
 
-      if (profileError && profileError.code !== 'PGRST116') {
-        throw profileError;
-      }
-
-      const hasData = !!(profile?.total_hours || (profile?.licenses && profile.licenses.length > 0));
+      const hasData = !!((profile?.total_hours as number) || (Array.isArray(profile?.licenses) && (profile?.licenses as string[]).length > 0));
       setHasProfileData(hasData);
 
       // Get total active jobs count
-      const { count: jobCount, error: countError } = await supabase
-        .from('job_database')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active');
-
-      if (!countError) {
-        setTotalJobs(jobCount || 0);
-      }
+      const jobRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'job_database',
+        operation: 'select',
+        where: { status: 'active' },
+        limit: 1000,
+      });
+      setTotalJobs((jobRows || []).length);
 
       // Fetch credential-based matches if profile exists
       if (profile) {
-        const { data: dbMatches, error: matchError } = await supabase
-          .rpc('get_pilot_job_matches', {
-            p_user_id: userId,
-            p_limit: limit
-          });
+        // Fetch jobs and matches, then do client-side filtering
+        const [jobDbRows, matchRows] = await Promise.all([
+          callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'job_database',
+            operation: 'select',
+            where: { status: 'active' },
+            limit: 500,
+          }),
+          callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_job_matches',
+            operation: 'select',
+            where: { user_id: userId },
+            limit: 500,
+          }),
+        ]);
 
-        if (matchError) throw matchError;
+        const dbMatches = (matchRows || []).map((m: any) => {
+          const job = (jobDbRows || []).find((j: any) => j.id === m.job_id || j.id === m.match_id);
+          return { ...m, ...job };
+        }).slice(0, limit);
 
-        if (dbMatches && dbMatches.length > 0) {
+        if (dbMatches.length > 0) {
           const transformedMatches = dbMatches.map(transformMatchData);
           setMatches(transformedMatches);
         } else {
@@ -236,27 +248,30 @@ export const usePilotJobMatches = ({
 
       // Fetch interest-based jobs
       // First get user interests
-      const { data: interests, error: interestsError } = await supabase
-        .from('pilot_interests')
-        .select('interest_tags')
-        .eq('user_id', userId)
-        .single();
+      const interestRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_interests',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const interests = interestRows?.[0];
 
-      if (!interestsError && interests?.interest_tags && interests.interest_tags.length > 0) {
+      if (interests?.interest_tags && Array.isArray(interests.interest_tags) && (interests.interest_tags as string[]).length > 0) {
         // Query jobs matching those interests
-        const { data: interestJobData, error: interestError } = await supabase
-          .from('job_database')
-          .select('*')
-          .eq('status', 'active')
-          .overlaps('tags', interests.interest_tags)
-          .limit(limit);
+        const interestJobRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'job_database',
+          operation: 'select',
+          where: { status: 'active' },
+          limit: 500,
+        });
+        const tags = interests.interest_tags as string[];
+        const interestJobData = (interestJobRows || []).filter((job: any) => {
+          const jobTags = job.tags || [];
+          return Array.isArray(jobTags) && jobTags.some((t: string) => tags.includes(t));
+        }).slice(0, limit);
 
-        if (!interestError && interestJobData) {
-          const transformedInterestJobs = interestJobData.map(transformInterestJobData);
-          setInterestJobs(transformedInterestJobs);
-        } else {
-          setInterestJobs([]);
-        }
+        const transformedInterestJobs = interestJobData.map(transformInterestJobData);
+        setInterestJobs(transformedInterestJobs);
       } else {
         setInterestJobs([]);
       }
@@ -268,78 +283,22 @@ export const usePilotJobMatches = ({
     } finally {
       setLoading(false);
     }
-  }, [userId, limit]);
+  }, [userId, limit, callApi]);
 
   // Fetch matches on mount and when userId changes
   useEffect(() => {
     fetchMatches();
   }, [fetchMatches]);
 
-  // Set up realtime subscription
+  // Set up polling instead of realtime subscriptions
   useEffect(() => {
     if (!userId || !enableRealtime) return;
 
-    // Subscribe to job database changes
-    const jobChannel = supabase
-      .channel('job_database_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'job_database'
-        },
-        () => {
-          // Re-fetch matches when jobs change
-          fetchMatches();
-        }
-      )
-      .subscribe();
+    const interval = setInterval(() => {
+      fetchMatches();
+    }, 30000);
 
-    // Subscribe to pilot profile changes
-    const profileChannel = supabase
-      .channel('pilot_profile_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'pilot_recognition_matches',
-          filter: `user_id=eq.${userId}`
-        },
-        () => {
-          // Re-fetch matches when profile changes
-          fetchMatches();
-        }
-      )
-      .subscribe();
-
-    // Subscribe to match changes
-    const matchChannel = supabase
-      .channel('pilot_job_matches_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'pilot_job_matches'
-        },
-        () => {
-          // Re-fetch matches when matches are updated
-          fetchMatches();
-        }
-      )
-      .subscribe();
-
-    channelRef.current = { jobChannel, profileChannel, matchChannel };
-
-    return () => {
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current.jobChannel);
-        supabase.removeChannel(channelRef.current.profileChannel);
-        supabase.removeChannel(channelRef.current.matchChannel);
-      }
-    };
+    return () => clearInterval(interval);
   }, [userId, enableRealtime, fetchMatches]);
 
   return {
@@ -358,6 +317,7 @@ export const usePilotProfile = (userId?: string) => {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (!userId) {
@@ -367,15 +327,13 @@ export const usePilotProfile = (userId?: string) => {
 
     const fetchProfile = async () => {
       try {
-        const { data, error } = await supabase
-          .from('pilot_recognition_matches')
-          .select('*')
-          .eq('user_id', userId)
-          .single();
-
-        if (error && error.code !== 'PGRST116') {
-          throw error;
-        }
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_recognition_matches',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const data = rows?.[0];
 
         setProfile(data || null);
       } catch (err: any) {
@@ -387,7 +345,7 @@ export const usePilotProfile = (userId?: string) => {
     };
 
     fetchProfile();
-  }, [userId]);
+  }, [userId, callApi]);
 
   return { profile, loading, error };
 };

@@ -1,12 +1,8 @@
-// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
-
 /**
  * Bookmark Service
  *
- * Handles all bookmark-related database operations using Supabase
+ * Handles all bookmark-related database operations via Cloudflare Worker API
  */
-
-import { supabase } from '../lib/supabase';
 
 export interface BookmarkItem {
   id: string;
@@ -30,24 +26,33 @@ export interface BookmarkCreateInput {
   metadata?: Record<string, unknown>;
 }
 
+// Helper type for callApi
+ type CallApiFn = <T>(action: string, params?: Record<string, unknown>) => Promise<T>;
+
 class BookmarkService {
+  private callApi: CallApiFn;
+
+  constructor(callApi: CallApiFn) {
+    this.callApi = callApi;
+  }
+
   /**
    * Get all bookmarks for the current user
    */
-  async getUserBookmarks(userId?: string): Promise<BookmarkItem[]> {
+  async getUserBookmarks(userId: string): Promise<BookmarkItem[]> {
     try {
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .select('*')
-        .eq('user_id', userId || (await this.getCurrentUserId()))
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching user bookmarks:', error);
-        throw new Error(`Failed to fetch bookmarks: ${error.message}`);
-      }
-
-      return data || [];
+      const rows = await this.callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      return sorted as unknown as BookmarkItem[];
     } catch (error) {
       console.error('Bookmark service error:', error);
       throw error;
@@ -59,22 +64,21 @@ class BookmarkService {
    */
   async getBookmarksByType(
     itemType: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer',
-    userId?: string
+    userId: string
   ): Promise<BookmarkItem[]> {
     try {
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .select('*')
-        .eq('user_id', userId || (await this.getCurrentUserId()))
-        .eq('item_type', itemType)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error(`Error fetching ${itemType} bookmarks:`, error);
-        throw new Error(`Failed to fetch ${itemType} bookmarks: ${error.message}`);
-      }
-
-      return data || [];
+      const rows = await this.callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'select',
+        where: { user_id: userId, item_type: itemType },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      return sorted as unknown as BookmarkItem[];
     } catch (error) {
       console.error('Bookmark service error:', error);
       throw error;
@@ -84,38 +88,31 @@ class BookmarkService {
   /**
    * Add a new bookmark
    */
-  async addBookmark(bookmarkData: BookmarkCreateInput, userId?: string): Promise<BookmarkItem> {
+  async addBookmark(bookmarkData: BookmarkCreateInput, userId: string): Promise<BookmarkItem> {
     try {
-      const currentUserId = userId || (await this.getCurrentUserId());
-      
       // Check if bookmark already exists
       const existingBookmark = await this.getBookmarkByItemId(
         bookmarkData.item_id,
         bookmarkData.item_type,
-        currentUserId
+        userId
       );
 
       if (existingBookmark) {
         throw new Error('Bookmark already exists');
       }
 
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .insert({
-          user_id: currentUserId,
+      const inserted = await this.callApi('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'insert',
+        data: {
+          user_id: userId,
           ...bookmarkData,
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        })
-        .select()
-        .single();
+          updated_at: new Date().toISOString(),
+        },
+      });
 
-      if (error) {
-        console.error('Error adding bookmark:', error);
-        throw new Error(`Failed to add bookmark: ${error.message}`);
-      }
-
-      return data;
+      return (inserted as any) as BookmarkItem;
     } catch (error) {
       console.error('Bookmark service error:', error);
       throw error;
@@ -125,20 +122,21 @@ class BookmarkService {
   /**
    * Remove a bookmark
    */
-  async removeBookmark(itemId: string, itemType: string, userId?: string): Promise<void> {
+  async removeBookmark(itemId: string, itemType: string, userId: string): Promise<void> {
     try {
-      const currentUserId = userId || (await this.getCurrentUserId());
-
-      const { error } = await supabase
-        .from('user_bookmarks')
-        .delete()
-        .eq('user_id', currentUserId)
-        .eq('item_id', itemId)
-        .eq('item_type', itemType);
-
-      if (error) {
-        console.error('Error removing bookmark:', error);
-        throw new Error(`Failed to remove bookmark: ${error.message}`);
+      const rows = await this.callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'select',
+        where: { user_id: userId, item_id: itemId, item_type: itemType },
+        limit: 1,
+      });
+      const target = rows?.[0];
+      if (target?.id) {
+        await this.callApi('queryTable', {
+          table: 'user_bookmarks',
+          operation: 'delete',
+          id: target.id as string,
+        });
       }
     } catch (error) {
       console.error('Bookmark service error:', error);
@@ -153,25 +151,20 @@ class BookmarkService {
     itemId: string,
     itemType: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer',
     bookmarkData: Omit<BookmarkCreateInput, 'item_id' | 'item_type'>,
-    userId?: string
+    userId: string
   ): Promise<{ action: 'added' | 'removed'; bookmark?: BookmarkItem }> {
     try {
-      const currentUserId = userId || (await this.getCurrentUserId());
-      
-      // Check if bookmark exists
-      const existingBookmark = await this.getBookmarkByItemId(itemId, itemType, currentUserId);
+      const existingBookmark = await this.getBookmarkByItemId(itemId, itemType, userId);
 
       if (existingBookmark) {
-        // Remove bookmark
-        await this.removeBookmark(itemId, itemType, currentUserId);
+        await this.removeBookmark(itemId, itemType, userId);
         return { action: 'removed' };
       } else {
-        // Add bookmark
         const bookmark = await this.addBookmark({
           item_id: itemId,
           item_type: itemType,
           ...bookmarkData
-        }, currentUserId);
+        }, userId);
         return { action: 'added', bookmark };
       }
     } catch (error) {
@@ -186,7 +179,7 @@ class BookmarkService {
   async isBookmarked(
     itemId: string,
     itemType: string,
-    userId?: string
+    userId: string
   ): Promise<boolean> {
     try {
       const bookmark = await this.getBookmarkByItemId(itemId, itemType, userId);
@@ -200,7 +193,7 @@ class BookmarkService {
   /**
    * Get bookmark counts by type for the current user
    */
-  async getBookmarkCounts(userId?: string): Promise<Record<string, number>> {
+  async getBookmarkCounts(userId: string): Promise<Record<string, number>> {
     try {
       const bookmarks = await this.getUserBookmarks(userId);
       const counts: Record<string, number> = {
@@ -240,45 +233,25 @@ class BookmarkService {
     updates: Partial<Pick<BookmarkItem, 'title' | 'description' | 'image_url' | 'metadata'>>
   ): Promise<BookmarkItem> {
     try {
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .update({
+      await this.callApi('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'update',
+        id: bookmarkId,
+        data: {
           ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', bookmarkId)
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Error updating bookmark:', error);
-        throw new Error(`Failed to update bookmark: ${error.message}`);
-      }
-
-      return data;
+          updated_at: new Date().toISOString(),
+        },
+      });
+      const rows = await this.callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'select',
+        where: { id: bookmarkId },
+        limit: 1,
+      });
+      return (rows?.[0] as unknown as BookmarkItem) || (updates as unknown as BookmarkItem);
     } catch (error) {
       console.error('Bookmark service error:', error);
       throw error;
-    }
-  }
-
-  // Private helper methods
-
-  /**
-   * Get current user ID from Supabase auth
-   */
-  private async getCurrentUserId(): Promise<string> {
-    try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      
-      if (error || !user) {
-        throw new Error('User not authenticated');
-      }
-      
-      return user.id;
-    } catch (error) {
-      console.error('Error getting current user ID:', error);
-      throw new Error('User not authenticated');
     }
   }
 
@@ -288,24 +261,16 @@ class BookmarkService {
   private async getBookmarkByItemId(
     itemId: string,
     itemType: string,
-    userId?: string
+    userId: string
   ): Promise<BookmarkItem | null> {
     try {
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .select('*')
-        .eq('user_id', userId || (await this.getCurrentUserId()))
-        .eq('item_id', itemId)
-        .eq('item_type', itemType)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
-        // PGRST116 is "not found", which is expected
-        console.error('Error fetching bookmark by item ID:', error);
-        throw new Error(`Failed to fetch bookmark: ${error.message}`);
-      }
-
-      return data;
+      const rows = await this.callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'user_bookmarks',
+        operation: 'select',
+        where: { user_id: userId, item_id: itemId, item_type: itemType },
+        limit: 1,
+      });
+      return (rows?.[0] as unknown as BookmarkItem) || null;
     } catch (error) {
       console.error('Bookmark service error:', error);
       throw error;
@@ -313,5 +278,5 @@ class BookmarkService {
   }
 }
 
-// Export singleton instance
-export const bookmarkService = new BookmarkService();
+// Export factory so components pass their callApi from useWorkerAuth
+export { BookmarkService };

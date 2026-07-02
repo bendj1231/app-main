@@ -9,7 +9,8 @@ import { safeRedirect } from '@/lib/url-validator';
 import { motion } from 'framer-motion';
 import { Bookmark, Search, Filter, Grid3x3, List, ChevronRight, ChevronLeft, Clock, Star, Trash2, ExternalLink, Plane, Building, GraduationCap, Factory } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { bookmarkService, BookmarkItem } from '@/services/bookmarkService';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { BookmarkService, BookmarkItem } from '@/services/bookmarkService';
 
 interface BookmarksViewProps {
   className?: string;
@@ -18,6 +19,8 @@ interface BookmarksViewProps {
 
 const BookmarksView: React.FC<BookmarksViewProps> = ({ className = '', onNavigate }) => {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
+  const bookmarkService = React.useMemo(() => new BookmarkService(callApi), [callApi]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'pathways' | 'programs' | 'airlines' | 'manufacturers' | 'aircraft'>('all');
@@ -252,7 +255,7 @@ const BookmarksView: React.FC<BookmarksViewProps> = ({ className = '', onNavigat
               className="flex items-center gap-2 text-xs text-slate-400 hover:text-red-400 transition-colors duration-300"
               onClick={async () => {
                 try {
-                  await bookmarkService.removeBookmark(bookmark.item_id, bookmark.item_type);
+                  await bookmarkService.removeBookmark(bookmark.item_id, bookmark.item_type, currentUser.id);
                   // Refresh bookmarks
                   if (currentUser) {
                     const bookmarks = await bookmarkService.getUserBookmarks(currentUser.id);
@@ -344,7 +347,7 @@ const BookmarksView: React.FC<BookmarksViewProps> = ({ className = '', onNavigat
                 className="text-xs text-slate-400 hover:text-red-400 transition-colors duration-300"
                 onClick={async () => {
                   try {
-                    await bookmarkService.removeBookmark(bookmark.item_id, bookmark.item_type);
+                    await bookmarkService.removeBookmark(bookmark.item_id, bookmark.item_type, currentUser.id);
                     // Refresh bookmarks
                     if (currentUser) {
                       const bookmarks = await bookmarkService.getUserBookmarks(currentUser.id);

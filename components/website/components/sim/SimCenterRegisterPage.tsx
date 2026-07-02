@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Cpu, Info } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -22,6 +22,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function SimCenterRegisterPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [tier, setTier] = useState('standard');
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -34,17 +35,20 @@ export function SimCenterRegisterPage({ onBack, onNavigate }: Props) {
     setStatus('submitting'); setError(null);
     try {
       const slug = form.center_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now();
-      const { error: err } = await supabase.from('sim_centers').insert({
-        admin_user_id: currentUser?.id ?? null,
-        center_name: form.center_name, slug,
-        country: form.country, city: form.city || null,
-        website: form.website || null,
-        contact_email: form.contact_email, contact_name: form.contact_name,
-        regulatory_approval: form.regulatory_approval || null,
-        issuing_authority: form.issuing_authority || null,
-        tier, status: 'pending',
+      await callApi('queryTable', {
+        table: 'sim_centers',
+        operation: 'insert',
+        data: {
+          admin_user_id: currentUser?.id ?? null,
+          center_name: form.center_name, slug,
+          country: form.country, city: form.city || null,
+          website: form.website || null,
+          contact_email: form.contact_email, contact_name: form.contact_name,
+          regulatory_approval: form.regulatory_approval || null,
+          issuing_authority: form.issuing_authority || null,
+          tier, status: 'pending',
+        },
       });
-      if (err) throw err;
       setStatus('success');
     } catch (e: any) { setError(e?.message ?? 'Submission failed.'); setStatus('error'); }
   }

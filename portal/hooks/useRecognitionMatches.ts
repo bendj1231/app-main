@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export interface RecognitionMatch {
   id: string;
@@ -46,6 +46,8 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchMatches = useCallback(async () => {
     if (!userId) {
       setLoading(false);
@@ -56,23 +58,22 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
       setLoading(true);
       setError(null);
 
-      const { data, error: fetchError } = await supabase
-        .from('pilot_recognition_matches')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .order('overall_match_percentage', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'select',
+        where: { user_id: userId, status: 'active' },
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (b.overall_match_percentage || 0) - (a.overall_match_percentage || 0));
 
-      if (fetchError) throw fetchError;
-
-      setMatches(data || []);
+      setMatches(data as unknown as RecognitionMatch[]);
     } catch (err: any) {
       console.error('Error fetching recognition matches:', err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, callApi]);
 
   const calculateMatches = async (jobListings: any[]) => {
     if (!userId || !jobListings?.length) return;
@@ -82,11 +83,13 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
       setError(null);
 
       // Get user's portfolio data
-      const { data: portfolio } = await supabase
-        .from('pilot_portfolio_data')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
+      const portfolioRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const portfolio = portfolioRows?.[0];
 
       if (!portfolio) {
         console.warn('No portfolio data found for user');
@@ -101,9 +104,17 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
 
       // Upsert matches to database
       for (const match of calculatedMatches) {
-        const { error: upsertError } = await supabase
-          .from('pilot_recognition_matches')
-          .upsert({
+        try {
+          // Check if existing match
+          const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_recognition_matches',
+            operation: 'select',
+            where: { user_id: userId, job_id: match.job_id },
+            limit: 1,
+          });
+          const existing = existingRows?.[0];
+
+          const matchData = {
             user_id: userId,
             job_id: match.job_id,
             operator_name: match.operator_name,
@@ -124,11 +135,23 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
             missing_factors: match.missing_factors,
             status: 'active',
             updated_at: new Date().toISOString()
-          }, {
-            onConflict: 'user_id,job_id'
-          });
+          };
 
-        if (upsertError) {
+          if (existing?.id) {
+            await callApi('queryTable', {
+              table: 'pilot_recognition_matches',
+              operation: 'update',
+              id: existing.id as string,
+              data: matchData,
+            });
+          } else {
+            await callApi('queryTable', {
+              table: 'pilot_recognition_matches',
+              operation: 'insert',
+              data: matchData,
+            });
+          }
+        } catch (upsertError) {
           console.error('Error upserting match:', upsertError);
         }
       }
@@ -254,15 +277,15 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
 
   const saveMatch = async (matchId: string) => {
     try {
-      const { error: updateError } = await supabase
-        .from('pilot_recognition_matches')
-        .update({
+      await callApi('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'update',
+        id: matchId,
+        data: {
           status: 'saved',
           saved_at: new Date().toISOString()
-        })
-        .eq('id', matchId);
-
-      if (updateError) throw updateError;
+        },
+      });
       await fetchMatches();
     } catch (err: any) {
       console.error('Error saving match:', err);
@@ -272,12 +295,12 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
 
   const dismissMatch = async (matchId: string) => {
     try {
-      const { error: updateError } = await supabase
-        .from('pilot_recognition_matches')
-        .update({ status: 'dismissed' })
-        .eq('id', matchId);
-
-      if (updateError) throw updateError;
+      await callApi('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'update',
+        id: matchId,
+        data: { status: 'dismissed' },
+      });
       await fetchMatches();
     } catch (err: any) {
       console.error('Error dismissing match:', err);
@@ -287,12 +310,12 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
 
   const markAsApplied = async (matchId: string) => {
     try {
-      const { error: updateError } = await supabase
-        .from('pilot_recognition_matches')
-        .update({ status: 'applied' })
-        .eq('id', matchId);
-
-      if (updateError) throw updateError;
+      await callApi('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'update',
+        id: matchId,
+        data: { status: 'applied' },
+      });
       await fetchMatches();
     } catch (err: any) {
       console.error('Error marking as applied:', err);
@@ -302,12 +325,12 @@ export const useRecognitionMatches = (userId?: string): UseRecognitionMatchesRet
 
   const viewMatch = async (matchId: string) => {
     try {
-      const { error: updateError } = await supabase
-        .from('pilot_recognition_matches')
-        .update({ viewed_at: new Date().toISOString() })
-        .eq('id', matchId);
-
-      if (updateError) throw updateError;
+      await callApi('queryTable', {
+        table: 'pilot_recognition_matches',
+        operation: 'update',
+        id: matchId,
+        data: { viewed_at: new Date().toISOString() },
+      });
     } catch (err: any) {
       console.error('Error viewing match:', err);
     }

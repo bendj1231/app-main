@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { db, doc, deleteDoc, addDoc, collection } from '../lib/firebase-stub';
 
 interface MentorLogEntry {
@@ -50,25 +50,24 @@ export const MentorLogbookPage: React.FC<MentorLogbookPageProps> = ({ onBack, us
     try {
       setLoading(true);
       const userId = userProfile?.id || userProfile?.uid;
-      const { data: logsData, error: logsError } = await supabase
-        .from('mentor_logs')
-        .select('*')
-        .eq('user_id', userId)
-        .order('session_date', { ascending: false });
+      const { callApi } = useWorkerAuth();
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentor_logs',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 500,
+      });
+      const logsData = (rows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
-      if (logsError) {
-        throw logsError;
-      }
-
-      const entries: MentorLogEntry[] = (logsData || []).map((log) => ({
-        id: log.id,
-        date: log.session_date,
-        mentorName: log.mentor_name,
-        sessionType: log.session_type || 'General',
-        hours: log.duration || 0,
-        observations: log.observations || 0,
-        cases: log.cases || 0,
-        notes: log.notes || ''
+      const entries: MentorLogEntry[] = logsData.map((log: any) => ({
+        id: log.id as string,
+        date: log.session_date as string,
+        mentorName: log.mentor_name as string,
+        sessionType: (log.session_type || 'General') as string,
+        hours: (log.duration || 0) as number,
+        observations: (log.observations || 0) as number,
+        cases: (log.cases || 0) as number,
+        notes: (log.notes || '') as string
       }));
 
       setLogEntries(entries);

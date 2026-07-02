@@ -33,15 +33,15 @@ jobs:
           rm -f dist/*.mp4 dist/*.mov dist/**/*.mp4 dist/**/*.mov
 
       - name: Temporarily rename functions directory
-        run: mv functions supabase-functions || true
+        run: mv functions legacy-functions || true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=pilotrecognition-frontend --commit-dirty=true
+          command: pages deploy dist --project-name=pilotrecognition-frontend --branch main --commit-hash ${{ github.sha }} --commit-message "${{ github.event.head_commit.message }}" --commit-dirty=true
 
       - name: Restore functions directory
-        run: mv supabase-functions functions || true
+        run: mv legacy-functions functions || true
         if: always()

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Building2, Info } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -61,6 +61,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function OEMPartnerRegisterPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [tier, setTier] = useState('standard');
   const [oemType, setOemType] = useState('');
   const [status, setStatus] = useState<Status>('idle');
@@ -79,20 +80,23 @@ export function OEMPartnerRegisterPage({ onBack, onNavigate }: Props) {
     setStatus('submitting'); setError(null);
     try {
       const slug = form.company_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now();
-      const { error: err } = await supabase.from('oem_partners').insert({
-        admin_user_id: currentUser?.id ?? null,
-        company_name: form.company_name, slug,
-        headquarters_country: form.headquarters_country,
-        website: form.website || null,
-        contact_email: form.contact_email,
-        contact_name: form.contact_name || null,
-        oem_type: oemType,
-        aircraft_families: aircraftFamilies.length ? aircraftFamilies : null,
-        tier,
-        data_access_scope: dataScopes.length ? dataScopes : null,
-        status: 'pending',
+      await callApi('queryTable', {
+        table: 'oem_partners',
+        operation: 'insert',
+        data: {
+          admin_user_id: currentUser?.id ?? null,
+          company_name: form.company_name, slug,
+          headquarters_country: form.headquarters_country,
+          website: form.website || null,
+          contact_email: form.contact_email,
+          contact_name: form.contact_name || null,
+          oem_type: oemType,
+          aircraft_families: aircraftFamilies.length ? aircraftFamilies : null,
+          tier,
+          data_access_scope: dataScopes.length ? dataScopes : null,
+          status: 'pending',
+        },
       });
-      if (err) throw err;
       setStatus('success');
     } catch (e: any) { setError(e?.message ?? 'Submission failed.'); setStatus('error'); }
   }

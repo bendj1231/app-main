@@ -220,3 +220,23 @@ CREATE INDEX IF NOT EXISTS idx_profiles_auth0_id ON profiles(auth0_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
 CREATE INDEX IF NOT EXISTS idx_profiles_account_number ON profiles(account_number);
 CREATE INDEX IF NOT EXISTS idx_mentorship_badges_user ON mentorship_badges(user_id);
+
+-- Messages (admin <> pilot communication)
+CREATE TABLE IF NOT EXISTS messages (
+  id              TEXT PRIMARY KEY,
+  sender_id       TEXT NOT NULL,
+  sender_type     TEXT DEFAULT 'admin',
+  recipient_id    TEXT NOT NULL,
+  recipient_type  TEXT DEFAULT 'pilot',
+  subject         TEXT,
+  body            TEXT NOT NULL,
+  is_read         INTEGER DEFAULT 0,
+  read_at         TEXT,
+  thread_id       TEXT,
+  priority        TEXT DEFAULT 'normal',
+  category        TEXT DEFAULT 'general',
+  created_at      TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_recipient ON messages(recipient_id);
+CREATE INDEX IF NOT EXISTS idx_messages_unread ON messages(recipient_id, is_read);

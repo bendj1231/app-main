@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 type TabId = 'home' | 'profile' | 'wallet' | 'pathways' | 'programs' | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook' | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance' | 'cockpit';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import foundationalQuestions from '../data/foundational-knowledge-exam-questions.json';
 
 interface FoundationalKnowledgeExamPageProps {
@@ -34,9 +34,11 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
     }
 
     try {
-      const { error } = await supabase
-        .from('pilot_exams')
-        .insert({
+      const { callApi } = useWorkerAuth();
+      await callApi('queryTable', {
+        table: 'pilot_exams',
+        operation: 'insert',
+        data: {
           user_id: userId,
           exam_name: 'Foundational Knowledge Examination',
           exam_type: 'foundational',
@@ -50,13 +52,9 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
           status: score >= passingScore ? 'passed' : 'failed',
           attempts: 1,
           max_attempts: 3
-        });
-
-      if (error) {
-        console.error('Error saving exam result:', error);
-      } else {
-        setExamSaved(true);
-      }
+        },
+      });
+      setExamSaved(true);
     } catch (error) {
       console.error('Error saving exam result:', error);
     }

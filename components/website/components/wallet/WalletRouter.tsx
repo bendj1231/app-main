@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
+import { useAuth0 } from '@auth0/auth0-react';
 import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';
 import { WalletPageWithSidebar } from './WalletPageWithSidebar';
-import { supabase } from '@/lib/shared/supabase';
 
 type View = 'loading' | 'public' | 'gate' | 'manage' | 'no-token';
 
@@ -14,6 +14,7 @@ const isWalletHost = () => {
 };
 
 export const WalletRouter: React.FC = () => {
+  const { user: auth0User, isAuthenticated } = useAuth0();
   const [view, setView] = useState<View>('loading');
   const [nextView, setNextView] = useState<View>('no-token');
   const [token, setToken] = useState<string>('');
@@ -30,14 +31,12 @@ export const WalletRouter: React.FC = () => {
       setToken(t);
       setNextView('public');
     } else if (t === 'manage') {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user?.id) {
-          setAuthedUserId(session.user.id);
-          setNextView('manage');
-        } else {
-          setNextView('gate');
-        }
-      });
+      if (isAuthenticated && auth0User?.sub) {
+        setAuthedUserId(auth0User.sub);
+        setNextView('manage');
+      } else {
+        setNextView('gate');
+      }
     } else {
       setNextView('no-token');
     }
@@ -47,8 +46,7 @@ export const WalletRouter: React.FC = () => {
     return (
       <WalletLoadingScreen
         onComplete={async () => {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user?.id) setAuthedUserId(session.user.id);
+          if (isAuthenticated && auth0User?.sub) setAuthedUserId(auth0User.sub);
           setView(nextView === 'no-token' ? 'manage' : nextView);
         }}
       />
@@ -117,13 +115,11 @@ export const WalletRouter: React.FC = () => {
       token={token}
       onManage={() => {
         // Check if already logged in first
-        supabase.auth.getSession().then(({ data: { session } }) => {
-          if (session?.user?.id) {
-            safeRedirect(`https://pilotrecognition.com/platform?tab=wallet`);
-          } else {
-            setView('gate');
-          }
-        });
+        if (isAuthenticated && auth0User?.sub) {
+          safeRedirect(`https://pilotrecognition.com/platform?tab=wallet`);
+        } else {
+          setView('gate');
+        }
       }}
     />
   );

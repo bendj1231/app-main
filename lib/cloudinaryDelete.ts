@@ -1,11 +1,11 @@
 /**
  * Delete images from Cloudinary
  * 
- * Uses Supabase Edge Function for secure server-side deletion
+ * Uses the Cloudflare Worker for secure server-side deletion
  * (API credentials are not exposed to browser)
  */
 
-import { supabase } from './supabase';
+const API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 export interface DeleteImageResult {
   success: boolean;
@@ -15,26 +15,34 @@ export interface DeleteImageResult {
 /**
  * Delete a profile image from Cloudinary
  * 
+ * @param accessToken - Auth0 ID token JWT
  * @param publicId - The Cloudinary public_id to delete
  * @returns Result of deletion
  */
-export async function deleteProfileImage(publicId: string): Promise<DeleteImageResult> {
+export async function deleteProfileImage(accessToken: string, publicId: string): Promise<DeleteImageResult> {
   try {
     if (!publicId) {
       return { success: false, error: 'No public_id provided' };
     }
+    if (!accessToken) {
+      return { success: false, error: 'Not authenticated' };
+    }
 
-    // Call Supabase edge function to delete the image
-    const { data, error } = await supabase.functions.invoke('cloudinary-delete', {
-      body: {
-        publicId,
-        type: 'profile',
+    // Call Worker endpoint to delete the image
+    const res = await fetch(`${API_URL}/api/cloudinary-delete`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ publicId, type: 'profile' }),
     });
 
-    if (error) {
-      console.error('[cloudinaryDelete] Edge function error:', error);
-      return { success: false, error: error instanceof Error ? error.message : String(error) };
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      console.error('[cloudinaryDelete] Worker error:', data?.error || res.statusText);
+      return { success: false, error: data?.error || `Delete failed: ${res.status}` };
     }
 
     if (!data?.success) {
@@ -51,14 +59,15 @@ export async function deleteProfileImage(publicId: string): Promise<DeleteImageR
 /**
  * Delete old profile image before uploading new one
  * 
+ * @param accessToken - Auth0 ID token JWT
  * @param oldPublicId - The existing public_id from profile record
  * @returns Result (non-blocking, failures are logged but not thrown)
  */
-export async function cleanupOldProfileImage(oldPublicId: string | null | undefined): Promise<void> {
-  if (!oldPublicId) return;
+export async function cleanupOldProfileImage(accessToken: string | undefined, oldPublicId: string | null | undefined): Promise<void> {
+  if (!oldPublicId || !accessToken) return;
 
   try {
-    const result = await deleteProfileImage(oldPublicId);
+    const result = await deleteProfileImage(accessToken, oldPublicId);
     if (!result.success) {
       console.warn('[cloudinaryDelete] Failed to cleanup old image:', result.error);
       // Don't throw - new image upload should still proceed

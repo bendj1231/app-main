@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, AlertTriangle, CheckCircle2, Clock, XCircle, Loader2, Upload, Send, ShieldCheck, RefreshCw, AlertCircle } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props {
   onBack: () => void;
@@ -142,6 +142,7 @@ function ConflictCard({ conflict, onRespond }: { conflict: Conflict; onRespond: 
 
 export function ConflictResolutionDashboard({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [conflicts, setConflicts] = useState<Conflict[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Conflict | null>(null);
@@ -153,12 +154,18 @@ export function ConflictResolutionDashboard({ onBack, onNavigate }: Props) {
   const loadConflicts = useCallback(async () => {
     if (!currentUser?.id) { setLoading(false); return; }
     setLoading(true);
-    const { data, error } = await supabase
-      .from('verification_conflicts')
-      .select('*')
-      .eq('pilot_id', currentUser.id)
-      .order('created_at', { ascending: false });
-    if (!error) setConflicts(data ?? []);
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'verification_conflicts',
+      operation: 'select',
+      where: { pilot_id: currentUser.id },
+      limit: 500,
+    });
+    const sorted = (rows || []).sort((a: any, b: any) => {
+      const ca = a.created_at || '';
+      const cb = b.created_at || '';
+      return cb.localeCompare(ca);
+    });
+    setConflicts((sorted as unknown) as Conflict[]);
     setLoading(false);
   }, [currentUser?.id]);
 
@@ -173,25 +180,26 @@ export function ConflictResolutionDashboard({ onBack, onNavigate }: Props) {
     setSubmitting(true);
     setSubmitError(null);
 
-    const { error } = await supabase
-      .from('verification_conflicts')
-      .update({
-        status: 'pilot_responded',
-        pilot_explanation: explanation.trim(),
-        pilot_responded_at: new Date().toISOString(),
-      })
-      .eq('id', selected.id)
-      .eq('pilot_id', currentUser.id);
-
-    if (error) {
-      setSubmitError(error.message);
-    } else {
+    try {
+      await callApi('queryTable', {
+        table: 'verification_conflicts',
+        operation: 'update',
+        id: selected.id,
+        data: {
+          status: 'pilot_responded',
+          pilot_explanation: explanation.trim(),
+          pilot_responded_at: new Date().toISOString(),
+        },
+      });
       setSubmitSuccess(true);
       setSelected(null);
       setExplanation('');
       await loadConflicts();
+    } catch (err: any) {
+      setSubmitError(err?.message || 'Failed to submit response.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   }
 
   return (

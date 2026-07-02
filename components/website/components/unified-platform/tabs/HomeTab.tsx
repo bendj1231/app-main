@@ -6,12 +6,12 @@ import {
   ChevronRight, TrendingUp, Award, Clock,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Star, Target,
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
-  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Copy,
+  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Plus,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
   Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { safeRedirect } from '@/lib/url-validator';
 import ProfileImage from '@/components/ProfileImage';
 import { GettingStartedBar } from '../../GettingStartedBar';
@@ -42,6 +42,7 @@ export const HomeTab: React.FC<{
   avatarError?: string;
   handleAvatarUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, currentUser, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload }) => {
+  const { callApi } = useWorkerAuth();
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -76,7 +77,6 @@ export const HomeTab: React.FC<{
   const [obHoursBand, setObHoursBand] = React.useState('');
   const [obHoursHashing, setObHoursHashing] = useState(false);
   const [obHoursHashed, setObHoursHashed] = useState(false);
-  const [copiedUrl, setCopiedUrl] = React.useState(false);
   const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
   const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
 
@@ -181,9 +181,19 @@ export const HomeTab: React.FC<{
     const id = profile?.id;
     if (!id) return;
     let active = true;
-    supabase.from('pilot_flight_logs').select('*').eq('user_id', id).order('date', { ascending: false }).limit(50).then(({ data }) => {
+    callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_flight_logs',
+      operation: 'select',
+      where: { user_id: id },
+      limit: 50,
+    }).then((data) => {
       if (!active) return;
-      setLogbookEntries(data ?? []);
+      const sorted = (data || []).sort((a: any, b: any) => {
+        const da = a.date || '';
+        const db = b.date || '';
+        return db.localeCompare(da);
+      });
+      setLogbookEntries(sorted);
       setLogbookLoaded(true);
     });
     return () => { active = false; };
@@ -557,10 +567,10 @@ export const HomeTab: React.FC<{
             <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
           </div>
 
-          {/* THE PILOT GAP — pilotshortage.org */}
+          {/* THE PILOT SHORTAGE — pilotshortage.org in-app */}
           <div
             className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
+            onClick={() => onNavigate('pilotshortage')}
           >
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
@@ -731,26 +741,43 @@ export const HomeTab: React.FC<{
                     <span className="flex items-center justify-center leading-none"><Instagram size={15} className="text-white/30" /></span>
                   </div>
                 )}
-                {/* Copy Profile URL */}
+                {profile?.x_url ? (
+                  <a href={profile.x_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}>
+                    <span className="flex items-center justify-center leading-none">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                  </a>
+                ) : (
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(255,255,255,0.12)' }}>
+                    <span className="flex items-center justify-center leading-none">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-white/30"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                  </div>
+                )}
+                {/* Add / manage social accounts */}
                 <button
-                  onClick={() => {
-                    const displayHandle = (profile?.display_name || profile?.full_name || name || 'pilot').toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
-                    const url = `${window.location.origin}/p/${displayHandle || 'pilot'}`;
-                    navigator.clipboard.writeText(url).then(() => { setCopiedUrl(true); setTimeout(() => setCopiedUrl(false), 1500); });
-                  }}
-                  className="relative w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
-                  style={{ background: copiedUrl ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)', border: `1.5px solid ${copiedUrl ? 'rgba(16,185,129,0.5)' : 'rgba(255,255,255,0.25)'}` }}
-                  title={copiedUrl ? 'Copied!' : 'Copy Profile URL'}
+                  onClick={() => setTab('settings' as TabId)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}
+                  title="Manage social accounts"
                 >
-                  <span className="flex items-center justify-center leading-none">{copiedUrl ? <CheckCircle size={15} className="text-emerald-400" /> : <Copy size={15} className="text-white/70" />}</span>
+                  <span className="flex items-center justify-center leading-none"><Plus size={15} className="text-white" /></span>
                 </button>
               </div>
+
+              {/* Sync social media accounts */}
+              <button
+                onClick={() => setTab('settings' as TabId)}
+                className="flex items-center gap-1.5 mt-2 text-[10px] font-bold text-white/50 hover:text-blue-400 transition-colors"
+              >
+                <ExternalLink size={12} />
+                Sync social media accounts
+              </button>
 
               {/* Account tier & invite code */}
               {(() => {
                 const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
                 const isFree = tier === 'free' || tier === 'bronze';
-                const inviteCode = profile?.referral_code || (profile?.id ? profile.id.slice(0, 8).toUpperCase() : '');
                 return isFree ? (
                   <div className="flex items-center gap-2 mt-3">
                     <button
@@ -760,9 +787,6 @@ export const HomeTab: React.FC<{
                     >
                       Get Invite Code With Recognition+
                     </button>
-                    {inviteCode && (
-                      <span className="text-[9px] font-mono text-white/40 tracking-wider">{inviteCode}</span>
-                    )}
                   </div>
                 ) : (
                   <div className="mt-3">
@@ -1439,14 +1463,14 @@ export const HomeTab: React.FC<{
                           {/* Card header */}
                           <div className="flex items-center justify-between px-3 py-2" style={{ borderBottom: '1px solid #e2e8f0' }}>
                             <p className="text-[8px] font-black text-gray-800 uppercase tracking-widest">Database Protocol &amp; Ledger Architecture</p>
-                            <span className="text-[7px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#e2e8f0', color: '#64748b' }}>Supabase Vault Status: Neutral Node</span>
+                            <span className="text-[7px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#e2e8f0', color: '#64748b' }}>D1 Vault Status: Neutral Node</span>
                           </div>
                           {/* Architecture rows */}
                           <div className="px-3 py-2.5 space-y-2">
                             {[
-                              { label: 'Host Domain Storage', value: 'Supabase Neutral Node Ledger' },
+                              { label: 'Host Domain Storage', value: 'D1 Neutral Node Ledger' },
                               { label: 'Ingestion Vector', value: 'Secure Auth0 Identity Protocol Layer' },
-                              { label: 'Storage Target', value: 'Encrypted Supabase Database Network (profiles schema)' },
+                              { label: 'Storage Target', value: 'Encrypted D1 Database Network (profiles schema)' },
                               { label: 'Retention State', value: 'Permanent Cryptographic Hash Tokenization Only' },
                             ].map(row => (
                               <div key={row.label} className="flex items-baseline gap-2">
@@ -1491,7 +1515,7 @@ export const HomeTab: React.FC<{
                                     <span className="text-[8px] font-black text-gray-700 w-20 flex-shrink-0">Hour Band</span>
                                     <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>{obHoursBand}</span>
                                   </div>
-                                  <p className="text-[7px] text-green-700 font-medium">Raw hours discarded. Hash + band ready for Supabase ledger commit on consent sign-off.</p>
+                                  <p className="text-[7px] text-green-700 font-medium">Raw hours discarded. Hash + band ready for D1 ledger commit on consent sign-off.</p>
                                 </div>
                               )}
                             </div>
@@ -1500,7 +1524,7 @@ export const HomeTab: React.FC<{
                           <div className="px-3 pb-3">
                             <div className="px-2.5 py-2 rounded" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
                               <p className="text-[7px] font-black text-gray-700 uppercase tracking-wide mb-1">System Architecture Directive</p>
-                              <p className="text-[8px] text-gray-500 leading-relaxed">Flight hour records are ingested exclusively via the secure Auth0 session layer, where they are immediately converted into one-way cryptographic hashes. This interface passes the resulting hash token directly to a neutral, read-only storage partition on Supabase. Because the platform possesses no structural decryption keys, the raw integer values are completely unrecoverable by the database host. The local database remains entirely neutral, retaining zero visible or readable logbook assets.</p>
+                              <p className="text-[8px] text-gray-500 leading-relaxed">Flight hour records are ingested exclusively via the secure Auth0 session layer, where they are immediately converted into one-way cryptographic hashes. This interface passes the resulting hash token directly to a neutral, read-only storage partition on D1. Because the platform possesses no structural decryption keys, the raw integer values are completely unrecoverable by the database host. The local database remains entirely neutral, retaining zero visible or readable logbook assets.</p>
                             </div>
                           </div>
                         </div>
@@ -1681,7 +1705,12 @@ export const HomeTab: React.FC<{
                             updatePayload.logbook_hash_updated_at = new Date().toISOString();
                             updatePayload.logbook_total_hours_band = obHoursBand;
                           }
-                          await supabase.from('profiles').update(updatePayload).eq('id', profile.id);
+                          await callApi('queryTable', {
+                            table: 'profiles',
+                            operation: 'update',
+                            id: profile.id,
+                            data: updatePayload,
+                          });
                         }
                         setOnboardingStep(2);
                       }}

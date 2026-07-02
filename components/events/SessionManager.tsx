@@ -6,7 +6,7 @@ import {
   Mic, Video, Users as UsersIcon, ChevronUp, ChevronDown,
   Save, Search, Filter, CheckCircle, AlertCircle, ExternalLink
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface SessionManagerProps {
   eventId: string;
@@ -42,6 +42,7 @@ interface Session {
 }
 
 export function SessionManager({ eventId, eventTitle, user, onClose }: SessionManagerProps) {
+  const { callApi } = useWorkerAuth();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -79,15 +80,21 @@ export function SessionManager({ eventId, eventTitle, user, onClose }: SessionMa
   const loadSessions = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('event_sessions')
-        .select('*')
-        .eq('event_id', eventId)
-        .order('session_date', { ascending: true })
-        .order('start_time', { ascending: true });
-
-      if (error) throw error;
-      setSessions(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_sessions',
+        operation: 'select',
+        where: { event_id: eventId },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const da = a.session_date || '';
+        const db = b.session_date || '';
+        if (da !== db) return da.localeCompare(db);
+        const ta = a.start_time || '';
+        const tb = b.start_time || '';
+        return ta.localeCompare(tb);
+      });
+      setSessions((sorted as unknown) as Session[]);
     } catch (err) {
       console.error('Error loading sessions:', err);
       setError('Failed to load sessions');
@@ -129,18 +136,18 @@ export function SessionManager({ eventId, eventTitle, user, onClose }: SessionMa
       };
 
       if (editingSession) {
-        const { error } = await supabase
-          .from('event_sessions')
-          .update(sessionData)
-          .eq('id', editingSession.id);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_sessions',
+          operation: 'update',
+          id: editingSession.id,
+          data: sessionData,
+        });
       } else {
-        const { error } = await supabase
-          .from('event_sessions')
-          .insert(sessionData);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_sessions',
+          operation: 'insert',
+          data: sessionData,
+        });
       }
 
       await loadSessions();
@@ -159,12 +166,11 @@ export function SessionManager({ eventId, eventTitle, user, onClose }: SessionMa
     if (!confirm('Are you sure you want to delete this session?')) return;
 
     try {
-      const { error } = await supabase
-        .from('event_sessions')
-        .delete()
-        .eq('id', sessionId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'event_sessions',
+        operation: 'delete',
+        id: sessionId,
+      });
       await loadSessions();
     } catch (err) {
       console.error('Error deleting session:', err);
@@ -220,12 +226,12 @@ export function SessionManager({ eventId, eventTitle, user, onClose }: SessionMa
 
   const updateStatus = async (sessionId: string, newStatus: string) => {
     try {
-      const { error } = await supabase
-        .from('event_sessions')
-        .update({ status: newStatus })
-        .eq('id', sessionId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'event_sessions',
+        operation: 'update',
+        id: sessionId,
+        data: { status: newStatus },
+      });
       await loadSessions();
     } catch (err) {
       console.error('Error updating status:', err);

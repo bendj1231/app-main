@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '@/lib/shared/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface PasskeyGateProps {
   onAuthenticated: (userId: string) => void;
@@ -23,7 +23,10 @@ const bufferToBase64url = (buffer: ArrayBuffer): string => {
   return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 };
 
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+
 export const PasskeyGate: React.FC<PasskeyGateProps> = ({ onAuthenticated, onCancel }) => {
+  const { getIdTokenClaims } = useAuth0();
   const [step, setStep] = useState<Step>('choose');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -34,13 +37,14 @@ export const PasskeyGate: React.FC<PasskeyGateProps> = ({ onAuthenticated, onCan
     setErrorMsg('');
 
     try {
-      // 1. Get challenge from edge function
-      const { data: { session } } = await supabase.auth.getSession();
-      const challengeRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/passkey-generate-challenge`, {
+      // 1. Get challenge from Worker API
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      const challengeRes = await fetch(`${PILOT_API_URL}/api/passkey-generate-challenge`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${token || ''}`,
         },
       });
 
@@ -63,12 +67,12 @@ export const PasskeyGate: React.FC<PasskeyGateProps> = ({ onAuthenticated, onCan
 
       const response = assertion.response as AuthenticatorAssertionResponse;
 
-      // 3. Verify with edge function
-      const verifyRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/passkey-verify`, {
+      // 3. Verify with Worker API
+      const verifyRes = await fetch(`${PILOT_API_URL}/api/passkey-verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${token || ''}`,
         },
         body: JSON.stringify({
           credentialId: bufferToBase64url(assertion.rawId),
@@ -98,14 +102,19 @@ export const PasskeyGate: React.FC<PasskeyGateProps> = ({ onAuthenticated, onCan
     setStep('google');
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/wallet/manage`,
-          queryParams: { prompt: 'select_account' },
-        },
+      // Redirect to Auth0 Google login
+      const auth0Domain = (import.meta.env as any).VITE_AUTH0_DOMAIN || 'login.pilotrecognition.com';
+      const clientId = (import.meta.env as any).VITE_AUTH0_CLIENT_ID || '';
+      const redirectUri = `${window.location.origin}/wallet/manage`;
+      const params = new URLSearchParams({
+        client_id: clientId,
+        response_type: 'token id_token',
+        redirect_uri: redirectUri,
+        connection: 'google-oauth2',
+        scope: 'openid profile email',
+        prompt: 'select_account',
       });
-      if (error) throw error;
+      window.location.href = `https://${auth0Domain}/authorize?${params.toString()}`;
     } catch (err: any) {
       setErrorMsg(err?.message || 'Google sign-in failed.');
       setStep('error');

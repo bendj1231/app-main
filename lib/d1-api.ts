@@ -23,8 +23,8 @@
 
 // ── Config ─────────────────────────────────────────────────────
 
-const PLATFORM_API_URL = import.meta.env.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
-const PILOT_API_URL    = import.meta.env.VITE_PILOT_API_URL    || 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
+const PLATFORM_API_URL = (import.meta.env as any).VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
+const PILOT_API_URL    = (import.meta.env as any).VITE_PILOT_API_URL    || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 async function fetchAPI(
   accessToken: string,
@@ -50,7 +50,7 @@ async function fetchAPI(
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const msg = (data as Record<string, unknown>)?.error || `HTTP ${res.status}`;
+        const msg = String((data as Record<string, unknown>)?.error || `HTTP ${res.status}`);
         throw new Error(msg);
       }
       return data;
@@ -285,6 +285,12 @@ export async function deleteProfile(accessToken: string, profileId: string) {
   return pilotApi(accessToken, 'deleteProfile', { id: profileId });
 }
 
+// ── Admin Dashboard ──────────────────────────────────────────────
+
+export async function getAdminDashboardStats(accessToken: string) {
+  return api(accessToken, 'getAdminDashboardStats');
+}
+
 // ── Health ─────────────────────────────────────────────────────
 
 export async function healthCheck() {
@@ -295,6 +301,6 @@ export async function healthCheck() {
 // ── Compatibility helpers (drop-in replacements for Supabase patterns) ──
 
 // NOTE: getProfileById and getMe are the replacements for:
-//   supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
+//   Old Supabase pattern: supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
 // Use getMe() when you want the current logged-in user's profile.
 // Use getProfileById() when you have a specific profile UUID.

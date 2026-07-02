@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAccountTier } from '@/hooks/useAccountTier';
@@ -32,6 +32,7 @@ interface PilotLicensureExperiencePageProps {
     email?: string;
   } | null;
   embedded?: boolean;
+  visibleSection?: 'personal' | 'license-medical' | 'ratings-endorsements' | 'experience-career';
 }
 
 interface JobExperience {
@@ -94,6 +95,39 @@ const COMMON_AIRCRAFT = [
   'Other'
 ];
 
+const TYPE_RATING_CENTERS = [
+  'Airbus Training Centre Europe (Toulouse)',
+  'Airbus Training Center Americas (Miami)',
+  'Airbus Training Center Asia Pacific (Singapore)',
+  'Boeing Flight Services (Miami)',
+  'Boeing Flight Services (Seattle)',
+  'Boeing Flight Services (Dubai)',
+  'Boeing Flight Services (Shanghai)',
+  'CAE Oxford Aviation Academy',
+  'CAE Dallas/Fort Worth',
+  'CAE Phoenix',
+  'CAE Montreal',
+  'CAE Madrid',
+  'L3Harris Airline Academy (UK)',
+  'L3Harris Airline Academy (Florida)',
+  'L3Harris Training Center (New Zealand)',
+  'FlightSafety International (Vero Beach)',
+  'FlightSafety International (Long Beach)',
+  'FlightSafety International (Paris)',
+  'FlightSafety International (St. Louis)',
+  'Pan AM International Flight Academy',
+  'ATP Flight School',
+  'American Flyers',
+  'Sheffield School of Aeronautics',
+  'Embry-Riddle Aeronautical University',
+  'University of North Dakota',
+  'Purdue University Aviation',
+  'University of Oklahoma Aviation',
+  'Western Michigan University',
+  'Aerosim Flight Academy',
+  'Other'
+];
+
 const AIRCRAFT_CLASSES = [
   'Single Engine Land (SEL)',
   'Multi-Engine Land (MEL)',
@@ -118,6 +152,39 @@ const AIRCRAFT_MANUFACTURERS = [
   'Mooney',
   'Other'
 ];
+
+const MANUFACTURER_MODELS: Record<string, string[]> = {
+  Airbus: ['A320', 'A321', 'A330-200', 'A330-300', 'A350-900', 'A350-1000', 'A380', 'A318', 'A319', 'A340-300', 'A340-600'],
+  Boeing: ['737-700', '737-800', '737-900', '747-400', '747-8', '757-200', '767-300', '777-200', '777-300', '787-8', '787-9', '787-10'],
+  Cessna: ['172 Skyhawk', '182 Skylane', '206 Stationair', '208 Caravan', 'Citation CJ3', 'Citation X', 'Citation Latitude'],
+  Piper: ['PA-28 Cherokee', 'PA-28 Arrow', 'PA-34 Seneca', 'PA-44 Seminole', 'PA-46 Malibu', 'M350', 'M500', 'M600'],
+  Diamond: ['DA40 NG', 'DA42 Twin Star', 'DA62', 'DA50 RG'],
+  Beechcraft: ['King Air 200', 'King Air 350', 'Baron G58', 'Bonanza G36', 'Premier I', 'Hawker 400XP'],
+  Embraer: ['E170', 'E175', 'E190', 'E195', 'Phenom 100', 'Phenom 300', 'Praetor 500', 'Praetor 600', 'Legacy 450', 'Legacy 500'],
+  Bombardier: ['CRJ200', 'CRJ700', 'CRJ900', 'CRJ1000', 'Global 5000', 'Global 6000', 'Global 7500', 'Challenger 300', 'Challenger 350'],
+  ATR: ['ATR 42-600', 'ATR 72-600', 'ATR 72-500'],
+  Tecnam: ['P2008 JC', 'P2010', 'P2006T', 'P92 Echo', 'Astore'],
+  Cirrus: ['SR20', 'SR22', 'SR22T', 'SF50 Vision Jet'],
+  Mooney: ['M20V Acclaim Ultra', 'M20U Ovation Ultra', 'M20TN Acclaim'],
+  Other: ['Other']
+};
+
+const MANUFACTURER_LOGOS: Record<string, string> = {
+  Airbus: '/airbus-logo.png',
+  Boeing: 'https://en.wikipedia.org/wiki/Special:FilePath/Boeing_logo.svg',
+  Cessna: '/cessna-logo.png',
+  Piper: 'https://en.wikipedia.org/wiki/Special:FilePath/Piper_Aircraft_logo.svg',
+  Diamond: '',
+  Beechcraft: 'https://en.wikipedia.org/wiki/Special:FilePath/Beechcraft_logo.svg',
+  Embraer: 'https://en.wikipedia.org/wiki/Special:FilePath/Embraer_logo.svg',
+  Bombardier: '/bombardier-logo.svg',
+  ATR: '/atr-logo.png',
+  Tecnam: '/tecnam-logo.png',
+  Cirrus: 'https://en.wikipedia.org/wiki/Special:FilePath/Cirrus_Aircraft_logo.svg',
+  Mooney: '/mooney-logo.png',
+};
+
+const getManufacturerLogo = (name: string) => MANUFACTURER_LOGOS[name] || '';
 
 const LANGUAGES = [
   'English', 'Arabic', 'French', 'Spanish', 'German', 'Italian', 'Portuguese',
@@ -285,12 +352,14 @@ const OTHER_INDUSTRY_EXPERIENCE_OPTIONS = [
 export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePageProps> = ({ 
   onBack, 
   userProfile: userProfileProp,
-  embedded = false
+  embedded = false,
+  visibleSection
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
   const { user: auth0User } = useAuth0();
   const { readProfile, readLicensure, writeLicensure, updateProfile } = useVaultProfile();
+  const { callApi } = useWorkerAuth();
   
   // Use prop if provided (nested navigation), otherwise use auth context (direct URL access)
   const userProfile = userProfileProp || authUserProfile || (currentUser ? {
@@ -466,19 +535,21 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return () => clearTimeout(timer);
   }, [dataLoaded, userProfile?.id]);
 
-  // Load existing data from Supabase
+  // Load existing data from D1
   useEffect(() => {
     const loadExistingData = async () => {
       let userId = userProfile?.id || userProfile?.uid;
 
-      // Auth0-only fallback: resolve Supabase profile ID via auth0_id
+      // Auth0-only fallback: resolve profile ID via auth0_id
       if (!userId && auth0User?.sub) {
-        const { data: p } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('auth0_id', auth0User.sub)
-          .maybeSingle();
-        if (p?.id) userId = p.id;
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { auth0_id: auth0User.sub },
+          limit: 1,
+        });
+        const p = rows?.[0];
+        if (p?.id) userId = p.id as string;
       }
 
       if (!userId) {
@@ -572,14 +643,19 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         const { data, error } = await readLicensure(userId);
 
         // Also fetch from pilot_profiles for flight hours and license data
-        const { data: pilotProfileData, error: pilotProfileError } = await supabase
-          .from('pilot_profiles')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
-
-        if (pilotProfileError) {
-        } else if (pilotProfileData) {
+        try {
+          const pilotProfileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_profiles',
+            operation: 'select',
+            where: { user_id: userId },
+            limit: 1,
+          });
+          const pilotProfileData = pilotProfileRows?.[0];
+          if (pilotProfileData) {
+            // Pilot profile data available for future use
+          }
+        } catch {
+          // pilot_profiles query failed, continue without it
         }
 
         if (error) {
@@ -939,7 +1015,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     }
   };
 
-  // Save all data to Supabase
+  // Save all data to D1 via Worker API
   const handleSave = async () => {
     const userId = userProfile?.id || userProfile?.uid;
     if (!userId) {
@@ -999,7 +1075,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
       const { error } = await writeLicensure(userId, data);
 
       if (error) {
-        console.error('Supabase error:', error);
+        console.error('D1 save error:', error);
         throw error;
       }
 
@@ -1096,6 +1172,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         </div>
       ) : (
       <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        {!visibleSection && (<>
         {/* Header */}
         <header style={{ marginBottom: '2rem', textAlign: 'center', position: 'relative' }}>
           <button
@@ -1147,6 +1224,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             In support of <span style={{ color: '#111827' }}>pilot</span><span style={{ color: '#dc2626' }}>shortage</span><span style={{ color: '#dc2626' }}>.org</span>
           </div>
         </motion.div>
+        </>)}
 
         {/* Save Message */}
         {saveMessage && (
@@ -1164,6 +1242,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         )}
 
         {/* Personal Information Section */}
+        {visibleSection === 'personal' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '20px', 
@@ -1550,8 +1629,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </p>
           </div>
         </motion.section>
+        </>)}
 
         {/* License Information Section - Terminal Style */}
+        {visibleSection === 'license-medical' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
           background: 'white', 
           borderRadius: '8px', 
@@ -1816,27 +1897,32 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
         </motion.section>
+        </>)}
 
-        {/* Aircraft Type Ratings Section - Terminal Style */}
+        {/* Aircraft Type Ratings Section - Glassy UI */}
+        {visibleSection === 'ratings-endorsements' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
-          background: 'white',
-          borderRadius: '8px',
+          background: 'rgba(15, 23, 42, 0.55)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderRadius: '16px',
           padding: '1.5rem',
           marginBottom: '2rem',
-          border: `1px solid ${SLATE[200]}`
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.35)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
-              <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              <Shield style={{ width: '20px', height: '20px', color: '#38bdf8' }} />
+              <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
                 Aircraft Type Ratings
               </h2>
             </div>
           </div>
 
           {aircraftRatings.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: SLATE[50], borderRadius: '8px', border: `1px solid ${SLATE[200]}` }}>
-              <p style={{ color: SLATE[500], fontSize: '0.875rem', margin: 0 }}>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem', margin: 0 }}>
                 No aircraft ratings added yet. Use the + button below to add your A320, B737, or other type ratings.
               </p>
             </div>
@@ -1846,25 +1932,25 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div key={rating.id} style={{
               marginBottom: '1rem',
               padding: '1rem',
-              background: 'white',
-              borderRadius: '8px',
-              border: `1px solid ${SLATE[200]}`
+              background: 'rgba(0,0,0,0.25)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.08)'
             }}>
               {/* Rating Header with Status */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: `1px solid ${SLATE[100]}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: SLATE[800] }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#ffffff' }}>
                     Rating #{index + 1}
                   </span>
                   {rating.aircraftType && (
                     <span style={{
                       fontSize: '0.7rem',
                       padding: '0.2rem 0.5rem',
-                      background: getDocsByType('rating').length > index ? '#f0fdf4' : '#fef3c7',
-                      color: getDocsByType('rating').length > index ? EMERALD : '#d97706',
+                      background: getDocsByType('rating').length > index ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
+                      color: getDocsByType('rating').length > index ? '#34d399' : '#fbbf24',
                       borderRadius: '4px',
                       fontWeight: 500,
-                      border: `1px solid ${getDocsByType('rating').length > index ? EMERALD : '#fbbf24'}`
+                      border: `1px solid ${getDocsByType('rating').length > index ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'}`
                     }}>
                       {getDocsByType('rating').length > index ? 'VERIFIED' : 'PENDING'}
                     </span>
@@ -1890,63 +1976,240 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', alignItems: 'end' }}>
-                {/* Aircraft Class */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                    Aircraft Class
-                  </label>
-                  <select
-                    value={rating.aircraftClass}
-                    onChange={(e) => updateAircraftRating(rating.id, 'aircraftClass', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem 0.75rem',
-                      border: `1px solid ${SLATE[300]}`,
-                      borderRadius: '6px',
-                      fontSize: '0.875rem',
-                      outline: 'none',
-                      fontFamily: MONO_FONT,
-                      background: 'white'
-                    }}
-                  >
-                    <option value="">Select class</option>
-                    {AIRCRAFT_CLASSES.map(cls => (
-                      <option key={cls} value={cls}>{cls}</option>
-                    ))}
-                  </select>
+              {/* Visual Aircraft Card — shown only when all core fields are filled */}
+              {rating.manufacturer && rating.aircraftClass && rating.model && (
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '1rem',
+                  background: 'rgba(0,0,0,0.35)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  overflow: 'hidden',
+                  marginBottom: '1rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(56,189,248,0.3)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(56,189,248,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                {/* Aircraft Image */}
+                <div style={{ position: 'relative', width: '200px', minHeight: '140px', flexShrink: 0, overflow: 'hidden' }}>
+                  <img
+                    src={rating.manufacturer === 'Airbus' ? 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=400&q=80' :
+                         rating.manufacturer === 'Boeing' ? 'https://images.unsplash.com/photo-1559628233-eb1b1ee2974e?w=400&q=80' :
+                         rating.manufacturer === 'Cessna' ? 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg' :
+                         rating.manufacturer === 'Piper' ? 'https://resources.globalair.com/specs/images/Twin%20Pistons/Piper/Seminole/PA-44-180/Exterior/Seminole%20PA-44-180%204.jpg?w=400' :
+                         'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80'}
+                    alt={rating.aircraftType || 'Aircraft'}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80'; }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 40%, rgba(0,0,0,0.6))' }} />
                 </div>
 
-                {/* Type Rating + Rating Date stacked */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* Card Content */}
+                <div style={{ flex: 1, padding: '1rem 1rem 1rem 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>
+                      {rating.aircraftType || rating.model}
+                    </h3>
+                    {rating.manufacturer && getManufacturerLogo(rating.manufacturer) && (
+                      <img
+                        src={getManufacturerLogo(rating.manufacturer)}
+                        alt={rating.manufacturer}
+                        style={{ width: '28px', height: '28px', objectFit: 'contain', borderRadius: '4px', background: 'rgba(255,255,255,0.9)', padding: '2px' }}
+                        referrerPolicy="no-referrer"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    )}
+                  </div>
+                  <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+                    {rating.model} {rating.tailNumber ? `· ${rating.tailNumber}` : ''}
+                  </p>
+
+                  {/* Stats Row */}
+                  <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '0.75rem' }}>
+                    <div>
+                      <p style={{ margin: 0, fontSize: '0.6rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Rating Date</p>
+                      <p style={{ margin: '0.15rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{rating.ratingDate ? new Date(rating.ratingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</p>
+                    </div>
+                    <div>
+                      <p style={{ margin: 0, fontSize: '0.6rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Class</p>
+                      <p style={{ margin: '0.15rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{rating.aircraftClass}</p>
+                    </div>
+                    <div>
+                      <p style={{ margin: 0, fontSize: '0.6rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Manufacturer</p>
+                      <p style={{ margin: '0.15rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{rating.manufacturer}</p>
+                    </div>
+                  </div>
+
+                  {/* Currency Bar */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                    <div style={{ flex: 1, height: '3px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ width: rating.isCurrent ? '100%' : '0%', height: '100%', background: rating.isCurrent ? '#34d399' : '#ef4444', borderRadius: '2px', transition: 'all 0.5s ease' }} />
+                    </div>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, color: rating.isCurrent ? '#34d399' : '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {rating.isCurrent ? 'Current' : 'Not Current'}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.4 }}>
+                      {rating.lastFlown ? `Last flown: ${new Date(rating.lastFlown).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'No recent flight data'}
+                    </p>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Edit Details →
+                    </span>
+                  </div>
+                </div>
+              </div>
+              )}
+
+              {/* Rich Form Container */}
+              <div style={{
+                background: 'rgba(0,0,0,0.2)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255,255,255,0.06)',
+                padding: '1.25rem',
+                marginTop: '0.5rem'
+              }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  {/* Aircraft Class */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                      Type Rating
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Aircraft Class
                     </label>
-                    <input
-                      type="text"
-                      value={rating.aircraftType}
-                      onChange={(e) => updateAircraftRating(rating.id, 'aircraftType', e.target.value)}
-                      placeholder="e.g., A320, B737..."
-                      list={`aircraft-list-${rating.id}`}
+                    <select
+                      value={rating.aircraftClass}
+                      onChange={(e) => updateAircraftRating(rating.id, 'aircraftClass', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '0.5rem 0.75rem',
-                        border: `1px solid ${SLATE[300]}`,
-                        borderRadius: '6px',
+                        padding: '0.6rem 0.75rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
                         fontSize: '0.875rem',
                         outline: 'none',
-                        fontFamily: MONO_FONT
+                        fontFamily: MONO_FONT,
+                        background: 'rgba(0,0,0,0.35)',
+                        color: '#ffffff',
+                        cursor: 'pointer'
                       }}
-                    />
-                    <datalist id={`aircraft-list-${rating.id}`}>
-                      {COMMON_AIRCRAFT.map(aircraft => (
-                        <option key={aircraft} value={aircraft} />
+                    >
+                      <option value="">Select class</option>
+                      {AIRCRAFT_CLASSES.map(cls => (
+                        <option key={cls} value={cls}>{cls}</option>
                       ))}
-                    </datalist>
+                    </select>
                   </div>
+
+                  {/* Type Rating */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Type Rating Center
+                    </label>
+                    <select
+                      value={rating.aircraftType}
+                      onChange={(e) => updateAircraftRating(rating.id, 'aircraftType', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.75rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        fontFamily: MONO_FONT,
+                        background: 'rgba(0,0,0,0.35)',
+                        color: '#ffffff',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="">Select type rating center</option>
+                      {TYPE_RATING_CENTERS.map(center => (
+                        <option key={center} value={center}>{center}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Manufacturer */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Manufacturer
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <select
+                        value={rating.manufacturer}
+                        onChange={(e) => updateAircraftRating(rating.id, 'manufacturer', e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '0.6rem 0.75rem',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '10px',
+                          fontSize: '0.875rem',
+                          outline: 'none',
+                          fontFamily: MONO_FONT,
+                          background: 'rgba(0,0,0,0.35)',
+                          color: '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <option value="">Select make</option>
+                        {AIRCRAFT_MANUFACTURERS.map(m => (
+                          <option key={m} value={m}>{m}</option>
+                        ))}
+                      </select>
+                      {rating.manufacturer && getManufacturerLogo(rating.manufacturer) && (
+                        <img
+                          src={getManufacturerLogo(rating.manufacturer)}
+                          alt={rating.manufacturer}
+                          style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '6px', background: 'rgba(255,255,255,0.95)', padding: '3px' }}
+                          referrerPolicy="no-referrer"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Model — dependent on manufacturer */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Model
+                    </label>
+                    <select
+                      value={rating.model}
+                      onChange={(e) => updateAircraftRating(rating.id, 'model', e.target.value)}
+                      disabled={!rating.manufacturer}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.75rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        fontFamily: MONO_FONT,
+                        background: rating.manufacturer ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.15)',
+                        color: rating.manufacturer ? '#ffffff' : 'rgba(255,255,255,0.3)',
+                        cursor: rating.manufacturer ? 'pointer' : 'not-allowed'
+                      }}
+                    >
+                      <option value="">
+                        {rating.manufacturer ? 'Select model' : 'Select manufacturer first'}
+                      </option>
+                      {(MANUFACTURER_MODELS[rating.manufacturer] || []).map(m => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Rating Date */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                       Rating Date
                     </label>
                     <input
@@ -1955,119 +2218,52 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       onChange={(e) => updateAircraftRating(rating.id, 'ratingDate', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '0.5rem 0.75rem',
-                        border: `1px solid ${SLATE[300]}`,
-                        borderRadius: '6px',
+                        padding: '0.6rem 0.75rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
                         fontSize: '0.875rem',
-                        fontFamily: MONO_FONT
+                        fontFamily: MONO_FONT,
+                        background: 'rgba(0,0,0,0.35)',
+                        color: '#ffffff'
                       }}
                     />
                   </div>
-                </div>
 
-                {/* Manufacturer */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                    Manufacturer
-                  </label>
-                  <select
-                    value={rating.manufacturer}
-                    onChange={(e) => updateAircraftRating(rating.id, 'manufacturer', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem 0.75rem',
-                      border: `1px solid ${SLATE[300]}`,
-                      borderRadius: '6px',
-                      fontSize: '0.875rem',
-                      outline: 'none',
-                      fontFamily: MONO_FONT,
-                      background: 'white'
-                    }}
-                  >
-                    <option value="">Select make</option>
-                    {AIRCRAFT_MANUFACTURERS.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Model + Tail Number stacked */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {/* Last Flown */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                      Model
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', marginBottom: '0.35rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Last Flown
                     </label>
                     <input
-                      type="text"
-                      value={rating.model}
-                      onChange={(e) => updateAircraftRating(rating.id, 'model', e.target.value)}
-                      placeholder="e.g., 737-800, DA40..."
+                      type="date"
+                      value={rating.lastFlown}
+                      onChange={(e) => updateAircraftRating(rating.id, 'lastFlown', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '0.5rem 0.75rem',
-                        border: `1px solid ${SLATE[300]}`,
-                        borderRadius: '6px',
+                        padding: '0.6rem 0.75rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
                         fontSize: '0.875rem',
-                        outline: 'none',
-                        fontFamily: MONO_FONT
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
-                      Tail Number
-                    </label>
-                    <input
-                      type="text"
-                      value={rating.tailNumber}
-                      onChange={(e) => updateAircraftRating(rating.id, 'tailNumber', e.target.value)}
-                      placeholder="e.g., N123AB, RP-C1234..."
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem 0.75rem',
-                        border: `1px solid ${SLATE[300]}`,
-                        borderRadius: '6px',
-                        fontSize: '0.875rem',
-                        outline: 'none',
-                        fontFamily: MONO_FONT
+                        fontFamily: MONO_FONT,
+                        background: 'rgba(0,0,0,0.35)',
+                        color: '#ffffff'
                       }}
                     />
                   </div>
                 </div>
 
-                {/* Current / Currency checkbox + Last Flown */}
-                <div style={{ gridColumn: 'span 2' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem', color: SLATE[700], marginBottom: '0.5rem' }}>
+                {/* Currency Checkbox — full width below */}
+                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontSize: '0.875rem', color: 'rgba(255,255,255,0.75)' }}>
                     <input
                       type="checkbox"
                       checked={rating.isCurrent}
                       onChange={(e) => updateAircraftRating(rating.id, 'isCurrent', e.target.checked)}
-                      style={{ width: '1rem', height: '1rem' }}
+                      style={{ width: '1.1rem', height: '1.1rem', accentColor: '#34d399' }}
                     />
-                    Have you flown this aircraft within the last 90 days? (currency)
+                    <span>Have you flown this aircraft within the last 90 days? <span style={{ color: 'rgba(255,255,255,0.4)' }}>(currency)</span></span>
                   </label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: SLATE[500], marginBottom: '0.25rem' }}>
-                        Last Flown (optional)
-                      </label>
-                      <input
-                        type="date"
-                        value={rating.lastFlown}
-                        onChange={(e) => updateAircraftRating(rating.id, 'lastFlown', e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '0.5rem 0.75rem',
-                          border: '1px solid #d1d5db',
-                          borderRadius: '6px',
-                          fontSize: '0.875rem',
-                          color: SLATE[700],
-                          background: 'white'
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <p style={{ margin: '0.5rem 0 0', fontSize: '0.7rem', color: SLATE[400], lineHeight: 1.4 }}>
+                  <p style={{ margin: '0.5rem 0 0 1.7rem', fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
                     This date will be cross-checked with your synced logbook. If your logbook shows a different last-flown date, it will be automatically updated.
                   </p>
                 </div>
@@ -2083,23 +2279,23 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 width: '40px',
                 height: '40px',
                 borderRadius: '50%',
-                background: '#001E3C',
+                background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
                 color: 'white',
-                border: 'none',
+                border: '1px solid rgba(255,255,255,0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
                 transition: 'all 0.15s',
-                boxShadow: '0 2px 8px rgba(0,30,60,0.25)'
+                boxShadow: '0 4px 15px rgba(59,130,246,0.3)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,30,60,0.35)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(59,130,246,0.45)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,30,60,0.25)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(59,130,246,0.3)';
               }}
               title="Add new rating"
             >
@@ -2107,27 +2303,27 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </button>
           </div>
           
-          {/* Type Rating Certificate Upload - Terminal Style - Recognition+ Gated */}
-          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+          {/* Type Rating Certificate Upload - Glassy Style - Recognition+ Gated */}
+          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'rgba(0,0,0,0.25)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.625rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                <Shield style={{ width: '14px', height: '14px', color: '#38bdf8' }} />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#ffffff', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                   Type Rating Documentation
                 </span>
                 {!isRecognitionPlus && !tierLoading && (
-                  <span style={{ fontSize: '0.7rem', color: '#d97706', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ fontSize: '0.7rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <Star style={{ width: '12px', height: '12px' }} />
                     Recognition+ Required
                   </span>
                 )}
               </div>
-              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>Optional</span>
+              <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>Optional</span>
             </div>
 
             {!isRecognitionPlus && getDocsByType('rating').length === 0 ? (
-              <div style={{ padding: '1rem', background: '#fef3c7', borderRadius: '4px', border: '1px solid #fbbf24' }}>
-                <p style={{ margin: 0, fontSize: '0.75rem', color: '#92400e', lineHeight: 1.5 }}>
+              <div style={{ padding: '1rem', background: 'rgba(245,158,11,0.08)', borderRadius: '8px', border: '1px solid rgba(251,191,36,0.25)' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#fbbf24', lineHeight: 1.5 }}>
                   <strong>Get Recognition+ — Get Verified:</strong> Get the recognition you deserve for your training investments and flight experience. Upgrade to upload official ATO certificates and unlock verified status for your type ratings.
                 </p>
                 <button
@@ -2135,10 +2331,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   style={{
                     marginTop: '0.75rem',
                     padding: '0.5rem 1rem',
-                    background: '#d97706',
+                    background: 'linear-gradient(135deg, #d97706, #b45309)',
                     color: 'white',
                     border: 'none',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     fontSize: '0.75rem',
                     fontWeight: 600,
                     cursor: 'pointer'
@@ -2158,34 +2354,34 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     fileInputRef.current?.click();
                   }}
                   style={{
-                    border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
-                    borderRadius: '4px',
+                    border: `1px solid ${isDragging ? '#38bdf8' : 'rgba(255,255,255,0.1)'}`,
+                    borderRadius: '8px',
                     padding: '0.75rem 1rem',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.75rem',
-                    background: SLATE[50],
+                    background: 'rgba(0,0,0,0.2)',
                     cursor: 'pointer',
                     transition: 'all 0.15s'
                   }}
                 >
-                  <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
+                  <FileDigit style={{ width: '18px', height: '18px', color: '#38bdf8' }} />
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
+                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: '#ffffff' }}>
                       Upload ATO Certificate
                     </p>
-                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
+                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
                       PDF, JPG • Max 10MB • Enhances credibility
                     </p>
                   </div>
-                  <span style={{ fontSize: '0.75rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
+                  <span style={{ fontSize: '0.75rem', color: '#38bdf8', fontWeight: 600 }}>Browse</span>
                 </div>
                 <button
                   style={{
                     padding: '0.5rem',
                     background: 'transparent',
                     border: 'none',
-                    color: SLATE[400],
+                    color: 'rgba(255,255,255,0.4)',
                     fontSize: '0.75rem',
                     fontWeight: 400,
                     cursor: 'pointer',
@@ -2203,11 +2399,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     alignItems: 'center', 
                     gap: '0.75rem', 
                     padding: '0.75rem', 
-                    background: SLATE[50], 
-                    borderRadius: '4px', 
-                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
+                    background: 'rgba(0,0,0,0.2)', 
+                    borderRadius: '8px', 
+                    border: `1px solid ${doc.status === 'pending_review' ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}` 
                   }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#eff6ff' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {doc.status === 'processing' ? (
                         <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
                       ) : doc.status === 'pending_review' ? (
@@ -2217,11 +2413,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       )}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: '#ffffff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
-                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
+                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>{formatFileSize(doc.fileSize)}</span>
                         {doc.status === 'uploading' && (
-                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>↑ Uploading...</span>
                         )}
                         {doc.status === 'processing' && (
                           <span style={{ fontSize: '0.7rem', color: '#f59e0b' }}>Processing...</span>
@@ -2239,7 +2435,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
                       onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
                     >
-                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+                      <X style={{ width: '16px', height: '16px', color: 'rgba(255,255,255,0.4)' }} />
                     </button>
                   </div>
                 ))}
@@ -2252,10 +2448,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     style={{ 
                       flex: 1,
                       padding: '0.625rem', 
-                      border: `1px dashed ${SLATE[300]}`, 
-                      borderRadius: '4px', 
-                      background: 'white',
-                      color: SLATE[600],
+                      border: '1px dashed rgba(255,255,255,0.15)', 
+                      borderRadius: '8px', 
+                      background: 'rgba(0,0,0,0.2)',
+                      color: 'rgba(255,255,255,0.7)',
                       fontSize: '0.75rem',
                       cursor: 'pointer'
                     }}
@@ -2267,7 +2463,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       padding: '0.625rem 1rem',
                       background: 'transparent',
                       border: 'none',
-                      color: SLATE[400],
+                      color: 'rgba(255,255,255,0.4)',
                       fontSize: '0.75rem',
                       cursor: 'pointer'
                     }}
@@ -2457,8 +2653,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             );
           })}
         </motion.section>
+        </>)}
 
         {/* Pilot Status and Interests Section */}
+        {visibleSection === 'experience-career' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
           background: 'white',
           borderRadius: '8px',
@@ -3449,6 +3647,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             Keep your information up-to-date to maximize your opportunities in the aviation industry.
           </p>
         </motion.section>
+        </>)}
 
         {/* Save Button */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>

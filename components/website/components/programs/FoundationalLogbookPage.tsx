@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { ClipboardList, Clock, CheckCircle, Plus, ArrowRight } from 'lucide-react';
 
 interface FoundationalLogbookPageProps {
@@ -23,6 +23,7 @@ export const FoundationalLogbookPage: React.FC<FoundationalLogbookPageProps> = (
   onNavigate 
 }) => {
   const { userProfile } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [sessions, setSessions] = useState<MentorshipSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalHours, setTotalHours] = useState(0);
@@ -53,13 +54,25 @@ export const FoundationalLogbookPage: React.FC<FoundationalLogbookPageProps> = (
 
     try {
       const userId = userProfile?.id || userProfile?.uid;
-      // Fetch from Supabase study_sessions table
-      const { data, error } = await supabase
-        .from('study_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('session_type', 'mentorship')
-        .order('session_date', { ascending: false });
+      // Fetch from D1 study_sessions table
+      let data: Record<string, unknown>[] = [];
+      let error: any = null;
+      try {
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'study_sessions',
+          operation: 'select',
+          where: { user_id: userId, session_type: 'mentorship' },
+          limit: 500,
+        });
+        data = rows || [];
+        data.sort((a: any, b: any) => {
+          const da = a.session_date || a.date || '';
+          const db = b.session_date || b.date || '';
+          return db.localeCompare(da);
+        });
+      } catch (err) {
+        error = err;
+      }
 
       if (error) {
         console.warn('Error fetching mentorship sessions:', error);
@@ -113,21 +126,23 @@ export const FoundationalLogbookPage: React.FC<FoundationalLogbookPageProps> = (
     try {
       const userId = userProfile?.id || userProfile?.uid;
       
-      const { error } = await supabase
-        .from('study_sessions')
-        .insert({
-          user_id: userId,
-          session_type: 'mentorship',
-          session_date: formData.date,
-          mentor_email: formData.mentorEmail,
-          description: formData.description,
-          hours: parseFloat(formData.hours),
-          prescription: formData.prescription,
-          verified: false,
-          created_at: new Date().toISOString(),
+      try {
+        await callApi('queryTable', {
+          table: 'study_sessions',
+          operation: 'insert',
+          data: {
+            user_id: userId,
+            session_type: 'mentorship',
+            session_date: formData.date,
+            mentor_email: formData.mentorEmail,
+            description: formData.description,
+            hours: parseFloat(formData.hours),
+            prescription: formData.prescription,
+            verified: false,
+            created_at: new Date().toISOString(),
+          },
         });
-
-      if (error) {
+      } catch (error) {
         console.error('Error adding session:', error);
         alert('Failed to add session. Please try again.');
         return;

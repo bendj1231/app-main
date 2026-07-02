@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ExaminationResultsPageProps {
   onBack: () => void;
@@ -21,6 +21,7 @@ interface Exam {
 }
 
 const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack, userProfile }) => {
+  const { callApi } = useWorkerAuth();
   const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState(true);
   const fullName = `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`.trim();
@@ -35,19 +36,20 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
       const userId = userProfile?.id || userProfile?.uid;
       
       try {
-        const { data, error } = await supabase
-          .from('pilot_exams')
-          .select('*')
-          .eq('user_id', userId)
-          .order('exam_date', { ascending: false });
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_exams',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const data = rows || [];
+        data.sort((a: any, b: any) => {
+          const da = a.exam_date || '';
+          const db = b.exam_date || '';
+          return db.localeCompare(da);
+        });
 
-        if (error) {
-          console.error('Error fetching exam results:', error);
-          setLoading(false);
-          return;
-        }
-
-        if (data && data.length > 0) {
+        if (data.length > 0) {
           const formattedExams: Exam[] = data.map((exam: any) => ({
             id: exam.id,
             name: exam.exam_name || 'Exam',

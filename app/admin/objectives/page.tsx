@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -59,40 +59,50 @@ export default function EmployeeObjectivesPage() {
     fetchEmployeePerformance();
   }, []);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchEmployeePerformance = async () => {
     setLoading(true);
     try {
       // 1. Fetch all employee profiles (non-pilot roles)
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, display_name, email, role, created_at')
-        .in('role', ['super_admin', 'admin', 'recruiter', 'sales', 'employee'])
-        .order('created_at', { ascending: false });
-
-      if (profilesError) {
-        console.log('[EmployeeRoster] profiles error:', profilesError.message);
-      }
+      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        limit: 500,
+      });
+      const profiles = (profileRows || []).filter((p: any) =>
+        ['super_admin', 'admin', 'recruiter', 'sales', 'employee'].includes(p.role)
+      ).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
 
       const employeeList: Employee[] = [];
-      const baseProfiles = profiles || [];
+      const baseProfiles = profiles as any[];
 
       // 2. Fetch all assignments
       let allAssignments: { employee_id: string; module: string }[] = [];
       try {
-        const { data, error } = await supabase.from('employee_assignments').select('employee_id, module');
-        if (!error) allAssignments = data || [];
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'employee_assignments',
+          operation: 'select',
+          limit: 500,
+        });
+        allAssignments = (rows || []).map((a: any) => ({ employee_id: a.employee_id, module: a.module }));
       } catch { /* ignore */ }
 
       // 3. For each employee, count their referrals
       for (const p of baseProfiles) {
         let referralCount = 0;
         try {
-          const { count, error } = await supabase
-            .from('referrals')
-            .select('id', { count: 'exact', head: true })
-            .eq('referrer_profile_id', p.id)
-            .eq('status', 'credited');
-          if (!error) referralCount = count || 0;
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'referrals',
+            operation: 'select',
+            where: { referrer_profile_id: p.id, status: 'credited' },
+            limit: 500,
+          });
+          referralCount = (rows || []).length;
         } catch { /* ignore */ }
 
         // Assume $50 revenue per credited referral
@@ -108,11 +118,11 @@ export default function EmployeeObjectivesPage() {
           .map((a) => a.module);
 
         employeeList.push({
-          id: p.id,
-          display_name: p.display_name,
-          email: p.email,
-          role: p.role,
-          created_at: p.created_at,
+          id: p.id as string,
+          display_name: p.display_name as string | null,
+          email: p.email as string | null,
+          role: p.role as string | null,
+          created_at: p.created_at as string,
           referral_count: referralCount,
           referral_revenue: revenue,
           performance_tier: tier,
@@ -180,10 +190,12 @@ export default function EmployeeObjectivesPage() {
   const saveEvaluation = async (status: Employee['evaluation_status']) => {
     if (!evaluatingEmployee) return;
     try {
-      await supabase
-        .from('profiles')
-        .update({ evaluation_status: status })
-        .eq('id', evaluatingEmployee.id);
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: evaluatingEmployee.id,
+        data: { evaluation_status: status },
+      });
       setEmployees((prev) =>
         prev.map((e) =>
           e.id === evaluatingEmployee.id ? { ...e, evaluation_status: status } : e
@@ -200,15 +212,34 @@ export default function EmployeeObjectivesPage() {
     if (!selectedEmployee) return;
     try {
       // Delete existing assignments for this employee
-      await supabase.from('employee_assignments').delete().eq('employee_id', selectedEmployee.id);
+      const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'employee_assignments',
+        operation: 'select',
+        where: { employee_id: selectedEmployee.id },
+        limit: 500,
+      });
+      for (const row of existingRows || []) {
+        if (row.id) {
+          await callApi('queryTable', {
+            table: 'employee_assignments',
+            operation: 'delete',
+            id: row.id as string,
+          });
+        }
+      }
       // Insert new ones
       if (selectedModules.length > 0) {
-        const rows = selectedModules.map((module) => ({
-          employee_id: selectedEmployee.id,
-          module,
-          role_type: 'primary',
-        }));
-        await supabase.from('employee_assignments').insert(rows);
+        for (const module of selectedModules) {
+          await callApi('queryTable', {
+            table: 'employee_assignments',
+            operation: 'insert',
+            data: {
+              employee_id: selectedEmployee.id,
+              module,
+              role_type: 'primary',
+            },
+          });
+        }
       }
       setShowAssignModal(false);
       fetchEmployeePerformance();

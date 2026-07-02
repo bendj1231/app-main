@@ -75,15 +75,16 @@ export const MentorProfilePage: React.FC<MentorProfilePageProps> = ({ onBack, me
   const fetchMentorProfile = async () => {
     try {
       setLoading(true);
-      const { supabase } = await import('../lib/supabase-auth');
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', mentorId)
-        .single();
-
-      if (error) throw error;
-      setMentor(data as MentorProfile);
+      const { useWorkerAuth } = await import('@/hooks/useWorkerAuth');
+      const { callApi } = useWorkerAuth();
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { id: mentorId },
+        limit: 1,
+      });
+      const data = rows?.[0];
+      if (data) setMentor(data as MentorProfile);
     } catch (error) {
       console.error('Error fetching mentor profile:', error);
     } finally {

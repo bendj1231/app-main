@@ -208,6 +208,7 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [viewMode, setViewMode] = useState<'analog' | 'glass'>('analog');
+  const [bioExpanded, setBioExpanded] = useState(false);
   const [hours, setHours] = useState<FlightHoursData>(DEFAULT_HOURS);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.25 });
@@ -589,7 +590,7 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
         </div>
       )}
 
-      {/* ─── PILOT BIO & INTERESTS ─── */}
+      {/* ─── ABOUT / PILOT BIO ─── */}
       <div className="space-y-4 pt-2">
         {/* Divider */}
         <div
@@ -601,7 +602,7 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <User size={14} className="text-sky-400" />
-            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">Pilot Bio & Interests</span>
+            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">About</span>
           </div>
           {onCompleteProfile && (
             <button
@@ -613,43 +614,70 @@ export const CockpitFlightHoursDashboard: React.FC<CockpitFlightHoursDashboardPr
           )}
         </div>
 
-        {/* Pathway interests — wired from profile / getDashboardData */}
+        {/* LinkedIn-style biography */}
         {(() => {
-          const interests = [
-            { label: 'Career Goal', value: profile?.career_goal },
-            { label: 'Pilot Stage', value: profile?.pilot_stage },
-            { label: 'Target Role', value: profile?.target_role },
-            { label: 'Preferred Region', value: profile?.preferred_region },
-            { label: 'Current Occupation', value: profile?.current_occupation },
-            { label: 'Employment Status', value: profile?.employment_status },
-          ].filter((i) => !!i.value);
+          const rawBio = (profile?.bio as string | undefined) || '';
+          const occupation = profile?.current_occupation || '';
+          const employment = profile?.employment_status || '';
+          const careerGoal = profile?.career_goal || '';
+          const pilotStage = profile?.pilot_stage || '';
+          const preferredRegion = profile?.preferred_region || '';
+          const targetRole = profile?.target_role || '';
 
-          if (interests.length === 0) {
+          const generatedBio = rawBio || (() => {
+            if (!occupation && !employment && !careerGoal && !pilotStage) return '';
+            const sentences: string[] = [];
+            if (occupation) {
+              const status = employment ? `, currently ${employment}` : '';
+              sentences.push(`I am a ${occupation}${status}.`);
+            } else if (employment) {
+              sentences.push(`I am currently ${employment}.`);
+            }
+            if (careerGoal) {
+              sentences.push(`My goal is to build a career in ${careerGoal} aviation.`);
+            }
+            if (pilotStage) {
+              sentences.push(`I am on the ${pilotStage} pathway, actively gaining the experience and ratings needed to reach the next level.`);
+            }
+            if (preferredRegion) {
+              sentences.push(`I am primarily looking for opportunities in ${preferredRegion}.`);
+            }
+            if (targetRole) {
+              sentences.push(`My target role is ${targetRole}.`);
+            }
+            return sentences.join(' ');
+          })();
+
+          if (!generatedBio) {
             return (
               <div
                 className="rounded-xl p-4 text-center"
                 style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}
               >
-                <p className="text-[11px] text-white/25">No interests or goals set yet.</p>
+                <p className="text-[11px] text-white/25">No bio set yet.</p>
                 <p className="text-[10px] text-white/20 mt-1">
-                  Complete your advanced profile to unlock pathway matching.
+                  Complete your advanced profile to tell your story.
                 </p>
               </div>
             );
           }
 
+          const shouldClamp = generatedBio.length > 200;
+          const displayBio = bioExpanded || !shouldClamp ? generatedBio : generatedBio.slice(0, 200).trim() + '…';
+
           return (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {interests.map(({ label, value }) => (
-                <div
-                  key={label}
-                  className="rounded-xl p-3"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+            <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className="text-[12px] leading-relaxed text-white/80 whitespace-pre-line">
+                {displayBio}
+              </p>
+              {shouldClamp && (
+                <button
+                  onClick={() => setBioExpanded((v) => !v)}
+                  className="mt-2 text-[10px] font-bold text-white/40 hover:text-blue-400 transition-colors"
                 >
-                  <p className="text-[8px] font-black tracking-wider uppercase text-white/30">{label}</p>
-                  <p className="text-[11px] font-bold text-white/80 mt-0.5 truncate">{String(value)}</p>
-                </div>
-              ))}
+                  {bioExpanded ? 'Show less' : 'Show more'}
+                </button>
+              )}
             </div>
           );
         })()}

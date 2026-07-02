@@ -1,6 +1,6 @@
 # Production Deployment Guide
 
-This guide provides step-by-step instructions for deploying the application to production with cookie-based authentication, Edge Functions, and comprehensive security measures.
+This guide provides step-by-step instructions for deploying the application to production with cookie-based authentication, Cloudflare Workers, D1 databases, and comprehensive security measures.
 
 ## Table of Contents
 
@@ -18,10 +18,10 @@ This guide provides step-by-step instructions for deploying the application to p
 
 ### Required Accounts and Services
 
-- **Supabase Project** (https://supabase.com)
-  - Project URL and service role key
-  - Database connection string
-  - Storage buckets configured
+- **Cloudflare Account** (https://cloudflare.com)
+  - Workers & Pages enabled
+  - D1 databases created: `pilotrecognition-profiles`, `pilotrecognition-d1`, `pilotrecognition-reference-data`, `recognition-plus-trace`, `wingmentor-program`
+  - R2 buckets configured (if using object storage)
 
 - **Firebase Project** (optional, for legacy compatibility)
   - Firebase config credentials
@@ -38,26 +38,29 @@ This guide provides step-by-step instructions for deploying the application to p
 
 ```bash
 # Required CLI tools
-npm install -g supabase
-npm install -g vercel  # or your preferred hosting platform
+npm install -g wrangler  # Cloudflare CLI
 ```
 
 ---
 
 ## Environment Configuration
 
-### 1. Supabase Environment Variables
+### 1. Environment Variables
 
 Create a `.env.production` file in the project root:
 
 ```bash
-# Supabase Configuration
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+# Worker API endpoints (public — safe for frontend)
+VITE_PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev
+VITE_PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev
 
-# Supabase Edge Functions (deployed via Supabase CLI)
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+# Auth0 (public config)
+VITE_AUTH0_DOMAIN=your-auth0-domain
+VITE_AUTH0_CLIENT_ID=your-auth0-client-id
+VITE_AUTH0_AUDIENCE=your-auth0-audience
+
+# Stripe (public key only)
+VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
 
 # Environment
 ENVIRONMENT=production
@@ -75,191 +78,150 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
 VITE_FIREBASE_APP_ID=your-app-id
 ```
 
-### 2. Edge Functions Environment Variables
+### 2. Cloudflare Worker Secrets
 
-Set these in Supabase Dashboard → Settings → Edge Functions:
+Set encrypted secrets via Wrangler:
 
 ```bash
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-ENVIRONMENT=production
-DEBUG=false
-RESEND_API_KEY=your-resend-api-key
+cd worker
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put EMAIL_API_SECRET
+npx wrangler secret put OPENROUTER_API_KEY
+npx wrangler secret put MFA_ENCRYPTION_KEY
+npx wrangler secret put STRIPE_SECRET_KEY
+npx wrangler secret put DODO_API_KEY
+npx wrangler secret put VEREMARK_WEBHOOK_SECRET
+
+cd ../cloudflare
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put DODO_API_KEY
+npx wrangler secret put VEREMARK_WEBHOOK_SECRET
+npx wrangler secret put CLOUDINARY_API_SECRET
+npx wrangler secret put CLOUDFLARE_R2_SECRET_ACCESS_KEY
 ```
 
 ### 3. Security Considerations
 
 - **Never commit** `.env.production` to version control
 - Use **environment-specific** keys (different from development)
-- Rotate service role keys after deployment
-- Enable **IP restrictions** on service role access if possible
+- Rotate Worker secrets after deployment
+- Enable **Access policies** on sensitive routes if needed
 
 ---
 
 ## Database Setup
 
-### 1. Enable Required Extensions
+### 1. Apply D1 Migrations
 
-Connect to your Supabase database and run:
-
-```sql
--- Enable UUID extension (if not already enabled)
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- Enable pgcrypto for encryption functions
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-```
-
-### 2. Create Rate Limiting Table
-
-For database-backed rate limiting:
-
-```sql
--- Create rate_limits table for distributed rate limiting
-CREATE TABLE IF NOT EXISTS rate_limits (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  identifier TEXT NOT NULL,
-  count INTEGER NOT NULL DEFAULT 1,
-  reset_time TIMESTAMP WITH TIME ZONE NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Create index for fast lookups
-CREATE INDEX IF NOT EXISTS idx_rate_limits_identifier ON rate_limits(identifier);
-CREATE INDEX IF NOT EXISTS idx_rate_limits_reset_time ON rate_limits(reset_time);
-
--- Create upsert function
-CREATE OR REPLACE FUNCTION upsert_rate_limit(
-  p_identifier TEXT,
-  p_max_requests INTEGER,
-  p_window_ms INTEGER
-) RETURNS VOID AS $$
-BEGIN
-  INSERT INTO rate_limits (identifier, count, reset_time)
-  VALUES (p_identifier, 1, NOW() + (p_window_ms || ' milliseconds')::INTERVAL)
-  ON CONFLICT (identifier) 
-  DO UPDATE SET
-    count = CASE
-      WHEN rate_limits.reset_time < NOW() THEN 1
-      ELSE rate_limits.count + 1
-    END,
-    reset_time = CASE
-      WHEN rate_limits.reset_time < NOW() THEN NOW() + (p_window_ms || ' milliseconds')::INTERVAL
-      ELSE rate_limits.reset_time
-    END,
-    updated_at = NOW();
-END;
-$$ LANGUAGE plpgsql;
-```
-
-### 3. Verify Core Tables
-
-Ensure these tables exist (created via migrations):
-
-```sql
--- Core user tables
-SELECT table_name FROM information_schema.tables 
-WHERE table_schema = 'public' 
-AND table_name IN ('profiles', 'pilot_licensure_experience', 'user_app_access', 'enrollments');
-
--- Expected output should show all 4 tables
-```
-
-### 4. Run Security Advisor Check
+The project uses Cloudflare D1 (SQLite). Apply migrations to each database:
 
 ```bash
-# Using Supabase CLI
-supabase db diff --schema public
-supabase gen types typescript --local
+# Profiles database
+cd worker
+npx wrangler d1 migrations apply pilotrecognition-profiles --remote
+
+# Ops database
+cd ../cloudflare
+npx wrangler d1 migrations apply pilotrecognition-d1 --remote
+
+# Reference data database
+npx wrangler d1 migrations apply pilotrecognition-reference-data --remote
+
+# Trace database
+npx wrangler d1 migrations apply recognition-plus-trace --remote
+
+# Wingmentor program database
+npx wrangler d1 migrations apply wingmentor-program --remote
+```
+
+### 2. Verify Core Tables
+
+Ensure these tables exist in each D1 database:
+
+```bash
+npx wrangler d1 execute pilotrecognition-profiles --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('profiles', 'flight_hours', 'pilot_credentials', 'pilot_notifications');"
+
+npx wrangler d1 execute pilotrecognition-d1 --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('admin_emails', 'messages', 'support_enquiries', 'ai_usage_log');"
+```
+
+### 3. Run Schema Diff Check
+
+```bash
+npx wrangler d1 migrations list pilotrecognition-profiles --remote
+npx wrangler d1 migrations list pilotrecognition-d1 --remote
 ```
 
 ---
 
-## Edge Functions Deployment
+## Cloudflare Workers Deployment
 
-### 1. Install Supabase CLI (if not installed)
+### 1. Install Wrangler (if not installed)
 
 ```bash
-npm install -g supabase
+npm install -g wrangler
 ```
 
-### 2. Link to Supabase Project
+### 2. Deploy Pilot Worker
 
 ```bash
-cd /Users/bowler/Documents/apps/app-main
-supabase link --project-ref your-project-ref
+cd /Users/bowler/Documents/apps/app-main/worker
+npx wrangler deploy
 ```
 
-### 3. Deploy All Edge Functions
+### 3. Deploy Platform Worker
 
 ```bash
-# Deploy all functions at once
-supabase functions deploy
-
-# Or deploy individual functions
-supabase functions deploy auth-login
-supabase functions deploy auth-signup
-supabase functions deploy auth-logout
-supabase functions deploy auth-refresh
-supabase functions deploy auth-verify
-supabase functions deploy delete-account
-supabase functions deploy health-check
-supabase functions deploy send-account-created-email
-supabase functions deploy send-enrollment-email
+cd /Users/bowler/Documents/apps/app-main/cloudflare
+npx wrangler deploy
 ```
 
-### 4. Set Environment Variables for Functions
+### 4. Set Worker Secrets
 
 ```bash
-# Set environment variables for Edge Functions
-supabase secrets set ENVIRONMENT=production
-supabase secrets set DEBUG=false
-supabase secrets set RESEND_API_KEY=your-resend-api-key
+cd /Users/bowler/Documents/apps/app-main/worker
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put EMAIL_API_SECRET
+npx wrangler secret put OPENROUTER_API_KEY
+npx wrangler secret put MFA_ENCRYPTION_KEY
+npx wrangler secret put STRIPE_SECRET_KEY
+npx wrangler secret put DODO_API_KEY
+npx wrangler secret put VEREMARK_WEBHOOK_SECRET
+
+cd /Users/bowler/Documents/apps/app-main/cloudflare
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put DODO_API_KEY
+npx wrangler secret put VEREMARK_WEBHOOK_SECRET
+npx wrangler secret put CLOUDINARY_API_SECRET
+npx wrangler secret put CLOUDFLARE_R2_SECRET_ACCESS_KEY
 ```
 
 ### 5. Verify Deployment
 
 ```bash
-# List deployed functions
-supabase functions list
+# Test pilot worker health endpoint
+curl https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health
 
-# Test health check endpoint
-curl https://your-project.supabase.co/functions/v1/health-check
+# Test platform worker health endpoint
+curl https://platform-api.benjamintigerbowler.workers.dev/api/health
 ```
-
-### 6. Configure Function Permissions
-
-In Supabase Dashboard → Edge Functions:
-
-1. Go to each function
-2. Set **JWT Verification** to:
-   - `auth-login`: Disabled (handles auth)
-   - `auth-signup`: Disabled (handles auth)
-   - `auth-logout`: Disabled (handles auth)
-   - `auth-refresh`: Disabled (handles auth)
-   - `auth-verify`: Enabled (requires valid session)
-   - `delete-account`: Enabled (requires valid session)
-   - `health-check`: Disabled (public endpoint)
-   - `send-*`: Disabled (internal use)
 
 ---
 
 ## Frontend Deployment
 
-### Option 1: Vercel (Recommended)
+### Option 1: Cloudflare Pages (Recommended)
 
 ```bash
-# Install Vercel CLI
-npm install -g vercel
+# Install Wrangler CLI
+npm install -g wrangler
 
-# Login to Vercel
-vercel login
+# Login to Cloudflare
+wrangler login
 
 # Deploy to production
-vercel --prod
+wrangler pages deploy dist --project-name=<your-cloudflare-pages-project>
 
-# Set environment variables in Vercel Dashboard
+# Set environment variables in Cloudflare Pages Dashboard
 # Add all variables from Environment Configuration section
 ```
 
@@ -322,7 +284,11 @@ export default defineConfig({
 ### 1. Health Check
 
 ```bash
-curl https://your-project.supabase.co/functions/v1/health-check
+# Pilot Worker health check
+curl https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health
+
+# Platform Worker health check
+curl https://platform-api.benjamintigerbowler.workers.dev/api/health
 ```
 
 Expected response:
@@ -347,32 +313,15 @@ Expected response:
 
 ### 2. Test Authentication Flow
 
-**Test Signup:**
-```bash
-curl -X POST https://your-project.supabase.co/functions/v1/auth-signup \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "test@example.com",
-    "password": "TestPassword123",
-    "userData": {"fullName": "Test User"}
-  }'
-```
+Authentication is handled by Auth0. Test via the frontend or Auth0 dashboard:
 
-**Test Login:**
 ```bash
-curl -X POST https://your-project.supabase.co/functions/v1/auth-login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "test@example.com",
-    "password": "TestPassword123"
-  }'
-```
+# Verify Auth0 domain is reachable
+curl https://<your-auth0-domain>/.well-known/openid-configuration
 
-**Test Session Verification:**
-```bash
-curl -X GET https://your-project.supabase.co/functions/v1/auth-verify \
-  -H "Cookie: sb-access-token=your-token; csrf-token=your-csrf-token" \
-  -H "X-CSRF-Token: your-csrf-token"
+# Test Worker API with a valid Auth0 token
+curl -H "Authorization: Bearer <your-access-token>" \
+  https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/getDashboardData
 ```
 
 ### 3. Verify Security Headers
@@ -390,21 +339,27 @@ Check for these headers:
 
 ### 4. Check Database Security
 
-Run Supabase Security Advisor:
+Review Cloudflare D1 security:
 
 ```bash
-# Via Supabase Dashboard
-# Go to Database → Security → Run Security Advisor
+# Via Cloudflare Dashboard
+# Go to Workers & Pages → D1 → Your Database → Settings
 ```
 
-Expected: 9/10 or 10/10 security rating
+Ensure:
+- D1 databases are only accessible via Workers
+- No direct SQL access from outside the Cloudflare network
+- Worker bindings are correctly configured
 
 ### 5. Monitor Initial Logs
 
 ```bash
-# View Edge Function logs
-supabase functions logs auth-login
-supabase functions logs auth-signup
+# View Worker logs
+npx wrangler tail --name pilotrecognition-api
+npx wrangler tail --name platform-api
+
+# View Pages deployment logs
+wrangler pages deployment tail --project-name=<your-project>
 ```
 
 ---
@@ -480,24 +435,24 @@ supabase functions logs auth-signup
 
 If deployment fails or issues arise:
 
-### 1. Edge Functions Rollback
+### 1. Cloudflare Workers Rollback
 
 ```bash
-# List function versions
-supabase functions list
+# List Worker versions and roll back via dashboard
+npx wrangler deployments list --name pilotrecognition-api
+npx wrangler deployments list --name platform-api
 
-# Redeploy previous version (if versioned)
-supabase functions deploy auth-login --version previous-version
-
-# Or redeploy from local backup
-supabase functions deploy
+# Or redeploy previous commit
+cd worker && npx wrangler deploy
+cd ../cloudflare && npx wrangler deploy
 ```
 
 ### 2. Frontend Rollback
 
-**Vercel:**
+**Cloudflare Pages:**
 ```bash
-vercel rollback
+wrangler pages deployment list --project-name=<your-project>
+wrangler pages deployment tail --project-name=<your-project>
 ```
 
 **Netlify:**
@@ -514,9 +469,9 @@ sudo cp -r /backups/previous-dist/* /var/www/html/
 ### 3. Database Rollback
 
 ```bash
-# Use Supabase Dashboard to restore from backup
-# Or run rollback migration:
-supabase db reset
+# D1 does not have a direct reset. Restore from a backup or reapply migrations:
+npx wrangler d1 export pilotrecognition-profiles --remote --output=backup.sql
+npx wrangler d1 migrations list pilotrecognition-profiles --remote
 ```
 
 ---
@@ -530,7 +485,7 @@ See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for common issues and solutions.
 ## Support
 
 For deployment issues:
-- Check Supabase logs: Dashboard → Edge Functions → Logs
-- Check database logs: Dashboard → Database → Logs
-- Review security advisor: Dashboard → Database → Security
+- Check Cloudflare Worker logs: Dashboard → Workers & Pages → Logs
+- Check D1 database logs: Dashboard → Workers & Pages → D1 → Your Database
+- Review security settings: Dashboard → Account → Security
 - Consult API documentation: [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)

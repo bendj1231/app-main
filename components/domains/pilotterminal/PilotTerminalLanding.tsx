@@ -7,7 +7,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MessageSquare, Users, Radio, Search, Bell, User, Hash, TrendingUp, Clock, ChevronRight, ChevronUp, ChevronDown, ArrowBigUp, ArrowBigDown, Share, MoreHorizontal, Plane, Shield, Map, AlertTriangle, Globe, Home, Star, Newspaper, Compass, Plus, Info, BookOpen, Award, ExternalLink, Rss, Moon, Sun, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import AggregatedSocialFeed from './AggregatedSocialFeed';
 
 export default function PilotTerminalLanding() {
@@ -41,11 +40,6 @@ export default function PilotTerminalLanding() {
     setIsLoggedIn(isAuthenticated);
   }, [isAuthenticated]);
 
-  const checkSession = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    setIsLoggedIn(!!session);
-  };
-
   const toggleTheme = () => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
@@ -55,21 +49,8 @@ export default function PilotTerminalLanding() {
   const handleLogin = async () => {
     setLoginLoading(true);
     setLoginError('');
-    
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
-        password: loginPassword
-      });
-      
-      if (error) {
-        setLoginError(error.message);
-      } else if (data.session) {
-        setIsLoggedIn(true);
-        setShowLoginModal(false);
-        setLoginEmail('');
-        setLoginPassword('');
-      }
+      await loginWithRedirect();
     } catch (err) {
       setLoginError('An unexpected error occurred');
     } finally {
@@ -79,7 +60,6 @@ export default function PilotTerminalLanding() {
 
   const handleLogout = async () => {
     await auth0Logout({ logoutParams: { returnTo: window.location.origin } });
-    await supabase.auth.signOut();
     setIsLoggedIn(false);
   };
 

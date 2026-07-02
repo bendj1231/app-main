@@ -495,6 +495,72 @@ CREATE TABLE aircraft_type_ratings (
 CREATE INDEX idx_aircraft_manufacturer ON aircraft_type_ratings(manufacturer_id);
 
 -- ============================================================
+-- SIM CENTERS (training locations)
+-- ============================================================
+CREATE TABLE sim_centers (
+  id              TEXT PRIMARY KEY,
+  name            TEXT NOT NULL,
+  icao            TEXT,
+  iata            TEXT,
+  country         TEXT,
+  city            TEXT,
+  latitude        REAL,
+  longitude       REAL,
+  address         TEXT,
+  phone           TEXT,
+  email           TEXT,
+  website         TEXT,
+  facilities      TEXT,                                -- JSON: {full_motion: true, ftd: true, ...}
+  aircraft_types  TEXT,                                -- JSON array
+  is_active       INTEGER DEFAULT 1,
+  created_at      TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX idx_sim_centers_country ON sim_centers(country);
+CREATE INDEX idx_sim_centers_active ON sim_centers(is_active);
+
+-- ============================================================
+-- COUNTRIES (reference data)
+-- ============================================================
+CREATE TABLE countries (
+  id              TEXT PRIMARY KEY,
+  name            TEXT NOT NULL,
+  iso_code        TEXT NOT NULL UNIQUE,
+  iso3_code       TEXT,
+  dialing_code    TEXT,
+  currency        TEXT,
+  region          TEXT,
+  is_active       INTEGER DEFAULT 1,
+  created_at      TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX idx_countries_region ON countries(region);
+
+-- ============================================================
+-- BLOG POSTS
+-- ============================================================
+CREATE TABLE blog_posts (
+  id              TEXT PRIMARY KEY,
+  title           TEXT NOT NULL,
+  slug            TEXT NOT NULL UNIQUE,
+  excerpt         TEXT,
+  content         TEXT NOT NULL,
+  cover_image_url TEXT,
+  author_id       TEXT,
+  author_name     TEXT,
+  category        TEXT DEFAULT 'news',
+  tags            TEXT,
+  is_published    INTEGER DEFAULT 0,
+  published_at    TEXT,
+  view_count      INTEGER DEFAULT 0,
+  created_at      TEXT DEFAULT (datetime('now')),
+  updated_at      TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX idx_blog_posts_slug ON blog_posts(slug);
+CREATE INDEX idx_blog_posts_category ON blog_posts(category);
+CREATE INDEX idx_blog_posts_published ON blog_posts(is_published, published_at);
+
+-- ============================================================
 -- FORUM TABLES
 -- ============================================================
 

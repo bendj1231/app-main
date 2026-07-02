@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, Graduation
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface PathwayDetailPageProps {
   pathwayId: string;
@@ -72,40 +72,42 @@ const PathwayDetailPage: React.FC<PathwayDetailPageProps> = ({ pathwayId, onBack
     return school.region === regionFilter;
   });
 
+  const { callApi } = useWorkerAuth();
+
   useEffect(() => {
     async function fetchPathwayDetails() {
       try {
         // Fetch sub-pathway details
-        const { data: subPathwayData, error: subPathwayError } = await supabase
-          .from('career_hierarchy_sub_pathways')
-          .select('*')
-          .eq('id', pathwayId)
-          .single();
-
-        if (subPathwayError) throw subPathwayError;
-        setSubPathway(subPathwayData);
+        const subPathwayRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'career_hierarchy_sub_pathways',
+          operation: 'select',
+          where: { id: pathwayId },
+          limit: 1,
+        });
+        const subPathwayData = subPathwayRows?.[0];
+        setSubPathway(subPathwayData as any);
 
         // Fetch parent pathway details
         if (subPathwayData?.pathway_id) {
-          const { data: pathwayData, error: pathwayError } = await supabase
-            .from('career_hierarchy_pathways')
-            .select('*')
-            .eq('id', subPathwayData.pathway_id)
-            .single();
-
-          if (pathwayError) throw pathwayError;
-          setPathway(pathwayData);
+          const pathwayRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'career_hierarchy_pathways',
+            operation: 'select',
+            where: { id: subPathwayData.pathway_id },
+            limit: 1,
+          });
+          const pathwayData = pathwayRows?.[0];
+          setPathway(pathwayData as any);
 
           // Fetch all sub-pathways for the carousel
-          const { data: allSubPathwaysData, error: allSubPathwaysError } = await supabase
-            .from('career_hierarchy_sub_pathways')
-            .select('*')
-            .eq('pathway_id', subPathwayData.pathway_id)
-            .order('display_order');
-
-          if (allSubPathwaysError) throw allSubPathwaysError;
-          setAllSubPathways(allSubPathwaysData || []);
-          setSelectedCarouselPathway(subPathwayData);
+          const allSubPathwaysRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'career_hierarchy_sub_pathways',
+            operation: 'select',
+            where: { pathway_id: subPathwayData.pathway_id },
+            limit: 100,
+          });
+          const allSubPathwaysData = (allSubPathwaysRows || []).sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0));
+          setAllSubPathways(allSubPathwaysData as any[]);
+          setSelectedCarouselPathway(subPathwayData as any);
         }
       } catch (error) {
         console.error('Error fetching pathway details:', error);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, Plane, Check, Building2, Filter, ArrowRight, AlertCircle } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface AirlineSelectionModalProps {
   isOpen: boolean;
@@ -62,17 +62,22 @@ const AirlineSelectionModal: React.FC<AirlineSelectionModalProps> = ({
     }
   }, [isOpen]);
 
+  const { callApi } = useWorkerAuth();
+
   const loadEnterpriseAirlines = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('enterprise_accounts')
-        .select('*')
-        .eq('is_active', true)
-        .order('airline_name');
-
-      if (error) throw error;
-      setEnterpriseAirlines(data || []);
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'enterprise_accounts',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 500,
+      });
+      setEnterpriseAirlines((data || []).sort((a: any, b: any) => {
+        const na = a.airline_name || '';
+        const nb = b.airline_name || '';
+        return na.localeCompare(nb);
+      }) as EnterpriseAccount[]);
     } catch (err) {
       console.error('Error loading airlines:', err);
     } finally {

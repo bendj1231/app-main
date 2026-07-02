@@ -5,7 +5,7 @@ import {
   QrCode, User, Mail, Phone, CheckCircle, AlertCircle,
   Printer, Download, X, Calendar, MapPin, Plane
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 /** Escape HTML special characters to prevent XSS in document.write */
 function escapeHtml(str: string): string {
@@ -25,6 +25,7 @@ interface OnSiteSignupPageProps {
 }
 
 export function OnSiteSignupPage({ eventId, eventTitle, onComplete, onCancel }: OnSiteSignupPageProps) {
+  const { callApi } = useWorkerAuth();
   const [step, setStep] = useState<'form' | 'qr' | 'success'>('form');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,13 +69,11 @@ export function OnSiteSignupPage({ eventId, eventTitle, onComplete, onCancel }: 
         }
       };
 
-      const { data, error: regError } = await supabase
-        .from('event_registrations')
-        .insert(registrationData)
-        .select()
-        .single();
-
-      if (regError) throw regError;
+      const data = await callApi('queryTable', {
+        table: 'event_registrations',
+        operation: 'insert',
+        data: registrationData,
+      });
 
       setRegistration(data);
       setStep('qr');

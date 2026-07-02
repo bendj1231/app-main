@@ -7,7 +7,7 @@ import {
   AlertCircle, Star, Shield, Plane, Play, Pause, MoreVertical,
   Download, Mail, Send, Eye, Settings, RefreshCw
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { InterviewRecordingPage } from './InterviewRecordingPage';
 import { InterviewAssessmentForm } from './InterviewAssessmentForm';
 import { InterviewFeedbackDelivery } from './InterviewFeedbackDelivery';
@@ -15,6 +15,7 @@ import { InterviewFeedbackDelivery } from './InterviewFeedbackDelivery';
 type Tab = 'scheduled' | 'in-progress' | 'completed' | 'all';
 
 export function InterviewerDashboard({ user, account }: { user: any; account: any }) {
+  const { callApi } = useWorkerAuth();
   const [activeTab, setActiveTab] = useState<Tab>('scheduled');
   const [interviews, setInterviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,24 +35,57 @@ export function InterviewerDashboard({ user, account }: { user: any; account: an
   const loadInterviews = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('interviews')
-        .select(`
-          *,
-          profiles:pilot_profile_id (display_name, email, total_flight_hours, overall_recognition_score),
-          interview_assessments (id, overall_score, overall_grade, recommendation)
-        `)
-        .order('scheduled_at', { ascending: true });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'interviews',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []) as any[];
 
-      if (error) throw error;
-      setInterviews(data || []);
+      // Fetch profile and assessment data for manual join
+      const profileIds = data.map(i => i.pilot_profile_id).filter(Boolean);
+      let profileMap: Record<string, any> = {};
+      if (profileIds.length) {
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: profileIds[0] },
+          limit: 500,
+        });
+        (profileRows || []).forEach((p: any) => { if (p.id) profileMap[p.id] = p; });
+      }
+      const interviewIds = data.map(i => i.id).filter(Boolean);
+      let assessmentMap: Record<string, any> = {};
+      if (interviewIds.length) {
+        const assessmentRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'interview_assessments',
+          operation: 'select',
+          where: { interview_id: interviewIds[0] },
+          limit: 500,
+        });
+        (assessmentRows || []).forEach((a: any) => { if (a.interview_id) assessmentMap[a.interview_id] = a; });
+      }
+
+      const merged = data.map((i: any) => ({
+        ...i,
+        profiles: i.pilot_profile_id ? profileMap[i.pilot_profile_id] : null,
+        interview_assessments: i.id ? assessmentMap[i.id] : null,
+      }));
+
+      merged.sort((a: any, b: any) => {
+        const sa = a.scheduled_at || '';
+        const sb = b.scheduled_at || '';
+        return sa.localeCompare(sb);
+      });
+
+      setInterviews(merged);
 
       // Calculate stats
       const stats = {
-        scheduled: data?.filter(i => i.status === 'scheduled').length || 0,
-        inProgress: data?.filter(i => i.status === 'in_progress').length || 0,
-        completed: data?.filter(i => i.status === 'completed').length || 0,
-        total: data?.length || 0
+        scheduled: merged.filter(i => i.status === 'scheduled').length || 0,
+        inProgress: merged.filter(i => i.status === 'in_progress').length || 0,
+        completed: merged.filter(i => i.status === 'completed').length || 0,
+        total: merged.length || 0
       };
       setStats(stats);
     } catch (err) {
@@ -107,14 +141,15 @@ export function InterviewerDashboard({ user, account }: { user: any; account: an
   // Update interview status
   const updateInterviewStatus = async (interviewId: string, status: string) => {
     try {
-      await supabase
-        .from('interviews')
-        .update({ 
-          status,
-          started_at: status === 'in_progress' ? new Date().toISOString() : undefined,
-          completed_at: status === 'completed' ? new Date().toISOString() : undefined
-        })
-        .eq('id', interviewId);
+      const updateData: Record<string, any> = { status };
+      if (status === 'in_progress') updateData.started_at = new Date().toISOString();
+      if (status === 'completed') updateData.completed_at = new Date().toISOString();
+      await callApi('queryTable', {
+        table: 'interviews',
+        operation: 'update',
+        id: interviewId,
+        data: updateData,
+      });
       loadInterviews();
     } catch (err) {
       console.error('Error updating status:', err);

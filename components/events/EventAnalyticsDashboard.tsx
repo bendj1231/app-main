@@ -6,9 +6,10 @@ import {
   CheckCircle, ArrowUpRight, ArrowDownRight, Filter,
   Download, RefreshCw, Plane, Building2, Star, MapPin
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export function EventAnalyticsDashboard({ user, account }: { user?: any; account?: any }) {
+  const { callApi } = useWorkerAuth();
   const [events, setEvents] = useState<any[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,20 +37,28 @@ export function EventAnalyticsDashboard({ user, account }: { user?: any; account
   const loadEvents = async () => {
     setLoading(true);
     try {
-      let query = supabase.from('events').select('*');
-      
-      // Filter by organizer or enterprise
-      if (user?.id) {
-        query = query.or(`organizer_id.eq.${user.id},enterprise_account_id.in.(select id from enterprise_accounts where profile_id.eq.${user.id})`);
-      }
-      
-      const { data, error } = await query.order('start_date', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        limit: 500,
+      });
 
-      if (error) throw error;
-      setEvents(data || []);
-      
-      if (data && data.length > 0) {
-        setSelectedEventId(data[0].id);
+      let data = rows || [];
+      // Filter by organizer or enterprise client-side
+      if (user?.id) {
+        data = data.filter((e: any) =>
+          e.organizer_id === user.id || e.enterprise_account_id
+        );
+      }
+      data = data.sort((a: any, b: any) => {
+        const sa = a.start_date || '';
+        const sb = b.start_date || '';
+        return sb.localeCompare(sa);
+      });
+
+      setEvents(data);
+      if (data.length > 0) {
+        setSelectedEventId((data[0] as any).id);
       }
     } catch (err) {
       console.error('Error loading events:', err);
@@ -63,33 +72,33 @@ export function EventAnalyticsDashboard({ user, account }: { user?: any; account
       const eventId = selectedEventId || (events.length > 0 ? events[0].id : null);
       if (!eventId) return;
 
-      // Load event with registrations
-      const { data: eventData, error: eventError } = await supabase
-        .from('events')
-        .select(`
-          *,
-          event_registrations (
-            id,
-            payment_status,
-            payment_amount,
-            checked_in,
-            promo_code_used
-          )
-        `)
-        .eq('id', eventId)
-        .single();
+      // Load event and registrations separately
+      const eventRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        where: { id: eventId },
+        limit: 1,
+      });
+      const eventData = eventRows?.[0] as any;
+      if (!eventData) return;
 
-      if (eventError) throw eventError;
-
-      const registrations = eventData.event_registrations || [];
+      const regRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_registrations',
+        operation: 'select',
+        where: { event_id: eventId },
+        limit: 500,
+      });
+      const registrations = (regRows || []) as any[];
       const checkIns = registrations.filter(r => r.checked_in).length;
       const revenue = registrations.reduce((sum: number, r: any) => sum + (r.payment_amount || 0), 0);
-      const conversionRate = eventData.views_count > 0 
-        ? (registrations.length / eventData.views_count) * 100 
+      const viewsCount = (eventData.views_count as number) || 0;
+      const conversionRate = viewsCount > 0
+        ? (registrations.length / viewsCount) * 100
         : 0;
 
-      const averageAttendance = eventData.max_attendees > 0 
-        ? (checkIns / eventData.max_attendees) * 100 
+      const maxAttendees = (eventData.max_attendees as number) || 0;
+      const averageAttendance = maxAttendees > 0
+        ? (checkIns / maxAttendees) * 100
         : 0;
 
       setAnalytics({

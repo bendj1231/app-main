@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { FleetIntelligenceCard } from './FleetIntelligenceCard';
 import PremiumFeaturesPanel from './PremiumFeaturesPanel';
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 const REGIONS = ['Asia-Pacific', 'Europe', 'North America', 'Middle East', 'Latin America', 'Africa'];
 const SEGMENT_COLORS: Record<string, string> = {
@@ -71,6 +71,8 @@ const StatCard: React.FC<{ label: string; value: string | number; sub?: string; 
 );
 
 export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardProps> = ({ profile }) => {
+  const { getIdTokenClaims } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [aircraftType, setAircraftType] = useState(profile?.aircraft_type || profile?.current_aircraft || '');
   const [region, setRegion] = useState('Asia-Pacific');
   const [forecasts, setForecasts] = useState<Forecast[]>([]);
@@ -91,17 +93,25 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
   useEffect(() => {
     const load = async () => {
       setForecastsLoading(true);
-      const [{ data: forecastData }, session] = await Promise.all([
-        supabase.from('oem_market_forecasts').select('*').order('demand_index', { ascending: false }),
-        supabase.auth.getSession(),
-      ]);
-      setForecasts(forecastData ?? []);
-      setForecastsLoading(false);
-      const token = session.data.session?.access_token || '';
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
       setAuthToken(token);
+      const forecastData = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'oem_market_forecasts',
+        operation: 'select',
+        limit: 500,
+      });
+      setForecasts((forecastData || []).sort((a: any, b: any) => (b.demand_index || 0) - (a.demand_index || 0)) as Forecast[]);
+      setForecastsLoading(false);
       if (token && profile?.id) {
-        const { data: prof } = await supabase.from('profiles').select('recognition_plus, recognition_plus_expires').eq('id', profile.id).maybeSingle();
-        const exp = prof?.recognition_plus_expires ? new Date(prof.recognition_plus_expires) > new Date() : true;
+        const profs = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: profile.id },
+          limit: 1,
+        });
+        const prof = profs?.[0];
+        const exp = prof?.recognition_plus_expires ? new Date(prof.recognition_plus_expires as string) > new Date() : true;
         setIsPremium(!!(prof?.recognition_plus && exp));
       }
     };
@@ -117,11 +127,12 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
     if (!aircraftType.trim()) return;
     setLoading(true);
     try {
-      const session = (await supabase.auth.getSession()).data.session;
-      if (!session) return;
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/aviation-data-agent`, {
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) return;
+      const res = await fetch(`${PILOT_API_URL}/api/aviation-data-agent`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'gap_analysis', aircraftType, region, yearOfManufacture: yearOfManufacture ? parseInt(yearOfManufacture) : null, airlineSlug: airlineSlug.trim() || null }),
       });
       const data = await res.json();
@@ -384,7 +395,6 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                   isPremium={isPremium}
                   pilotId={profile?.id ?? ''}
                   authToken={authToken}
-                  supabaseUrl={SUPABASE_URL}
                   gapAnalysisResult={gapAnalysis}
                 />
               </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -36,14 +36,21 @@ export default function EventManagementPage() {
     fetchEvents();
   }, [currentUser, isAdmin]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchEvents = async () => {
     try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .order('date', { ascending: true });
-      if (error) throw error;
-      setEvents(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const da = a.date || '';
+        const db = b.date || '';
+        return da.localeCompare(db);
+      });
+      setEvents(data);
     } catch (err) {
       console.error('Error fetching events:', err);
     } finally {
@@ -54,21 +61,24 @@ export default function EventManagementPage() {
   const createEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { error } = await supabase.from('events').insert([{
-        title: newEvent.title,
-        start_date: newEvent.start_date,
-        end_date: newEvent.end_date || newEvent.start_date,
-        start_time: newEvent.start_time || null,
-        end_time: newEvent.end_time || null,
-        venue_name: newEvent.location,
-        description: newEvent.description,
-        virtual_event_url: newEvent.virtual_event_url || null,
-        event_type: newEvent.event_type,
-        status: 'planning',
-        timezone: 'UTC',
-        created_at: new Date().toISOString(),
-      }]);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'events',
+        operation: 'insert',
+        data: {
+          title: newEvent.title,
+          start_date: newEvent.start_date,
+          end_date: newEvent.end_date || newEvent.start_date,
+          start_time: newEvent.start_time || null,
+          end_time: newEvent.end_time || null,
+          venue_name: newEvent.location,
+          description: newEvent.description,
+          virtual_event_url: newEvent.virtual_event_url || null,
+          event_type: newEvent.event_type,
+          status: 'planning',
+          timezone: 'UTC',
+          created_at: new Date().toISOString(),
+        },
+      });
       setShowCreateModal(false);
       setNewEvent({
         title: '',

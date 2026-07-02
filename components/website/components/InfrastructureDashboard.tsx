@@ -1,11 +1,11 @@
 /**
  * InfrastructureDashboard — Admin-only overview of all infrastructure in use.
- * Queries Supabase tables directly. All data is read-only.
+ * Queries D1 tables via Worker API. All data is read-only.
  * Only rendered for super_admin users.
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import {
   Database, Cloud, Zap, Users, Shield, Activity, Image,
   CreditCard, Mail, RefreshCw, AlertTriangle, CheckCircle, XCircle,
@@ -156,153 +156,20 @@ export const InfrastructureDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { callApi } = useWorkerAuth();
 
   const loadStats = useCallback(async () => {
     try {
-      const today = new Date().toISOString().slice(0, 10);
-      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
-
-      const [
-        pilotsRes, pilotsWeekRes, subRes, credRes, enrollRes, flightRes, refRes,
-        secRes, actRes, aiTodayRes, aiTotalRes, aiUsersRes,
-        veremarkRes, veremarkWeekRes, veremarkDetailRes,
-        notifTodayRes, notifTotalRes,
-        walletRes, vcRevRes,
-        rateLimitRes, imagesRes,
-        vcTotalRes, vcPendingRes, vcInProgressRes, vcVerifiedRes,
-        vcFailedRes, vcFlaggedRes, vcExpiredRes, vcOverriddenRes,
-        auth0TodayRes, auth0TotalRes,
-        logbookTotalRes, logbookActiveRes, logbookProvidersRes,
-        pilotDidsRes, pilotWalletsRes,
-        emailsRes, ipfsPinsRes,
-        mfaRes, passkeysRes, pilotDocsRes, payoutsPendingRes,
-        atoCommRes, atoVerifRes, recScoreRes, atlasRes,
-        refConvRes, refDivRes, cacheRes,
-      ] = await Promise.all([
-        supabase.from('profiles').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo),
-        supabase.from('subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-        supabase.from('pilot_credentials').select('*', { count: 'exact', head: true }),
-        supabase.from('enrollments').select('*', { count: 'exact', head: true }),
-        supabase.from('pilot_flight_logs').select('*', { count: 'exact', head: true }),
-        supabase.from('referrals').select('*', { count: 'exact', head: true }),
-        supabase.from('security_events').select('*', { count: 'exact', head: true }).gte('created_at', today),
-        supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).gte('created_at', today),
-        supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).eq('date', today),
-        supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }),
-        supabase.from('ai_usage_log').select('user_id').eq('date', today),
-        supabase.from('veremark_webhook_logs').select('*', { count: 'exact', head: true }),
-        supabase.from('veremark_webhook_logs').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo),
-        supabase.from('verification_checks').select('id, status, manually_overridden'),
-        supabase.from('notifications').select('*', { count: 'exact', head: true }).gte('created_at', today),
-        supabase.from('notifications').select('*', { count: 'exact', head: true }),
-        supabase.from('pilot_verification_wallet').select('*', { count: 'exact', head: true }),
-        supabase.from('vc_revocation_registry').select('*', { count: 'exact', head: true }),
-        supabase.from('rate_limit_buckets').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).not('profile_image_url', 'is', null),
-        // verification_checks status breakdown
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'in_progress'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'verified'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'failed'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'flagged'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'expired'),
-        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('manually_overridden', true),
-        // Auth0 — via activity log
-        supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).gte('created_at', today).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
-        supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
-        // Logbook providers
-        supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }),
-        supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }).eq('connection_status', 'active'),
-        supabase.from('pilot_platform_connections').select('provider_name'),
-        // Pilot Wallet
-        supabase.from('pilot_dids').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).not('wallet_id', 'is', null),
-        // Resend — via notifications table method column
-        supabase.from('notifications').select('*', { count: 'exact', head: true }),
-        // IPFS
-        supabase.from('public_ipfs_pins').select('*', { count: 'exact', head: true }),
-        // Extended
-        supabase.from('mfa_settings').select('*', { count: 'exact', head: true }).eq('mfa_required', true),
-        supabase.from('pilot_passkeys').select('*', { count: 'exact', head: true }),
-        supabase.from('pilot_documents').select('*', { count: 'exact', head: true }),
-        supabase.from('payouts').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('ato_pending_commissions').select('*', { count: 'exact', head: true }),
-        supabase.from('ato_verification_requests').select('*', { count: 'exact', head: true }),
-        supabase.from('recognition_scores').select('*', { count: 'exact', head: true }),
-        supabase.from('atlas_resumes').select('*', { count: 'exact', head: true }),
-        supabase.from('referral_conversions').select('*', { count: 'exact', head: true }),
-        supabase.from('referral_dividend_ledger').select('*', { count: 'exact', head: true }),
-        supabase.from('cache_statistics').select('*', { count: 'exact', head: true }),
-      ]);
-
-      const uniqueAIUsers = new Set((aiUsersRes.data || []).map((r: any) => r.user_id)).size;
-      const connectedProviders: string[] = [...new Set<string>((logbookProvidersRes.data || []).map((r: any) => String(r.provider_name)).filter(Boolean))];
-
-      setStats({
-        totalPilots: pilotsRes.count ?? 0,
-        pilotsToday: 0,
-        pilotsWeek: pilotsWeekRes.count ?? 0,
-        activeSubscriptions: subRes.count ?? 0,
-        totalCredentials: credRes.count ?? 0,
-        totalEnrollments: enrollRes.count ?? 0,
-        totalFlightLogs: flightRes.count ?? 0,
-        totalReferrals: refRes.count ?? 0,
-        securityEventsToday: secRes.count ?? 0,
-        activityToday: actRes.count ?? 0,
-        aiRequestsToday: aiTodayRes.count ?? 0,
-        aiRequestsTotal: aiTotalRes.count ?? 0,
-        aiUniqueUsersToday: uniqueAIUsers,
-        veremarkWebhooksTotal: veremarkRes.count ?? 0,
-        veremarkWebhooksWeek: veremarkWeekRes.count ?? 0,
-        veremarkWebhooksProcessed: (veremarkDetailRes.data || []).filter((r: any) => r.status === 'processed').length,
-        veremarkWebhooksErrored: (veremarkDetailRes.data || []).filter((r: any) => r.status === 'error').length,
-        vcTotal: vcTotalRes.count ?? 0,
-        vcPending: vcPendingRes.count ?? 0,
-        vcInProgress: vcInProgressRes.count ?? 0,
-        vcVerified: vcVerifiedRes.count ?? 0,
-        vcFailed: vcFailedRes.count ?? 0,
-        vcFlagged: vcFlaggedRes.count ?? 0,
-        vcExpired: vcExpiredRes.count ?? 0,
-        vcManuallyOverridden: vcOverriddenRes.count ?? 0,
-        profilesWithImages: imagesRes.count ?? 0,
-        notificationsToday: notifTodayRes.count ?? 0,
-        notificationsTotal: notifTotalRes.count ?? 0,
-        pilotWallets: walletRes.count ?? 0,
-        vcRevocations: vcRevRes.count ?? 0,
-        rateLimitBuckets: rateLimitRes.count ?? 0,
-        auth0LoginsToday: auth0TodayRes.count ?? 0,
-        auth0EventsTotal: auth0TotalRes.count ?? 0,
-        logbookConnectionsTotal: logbookTotalRes.count ?? 0,
-        logbookConnectionsActive: logbookActiveRes.count ?? 0,
-        connectedProviders,
-        pilotDids: pilotDidsRes.count ?? 0,
-        pilotWalletsActive: pilotWalletsRes.count ?? 0,
-        emailsSentTotal: emailsRes.count ?? 0,
-        ipfsPins: ipfsPinsRes.count ?? 0,
-        mfaRequiredUsers: mfaRes.count ?? 0,
-        passkeysRegistered: passkeysRes.count ?? 0,
-        pilotDocuments: pilotDocsRes.count ?? 0,
-        payoutsPending: payoutsPendingRes.count ?? 0,
-        atoPendingCommissions: atoCommRes.count ?? 0,
-        helioTokensTotal: 0,
-        paymentSplitsTotal: 0,
-        atoVerificationRequests: atoVerifRes.count ?? 0,
-        recognitionScores: recScoreRes.count ?? 0,
-        atlasResumes: atlasRes.count ?? 0,
-        referralConversions: refConvRes.count ?? 0,
-        referralDividends: refDivRes.count ?? 0,
-        cacheStatRows: cacheRes.count ?? 0,
-      });
+      const data = await callApi<InfraStats>('getAdminDashboardStats');
+      setStats(data);
       setLastRefresh(new Date());
       setError(null);
     } catch (e: any) {
-      setError(e.message);
+      setError(e.message || 'Failed to load dashboard stats');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [callApi]);
 
   useEffect(() => {
     loadStats();
@@ -341,21 +208,21 @@ export const InfrastructureDashboard: React.FC = () => {
 
   const hasEnv = (k: string) => {
     // We can't read env on the client — we infer from known keys loaded at build
-    // Treat as configured if the dashboard itself loaded (Supabase works)
+    // Treat as configured if the dashboard itself loaded (D1 API works)
     return true; // placeholder — actual check is the edge fn being deployed
   };
 
   const integrations: Integ[] = [
     // ── AUTH ──────────────────────────────────────────────────
-    { name: 'Auth0', category: 'Auth', status: 'live', envKey: 'VITE_AUTH0_CLIENT_ID', notes: 'Login/logout/MFA via Auth0 React SDK. Session bridged to Supabase JWT.' },
-    { name: 'Supabase Auth', category: 'Auth', status: 'live', notes: 'JWT session, RLS policies, edge function auth.' },
+    { name: 'Auth0', category: 'Auth', status: 'live', envKey: 'VITE_AUTH0_CLIENT_ID', notes: 'Login/logout/MFA via Auth0 React SDK. Session bridged to Worker API with Auth0 JWT.' },
+    { name: 'Cloudflare D1 Auth', category: 'Auth', status: 'live', notes: 'Auth0 JWT verified in Workers. D1 queries gated by Worker auth middleware.' },
     { name: 'MFA (TOTP)', category: 'Auth', status: 'live', edgeFn: 'auth-mfa-setup', notes: `Edge fns deployed. mfa_secrets encrypted via pgcrypto (pgp_sym_encrypt). ${stats.mfaRequiredUsers} users with MFA required.`, dbCheck: stats.mfaRequiredUsers },
     { name: 'Passkeys (WebAuthn)', category: 'Auth', status: 'partial', edgeFn: 'passkey-challenge / passkey-verify', notes: 'Edge fns deployed. pilot_passkeys table exists. 0 passkeys registered.', dbCheck: stats.passkeysRegistered ?? 0 },
     // ── STORAGE ───────────────────────────────────────────────
     { name: 'Cloudinary', category: 'Storage', status: 'live', notes: `Profile images. ${stats.profilesWithImages} pilots have uploaded. Unsigned preset, auto-optimize.` },
     { name: 'Cloudflare R2', category: 'Storage', status: 'partial', edgeFn: 'r2-presign-upload', notes: 'Edge fn built. Env vars R2_ACCOUNT_ID/KEY needed. Pilot encrypted vault bucket. Not yet wired to UI upload flow.' },
     { name: 'Backblaze B2', category: 'Storage', status: 'partial', edgeFn: 'b2-backup', notes: 'Edge fn deployed for cold backup. No automated cron trigger set up yet.' },
-    { name: 'Supabase Storage', category: 'Storage', status: 'live', notes: `pilot-documents bucket. ${stats.pilotDocuments ?? 0} documents uploaded. Signed URL 5-min TTL.` },
+    { name: 'Cloudflare R2 Storage', category: 'Storage', status: 'live', notes: `pilot-documents bucket. ${stats.pilotDocuments ?? 0} documents uploaded. Signed URL 5-min TTL.` },
     // ── PAYMENTS ──────────────────────────────────────────────
     { name: 'Stripe', category: 'Payments', status: 'live', edgeFn: 'stripe-checkout / stripe-webhook / ato-stripe-checkout', notes: `${stats.activeSubscriptions} active subs. Webhook live. ATO checkout variant deployed.` },
     { name: 'Helio (USDC)', category: 'Payments', status: 'partial', edgeFn: 'helio-webhook', notes: `Webhook handler deployed. HELIO_WEBHOOK_SECRET env needed. ${stats.helioTokensTotal} tokens issued. Payment splitter built but not triggered.` },
@@ -380,12 +247,12 @@ export const InfrastructureDashboard: React.FC = () => {
     { name: 'EBT Video Scoring', category: 'AI', status: 'missing', notes: 'Not built. Core IP — behaviorism + constructivism scoring of recorded interviews. Required for Transition Program.' },
     // ── EMAIL / COMMS ─────────────────────────────────────────
     { name: 'Resend (Email)', category: 'Comms', status: 'live', edgeFn: 'send-account-created-email / send-enrollment-email / ato-notification', notes: `${stats.notificationsTotal} notifications total. RESEND_API_KEY configured.` },
-    { name: 'Firebase (Notifications)', category: 'Comms', status: 'partial', notes: 'Firebase SDK configured. Firestore writes client-side. No server-side invocation logging in Supabase.' },
+    { name: 'Firebase (Notifications)', category: 'Comms', status: 'partial', notes: 'Firebase SDK configured. Firestore writes client-side. No server-side invocation logging in D1.' },
     // ── REFERRAL / GROWTH ─────────────────────────────────────
     { name: 'Referral System', category: 'Growth', status: 'partial', edgeFn: 'generate-referral / referral-tracker / referral-credit', notes: `${stats.totalReferrals} referrals. ${stats.referralConversions ?? 0} conversions. ${stats.referralDividends ?? 0} dividend ledger entries.` },
     { name: 'ATO Activation Credits', category: 'Growth', status: 'live', edgeFn: 'activation-credit-expiry / ato-subscription-credit-release', notes: `5-day credit on verification. Cron expiry fn deployed. ato_activation_credits table active.` },
     // ── LOGBOOK ───────────────────────────────────────────────
-    { name: 'MyFlightBook OAuth', category: 'Logbook', status: 'partial', edgeFn: 'mfb-token-exchange (functions/)', notes: `VITE_MFB_CLIENT_ID configured. OAuth callback built. ${stats.logbookConnectionsActive} active connections. Token exchange fn present but not in supabase/functions.` },
+    { name: 'MyFlightBook OAuth', category: 'Logbook', status: 'partial', edgeFn: 'mfb-token-exchange (functions/)', notes: `VITE_MFB_CLIENT_ID configured. OAuth callback built. ${stats.logbookConnectionsActive} active connections. Token exchange fn present but not in worker/functions.` },
     { name: 'Digital Logbook', category: 'Logbook', status: 'live', notes: `${stats.totalFlightLogs} flight log entries. pilot_flight_logs table. Manual entry UI built.` },
     // ── SECURITY ──────────────────────────────────────────────
     { name: 'Rate Limiting', category: 'Security', status: 'live', notes: `${stats.rateLimitBuckets} active buckets. Sliding window. Per-user and per-IP.` },
@@ -397,7 +264,7 @@ export const InfrastructureDashboard: React.FC = () => {
     { name: 'Pilot Pull API', category: 'Enterprise', status: 'live', edgeFn: 'pilot-pull-api', notes: 'Enterprise filter: hours, country, license, medical, verified. PII gated. Audit logged.' },
     { name: 'IPFS Pins', category: 'Enterprise', status: stats.ipfsPins > 0 ? 'live' : 'stub', notes: `${stats.ipfsPins} public IPFS pins. public_ipfs_pins table. Pinata integration not confirmed in env.` },
     // ── MONITORING ────────────────────────────────────────────
-    { name: 'Sentry', category: 'Monitoring', status: 'partial', notes: 'src/lib/sentry.ts configured. Error events sent to Sentry cloud. No counts in Supabase.' },
+    { name: 'Sentry', category: 'Monitoring', status: 'partial', notes: 'src/lib/sentry.ts configured. Error events sent to Sentry cloud. No counts in D1.' },
     { name: 'Metrics Dashboard (internal)', category: 'Monitoring', status: 'live', edgeFn: 'metrics-dashboard', notes: 'METRICS_API_KEY gated. Queryable by internal tooling.' },
     { name: 'Health Check', category: 'Monitoring', status: 'live', edgeFn: 'health-check', notes: 'Public health endpoint. Used for uptime monitoring.' },
     { name: 'API Gateway', category: 'Monitoring', status: 'live', edgeFn: 'api-gateway', notes: 'Central routing. Auth validation. Rate limit enforcement.' },
@@ -429,8 +296,8 @@ export const InfrastructureDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* ── SUPABASE ───────────────────────────────────────────── */}
-      <ServiceBlock title="Supabase — Auth + Database" status="live" icon={Database} color="#22c55e">
+      {/* ── D1 / CLOUDFLARE ────────────────────────────────────── */}
+      <ServiceBlock title="Cloudflare D1 — Auth + Database" status="live" icon={Database} color="#22c55e">
         <div className="grid grid-cols-4 gap-2">
           <StatCard icon={Users} label="Total Pilots" value={stats.totalPilots} color="#3b82f6" />
           <StatCard icon={TrendingUp} label="New This Week" value={stats.pilotsWeek} color="#8b5cf6" />
@@ -483,7 +350,7 @@ export const InfrastructureDashboard: React.FC = () => {
       {/* ── FIREBASE ───────────────────────────────────────────── */}
       <ServiceBlock title="Firebase — Notifications (Firestore)" status="partial" icon={Cloud} color="#f97316">
         <div className="grid grid-cols-2 gap-2">
-          <StatCard icon={Mail} label="Notifications Sent Today" value={stats.notificationsToday} color="#f97316" sub="Via Supabase notifications table" />
+          <StatCard icon={Mail} label="Notifications Sent Today" value={stats.notificationsToday} color="#f97316" sub="Via D1 notifications table" />
           <StatCard icon={BarChart3} label="Total Notifications" value={stats.notificationsTotal} color="#fb923c" />
         </div>
         <div
@@ -491,8 +358,8 @@ export const InfrastructureDashboard: React.FC = () => {
           style={{ background: 'rgba(251,146,60,0.06)', border: '1px solid rgba(251,146,60,0.15)' }}
         >
           <AlertTriangle size={10} className="flex-shrink-0 mt-0.5 text-amber-400" />
-          Firebase Firestore writes happen client-side only — no invocation logs stored in Supabase.
-          Counts above reflect the Supabase notifications table, not direct Firestore document writes.
+          Firebase Firestore writes happen client-side only — no invocation logs stored in D1.
+          Counts above reflect the D1 notifications table, not direct Firestore document writes.
           To get Firebase invocation counts, use the Firebase Console → Usage tab.
         </div>
       </ServiceBlock>
@@ -622,7 +489,7 @@ export const InfrastructureDashboard: React.FC = () => {
       {/* ── BACKBLAZE B2 ───────────────────────────────────────── */}
       <ServiceBlock title="Backblaze B2 — Cold Backup Storage" status="unknown" icon={Server} color="#6b7280">
         <p className="text-[9px] text-white/40">
-          Nightly backup of Supabase + Neon via b2-backup edge function. No usage tracked in Supabase.
+          Nightly backup of D1 + R2 via b2-backup edge function. No usage tracked in D1.
           Check Backblaze dashboard for storage usage and backup history.
         </p>
       </ServiceBlock>
@@ -704,7 +571,7 @@ export const InfrastructureDashboard: React.FC = () => {
       {/* ── SENTRY ─────────────────────────────────────────────── */}
       <ServiceBlock title="Sentry — Error Monitoring" status="unknown" icon={AlertTriangle} color="#f43f5e">
         <p className="text-[9px] text-white/40 leading-relaxed">
-          Sentry is configured via src/lib/sentry.ts. Error events are sent directly to Sentry's servers — no counts stored in Supabase.
+          Sentry is configured via src/lib/sentry.ts. Error events are sent directly to Sentry's servers — no counts stored in D1.
           Check Sentry Dashboard for error rates, performance traces, and replay sessions.
         </p>
         <a href="https://sentry.io" target="_blank" rel="noopener noreferrer"

@@ -1,9 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 // ─── Tier config ────────────────────────────────────────────────────────────
 const TIER_CONFIG: Record<string, {
@@ -101,6 +100,7 @@ export const FleetIntelligenceCard: React.FC<FleetIntelligenceCardProps> = ({
   const [pinning, setPinning] = useState(false);
   const [cid, setCid] = useState<string | null>(null);
   const [pinError, setPinError] = useState<string | null>(null);
+  const { getIdTokenClaims } = useAuth0();
 
   const tier = TIER_CONFIG[retirementStatus] ?? TIER_CONFIG.window;
 
@@ -108,13 +108,14 @@ export const FleetIntelligenceCard: React.FC<FleetIntelligenceCardProps> = ({
     setPinning(true);
     setPinError(null);
     try {
-      const session = (await supabase.auth.getSession()).data.session;
-      if (!session) throw new Error('Not authenticated');
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) throw new Error('Not authenticated');
 
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/aviation-data-agent`, {
+      const res = await fetch(`${PILOT_API_URL}/api/aviation-data-agent`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { W1000App } from '../../../portal/components/w1000/W1000App';
 import { ArrowLeft, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/shared/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface W1000PageProps {
     onBack: () => void;
@@ -12,7 +12,8 @@ interface W1000PageProps {
 
 const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
     const navigate = useNavigate();
-    const { currentUser, userProfile } = useAuth();
+    const { currentUser, userProfile, logout } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [notifications, setNotifications] = useState<Array<{ id: string; title: string; message: string; type: 'success' | 'error' | 'warning' | 'info'; is_read: boolean; created_at: string }>>([]);
     const [notificationCount, setNotificationCount] = useState(0);
     const [w12UserProfile, setW12UserProfile] = useState<{ displayName?: string; email?: string; avatarUrl?: string } | undefined>(undefined);
@@ -33,14 +34,15 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
             // Fetch profile image from profiles table if not already set
             if (currentUser?.uid && !profile?.avatarUrl) {
                 try {
-                    const { data, error } = await supabase
-                        .from('profiles')
-                        .select('profile_image_url')
-                        .eq('id', currentUser.uid)
-                        .maybeSingle();
-
-                    if (!error && data && data.profile_image_url) {
-                        profile = { ...profile, avatarUrl: data.profile_image_url };
+                    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                        table: 'profiles',
+                        operation: 'select',
+                        where: { id: currentUser.uid },
+                        limit: 1,
+                    });
+                    const data = rows?.[0];
+                    if (data && data.profile_image_url) {
+                        profile = { ...profile, avatarUrl: data.profile_image_url as string };
                     }
                 } catch (err) {
                     console.error('Error fetching profile image:', err);
@@ -58,18 +60,20 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
         const fetchNotifications = async () => {
             if (userProfile?.id) {
                 try {
-                    const { data, error } = await supabase
-                        .from('notifications')
-                        .select('*')
-                        .eq('user_id', userProfile.id)
-                        .order('created_at', { ascending: false })
-                        .limit(10);
-
-                    if (!error && data) {
-                        setNotifications(data);
-                        const unreadCount = data.filter((n: any) => !n.is_read).length;
-                        setNotificationCount(unreadCount);
-                    }
+                    const data = await callApi<Record<string, unknown>[]>('queryTable', {
+                        table: 'notifications',
+                        operation: 'select',
+                        where: { user_id: userProfile.id },
+                        limit: 10,
+                    });
+                    const sorted = (data || []).sort((a: any, b: any) => {
+                        const ca = a.created_at || '';
+                        const cb = b.created_at || '';
+                        return cb.localeCompare(ca);
+                    });
+                    setNotifications(sorted as any);
+                    const unreadCount = sorted.filter((n: any) => !n.is_read).length;
+                    setNotificationCount(unreadCount);
                 } catch (err) {
                     console.error('Error fetching notifications:', err);
                 }
@@ -93,8 +97,8 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data.action === 'logout') {
                 try {
-                    // Sign out from Supabase auth
-                    await supabase.auth.signOut();
+                    // Sign out via Auth0
+                    await logout();
                     // Navigate to home page
                     navigate('/');
                 } catch (error) {

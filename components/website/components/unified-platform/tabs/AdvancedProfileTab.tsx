@@ -3,23 +3,28 @@ import {
   LayoutDashboard, User, BookOpen, FileText, Shield, ChevronRight
 } from 'lucide-react';
 import { PilotLicensureExperiencePage } from '../../pilot-recognition/PilotLicensureExperiencePage';
+import { LogbookHub } from '../../pilot-recognition/LogbookHub';
 import type { TabId } from '../types';
 
 type SidebarSection =
-  | 'overview'
-  | 'statistics'
-  | 'logbook'
-  | 'photos'
-  | 'identity'
+  | 'profile-information'
+  | 'personal-details'
+  | 'license-medical'
+  | 'ratings-endorsements'
+  | 'experience-career'
+  | 'flight-logbooks'
+  | 'documents'
   | 'vault';
 
 const SECTIONS: { id: SidebarSection; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-  { id: 'overview',     label: 'Overview',             icon: LayoutDashboard },
-  { id: 'statistics',   label: 'Licensure & Currency', icon: FileText },
-  { id: 'logbook',      label: 'Flight Logbooks',      icon: BookOpen },
-  { id: 'photos',       label: 'Certificates',         icon: FileText },
-  { id: 'identity',     label: 'About & Experience',   icon: User },
-  { id: 'vault',        label: 'Public Profile',       icon: Shield },
+  { id: 'profile-information',  label: 'Profile Information',      icon: LayoutDashboard },
+  { id: 'personal-details',     label: 'Personal Details',         icon: User },
+  { id: 'license-medical',      label: 'License & Medical',        icon: Shield },
+  { id: 'ratings-endorsements', label: 'Ratings & Endorsements',   icon: BookOpen },
+  { id: 'experience-career',    label: 'Experience & Career',      icon: FileText },
+  { id: 'flight-logbooks',      label: 'Flight Logbooks',          icon: BookOpen },
+  { id: 'documents',            label: 'Documents',                icon: FileText },
+  { id: 'vault',                label: 'Public Profile',           icon: Shield },
 ];
 
 interface AdvancedProfileTabProps {
@@ -28,7 +33,7 @@ interface AdvancedProfileTabProps {
 }
 
 export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, profile }) => {
-  const [activeSection, setActiveSection] = useState<SidebarSection>('overview');
+  const [activeSection, setActiveSection] = useState<SidebarSection>('profile-information');
 
   const userProfile = profile
     ? {
@@ -42,60 +47,111 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
 
   return (
     <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7 relative min-h-screen flex">
-      {/* ─── Sidebar ─── */}
+      {/* ─── Sidebar — old card style ─── */}
       <aside
-        className="hidden md:flex flex-col w-64 flex-shrink-0 sticky top-0 h-screen overflow-y-auto"
+        className="hidden md:flex flex-col flex-shrink-0 sticky top-0 h-screen overflow-y-auto"
         style={{
-          background: 'linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(8,10,18,0.98) 100%)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
+          width: '280px',
+          padding: '5rem 1rem 2rem 1.5rem',
+          background: 'transparent',
+          borderRight: 'none',
+          gap: '0.75rem',
         }}
       >
-        {/* Header */}
-        <div className="px-5 pt-6 pb-4">
-          <p className="text-[10px] font-black tracking-[0.2em] uppercase text-white/30">Pilot Profile</p>
-          <h2 className="text-lg font-black text-white tracking-tight mt-1">My Profile</h2>
+        {/* Header with chevron */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginBottom: '1.5rem',
+          paddingLeft: '0.25rem',
+          overflow: 'hidden',
+          width: '100%',
+        }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <div style={{ overflow: 'hidden', minWidth: 0 }}>
+            <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
+            <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+          </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-3 pb-4 space-y-0.5">
+        {/* Navigation Items — card style */}
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
           {SECTIONS.map((section) => {
             const Icon = section.icon;
             const isActive = activeSection === section.id;
+            const isVaultItem = section.id === 'vault';
             return (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all group"
                 style={{
-                  background: isActive ? 'rgba(220,38,38,0.10)' : 'transparent',
-                  border: isActive ? '1px solid rgba(220,38,38,0.25)' : '1px solid transparent',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.875rem 1rem',
+                  borderRadius: '4px',
+                  background: isVaultItem
+                    ? (isActive ? '#ffffff' : 'rgba(255,255,255,0.92)')
+                    : isActive
+                      ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+                      : 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)',
+                  border: isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
+                  color: isVaultItem ? '#111827' : '#ffffff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  textAlign: 'left',
+                  fontSize: '0.85rem',
+                  fontWeight: 500,
+                  boxShadow: isVaultItem
+                    ? (isActive ? '0 4px 20px rgba(220,38,38,0.4)' : '0 4px 20px rgba(0,0,0,0.3)')
+                    : isActive
+                      ? '0 4px 15px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)'
+                      : '0 2px 8px rgba(0,0,0,0.2)',
+                  overflow: 'hidden',
+                  width: '100%',
+                  minWidth: 0,
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.8)';
+                    if (isVaultItem) {
+                      e.currentTarget.style.background = '#ffffff';
+                    } else {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(29, 78, 216, 0.2) 100%)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
+                    }
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.55)';
+                    if (isVaultItem) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.92)';
+                    } else {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                    }
                   }
                 }}
               >
-                <Icon
-                  size={16}
-                  className="flex-shrink-0 transition-colors"
-                  style={{ color: isActive ? '#ef4444' : 'rgba(255,255,255,0.35)' }}
-                />
-                <span
-                  className="text-[13px] font-bold flex-1 transition-colors"
-                  style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)' }}
-                >
-                  {section.label}
-                </span>
+                {isVaultItem ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', minWidth: 0 }}>
+                    <Icon size={16} style={{ color: '#dc2626', flexShrink: 0 }} />
+                    <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#111827', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <span style={{ color: '#111827' }}>Public </span>
+                        <span style={{ color: '#dc2626' }}>profile</span>
+                      </p>
+                      <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#6b7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Operator-facing profile view</p>
+                    </div>
+                  </div>
+                ) : (
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', minWidth: 0 }}>{section.label}</span>
+                )}
                 {isActive && (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isVaultItem ? '#dc2626' : 'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                 )}
@@ -103,19 +159,6 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
             );
           })}
         </nav>
-
-        {/* Collapse button */}
-        <div className="px-5 py-4 mt-auto" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <button
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-[11px] font-bold transition-all"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-            Collapse
-          </button>
-        </div>
       </aside>
 
       {/* ─── Mobile section selector ─── */}
@@ -144,60 +187,50 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
 
       {/* ─── Content Area ─── */}
       <main className="flex-1 min-w-0">
-        {activeSection === 'overview' && (
+        {(activeSection === 'profile-information' ||
+          activeSection === 'personal-details' ||
+          activeSection === 'license-medical' ||
+          activeSection === 'ratings-endorsements' ||
+          activeSection === 'experience-career') && (
           <PilotLicensureExperiencePage
             onBack={() => setTab('verification')}
             userProfile={userProfile}
             embedded={true}
+            visibleSection={
+              activeSection === 'personal-details' ? 'personal' :
+              activeSection === 'license-medical' ? 'license-medical' :
+              activeSection === 'ratings-endorsements' ? 'ratings-endorsements' :
+              activeSection === 'experience-career' ? 'experience-career' :
+              undefined
+            }
           />
         )}
 
-        {activeSection === 'statistics' && (
-          <div className="p-6 lg:p-10 max-w-3xl">
-            <h3 className="text-white font-black text-xl tracking-tight mb-2">Licensure & Currency</h3>
-            <p className="text-white/40 text-sm mb-8">View your license status, ratings, and currency information.</p>
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/30 text-sm">Licensure details are available in the Overview tab.</p>
-              <button
-                onClick={() => setActiveSection('overview')}
-                className="px-4 py-2 rounded-lg text-xs font-black text-white transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-              >
-                GO TO OVERVIEW →
-              </button>
-            </div>
+        {activeSection === 'flight-logbooks' && (
+          <div className="p-6 lg:p-10">
+            <LogbookHub
+              profile={profile}
+              onNavigate={(path) => {
+                if (path.includes('recognition-plus')) setTab('recognition-plus' as TabId);
+                else if (path.includes('logbook')) setTab('logbook' as TabId);
+              }}
+              onCompleteProfile={() => setTab('advanced-profile' as TabId)}
+            />
           </div>
         )}
 
-        {activeSection === 'photos' && (
+        {activeSection === 'documents' && (
           <div className="p-6 lg:p-10 max-w-3xl">
-            <h3 className="text-white font-black text-xl tracking-tight mb-2">Certificates</h3>
+            <h3 className="text-white font-black text-xl tracking-tight mb-2">Documents</h3>
             <p className="text-white/40 text-sm mb-8">Upload and manage your certificates and endorsements.</p>
             <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/30 text-sm">Certificate upload is available in the Overview tab.</p>
+              <p className="text-white/30 text-sm">Document upload is available in the Profile Information tab.</p>
               <button
-                onClick={() => setActiveSection('overview')}
+                onClick={() => setActiveSection('profile-information')}
                 className="px-4 py-2 rounded-lg text-xs font-black text-white transition-all hover:brightness-110"
                 style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
               >
-                GO TO OVERVIEW →
-              </button>
-            </div>
-          </div>
-        )}
-
-        {activeSection === 'identity' && (
-          <div className="p-6 lg:p-10 max-w-3xl">
-            <h3 className="text-white font-black text-xl tracking-tight mb-2">About & Experience</h3>
-            <p className="text-white/40 text-sm mb-8">Manage your personal information and flight experience.</p>
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/30 text-sm">Profile editing is available in the Overview tab.</p>
-              <button
-                onClick={() => setActiveSection('overview')}
-                className="px-4 py-2 rounded-lg text-xs font-black text-white transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-              >
-                GO TO OVERVIEW →
+                GO TO PROFILE INFORMATION →
               </button>
             </div>
           </div>
@@ -208,30 +241,13 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
             <h3 className="text-white font-black text-xl tracking-tight mb-2">Public Profile</h3>
             <p className="text-white/40 text-sm mb-8">Control what airlines and operators see when they view your profile.</p>
             <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/30 text-sm">Public profile settings are available in the Overview tab.</p>
+              <p className="text-white/30 text-sm">Public profile settings are available in the Profile Information tab.</p>
               <button
-                onClick={() => setActiveSection('overview')}
+                onClick={() => setActiveSection('profile-information')}
                 className="px-4 py-2 rounded-lg text-xs font-black text-white transition-all hover:brightness-110"
                 style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
               >
-                GO TO OVERVIEW →
-              </button>
-            </div>
-          </div>
-        )}
-
-        {activeSection === 'logbook' && (
-          <div className="p-6 lg:p-10 max-w-3xl">
-            <h3 className="text-white font-black text-xl tracking-tight mb-2">Flight Logbook</h3>
-            <p className="text-white/40 text-sm mb-8">Sync and manage your digital flight logbooks.</p>
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/30 text-sm">Connect your logbook provider to sync flight hours.</p>
-              <button
-                onClick={() => setTab('logbook')}
-                className="px-4 py-2 rounded-lg text-xs font-black text-white transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-              >
-                GO TO LOGBOOK TAB →
+                GO TO PROFILE INFORMATION →
               </button>
             </div>
           </div>

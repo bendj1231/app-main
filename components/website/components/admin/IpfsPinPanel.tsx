@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 const DOC_TYPES = [
   { value: 'hiring_rubric',      label: 'Hiring Rubric / Cadet Expectations' },
@@ -35,6 +35,8 @@ interface PinRecord {
 }
 
 export const IpfsPinPanel: React.FC = () => {
+  const { getIdTokenClaims } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [sourceUrl, setSourceUrl]       = useState('');
   const [docType, setDocType]           = useState('hiring_rubric');
   const [title, setTitle]               = useState('');
@@ -49,12 +51,17 @@ export const IpfsPinPanel: React.FC = () => {
 
   const loadPins = async () => {
     setLoadingPins(true);
-    const { data } = await supabase
-      .from('public_ipfs_pins')
-      .select('id,ipfs_cid,title,doc_type,source_url,gateway_url,file_size_bytes,pinned_at,related_table')
-      .order('pinned_at', { ascending: false })
-      .limit(50);
-    setPins(data ?? []);
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'public_ipfs_pins',
+      operation: 'select',
+      limit: 50,
+    });
+    const sorted = (rows || []).sort((a: any, b: any) => {
+      const pa = a.pinned_at || '';
+      const pb = b.pinned_at || '';
+      return pb.localeCompare(pa);
+    });
+    setPins((sorted as unknown) as PinRecord[]);
     setLoadingPins(false);
   };
 
@@ -66,12 +73,13 @@ export const IpfsPinPanel: React.FC = () => {
     setResult(null);
     setPinning(true);
     try {
-      const session = (await supabase.auth.getSession()).data.session;
-      if (!session) throw new Error('Not authenticated');
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/pinata-pin-public`, {
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) throw new Error('Not authenticated');
+      const res = await fetch(`${PILOT_API_URL}/api/pinata-pin-public`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

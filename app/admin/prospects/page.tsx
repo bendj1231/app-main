@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -85,17 +85,23 @@ export default function ProspectsPage() {
   const [linkedinLoading, setLinkedinLoading] = useState(false);
   const [linkedinResult, setLinkedinResult] = useState<any>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchProspects = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('prospects')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) {
-      console.error('Error fetching prospects:', error);
-    } else {
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'prospects',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
       setProspects(
-        (data || []).map((row: any) => ({
+        data.map((row: any) => ({
           id: row.id,
           title: row.title,
           description: row.description,
@@ -105,6 +111,8 @@ export default function ProspectsPage() {
           updated_at: row.updated_at,
         }))
       );
+    } catch (err) {
+      console.error('Error fetching prospects:', err);
     }
     setLoading(false);
   };
@@ -124,54 +132,75 @@ export default function ProspectsPage() {
   const handleAddProspect = async () => {
     if (!newTitle.trim() || !newDescription.trim()) return;
     const author = userProfile?.display_name || currentUser?.email?.split('@')[0] || 'Other';
-    const { data, error } = await supabase.from('prospects').insert({
-      title: newTitle.trim(),
-      description: newDescription.trim(),
-      author,
-      status: 'active',
-      company_name: newCompany.trim() || null,
-      created_by: currentUser?.id,
-    }).select().single();
+    try {
+      const inserted = await callApi('queryTable', {
+        table: 'prospects',
+        operation: 'insert',
+        data: {
+          title: newTitle.trim(),
+          description: newDescription.trim(),
+          author,
+          status: 'active',
+          company_name: newCompany.trim() || null,
+          created_by: currentUser?.id,
+        },
+      });
+      const data = inserted as any;
 
-    if (error) {
-      console.error('Error adding prospect:', error);
+      setProspects((prev) => [
+        {
+          id: data?.id || String(Date.now()),
+          title: newTitle.trim(),
+          description: newDescription.trim(),
+          author,
+          status: 'active',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+      setNewTitle('');
+      setNewDescription('');
+      setNewCompany('');
+    } catch (err) {
+      console.error('Error adding prospect:', err);
       alert('Failed to add prospect');
-      return;
     }
-
-    setProspects((prev) => [
-      {
-        id: data.id,
-        title: data.title,
-        description: data.description,
-        author: data.author,
-        status: data.status,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-      },
-      ...prev,
-    ]);
-    setNewTitle('');
-    setNewDescription('');
-    setNewCompany('');
   };
 
   const handleUpdateStatus = async (id: string, status: Prospect['status']) => {
-    const { error } = await supabase.from('prospects').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
-    if (error) {
-      console.error('Error updating prospect:', error);
-      return;
+    try {
+      await callApi('queryTable', {
+        table: 'prospects',
+        operation: 'update',
+        id,
+        data: { status, updated_at: new Date().toISOString() },
+      });
+      setProspects((prev) => prev.map((p) => (p.id === id ? { ...p, status, updated_at: new Date().toISOString() } : p)));
+    } catch (err) {
+      console.error('Error updating prospect:', err);
     }
-    setProspects((prev) => prev.map((p) => (p.id === id ? { ...p, status, updated_at: new Date().toISOString() } : p)));
   };
 
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from('prospects').delete().eq('id', id);
-    if (error) {
-      console.error('Error deleting prospect:', error);
-      return;
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'prospects',
+        operation: 'select',
+        where: { id },
+        limit: 1,
+      });
+      if (rows?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'prospects',
+          operation: 'delete',
+          id: rows[0].id as string,
+        });
+      }
+      setProspects((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error('Error deleting prospect:', err);
     }
-    setProspects((prev) => prev.filter((p) => p.id !== id));
     setSelectedProspect(null);
   };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Stethoscope } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -18,6 +18,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function AMERegisterPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ full_name: '', designation: '', country: '', city: '', clinic_name: '', contact_email: '', issuing_authority: '', ame_certificate_number: '', certificate_expiry: '' });
@@ -29,19 +30,22 @@ export function AMERegisterPage({ onBack, onNavigate }: Props) {
     if (!canSubmit || status === 'submitting') return;
     setStatus('submitting'); setError(null);
     try {
-      const { error: err } = await supabase.from('ame_practitioners').insert({
-        admin_user_id: currentUser?.id ?? null,
-        full_name: form.full_name, designation: form.designation || null,
-        country: form.country, city: form.city || null,
-        clinic_name: form.clinic_name || null,
-        contact_email: form.contact_email,
-        issuing_authority: form.issuing_authority,
-        ame_certificate_number: form.ame_certificate_number || null,
-        certificate_expiry: form.certificate_expiry || null,
-        supports_class1: classes.c1, supports_class2: classes.c2, supports_class3: classes.c3,
-        status: 'pending', verified: false,
+      await callApi('queryTable', {
+        table: 'ame_practitioners',
+        operation: 'insert',
+        data: {
+          admin_user_id: currentUser?.id ?? null,
+          full_name: form.full_name, designation: form.designation || null,
+          country: form.country, city: form.city || null,
+          clinic_name: form.clinic_name || null,
+          contact_email: form.contact_email,
+          issuing_authority: form.issuing_authority,
+          ame_certificate_number: form.ame_certificate_number || null,
+          certificate_expiry: form.certificate_expiry || null,
+          supports_class1: classes.c1, supports_class2: classes.c2, supports_class3: classes.c3,
+          status: 'pending', verified: false,
+        },
       });
-      if (err) throw err;
       setStatus('success');
     } catch (e: any) { setError(e?.message ?? 'Submission failed.'); setStatus('error'); }
   }

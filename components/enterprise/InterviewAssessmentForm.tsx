@@ -6,7 +6,7 @@ import {
   CheckCircle, Star, Shield, Plane, Clock, Target,
   Users, MessageSquare, Plus, X, ChevronDown, ChevronUp
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface InterviewAssessmentFormProps {
   interviewId: string;
@@ -100,6 +100,7 @@ export function InterviewAssessmentForm({
   onComplete,
   onCancel
 }: InterviewAssessmentFormProps) {
+  const { callApi } = useWorkerAuth();
   const [scores, setScores] = useState<Record<string, number>>({});
   const [overallGrade, setOverallGrade] = useState<string>('');
   const [strengths, setStrengths] = useState<string[]>([]);
@@ -212,19 +213,19 @@ export function InterviewAssessmentForm({
         applied_at: applyToRecognitionScore ? new Date().toISOString() : null
       };
 
-      const { data, error: insertError } = await supabase
-        .from('interview_assessments')
-        .insert(assessmentData)
-        .select()
-        .single();
-
-      if (insertError) throw insertError;
+      const inserted = await callApi('queryTable', {
+        table: 'interview_assessments',
+        operation: 'insert',
+        data: assessmentData,
+      });
 
       // Update interview status to completed
-      await supabase
-        .from('interviews')
-        .update({ status: 'completed' })
-        .eq('id', interviewId);
+      await callApi('queryTable', {
+        table: 'interviews',
+        operation: 'update',
+        id: interviewId,
+        data: { status: 'completed' },
+      });
 
       // If applying to recognition score, update pilot's recognition score
       if (applyToRecognitionScore) {
@@ -235,7 +236,7 @@ export function InterviewAssessmentForm({
       setTimeout(() => setSaved(false), 3000);
 
       if (onComplete) {
-        onComplete(data.id);
+        onComplete((inserted as any)?.id || '');
       }
     } catch (err) {
       console.error('Save error:', err);
@@ -249,28 +250,35 @@ export function InterviewAssessmentForm({
   const applyRecognitionScoreUpdate = async (pilotId: string, impact: number) => {
     try {
       // Get current recognition score
-      const { data: currentScore } = await supabase
-        .from('recognition_scores')
-        .select('total_score')
-        .eq('user_id', pilotId)
-        .single();
+      const scoreRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'recognition_scores',
+        operation: 'select',
+        where: { user_id: pilotId },
+        limit: 1,
+      });
+      const currentScore = scoreRows?.[0];
 
       if (currentScore) {
-        const newScore = Math.min(1000, Math.max(0, currentScore.total_score + impact));
-        
-        await supabase
-          .from('recognition_scores')
-          .update({
+        const totalScore = (currentScore.total_score as number) || 0;
+        const newScore = Math.min(1000, Math.max(0, totalScore + impact));
+
+        await callApi('queryTable', {
+          table: 'recognition_scores',
+          operation: 'update',
+          id: currentScore.id as string,
+          data: {
             total_score: newScore,
-            last_calculated_at: new Date().toISOString()
-          })
-          .eq('user_id', pilotId);
+            last_calculated_at: new Date().toISOString(),
+          },
+        });
 
         // Also update interview_score in profiles
-        await supabase
-          .from('profiles')
-          .update({ interview_score: newScore })
-          .eq('id', pilotId);
+        await callApi('queryTable', {
+          table: 'profiles',
+          operation: 'update',
+          id: pilotId,
+          data: { interview_score: newScore },
+        });
       }
     } catch (err) {
       console.error('Recognition score update error:', err);

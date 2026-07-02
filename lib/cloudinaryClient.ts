@@ -289,6 +289,48 @@ export function revokeImageUrl(url: string): void {
 }
 
 /**
+ * Upload a generic document (PDF, etc.) to Cloudinary using unsigned preset
+ * Uses the /raw/upload endpoint for non-image files
+ */
+export async function uploadDocument(
+  file: File,
+  userId: string,
+  docType: string
+): Promise<CloudinaryUploadResult> {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+    formData.append('folder', `documents/${userId}/${docType}`);
+    formData.append('public_id', `${docType}_${userId}_${Date.now()}`);
+    formData.append('context', `user_id=${userId}|doc_type=${docType}`);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      return { success: false, error: `Upload failed: ${error}` };
+    }
+
+    const data = await response.json();
+    return {
+      success: true,
+      url: data.secure_url,
+      publicId: data.public_id,
+    };
+  } catch (err: unknown) {
+    console.error('[cloudinaryClient] Document upload failed:', err);
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/**
  * Delete image from Cloudinary
  * Note: Requires signature or admin API - use edge function if needed
  */

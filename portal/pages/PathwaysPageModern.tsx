@@ -68,7 +68,8 @@ import {
   ScoreLiveWidget,
 } from '../components/PathwaysIntelligenceWidgets';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 import { 
   pathwayEngine, 
   extractPilotProfile, 
@@ -2109,24 +2110,32 @@ const CategorySelection: React.FC<{
   const [generalCategories, setGeneralCategories] = useState<GeneralCategory[]>(GENERAL_CATEGORIES);
   const [loading, setLoading] = useState(false);
 
+  const { callApi } = useWorkerAuth();
+
   // Pre-populate with hardcoded fallback so pills render immediately
-  // Supabase fetch runs in background to pick up any DB overrides
+  // Worker API fetch runs in background to pick up any DB overrides
   useEffect(() => {
     let cancelled = false;
     const fetchGeneralCategories = async () => {
       try {
-        const { data, error } = await supabase
-          .from('career_hierarchy_general_categories')
-          .select('*')
-          .order('display_order');
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'career_hierarchy_general_categories',
+          operation: 'select',
+          limit: 100,
+        });
+        const data = (rows || []).sort((a: any, b: any) => {
+          const da = a.display_order || 0;
+          const db = b.display_order || 0;
+          return da - db;
+        });
 
         if (cancelled) return;
-        if (!error && data && data.length > 0) {
-          const overriddenCategories = data.map(cat => ({
+        if (data.length > 0) {
+          const overriddenCategories = data.map((cat: any) => ({
             ...cat,
             name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
           }));
-          setGeneralCategories(overriddenCategories);
+          setGeneralCategories(overriddenCategories as GeneralCategory[]);
         }
         // If error or empty — silently keep the hardcoded fallback already in state
       } catch (e) {
@@ -2224,6 +2233,7 @@ const ThreeStagePathwayFilter: React.FC<{
   onNavigate?: (page: string) => void;
 }> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway, onNavigate }) => {
   const { addToast } = useToast();
+  const { callApi } = useWorkerAuth();
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -2245,45 +2255,50 @@ const ThreeStagePathwayFilter: React.FC<{
         setLoading(true);
         
         // Fetch pathways
-        const { data: pathwaysData, error: pathwaysError } = await supabase
-          .from('career_hierarchy_pathways')
-          .select('*')
-          .eq('general_category_id', selectedGeneralCategory)
-          .order('display_order');
-        
-        if (pathwaysError) {
-          console.error('Error fetching pathways:', pathwaysError);
-          setLoading(false);
-          return;
-        }
+        const pathwaysRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'career_hierarchy_pathways',
+          operation: 'select',
+          where: { general_category_id: selectedGeneralCategory },
+          limit: 500,
+        });
+        const pathwaysData = (pathwaysRows || []).sort((a: any, b: any) => {
+          const da = a.display_order || 0;
+          const db = b.display_order || 0;
+          return da - db;
+        });
 
         // Override pathway names for specific pathways
-        const overriddenPathways = (pathwaysData || []).map(pathway => ({
+        const overriddenPathways = (pathwaysData as any[]).map((pathway: any) => ({
           ...pathway,
           name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
         }));
-        
-        setPathways(overriddenPathways);
-        
+
+        setPathways(overriddenPathways as Pathway[]);
+
         // Fetch all sub-pathways for these pathways
         if (overriddenPathways && overriddenPathways.length > 0) {
-          const pathwayIds = overriddenPathways.map(p => p.id);
-          const { data: subPathwaysData, error: subPathwaysError } = await supabase
-            .from('career_hierarchy_sub_pathways')
-            .select('*')
-            .in('pathway_id', pathwayIds)
-            .eq('is_active', true)
-            .order('display_order');
-          
-          if (subPathwaysError) {
-            console.error('Error fetching sub-pathways:', subPathwaysError);
+          const pathwayIds = overriddenPathways.map((p: any) => p.id);
+          const subRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'career_hierarchy_sub_pathways',
+            operation: 'select',
+            where: { pathway_id: pathwayIds[0], is_active: true },
+            limit: 500,
+          });
+          const subPathwaysData = (subRows || []).sort((a: any, b: any) => {
+            const da = a.display_order || 0;
+            const db = b.display_order || 0;
+            return da - db;
+          });
+
+          if (!subPathwaysData) {
+            console.error('Error fetching sub-pathways: no data');
           } else {
             // Override sub-pathway names for specific sub-pathways
-            const overriddenSubPathways = (subPathwaysData || []).map(sp => ({
+            const overriddenSubPathways = (subPathwaysData as any[]).map((sp: any) => ({
               ...sp,
               name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
             }));
-            setSubPathways(overriddenSubPathways);
+            setSubPathways(overriddenSubPathways as SubPathway[]);
           }
         } else {
           setSubPathways([]);
@@ -2304,20 +2319,25 @@ const ThreeStagePathwayFilter: React.FC<{
     if (selectedPathway) {
       const fetchSubPathways = async () => {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('career_hierarchy_sub_pathways')
-          .select('*')
-          .eq('pathway_id', selectedPathway)
-          .eq('is_active', true)
-          .order('display_order');
-        
-        if (data && !error) {
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'career_hierarchy_sub_pathways',
+          operation: 'select',
+          where: { pathway_id: selectedPathway, is_active: true },
+          limit: 500,
+        });
+        const data = (rows || []).sort((a: any, b: any) => {
+          const da = a.display_order || 0;
+          const db = b.display_order || 0;
+          return da - db;
+        });
+
+        if (data) {
           // Override sub-pathway names for specific sub-pathways
-          const overriddenSubPathways = data.map(sp => ({
+          const overriddenSubPathways = (data as any[]).map((sp: any) => ({
             ...sp,
             name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
           }));
-          setSubPathways(overriddenSubPathways);
+          setSubPathways(overriddenSubPathways as SubPathway[]);
         }
         setLoading(false);
       };
@@ -3500,6 +3520,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [canPostPathways, setCanPostPathways] = useState(false);
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
   const [selectedStage1PathwayId, setSelectedStage1PathwayId] = useState<string | null>(null);
+  const { callApi } = useWorkerAuth();
   const [interestSubmitting, setInterestSubmitting] = useState(false);
   const [interestSubmitted, setInterestSubmitted] = useState<string | null>(null); // card id
   // Article 4 — Skybridge T2 legal notice state
@@ -3745,19 +3766,42 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     const rawCardId = pathway.id.replace('enterprise-', '');
     setInterestSubmitting(true);
     try {
-      const { data: cardRow } = await supabase
-        .from('enterprise_pathway_cards')
-        .select('id, enterprise_account_id')
-        .eq('id', rawCardId)
-        .maybeSingle();
+      const cardRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'enterprise_pathway_cards',
+        operation: 'select',
+        where: { id: rawCardId },
+        limit: 1,
+      });
+      const cardRow = cardRows?.[0];
       if (!cardRow) throw new Error('Card not found');
-      const { error } = await supabase.from('pathway_card_interests').upsert({
-        pilot_id: currentUser.id,
-        card_id: rawCardId,
-        enterprise_account_id: cardRow.enterprise_account_id,
-        submitted_at: new Date().toISOString(),
-      }, { onConflict: 'pilot_id,card_id' });
-      if (error) throw error;
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pathway_card_interests',
+        operation: 'select',
+        where: { pilot_id: currentUser.id, card_id: rawCardId },
+        limit: 1,
+      });
+      if (existing?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'pathway_card_interests',
+          operation: 'update',
+          id: existing[0].id as string,
+          data: {
+            enterprise_account_id: cardRow.enterprise_account_id,
+            submitted_at: new Date().toISOString(),
+          },
+        });
+      } else {
+        await callApi('queryTable', {
+          table: 'pathway_card_interests',
+          operation: 'insert',
+          data: {
+            pilot_id: currentUser.id,
+            card_id: rawCardId,
+            enterprise_account_id: cardRow.enterprise_account_id,
+            submitted_at: new Date().toISOString(),
+          },
+        });
+      }
       setInterestSubmitted(pathway.id);
     } catch (e) {
       console.error('Failed to submit interest:', e);
@@ -3766,17 +3810,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   };
 
-  // Fetch flight school card data from Supabase when a card is selected
+  // Fetch flight school card data from Worker API when a card is selected
   useEffect(() => {
     if (!selectedCarouselPathway?.id || selectedPathwayCard?.category !== 'flight-schools') return;
     const cardId = selectedCarouselPathway.id;
     // Skip if already cached
     if (flightSchoolCardData[cardId]) return;
     const fetchCard = async () => {
-      const [{ data: card }, { data: totals }] = await Promise.all([
-        supabase.from('flight_school_cards').select('*').eq('id', cardId).single(),
-        supabase.from('pathway_card_engagement_totals').select('*').eq('card_id', cardId).eq('card_type', 'flight_school').single(),
+      const [cardRows, totalsRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'flight_school_cards',
+          operation: 'select',
+          where: { id: cardId },
+          limit: 1,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pathway_card_engagement_totals',
+          operation: 'select',
+          where: { card_id: cardId, card_type: 'flight_school' },
+          limit: 1,
+        }),
       ]);
+      const card = cardRows?.[0];
+      const totals = totalsRows?.[0];
       if (card) setFlightSchoolCardData(prev => ({ ...prev, [cardId]: card }));
       if (totals) setFlightSchoolEngagement(prev => ({ ...prev, [cardId]: totals }));
     };
@@ -3898,23 +3954,28 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Stage 1: Fetch General Categories on mount
   useEffect(() => {
     const fetchGeneralCategories = async () => {
-      const { data, error } = await supabase
-        .from('career_hierarchy_general_categories')
-        .select('*')
-        .order('display_order');
-      
-      if (error) {
-        console.error('Error fetching general categories:', error);
-        setStage1Categories([]);
-      } else {
-        const overriddenCategories = (data || []).map(cat => ({
+      try {
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'career_hierarchy_general_categories',
+          operation: 'select',
+          limit: 100,
+        });
+        const data = (rows || []).sort((a: any, b: any) => {
+          const da = a.display_order || 0;
+          const db = b.display_order || 0;
+          return da - db;
+        });
+        const overriddenCategories = data.map(cat => ({
           ...cat,
-          name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
+          name: (cat.name as string) === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
         }));
-        setStage1Categories(overriddenCategories);
+        setStage1Categories(overriddenCategories as any);
+      } catch (err) {
+        console.error('Error fetching general categories:', err);
+        setStage1Categories([]);
       }
     };
-    
+
     fetchGeneralCategories();
   }, []);
 
@@ -3922,24 +3983,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   useEffect(() => {
     if (selectedStage1Category) {
       const fetchPathways = async () => {
-        const { data, error } = await supabase
-          .from('career_hierarchy_pathways')
-          .select('*')
-          .eq('general_category_id', selectedStage1Category.id)
-          .order('display_order');
-        
-        if (error) {
-          console.error('Error fetching pathways:', error);
-          setStage2Pathways([]);
-        } else {
-          const overriddenPathways = (data || []).map(pathway => ({
+        try {
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'career_hierarchy_pathways',
+            operation: 'select',
+            where: { general_category_id: selectedStage1Category.id },
+            limit: 500,
+          });
+          const data = (rows || []).sort((a: any, b: any) => {
+            const da = a.display_order || 0;
+            const db = b.display_order || 0;
+            return da - db;
+          });
+          const overriddenPathways = data.map(pathway => ({
             ...pathway,
-            name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
+            name: (pathway.name as string) === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
           }));
-          setStage2Pathways(overriddenPathways);
+          setStage2Pathways(overriddenPathways as any);
+        } catch (err) {
+          console.error('Error fetching pathways:', err);
+          setStage2Pathways([]);
         }
       };
-      
+
       fetchPathways();
     } else {
       setStage2Pathways([]);
@@ -3950,25 +4016,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   useEffect(() => {
     if (selectedStage2Pathway) {
       const fetchSubPathways = async () => {
-        const { data, error } = await supabase
-          .from('career_hierarchy_sub_pathways')
-          .select('*')
-          .eq('pathway_id', selectedStage2Pathway.id)
-          .eq('is_active', true)
-          .order('display_order');
-        
-        if (error) {
-          console.error('Error fetching sub-pathways:', error);
-          setStage3SubPathways([]);
-        } else {
-          const overriddenSubPathways = (data || []).map(sp => ({
+        try {
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'career_hierarchy_sub_pathways',
+            operation: 'select',
+            where: { pathway_id: selectedStage2Pathway.id, is_active: true },
+            limit: 500,
+          });
+          const data = (rows || []).sort((a: any, b: any) => {
+            const da = a.display_order || 0;
+            const db = b.display_order || 0;
+            return da - db;
+          });
+          const overriddenSubPathways = data.map(sp => ({
             ...sp,
             name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
           }));
           setStage3SubPathways(overriddenSubPathways);
+        } catch (err) {
+          console.error('Error fetching sub-pathways:', err);
+          setStage3SubPathways([]);
         }
       };
-      
+
       fetchSubPathways();
     } else {
       setStage3SubPathways([]);
@@ -4597,9 +4667,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       setAlignProfileLoading(true);
       
       try {
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
+        const { getIdTokenClaims } = useAuth0();
+        const claims = await getIdTokenClaims();
+        const userId = claims?.sub;
+        if (!userId) {
           setAlignProfileLoading(false);
           return;
         }
@@ -4607,13 +4678,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         // Load pathways (from cache or fetch)
         let pathways: Pathway[] | null = getCachedPathways() as any;
         if (!pathways) {
-          const { data: pathwayData, error } = await supabase
-            .from('pathways')
-            .select('*')
-            .eq('status', 'active');
-          
-          if (!error && pathwayData) {
-            pathways = pathwayData;
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pathways',
+            operation: 'select',
+            where: { status: 'active' },
+            limit: 500,
+          });
+          if (rows) {
+            pathways = rows as any;
             cachePathways(pathways as any);
           }
         }
@@ -4623,11 +4695,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         }
 
         // Load user profile
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: userId },
+          limit: 1,
+        });
+        const profile = profileRows?.[0];
 
         if (profile) {
           const localProfile = extractPilotProfile(profile);

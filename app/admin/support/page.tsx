@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -51,38 +52,60 @@ export default function SupportInboxPage() {
     urgent: '#ef4444',
   };
 
+  const { callApi } = useWorkerAuth();
+  const { getIdTokenClaims } = useAuth0();
+
   const loadTickets = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('support_enquiries')
-      .select(`
-        *,
-        profiles:user_id (email, display_name, full_name)
-      `)
-      .order('created_at', { ascending: false });
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'support_enquiries',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
 
-    if (error) {
-      console.error('Error loading tickets:', error);
-      setLoading(false);
-      return;
+      // Fetch profiles separately for manual join
+      const userIds = [...new Set(data.map((r: any) => r.user_id).filter(Boolean))];
+      let profilesMap: Record<string, any> = {};
+      if (userIds.length > 0) {
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: userIds[0] },
+          limit: 500,
+        });
+        (profileRows || []).forEach((p: any) => {
+          profilesMap[p.id] = p;
+        });
+      }
+
+      const mapped = data.map((row: any) => {
+        const profile = profilesMap[row.user_id];
+        return {
+          id: row.id,
+          user_id: row.user_id,
+          user_email: profile?.email || 'unknown@pilotrecognition.com',
+          user_name: profile?.display_name || profile?.full_name || 'Unknown Pilot',
+          subject: row.subject,
+          message: row.message,
+          status: (row.status || 'open') as SupportTicket['status'],
+          priority: (row.priority || 'medium') as SupportTicket['priority'],
+          program_type: row.program_type || 'General',
+          admin_notes: row.admin_notes,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+        };
+      });
+
+      setTickets(mapped);
+    } catch (err) {
+      console.error('Error loading tickets:', err);
     }
-
-    const mapped = (data || []).map((row: any) => ({
-      id: row.id,
-      user_id: row.user_id,
-      user_email: row.profiles?.email || 'unknown@pilotrecognition.com',
-      user_name: row.profiles?.display_name || row.profiles?.full_name || 'Unknown Pilot',
-      subject: row.subject,
-      message: row.message,
-      status: (row.status || 'open') as SupportTicket['status'],
-      priority: (row.priority || 'medium') as SupportTicket['priority'],
-      program_type: row.program_type || 'General',
-      admin_notes: row.admin_notes,
-      created_at: row.created_at,
-      updated_at: row.updated_at,
-    }));
-
-    setTickets(mapped);
     setLoading(false);
   };
 
@@ -97,13 +120,13 @@ export default function SupportInboxPage() {
     setSendingReply(true);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-support-reply`, {
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
+      const res = await fetch(`${import.meta.env.VITE_PILOT_API_URL}/api/send-support-reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           ticket_id: selectedTicket.id,
@@ -132,19 +155,19 @@ export default function SupportInboxPage() {
   };
 
   const handleResolve = async (id: string) => {
-    const { error } = await supabase
-      .from('support_enquiries')
-      .update({ status: 'resolved', updated_at: new Date().toISOString() })
-      .eq('id', id);
-
-    if (error) {
-      console.error('Resolve error:', error);
+    try {
+      await callApi('queryTable', {
+        table: 'support_enquiries',
+        operation: 'update',
+        id,
+        data: { status: 'resolved', updated_at: new Date().toISOString() },
+      });
+      setSelectedTicket(null);
+      await loadTickets();
+    } catch (err) {
+      console.error('Resolve error:', err);
       alert('Failed to resolve ticket');
-      return;
     }
-
-    setSelectedTicket(null);
-    await loadTickets();
   };
 
   if (!currentUser || !isAdmin) {

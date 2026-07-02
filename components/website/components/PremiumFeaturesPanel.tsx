@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import { Lock, TrendingUp, DollarSign, Shield, ChevronDown, ChevronUp, AlertTriangle, CheckCircle, ExternalLink, Loader2 } from 'lucide-react';
 
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+
 interface PremiumFeaturesPanelProps {
   isPremium: boolean;
   pilotId: string;
   authToken: string;
-  supabaseUrl: string;
   gapAnalysisResult?: any;
 }
 
@@ -79,7 +80,6 @@ export default function PremiumFeaturesPanel({
   isPremium,
   pilotId,
   authToken,
-  supabaseUrl,
   gapAnalysisResult,
 }: PremiumFeaturesPanelProps) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
@@ -102,7 +102,7 @@ export default function PremiumFeaturesPanel({
   const [auditPinResult, setAuditPinResult] = useState<any>(null);
 
   const callAgent = async (payload: object) => {
-    const res = await fetch(`${supabaseUrl}/functions/v1/aviation-data-agent`, {
+    const res = await fetch(`${PILOT_API_URL}/api/aviation-data-agent`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ pilotId, ...payload }),

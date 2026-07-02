@@ -26,10 +26,15 @@ description: Storage architecture — R2 for private pilot data, Pinata IPFS for
 2. Click **+ New Key**, toggle **Admin** on, name it `pilotrecognition-public`
 3. **Copy the JWT** — you will NOT be able to see it again
 
-### Step 3 — Add secrets to Supabase
+### Step 3 — Add secrets to Cloudflare Workers
 
-1. Go to https://supabase.com/dashboard/project/gkbhgrozrzhalnjherfu/settings/edge-functions
-2. Add:
+1. Run:
+
+```bash
+cd cloudflare
+npx wrangler secret put PINATA_JWT
+npx wrangler secret put PINATA_GATEWAY
+```
 
 | Secret Name | Value |
 |---|---|
@@ -47,10 +52,10 @@ Use Pinata only to pin **publicly-declared institutional reference data**:
 
 **Why IPFS for this data:**
 - CID is derived from file hash — content is tamper-proof. Airlines cannot retroactively alter old hiring expectations; the old CID is a permanent record
-- Zero database bloat — Supabase only stores the `ipfs://Qm...` pointer string, not the PDF
+- Zero database bloat — D1 only stores the `ipfs://Qm...` pointer string, not the PDF
 - Cross-school sync — multiple ATOs across the Philippines can all reference the same CID for the same airline pathway standard
 
-**Supabase only stores the pointer:**
+**D1 only stores the pointer:**
 ```sql
 -- e.g. in airline_pathways or ato_programmes table
 ipfs_cid TEXT -- e.g. 'bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra'
@@ -58,11 +63,11 @@ ipfs_cid TEXT -- e.g. 'bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4f
 
 **Never pin pilot credentials, photos, logbooks, medicals, or any PII to IPFS.**
 
-**Never include `pilot_id` in any IPFS artifact** — identity binding (pilot_id ↔ CID) lives in Supabase only.
+**Never include `pilot_id` in any IPFS artifact** — identity binding (pilot_id ↔ CID) lives in D1 only.
 
 ### aviation-data-agent v7 storage split
 
-| Action | IPFS artifact (no PII) | Supabase (pointer only) |
+| Action | IPFS artifact (no PII) | D1 (pointer only) |
 |---|---|---|
 | `gap_analysis` | Market alignment JSON: aircraft type, Weibull result, OEM data | `pilot_career_intelligence.ipfs_cid` |
 | `pin_market_audit` | Same as above, explicit pin | Same |

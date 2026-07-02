@@ -40,7 +40,6 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { supabase } from '@/lib/shared/supabase';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import ProfileImage from '@/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
@@ -210,14 +209,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     };
   }, [activeTab]);
 
-  // Check email verification status
+  // Check email verification status via Auth0
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setEmailVerified(!!session.user.email_confirmed_at);
-      }
-    });
-  }, []);
+    if (auth0User) {
+      setEmailVerified(!!(auth0User as any).email_verified);
+    }
+  }, [auth0User]);
 
   // Check if T&C version has been updated since user last accepted
   useEffect(() => {
@@ -688,7 +685,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           <EmailVerifyGate
             onResend={async () => {
               setResendingSent(true);
-              await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' });
+              // Auth0 handles email verification; no direct client-side resend available
             }}
             sent={resendingSent}
           />
@@ -994,19 +991,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           <SettingsTab
             onLogout={handleLogout}
             getToken={async () => {
-              try {
-                const claims = await getIdTokenClaims();
-                const t = claims?.__raw;
-                if (t) return t;
-                throw new Error('no id token');
-              } catch {
-                const {
-                  data: { session },
-                } = await supabase.auth.getSession();
-                const t = session?.access_token;
-                if (!t) throw new Error('No auth token available — please log out and back in');
-                return t;
-              }
+              const claims = await getIdTokenClaims();
+              const t = claims?.__raw;
+              if (t) return t;
+              throw new Error('No auth token available — please log out and back in');
             }}
             profileId={profileData?.id ?? null}
             profile={profileData}

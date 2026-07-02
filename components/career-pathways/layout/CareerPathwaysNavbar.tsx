@@ -4,7 +4,7 @@ import { safeRedirect } from '@/lib/url-validator';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import ProfileImage from '@/components/ProfileImage';
 import { MessagesPanel } from '@/components/website/components/unified-platform/MessagesPanel';
 import { NotificationsFeedPanel } from '@/components/website/components/unified-platform/shared';
@@ -44,6 +44,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   const navigate = useNavigate();
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const displayName = userProfile?.display_name || userProfile?.full_name || currentUser?.email?.split('@')[0] || 'Pilot';
   const profileImageUrl = userProfile?.profile_image_url || auth0User?.picture || undefined;
   const profileImagePublicId = userProfile?.profile_image_public_id || undefined;
@@ -65,10 +66,8 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   const hamburgerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }: { data: { session: any } }) => {
-      if (session?.user) setEmailVerified(!!session.user.email_confirmed_at);
-    });
-  }, []);
+    setEmailVerified(!!auth0User?.email_verified);
+  }, [auth0User?.email_verified]);
 
   useEffect(() => {
     const CURRENT_TC_VERSION = 'v2-2026';
@@ -81,10 +80,20 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
     const profileId = userProfile?.id;
     if (!profileId) return;
     const fetchNotifs = async () => {
-      const countResult = await supabase.from('pilot_notifications').select('id', { count: 'exact', head: true }).eq('pilot_id', profileId).eq('is_read', false);
-      const dataResult = await supabase.from('pilot_notifications').select('*').eq('pilot_id', profileId).order('created_at', { ascending: false }).limit(10);
-      if (countResult.count !== null) setNotifCount(countResult.count);
-      if (dataResult.data) setNotifications(dataResult.data);
+      const allNotifs = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_notifications',
+        operation: 'select',
+        where: { pilot_id: profileId },
+        limit: 500,
+      });
+      const unread = (allNotifs || []).filter((n: any) => !n.is_read);
+      const sorted = (allNotifs || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      }).slice(0, 10);
+      setNotifCount(unread.length);
+      setNotifications(sorted);
     };
     fetchNotifs();
     const interval = setInterval(fetchNotifs, 60000);

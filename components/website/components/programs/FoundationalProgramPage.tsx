@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, CheckCircle, Home } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { ProgramStages } from './ProgramStages';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { FoundationLoadingScreen } from './FoundationLoadingScreen';
@@ -18,6 +18,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
     onLogin
 }) => {
     const { currentUser, refreshUserProfile } = useAuth();
+    const { callApi } = useWorkerAuth();
     const isLoggedIn = !!currentUser;
     const [currentSlide, setCurrentSlide] = useState(0);
     const [autoPlay, setAutoPlay] = useState(true);
@@ -108,29 +109,33 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
         }
         setShowEnrollmentLoading(true);
         try {
-            const { data: existingProfile } = await supabase
-                .from('profiles')
-                .select('enrolled_programs')
-                .eq('id', currentUser.uid)
-                .maybeSingle();
-            const currentPrograms = existingProfile?.enrolled_programs || [];
+            const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                table: 'profiles',
+                operation: 'select',
+                where: { id: currentUser.uid },
+                limit: 1,
+            });
+            const existingProfile = rows?.[0];
+            const currentPrograms = (existingProfile?.enrolled_programs as string[]) || [];
             const updatedPrograms = currentPrograms.includes('Foundational')
                 ? currentPrograms
                 : [...currentPrograms, 'Foundational'];
-            const { error } = await supabase
-                .from('profiles')
-                .update({ enrolled_programs: updatedPrograms })
-                .eq('id', currentUser.uid);
-            if (error) {
-                console.error('Profile update error details:', error);
-                throw error;
-            }
-            await supabase.from('notifications').insert({
-                user_id: currentUser.uid,
-                title: 'Congratulations!',
-                message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
-                type: 'success',
-                is_read: false,
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: currentUser.uid,
+                data: { enrolled_programs: updatedPrograms },
+            });
+            await callApi('queryTable', {
+                table: 'notifications',
+                operation: 'insert',
+                data: {
+                    user_id: currentUser.uid,
+                    title: 'Congratulations!',
+                    message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
+                    type: 'success',
+                    is_read: false,
+                },
             });
             // Refresh user profile to update enrollment state immediately
             if (refreshUserProfile) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Icons } from '../icons';
-import { completeEnrollment, supabase } from '../lib/supabase-auth';
-import { sendEnrollmentConfirmationEmail } from '../lib/email';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface EnrollmentOnboardingPageProps {
     onComplete: () => void;
@@ -24,44 +24,42 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
         e.preventDefault();
         if (!agreed || !goals) return;
 
+        const { user } = useAuth0();
+        const { callApi } = useWorkerAuth();
+
         setLoading(true);
         setError(null); // Clear previous errors
         try {
-            
-            // Get authenticated user
-            const { data: { user }, error: authError } = await supabase.auth.getUser();
-            
-            if (authError) {
-                console.error('❌ Auth error:', authError);
-                setError(`Authentication error: ${authError.message}`);
-                setLoading(false);
-                return;
-            }
-            
+
             if (!user) {
                 console.error('❌ No authenticated user found');
                 setError('No authenticated user found. Please log in again.');
                 setLoading(false);
                 return;
             }
-            
-            
-            // Show auth loading screen during Supabase enrollment authentication
+
+            // Show auth loading screen during enrollment authentication
             setLoading(false);
             setAuthLoading(true);
-            
+
             // Add minimum delay to ensure loading screen is shown
             await new Promise(resolve => setTimeout(resolve, 3000));
-            
-            // Complete enrollment in Supabase
-            await completeEnrollment(user.id, {
-                interest: goals,
-                goals,
-                agreementVersion: '1.0',
-                agreedAt: new Date().toISOString()
+
+            // Complete enrollment via Worker API
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: user.sub,
+                data: {
+                    interest: goals,
+                    goals,
+                    agreement_version: '1.0',
+                    agreed_at: new Date().toISOString(),
+                    enrolled_programs: ['Foundational'],
+                },
             });
-            
-            // Add delay to ensure Supabase commits the changes
+
+            // Add delay to ensure changes are committed
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             // Refresh profile data to ensure enrollment status is updated
@@ -127,7 +125,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                     marginBottom: '2rem'
                 }} />
                 <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
-                    Authenticating with Supabase...
+                    Authenticating...
                 </div>
                 <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
                     Please wait while we process your enrollment

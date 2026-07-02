@@ -6,7 +6,7 @@ import {
   TrendingUp, Eye, ChevronUp, ChevronDown, Image as ImageIcon,
   CheckCircle, AlertCircle, Save, Search, Filter
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface PilotSpotlightManagerProps {
   eventId: string;
@@ -35,6 +35,7 @@ interface Spotlight {
 }
 
 export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: PilotSpotlightManagerProps) {
+  const { callApi } = useWorkerAuth();
   const [spotlights, setSpotlights] = useState<Spotlight[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -64,21 +65,36 @@ export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: Pi
   const loadSpotlights = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('pilot_spotlights')
-        .select(`
-          *,
-          profiles (
-            display_name,
-            email,
-            profile_image_url
-          )
-        `)
-        .eq('event_id', eventId)
-        .order('display_order', { ascending: true });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_spotlights',
+        operation: 'select',
+        where: { event_id: eventId },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const da = (a.display_order as number) || 0;
+        const db = (b.display_order as number) || 0;
+        return da - db;
+      });
 
-      if (error) throw error;
-      setSpotlights(data || []);
+      // Fetch profile names for join
+      const profileIds = sorted.map((s: any) => s.profile_id).filter(Boolean);
+      let profileMap: Record<string, Record<string, unknown>> = {};
+      if (profileIds.length) {
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: profileIds[0] },
+          limit: 500,
+        });
+        (profileRows || []).forEach((p: any) => { if (p.id) profileMap[p.id] = p; });
+      }
+      const merged = sorted.map((s: any) => ({
+        ...s,
+        profile: s.profile_id ? profileMap[s.profile_id] : null,
+      }));
+
+      setSpotlights((merged as unknown) as Spotlight[]);
     } catch (err) {
       console.error('Error loading spotlights:', err);
       setError('Failed to load spotlights');
@@ -109,26 +125,19 @@ export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: Pi
         display_order: formData.display_order,
       };
 
-      let result;
       if (editingSpotlight) {
-        const { data, error } = await supabase
-          .from('pilot_spotlights')
-          .update(spotlightData)
-          .eq('id', editingSpotlight.id)
-          .select()
-          .single();
-
-        if (error) throw error;
-        result = data;
+        await callApi('queryTable', {
+          table: 'pilot_spotlights',
+          operation: 'update',
+          id: editingSpotlight.id,
+          data: spotlightData,
+        });
       } else {
-        const { data, error } = await supabase
-          .from('pilot_spotlights')
-          .insert(spotlightData)
-          .select()
-          .single();
-
-        if (error) throw error;
-        result = data;
+        await callApi('queryTable', {
+          table: 'pilot_spotlights',
+          operation: 'insert',
+          data: spotlightData,
+        });
       }
 
       await loadSpotlights();
@@ -147,12 +156,11 @@ export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: Pi
     if (!confirm('Are you sure you want to delete this spotlight?')) return;
 
     try {
-      const { error } = await supabase
-        .from('pilot_spotlights')
-        .delete()
-        .eq('id', spotlightId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'pilot_spotlights',
+        operation: 'delete',
+        id: spotlightId,
+      });
       await loadSpotlights();
     } catch (err) {
       console.error('Error deleting spotlight:', err);
@@ -208,12 +216,12 @@ export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: Pi
 
   const toggleFeatured = async (spotlight: Spotlight) => {
     try {
-      const { error } = await supabase
-        .from('pilot_spotlights')
-        .update({ is_featured: !spotlight.is_featured })
-        .eq('id', spotlight.id);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'pilot_spotlights',
+        operation: 'update',
+        id: spotlight.id,
+        data: { is_featured: !spotlight.is_featured },
+      });
       await loadSpotlights();
     } catch (err) {
       console.error('Error toggling featured status:', err);

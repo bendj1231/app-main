@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export interface AirlinePassportConnection {
   id: string;
@@ -33,6 +33,8 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchConnections = useCallback(async () => {
     if (!userId) {
       setLoading(false);
@@ -43,27 +45,27 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
       setLoading(true);
       setError(null);
 
-      const { data, error: fetchError } = await supabase
-        .from('airline_passport_connections')
-        .select('*')
-        .eq('user_id', userId)
-        .order('updated_at', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'airline_passport_connections',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (b.updated_at || '').localeCompare(a.updated_at || ''));
 
-      if (fetchError) throw fetchError;
-
-      setConnections(data || []);
+      setConnections(data as unknown as AirlinePassportConnection[]);
     } catch (err: any) {
       console.error('Error fetching airline connections:', err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, callApi]);
 
   const connectAirline = async (
-    airlineId: string, 
-    airlineName: string, 
-    airlineCode: string, 
+    airlineId: string,
+    airlineName: string,
+    airlineCode: string,
     logoUrl: string
   ) => {
     if (!userId) return;
@@ -72,29 +74,31 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
       setError(null);
 
       // Check if already exists
-      const { data: existing } = await supabase
-        .from('airline_passport_connections')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('airline_id', airlineId)
-        .single();
+      const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'airline_passport_connections',
+        operation: 'select',
+        where: { user_id: userId, airline_id: airlineId },
+        limit: 1,
+      });
+      const existing = existingRows?.[0];
 
       if (existing) {
         // Update to pending/connected
-        const { error: updateError } = await supabase
-          .from('airline_passport_connections')
-          .update({
+        await callApi('queryTable', {
+          table: 'airline_passport_connections',
+          operation: 'update',
+          id: existing.id as string,
+          data: {
             status: 'pending',
             updated_at: new Date().toISOString()
-          })
-          .eq('id', existing.id);
-
-        if (updateError) throw updateError;
+          },
+        });
       } else {
         // Create new connection
-        const { error: insertError } = await supabase
-          .from('airline_passport_connections')
-          .insert({
+        await callApi('queryTable', {
+          table: 'airline_passport_connections',
+          operation: 'insert',
+          data: {
             user_id: userId,
             airline_id: airlineId,
             airline_name: airlineName,
@@ -105,9 +109,8 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
             flight_hours_synced: false,
             competencies_synced: false,
             achievements_synced: false
-          });
-
-        if (insertError) throw insertError;
+          },
+        });
       }
 
       await fetchConnections();
@@ -121,12 +124,11 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
     try {
       setError(null);
 
-      const { error: deleteError } = await supabase
-        .from('airline_passport_connections')
-        .delete()
-        .eq('id', connectionId);
-
-      if (deleteError) throw deleteError;
+      await callApi('queryTable', {
+        table: 'airline_passport_connections',
+        operation: 'delete',
+        id: connectionId,
+      });
 
       await fetchConnections();
     } catch (err: any) {
@@ -142,29 +144,31 @@ export const useAirlinePassport = (userId?: string): UseAirlinePassportReturn =>
       setError(null);
 
       // Get user's pilot portfolio data
-      const { data: portfolio } = await supabase
-        .from('pilot_portfolio_data')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
+      const portfolioRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const portfolio = portfolioRows?.[0];
 
       // Calculate match percentage based on portfolio data
       const matchPercentage = calculateMatchPercentage(portfolio);
 
       // Update connection with synced data
-      const { error: updateError } = await supabase
-        .from('airline_passport_connections')
-        .update({
+      await callApi('queryTable', {
+        table: 'airline_passport_connections',
+        operation: 'update',
+        id: connectionId,
+        data: {
           status: 'connected',
           last_synced_at: new Date().toISOString(),
           match_percentage: matchPercentage,
-          flight_hours_synced: !!portfolio?.total_hours,
-          competencies_synced: !!(portfolio?.core_competencies?.length > 0),
-          achievements_synced: !!(portfolio?.achievements?.length > 0)
-        })
-        .eq('id', connectionId);
-
-      if (updateError) throw updateError;
+          flight_hours_synced: !!(portfolio as any)?.total_hours,
+          competencies_synced: !!((portfolio as any)?.core_competencies?.length > 0),
+          achievements_synced: !!((portfolio as any)?.achievements?.length > 0)
+        },
+      });
 
       await fetchConnections();
     } catch (err: any) {

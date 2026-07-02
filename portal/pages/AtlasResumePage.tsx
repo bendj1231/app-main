@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 
 interface AtlasResumePageProps {
@@ -28,16 +28,14 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
 
       try {
         const userId = userProfile?.id || userProfile?.uid;
-        const { data, error } = await supabase
-          .from('pilot_flight_logs')
-          .select('hours')
-          .eq('user_id', userId);
-
-        if (error) {
-          throw error;
-        }
-
-        const hoursSum = (data || []).reduce((sum, log) => sum + Number(log.hours || 0), 0);
+        const { callApi } = useWorkerAuth();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_flight_logs',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const hoursSum = (rows || []).reduce((sum: number, log: any) => sum + Number(log.hours || 0), 0);
         setDigitalLogbookTotal(hoursSum);
       } catch (error) {
         console.error('Failed to sync atlas resume logbook totals:', error);
@@ -52,18 +50,16 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
       }
 
       try {
-        const { data, error } = await supabase
-          .from('pilot_licensure_experience')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.warn('Error fetching licensure data:', error);
-        }
-
+        const { callApi } = useWorkerAuth();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const data = rows?.[0];
         if (data) {
-          setLicensureData(data);
+          setLicensureData(data as any);
         }
       } catch (error) {
         console.warn('Error fetching licensure data:', error);

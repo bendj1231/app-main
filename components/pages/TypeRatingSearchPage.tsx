@@ -3,13 +3,17 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { bookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { safeRedirect } from '@/lib/url-validator';
+import {
+  manufacturers as rawManufacturers,
+  aircraftTypeRatings as rawAircraftTypeRatings,
+} from '@/data/aircraft-manufacturers';
 
-// Types from Supabase schema
+// Types from D1 schema
 interface Manufacturer {
   id: string;
   name: string;
@@ -51,6 +55,155 @@ interface AircraftTypeRating {
   operatorCount?: number;
   pilotCount?: number;
 }
+
+// Manufacturer logo mapping — using Wikipedia Special:FilePath (redirects to actual file)
+const MANUFACTURER_LOGOS: Record<string, string> = {
+  airbus: '/airbus-logo.png',
+  boeing: 'https://en.wikipedia.org/wiki/Special:FilePath/Boeing_logo.svg',
+  atr: '/atr-logo.png',
+  embraer: 'https://en.wikipedia.org/wiki/Special:FilePath/Embraer_logo.svg',
+  bombardier: '/bombardier-logo.svg',
+  gulfstream: '/gulfstream-logo.webp',
+  cessna: '/cessna-logo.png',
+  'dassault-falcon': 'https://en.wikipedia.org/wiki/Special:FilePath/Dassault_Aviation_logo.svg',
+  pilatus: 'https://en.wikipedia.org/wiki/Special:FilePath/Pilatus_Aircraft_logo.svg',
+  beechcraft: 'https://en.wikipedia.org/wiki/Special:FilePath/Beechcraft_logo.svg',
+  sikorsky: '/sikorsky-logo.png',
+  leonardo: '/leonardo-logo.png',
+  'de-havilland': '/de-havilland-logo.png',
+  'mitsubishi-mrj': '/mitsubishi-logo.svg',
+  'comac-c919': '/comac-logo.jpg',
+  tecnam: '/tecnam-logo.png',
+  piper: 'https://en.wikipedia.org/wiki/Special:FilePath/Piper_Aircraft_logo.svg',
+  cirrus: 'https://en.wikipedia.org/wiki/Special:FilePath/Cirrus_Aircraft_logo.svg',
+  let: '/let-logo.svg',
+  aeroprakt: '/aeroprakt-logo.png',
+  antonov: '/antonov-logo.png',
+  ilyushin: '/ilyushin-logo.png',
+  'hindustan-aeronautics': '/hindustan-logo.jpg',
+  dornier: '/dornier-logo.svg',
+  archer: '/archer-logo.svg',
+  joby: '/joby-logo.jpg',
+  mlg: '/mlg-logo.jpg',
+  bell: '/bell-logo.svg',
+  ehang: '/ehang-logo.jpg',
+  raytheon: '/raytheon-logo.svg',
+  lilium: '/lilium-logo.png',
+  wisk: '/wisk-logo.jpg',
+  beta: '/beta-logo.png',
+  autoflight: '/autoflight-logo.jpg',
+  eve: '/eve-logo.jpg',
+  mooney: '/mooney-logo.png',
+  pipistrel: '/pipistrel-logo.png',
+  aviat: '/aviat-logo.png',
+  'american-champion': '/american-champion-logo.png',
+  sling: '/sling-logo.png',
+  epic: '/epic-logo.jpg',
+  socata: '/socata-logo.png',
+  hondajet: '/hondajet-logo.png',
+  airtractor: '/airtractor-logo.svg',
+  thrush: '/thrush-logo.jpg',
+  elixir: '/elixir-logo.webp',
+  icon: '/icon-logo.jpg',
+  waco: '/waco-logo.png',
+  vulcanair: '/vulcanair-logo.png',
+  mahindra: '/mahindra-logo.png',
+  'twin-commander': '/twin-commander-logo.png',
+  'britten-norman': '/britten-norman-logo.png',
+  evektor: '/evektor-logo.jpg',
+  bristell: '/bristell-logo.png',
+  velocity: '/velocity-logo.png',
+  quest: '/quest-logo.png',
+  'pacific-aerospace': '/pacific-aerospace-logo.jpg',
+  'aero-east-europe': '/aero-east-europe-logo.png',
+  jmb: '/jmb-logo.png',
+  foxcon: '/foxcon-logo.jpg',
+  grob: '/grob-logo.jpg',
+  'elroy-air': '/elroy-air-logo.jpg',
+  pyka: '/pyka-logo.jpg',
+  sabrewing: '/sabrewing-logo.jpg',
+  fugro: '/fugro-logo.svg',
+  supernal: '/supernal-logo.jpg',
+  'regent-craft': '/regent-craft-logo.png',
+};
+
+// Map hardcoded data file manufacturers to component interface
+const HARDCODED_MANUFACTURERS: Manufacturer[] = rawManufacturers.map(m => ({
+  id: m.id,
+  name: m.name,
+  logo: MANUFACTURER_LOGOS[m.id] || m.logo || '/logo.png',
+  hero_image: m.heroImage,
+  description: m.description,
+  founded: m.founded,
+  headquarters: m.headquarters,
+  website: m.website,
+  reputation_score: m.reputationScore,
+  total_aircraft_count: m.totalAircraftCount,
+}));
+
+// Map hardcoded data file aircraft to component interface
+const HARDCODED_AIRCRAFT: AircraftTypeRating[] = rawAircraftTypeRatings.map(a => ({
+  id: a.id,
+  model: a.model,
+  manufacturer_id: a.manufacturer_id,
+  category: a.category,
+  subcategory: a.subcategory,
+  image: a.image,
+  sketchfab_id: a.sketchfab_id,
+  description: a.description,
+  conditionally_new: a.conditionally_new as 'green' | 'amber' | 'red' | undefined,
+  first_flight: String(a.first_flight),
+  why_choose_rating: a.why_choose_rating,
+  specifications: a.specifications,
+  demandLevel: a.demandLevel === 'none' ? 'low' : a.demandLevel as 'high' | 'medium' | 'low',
+  lifecycleStage: (a as any).lifecycle_stage as 'early-career' | 'mid-career' | 'mature' | 'retiring' | undefined,
+  orderBacklog: (a as any).order_backlog,
+  operatorCount: (a as any).operator_count,
+  pilotCount: (a as any).pilot_count,
+}));
+
+// D1-backed aircraft (will be merged with hardcoded)
+let d1Aircraft: AircraftTypeRating[] = [];
+
+// Airlines by aircraft ID for detail panel — restored from old git history
+const AIRCRAFT_AIRLINES: Record<string, { name: string; logo: string }[]> = {
+  'airbus-a320': [
+    { name: 'Philippine Airlines', logo: 'https://www.philippineairlines.com/content/dam/palportal/migration/files/historyandmilestonespalsstory/nutshell-copy.jpg' },
+    { name: 'Cebu Pacific', logo: 'https://images.jgsummit.com.ph/2021/12/15/0f999ad31e634dc5a90ad0d350cbe86ddfc4eca3.jpg' },
+    { name: 'IndiGo', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+    { name: 'easyJet', logo: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp' },
+  ],
+  'boeing-737': [
+    { name: 'Southwest Airlines', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png' },
+    { name: 'Ryanair', logo: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
+    { name: 'SkyWest', logo: 'https://www.thrustflight.com/wp-content/uploads/2022/11/skywest-airlines-2-768x512.jpg' },
+  ],
+  'tecnam-p2002': [
+    { name: 'Flight Training Schools', logo: '/logo.png' },
+  ],
+  'cessna-172': [
+    { name: 'Flight Schools Worldwide', logo: '/logo.png' },
+  ],
+  'cessna-152': [
+    { name: 'Flight Schools Worldwide', logo: '/logo.png' },
+  ],
+  'airbus-a350': [
+    { name: 'Qatar Airways', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+    { name: 'Singapore Airlines', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+    { name: 'Cathay Pacific', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+    { name: 'Finnair', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+  ],
+  'airbus-a380': [
+    { name: 'Emirates', logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/emirates.jpg' },
+    { name: 'Singapore Airlines', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+    { name: 'Qantas', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+    { name: 'British Airways', logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/british-airways.jpg' },
+  ],
+  'atr-72': [
+    { name: 'Cebu Pacific', logo: 'https://images.jgsummit.com.ph/2021/12/15/0f999ad31e634dc5a90ad0d350cbe86ddfc4eca3.jpg' },
+    { name: 'Philippine Airlines', logo: 'https://www.philippineairlines.com/content/dam/palportal/migration/files/historyandmilestonespalsstory/nutshell-copy.jpg' },
+  ],
+};
 
 // Career Score Calculation Function
 function calculateCareerScore(aircraft: AircraftTypeRating, pilotProfile?: {
@@ -350,41 +503,38 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [showExtendedInfo, setShowExtendedInfo] = useState(false);
   const [activeTab, setActiveTab] = useState('Overview');
   const carouselRef = useRef<HTMLDivElement>(null);
+  const manufacturerCarouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [showRequirements, setShowRequirements] = useState(false);
 
-  // Data from Supabase
-  const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>([]);
+  // Data — manufacturers load immediately from hardcoded data (old version behavior)
+  const [manufacturers, setManufacturers] = useState<Manufacturer[]>(HARDCODED_MANUFACTURERS);
+  const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>(HARDCODED_AIRCRAFT);
   const [dataLoading, setDataLoading] = useState(true);
-  
+
   // Bookmark state
   const [bookmarkedAircraft, setBookmarkedAircraft] = useState<Set<string>>(new Set());
 
-  // Fetch manufacturers and aircraft from Supabase
+  const { callApi } = useWorkerAuth();
+
+  // Fetch aircraft from D1 and merge with hardcoded data
   useEffect(() => {
     const fetchData = async () => {
       setDataLoading(true);
       try {
-        // Fetch manufacturers
-        const { data: manufacturersData, error: manufacturersError } = await supabase
-          .from('manufacturers')
-          .select('*');
-        if (manufacturersError) {
-          console.error('Error fetching manufacturers:', manufacturersError);
-        } else {
-          setManufacturers(manufacturersData || []);
-        }
-
-        // Fetch aircraft type ratings
-        const { data: aircraftData, error: aircraftError } = await supabase
-          .from('aircraft_type_ratings')
-          .select('*');
-        if (aircraftError) {
-          console.error('Error fetching aircraft:', aircraftError);
-        } else {
-          setAircraftTypeRatings(aircraftData || []);
+        // Fetch aircraft type ratings from D1 and merge
+        const aircraftData = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'aircraft_type_ratings',
+          operation: 'select',
+          limit: 500,
+        });
+        if (aircraftData && aircraftData.length > 0) {
+          d1Aircraft = (aircraftData as unknown) as AircraftTypeRating[];
+          // Merge: D1 entries override hardcoded by ID
+          const hardcodedIds = new Set(HARDCODED_AIRCRAFT.map(a => a.id));
+          const newD1 = aircraftData.filter((a: any) => !hardcodedIds.has(a.id));
+          setAircraftTypeRatings([...HARDCODED_AIRCRAFT, ...((newD1 as unknown) as AircraftTypeRating[])]);
         }
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -392,7 +542,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         setDataLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -574,7 +723,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     return Array.from(categories);
   }, [aircraftTypeRatings]);
 
-  // Auto-scroll carousel
+  // Auto-scroll aircraft carousel
   useEffect(() => {
     const interval = setInterval(() => {
       if (!carouselRef.current) return;
@@ -586,6 +735,21 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         el.scrollBy({ left: 300, behavior: 'smooth' });
       }
     }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-scroll manufacturer carousel (infinite loop)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!manufacturerCarouselRef.current) return;
+      const el = manufacturerCarouselRef.current;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: 240, behavior: 'smooth' });
+      }
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
@@ -669,41 +833,38 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
       </div>
 
-      {/* Manufacturer Carousel */}
-      <div className="w-full mb-4 md:mb-8 relative z-10">
-        <div className="px-4 md:px-6 mb-3 md:mb-4 flex items-center justify-between">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-serif font-normal text-slate-900">Browse Manufacturers</h2>
-          <p className="text-xs md:text-sm text-black">{manufacturers.length} manufacturers available</p>
+      {/* Manufacturer Carousel - Edge to Edge */}
+      <div className="mb-8">
+        <div className="px-6 mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
+            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
+          </h2>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-          {/* Dashboard News and Updates Card */}
-          <button
-            onClick={() => { setSelectedManufacturer(null); setSelectedAircraft(null); }}
-            className={`flex-shrink-0 w-56 sm:w-60 md:w-64 lg:w-72 p-4 md:p-5 lg:p-6 rounded-xl border-2 transition-all relative overflow-hidden ${
-              !selectedManufacturer
-                ? 'ring-2 ring-sky-500 border-sky-500/50 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl shadow-2xl shadow-black/30'
-                : 'border-white/20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl hover:border-white/30 hover:from-white/20 hover:shadow-lg shadow-black/20'
-            }`}
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
-            <div className="flex flex-col items-center justify-center h-32 sm:h-36 md:h-40 lg:h-48 relative z-10">
-              <h3 className="text-black font-semibold text-center text-base md:text-lg lg:text-xl">Dashboard</h3>
-              <p className="text-black/80 text-xs text-center mt-2">News & Updates</p>
-            </div>
-          </button>
+        <div
+          ref={manufacturerCarouselRef}
+          className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
           {manufacturers.map(manufacturer => (
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 w-56 sm:w-60 md:w-64 lg:w-72 p-4 md:p-5 lg:p-6 rounded-xl border-2 transition-all relative overflow-hidden ${
+              className={`flex-shrink-0 w-56 p-8 rounded-xl border-2 transition-all relative overflow-hidden ${
                 selectedManufacturer?.id === manufacturer.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl shadow-2xl shadow-black/30'
                   : 'border-white/20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl hover:border-white/30 hover:from-white/20 hover:shadow-lg shadow-black/20'
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
-              <div className="flex items-center justify-center h-32 sm:h-36 md:h-40 lg:h-48 relative z-10">
-                <span className="text-black font-bold text-center text-lg sm:text-xl md:text-2xl lg:text-3xl">{manufacturer.name}</span>
+              <img
+                src={manufacturer.logo}
+                alt={manufacturer.name}
+                className="w-24 h-24 object-contain mb-6 mx-auto relative z-10"
+                referrerPolicy="no-referrer"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              <div className="text-center relative z-10">
+                <p className="font-medium text-slate-900 text-lg">{manufacturer.name}</p>
               </div>
             </button>
           ))}
@@ -712,10 +873,24 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Hero Section - Unified component for both default and manufacturer-specific content */}
       <div className="relative overflow-hidden mb-8 z-10 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
-        {/* Background - dark gradient for all manufacturers */}
+        {/* Background - manufacturer hero image when selected, otherwise dark gradient */}
         <>
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+          {selectedManufacturer?.hero_image ? (
+            <>
+              <img
+                src={selectedManufacturer.hero_image}
+                alt={selectedManufacturer.name}
+                className="absolute inset-0 w-full h-full object-cover z-0"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              <div className="absolute inset-0 bg-black/70 z-0" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+            </>
+          )}
         </>
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
@@ -736,7 +911,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   <div className="text-sm text-slate-300">Active Type Ratings</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-3xl font-bold">20</div>
+                  <div className="text-3xl font-bold">{manufacturers.length}</div>
                   <div className="text-sm text-slate-300">Manufacturers</div>
                 </div>
               </div>
@@ -1678,7 +1853,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           <div className="mt-8 bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-6 border border-sky-200">
             <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               <span className="w-2 h-8 bg-blue-500 rounded-full"></span>
-              Manufacturer Overview (20 Aircraft Manufacturers)
+              Manufacturer Overview ({manufacturers.length} Aircraft Manufacturers)
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-white rounded-lg p-4 text-center shadow-sm border border-slate-200">
@@ -2089,6 +2264,25 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 </div>
               </div>
             </div>
+
+            {/* Airlines Operating This Type */}
+            {(() => {
+              const airlines = AIRCRAFT_AIRLINES[selectedAircraft.id];
+              if (!airlines || !airlines.length) return null;
+              return (
+                <div className="px-6 md:px-8 py-5 border-b border-slate-100">
+                  <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Airlines Operating This Type</p>
+                  <div className="flex flex-wrap gap-3">
+                    {airlines.map(a => (
+                      <div key={a.name} className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                        <img src={a.logo} alt={a.name} className="h-6 w-10 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                        <span className="text-xs font-medium text-slate-700">{a.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Tab Navigation */}
             <div className="border-b border-slate-200 px-6 md:px-8 bg-white">

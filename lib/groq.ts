@@ -1,17 +1,15 @@
 /**
- * Groq AI client — calls the ai-coaching Supabase Edge Function.
- * The edge function holds the GROQ_API_KEY server-side; this file never
+ * Groq AI client — calls the Cloudflare Worker AI coaching endpoint.
+ * The Worker holds the GROQ_API_KEY server-side; this file never
  * exposes it to the browser.
  */
 
-import { supabase } from './supabase';
+const API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+const FUNCTION_URL = `${API_URL}/api/ai-coaching`;
 
-const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-coaching`;
-
-async function getAuthHeader(): Promise<string> {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.access_token) throw new Error('Not authenticated');
-  return `Bearer ${session.access_token}`;
+function ensureToken(accessToken: string): string {
+  if (!accessToken) throw new Error('Not authenticated');
+  return accessToken;
 }
 
 export interface CoachingResult {
@@ -48,11 +46,11 @@ export class QuotaExceededError extends Error {
   }
 }
 
-async function post(body: object): Promise<Response> {
+async function postWithToken(accessToken: string, body: object): Promise<Response> {
   const res = await fetch(FUNCTION_URL, {
     method: 'POST',
     headers: {
-      'Authorization': await getAuthHeader(),
+      'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
@@ -66,28 +64,29 @@ async function post(body: object): Promise<Response> {
 }
 
 /** One-shot career coaching analysis for a pilot profile */
-export async function getCareerCoaching(profile: Record<string, unknown>): Promise<CoachingResponse> {
-  const res = await post({ type: 'coaching', profile });
+export async function getCareerCoaching(accessToken: string, profile: Record<string, unknown>): Promise<CoachingResponse> {
+  const res = await postWithToken(ensureToken(accessToken), { type: 'coaching', profile });
   const json = await res.json();
   return { data: json.data as CoachingResult, quota: json.quota };
 }
 
 /** Multi-turn chat with the aviation career coach */
 export async function chatWithCoach(
+  accessToken: string,
   messages: { role: 'user' | 'assistant'; content: string }[],
   profile?: Record<string, unknown>
 ): Promise<ChatResponse> {
-  const res = await post({ type: 'chat', messages, profile });
+  const res = await postWithToken(ensureToken(accessToken), { type: 'chat', messages, profile });
   const json = await res.json();
   return { message: json.message as string, quota: json.quota };
 }
 
 /** Atlas CV improvement suggestions */
-export async function getAtlasCVSuggestions(profile: Record<string, unknown>): Promise<string> {
+export async function getAtlasCVSuggestions(accessToken: string, profile: Record<string, unknown>): Promise<string> {
   const res = await fetch(FUNCTION_URL, {
     method: 'POST',
     headers: {
-      'Authorization': await getAuthHeader(),
+      'Authorization': `Bearer ${ensureToken(accessToken)}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ type: 'atlas-cv', profile }),

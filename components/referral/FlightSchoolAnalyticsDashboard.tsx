@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 interface FlightSchoolAnalyticsDashboardProps {
@@ -24,6 +24,7 @@ interface PayoutSummary {
 }
 
 export const FlightSchoolAnalyticsDashboard: React.FC<FlightSchoolAnalyticsDashboardProps> = ({ flightSchoolId }) => {
+  const { callApi } = useWorkerAuth();
   const [loading, setLoading] = useState(true);
   const [analytics, setAnalytics] = useState<ReferralData | null>(null);
   const [payoutSummary, setPayoutSummary] = useState<PayoutSummary | null>(null);
@@ -41,37 +42,45 @@ export const FlightSchoolAnalyticsDashboard: React.FC<FlightSchoolAnalyticsDashb
       setError(null);
 
       // Fetch referral analytics
-      const { data: analyticsData, error: analyticsError } = await supabase
-        .from('referral_analytics')
-        .select('*')
-        .eq('flight_school_id', flightSchoolId)
-        .order('period_start', { ascending: false })
-        .limit(30);
-
-      if (analyticsError) throw analyticsError;
+      const analyticsRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'referral_analytics',
+        operation: 'select',
+        where: { flight_school_id: flightSchoolId },
+        limit: 30,
+      });
+      const analyticsData = (analyticsRows || []).sort((a: any, b: any) => {
+        const sa = a.period_start || '';
+        const sb = b.period_start || '';
+        return sb.localeCompare(sa);
+      });
 
       // Fetch payout summary
-      const { data: payoutsData, error: payoutsError } = await supabase
-        .from('payouts')
-        .select('status, amount')
-        .eq('flight_school_id', flightSchoolId);
-
-      if (payoutsError) throw payoutsError;
+      const payoutsRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'payouts',
+        operation: 'select',
+        where: { flight_school_id: flightSchoolId },
+        limit: 500,
+      });
+      const payoutsData = payoutsRows || [];
 
       // Fetch referrals
-      const { data: referralsData, error: referralsError } = await supabase
-        .from('referrals')
-        .select('*')
-        .eq('flight_school_id', flightSchoolId)
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (referralsError) throw referralsError;
+      const referralsRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'referrals',
+        operation: 'select',
+        where: { flight_school_id: flightSchoolId },
+        limit: 50,
+      });
+      const referralsData = (referralsRows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
 
       // Calculate summary
-      const totalPayouts = payoutsData?.reduce((sum, p) => sum + parseFloat(p.amount), 0) || 0;
-      const pendingPayouts = payoutsData?.filter(p => p.status === 'pending').reduce((sum, p) => sum + parseFloat(p.amount), 0) || 0;
-      const completedPayouts = payoutsData?.filter(p => p.status === 'completed').reduce((sum, p) => sum + parseFloat(p.amount), 0) || 0;
+      const payoutsAny = payoutsData as any[];
+      const totalPayouts = payoutsAny?.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0) || 0;
+      const pendingPayouts = payoutsAny?.filter(p => p.status === 'pending').reduce((sum, p) => sum + parseFloat(p.amount || 0), 0) || 0;
+      const completedPayouts = payoutsAny?.filter(p => p.status === 'completed').reduce((sum, p) => sum + parseFloat(p.amount || 0), 0) || 0;
 
       setPayoutSummary({
         total: totalPayouts,

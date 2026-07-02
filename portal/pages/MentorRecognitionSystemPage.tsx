@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { UserProfile } from '../types/user';
 
 interface MentorRecognitionSystemPageProps {
@@ -77,83 +77,85 @@ export const MentorRecognitionSystemPage: React.FC<MentorRecognitionSystemPagePr
     }
   }, [userProfile?.uid]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchMentorData = async () => {
     try {
       setLoading(true);
 
       // Fetch mentor profile
-      const { data: mentorData, error: mentorError } = await supabase
-        .from('mentor_profiles')
-        .select('*')
-        .eq('user_id', userProfile?.uid)
-        .single();
-
-      if (mentorError && mentorError.code !== 'PGRST116') {
-        throw mentorError;
-      }
+      const mentorRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentor_profiles',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 1,
+      });
+      let mentorData: any = mentorRows?.[0];
 
       // Create mentor profile if it doesn't exist
       if (!mentorData) {
-        const { data: newMentor, error: createError } = await supabase
-          .from('mentor_profiles')
-          .insert({
+        const newMentor = await callApi('queryTable', {
+          table: 'mentor_profiles',
+          operation: 'insert',
+          data: {
             user_id: userProfile?.uid,
             mentor_level: 'foundation',
             recognition_status: 'pending'
-          })
-          .select()
-          .single();
-
-        if (createError) throw createError;
-        setMentorProfile(newMentor);
+          },
+        });
+        mentorData = newMentor;
+        setMentorProfile(mentorData);
       } else {
         setMentorProfile(mentorData);
       }
 
       // Fetch EBT CBTA competencies
-      const { data: competencyData, error: competencyError } = await supabase
-        .from('ebt_cbta_competencies')
-        .select('*')
-        .order('category', { ascending: true });
-
-      if (competencyError) throw competencyError;
-      setCompetencies(competencyData || []);
+      const competencyRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ebt_cbta_competencies',
+        operation: 'select',
+        limit: 500,
+      });
+      const competencyData = (competencyRows || []).sort((a: any, b: any) => (a.category || '').localeCompare(b.category || ''));
+      setCompetencies(competencyData as any);
 
       // Fetch recent mentor sessions
-      const { data: sessionData, error: sessionError } = await supabase
-        .from('mentor_sessions')
-        .select('*')
-        .eq('mentor_id', mentorData?.id || '')
-        .order('session_date', { ascending: false })
-        .limit(10);
-
-      if (sessionError && sessionError.code !== 'PGRST116') {
-        throw sessionError;
-      }
-      setRecentSessions(sessionData || []);
+      const sessionRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentor_sessions',
+        operation: 'select',
+        where: { mentor_id: mentorData?.id || '' },
+        limit: 10,
+      });
+      const sessionData = (sessionRows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
+      setRecentSessions(sessionData as any);
 
       // Fetch mentee progress
-      const { data: menteeData, error: menteeError } = await supabase
-        .from('mentee_progress')
-        .select(`
-          *,
-          users!mentee_progress_mentee_id_fkey (
-            first_name,
-            last_name,
-            email
-          )
-        `)
-        .eq('mentor_id', mentorData?.id || '')
-        .order('start_date', { ascending: false });
+      const menteeRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentee_progress',
+        operation: 'select',
+        where: { mentor_id: mentorData?.id || '' },
+        limit: 500,
+      });
+      const menteeData = (menteeRows || []).sort((a: any, b: any) => (b.start_date || '').localeCompare(a.start_date || ''));
 
-      if (menteeError && menteeError.code !== 'PGRST116') {
-        throw menteeError;
+      // Fetch users for mentee names
+      const userIds = menteeData.map((m: any) => m.mentee_id).filter(Boolean);
+      let usersMap = new Map<string, any>();
+      if (userIds.length > 0) {
+        const userRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 500,
+        });
+        (userRows || []).forEach((u: any) => { if (u.id) usersMap.set(u.id, u); });
       }
 
-      const menteeProgress = (menteeData || []).map(mp => ({
-        ...mp,
-        mentee_name: mp.users ? `${mp.users.first_name} ${mp.users.last_name}` : 'Unknown Mentee'
-      }));
+      const menteeProgress = menteeData.map((mp: any) => {
+        const user = usersMap.get(mp.mentee_id);
+        return {
+          ...mp,
+          mentee_name: user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() : 'Unknown Mentee'
+        };
+      });
       setMentees(menteeProgress);
 
     } catch (error) {

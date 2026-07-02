@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -55,57 +55,72 @@ export default function RecognitionPlusManagementPage() {
   const [stats, setStats] = useState({ total: 0, active: 0, pending: 0, suspicious: 0, revenue: 0 });
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const loadSubscribers = useCallback(async () => {
     setLoading(true);
     try {
-      let query = supabase
-        .from('subscriptions')
-        .select(`
-          id, user_id, status, admin_flag, created_at, current_period_end,
-          amount, product_name, dodo_customer_id, dodo_payment_id, receipt_url,
-          stripe_customer_id, stripe_subscription_id,
-          profiles!inner(email, display_name)
-        `)
-        .order('created_at', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'subscriptions',
+        operation: 'select',
+        limit: 500,
+      });
+      let data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
 
-      if (filterStatus !== 'all') query = query.eq('status', filterStatus);
-      if (filterFlag !== 'all') query = query.eq('admin_flag', filterFlag);
+      if (filterStatus !== 'all') data = data.filter((s: any) => s.status === filterStatus);
+      if (filterFlag !== 'all') data = data.filter((s: any) => s.admin_flag === filterFlag);
 
-      const { data, error } = await query;
-      if (error) throw error;
-
-      const rows = (data || []).map((row: any) => ({
-        id: row.id,
-        user_id: row.user_id,
-        email: row.profiles?.email,
-        display_name: row.profiles?.display_name,
-        status: row.status,
-        admin_flag: (row.admin_flag as AdminFlag) || 'active',
-        created_at: row.created_at,
-        current_period_end: row.current_period_end,
-        amount: row.amount,
-        product_name: row.product_name,
-        dodo_customer_id: row.dodo_customer_id,
-        dodo_payment_id: row.dodo_payment_id,
-        receipt_url: row.receipt_url,
-        stripe_customer_id: row.stripe_customer_id,
-        stripe_subscription_id: row.stripe_subscription_id,
-      })) as Subscriber[];
-
-      setSubscribers(rows);
-
-      const { data: allSubs } = await supabase.from('subscriptions').select('status, admin_flag, amount');
-      if (allSubs) {
-        setStats({
-          total: allSubs.length,
-          active: allSubs.filter((s: any) => s.status === 'active').length,
-          pending: allSubs.filter((s: any) => s.admin_flag === 'pending').length,
-          suspicious: allSubs.filter((s: any) => s.admin_flag === 'suspicious').length,
-          revenue: allSubs
-            .filter((s: any) => s.status === 'active')
-            .reduce((sum: number, s: any) => sum + (s.amount || 0), 0),
+      // Fetch profiles separately for manual join
+      const userIds = [...new Set(data.map((r: any) => r.user_id).filter(Boolean))];
+      let profilesMap: Record<string, any> = {};
+      if (userIds.length > 0) {
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: userIds[0] },
+          limit: 500,
+        });
+        (profileRows || []).forEach((p: any) => {
+          profilesMap[p.id] = p;
         });
       }
+
+      const mapped = data.map((row: any) => {
+        const profile = profilesMap[row.user_id];
+        return {
+          id: row.id,
+          user_id: row.user_id,
+          email: profile?.email,
+          display_name: profile?.display_name,
+          status: row.status,
+          admin_flag: (row.admin_flag as AdminFlag) || 'active',
+          created_at: row.created_at,
+          current_period_end: row.current_period_end,
+          amount: row.amount,
+          product_name: row.product_name,
+          dodo_customer_id: row.dodo_customer_id,
+          dodo_payment_id: row.dodo_payment_id,
+          receipt_url: row.receipt_url,
+          stripe_customer_id: row.stripe_customer_id,
+          stripe_subscription_id: row.stripe_subscription_id,
+        };
+      }) as Subscriber[];
+
+      setSubscribers(mapped);
+
+      setStats({
+        total: data.length,
+        active: data.filter((s: any) => s.status === 'active').length,
+        pending: data.filter((s: any) => s.admin_flag === 'pending').length,
+        suspicious: data.filter((s: any) => s.admin_flag === 'suspicious').length,
+        revenue: data
+          .filter((s: any) => s.status === 'active')
+          .reduce((sum: number, s: any) => sum + (s.amount || 0), 0),
+      });
     } catch (err) {
       console.error('[Recognition+] Error loading subscribers:', err);
     } finally {
@@ -118,11 +133,12 @@ export default function RecognitionPlusManagementPage() {
   const updateFlag = async (id: string, flag: AdminFlag) => {
     setUpdatingId(id);
     try {
-      const { error } = await supabase
-        .from('subscriptions')
-        .update({ admin_flag: flag })
-        .eq('id', id);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'subscriptions',
+        operation: 'update',
+        id,
+        data: { admin_flag: flag },
+      });
       setSubscribers((prev) =>
         prev.map((s) => (s.id === id ? { ...s, admin_flag: flag } : s))
       );

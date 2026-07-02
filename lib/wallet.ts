@@ -201,7 +201,7 @@ export async function issueAndStoreCredential(
   auth0Id: string,
   profileId: string,
   totalHours: number,
-  storageBackend: 'supabase' | 'firebase' | 'both' = 'both'
+  storageBackend: 'd1' | 'firebase' | 'both' = 'both'
 ): Promise<{ success: boolean; credential?: IssuedCredential; error?: string }> {
   try {
     const now = new Date();
@@ -359,7 +359,7 @@ export async function issueAndStoreCredentialSelfHosted(
         issued_at: issueRes.issued_at,
         expires_at: licenseExpiry,
         status: 'active',
-        storage_backend: 'supabase',
+        storage_backend: 'd1',
         signed_credential: JSON.stringify(signedCred),
         proof_value: proofValue,
         metadata: JSON.stringify({
