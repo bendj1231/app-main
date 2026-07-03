@@ -607,6 +607,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [countrySearch, setCountrySearch] = useState('');
   const [nationalitySearch, setNationalitySearch] = useState('');
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
   const [showNationalityDropdown, setShowNationalityDropdown] = useState(false);
   const [flightSchoolSearch, setFlightSchoolSearch] = useState('');
   const [affiliationTab, setAffiliationTab] = useState<'student' | 'operator'>('student');
@@ -774,6 +775,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showAuthorityDropdown]);
+
+  useEffect(() => {
+    if (!showCountryDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target as Node)) {
+        setShowCountryDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showCountryDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -1656,7 +1668,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             {/* Row 3: Country + Nationality */}
-            <div style={{ position: 'relative' }}>
+            <div ref={countryDropdownRef} style={{ position: 'relative' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Residing Country *
                 <span style={{ position: 'relative', display: 'inline-flex' }}>
@@ -1693,7 +1705,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     outline: 'none',
                     transition: 'border-color 0.2s, box-shadow 0.2s'
                   }}
-                  onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
                 />
                 <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
               </div>
@@ -1729,7 +1740,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     }} />
                     <input
                       type="text"
-                      autoFocus
                       placeholder="Search country..."
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
@@ -2069,8 +2079,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
             <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
-            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
-              License Information
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              <span style={{ color: 'white' }}>License</span>{' '}
+              <span style={{ color: '#dc2626' }}>Information</span>
             </h2>
           </div>
           
@@ -2105,7 +2116,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ position: 'relative', zIndex: showAuthorityDropdown ? 100 : undefined }}>
+            <div ref={authorityDropdownRef} style={{ position: 'relative', zIndex: showAuthorityDropdown ? 100 : undefined }}>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Issuing Authority / Governing Aviation Authority
               </label>
