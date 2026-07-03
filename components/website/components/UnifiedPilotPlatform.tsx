@@ -36,10 +36,13 @@ import {
   Target,
   TrendingUp,
   Star,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { ThemeContext } from '../context/ThemeContext';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import ProfileImage from '@/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
@@ -108,7 +111,18 @@ import { InboxTab } from './unified-platform/tabs/InboxTab';
 import { PilotShortageSupportPage } from './PilotShortageSupportPage';
 
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
+// Safe hook that handles missing ThemeProvider
+const useSafeTheme = () => {
+  try {
+    const context = React.useContext(ThemeContext);
+    return context || { isDarkMode: false, toggleTheme: () => {} };
+  } catch {
+    return { isDarkMode: false, toggleTheme: () => {} };
+  }
+};
+
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
+  const { isDarkMode, toggleTheme } = useSafeTheme();
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User, getIdTokenClaims, logout: auth0Logout } = useAuth0();
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
@@ -516,7 +530,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               );
               setNotifCount((payload as { notifCount?: number }).notifCount || 0);
               console.log('[dashboard] loaded from IndexedDB cache');
-              // Continue below to fetch fresh data from Worker and update state
+              return; // Valid cache — skip Worker call
             }
           } catch {
             /* invalid cache, fetch fresh */
@@ -670,6 +684,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             avatarUploading={avatarUploading}
             avatarError={avatarError}
             handleAvatarUpload={handleAvatarUpload}
+            isDarkMode={isDarkMode}
           />
         );
       case 'profile':
@@ -1062,7 +1077,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         {graphicsConfig.enableMeshGradient ? (
           <MeshGradient
             className="w-full h-full"
-            colors={[
+            colors={isDarkMode ? [
               '#dbeafe',
               '#94a3b8',
               '#64748b',
@@ -1071,21 +1086,30 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               '#1e3a5f',
               '#1e3a8a',
               '#0f172a',
+            ] : [
+              '#ffffff',
+              '#f0f5fa',
+              '#c8d8e8',
+              '#9ab0c8',
+              '#5e85a8',
+              '#345a7d',
+              '#1e3a5f',
+              '#0f2747',
             ]}
             speed={graphicsConfig.meshGradientSpeed}
           />
         ) : (
           <div
             className="w-full h-full"
-            style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}
+            style={{ background: isDarkMode ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)' }}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-        <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+        <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`} />
+        <div className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`} />
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)',
+            background: isDarkMode ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
           }}
         />
       </div>
@@ -1320,6 +1344,37 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   }}
                 >
                   <Settings size={20} className="text-white" strokeWidth={2} />
+                </button>
+
+                {/* Theme toggle tile */}
+                <button
+                  onClick={toggleTheme}
+                  title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className="transition-all duration-150"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: 'rgba(0,0,0,0.25)',
+                    border: '2px solid rgba(255,255,255,0.15)',
+                    borderRadius: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
+                  }}
+                >
+                  {isDarkMode ? (
+                    <Sun size={20} className="text-amber-400" strokeWidth={2} />
+                  ) : (
+                    <Moon size={20} className="text-white" strokeWidth={2} />
+                  )}
                 </button>
 
                 {/* Avatar + Hamburger unified island */}

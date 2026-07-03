@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSig
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { bookmarkService } from '@/services/bookmarkService';
+import { BookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { safeRedirect } from '@/lib/url-validator';
@@ -517,6 +517,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [bookmarkedAircraft, setBookmarkedAircraft] = useState<Set<string>>(new Set());
 
   const { callApi } = useWorkerAuth();
+  const bookmarkService = React.useMemo(() => new BookmarkService(callApi), [callApi]);
 
   // Fetch aircraft from D1 and merge with hardcoded data
   useEffect(() => {

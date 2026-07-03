@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle, User, FileText, Shield, Settings } from 'lucide-react';
 
-type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
+type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard' | 'cockpit';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -178,8 +179,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     }, [injectedWalletData, profileData]);
 
     // MSFS 2024 Style Sidebar Navigation
-    const [activeSection, setActiveSection] = useState<ProfileSection>('overview');
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const rawSection = searchParams.get('section');
+    const validSections: ProfileSection[] = ['overview', 'statistics', 'logbook', 'photos', 'identity', 'vault', 'admin_dashboard', 'cockpit'];
+    const sectionFromUrl: ProfileSection | null = rawSection && validSections.includes(rawSection as ProfileSection) ? (rawSection as ProfileSection) : null;
+    const initialSection = sectionFromUrl || 'overview';
+    const [activeSection, setActiveSectionState] = useState<ProfileSection>(initialSection);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const setActiveSection = useCallback((section: ProfileSection) => {
+        setActiveSectionState(section);
+        const next = new URLSearchParams(searchParams);
+        next.set('section', section);
+        setSearchParams(next);
+    }, [searchParams, setSearchParams]);
 
     // isPremium is derived from profileData above — no extra API call needed
 
@@ -190,6 +203,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setTheme(savedTheme);
         }
     }, []);
+
+    // Sync active section with URL section param (for back/forward navigation & direct links)
+    useEffect(() => {
+        const section = searchParams.get('section') as ProfileSection | null;
+        if (section && validSections.includes(section) && section !== activeSection) {
+            setActiveSectionState(section);
+        }
+    }, [searchParams]);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -886,6 +907,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 { id: 'logbook',    label: 'Flight Logbooks' },
                                 { id: 'photos',     label: 'Documents' },
                                 { id: 'identity',   label: 'Experience & Career' },
+                                { id: 'cockpit',    label: 'Cockpit' },
                                 { id: 'vault',      label: 'Public Profile', isVault: true },
                                 ...(isAdmin ? [{ id: 'admin_dashboard', label: 'Admin Dashboard', isAdmin: true }] : []),
                             ].map((item: any) => {
@@ -1191,7 +1213,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {/* Verification Dashboard */}
                         <VerificationStatusTab
                             profile={profileData}
                             walletChecks={injectedWalletData?.credentials || []}
@@ -1864,6 +1885,29 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <AdminDashboardPanel />
+                </motion.section>
+                )}
+
+                {/* ── COCKPIT SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'cockpit' && (
+                <motion.section
+                    key="cockpit"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <VerificationStatusTab
+                        profile={profileData}
+                        walletChecks={injectedWalletData?.credentials || []}
+                        credentials={injectedWalletData?.credentials || []}
+                        setTab={() => {}}
+                        onNavigate={onNavigate}
+                        onProfileImageUpdate={(url, publicId) => {
+                            setProfileData((prev: any) => prev ? { ...prev, profile_image_url: url, profile_image_public_id: publicId } : null);
+                        }}
+                        mode="dashboard"
+                    />
                 </motion.section>
                 )}
 

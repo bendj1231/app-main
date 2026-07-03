@@ -131,7 +131,17 @@ async function decryptJson<T>(record: { iv: string; ciphertext: string }): Promi
 // INDEXEDDB BOOTSTRAP
 // ─────────────────────────────────────────────────────────────
 
+const DISABLE_INDEXEDDB = true; // Set to false to re-enable
+
 function openDb(): Promise<IDBDatabase> {
+  if (DISABLE_INDEXEDDB) {
+    return Promise.resolve({
+      objectStoreNames: { contains: () => false },
+      createObjectStore: () => ({}),
+      transaction: () => ({ objectStore: () => ({ put: () => {}, get: () => {}, delete: () => {}, getAll: () => {}, index: () => ({ getAll: () => {} }) }) }),
+      close: () => {},
+    } as unknown as IDBDatabase);
+  }
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
 

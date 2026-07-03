@@ -128,7 +128,8 @@ export const VerificationStatusTab: React.FC<{
   setTab: (tab: TabId) => void;
   onNavigate: (page: string) => void;
   onProfileImageUpdate?: (url: string, publicId?: string) => void;
-}> = ({ profile, walletChecks, credentials = [], setTab, onNavigate, onProfileImageUpdate }) => {
+  mode?: 'full' | 'dashboard';
+}> = ({ profile, walletChecks, credentials = [], setTab, onNavigate, onProfileImageUpdate, mode = 'full' }) => {
   const isFreeUser = profile?.subscription_tier !== 'plus' && profile?.subscription_tier !== 'enterprise';
   const hours = profile?.total_flight_hours ?? 0;
   const verifiedHours = profile?.verified_flight_hours ?? hours * 0.6;
@@ -234,6 +235,8 @@ export const VerificationStatusTab: React.FC<{
       )}
       */}
 
+      {mode !== 'dashboard' && (
+      <>
       {/* Advert / upgrade banner */}
       <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl px-6 pt-3 pb-9 pr-8 md:pr-10" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
         <div className="absolute bottom-5 right-5 text-right z-10">
@@ -300,6 +303,9 @@ export const VerificationStatusTab: React.FC<{
           )}
         </div>
       </motion.div>
+
+      </>
+      )}
 
       {/* Dashboard legend banner */}
       <motion.div variants={itemVariants}>
@@ -795,6 +801,8 @@ export const VerificationStatusTab: React.FC<{
       {/* Recency & Currency Tracker moved to Licensure & Currency tab */}
 
 
+      {mode !== 'dashboard' && (
+      <>
       {/* Digital Dashboard — cockpit 6-pack style */}
       <CockpitFlightHoursDashboard
         userId={profile?.id as string | undefined}
@@ -1024,6 +1032,8 @@ export const VerificationStatusTab: React.FC<{
           </button>
         </div>
       </motion.div>
+      </>
+      )}
     </motion.div>
   );
 };

@@ -656,10 +656,37 @@ export const StatusPill: React.FC<{ status: string; label?: string }> = ({ statu
 
 export const glassCard = 'rounded-xl p-5';
 
-export const glassStyle: React.CSSProperties = {
-  background: 'rgba(30,41,59,0.75)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255,255,255,0.1)',
+export const glassStyleDark: React.CSSProperties = {
+  background: 'rgba(10,10,18,0.85)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(77,208,225,0.35)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
+};
+
+export const glassStyleLight: React.CSSProperties = {
+  background: 'rgba(240,245,250,0.38)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.28)',
+  boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.35)',
+};
+
+export const glassStyle = glassStyleLight;
+
+// G1000-style hard key button
+export const hardKeyStyle: React.CSSProperties = {
+  background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)',
+  border: '1px solid rgba(77,208,225,0.3)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)',
+  color: '#ffffff',
+};
+
+export const hardKeyActiveStyle: React.CSSProperties = {
+  background: 'linear-gradient(180deg, #4a4a5a 0%, #3a3a48 100%)',
+  border: '1px solid rgba(233,30,140,0.5)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 0 12px rgba(233,30,140,0.25)',
+  color: '#ffffff',
 };
 
 export const SectionCard: React.FC<{

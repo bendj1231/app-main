@@ -66,6 +66,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         console.log('[TopNavbar] toggleTheme click, current isDarkMode:', isDarkMode);
         toggleTheme();
     };
+    console.log('[TopNavbar] render - isDarkMode:', isDarkMode, 'currentUser:', !!currentUser, 'currentPage:', currentPage);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [passedPathwayGrid, setPassedPathwayGrid] = useState(false);
@@ -926,8 +927,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Dark/Light Mode Toggle */}
                                 <button
                                     onClick={onToggleThemeClick}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
-                                    title="Toggle dark mode"
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border-2 shadow-lg ${isDarkMode ? 'bg-slate-900 hover:bg-slate-700 text-amber-400 border-amber-400 hover:border-amber-300 shadow-amber-500/30' : 'bg-white hover:bg-amber-50 text-amber-600 border-amber-500 hover:border-amber-600 shadow-amber-500/20'}`}
+                                    title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                                 >
                                     {isDarkMode ? (
                                         <Sun className="w-5 h-5" />
