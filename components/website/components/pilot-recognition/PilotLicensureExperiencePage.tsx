@@ -1886,40 +1886,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
 
-          {/* CTA Row */}
-          <div style={{
-            marginTop: '1.25rem',
-            padding: '1.25rem 1.5rem',
-            background: 'rgba(220, 38, 38, 0.08)',
-            borderRadius: '12px',
-            border: '1px solid rgba(220, 38, 38, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1rem'
-          }}>
-            <div>
-              <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>
-                Ready to unlock your profile?
-              </p>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#475569' }}>
-                Start by filling out your Personal Details, then move through each section.
-              </p>
-            </div>
-            <div style={{
-              padding: '0.75rem 1.5rem',
-              background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-              color: '#ffffff',
-              borderRadius: '10px',
-              fontSize: '0.875rem',
-              fontWeight: 700,
-              boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
-              whiteSpace: 'nowrap',
-              flexShrink: 0
-            }}>
-              Use the sidebar to navigate →
-            </div>
-          </div>
         </motion.section>
         </div>)}
 
