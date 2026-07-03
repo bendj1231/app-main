@@ -257,11 +257,13 @@ export const HomeTab: React.FC<{
   const isAuthenticated = Boolean(profile || auth0User?.sub || currentUser?.id);
   const isAuthenticatedWithoutProfile = isAuthenticated && !profile;
   const hasLogbookSync = !!profile?.logbook_sync_valid || !!profile?.logbook_provider || logbookEntries.length > 0;
+  const discoveryDone = (() => {
+    try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
+  })();
   const steps = [
     { step: 1, label: 'Account Created',     sublabel: 'Profile activated',          done: !!profile,                                          tab: 'profile'   as TabId, icon: User,       highlight: false },
     { step: 2, label: 'Complete Advanced Profile & Sync Logbook', sublabel: 'Add ratings, hours, and logbook', done: hasLogbookSync, tab: 'advanced-profile' as TabId, icon: RefreshCw,  highlight: false },
-    { step: 3, label: 'Browse Pathways',     sublabel: 'Submit your interest',       done: score > 0,                                           tab: 'pathways'  as TabId, icon: Map,        highlight: false },
-    { step: 4, label: 'Verify Credentials',    sublabel: 'Recognition+ preferred',     done: walletChecks.some(c => c.status === 'verified'),     tab: 'wallet'    as TabId, icon: Shield,     highlight: false },
+    { step: 3, label: 'Discover Pathways',     sublabel: 'Choose what to explore',     done: discoveryDone,                                       tab: 'pathways-discovery' as TabId, icon: Compass,    highlight: false },
   ];
   const completedCount = steps.filter(s => s.done).length;
 
@@ -274,6 +276,17 @@ export const HomeTab: React.FC<{
       (enrolledInFoundation ? 15 : 0)
     ), 100
   );
+
+  // Auto-redirect to pathways discovery when advanced profile completes
+  React.useEffect(() => {
+    if (!hasLogbookSync || discoveryDone) return;
+    const alreadyRedirected = (() => {
+      try { return sessionStorage.getItem('pathways_discovery_redirected') === '1'; } catch { return false; }
+    })();
+    if (alreadyRedirected) return;
+    try { sessionStorage.setItem('pathways_discovery_redirected', '1'); } catch {}
+    setTab('pathways-discovery' as TabId);
+  }, [hasLogbookSync, discoveryDone, setTab]);
 
   const bCards = [
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },

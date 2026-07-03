@@ -106,6 +106,7 @@ import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
 import { FoundationWelcomeTab } from './unified-platform/tabs/FoundationWelcomeTab';
 import { PathwaysWelcomeTab } from './unified-platform/tabs/PathwaysWelcomeTab';
+import { PathwaysDiscoveryTab } from './unified-platform/tabs/PathwaysDiscoveryTab';
 import { RecognitionPlusTab } from './unified-platform/tabs/RecognitionPlusTab';
 import { InboxTab } from './unified-platform/tabs/InboxTab';
 import { PilotShortageSupportPage } from './PilotShortageSupportPage';
@@ -238,6 +239,21 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       setTcUpdatePending(true);
     }
   }, [profileData?.consent_version]);
+
+  // Auto-redirect to pathways discovery when logbook sync completes on advanced-profile tab
+  useEffect(() => {
+    const hasLogbookSync = !!profileData?.logbook_sync_valid || !!profileData?.logbook_provider;
+    const discoveryDone = (() => {
+      try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
+    })();
+    const alreadyRedirected = (() => {
+      try { return sessionStorage.getItem('pathways_discovery_redirected') === '1'; } catch { return false; }
+    })();
+    if (hasLogbookSync && !discoveryDone && !alreadyRedirected && activeTab === 'advanced-profile') {
+      try { sessionStorage.setItem('pathways_discovery_redirected', '1'); } catch {}
+      setActiveTab('pathways-discovery');
+    }
+  }, [profileData?.logbook_sync_valid, profileData?.logbook_provider, activeTab]);
 
   // Sync URL with active tab — preserve hash for scroll targets
   useEffect(() => {
@@ -714,6 +730,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         return <PathwaysTab onNavigate={onNavigate} />;
       case 'pathways-directory':
         return <PathwaysWelcomeTab setTab={setTab} onNavigate={onNavigate} profile={profileData} />;
+      case 'pathways-discovery':
+        return <PathwaysDiscoveryTab setTab={setTab} profile={profileData} />;
       case 'programs':
         return <ProgramsTab onNavigate={onNavigate} />;
       case 'foundation-welcome':
