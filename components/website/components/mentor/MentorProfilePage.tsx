@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Users, Plus, X } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -34,6 +34,7 @@ type Status = 'idle' | 'loading' | 'submitting' | 'success' | 'error';
 
 export function MentorProfilePage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<Status>('loading');
   const [error, setError] = useState<string | null>(null);
   const [existingId, setExistingId] = useState<string | null>(null);
@@ -52,20 +53,26 @@ export function MentorProfilePage({ onBack, onNavigate }: Props) {
 
   const load = useCallback(async () => {
     if (!currentUser?.id) return;
-    const { data } = await supabase.from('mentor_profiles').select('*').eq('user_id', currentUser.id).maybeSingle();
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'mentor_profiles',
+      operation: 'select',
+      where: { user_id: currentUser.id },
+      limit: 1,
+    });
+    const data = rows?.[0];
     if (data) {
-      setExistingId(data.id);
+      setExistingId(data.id as string);
       setForm({
-        display_name: data.display_name ?? '', role_type: data.role_type ?? 'mentor',
-        current_airline: data.current_airline ?? '', rank: data.rank ?? '',
-        total_hours: data.total_hours?.toString() ?? '', years_experience: data.years_experience?.toString() ?? '',
-        base_country: data.base_country ?? '', hours_per_month: data.hours_per_month?.toString() ?? '',
-        bio: data.bio ?? '', linkedin_url: data.linkedin_url ?? '',
-        is_available: data.is_available ?? true, public_profile: data.public_profile ?? true,
+        display_name: (data.display_name as string) ?? '', role_type: (data.role_type as string) ?? 'mentor',
+        current_airline: (data.current_airline as string) ?? '', rank: (data.rank as string) ?? '',
+        total_hours: (data.total_hours as number)?.toString() ?? '', years_experience: (data.years_experience as number)?.toString() ?? '',
+        base_country: (data.base_country as string) ?? '', hours_per_month: (data.hours_per_month as number)?.toString() ?? '',
+        bio: (data.bio as string) ?? '', linkedin_url: (data.linkedin_url as string) ?? '',
+        is_available: (data.is_available as boolean) ?? true, public_profile: (data.public_profile as boolean) ?? true,
       });
-      setSpecs(data.specialisations ?? []);
-      setAircraft(data.aircraft_types ?? []);
-      setFormats(data.format ?? ['video_call', 'async_chat']);
+      setSpecs((data.specialisations as string[]) ?? []);
+      setAircraft((data.aircraft_types as string[]) ?? []);
+      setFormats((data.format as string[]) ?? ['video_call', 'async_chat']);
     }
     setStatus('idle');
   }, [currentUser?.id]);
@@ -95,11 +102,18 @@ export function MentorProfilePage({ onBack, onNavigate }: Props) {
         public_profile: form.public_profile,
       };
       if (existingId) {
-        const { error: err } = await supabase.from('mentor_profiles').update(payload).eq('id', existingId);
-        if (err) throw err;
+        await callApi('queryTable', {
+          table: 'mentor_profiles',
+          operation: 'update',
+          id: existingId,
+          data: payload,
+        });
       } else {
-        const { error: err } = await supabase.from('mentor_profiles').insert(payload);
-        if (err) throw err;
+        await callApi('queryTable', {
+          table: 'mentor_profiles',
+          operation: 'insert',
+          data: payload,
+        });
       }
       setStatus('success');
     } catch (e: any) { setError(e?.message ?? 'Save failed.'); setStatus('error'); }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Shield, Plus, X } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -31,6 +31,7 @@ const COMMON_QUALIFICATIONS = ['Instrument Rating', 'Night Vision Goggles', 'For
 
 export function MilitaryTransitionPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
   const [existing, setExisting] = useState<any>(null);
@@ -55,12 +56,18 @@ export function MilitaryTransitionPage({ onBack, onNavigate }: Props) {
   const load = useCallback(async () => {
     if (!currentUser?.id) return;
     setStatus('loading');
-    const { data } = await supabase.from('military_service_records').select('*').eq('pilot_id', currentUser.id).maybeSingle();
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'military_service_records',
+      operation: 'select',
+      where: { pilot_id: currentUser.id },
+      limit: 1,
+    });
+    const data = rows?.[0];
     if (data) {
       setExisting(data);
-      setForm({ branch: data.branch, country: data.country, rank_at_discharge: data.rank_at_discharge ?? '', service_start_date: data.service_start_date ?? '', discharge_date: data.discharge_date ?? '', discharge_type: data.discharge_type ?? 'honorable', total_military_hours: data.total_military_hours?.toString() ?? '', total_combat_hours: data.total_combat_hours?.toString() ?? '', total_sortie_count: data.total_sortie_count?.toString() ?? '', instrument_hours: data.instrument_hours?.toString() ?? '', multi_engine_hours: data.multi_engine_hours?.toString() ?? '', pilot_statement: data.pilot_statement ?? '' });
-      setAircraft(data.primary_aircraft ?? []);
-      setQualifications(data.qualifications ?? []);
+      setForm({ branch: data.branch as string, country: data.country as string, rank_at_discharge: (data.rank_at_discharge as string) ?? '', service_start_date: (data.service_start_date as string) ?? '', discharge_date: (data.discharge_date as string) ?? '', discharge_type: (data.discharge_type as string) ?? 'honorable', total_military_hours: (data.total_military_hours as number)?.toString() ?? '', total_combat_hours: (data.total_combat_hours as number)?.toString() ?? '', total_sortie_count: (data.total_sortie_count as number)?.toString() ?? '', instrument_hours: (data.instrument_hours as number)?.toString() ?? '', multi_engine_hours: (data.multi_engine_hours as number)?.toString() ?? '', pilot_statement: (data.pilot_statement as string) ?? '' });
+      setAircraft((data.primary_aircraft as string[]) ?? []);
+      setQualifications((data.qualifications as string[]) ?? []);
     }
     setStatus('idle');
   }, [currentUser?.id]);
@@ -94,11 +101,18 @@ export function MilitaryTransitionPage({ onBack, onNavigate }: Props) {
         verification_status: 'self_reported',
       };
       if (existing) {
-        const { error: err } = await supabase.from('military_service_records').update(payload).eq('id', existing.id);
-        if (err) throw err;
+        await callApi('queryTable', {
+          table: 'military_service_records',
+          operation: 'update',
+          id: existing.id,
+          data: payload,
+        });
       } else {
-        const { error: err } = await supabase.from('military_service_records').insert(payload);
-        if (err) throw err;
+        await callApi('queryTable', {
+          table: 'military_service_records',
+          operation: 'insert',
+          data: payload,
+        });
       }
       setStatus('success');
     } catch (e: any) { setError(e?.message ?? 'Save failed.'); setStatus('error'); }

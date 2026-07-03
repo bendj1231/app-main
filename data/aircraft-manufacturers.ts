@@ -1119,6 +1119,1839 @@ export const manufacturers: Manufacturer[] = [
       seniorLevel: 'Chief Pilot',
       timeline: '2-4 years to Charter Pilot, 6-10 years to senior roles'
     }
+  },
+  {
+    id: 'antonov',
+    name: 'Antonov',
+    logo: '',
+    description: 'Antonov is a Ukrainian aircraft manufacturing and services company known for producing large cargo aircraft including the world\'s largest aircraft, the An-225 Mriya.',
+    founded: 1946,
+    headquarters: 'Kyiv, Ukraine',
+    website: 'https://www.antonov.com',
+    reputationScore: 8.0,
+    totalAircraftCount: 22000,
+    trainingCenters: [
+      {
+        id: 'antonov-kyiv',
+        name: 'Antonov Training Center Kyiv',
+        location: 'Kyiv, Ukraine',
+        country: 'Ukraine',
+        offers: ['An-148', 'An-158', 'An-178'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.antonov.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['Eastern Europe', 'Asia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$40,000 - $55,000',
+      midLevel: '$60,000 - $90,000',
+      seniorLevel: '$90,000 - $130,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Check Airman',
+      timeline: '3-5 years to Captain, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'ilyushin',
+    name: 'Ilyushin',
+    logo: '',
+    description: 'Ilyushin is a Russian aircraft manufacturer known for designing and building wide-body airliners and military transport aircraft including the Il-96 and Il-76 series.',
+    founded: 1933,
+    headquarters: 'Moscow, Russia',
+    website: 'https://www.ilyushin.org',
+    reputationScore: 7.8,
+    totalAircraftCount: 12000,
+    trainingCenters: [
+      {
+        id: 'ilyushin-moscow',
+        name: 'Ilyushin Training Center Moscow',
+        location: 'Moscow, Russia',
+        country: 'Russia',
+        offers: ['Il-96', 'Il-76', 'Il-114'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.ilyushin.org/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '2% annually',
+      keyMarkets: ['Russia', 'Eastern Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Check Airman',
+      timeline: '3-6 years to Captain, 10-15 years to senior roles'
+    }
+  },
+  {
+    id: 'hindustan-aeronautics',
+    name: 'Hindustan Aeronautics',
+    logo: '',
+    description: 'Hindustan Aeronautics Limited (HAL) is an Indian state-owned aerospace and defence company, one of the largest and oldest aerospace manufacturers in Asia, producing military and civil aircraft.',
+    founded: 1940,
+    headquarters: 'Bangalore, India',
+    website: 'https://www.hal-india.com',
+    reputationScore: 8.2,
+    totalAircraftCount: 4500,
+    trainingCenters: [
+      {
+        id: 'hal-bangalore',
+        name: 'HAL Training Center Bangalore',
+        location: 'Bangalore, India',
+        country: 'India',
+        offers: ['LCA Tejas', 'Dhruv', 'Dornier 228'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.hal-india.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '8% annually',
+      keyMarkets: ['India', 'Southeast Asia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$25,000 - $40,000',
+      midLevel: '$45,000 - $70,000',
+      seniorLevel: '$70,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '4-6 years to Test Pilot, 10-15 years to senior roles'
+    }
+  },
+  {
+    id: 'dornier',
+    name: 'Dornier',
+    logo: '',
+    description: 'Dornier is a German aircraft manufacturer historically known for innovative flying boat and STOL aircraft designs, including the popular Dornier 228 commuter aircraft.',
+    founded: 1914,
+    headquarters: 'Oberpfaffenhofen, Germany',
+    website: 'https://www.dornier.com',
+    reputationScore: 8.0,
+    totalAircraftCount: 1500,
+    trainingCenters: [
+      {
+        id: 'dornier-germany',
+        name: 'Dornier Flight Training Germany',
+        location: 'Oberpfaffenhofen, Germany',
+        country: 'Germany',
+        offers: ['Dornier 228', 'Dornier 328'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.dornier.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['Europe', 'Africa', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Check Airman',
+      timeline: '3-5 years to Captain, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'archer',
+    name: 'Archer Aviation',
+    logo: '',
+    description: 'Archer Aviation is an American electric aircraft manufacturer developing eVTOL (electric vertical take-off and landing) aircraft for urban air mobility.',
+    founded: 2018,
+    headquarters: 'San Jose, California, USA',
+    website: 'https://www.archer.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'archer-sanjose',
+        name: 'Archer Flight Academy San Jose',
+        location: 'San Jose, USA',
+        country: 'USA',
+        offers: ['Midnight eVTOL'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.archer.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '25% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$60,000 - $80,000',
+      midLevel: '$90,000 - $130,000',
+      seniorLevel: '$130,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'joby',
+    name: 'Joby Aviation',
+    logo: '',
+    description: 'Joby Aviation is an American aerospace company developing electric vertical take-off and landing (eVTOL) aircraft for commercial passenger service.',
+    founded: 2009,
+    headquarters: 'Santa Cruz, California, USA',
+    website: 'https://www.jobyaviation.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'joby-california',
+        name: 'Joby Flight Training California',
+        location: 'Marina, USA',
+        country: 'USA',
+        offers: ['Joby S4 eVTOL'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.jobyaviation.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '30% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$65,000 - $85,000',
+      midLevel: '$95,000 - $140,000',
+      seniorLevel: '$140,000 - $200,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'mlg',
+    name: 'Multi Level Group',
+    logo: '',
+    description: 'Multi Level Group (MLG) is an aviation services company specializing in aircraft leasing, maintenance, and technical training for commercial and corporate aviation.',
+    founded: 2005,
+    headquarters: 'Dubai, UAE',
+    website: 'https://www.mlg.aero',
+    reputationScore: 7.5,
+    totalAircraftCount: 800,
+    trainingCenters: [
+      {
+        id: 'mlg-dubai',
+        name: 'MLG Aviation Training Center Dubai',
+        location: 'Dubai, UAE',
+        country: 'UAE',
+        offers: ['A320', 'B737', 'Gulfstream'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.mlg.aero/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '5% annually',
+      keyMarkets: ['Middle East', 'Africa', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$40,000 - $55,000',
+      midLevel: '$60,000 - $90,000',
+      seniorLevel: '$90,000 - $130,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Line Maintenance Technician',
+      midLevel: 'Maintenance Manager',
+      seniorLevel: 'Director of Maintenance',
+      timeline: '3-5 years to Maintenance Manager, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'bell',
+    name: 'Bell Textron',
+    logo: '',
+    description: 'Bell Textron is an American aerospace manufacturer specializing in helicopters and tiltrotor aircraft, known for the iconic Bell UH-1 Iroquois and V-22 Osprey.',
+    founded: 1935,
+    headquarters: 'Fort Worth, Texas, USA',
+    website: 'https://www.bellflight.com',
+    reputationScore: 9.2,
+    totalAircraftCount: 35000,
+    trainingCenters: [
+      {
+        id: 'bell-fort-worth',
+        name: 'Bell Training Academy',
+        location: 'Fort Worth, USA',
+        country: 'USA',
+        offers: ['Bell 206', 'Bell 407', 'Bell 429', 'Bell 505'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.bellflight.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '4% annually',
+      keyMarkets: ['North America', 'South America', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$50,000 - $70,000',
+      midLevel: '$75,000 - $110,000',
+      seniorLevel: '$110,000 - $160,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Helicopter Pilot',
+      midLevel: 'Senior Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'ehang',
+    name: 'EHang',
+    logo: '',
+    description: 'EHang is a Chinese autonomous aerial vehicle (AAV) technology company specializing in passenger-grade eVTOL aircraft and urban air mobility solutions.',
+    founded: 2014,
+    headquarters: 'Guangzhou, China',
+    website: 'https://www.ehang.com',
+    reputationScore: 8.3,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'ehang-guangzhou',
+        name: 'EHang Flight Training Center',
+        location: 'Guangzhou, China',
+        country: 'China',
+        offers: ['EH216-S', 'EH216-L', 'EH216-F'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.ehang.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '35% annually',
+      keyMarkets: ['China', 'Asia', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$50,000 - $70,000',
+      midLevel: '$75,000 - $110,000',
+      seniorLevel: '$110,000 - $160,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'raytheon',
+    name: 'Raytheon Technologies',
+    logo: '',
+    description: 'Raytheon Technologies is an American multinational aerospace and defense conglomerate, one of the largest aerospace, intelligence services providers, and defense manufacturers in the world.',
+    founded: 1922,
+    headquarters: 'Arlington, Virginia, USA',
+    website: 'https://www.rtx.com',
+    reputationScore: 9.0,
+    totalAircraftCount: 50000,
+    trainingCenters: [
+      {
+        id: 'raytheon-arlington',
+        name: 'Raytheon Flight Training Center',
+        location: 'Arlington, USA',
+        country: 'USA',
+        offers: ['F-15', 'F-16', 'F-22', 'F-35'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.rtx.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '5% annually',
+      keyMarkets: ['North America', 'Europe', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$60,000 - $80,000',
+      midLevel: '$90,000 - $130,000',
+      seniorLevel: '$130,000 - $190,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Test Pilot',
+      midLevel: 'Senior Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '4-6 years to Senior Test Pilot, 10-15 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'lilium',
+    name: 'Lilium',
+    logo: '',
+    description: 'Lilium is a German aerospace company developing electric vertical take-off and landing (eVTOL) jets for regional air mobility.',
+    founded: 2015,
+    headquarters: 'Wessling, Germany',
+    website: 'https://www.lilium.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'lilium-germany',
+        name: 'Lilium Flight Training Center',
+        location: 'Wessling, Germany',
+        country: 'Germany',
+        offers: ['Lilium Jet'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.lilium.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '28% annually',
+      keyMarkets: ['Europe', 'North America', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$55,000 - $75,000',
+      midLevel: '$80,000 - $120,000',
+      seniorLevel: '$120,000 - $170,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'wisk',
+    name: 'Wisk Aero',
+    logo: '',
+    description: 'Wisk Aero is an American urban air mobility company developing all-electric, autonomous eVTOL aircraft for passenger transportation.',
+    founded: 2010,
+    headquarters: 'Mountain View, California, USA',
+    website: 'https://www.wisk.aero',
+    reputationScore: 8.6,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'wisk-california',
+        name: 'Wisk Flight Training Center',
+        location: 'Mountain View, USA',
+        country: 'USA',
+        offers: ['Wisk Cora'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.wisk.aero/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '32% annually',
+      keyMarkets: ['North America', 'Australia', 'New Zealand']
+    },
+    salaryExpectations: {
+      entryLevel: '$58,000 - $78,000',
+      midLevel: '$85,000 - $125,000',
+      seniorLevel: '$125,000 - $175,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Autonomous Flight Operator',
+      midLevel: 'Senior Flight Operations',
+      seniorLevel: 'Director of Autonomous Flight',
+      timeline: '2-4 years to Senior Flight Operations, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'beta',
+    name: 'Beta Technologies',
+    logo: '',
+    description: 'Beta Technologies is an American electric aerospace company developing eVTOL aircraft and a nationwide charging network for electric aviation.',
+    founded: 2017,
+    headquarters: 'Burlington, Vermont, USA',
+    website: 'https://www.beta.team',
+    reputationScore: 8.8,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'beta-vermont',
+        name: 'Beta Flight Training Vermont',
+        location: 'Burlington, USA',
+        country: 'USA',
+        offers: ['Beta Alia'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.beta.team/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '33% annually',
+      keyMarkets: ['North America', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$60,000 - $80,000',
+      midLevel: '$90,000 - $130,000',
+      seniorLevel: '$130,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'autoflight',
+    name: 'AutoFlight',
+    logo: '',
+    description: 'AutoFlight is a Chinese eVTOL aircraft developer focused on autonomous aerial vehicles for cargo and passenger transportation.',
+    founded: 2016,
+    headquarters: 'Kunshan, China',
+    website: 'https://www.autoflight.com',
+    reputationScore: 8.1,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'autoflight-china',
+        name: 'AutoFlight Training Center',
+        location: 'Kunshan, China',
+        country: 'China',
+        offers: ['Prosperity I', 'CarryAll'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.autoflight.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '30% annually',
+      keyMarkets: ['China', 'Asia', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$45,000 - $65,000',
+      midLevel: '$70,000 - $100,000',
+      seniorLevel: '$100,000 - $150,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'eve',
+    name: 'Eve Air Mobility',
+    logo: '',
+    description: 'Eve Air Mobility is a Brazilian-American eVTOL company developing urban air mobility solutions, spun off from Embraer.',
+    founded: 2020,
+    headquarters: 'Melbourne, Florida, USA',
+    website: 'https://www.eveairmobility.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 0,
+    trainingCenters: [
+      {
+        id: 'eve-florida',
+        name: 'Eve Flight Training Center',
+        location: 'Melbourne, USA',
+        country: 'USA',
+        offers: ['Eve eVTOL'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.eveairmobility.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '28% annually',
+      keyMarkets: ['North America', 'South America', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$55,000 - $75,000',
+      midLevel: '$80,000 - $120,000',
+      seniorLevel: '$120,000 - $170,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'Chief Pilot',
+      seniorLevel: 'Director of Flight Operations',
+      timeline: '2-4 years to Chief Pilot, 6-10 years to senior roles'
+    }
+  },
+  {
+    id: 'mooney',
+    name: 'Mooney',
+    logo: '',
+    description: 'Mooney International is an American general aviation aircraft manufacturer known for its high-performance, efficiency-focused single-engine piston aircraft.',
+    founded: 1929,
+    headquarters: 'Kerrville, Texas, USA',
+    website: 'https://www.mooney.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 11500,
+    trainingCenters: [
+      {
+        id: 'mooney-texas',
+        name: 'Mooney Flight Training Texas',
+        location: 'Kerrville, USA',
+        country: 'USA',
+        offers: ['Mooney M20', 'Mooney Ovation', 'Mooney Acclaim'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.mooney.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'pipistrel',
+    name: 'Pipistrel',
+    logo: '',
+    description: 'Pipistrel is a Slovenian light aircraft manufacturer specializing in energy-efficient and electric aircraft, known for the Velis Electro and Taurus self-launching gliders.',
+    founded: 1989,
+    headquarters: 'Ajdovscina, Slovenia',
+    website: 'https://www.pipistrel.com',
+    reputationScore: 9.0,
+    totalAircraftCount: 2500,
+    trainingCenters: [
+      {
+        id: 'pipistrel-slovenia',
+        name: 'Pipistrel Flight Training Slovenia',
+        location: 'Ajdovscina, Slovenia',
+        country: 'Slovenia',
+        offers: ['Pipistrel Velis Electro', 'Pipistrel Virus', 'Pipistrel Taurus'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.pipistrel.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '8% annually',
+      keyMarkets: ['Europe', 'North America', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $75,000',
+      seniorLevel: '$75,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'aviat',
+    name: 'Aviat Aircraft',
+    logo: '',
+    description: 'Aviat Aircraft is an American manufacturer of high-performance aerobatic and utility aircraft, known for the Pitts Special and Husky series.',
+    founded: 1967,
+    headquarters: 'Afton, Wyoming, USA',
+    website: 'https://www.aviataircraft.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 3000,
+    trainingCenters: [
+      {
+        id: 'aviat-wyoming',
+        name: 'Aviat Flight Training Wyoming',
+        location: 'Afton, USA',
+        country: 'USA',
+        offers: ['Pitts Special', 'Husky A-1C'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.aviataircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['North America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $75,000',
+      seniorLevel: '$75,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Aerobatic Pilot',
+      seniorLevel: 'Chief Aerobatic Instructor',
+      timeline: '3-5 years to Aerobatic Pilot, 8-12 years to Chief Aerobatic Instructor'
+    }
+  },
+  {
+    id: 'american-champion',
+    name: 'American Champion Aircraft',
+    logo: '',
+    description: 'American Champion Aircraft is an American manufacturer of light utility and aerobatic aircraft, known for the Citabria, Decathlon, and Scout series.',
+    founded: 1988,
+    headquarters: 'Rochester, Wisconsin, USA',
+    website: 'https://www.americanchampionaircraft.com',
+    reputationScore: 8.6,
+    totalAircraftCount: 5000,
+    trainingCenters: [
+      {
+        id: 'american-champion-wisconsin',
+        name: 'American Champion Flight Training Wisconsin',
+        location: 'Rochester, USA',
+        country: 'USA',
+        offers: ['Citabria', 'Decathlon', 'Scout'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.americanchampionaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'South America', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $75,000',
+      seniorLevel: '$75,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Aerobatic Pilot',
+      seniorLevel: 'Chief Aerobatic Instructor',
+      timeline: '3-5 years to Aerobatic Pilot, 8-12 years to Chief Aerobatic Instructor'
+    }
+  },
+  {
+    id: 'sling',
+    name: 'Sling Aircraft',
+    logo: '',
+    description: 'Sling Aircraft is a South African light sport aircraft manufacturer known for the Sling 2 and Sling 4 series of high-performance kit and factory-built aircraft.',
+    founded: 2008,
+    headquarters: 'Johannesburg, South Africa',
+    website: 'https://www.slingaircraft.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 1200,
+    trainingCenters: [
+      {
+        id: 'sling-south-africa',
+        name: 'Sling Flight Training South Africa',
+        location: 'Johannesburg, South Africa',
+        country: 'South Africa',
+        offers: ['Sling 2', 'Sling 4', 'Sling TSi'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.slingaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '6% annually',
+      keyMarkets: ['Africa', 'Australia', 'North America', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$25,000 - $40,000',
+      midLevel: '$45,000 - $65,000',
+      seniorLevel: '$65,000 - $95,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'epic',
+    name: 'Epic Aircraft',
+    logo: '',
+    description: 'Epic Aircraft is an American manufacturer of high-performance single-turboprop aircraft, known for the Epic E1000 GX all-carbon-fiber luxury aircraft.',
+    founded: 1995,
+    headquarters: 'Bend, Oregon, USA',
+    website: 'https://www.epicaircraft.com',
+    reputationScore: 8.8,
+    totalAircraftCount: 500,
+    trainingCenters: [
+      {
+        id: 'epic-oregon',
+        name: 'Epic Flight Training Oregon',
+        location: 'Bend, USA',
+        country: 'USA',
+        offers: ['Epic E1000 GX'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.epicaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '7% annually',
+      keyMarkets: ['North America', 'Europe', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$45,000 - $65,000',
+      midLevel: '$70,000 - $100,000',
+      seniorLevel: '$100,000 - $150,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Corporate Pilot',
+      midLevel: 'Senior Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'socata',
+    name: 'SOCATA (Daher)',
+    logo: '',
+    description: 'SOCATA (now Daher) is a French aircraft manufacturer known for the TBM series of high-performance single-turboprop business aircraft, now marketed as Daher TBM.',
+    founded: 1966,
+    headquarters: 'Tarbes, France',
+    website: 'https://www.daher.com',
+    reputationScore: 9.1,
+    totalAircraftCount: 2500,
+    trainingCenters: [
+      {
+        id: 'socata-france',
+        name: 'Daher TBM Training Center',
+        location: 'Tarbes, France',
+        country: 'France',
+        offers: ['TBM 910', 'TBM 960'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.daher.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '5% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$50,000 - $70,000',
+      midLevel: '$75,000 - $110,000',
+      seniorLevel: '$110,000 - $160,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Corporate Pilot',
+      midLevel: 'Senior Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'hondajet',
+    name: 'Honda Aircraft Company',
+    logo: '',
+    description: 'Honda Aircraft Company is an American aircraft manufacturer and subsidiary of Honda Motor Company, known for the HondaJet series of light business jets featuring over-the-wing engine mount design.',
+    founded: 2006,
+    headquarters: 'Greensboro, North Carolina, USA',
+    website: 'https://www.hondajet.com',
+    reputationScore: 9.2,
+    totalAircraftCount: 250,
+    trainingCenters: [
+      {
+        id: 'hondajet-north-carolina',
+        name: 'HondaJet Training Center',
+        location: 'Greensboro, USA',
+        country: 'USA',
+        offers: ['HondaJet HA-420', 'HondaJet Elite', 'HondaJet Elite II'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.hondajet.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '8% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$55,000 - $75,000',
+      midLevel: '$85,000 - $120,000',
+      seniorLevel: '$120,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Corporate Pilot',
+      midLevel: 'Senior Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'airtractor',
+    name: 'Air Tractor',
+    logo: '',
+    description: 'Air Tractor is an American aircraft manufacturer specializing in agricultural aircraft, aerial firefighting planes, and utility aircraft based in Olney, Texas.',
+    founded: 1973,
+    headquarters: 'Olney, Texas, USA',
+    website: 'https://www.airtractor.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 3500,
+    trainingCenters: [
+      {
+        id: 'airtractor-texas',
+        name: 'Air Tractor Training Center',
+        location: 'Olney, USA',
+        country: 'USA',
+        offers: ['AT-402', 'AT-502', 'AT-602', 'AT-802'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.airtractor.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['North America', 'South America', 'Australia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Agricultural Pilot',
+      midLevel: 'Senior Agricultural Pilot',
+      seniorLevel: 'Chief Pilot / Operations Manager',
+      timeline: '3-5 years to Senior Agricultural Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'thrush',
+    name: 'Thrush Aircraft',
+    logo: '',
+    description: 'Thrush Aircraft is an American manufacturer of agricultural aircraft and aerial application planes, known for the Thrush series of turboprop crop dusters and firefighting aircraft.',
+    founded: 2003,
+    headquarters: 'Albany, Georgia, USA',
+    website: 'https://www.thrushaircraft.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 2000,
+    trainingCenters: [
+      {
+        id: 'thrush-georgia',
+        name: 'Thrush Aircraft Training Center',
+        location: 'Albany, USA',
+        country: 'USA',
+        offers: ['Thrush 510P', 'Thrush 710P', 'Thrush S2R-T34'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.thrushaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'South America', 'Australia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Agricultural Pilot',
+      midLevel: 'Senior Agricultural Pilot',
+      seniorLevel: 'Chief Pilot / Operations Manager',
+      timeline: '3-5 years to Senior Agricultural Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'elixir',
+    name: 'Elixir Aircraft',
+    logo: '',
+    description: 'Elixir Aircraft is a French light sport aircraft manufacturer known for the Elixir, a modern two-seat high-wing aircraft made from carbon fiber with advanced safety features.',
+    founded: 2015,
+    headquarters: 'La Rochelle, France',
+    website: 'https://www.elixir-aircraft.com',
+    reputationScore: 8.6,
+    totalAircraftCount: 200,
+    trainingCenters: [
+      {
+        id: 'elixir-france',
+        name: 'Elixir Aircraft Training France',
+        location: 'La Rochelle, France',
+        country: 'France',
+        offers: ['Elixir'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.elixir-aircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '12% annually',
+      keyMarkets: ['Europe', 'North America', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $70,000',
+      seniorLevel: '$70,000 - $100,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'icon',
+    name: 'Icon Aircraft',
+    logo: '',
+    description: 'Icon Aircraft is an American light sport aircraft manufacturer known for the A5, an amphibious two-seat personal aircraft designed for recreational flying with spin-resistant safety features.',
+    founded: 2006,
+    headquarters: 'Tampa, Florida, USA',
+    website: 'https://www.iconaircraft.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 200,
+    trainingCenters: [
+      {
+        id: 'icon-florida',
+        name: 'Icon Aircraft Training Center',
+        location: 'Tampa, USA',
+        country: 'USA',
+        offers: ['Icon A5'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.iconaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '6% annually',
+      keyMarkets: ['North America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $70,000',
+      seniorLevel: '$70,000 - $100,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'waco',
+    name: 'Waco Aircraft',
+    logo: '',
+    description: 'Waco Aircraft is an American aircraft manufacturer known for its classic biplanes, including the YMF series, and modern sport and aerobatic aircraft.',
+    founded: 1919,
+    headquarters: 'Battle Creek, Michigan, USA',
+    website: 'https://www.wacoaircraft.com',
+    reputationScore: 8.8,
+    totalAircraftCount: 5000,
+    trainingCenters: [
+      {
+        id: 'waco-michigan',
+        name: 'Waco Flight Training Michigan',
+        location: 'Battle Creek, USA',
+        country: 'USA',
+        offers: ['Waco YMF-5', 'Waco Classic'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.wacoaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '2% annually',
+      keyMarkets: ['North America', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $75,000',
+      seniorLevel: '$75,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Aerobatic Pilot',
+      seniorLevel: 'Chief Aerobatic Instructor',
+      timeline: '3-5 years to Aerobatic Pilot, 8-12 years to Chief Aerobatic Instructor'
+    }
+  },
+  {
+    id: 'vulcanair',
+    name: 'Vulcanair',
+    logo: '',
+    description: 'Vulcanair is an Italian aircraft manufacturer known for the P68, A-Viator, and Canguro series of light twin-engine aircraft used for utility, surveillance, and training.',
+    founded: 1996,
+    headquarters: 'Casoria, Naples, Italy',
+    website: 'https://www.vulcanair.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 800,
+    trainingCenters: [
+      {
+        id: 'vulcanair-italy',
+        name: 'Vulcanair Training Center Italy',
+        location: 'Casoria, Italy',
+        country: 'Italy',
+        offers: ['P68 Observer', 'P68R', 'A-Viator', 'Canguro'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.vulcanair.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'North America', 'Africa', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'mahindra',
+    name: 'Mahindra Aerospace',
+    logo: '',
+    description: 'Mahindra Aerospace is an Indian aircraft manufacturer and subsidiary of the Mahindra Group, producing the GippsAero GA8 Airvan series of utility aircraft.',
+    founded: 2003,
+    headquarters: 'Melbourne, Australia / Bengaluru, India',
+    website: 'https://www.mahindraaerospace.com',
+    reputationScore: 8.3,
+    totalAircraftCount: 250,
+    trainingCenters: [
+      {
+        id: 'mahindra-australia',
+        name: 'Mahindra Aerospace Training Australia',
+        location: 'Melbourne, Australia',
+        country: 'Australia',
+        offers: ['GA8 Airvan', 'GA10'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.mahindraaerospace.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '5% annually',
+      keyMarkets: ['Australia', 'India', 'Africa', 'North America']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $70,000',
+      seniorLevel: '$70,000 - $100,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Utility Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Utility Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'twin-commander',
+    name: 'Twin Commander',
+    logo: '',
+    description: 'Twin Commander is an American aircraft manufacturer known for the Commander series of twin-turboprop business aircraft, originally developed by Rockwell and now supported by Twin Commander Aircraft LLC.',
+    founded: 1950,
+    headquarters: 'Crestview, Florida, USA',
+    website: 'https://www.twin-commander.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 4000,
+    trainingCenters: [
+      {
+        id: 'twin-commander-florida',
+        name: 'Twin Commander Training Center',
+        location: 'Crestview, USA',
+        country: 'USA',
+        offers: ['690B', '690C', '695A', '695B'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.twin-commander.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '2% annually',
+      keyMarkets: ['North America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$45,000 - $65,000',
+      midLevel: '$70,000 - $100,000',
+      seniorLevel: '$100,000 - $150,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Corporate Pilot',
+      midLevel: 'Senior Corporate Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Corporate Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'britten-norman',
+    name: 'Britten-Norman',
+    logo: '',
+    description: 'Britten-Norman is a British aircraft manufacturer known for the Islander and Defender series of rugged twin-turboprop utility aircraft used for regional transport and special missions.',
+    founded: 1951,
+    headquarters: 'Bembridge, Isle of Wight, UK',
+    website: 'https://www.britten-norman.com',
+    reputationScore: 8.6,
+    totalAircraftCount: 1300,
+    trainingCenters: [
+      {
+        id: 'britten-norman-uk',
+        name: 'Britten-Norman Training UK',
+        location: 'Bembridge, UK',
+        country: 'UK',
+        offers: ['BN-2 Islander', 'BN-2T Turbine Islander', 'Defender'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.britten-norman.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['Europe', 'Caribbean', 'Pacific Islands', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Regional Pilot',
+      midLevel: 'Senior Regional Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Regional Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'evektor',
+    name: 'Evektor Technik',
+    logo: '',
+    description: 'Evektor Technik is a Czech aircraft manufacturer known for the SportStar, Harmony, and EV-97 series of light sport and training aircraft.',
+    founded: 1991,
+    headquarters: 'Kunovice, Czech Republic',
+    website: 'https://www.evektor.cz',
+    reputationScore: 8.4,
+    totalAircraftCount: 1200,
+    trainingCenters: [
+      {
+        id: 'evektor-czech',
+        name: 'Evektor Flight Training Czech Republic',
+        location: 'Kunovice, Czech Republic',
+        country: 'Czech Republic',
+        offers: ['SportStar RTC', 'Harmony', 'EV-97 Eurostar'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.evektor.cz/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'North America', 'Asia', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$25,000 - $40,000',
+      midLevel: '$40,000 - $60,000',
+      seniorLevel: '$60,000 - $90,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'bristell',
+    name: 'Bristell',
+    logo: '',
+    description: 'Bristell is a Czech light sport aircraft manufacturer known for the Bristell NG5 series of modern two-seat low-wing aircraft designed for flight training and recreational flying.',
+    founded: 2009,
+    headquarters: 'Brno, Czech Republic',
+    website: 'https://www.bristell.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 500,
+    trainingCenters: [
+      {
+        id: 'bristell-czech',
+        name: 'Bristell Flight Training Czech Republic',
+        location: 'Brno, Czech Republic',
+        country: 'Czech Republic',
+        offers: ['Bristell NG5', 'Bristell B8', 'Bristell TDO'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.bristell.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '6% annually',
+      keyMarkets: ['Europe', 'North America', 'Australia', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$25,000 - $40,000',
+      midLevel: '$40,000 - $60,000',
+      seniorLevel: '$60,000 - $90,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'velocity',
+    name: 'Velocity Aircraft',
+    logo: '',
+    description: 'Velocity Aircraft is an American kit aircraft manufacturer known for the Velocity series of composite four-seat canard pusher aircraft designed for high performance and efficiency.',
+    founded: 1984,
+    headquarters: 'Sanford, Florida, USA',
+    website: 'https://www.velocityaircraft.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 1000,
+    trainingCenters: [
+      {
+        id: 'velocity-florida',
+        name: 'Velocity Aircraft Training Florida',
+        location: 'Sanford, USA',
+        country: 'USA',
+        offers: ['Velocity XL', 'Velocity TXL', 'Velocity V-Twin'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.velocityaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'quest',
+    name: 'Quest Aircraft (Daher Kodiak)',
+    logo: '',
+    description: 'Quest Aircraft was an American aircraft manufacturer known for the Kodiak 100 series of rugged single-turboprop utility aircraft, now marketed as the Daher Kodiak.',
+    founded: 2001,
+    headquarters: 'Sandpoint, Idaho, USA',
+    website: 'https://www.daher.com',
+    reputationScore: 8.9,
+    totalAircraftCount: 300,
+    trainingCenters: [
+      {
+        id: 'quest-idaho',
+        name: 'Kodiak Training Center',
+        location: 'Sandpoint, USA',
+        country: 'USA',
+        offers: ['Kodiak 100 Series II', 'Kodiak 100 Series III'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.daher.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '7% annually',
+      keyMarkets: ['North America', 'Africa', 'Asia', 'Pacific Islands']
+    },
+    salaryExpectations: {
+      entryLevel: '$40,000 - $60,000',
+      midLevel: '$65,000 - $95,000',
+      seniorLevel: '$95,000 - $140,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Utility Pilot',
+      midLevel: 'Senior Utility Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Senior Utility Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'pacific-aerospace',
+    name: 'Pacific Aerospace',
+    logo: '',
+    description: 'Pacific Aerospace is a New Zealand aircraft manufacturer known for the Fletcher, Cresco, and CT4 series of agricultural, utility, and training aircraft.',
+    founded: 1955,
+    headquarters: 'Hamilton, New Zealand',
+    website: 'https://www.pacificaerospace.co.nz',
+    reputationScore: 8.3,
+    totalAircraftCount: 1200,
+    trainingCenters: [
+      {
+        id: 'pacific-aerospace-nz',
+        name: 'Pacific Aerospace Training New Zealand',
+        location: 'Hamilton, New Zealand',
+        country: 'New Zealand',
+        offers: ['Fletcher FU24', 'Cresco', 'CT4 Airtrainer'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.pacificaerospace.co.nz/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['New Zealand', 'Australia', 'Africa', 'South America']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$50,000 - $70,000',
+      seniorLevel: '$70,000 - $100,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Agricultural Pilot',
+      midLevel: 'Senior Agricultural Pilot',
+      seniorLevel: 'Chief Pilot / Operations Manager',
+      timeline: '3-5 years to Senior Agricultural Pilot, 8-12 years to Chief Pilot'
+    }
+  },
+  {
+    id: 'aero-east-europe',
+    name: 'Aero East Europe',
+    logo: '',
+    description: 'Aero East Europe is a Bulgarian aircraft manufacturer known for the Sila and Antares series of light sport and ultralight aircraft designed for training and recreational flying.',
+    founded: 2001,
+    headquarters: 'Kazanlak, Bulgaria',
+    website: 'https://www.aeroeast.net',
+    reputationScore: 8.2,
+    totalAircraftCount: 400,
+    trainingCenters: [
+      {
+        id: 'aero-east-europe-bulgaria',
+        name: 'Aero East Europe Training Bulgaria',
+        location: 'Kazanlak, Bulgaria',
+        country: 'Bulgaria',
+        offers: ['Sila 450', 'Antares MA32', 'Antares MA34'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.aeroeast.net/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'Asia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$20,000 - $35,000',
+      midLevel: '$35,000 - $55,000',
+      seniorLevel: '$55,000 - $80,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'jmb',
+    name: 'JMB Aircraft',
+    logo: '',
+    description: 'JMB Aircraft is a French light sport aircraft manufacturer known for the JMB VL-3 and JMB VL-3 Evolution series of high-performance two-seat ultralight aircraft.',
+    founded: 2004,
+    headquarters: 'Belfort, France',
+    website: 'https://www.jmbaircraft.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 600,
+    trainingCenters: [
+      {
+        id: 'jmb-france',
+        name: 'JMB Aircraft Training France',
+        location: 'Belfort, France',
+        country: 'France',
+        offers: ['JMB VL-3', 'JMB VL-3 Evolution', 'JMB VL-3 Turbo'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.jmbaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '5% annually',
+      keyMarkets: ['Europe', 'North America', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$25,000 - $40,000',
+      midLevel: '$40,000 - $60,000',
+      seniorLevel: '$60,000 - $90,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'foxcon',
+    name: 'Foxcon Aviation',
+    logo: '',
+    description: 'Foxcon Aviation is a Czech light sport and ultralight aircraft manufacturer known for the Foxcon Terrier and Foxcon Viper series of two-seat high-wing aircraft.',
+    founded: 2008,
+    headquarters: 'Jihlava, Czech Republic',
+    website: 'https://www.foxcon.cz',
+    reputationScore: 8.1,
+    totalAircraftCount: 300,
+    trainingCenters: [
+      {
+        id: 'foxcon-czech',
+        name: 'Foxcon Aviation Training Czech Republic',
+        location: 'Jihlava, Czech Republic',
+        country: 'Czech Republic',
+        offers: ['Foxcon Terrier 200', 'Foxcon Viper', 'Foxcon Alpha'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.foxcon.cz/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'low',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'Asia', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$20,000 - $35,000',
+      midLevel: '$35,000 - $50,000',
+      seniorLevel: '$50,000 - $75,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Test Pilot',
+      seniorLevel: 'Chief Test Pilot',
+      timeline: '3-5 years to Test Pilot, 8-12 years to Chief Test Pilot'
+    }
+  },
+  {
+    id: 'grob',
+    name: 'Grob Aircraft',
+    logo: '',
+    description: 'Grob Aircraft is a German aircraft manufacturer known for the G 120 and G 115 series of high-performance composite training aircraft used by military and civilian flight schools worldwide.',
+    founded: 1971,
+    headquarters: 'Mindelheim, Bavaria, Germany',
+    website: 'https://www.grob-aircraft.com',
+    reputationScore: 8.8,
+    totalAircraftCount: 3500,
+    trainingCenters: [
+      {
+        id: 'grob-germany',
+        name: 'Grob Aircraft Training Germany',
+        location: 'Mindelheim, Germany',
+        country: 'Germany',
+        offers: ['G 120TP', 'G 115', 'G 520', 'G 109'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.grob-aircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'North America', 'Asia', 'Middle East', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $80,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Military Trainer Pilot',
+      seniorLevel: 'Chief Training Captain',
+      timeline: '3-5 years to Military Trainer Pilot, 8-12 years to Chief Training Captain'
+    }
+  },
+  {
+    id: 'elroy-air',
+    name: 'Elroy Air',
+    logo: '',
+    description: 'Elroy Air is an American aerospace company developing autonomous cargo aircraft systems, including the Chaparral VTOL drone designed for middle-mile logistics and humanitarian aid delivery.',
+    founded: 2016,
+    headquarters: 'San Francisco, California, USA',
+    website: 'https://www.elroyair.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 50,
+    trainingCenters: [
+      {
+        id: 'elroy-air-california',
+        name: 'Elroy Air Flight Operations Center',
+        location: 'San Francisco, USA',
+        country: 'USA',
+        offers: ['Chaparral VTOL', 'Autonomous Cargo Systems'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.elroyair.com/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '25% annually',
+      keyMarkets: ['North America', 'Europe', 'Middle East', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$60,000 - $85,000',
+      midLevel: '$90,000 - $130,000',
+      seniorLevel: '$130,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'UAV Pilot',
+      midLevel: 'Autonomous Systems Engineer',
+      seniorLevel: 'Chief Autonomous Flight Operations',
+      timeline: '3-5 years to Autonomous Systems Engineer, 8-12 years to Chief Autonomous Flight Operations'
+    }
+  },
+  {
+    id: 'pyka',
+    name: 'Pyka',
+    logo: '',
+    description: 'Pyka is an American autonomous aviation company developing electric-powered, self-flying cargo aircraft including the Pelican series for agricultural spraying and logistics.',
+    founded: 2017,
+    headquarters: 'Oakland, California, USA',
+    website: 'https://www.flypyka.com',
+    reputationScore: 8.6,
+    totalAircraftCount: 30,
+    trainingCenters: [
+      {
+        id: 'pyka-california',
+        name: 'Pyka Flight Operations Center',
+        location: 'Oakland, USA',
+        country: 'USA',
+        offers: ['Pelican Spray', 'Pelican Cargo', 'Pelican Courier'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.flypyka.com/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '30% annually',
+      keyMarkets: ['North America', 'South America', 'Europe', 'Australia']
+    },
+    salaryExpectations: {
+      entryLevel: '$65,000 - $90,000',
+      midLevel: '$95,000 - $140,000',
+      seniorLevel: '$140,000 - $190,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'UAV Pilot',
+      midLevel: 'Autonomous Flight Engineer',
+      seniorLevel: 'Chief Autonomous Flight Operations',
+      timeline: '3-5 years to Autonomous Flight Engineer, 8-12 years to Chief Autonomous Flight Operations'
+    }
+  },
+  {
+    id: 'sabrewing',
+    name: 'Sabrewing Aircraft Company',
+    logo: '',
+    description: 'Sabrewing Aircraft Company is an American aerospace manufacturer developing the Rhaegal series of heavy-lift cargo VTOL aircraft capable of autonomous flight and extreme-short takeoff and landing.',
+    founded: 2015,
+    headquarters: 'Oxnard, California, USA',
+    website: 'https://www.sabrewingair.com',
+    reputationScore: 8.3,
+    totalAircraftCount: 20,
+    trainingCenters: [
+      {
+        id: 'sabrewing-california',
+        name: 'Sabrewing Flight Operations Center',
+        location: 'Oxnard, USA',
+        country: 'USA',
+        offers: ['Rhaegal A', 'Rhaegal B', 'Rhaegal C'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.sabrewingair.com/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '20% annually',
+      keyMarkets: ['North America', 'Middle East', 'Pacific Islands']
+    },
+    salaryExpectations: {
+      entryLevel: '$60,000 - $85,000',
+      midLevel: '$90,000 - $130,000',
+      seniorLevel: '$130,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'UAV Pilot',
+      midLevel: 'Autonomous Cargo Operations Lead',
+      seniorLevel: 'Chief VTOL Operations Officer',
+      timeline: '3-5 years to Autonomous Cargo Operations Lead, 8-12 years to Chief VTOL Operations Officer'
+    }
+  },
+  {
+    id: 'fugro',
+    name: 'Fugro Aviation',
+    logo: '',
+    description: 'Fugro Aviation is part of Fugro N.V., a Dutch geodata company providing airborne geophysical and LiDAR survey services with a fleet of specialized survey aircraft operating worldwide.',
+    founded: 1962,
+    headquarters: 'Leidschendam, Netherlands',
+    website: 'https://www.fugro.com',
+    reputationScore: 8.7,
+    totalAircraftCount: 40,
+    trainingCenters: [
+      {
+        id: 'fugro-netherlands',
+        name: 'Fugro Aviation Training Netherlands',
+        location: 'Leidschendam, Netherlands',
+        country: 'Netherlands',
+        offers: ['Airborne Geophysics', 'LiDAR Survey Operations', 'Aerial Mapping'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.fugro.com/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '6% annually',
+      keyMarkets: ['Europe', 'North America', 'Middle East', 'Asia Pacific', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$55,000 - $80,000',
+      midLevel: '$85,000 - $120,000',
+      seniorLevel: '$120,000 - $170,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Survey Pilot',
+      midLevel: 'Senior Survey Pilot',
+      seniorLevel: 'Chief Survey Pilot / Operations Manager',
+      timeline: '3-5 years to Senior Survey Pilot, 8-12 years to Chief Survey Pilot'
+    }
+  },
+  {
+    id: 'supernal',
+    name: 'Supernal',
+    logo: '',
+    description: 'Supernal is a Hyundai Motor Group subsidiary developing electric vertical takeoff and landing (eVTOL) aircraft for urban air mobility, with the S-A2 passenger air vehicle.',
+    founded: 2021,
+    headquarters: 'Irvine, California, USA',
+    website: 'https://www.supernal.aero',
+    reputationScore: 8.6,
+    totalAircraftCount: 5,
+    trainingCenters: [
+      {
+        id: 'supernal-california',
+        name: 'Supernal Flight Operations Center',
+        location: 'Irvine, USA',
+        country: 'USA',
+        offers: ['S-A2 eVTOL', 'Urban Air Mobility Systems', 'eVTOL Pilot Training'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.supernal.aero/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '35% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$70,000 - $95,000',
+      midLevel: '$100,000 - $150,000',
+      seniorLevel: '$150,000 - $210,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'eVTOL Test Pilot',
+      midLevel: 'UAM Operations Lead',
+      seniorLevel: 'Chief UAM Operations Officer',
+      timeline: '3-5 years to UAM Operations Lead, 8-12 years to Chief UAM Operations Officer'
+    }
+  },
+  {
+    id: 'regent-craft',
+    name: 'Regent Craft',
+    logo: '',
+    description: 'Regent Craft is an American maritime aviation company developing the Viceroy series of all-electric, wing-in-ground-effect (WIG) seagliders for coastal transportation and logistics.',
+    founded: 2020,
+    headquarters: 'Bristol, Rhode Island, USA',
+    website: 'https://www.regentcraft.com',
+    reputationScore: 8.4,
+    totalAircraftCount: 10,
+    trainingCenters: [
+      {
+        id: 'regent-craft-rhode-island',
+        name: 'Regent Craft Flight Operations Center',
+        location: 'Bristol, USA',
+        country: 'USA',
+        offers: ['Viceroy Seaglider', 'Coastal Transportation Systems', 'WIG Operations Training'],
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+        website: 'https://www.regentcraft.com/careers'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '30% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia Pacific', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$65,000 - $90,000',
+      midLevel: '$95,000 - $140,000',
+      seniorLevel: '$140,000 - $190,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Seaglider Test Pilot',
+      midLevel: 'Maritime Aviation Operations Lead',
+      seniorLevel: 'Chief Maritime Aviation Officer',
+      timeline: '3-5 years to Maritime Aviation Operations Lead, 8-12 years to Chief Maritime Aviation Officer'
+    }
   }
 ];
 

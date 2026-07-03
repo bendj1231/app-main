@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { uploadProfileImage, type CloudinaryUploadResult } from '@/lib/cloudinaryClient';
 import { logAuditAction } from '@/lib/auditLog';
 import AdminSidebar from '../components/AdminSidebar';
@@ -14,6 +15,7 @@ export default function PlanningBoardPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, userProfile } = useAuth();
+  const { getIdTokenClaims } = useAuth0();
   const currentPath = location.pathname;
 
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
@@ -41,32 +43,42 @@ export default function PlanningBoardPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
+  const { callApi } = useWorkerAuth();
+
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
     fetchBoardData();
 
-    // Real-time subscription for employee_objectives
-    const objectivesSubscription = supabase
-      .channel('planning-objectives-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'employee_objectives' }, () => {
-        fetchBoardData();
-      })
-      .subscribe();
+    // Poll every 30s as replacement for real-time subscription
+    const interval = setInterval(() => {
+      fetchBoardData();
+    }, 30000);
 
-    return () => {
-      objectivesSubscription.unsubscribe();
-    };
+    return () => clearInterval(interval);
   }, [currentUser, isAdmin]);
 
   const fetchBoardData = async () => {
     try {
-      const [{ data: objectivesData, error: objectivesError }, { data: profilesData, error: profilesError }] = await Promise.all([
-        supabase.from('employee_objectives').select('*').order('created_at', { ascending: false }),
-        supabase.from('profiles').select('display_name, full_name, email, role').not('email', 'is', null).limit(200),
+      const [objectivesRows, profilesRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'employee_objectives',
+          operation: 'select',
+          limit: 500,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 200,
+        }),
       ]);
 
-      if (objectivesError) throw objectivesError;
-      setObjectives(objectivesData || []);
+      const objectivesData = (objectivesRows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      const profilesData = (profilesRows || []).filter((p: any) => p.email);
+      setObjectives(objectivesData as any);
 
       // Build team member list from profiles + existing assignees
       const fromProfiles = (profilesData || [])
@@ -107,8 +119,12 @@ export default function PlanningBoardPage() {
         employee_id: currentUser.id,
         created_by: currentUser.id,
       };
-      const { data, error } = await supabase.from('employee_objectives').insert(payload).select().single();
-      if (error) throw error;
+      const inserted = await callApi('queryTable', {
+        table: 'employee_objectives',
+        operation: 'insert',
+        data: payload,
+      });
+      const data = inserted as any;
       if (data) {
         setObjectives((prev) => [data, ...prev]);
         setShowCreateModal(false);
@@ -134,9 +150,11 @@ export default function PlanningBoardPage() {
     if (!currentUser) return;
     setUpdating(true);
     try {
-      const { data, error } = await supabase
-        .from('employee_objectives')
-        .update({
+      await callApi('queryTable', {
+        table: 'employee_objectives',
+        operation: 'update',
+        id,
+        data: {
           title: updates.title,
           description: updates.description,
           assignee: updates.assignee,
@@ -145,17 +163,12 @@ export default function PlanningBoardPage() {
           due_date: updates.due_date ? new Date(updates.due_date).toISOString() : null,
           collaborators: updates.collaborators || null,
           updated_at: new Date().toISOString(),
-        })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      if (data) {
-        setObjectives((prev) => prev.map((o) => (o.id === id ? data : o)));
-        setEditingId(null);
-        setEditDraft(null);
-      }
+        },
+      });
+      const data = { ...updates, id, updated_at: new Date().toISOString() };
+      setObjectives((prev) => prev.map((o) => (o.id === id ? data : o)));
+      setEditingId(null);
+      setEditDraft(null);
     } catch (err) {
       console.error('Error updating objective:', err);
       alert('Failed to update objective.');
@@ -169,8 +182,11 @@ export default function PlanningBoardPage() {
     if (!window.confirm('Delete this objective?')) return;
     setDeletingId(id);
     try {
-      const { error } = await supabase.from('employee_objectives').delete().eq('id', id);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'employee_objectives',
+        operation: 'delete',
+        id,
+      });
       setObjectives((prev) => prev.filter((o) => o.id !== id));
       if (selectedItem?.id === id) setSelectedItem(null);
     } catch (err) {
@@ -204,20 +220,27 @@ export default function PlanningBoardPage() {
       const updatedScreenshots = [...screenshots, result.url];
       
       // Update database
-      await supabase
-        .from('employee_objectives')
-        .update({ screenshots: updatedScreenshots })
-        .eq('id', selectedItem.id);
+      await callApi('queryTable', {
+        table: 'employee_objectives',
+        operation: 'update',
+        id: selectedItem.id,
+        data: { screenshots: updatedScreenshots },
+      });
 
       // Log audit action
-      await logAuditAction({
-        actionType: 'upload',
-        targetTable: 'employee_objectives',
-        targetId: selectedItem.id,
-        oldValues: { screenshots },
-        newValues: { screenshots: updatedScreenshots },
-        description: `Screenshot uploaded for objective: ${selectedItem.title}`,
-      });
+      const claims = await getIdTokenClaims();
+      const accessToken = claims?.__raw;
+      if (accessToken && currentUser?.uid) {
+        await logAuditAction(accessToken, {
+          adminId: currentUser.uid,
+          actionType: 'upload',
+          targetTable: 'employee_objectives',
+          targetId: selectedItem.id,
+          oldValues: { screenshots },
+          newValues: { screenshots: updatedScreenshots },
+          description: `Screenshot uploaded for objective: ${selectedItem.title}`,
+        });
+      }
       
       setObjectives((prev) =>
         prev.map((o) =>

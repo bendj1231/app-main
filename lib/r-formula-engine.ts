@@ -16,7 +16,7 @@
  * T = Time since last activity
  */
 
-import { supabase } from './supabase';
+import { api } from './d1-api';
 
 // Types for the R-Formula system
 export interface PilotProfile {
@@ -123,6 +123,7 @@ class RFormulaEngine {
   private programQualityCache: Map<string, ProgramQualityFactor> = new Map();
   private decayConfigCache: Map<string, RecencyDecayConfig> = new Map();
   private lastCacheUpdate: Date = new Date(0);
+  private accessToken: string | null = null;
 
   private constructor() {}
 
@@ -131,6 +132,15 @@ class RFormulaEngine {
       RFormulaEngine.instance = new RFormulaEngine();
     }
     return RFormulaEngine.instance;
+  }
+
+  public setAccessToken(token: string): void {
+    this.accessToken = token;
+  }
+
+  private ensureToken(): string {
+    if (!this.accessToken) throw new Error('No access token set. Call setAccessToken() before using RFormulaEngine.');
+    return this.accessToken;
   }
 
   /**
@@ -542,12 +552,12 @@ class RFormulaEngine {
    */
   private async loadPathwayWeights() {
     try {
-      const { data, error } = await supabase
-        .from('pathway_weights')
-        .select('*')
-        .eq('is_active', true);
-
-      if (error) throw error;
+      const data = await api(this.ensureToken(), 'queryTable', {
+        table: 'pathway_weights',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 1000,
+      }) as PathwayWeights[];
 
       // Group by pathway_key
       const grouped = new Map<string, PathwayWeights[]>();
@@ -569,12 +579,12 @@ class RFormulaEngine {
    */
   private async loadProgramQualityFactors() {
     try {
-      const { data, error } = await supabase
-        .from('program_quality_factors')
-        .select('*')
-        .eq('is_active', true);
-
-      if (error) throw error;
+      const data = await api(this.ensureToken(), 'queryTable', {
+        table: 'program_quality_factors',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 1000,
+      }) as ProgramQualityFactor[];
 
       const map = new Map<string, ProgramQualityFactor>();
       for (const pqf of data || []) {
@@ -592,12 +602,12 @@ class RFormulaEngine {
    */
   private async loadRecencyDecayConfig() {
     try {
-      const { data, error } = await supabase
-        .from('recency_decay_config')
-        .select('*')
-        .eq('is_active', true);
-
-      if (error) throw error;
+      const data = await api(this.ensureToken(), 'queryTable', {
+        table: 'recency_decay_config',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 1000,
+      }) as RecencyDecayConfig[];
 
       const map = new Map<string, RecencyDecayConfig>();
       for (const config of data || []) {
@@ -615,9 +625,10 @@ class RFormulaEngine {
    */
   public async saveRecognitionScore(score: RecognitionScore): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('pilot_recognition_scores')
-        .upsert({
+      await api(this.ensureToken(), 'queryTable', {
+        table: 'pilot_recognition_scores',
+        operation: 'insert',
+        data: {
           user_id: score.user_id,
           pathway_key: score.pathway_key,
           base_score: score.base_score,
@@ -629,10 +640,9 @@ class RFormulaEngine {
           score_breakdown: score.score_breakdown,
           decay_factors: score.decay_factors,
           calculated_at: score.calculated_at.toISOString(),
-          expires_at: score.expires_at.toISOString()
-        });
-
-      if (error) throw error;
+          expires_at: score.expires_at.toISOString(),
+        },
+      });
 
       // Also save to history for trend analysis
       await this.saveScoreHistory(score);
@@ -647,19 +657,19 @@ class RFormulaEngine {
    */
   private async saveScoreHistory(score: RecognitionScore): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('score_calculation_history')
-        .insert({
+      await api(this.ensureToken(), 'queryTable', {
+        table: 'score_calculation_history',
+        operation: 'insert',
+        data: {
           user_id: score.user_id,
           pathway_key: score.pathway_key,
           score_type: 'final',
           score_value: score.decay_adjusted_score,
           calculation_date: score.calculated_at.toISOString(),
           decay_applied: 1.0 - (score.decay_adjusted_score / score.quality_adjusted_score),
-          quality_multiplier: score.quality_adjusted_score / score.weighted_score
-        });
-
-      if (error) throw error;
+          quality_multiplier: score.quality_adjusted_score / score.weighted_score,
+        },
+      });
     } catch (error) {
       console.error('Error saving score history:', error);
     }
@@ -670,19 +680,30 @@ class RFormulaEngine {
    */
   public async getCachedScore(userId: string, pathwayKey?: string): Promise<RecognitionScore | null> {
     try {
-      const { data, error } = await supabase
-        .from('pilot_recognition_scores')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('pathway_key', pathwayKey || null)
-        .gt('expires_at', new Date().toISOString())
-        .order('calculated_at', { ascending: false })
-        .limit(1)
-        .single();
+      const where: Record<string, unknown> = { user_id: userId };
+      if (pathwayKey) where.pathway_key = pathwayKey;
+      else where.pathway_key = null;
 
-      if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "not found"
+      const data = await api(this.ensureToken(), 'queryTable', {
+        table: 'pilot_recognition_scores',
+        operation: 'select',
+        where,
+        limit: 100,
+      }) as RecognitionScore[];
+
+      const now = new Date();
+      const valid = (data || [])
+        .filter((s) => {
+          const expiry = s.expires_at instanceof Date ? s.expires_at : new Date(s.expires_at as string);
+          return expiry && expiry > now;
+        })
+        .sort((a, b) => {
+          const ca = a.calculated_at instanceof Date ? a.calculated_at : new Date(a.calculated_at as string);
+          const cb = b.calculated_at instanceof Date ? b.calculated_at : new Date(b.calculated_at as string);
+          return cb.getTime() - ca.getTime();
+        });
       
-      return data;
+      return valid[0] || null;
     } catch (_error) {
       return null;
     }
@@ -696,15 +717,23 @@ class RFormulaEngine {
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);
 
-      const { data, error } = await supabase
-        .from('score_calculation_history')
-        .select('*')
-        .eq('user_id', userId)
-        .gte('calculation_date', startDate.toISOString())
-        .order('calculation_date', { ascending: true });
+      const data = await api(this.ensureToken(), 'queryTable', {
+        table: 'score_calculation_history',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1000,
+      }) as Record<string, unknown>[];
 
-      if (error) throw error;
-      return data || [];
+      const filtered = (data || []).filter((row) => {
+        const date = row.calculation_date as string;
+        return date && date >= startDate.toISOString();
+      }).sort((a, b) => {
+        const da = (a.calculation_date as string) || '';
+        const db = (b.calculation_date as string) || '';
+        return da.localeCompare(db);
+      });
+
+      return filtered;
     } catch (error) {
       console.error('Error getting score trend:', error);
       return [];

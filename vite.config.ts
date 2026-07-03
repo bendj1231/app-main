@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     },
     plugins: [
       react(),
@@ -38,7 +43,6 @@ export default defineConfig(({ mode }) => {
               if (id.includes('framer-motion')) return 'vendor-framer';
               if (id.includes('three') || id.includes('@react-three')) return 'vendor-three';
               if (id.includes('lucide-react')) return 'vendor-lucide';
-              if (id.includes('@supabase')) return 'vendor-supabase';
               if (id.includes('recharts') || id.includes('d3-')) return 'vendor-charts';
               if (id.includes('firebase')) return 'vendor-firebase';
               if (id.includes('@paper-design') || id.includes('@fontsource')) return 'vendor-ui';

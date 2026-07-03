@@ -4,7 +4,8 @@ import {
 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { uploadProfileImage } from '@/lib/cloudinaryClient';
 
 interface FoundationalVerificationPageProps {
     onBack: () => void;
@@ -20,6 +21,7 @@ interface LogEntry {
 }
 
 export const FoundationalVerificationPage: React.FC<FoundationalVerificationPageProps> = ({ onBack, onNavigate, onLogin }) => {
+    const { callApi } = useWorkerAuth();
     const { currentUser, refreshUserProfile } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -372,33 +374,29 @@ export const FoundationalVerificationPage: React.FC<FoundationalVerificationPage
                                         setSubmitError(null);
                                         try {
                                             let photoUrl = '';
-                                            if (photo) {
-                                                const fileExt = photo.name.split('.').pop();
-                                                const filePath = `${currentUser.uid}/verification-${Date.now()}.${fileExt}`;
-                                                const { error: uploadError } = await supabase.storage
-                                                    .from('profile pics')
-                                                    .upload(filePath, photo);
-                                                if (uploadError) throw uploadError;
-                                                const { data: { publicUrl } } = supabase.storage
-                                                    .from('profile pics')
-                                                    .getPublicUrl(filePath);
-                                                photoUrl = publicUrl;
+                                            if (photo && currentUser?.uid) {
+                                                const result = await uploadProfileImage(photo, currentUser.uid);
+                                                if (!result.success) throw new Error(result.error || 'Upload failed');
+                                                photoUrl = result.url || '';
                                             }
 
-                                            const { data: existingProfile } = await supabase
-                                                .from('profiles')
-                                                .select('enrolled_programs')
-                                                .eq('id', currentUser.uid)
-                                                .maybeSingle();
-
-                                            const currentPrograms = existingProfile?.enrolled_programs || [];
+                                            const existingProfiles = await callApi<Record<string, unknown>[]>('queryTable', {
+                                                table: 'profiles',
+                                                operation: 'select',
+                                                where: { id: currentUser.uid },
+                                                limit: 1,
+                                            });
+                                            const existingProfile = existingProfiles?.[0];
+                                            const currentPrograms = (existingProfile?.enrolled_programs as string[]) || [];
                                             const updatedPrograms = currentPrograms.includes('Foundational')
                                                 ? currentPrograms
                                                 : [...currentPrograms, 'Foundational'];
 
-                                            const { error: updateError } = await supabase
-                                                .from('profiles')
-                                                .update({
+                                            await callApi('queryTable', {
+                                                table: 'profiles',
+                                                operation: 'update',
+                                                id: currentUser.uid,
+                                                data: {
                                                     pilot_id: wingMentorId || null,
                                                     full_name: fullName || null,
                                                     profile_image_url: photoUrl || undefined,
@@ -409,19 +407,19 @@ export const FoundationalVerificationPage: React.FC<FoundationalVerificationPage
                                                     total_flight_hours: totalHours ? parseFloat(totalHours) : null,
                                                     flight_log: logEntries.length > 0 ? JSON.stringify(logEntries) : null,
                                                     enrolled_programs: updatedPrograms,
-                                                })
-                                                .eq('id', currentUser.uid);
+                                                },
+                                            });
 
-                                            if (updateError) {
-                                                console.error('Profile update error details:', updateError);
-                                                throw updateError;
-                                            }
-                                            await supabase.from('notifications').insert({
-                                                user_id: currentUser.uid,
-                                                title: 'Congratulations!',
-                                                message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
-                                                type: 'success',
-                                                is_read: false,
+                                            await callApi('queryTable', {
+                                                table: 'notifications',
+                                                operation: 'insert',
+                                                data: {
+                                                    user_id: currentUser.uid,
+                                                    title: 'Congratulations!',
+                                                    message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
+                                                    type: 'success',
+                                                    is_read: false,
+                                                },
                                             });
                                             sessionStorage.setItem('enrollmentSuccess', 'true');
                                             onNavigate('home');

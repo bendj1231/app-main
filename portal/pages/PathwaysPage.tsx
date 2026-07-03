@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -4183,28 +4184,26 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
     ? CATEGORY_SECTIONS 
     : CATEGORY_SECTIONS.filter(section => activeFilters.includes(section.id));
 
-  // Fetch user profile from Supabase
+  const { callApi } = useWorkerAuth();
+  const { user: auth0User } = useAuth0();
+
+  // Fetch user profile from Worker API
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
+        if (!auth0User?.sub) {
           setProfileLoading(false);
           return;
         }
 
         // Fetch from pilot_recognition_matches table
-        const { data, error } = await supabase
-          .from('pilot_recognition_matches')
-          .select('total_hours, licenses, type_ratings, logged_hours, program_inputs')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error fetching profile:', error);
-        }
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_recognition_matches',
+          operation: 'select',
+          where: { user_id: auth0User.sub },
+          limit: 1,
+        });
+        const data = rows?.[0];
 
         if (data) {
           setProfile({
@@ -4213,7 +4212,7 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
             type_ratings: data.type_ratings,
             logged_hours: data.logged_hours,
             program_inputs: data.program_inputs
-          });
+          } as any);
         } else {
           setProfile(null);
         }
@@ -4226,7 +4225,7 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
     };
 
     fetchProfile();
-  }, []);
+  }, [auth0User?.sub]);
 
   try {
     return (

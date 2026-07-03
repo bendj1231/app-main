@@ -17,8 +17,6 @@ on:
         type: boolean
 
 env:
-  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_STAGING_PROJECT_ID }}
-  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
   ENVIRONMENT: staging
 
 jobs:
@@ -48,9 +46,8 @@ jobs:
       - name: Run auth tests
         run: node tests/run-auth-tests.ts
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_STAGING_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_STAGING_ANON_KEY }}
-          EDGE_FUNCTION_URL: ${{ secrets.SUPABASE_STAGING_EDGE_FUNCTION_URL }}
+          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
+          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
@@ -74,8 +71,8 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_STAGING_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_STAGING_ANON_KEY }}
+          VITE_PILOT_API_URL: ${{ secrets.VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev' }}
+          VITE_PLATFORM_API_URL: ${{ secrets.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev' }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
@@ -84,29 +81,32 @@ jobs:
           path: dist/
           retention-days: 7
 
-  deploy-edge-functions:
-    name: Deploy Edge Functions
+  deploy-workers:
+    name: Deploy Cloudflare Workers
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Supabase CLI
+      - name: Deploy Pilot Worker
         run: |
-          npm install -g supabase
-
-      - name: Deploy Edge Functions
-        run: |
-          supabase functions deploy --project-ref ${{ secrets.SUPABASE_STAGING_PROJECT_ID }}
+          cd worker
+          npx wrangler deploy
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-      - name: Verify deployment
+      - name: Deploy Platform Worker
         run: |
-          echo "Verifying Edge Functions deployment..."
-          curl -f ${{ secrets.SUPABASE_STAGING_EDGE_FUNCTION_URL }}/auth-verify || exit 1
-          echo "Edge Functions deployed successfully"
+          cd cloudflare
+          npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Verify Worker health
+        run: |
+          curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
 
   deploy-frontend:
     name: Deploy Frontend to Staging
@@ -122,44 +122,34 @@ jobs:
           name: build-artifacts
           path: dist/
 
-      - name: Deploy to Vercel (Staging)
-        uses: amondnet/vercel-action@v25
+      - name: Deploy to Cloudflare Pages (Staging)
+        uses: cloudflare/pages-action@v1
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ secrets.CLOUDFLARE_PAGES_STAGING_PROJECT }}
+          directory: dist
+          branch: develop
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   database-migrations:
-    name: Run Database Migrations
+    name: Run D1 Migrations
     runs-on: ubuntu-latest
-    needs: [deploy-edge-functions, deploy-frontend]
+    needs: [deploy-workers, deploy-frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Supabase CLI
+      - name: Apply D1 migrations
         run: |
-          npm install -g supabase
-
-      - name: Run migrations
-        run: |
-          supabase db push --project-ref ${{ secrets.SUPABASE_STAGING_PROJECT_ID }}
+          ./scripts/d1-apply-migrations.sh
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-
-      - name: Verify migrations
-        run: |
-          echo "Verifying database migrations..."
-          supabase db diff --use-migra --schema public --project-ref ${{ secrets.SUPABASE_STAGING_PROJECT_ID }} || echo "No schema changes detected"
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   deployment-verification:
     name: Deployment Verification
     runs-on: ubuntu-latest
-    needs: [deploy-edge-functions, deploy-frontend, database-migrations]
+    needs: [deploy-workers, deploy-frontend, database-migrations]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -176,15 +166,16 @@ jobs:
       - name: Run deployment verification tests
         run: npm run test:deployment
         env:
-          BASE_URL: ${{ secrets.SUPABASE_STAGING_URL }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_STAGING_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_STAGING_ANON_KEY }}
+          BASE_URL: ${{ secrets.STAGING_FRONTEND_URL }}
+          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
+          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
 
       - name: Health check
         run: |
           echo "Running health checks..."
-          # Check Edge Functions
-          curl -f ${{ secrets.SUPABASE_STAGING_EDGE_FUNCTION_URL }}/auth-verify || exit 1
+          # Check Workers
+          curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
           # Check frontend
           curl -f ${{ secrets.STAGING_FRONTEND_URL }} || exit 1
           echo "Health checks passed"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
-import { supabase } from "../lib/supabase-auth";
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ProgramProgressPageProps {
   userProfile?: UserProfile | null;
@@ -75,14 +75,17 @@ export const ProgramProgressPage: React.FC<ProgramProgressPageProps> = ({
       }
 
       try {
-        const { data, error } = await supabase.functions.invoke('calculate-program-progress', {
-          body: { user_id: userProfile.id }
+        const { callApi } = useWorkerAuth();
+        const data = await callApi('queryTable', {
+          table: 'program_progress',
+          operation: 'select',
+          where: { user_id: userProfile.id },
+          limit: 1,
         });
-
-        if (error) throw error;
-        
-        if (data) {
-          setProgressData(data);
+        if (data && Array.isArray(data) && data[0]) {
+          setProgressData(data[0] as any);
+        } else {
+          throw new Error('No progress data found');
         }
       } catch (err) {
         console.error('Error fetching progress:', err);

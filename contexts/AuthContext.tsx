@@ -1,4 +1,4 @@
-// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
+// Auth0-only authentication context. Data is fetched via Cloudflare Worker / D1 API.
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useWorkerAuth } from '../hooks/useWorkerAuth';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
 import { PostOAuthWelcomeScreen } from '@/components/website/components/PostOAuthWelcomeScreen';
 
-interface SupabaseUser {
+interface AuthUser {
   id: string;
   uid: string; // For backward compatibility
   email: string;
@@ -68,7 +68,7 @@ interface UserProfile {
 }
 
 interface AuthContextType {
-  currentUser: SupabaseUser | null;
+  currentUser: AuthUser | null;
   userProfile: UserProfile | null;
   loading: boolean;
   signupInProgress: boolean;
@@ -80,6 +80,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   sendOtp: (email: string, redirectTo?: string) => Promise<void>;
   verifyOtp: (email: string, token: string, redirectTo?: string) => Promise<void>;
+  devLogin: () => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: (userId: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
@@ -130,10 +131,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logout: auth0Logout,
   } = useAuth0();
   const { callApi } = useWorkerAuth();
-  const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
-  const currentUserRef = React.useRef<SupabaseUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const currentUserRef = React.useRef<AuthUser | null>(null);
   const oauthModalShownRef = React.useRef(false);
-  const setCurrentUserWithRef = (user: SupabaseUser | null) => {
+  const setCurrentUserWithRef = (user: AuthUser | null) => {
     currentUserRef.current = user;
     setCurrentUser(user);
   };
@@ -212,7 +213,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [oauthAccountCheck.hasAccount, userProfile?.role]);
 
   // If OAuth signed-in user has a linked profile, show welcome screen then redirect
-  // to /platform from common landing pages (handles Supabase redirect URL fallback)
+  // to /platform from common landing pages
   useEffect(() => {
     if (oauthAccountCheck.hasAccount === true && !oauthAccountCheck.checking) {
       const path = window.location.pathname;
@@ -251,11 +252,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [currentUser, IDLE_TIMEOUT_MS]);
 
-  // Sync Auth0 user into currentUser when there is no Supabase session
+  // Sync Auth0 user into currentUser when there is no active session
   useEffect(() => {
     if (auth0Loading) return;
     if (auth0IsAuthenticated && auth0User && !currentUser) {
-      const auth0AsSupabaseUser: SupabaseUser = {
+      const auth0AsUser: AuthUser = {
         id: auth0User.sub || '',
         uid: auth0User.sub || '',
         email: auth0User.email || '',
@@ -266,7 +267,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         displayName: auth0User.name || auth0User.email?.split('@')[0],
       };
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCurrentUser(auth0AsSupabaseUser);
+      setCurrentUser(auth0AsUser);
       setLoading(false);
 
       // Store auth0 token info in sessionStorage for session restoration
@@ -566,7 +567,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Step 4: Structure the user data
       const structuredData = {
-        uid: userId, // Use Supabase ID as primary
+        uid: userId, // Use Auth0 ID as primary
         email,
         createdAt: new Date().toISOString(),
         pilotCategory: userData.pilotCategory,
@@ -616,7 +617,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       };
 
-      // Step 6: Sync to Supabase pilot_licensure_experience table with all gathered information
+      // Step 6: Sync to pilot_licensure_experience table with all gathered information
       try {
         const rawLicensurePayload = {
           pilot_id: userData.pilotId,
@@ -738,7 +739,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setExplicitLogoutInStorage(false);
     await logLogin(user.id);
 
-    const supabaseUser: SupabaseUser = {
+    const authUser: AuthUser = {
       id: user.id,
       uid: user.id,
       email: user.email || '',
@@ -749,7 +750,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updated_at: user.updated_at || new Date().toISOString(),
     };
 
-    setCurrentUser(supabaseUser);
+    setCurrentUser(authUser);
     window.scrollTo(0, 0);
 
     try {
@@ -806,6 +807,79 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await loginWithRedirect({
       appState: redirectTo ? { returnTo: redirectTo } : undefined,
     });
+  }
+
+  async function devLogin() {
+    // Localhost-only dev easter egg. Bypasses Auth0 to log in a dummy pilot.
+    if (typeof window === 'undefined') return;
+    const hostname = window.location.hostname;
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      console.warn('[devLogin] Only available on localhost');
+      return;
+    }
+
+    const dummyId = 'dev-dummy-user';
+    const dummyEmail = 'dev@pilotrecognition.com';
+    const dummyName = 'Dev Pilot';
+
+    const dummyUser: AuthUser = {
+      id: dummyId,
+      uid: dummyId,
+      email: dummyEmail,
+      email_confirmed_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      display_name: dummyName,
+      displayName: dummyName,
+    };
+
+    const dummyProfile: UserProfile = {
+      id: dummyId,
+      user_id: dummyId,
+      email: dummyEmail,
+      full_name: dummyName,
+      display_name: dummyName,
+      displayName: dummyName,
+      role: 'pilot',
+      status: 'active',
+      pilot_id: 'PR0001',
+      total_flight_hours: 1500,
+      total_hours: 1500,
+      current_flight_hours: 1500,
+      flight_hours: 1500,
+      mentorship_hours: 0,
+      foundation_progress: 0,
+      examination_score: 0,
+      overall_recognition_score: 75,
+      recognition_score: 75,
+      score: 75,
+      current_level: 'Middle Timer',
+      level: 'Middle Timer',
+      created_at: new Date().toISOString(),
+      last_login: new Date().toISOString(),
+      enrolled_programs: [],
+      appAccess: [],
+    };
+
+    setExplicitLogoutInStorage(false);
+    setCurrentUserWithRef(dummyUser);
+    setUserProfileData(dummyProfile);
+    setLoading(false);
+    setOauthAccountCheck({ checking: false, hasAccount: true });
+
+    // Persist enough session markers so the rest of the app treats this as a real login.
+    sessionStorage.setItem('sb-auth-provider', 'dev');
+    sessionStorage.setItem('sb-auth-user-id', dummyId);
+    sessionStorage.setItem('sb-auth-email', dummyEmail);
+    sessionStorage.setItem('sb-auth-name', dummyName);
+    sessionStorage.setItem('sb-auth-expiry', (Date.now() + 24 * 60 * 60 * 1000).toString());
+    sessionStorage.setItem('auth0_user_id', dummyId);
+
+    try {
+      await logLogin(dummyId);
+    } catch (err) {
+      console.warn('[devLogin] Activity log failed (non-critical):', err);
+    }
   }
 
   async function logout() {
@@ -1017,12 +1091,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   useEffect(() => {
-    // Auth0 handles auth state changes — no Supabase listener needed
+    // Auth0 handles auth state changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // Verify session using Auth0 (bypassing Supabase)
+    // Verify session using Auth0
     const verifySession = async () => {
       if (isExplicitLogout()) {
         setCurrentUser(null);
@@ -1033,7 +1107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const token = await getAccessTokenSilently();
         if (token && auth0User) {
-          const verifiedUser: SupabaseUser = {
+          const verifiedUser: AuthUser = {
             id: auth0User.sub || '',
             uid: auth0User.sub || '',
             email: auth0User.email || '',
@@ -1102,6 +1176,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     login,
     sendOtp,
     verifyOtp,
+    devLogin,
     logout,
     deleteAccount,
     resetPassword,

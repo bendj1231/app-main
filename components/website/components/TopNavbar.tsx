@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo, useContext } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink, Moon, Sun, MessageSquare, LogOut, ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
@@ -12,9 +13,9 @@ import { ThemeContext } from '../context/ThemeContext';
 const useSafeTheme = () => {
     try {
         const context = useContext(ThemeContext);
-        return context || { isDarkMode: false, toggleTheme: () => {} };
+        return context || { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
     } catch {
-        return { isDarkMode: false, toggleTheme: () => {} };
+        return { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
     }
 };
 
@@ -65,6 +66,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         console.log('[TopNavbar] toggleTheme click, current isDarkMode:', isDarkMode);
         toggleTheme();
     };
+    console.log('[TopNavbar] render - isDarkMode:', isDarkMode, 'currentUser:', !!currentUser, 'currentPage:', currentPage);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [passedPathwayGrid, setPassedPathwayGrid] = useState(false);
@@ -159,50 +161,44 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         return () => { cancelled = true; };
     }, []);
 
+    const { callApi } = useWorkerAuth();
+
     useEffect(() => {
         const fetchProfileData = async () => {
             if (currentUser?.uid) {
                 setProfileLoading(true);
                 try {
-                    const { data, error } = await supabase
-                        .from('profiles')
-                        .select('pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs')
-                        .eq('id', currentUser.uid)
-                        .maybeSingle();
-                    
-                    if (error) {
-                        console.error('Error fetching profile data:', error);
-                        // Set default values on error to prevent UI breakage
-                        setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
-                        return;
-                    }
-                    
+                    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                        table: 'profiles',
+                        operation: 'select',
+                        where: { id: currentUser.uid },
+                        limit: 1,
+                    });
+                    const data = rows?.[0];
+
                     if (data) {
-                        // Safely set values with fallbacks for missing or invalid data
-                        setPilotId(data.pilot_id || userProfile?.display_name || userProfile?.full_name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
-                        setProfileImageUrl(data.profile_image_url || userProfile?.profile_image_url || null);
+                        setPilotId((data.pilot_id as string) || userProfile?.display_name || userProfile?.full_name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
+                        setProfileImageUrl((data.profile_image_url as string) || userProfile?.profile_image_url || null);
                         setTotalHours(typeof data.total_flight_hours === 'number' ? data.total_flight_hours : 0);
-                        setLastFlown(data.last_flown || '');
+                        setLastFlown((data.last_flown as string) || '');
                         setMentorshipHours(typeof data.mentorship_hours === 'number' ? data.mentorship_hours : 0);
                         setFoundationProgress(typeof data.foundation_progress === 'number' ? data.foundation_progress : 0);
                         setExaminationScore(typeof data.examination_score === 'number' ? data.examination_score : 0);
                         setOverallRecognitionScore(typeof data.overall_recognition_score === 'number' ? data.overall_recognition_score : 0);
-                        setIsEnrolledInFoundation(Array.isArray(data.enrolled_programs) && data.enrolled_programs.includes('Foundational'));
+                        setIsEnrolledInFoundation(Array.isArray(data.enrolled_programs) && (data.enrolled_programs as string[]).includes('Foundational'));
                     } else {
-                        // Profile doesn't exist in Supabase, fall back to AuthContext userProfile
                         setPilotId(userProfile?.display_name || userProfile?.full_name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                         setProfileImageUrl(userProfile?.profile_image_url || null);
                     }
                 } catch (err) {
                     console.error('Unexpected error fetching profile data:', err);
-                    // Set default values on unexpected error
                     setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                 } finally {
                     setProfileLoading(false);
                 }
             }
         };
-        
+
         fetchProfileData();
     }, [currentUser]);
 
@@ -235,28 +231,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
         setUploading(true);
         try {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
-            const filePath = `${currentUser.uid}-${Date.now()}.${fileExt}`;
+            const result = await uploadProfileImage(file, currentUser.uid);
+            if (!result.success || !result.url) {
+                throw new Error(result.error || 'Upload failed');
+            }
 
-            const { error: uploadError } = await supabase.storage
-                .from('profile pics')
-                .upload(filePath, file);
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: currentUser.uid,
+                data: { profile_image_url: result.url },
+            });
 
-            if (uploadError) throw uploadError;
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('profile pics')
-                .getPublicUrl(filePath);
-
-            const { error: updateError } = await supabase
-                .from('profiles')
-                .update({ profile_image_url: publicUrl })
-                .eq('id', currentUser.uid);
-
-            if (updateError) throw updateError;
-
-            setProfileImageUrl(publicUrl);
+            setProfileImageUrl(result.url);
         } catch (err) {
             console.error('Error uploading image:', err);
             alert('Failed to upload image. Please try again.');
@@ -326,45 +313,40 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 try {
                     const profileId = userProfile.id;
 
-                    // Fetch count
-                    const { count, error: countError } = await supabase
-                        .from('notifications')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('user_id', profileId)
-                        .eq('is_read', false);
-
-                    if (!countError && count !== null) {
-                        setNotificationCount(count);
-                    }
-
                     // Fetch actual notifications
-                    const { data, error } = await supabase
-                        .from('notifications')
-                        .select('*')
-                        .eq('user_id', profileId)
-                        .order('created_at', { ascending: false })
-                        .limit(10);
+                    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                        table: 'notifications',
+                        operation: 'select',
+                        where: { user_id: profileId },
+                        limit: 10,
+                    });
+                    const data = (rows || []).sort((a: any, b: any) => {
+                        const ca = a.created_at || '';
+                        const cb = b.created_at || '';
+                        return cb.localeCompare(ca);
+                    });
 
-                    if (!error && data) {
-                        if (data.length === 0) {
-                            setNotifications([
-                                {
-                                    id: 'welcome',
-                                    type: 'welcome',
-                                    title: 'Welcome to pilotrecognition.com',
-                                    message: 'This is where your pilot journey starts! To get started with the verification of your licenses and logbooks — and earn the recognition you deserve — get started with Recognition+.',
-                                    is_read: false,
-                                    created_at: new Date().toISOString(),
-                                    metadata: { action_url: '/recognition-plus' },
-                                },
-                            ]);
-                            setNotificationCount(1);
-                        } else {
-                            setNotifications(data);
-                        }
+                    // Count unread client-side
+                    const unreadCount = data.filter((n: any) => !n.is_read).length;
+                    setNotificationCount(unreadCount);
+
+                    if (data.length === 0) {
+                        setNotifications([
+                            {
+                                id: 'welcome',
+                                type: 'welcome',
+                                title: 'Welcome to pilotrecognition.com',
+                                message: 'This is where your pilot journey starts! To get started with the verification of your licenses and logbooks — and earn the recognition you deserve — get started with Recognition+.',
+                                is_read: false,
+                                created_at: new Date().toISOString(),
+                                metadata: { action_url: '/recognition-plus' },
+                            },
+                        ]);
+                        setNotificationCount(1);
+                    } else {
+                        setNotifications(data as any[]);
                     }
                 } catch (err) {
-                    // Suppress transient network errors (tab suspended, offline, etc.)
                     if (err instanceof Error && err.message !== 'Load failed') {
                         console.error('Error fetching notifications:', err);
                     }
@@ -374,33 +356,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
         fetchNotifications();
 
-        // Set up real-time subscription for new notifications
-        const subscription = supabase
-            .channel('notifications-count')
-            .on(
-                'postgres_changes',
-                {
-                    event: '*',
-                    schema: 'public',
-                    table: 'notifications',
-                },
-                () => {
-                    fetchNotifications();
-                }
-            )
-            .subscribe();
-
-        return () => {
-            subscription.unsubscribe();
-        };
+        // Poll every 30 seconds as real-time replacement
+        const interval = setInterval(fetchNotifications, 30000);
+        return () => clearInterval(interval);
     }, [currentUser?.uid, userProfile?.id]);
 
     const markAsRead = async (notificationId: string) => {
-        await supabase
-            .from('notifications')
-            .update({ is_read: true })
-            .eq('id', notificationId);
-        
+        await callApi('queryTable', {
+            table: 'notifications',
+            operation: 'update',
+            id: notificationId,
+            data: { is_read: true },
+        });
+
         setNotifications(prev =>
             prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
         );
@@ -411,10 +379,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
         if (unreadIds.length === 0) return;
 
-        await supabase
-            .from('notifications')
-            .update({ is_read: true })
-            .in('id', unreadIds);
+        await Promise.all(unreadIds.map(id =>
+            callApi('queryTable', {
+                table: 'notifications',
+                operation: 'update',
+                id,
+                data: { is_read: true },
+            })
+        ));
 
         setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
         setNotificationCount(0);
@@ -955,8 +927,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Dark/Light Mode Toggle */}
                                 <button
                                     onClick={onToggleThemeClick}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
-                                    title="Toggle dark mode"
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border-2 shadow-lg ${isDarkMode ? 'bg-slate-900 hover:bg-slate-700 text-amber-400 border-amber-400 hover:border-amber-300 shadow-amber-500/30' : 'bg-white hover:bg-amber-50 text-amber-600 border-amber-500 hover:border-amber-600 shadow-amber-500/20'}`}
+                                    title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                                 >
                                     {isDarkMode ? (
                                         <Sun className="w-5 h-5" />

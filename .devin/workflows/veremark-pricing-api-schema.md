@@ -749,17 +749,23 @@ async function handleLicenseCheckComplete(payload) {
   const { check_id, result, custom_reference } = payload;
   const pilotId = extractPilotIdFromReference(custom_reference);
   
-  // Update database
-  await supabase
-    .from('verifications')
-    .update({
-      license_check_status: result.overall_status,
-      license_check_completed_at: new Date().toISOString(),
-      license_verified: result.license_valid && result.license_active,
-      medical_status: result.verification_details?.medical_certificate?.status,
-      adverse_flags: result.adverse_information
+  // Update database via Worker API
+  await fetch('https://platform-api.benjamintigerbowler.workers.dev/api/updateRecord', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({
+      table: 'verifications',
+      dbName: 'pilotrecognition-profiles',
+      data: {
+        license_check_status: result.overall_status,
+        license_check_completed_at: new Date().toISOString(),
+        license_verified: result.license_valid && result.license_active,
+        medical_status: result.verification_details?.medical_certificate?.status,
+        adverse_flags: result.adverse_information
+      },
+      where: { veremark_check_id: check_id }
     })
-    .eq('veremark_check_id', check_id);
+  });
   
   // Trigger next stage if passed
   if (result.overall_status === 'verified') {
@@ -774,18 +780,24 @@ async function handleEducationCheckComplete(payload) {
   const { check_id, result, custom_reference } = payload;
   const pilotId = extractPilotIdFromReference(custom_reference);
   
-  // Update database
-  await supabase
-    .from('verifications')
-    .update({
-      hours_check_status: result.overall_status,
-      hours_check_completed_at: new Date().toISOString(),
-      hours_verified: result.result?.flight_hours?.total_verified || 0,
-      hours_discrepancy: result.result?.flight_hours?.discrepancy || 0,
-      ato_verified: result.result?.institution_verified,
-      logbook_reviewed: result.result?.physical_logbook_reviewed?.reviewed
+  // Update database via Worker API
+  await fetch('https://platform-api.benjamintigerbowler.workers.dev/api/updateRecord', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({
+      table: 'verifications',
+      dbName: 'pilotrecognition-profiles',
+      data: {
+        hours_check_status: result.overall_status,
+        hours_check_completed_at: new Date().toISOString(),
+        hours_verified: result.result?.flight_hours?.total_verified || 0,
+        hours_discrepancy: result.result?.flight_hours?.discrepancy || 0,
+        ato_verified: result.result?.institution_verified,
+        logbook_reviewed: result.result?.physical_logbook_reviewed?.reviewed
+      },
+      where: { veremark_check_id: check_id }
     })
-    .eq('veremark_check_id', check_id);
+  });
   
   // Check if both checks complete
   await completeVerificationIfReady(pilotId);

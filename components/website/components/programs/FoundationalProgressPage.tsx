@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { TrendingUp, Award, Clock, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface FoundationalProgressPageProps {
@@ -21,6 +21,7 @@ export const FoundationalProgressPage: React.FC<FoundationalProgressPageProps> =
   onNavigate 
 }) => {
   const { userProfile } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,14 +34,17 @@ export const FoundationalProgressPage: React.FC<FoundationalProgressPageProps> =
       setLoading(true);
       
       // Fetch portfolio data
-      const { data: portfolioData, error } = await supabase
-        .from('pilot_portfolio')
-        .select('*')
-        .eq('user_id', userProfile?.uid)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching portfolio:', error);
+      let portfolioData: Record<string, unknown> | null = null;
+      try {
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_portfolio',
+          operation: 'select',
+          where: { user_id: userProfile?.uid },
+          limit: 1,
+        });
+        portfolioData = rows?.[0] || null;
+      } catch (err) {
+        console.error('Error fetching portfolio:', err);
       }
 
       // Mock milestones based on portfolio data

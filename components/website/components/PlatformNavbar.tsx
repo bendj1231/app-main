@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 
@@ -21,6 +22,8 @@ const NAV_ITEMS = [
 
 export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, currentPage = '' }) => {
   const { currentUser, userProfile, logout } = useAuth();
+  const { user: auth0User } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [notifCount, setNotifCount] = useState(0);
   const [bellOpen, setBellOpen] = useState(false);
   const [profileDropOpen, setProfileDropOpen] = useState(false);
@@ -36,12 +39,8 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
 
   // Check email verification status
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }: { data: { session: any } }) => {
-      if (session?.user) {
-        setEmailVerified(!!session.user.email_confirmed_at);
-      }
-    });
-  }, []);
+    setEmailVerified(!!auth0User?.email_verified);
+  }, [auth0User?.email_verified]);
 
   // Check if T&C version has been updated
   useEffect(() => {
@@ -57,11 +56,20 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
     if (!profileId) return;
 
     const fetchNotifs = async () => {
-      const countResult = await supabase.from('pilot_notifications').select('id', { count: 'exact', head: true }).eq('pilot_id', profileId).eq('is_read', false);
-      const dataResult = await supabase.from('pilot_notifications').select('*').eq('pilot_id', profileId).order('created_at', { ascending: false }).limit(10);
-
-      if (countResult.count !== null) setNotifCount(countResult.count);
-      if (dataResult.data) setNotifications(dataResult.data);
+      const allNotifs = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_notifications',
+        operation: 'select',
+        where: { pilot_id: profileId },
+        limit: 500,
+      });
+      const unread = (allNotifs || []).filter((n: any) => !n.is_read);
+      const sorted = (allNotifs || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      }).slice(0, 10);
+      setNotifCount(unread.length);
+      setNotifications(sorted);
     };
 
     fetchNotifs();

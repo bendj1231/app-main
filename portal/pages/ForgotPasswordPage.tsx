@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
 import styles from './ForgotPasswordPage.module.css';
 
 type Step = 'email' | 'success';
@@ -16,19 +16,24 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onBack }
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+    const { loginWithRedirect } = useAuth0();
+
     const handleSendCode = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`,
+            // Auth0 handles password reset via Universal Login
+            await loginWithRedirect({
+                authorizationParams: {
+                    screen_hint: 'resetPassword',
+                    login_hint: email,
+                },
             });
-            if (error) throw error;
-            setSuccessMessage('Password reset link sent to your email. Please check your inbox and click the link to continue.');
+            setSuccessMessage('Redirecting to Auth0 password reset...');
             setStep('success');
         } catch (err: any) {
-            setError(err.message || 'Failed to send reset link.');
+            setError(err.message || 'Failed to initiate password reset.');
         } finally {
             setLoading(false);
         }

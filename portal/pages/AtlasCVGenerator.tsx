@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { db } from '../lib/firebase-stub';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -295,19 +295,19 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
 
       try {
         const userId = userProfile?.id || userProfile?.uid;
-        // Fetch pilot profiles from Supabase
-        const { data: profileData, error: profileError } = await supabase
-          .from('pilot_profiles')
-          .select('*')
-          .eq('user_id', userId)
-          .single();
+        const { callApi } = useWorkerAuth();
 
-        if (profileError && profileError.code !== 'PGRST116') {
-          throw profileError;
-        }
+        // Fetch pilot profiles
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_profiles',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const profileData = profileRows?.[0];
 
         if (profileData) {
-          const p = profileData;
+          const p: any = profileData;
 
           if (p.phone) base.personalInfo.phone = p.phone;
           if (p.location) base.personalInfo.location = p.location;
@@ -342,18 +342,16 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
         }
 
         // Fetch achievements for certifications → append to education
-        const { data: achievementData, error: achievementError } = await supabase
-          .from('achievements')
-          .select('*')
-          .eq('user_id', userProfile.id || userProfile.uid)
-          .eq('category', 'Certification');
-
-        if (achievementError && achievementError.code !== 'PGRST116') {
-          throw achievementError;
-        }
+        const achievementRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'achievements',
+          operation: 'select',
+          where: { user_id: userProfile.id || userProfile.uid, category: 'Certification' },
+          limit: 500,
+        });
+        const achievementData = achievementRows || [];
 
         const certEntries: EducationEntry[] = [];
-        (achievementData || []).forEach((achievement) => {
+        achievementData.forEach((achievement: any) => {
           certEntries.push({
             id: base.education.length + certEntries.length + 1,
             degree: achievement.title || 'Certification',
@@ -365,7 +363,7 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
           base.education = [...base.education, ...certEntries];
         }
       } catch (err) {
-        console.error('AtlasCVGenerator: Firebase fetch failed', err);
+        console.error('AtlasCVGenerator: fetch failed', err);
       }
 
       setUserData(base);

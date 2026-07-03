@@ -3,7 +3,7 @@ import { safeRedirect } from '@/lib/url-validator';
 import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { RecognitionScoreCard } from '../../components/RecognitionScoreCard';
 import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 
@@ -769,72 +769,68 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
       let lastEntryDate = pilotData.lastFlownDate;
 
       try {
-        // Fetch study sessions from Supabase
-        const { data: studyData, error: studyError } = await supabase
-          .from('study_sessions')
-          .select('*')
-          .eq('user_id', userProfile.uid)
-          .order('session_date', { ascending: false });
+        const { callApi } = useWorkerAuth();
 
-        if (studyError) {
-          throw studyError;
-        }
+        // Fetch study sessions
+        const studyRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'study_sessions',
+          operation: 'select',
+          where: { user_id: userProfile.uid },
+          limit: 500,
+        });
+        const studyData = (studyRows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
         let totalStudyMinutes = 0;
-        (studyData || []).forEach((session) => {
-          totalStudyMinutes += session.duration || 0;
+        (studyData || []).forEach((session: any) => {
+          totalStudyMinutes += (session.duration as number) || 0;
         });
         const studyHours = Math.round(totalStudyMinutes / 60);
 
-        // Fetch exam results from Supabase
-        const { data: examData, error: examError } = await supabase
-          .from('pilot_exams')
-          .select('*')
-          .eq('user_id', userProfile.uid)
-          .order('exam_date', { ascending: false });
-
-        if (examError) {
-          throw examError;
-        }
+        // Fetch exam results
+        const examRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_exams',
+          operation: 'select',
+          where: { user_id: userProfile.uid },
+          limit: 500,
+        });
+        const examData = (examRows || []).sort((a: any, b: any) => (b.exam_date || '').localeCompare(a.exam_date || ''));
 
         let examHours = 0;
         let totalScore = 0;
         let examCount = 0;
         let passedCount = 0;
-        (examData || []).forEach((exam) => {
-          examHours += exam.duration || 0;
+        (examData || []).forEach((exam: any) => {
+          examHours += (exam.duration as number) || 0;
           if (exam.score !== undefined) {
             totalScore += Number(exam.score);
             examCount++;
           }
           if (exam.passed) passedCount++;
         });
-        
+
         const avgRating = examCount > 0 ? `${Math.round(totalScore / examCount)}%` : '0%';
         const passRate = examCount > 0 ? `${Math.round((passedCount / examCount) * 100)}%` : '0%';
 
-        // Fetch flight logbook hours from Supabase
+        // Fetch flight logbook hours
         setFlightLogsLoading(true);
-        const { data: logbookData, error: logbookError } = await supabase
-          .from('pilot_flight_logs')
-          .select('*')
-          .eq('user_id', userProfile.uid)
-          .order('date', { ascending: false });
-
-        if (logbookError) {
-          throw logbookError;
-        }
+        const logbookRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_flight_logs',
+          operation: 'select',
+          where: { user_id: userProfile.uid },
+          limit: 500,
+        });
+        const logbookData = (logbookRows || []).sort((a: any, b: any) => (b.date || '').localeCompare(a.date || ''));
 
         let totalFlightHours = 0;
-        const entries: FlightLogEntry[] = (logbookData || []).map((log) => {
+        const entries: FlightLogEntry[] = (logbookData || []).map((log: any) => {
           totalFlightHours += Number(log.hours) || 0;
           return {
-            id: log.id,
-            date: log.date,
-            aircraft: log.aircraft_type || log.aircraft,
-            route: log.route,
+            id: log.id as string,
+            date: log.date as string,
+            aircraft: (log.aircraft_type || log.aircraft) as string,
+            route: log.route as string,
             hours: Number(log.hours),
-            remarks: log.remarks || ''
+            remarks: (log.remarks || '') as string
           };
         });
 
@@ -849,42 +845,37 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
         let foundationalProgress = pilotData.foundationalProgress;
 
         try {
-          const { data: profileData, error: profileError } = await supabase
-            .from('pilot_profiles')
-            .select('*')
-            .eq('user_id', userProfile.uid)
-            .single();
-
-          if (profileError && profileError.code !== 'PGRST116') {
-            throw profileError;
-          }
+          const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_profiles',
+            operation: 'select',
+            where: { user_id: userProfile.uid },
+            limit: 1,
+          });
+          const profileData = profileRows?.[0];
 
           if (profileData) {
-            licenseType = profileData.license_type || licenseType;
-            licenseStatus = profileData.license_status || licenseStatus;
-            totalHoursOverride = profileData.total_hours ?? totalHoursOverride;
-            picHoursOverride = profileData.pic_hours ?? picHoursOverride;
-            updatedRadioNumber = profileData.radio_license_number || updatedRadioNumber;
-            updatedRadioExpiry = profileData.radio_license_expiry || updatedRadioExpiry;
+            licenseType = (profileData.license_type as string) || licenseType;
+            licenseStatus = (profileData.license_status as string) || licenseStatus;
+            totalHoursOverride = (profileData.total_hours as number) ?? totalHoursOverride;
+            picHoursOverride = (profileData.pic_hours as number) ?? picHoursOverride;
+            updatedRadioNumber = (profileData.radio_license_number as string) || updatedRadioNumber;
+            updatedRadioExpiry = (profileData.radio_license_expiry as string) || updatedRadioExpiry;
           }
         } catch (profileError) {
           console.warn('Unable to load pilot profile license info:', profileError);
         }
 
         try {
-          const { data: progressData, error: progressError } = await supabase
-            .from('program_progress')
-            .select('*')
-            .eq('user_id', userProfile.uid)
-            .eq('program_type', 'foundational')
-            .single();
-
-          if (progressError && progressError.code !== 'PGRST116') {
-            throw progressError;
-          }
+          const progressRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'program_progress',
+            operation: 'select',
+            where: { user_id: userProfile.uid, program_type: 'foundational' },
+            limit: 1,
+          });
+          const progressData = progressRows?.[0];
 
           if (progressData) {
-            const percent = Math.round(progressData.completion_percentage ?? 0);
+            const percent = Math.round((progressData.completion_percentage as number) ?? 0);
             foundationalProgress = `${percent}% complete`;
           }
         } catch (progressError) {
@@ -894,19 +885,18 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
         // Fetch mentor hours from study_sessions for mentorship entries
         let totalMentorHours = 0;
         try {
-          const { data: mentorData, error: mentorError } = await supabase
-            .from('study_sessions')
-            .select('*')
-            .eq('user_id', userProfile.uid)
-            .eq('session_type', 'mentorship')
-            .order('session_date', { ascending: false });
+          const mentorRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'study_sessions',
+            operation: 'select',
+            where: { user_id: userProfile.uid, session_type: 'mentorship' },
+            limit: 500,
+          });
+          const mentorData = (mentorRows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
-          if (mentorError) {
-            console.warn('Unable to fetch mentor hours:', mentorError);
-          } else if (mentorData && mentorData.length > 0) {
+          if (mentorData.length > 0) {
             let mentorMinutes = 0;
-            mentorData.forEach((session) => {
-              mentorMinutes += session.duration || 0;
+            mentorData.forEach((session: any) => {
+              mentorMinutes += (session.duration as number) || 0;
             });
             totalMentorHours = Math.round(mentorMinutes / 60 * 10) / 10; // Round to 1 decimal
             setMentorHoursLabel(`${totalMentorHours} hr`);

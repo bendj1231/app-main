@@ -25,7 +25,6 @@ external-references/
 *.njsproj
 *.sln
 *.sw?
-.vercel
 
 # Environment variables — never commit
 .env

@@ -26,7 +26,7 @@ import {
   Target,
   X,
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { NavItem } from './types';
 
 interface Profile {
@@ -100,20 +100,25 @@ export const LogbookPreviewPanel: React.FC<{ profile: Profile; onOpenLogbook: ()
   profile,
   onOpenLogbook,
 }) => {
+  const { callApi } = useWorkerAuth();
   const [logs, setLogs] = React.useState<Record<string, unknown>[]>([]);
   React.useEffect(() => {
     const id = profile?.id;
     if (!id) return;
     let active = true;
-    supabase
-      .from('pilot_flight_logs')
-      .select('id,date,aircraft_type,route,hours')
-      .eq('user_id', id)
-      .order('date', { ascending: false })
-      .limit(3)
-      .then(({ data }) => {
-        if (active) setLogs(data ?? []);
+    callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_flight_logs',
+      operation: 'select',
+      where: { user_id: id },
+      limit: 3,
+    }).then((rows) => {
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const da = a.date || '';
+        const db = b.date || '';
+        return db.localeCompare(da);
       });
+      if (active) setLogs(sorted);
+    });
     return () => {
       active = false;
     };
@@ -303,19 +308,24 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
   profile,
   onClose,
 }) => {
+  const { callApi } = useWorkerAuth();
   const [notifs, setNotifs] = React.useState<Record<string, unknown>[]>([]);
   React.useEffect(() => {
     if (!profileId) return;
     let active = true;
-    supabase
-      .from('pilot_notifications')
-      .select('*')
-      .eq('pilot_id', profileId)
-      .order('created_at', { ascending: false })
-      .limit(8)
-      .then(({ data }) => {
-        if (active) setNotifs(data ?? []);
+    callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_notifications',
+      operation: 'select',
+      where: { pilot_id: profileId },
+      limit: 8,
+    }).then((rows) => {
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
       });
+      if (active) setNotifs(sorted);
+    });
     return () => {
       active = false;
     };
@@ -407,7 +417,12 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
 
   const markRead = async (id: string) => {
     if (!id.startsWith('rp-')) {
-      await supabase.from('pilot_notifications').update({ is_read: true }).eq('id', id);
+      await callApi('queryTable', {
+        table: 'pilot_notifications',
+        operation: 'update',
+        id,
+        data: { is_read: true },
+      });
     }
     setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
   };
@@ -641,10 +656,37 @@ export const StatusPill: React.FC<{ status: string; label?: string }> = ({ statu
 
 export const glassCard = 'rounded-xl p-5';
 
-export const glassStyle: React.CSSProperties = {
-  background: 'rgba(30,41,59,0.75)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255,255,255,0.1)',
+export const glassStyleDark: React.CSSProperties = {
+  background: 'rgba(10,10,18,0.85)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(77,208,225,0.35)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
+};
+
+export const glassStyleLight: React.CSSProperties = {
+  background: 'rgba(240,245,250,0.38)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.28)',
+  boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.35)',
+};
+
+export const glassStyle = glassStyleLight;
+
+// G1000-style hard key button
+export const hardKeyStyle: React.CSSProperties = {
+  background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)',
+  border: '1px solid rgba(77,208,225,0.3)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)',
+  color: '#ffffff',
+};
+
+export const hardKeyActiveStyle: React.CSSProperties = {
+  background: 'linear-gradient(180deg, #4a4a5a 0%, #3a3a48 100%)',
+  border: '1px solid rgba(233,30,140,0.5)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 0 12px rgba(233,30,140,0.25)',
+  color: '#ffffff',
 };
 
 export const SectionCard: React.FC<{

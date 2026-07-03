@@ -3,7 +3,7 @@ import { safeRedirect } from '@/lib/url-validator';
 import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { PathwaysCarousel } from '../components/PathwaysCarousel';
 import { PathwayStrategyCarousel } from '../components/PathwayStrategyCarousel';
@@ -857,6 +857,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [latestLogbookHours, setLatestLogbookHours] = useState(0);
   const [foundationalPlatformLoading, setFoundationalPlatformLoading] = useState(false);
   const { portfolio, updatePortfolio } = usePilotPortfolio(userProfile?.uid);
+  const { callApi } = useWorkerAuth();
   
   // New state variables for redesigned portfolio
   const [progress, setProgress] = useState({ foundational: 0 });
@@ -892,11 +893,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     }
   });
   
-  // Mentorship enrollment state from Supabase
+  // Mentorship enrollment state
   const [mentorshipEnrolled, setMentorshipEnrolled] = useState(true);
   const [mentorshipHoursRemaining, setMentorshipHoursRemaining] = useState(50);
 
-  // Licensure data from Supabase
+  // Licensure data
   interface LicensureData {
     current_license?: string[];
     license_number?: string;
@@ -935,17 +936,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       }
 
       
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('enrolled_programs, email, id')
-        .eq('email', userProfile.email)
-        .single();
-      
-      
-      if (profileError) {
-        console.error('❌ Profile lookup error:', profileError);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { email: userProfile.email },
+        limit: 1,
+      });
+      const profileData = rows?.[0];
+
+      if (!profileData) {
+        console.warn('⚠️ Profile not found for email:', userProfile.email);
         setIsFoundationalEnrolled(false);
-      } else if (profileData && profileData.enrolled_programs) {
+      } else if (profileData.enrolled_programs) {
         const enrolledPrograms = profileData.enrolled_programs;
         
         if (Array.isArray(enrolledPrograms)) {
@@ -987,40 +989,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         const userId = userProfile?.id || userProfile?.uid;
         if (!userId) throw new Error('No user ID available');
         
-        // Fetch study sessions from Supabase
-        const { data: studyData, error: studyError } = await supabase
-          .from('study_sessions')
-          .select('*')
-          .eq('user_id', userId)
-          .order('session_date', { ascending: false });
-
-        if (studyError) {
-          throw studyError;
-        }
+        // Fetch study sessions
+        const studyRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'study_sessions',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const studyData = (studyRows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
         let totalStudyMinutes = 0;
-        (studyData || []).forEach((session) => {
-          totalStudyMinutes += session.duration || 0;
+        (studyData || []).forEach((session: any) => {
+          totalStudyMinutes += (session.duration as number) || 0;
         });
         const studyHours = Math.round(totalStudyMinutes / 60);
 
-        // Fetch exam results from Supabase
-        const { data: examData, error: examError } = await supabase
-          .from('pilot_exams')
-          .select('*')
-          .eq('user_id', userId)
-          .order('exam_date', { ascending: false });
-
-        if (examError) {
-          throw examError;
-        }
+        // Fetch exam results
+        const examRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_exams',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const examData = (examRows || []).sort((a: any, b: any) => (b.exam_date || '').localeCompare(a.exam_date || ''));
 
         let examHours = 0;
         let totalScore = 0;
         let examCount = 0;
         let passedCount = 0;
-        (examData || []).forEach((exam) => {
-          examHours += exam.duration || 0;
+        (examData || []).forEach((exam: any) => {
+          examHours += (exam.duration as number) || 0;
           if (exam.score !== undefined) {
             totalScore += Number(exam.score);
             examCount++;
@@ -1031,28 +1029,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         const avgRating = examCount > 0 ? `${Math.round(totalScore / examCount)}%` : '0%';
         const passRate = examCount > 0 ? `${Math.round((passedCount / examCount) * 100)}%` : '0%';
 
-        // Fetch flight logbook hours from Supabase
+        // Fetch flight logbook hours
         setFlightLogsLoading(true);
-        const { data: logbookData, error: logbookError } = await supabase
-          .from('pilot_flight_logs')
-          .select('*')
-          .eq('user_id', userId)
-          .order('date', { ascending: false });
-
-        if (logbookError) {
-          throw logbookError;
-        }
+        const logbookRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_flight_logs',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const logbookData = (logbookRows || []).sort((a: any, b: any) => (b.date || '').localeCompare(a.date || ''));
 
         let totalFlightHours = 0;
-        const entries: FlightLogEntry[] = (logbookData || []).map((log) => {
+        const entries: FlightLogEntry[] = (logbookData || []).map((log: any) => {
           totalFlightHours += Number(log.hours) || 0;
           return {
-            id: log.id,
-            date: log.date,
-            aircraft: log.aircraft_type || log.aircraft,
-            route: log.route,
+            id: log.id as string,
+            date: log.date as string,
+            aircraft: (log.aircraft_type || log.aircraft) as string,
+            route: log.route as string,
             hours: Number(log.hours),
-            remarks: log.remarks || ''
+            remarks: (log.remarks || '') as string
           };
         });
 
@@ -1067,42 +1063,37 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         let foundationalProgress = pilotData.foundationalProgress;
 
         try {
-          const { data: profileData, error: profileError } = await supabase
-            .from('pilot_profiles')
-            .select('*')
-            .eq('user_id', userId)
-            .single();
-
-          if (profileError && profileError.code !== 'PGRST116') {
-            throw profileError;
-          }
+          const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'pilot_profiles',
+            operation: 'select',
+            where: { user_id: userId },
+            limit: 1,
+          });
+          const profileData = profileRows?.[0];
 
           if (profileData) {
-            licenseType = profileData.license_type || licenseType;
-            licenseStatus = profileData.license_status || licenseStatus;
-            totalHoursOverride = profileData.total_hours ?? totalHoursOverride;
-            picHoursOverride = profileData.pic_hours ?? picHoursOverride;
-            updatedRadioNumber = profileData.radio_license_number || updatedRadioNumber;
-            updatedRadioExpiry = profileData.radio_license_expiry || updatedRadioExpiry;
+            licenseType = (profileData.license_type as string) || licenseType;
+            licenseStatus = (profileData.license_status as string) || licenseStatus;
+            totalHoursOverride = (profileData.total_hours as number) ?? totalHoursOverride;
+            picHoursOverride = (profileData.pic_hours as number) ?? picHoursOverride;
+            updatedRadioNumber = (profileData.radio_license_number as string) || updatedRadioNumber;
+            updatedRadioExpiry = (profileData.radio_license_expiry as string) || updatedRadioExpiry;
           }
         } catch (profileError) {
           console.warn('Unable to load pilot profile license info:', profileError);
         }
 
         try {
-          const { data: progressData, error: progressError } = await supabase
-            .from('program_progress')
-            .select('*')
-            .eq('user_id', userId)
-            .eq('program_type', 'foundational')
-            .single();
-
-          if (progressError && progressError.code !== 'PGRST116') {
-            throw progressError;
-          }
+          const progressRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'program_progress',
+            operation: 'select',
+            where: { user_id: userId, program_type: 'foundational' },
+            limit: 1,
+          });
+          const progressData = progressRows?.[0];
 
           if (progressData) {
-            const percent = Math.round(progressData.completion_percentage ?? 0);
+            const percent = Math.round((progressData.completion_percentage as number) ?? 0);
             foundationalProgress = `${percent}% complete`;
           }
         } catch (progressError) {
@@ -1112,19 +1103,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         // Fetch mentor hours from study_sessions for mentorship entries
         let totalMentorHours = 0;
         try {
-          const { data: mentorData, error: mentorError } = await supabase
-            .from('study_sessions')
-            .select('*')
-            .eq('user_id', userProfile.uid)
-            .eq('session_type', 'mentorship')
-            .order('session_date', { ascending: false });
+          const mentorRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'study_sessions',
+            operation: 'select',
+            where: { user_id: userProfile.uid, session_type: 'mentorship' },
+            limit: 500,
+          });
+          const mentorData = (mentorRows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
-          if (mentorError) {
-            console.warn('Unable to fetch mentor hours:', mentorError);
-          } else if (mentorData && mentorData.length > 0) {
+          if (mentorData.length > 0) {
             let mentorMinutes = 0;
-            mentorData.forEach((session) => {
-              mentorMinutes += session.duration || 0;
+            mentorData.forEach((session: any) => {
+              mentorMinutes += (session.duration as number) || 0;
             });
             totalMentorHours = Math.round(mentorMinutes / 60 * 10) / 10; // Round to 1 decimal
             setMentorHoursLabel(`${totalMentorHours} hr`);
@@ -1165,7 +1155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     fetchFirebaseData();
   }, [userProfile?.uid]);
 
-  // Fetch licensure data from Supabase
+  // Fetch licensure data
   useEffect(() => {
     const fetchLicensureData = async () => {
       const userId = userProfile?.id || userProfile?.uid;
@@ -1175,33 +1165,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       }
 
       try {
-        const { data, error } = await supabase
-          .from('pilot_licensure_experience')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.warn('Error fetching licensure data:', error);
-        }
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const data = rows?.[0];
 
         if (data) {
           setLicensureData({
-            current_license: data.current_license || [],
-            license_number: data.license_number,
-            license_expiry: data.license_expiry,
-            license_country_of_issue: data.license_country_of_issue,
-            medical_class: data.medical_class,
-            medical_expiry: data.medical_expiry,
-            medical_country: data.medical_country,
-            radio_license_expiry: data.radio_license_expiry,
-            aircraft_ratings: data.aircraft_ratings || [],
-            languages: data.languages,
-            english_proficiency: data.english_proficiency,
-            job_experiences: data.job_experiences || [],
-            current_occupation: data.current_occupation,
-            current_employer: data.current_employer,
-            current_position: data.current_position
+            current_license: (data.current_license as string[]) || [],
+            license_number: data.license_number as string,
+            license_expiry: data.license_expiry as string,
+            license_country_of_issue: data.license_country_of_issue as string,
+            medical_class: data.medical_class as string,
+            medical_expiry: data.medical_expiry as string,
+            medical_country: data.medical_country as string,
+            radio_license_expiry: data.radio_license_expiry as string,
+            aircraft_ratings: (data.aircraft_ratings as { aircraftType: string; ratingDate: string; isCurrent: boolean }[]) || [],
+            languages: data.languages as string,
+            english_proficiency: data.english_proficiency as string,
+            job_experiences: (data.job_experiences as any[]) || [],
+            current_occupation: data.current_occupation as string,
+            current_employer: data.current_employer as string,
+            current_position: data.current_position as string
           });
         }
       } catch (error) {

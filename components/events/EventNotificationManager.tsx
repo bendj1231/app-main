@@ -6,7 +6,7 @@ import {
   AlertCircle, Send, Clock, Users, MapPin, Calendar, Mail, Megaphone,
   ChevronUp, ChevronDown, Copy
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface EventNotificationManagerProps {
   eventId: string;
@@ -32,6 +32,7 @@ interface Notification {
 }
 
 export function EventNotificationManager({ eventId, eventTitle, user, onClose }: EventNotificationManagerProps) {
+  const { callApi } = useWorkerAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -61,14 +62,18 @@ export function EventNotificationManager({ eventId, eventTitle, user, onClose }:
   const loadNotifications = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('event_notifications')
-        .select('*')
-        .eq('event_id', eventId)
-        .order('scheduled_for', { ascending: false });
-
-      if (error) throw error;
-      setNotifications(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_notifications',
+        operation: 'select',
+        where: { event_id: eventId },
+        limit: 500,
+      });
+      const sorted = (rows || []).sort((a: any, b: any) => {
+        const sa = a.scheduled_for || '';
+        const sb = b.scheduled_for || '';
+        return sb.localeCompare(sa);
+      });
+      setNotifications((sorted as unknown) as Notification[]);
     } catch (err) {
       console.error('Error loading notifications:', err);
       setError('Failed to load notifications');
@@ -101,18 +106,18 @@ export function EventNotificationManager({ eventId, eventTitle, user, onClose }:
       };
 
       if (editingNotification) {
-        const { error } = await supabase
-          .from('event_notifications')
-          .update(notificationData)
-          .eq('id', editingNotification.id);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_notifications',
+          operation: 'update',
+          id: editingNotification.id,
+          data: notificationData,
+        });
       } else {
-        const { error } = await supabase
-          .from('event_notifications')
-          .insert(notificationData);
-
-        if (error) throw error;
+        await callApi('queryTable', {
+          table: 'event_notifications',
+          operation: 'insert',
+          data: notificationData,
+        });
       }
 
       await loadNotifications();
@@ -135,16 +140,16 @@ export function EventNotificationManager({ eventId, eventTitle, user, onClose }:
 
     try {
       // Simulate sending (in production, this would call an email service)
-      const { error } = await supabase
-        .from('event_notifications')
-        .update({ 
+      await callApi('queryTable', {
+        table: 'event_notifications',
+        operation: 'update',
+        id: notificationId,
+        data: {
           status: 'sent',
           sent_at: new Date().toISOString(),
           sent_count: Math.floor(Math.random() * 100) + 50,
-        })
-        .eq('id', notificationId);
-
-      if (error) throw error;
+        },
+      });
       await loadNotifications();
     } catch (err) {
       console.error('Error sending notification:', err);
@@ -158,12 +163,11 @@ export function EventNotificationManager({ eventId, eventTitle, user, onClose }:
     if (!confirm('Are you sure you want to delete this notification?')) return;
 
     try {
-      const { error } = await supabase
-        .from('event_notifications')
-        .delete()
-        .eq('id', notificationId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'event_notifications',
+        operation: 'delete',
+        id: notificationId,
+      });
       await loadNotifications();
     } catch (err) {
       console.error('Error deleting notification:', err);

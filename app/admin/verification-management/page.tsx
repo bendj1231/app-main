@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -48,6 +48,7 @@ export default function AdminVerificationManagementPage() {
   const [deployingVC, setDeployingVC] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
@@ -60,18 +61,16 @@ export default function AdminVerificationManagementPage() {
       // Fetch verification requests with payment tracking
       // This would typically query a verification_requests table
       // For now, we'll simulate with profiles table
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select(`
-          id,
-          full_name,
-          email,
-          account_number,
-          subscription_id,
-          account_tier,
-          created_at
-        `)
-        .order('created_at', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        limit: 500,
+      });
+      const profiles = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
 
       if (!profiles) {
         setRequests([]);

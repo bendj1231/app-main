@@ -12,7 +12,7 @@ import {
   ChevronUp,
   ExternalLink
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface VerificationDirective {
   id: string;
@@ -62,17 +62,24 @@ export default function EnterpriseVerificationDashboard() {
     }
   }, [isAuthenticated]);
 
-  const fetchDirectives = async () => {
-    const { data, error } = await supabase
-      .from('verification_directives')
-      .select('*')
-      .order('initiated_at', { ascending: false })
-      .limit(50);
+  const { callApi } = useWorkerAuth();
 
-    if (data && !error) {
-      setDirectives(data);
+  const fetchDirectives = async () => {
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'verification_directives',
+        operation: 'select',
+        limit: 50,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ia = a.initiated_at || '';
+        const ib = b.initiated_at || '';
+        return ib.localeCompare(ia);
+      });
+      setDirectives(data as any);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const filteredDirectives = filter === 'ALL' 

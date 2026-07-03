@@ -6,7 +6,7 @@ import {
   AlertCircle, QrCode, Ticket, Star, ExternalLink, ChevronRight,
   Plane, Building2, Award, X
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface EventRegistrationPageProps {
   eventId: string;
@@ -16,6 +16,7 @@ interface EventRegistrationPageProps {
 }
 
 export function EventRegistrationPage({ eventId, user, onComplete, onCancel }: EventRegistrationPageProps) {
+  const { callApi } = useWorkerAuth();
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
@@ -43,25 +44,25 @@ export function EventRegistrationPage({ eventId, user, onComplete, onCancel }: E
   const loadEvent = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('id', eventId)
-        .single();
-
-      if (error) throw error;
+      const eventRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        where: { id: eventId },
+        limit: 1,
+      });
+      const data = eventRows?.[0];
+      if (!data) throw new Error('Event not found');
       setEvent(data);
 
       // Check if user already registered
       if (user?.id) {
-        const { data: existingReg } = await supabase
-          .from('event_registrations')
-          .select('*')
-          .eq('event_id', eventId)
-          .eq('user_id', user.id)
-          .single();
-
-        if (existingReg) {
+        const regRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'event_registrations',
+          operation: 'select',
+          where: { event_id: eventId, user_id: user.id },
+          limit: 1,
+        });
+        if (regRows?.[0]) {
           setRegistered(true);
         }
       }
@@ -77,14 +78,15 @@ export function EventRegistrationPage({ eventId, user, onComplete, onCancel }: E
     if (!formData.promo_code || !event) return;
 
     try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('promo_discount_percentage, promo_max_uses, promo_uses_count, promo_code_expires_at')
-        .eq('id', eventId)
-        .eq('promo_code', formData.promo_code)
-        .single();
+      const promoRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        where: { id: eventId, promo_code: formData.promo_code },
+        limit: 1,
+      });
+      const data = promoRows?.[0];
 
-      if (error || !data) {
+      if (!data) {
         setError('Invalid promo code');
         setPromoDiscount(0);
         setFinalPrice(event.registration_fee);
@@ -146,33 +148,35 @@ export function EventRegistrationPage({ eventId, user, onComplete, onCancel }: E
         payment_status: finalPrice > 0 ? 'pending' : 'free',
       };
 
-      const { data, error: regError } = await supabase
-        .from('event_registrations')
-        .insert(registrationData)
-        .select()
-        .single();
-
-      if (regError) throw regError;
+      const inserted = await callApi('queryTable', {
+        table: 'event_registrations',
+        operation: 'insert',
+        data: registrationData,
+      });
 
       // Update event attendee count
-      await supabase
-        .from('events')
-        .update({ 
+      await callApi('queryTable', {
+        table: 'events',
+        operation: 'update',
+        id: eventId,
+        data: {
           current_attendees: (event.current_attendees || 0) + 1,
-          signups_count: (event.signups_count || 0) + 1
-        })
-        .eq('id', eventId);
+          signups_count: (event.signups_count || 0) + 1,
+        },
+      });
 
       // Update promo code usage if used
       if (formData.promo_code) {
-        await supabase
-          .from('events')
-          .update({ promo_uses_count: (event.promo_uses_count || 0) + 1 })
-          .eq('id', eventId);
+        await callApi('queryTable', {
+          table: 'events',
+          operation: 'update',
+          id: eventId,
+          data: { promo_uses_count: (event.promo_uses_count || 0) + 1 },
+        });
       }
 
       setRegistered(true);
-      if (onComplete) onComplete(data.id);
+      if (onComplete) onComplete((inserted as any)?.id || '');
     } catch (err) {
       console.error('Registration error:', err);
       setError('Failed to register. Please try again.');

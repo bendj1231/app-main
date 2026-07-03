@@ -22,6 +22,7 @@ export type TabId =
   | 'advanced-profile'
   | 'foundation-welcome'
   | 'pathways-directory'
+  | 'pathways-discovery'
   | 'recognition-plus-tab'
   | 'pilot-shortage-support'
   | 'inbox'

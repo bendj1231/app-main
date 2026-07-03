@@ -1,7 +1,8 @@
 // Pathway Dashboard - Shows real pathway matches from browser engine
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/shared/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { 
   Route, 
   Target, 
@@ -28,6 +29,8 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
   pilotId 
 }) => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [profile, setProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
@@ -43,34 +46,31 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
     limit: 10 
   });
 
-  // Fetch real Supabase profile for the Profile Card
+  // Fetch real D1 profile for the Profile Card
   useEffect(() => {
     const fetchProfile = async () => {
       setProfileLoading(true);
       try {
         // Use pilotId prop if provided, otherwise get current auth user
-        let targetUserId = pilotId;
-        if (!targetUserId) {
-          const { data: { user } } = await supabase.auth.getUser();
-          targetUserId = user?.id;
-        }
+        const targetUserId = pilotId || currentUser?.uid;
         
         if (!targetUserId) {
           setProfileLoading(false);
           return;
         }
         
-        const { data } = await supabase
-          .from('profiles')
-          .select('id, first_name, last_name, license_type, total_flight_hours, recognition_score, profile_readiness, profile_image_url, medical_expiry, ratings, type_ratings')
-          .eq('id', targetUserId)
-          .single();
-        if (data) setProfile(data);
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: targetUserId },
+          limit: 1,
+        });
+        if (rows?.[0]) setProfile(rows[0]);
       } catch (e) { /* silent fail */ }
       setProfileLoading(false);
     };
     fetchProfile();
-  }, [pilotId]);
+  }, [pilotId, currentUser?.uid]);
 
   const handleNavigate = (path: string) => {
     if (onNavigate) {

@@ -7,8 +7,33 @@ binding = "pilotrecognition_profiles"
 database_name = "pilotrecognition-profiles"
 database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
 
+# Wingmentor Program Database
+[[d1_databases]]
+binding = "wingmentor_program"
+database_name = "wingmentor-program"
+database_id = "5ef76bc5-9783-4ad5-8751-05b21d70e135"
+
+# pilotrecognition-d1 (OPS) — security_events, ai_usage_log, payouts, etc.
+[[d1_databases]]
+binding = "ops_db"
+database_name = "pilotrecognition-d1"
+database_id = "0652ca22-adb0-4642-8658-ccc3ad74d263"
+
+# Reference data — enterprise, pathways, blog posts, etc.
+[[d1_databases]]
+binding = "reference_data"
+database_name = "pilotrecognition-reference-data"
+database_id = "1a59c397-fa2a-4a5f-b557-87b54230b202"
+
 [vars]
 AUTH0_DOMAIN = "auth.pilotrecognition.com"
+
+# KV namespace for community chat (ephemeral messages, auto-expire)
+# Create with: npx wrangler kv namespace create "pilot-chat"
+# Then update the id below with the returned namespace ID
+# [[kv_namespaces]]
+# binding = "CHAT"
+# id = "your_kv_namespace_id_here"
 
 [observability]
 enabled = true

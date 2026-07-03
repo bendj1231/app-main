@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { UserProfile } from '../types/user';
 
 interface PilotPortfolioPageProps {
@@ -43,25 +43,26 @@ export const PilotPortfolioPage: React.FC<PilotPortfolioPageProps> = ({ onBack, 
     }
   }, [userProfile?.uid, preloadedPortfolio]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchPortfolioData = async () => {
     try {
       setLoading(true);
 
-      const { data: portfolioData, error: portfolioError } = await supabase
-        .from('pilot_portfolio')
-        .select('*')
-        .eq('user_id', userProfile?.uid)
-        .single();
-
-      if (portfolioError && portfolioError.code !== 'PGRST116') {
-        throw portfolioError;
-      }
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 1,
+      });
+      const portfolioData = rows?.[0];
 
       // Create portfolio if it doesn't exist
       if (!portfolioData) {
-        const { data: newPortfolio, error: createError } = await supabase
-          .from('pilot_portfolio')
-          .insert({
+        const newPortfolio = await callApi('queryTable', {
+          table: 'pilot_portfolio',
+          operation: 'insert',
+          data: {
             user_id: userProfile?.uid,
             foundation_program_status: 'not_started',
             initial_examination_scores: {},
@@ -74,14 +75,11 @@ export const PilotPortfolioPage: React.FC<PilotPortfolioPageProps> = ({ onBack, 
             competency_development: {},
             career_progression: {},
             recognition_achievements: []
-          })
-          .select()
-          .single();
-
-        if (createError) throw createError;
-        setPortfolio(newPortfolio);
+          },
+        });
+        setPortfolio(newPortfolio as any);
       } else {
-        setPortfolio(portfolioData);
+        setPortfolio(portfolioData as any);
       }
 
     } catch (error) {

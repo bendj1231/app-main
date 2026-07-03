@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { UserProfile } from '../types/user';
 
 interface FoundationalProgramLogbookPageProps {
@@ -52,6 +52,8 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
     fetchMentorshipSessions();
   }, [userProfile?.uid]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchMentorshipSessions = async () => {
     if (!userProfile?.uid) {
       setLoading(false);
@@ -60,16 +62,17 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
 
     try {
       const userId = userProfile?.id || userProfile?.uid;
-      // Fetch from Supabase study_sessions table
-      const { data, error } = await supabase
-        .from('study_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('session_type', 'mentorship')
-        .order('session_date', { ascending: false });
+      // Fetch from study_sessions table
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'study_sessions',
+        operation: 'select',
+        where: { user_id: userId, session_type: 'mentorship' },
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (b.session_date || '').localeCompare(a.session_date || ''));
 
-      if (error) {
-        console.warn('Error fetching mentorship sessions:', error);
+      if (!rows) {
+        console.warn('Error fetching mentorship sessions');
         // Use sample data if no data found
         const sampleSessions: MentorshipSession[] = [
           {
@@ -192,11 +195,12 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
       status: 'pending'
     };
 
-    // Try to save to Supabase FIRST (before resetting form)
+    // Try to save FIRST (before resetting form)
     try {
-      const { error } = await supabase
-        .from('study_sessions')
-        .insert({
+      await callApi('queryTable', {
+        table: 'study_sessions',
+        operation: 'insert',
+        data: {
           user_id: userProfile?.uid,
           session_type: 'mentorship',
           session_date: formData.date,
@@ -208,20 +212,15 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
           mentor_logged: false,
           mentee_logged: true,
           wingmentor_verified: false
-        });
-      
-      if (error) {
-        console.warn('Failed to save to Supabase:', error);
-        alert('Failed to save session to database. Please try again.');
-        return;
-      }
+        },
+      });
     } catch (err) {
       console.error('Error saving session:', err);
       alert('Error saving session. Please try again.');
       return;
     }
 
-    // Update local state only after successful Supabase save
+    // Update local state only after successful save
     const updatedSessions = [newSession, ...sessions];
     setSessions(updatedSessions);
     calculateHours(updatedSessions);

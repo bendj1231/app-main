@@ -1,7 +1,7 @@
 # DNS Setup Guide - PilotRecognition.com Subdomains
 
 ## Overview
-7 subdomains need CNAME records pointing to Vercel. This enables the Boeing-style architecture.
+7 subdomains need CNAME records pointing to Cloudflare Pages. This enables the Boeing-style architecture.
 
 ## Required DNS Records
 
@@ -9,15 +9,15 @@ Add these CNAME records in your domain registrar (GoDaddy, Namecheap, Cloudflare
 
 | Subdomain | Type | Value | Purpose |
 |-----------|------|-------|---------|
-| `enterprise.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | B2B portal for airlines/ATOs |
-| `pathways.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Pathway discovery for pilots |
-| `recognitionplus.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Premium membership |
-| `support.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Support center |
-| `partners.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Flight school partners |
-| `join.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Membership signup |
-| `blog.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Blog and content |
+| `enterprise.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | B2B portal for airlines/ATOs |
+| `pathways.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Pathway discovery for pilots |
+| `recognitionplus.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Premium membership |
+| `support.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Support center |
+| `partners.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Flight school partners |
+| `join.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Membership signup |
+| `blog.pilotrecognition.com` | CNAME | `<your-pages-project>.pages.dev` | Blog and content |
 
-**Note:** Your Vercel DNS target is `535f678ef37f1e51.vercel-dns-017.com` (project-specific). Use this exact value.
+**Note:** Your Cloudflare Pages DNS target is `<your-pages-project>.pages.dev` (project-specific). Replace `<your-pages-project>` with your actual Pages project name.
 
 **Optional:** `store.pilotrecognition.com` can be kept as an alias for `recognitionplus.pilotrecognition.com` (backwards compatibility).
 
@@ -34,7 +34,7 @@ For each subdomain above:
 1. Click "Add Record" or "+"
 2. Type: Select `CNAME`
 3. Host/Name: Enter subdomain prefix (e.g., `enterprise`)
-4. Value/Points to: Enter `cname.vercel-dns.com`
+4. Value/Points to: Enter `<your-pages-project>.pages.dev`
 5. TTL: Leave default (usually 600 seconds or 1 hour)
 6. Save
 

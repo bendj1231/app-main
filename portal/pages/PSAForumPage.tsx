@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   MessageCircle,
@@ -85,59 +85,78 @@ export default function PSAForumPage() {
     loadTopics();
   }, [selectedCategory, activeTab]);
 
-  const loadCategories = async () => {
-    const { data, error } = await supabase
-      .from('forum_categories')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order');
+  const { callApi } = useWorkerAuth();
 
-    if (!error && data) {
-      setCategories(data);
-    }
+  const loadCategories = async () => {
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'forum_categories',
+      operation: 'select',
+      where: { is_active: true },
+      limit: 100,
+    });
+    const data = (rows || []).sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
+    setCategories(data as any);
   };
 
   const loadTopics = async () => {
     setLoading(true);
     try {
-      let query = supabase
-        .from('forum_topics')
-        .select(`
-          *,
-          profiles:author_id (full_name),
-          forum_categories:category_id (name, slug)
-        `)
-        .eq('status', 'active')
-        .order('is_pinned', { ascending: false });
+      const [topicRows, profileRows, categoryRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'forum_topics',
+          operation: 'select',
+          where: { status: 'active' },
+          limit: 100,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 500,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'forum_categories',
+          operation: 'select',
+          limit: 100,
+        }),
+      ]);
+
+      const profilesMap = new Map<string, any>();
+      (profileRows || []).forEach((p: any) => { if (p.id) profilesMap.set(p.id, p); });
+      const categoriesMap = new Map<string, any>();
+      (categoryRows || []).forEach((c: any) => { if (c.id) categoriesMap.set(c.id, c); });
+
+      let data = (topicRows || []).filter((t: any) => t.status === 'active');
 
       if (selectedCategory) {
         const category = categories.find(c => c.slug === selectedCategory);
         if (category) {
-          query = query.eq('category_id', category.id);
+          data = data.filter((t: any) => t.category_id === category.id);
         }
       }
 
       if (activeTab === 'recent') {
-        query = query.order('created_at', { ascending: false });
+        data = data.sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || ''));
       } else if (activeTab === 'verified') {
-        query = query.eq('is_verified_author', true)
-                     .order('created_at', { ascending: false });
+        data = data.filter((t: any) => t.is_verified_author)
+                   .sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || ''));
       } else {
-        // trending - by reply count and last activity
-        query = query.order('last_reply_at', { ascending: false, nullsFirst: false });
+        // trending - by last_reply_at
+        data = data.sort((a: any, b: any) => (b.last_reply_at || b.created_at || '').localeCompare(a.last_reply_at || a.created_at || ''));
       }
 
-      const { data, error } = await query.limit(50);
+      data = data.slice(0, 50);
 
-      if (!error && data) {
-        const formattedTopics: ForumTopic[] = data.map((t: any) => ({
+      const formattedTopics: ForumTopic[] = data.map((t: any) => {
+        const profile = profilesMap.get(t.author_id);
+        const category = categoriesMap.get(t.category_id);
+        return {
           ...t,
-          author_name: t.profiles?.full_name || 'Unknown',
-          category_name: t.forum_categories?.name || '',
-          category_slug: t.forum_categories?.slug || ''
-        }));
-        setTopics(formattedTopics);
-      }
+          author_name: profile?.full_name || 'Unknown',
+          category_name: category?.name || '',
+          category_slug: category?.slug || ''
+        };
+      });
+      setTopics(formattedTopics);
     } finally {
       setLoading(false);
     }
@@ -149,37 +168,63 @@ export default function PSAForumPage() {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('search_forum', {
-        p_query: searchQuery,
-        p_limit: 20
-      });
+      const [topicRows, profileRows, categoryRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'forum_topics',
+          operation: 'select',
+          where: { status: 'active' },
+          limit: 500,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 500,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'forum_categories',
+          operation: 'select',
+          limit: 100,
+        }),
+      ]);
 
-      if (!error && data) {
-        // Convert search results to topic format
-        const searchResults: ForumTopic[] = data.map((result: any) => ({
+      const profilesMap = new Map<string, any>();
+      (profileRows || []).forEach((p: any) => { if (p.id) profilesMap.set(p.id, p); });
+      const categoriesMap = new Map<string, any>();
+      (categoryRows || []).forEach((c: any) => { if (c.id) categoriesMap.set(c.id, c); });
+
+      const q = searchQuery.toLowerCase();
+      const filtered = (topicRows || []).filter((t: any) =>
+        (t.title && t.title.toLowerCase().includes(q)) ||
+        (t.content && t.content.toLowerCase().includes(q))
+      ).slice(0, 20);
+
+      const searchResults: ForumTopic[] = filtered.map((result: any) => {
+        const profile = profilesMap.get(result.author_id);
+        const category = categoriesMap.get(result.category_id);
+        return {
           id: result.id,
           title: result.title,
           slug: result.id,
           excerpt: result.content,
           content: result.content,
-          author_id: '',
-          author_name: 'Search Result',
-          display_name: null,
-          is_verified_author: false,
-          verification_badge_level: 'none',
-          category_id: '',
-          category_name: 'Search',
-          category_slug: 'search',
-          view_count: 0,
-          reply_count: 0,
-          like_count: 0,
-          is_pinned: false,
-          is_featured: false,
-          created_at: new Date().toISOString(),
-          last_reply_at: null
-        }));
-        setTopics(searchResults);
-      }
+          author_id: result.author_id || '',
+          author_name: profile?.full_name || 'Search Result',
+          display_name: result.display_name || null,
+          is_verified_author: result.is_verified_author || false,
+          verification_badge_level: result.verification_badge_level || 'none',
+          category_id: result.category_id || '',
+          category_name: category?.name || 'Search',
+          category_slug: category?.slug || 'search',
+          view_count: result.view_count || 0,
+          reply_count: result.reply_count || 0,
+          like_count: result.like_count || 0,
+          is_pinned: result.is_pinned || false,
+          is_featured: result.is_featured || false,
+          created_at: result.created_at || new Date().toISOString(),
+          last_reply_at: result.last_reply_at || null
+        };
+      });
+      setTopics(searchResults);
     } finally {
       setLoading(false);
     }
@@ -537,9 +582,10 @@ function NewTopicModal({
     setError('');
 
     try {
-      const { error: submitError } = await supabase
-        .from('forum_topics')
-        .insert({
+      await callApi('queryTable', {
+        table: 'forum_topics',
+        operation: 'insert',
+        data: {
           category_id: categoryId,
           author_id: user!.id,
           title: title.trim(),
@@ -548,9 +594,8 @@ function NewTopicModal({
           display_name: displayName.trim() || null,
           show_real_name: showRealName,
           excerpt: content.trim().substring(0, 300)
-        });
-
-      if (submitError) throw submitError;
+        },
+      });
       
       onSuccess();
     } catch (err: any) {

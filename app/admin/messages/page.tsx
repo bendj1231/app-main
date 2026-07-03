@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useDb } from '@/components/enterprise/hooks/useDb';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -37,6 +37,7 @@ export default function MessagesPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, userProfile } = useAuth();
+  const db = useDb();
   const currentPath = location.pathname;
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
 
@@ -73,12 +74,13 @@ export default function MessagesPage() {
     if (!currentUser) return;
     setObjectivesLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('employee_objectives')
         .select('id, title, status')
         .eq('assignee', currentAssignee)
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(20)
+        .dbName('DB_OPS');
       if (error) throw error;
       setDailyObjectives(
         (data || []).map((o: any) => ({
@@ -97,13 +99,14 @@ export default function MessagesPage() {
   // Fetch daily quote from Supabase
   const fetchDailyQuote = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('daily_quotes')
         .select('quote, author')
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .single()
+        .dbName('DB_OPS');
       if (error) throw error;
       if (data) {
         setDailyQuote(data.quote);
@@ -117,11 +120,12 @@ export default function MessagesPage() {
   // Fetch team updates from Supabase
   const fetchTeamUpdates = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('team_updates')
         .select('id, title, message, type, created_at')
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(20)
+        .dbName('DB_OPS');
       if (error) throw error;
       setTeamUpdates(data || []);
     } catch (err) {
@@ -149,48 +153,26 @@ export default function MessagesPage() {
     fetchDailyQuote();
     fetchTeamUpdates();
 
-    // Realtime sync for daily briefing
-    const quoteChannel = supabase
-      .channel('daily-quote-sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'daily_quotes' }, () => {
-        fetchDailyQuote();
-      })
-      .subscribe();
-
-    const updatesChannel = supabase
-      .channel('team-updates-sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'team_updates' }, () => {
-        fetchTeamUpdates();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(quoteChannel);
-      supabase.removeChannel(updatesChannel);
-    };
+    // Realtime sync disabled (Worker API does not expose Supabase realtime channels)
+    return () => {};
   }, [isAdmin]);
 
   useEffect(() => {
     if (isAdmin) fetchDailyObjectives();
-    // Realtime sync with planning board
-    const channel = supabase
-      .channel('daily-objectives-sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'employee_objectives' }, () => {
-        fetchDailyObjectives();
-      })
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    // Realtime sync disabled
+    return () => {};
   }, [isAdmin, currentAssignee]);
 
   useEffect(() => {
     if (!isAdmin) return;
     const fetchMembers = async () => {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('profiles')
           .select('id, display_name, email')
           .not('role', 'in', '("super_admin","admin")')
-          .limit(50);
+          .limit(50)
+          .dbName('DB_PROFILES');
         if (error) throw error;
         const memberContacts: Contact[] = (data || []).map((p) => ({
           id: p.id,
@@ -219,7 +201,7 @@ export default function MessagesPage() {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedContact || !currentUser) return;
     try {
-      const { error } = await supabase.from('messages').insert({
+      const { error } = await db.from('messages').dbName('DB_PROFILES').insert({
         sender_id: currentUserId,
         recipient_id: selectedContact.id,
         content: newMessage.trim(),
@@ -235,11 +217,12 @@ export default function MessagesPage() {
   const fetchMessages = async (contactId: string) => {
     if (!currentUserId) return;
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('messages')
         .select('*')
         .or(`sender_id.eq.${currentUserId},recipient_id.eq.${currentUserId}`)
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: true })
+        .dbName('DB_PROFILES');
       if (error) throw error;
       const conversation = (data || []).filter(
         (m) =>
@@ -252,35 +235,15 @@ export default function MessagesPage() {
     }
   };
 
-  // Realtime subscription
+  // Realtime subscription disabled (Worker API does not expose Supabase realtime channels)
   useEffect(() => {
     if (!currentUserId) return;
-    const channel = supabase
-      .channel('messages')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages' },
-        (payload: any) => {
-          const newMsg = payload.new as Message;
-          if (
-            (newMsg.sender_id === currentUserId && newMsg.recipient_id === selectedContact?.id) ||
-            (newMsg.sender_id === selectedContact?.id && newMsg.recipient_id === currentUserId)
-          ) {
-            setMessages((prev) => [...prev, newMsg]);
-            if (newMsg.sender_id !== currentUserId && selectedContact?.id === newMsg.sender_id) {
-              // Mark as read immediately
-              supabase.from('messages').update({ read_at: new Date().toISOString() }).eq('id', newMsg.id).then();
-            }
-          }
-          // Refresh unread counts
-          fetchUnreadCounts();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // Polling fallback for new messages
+    const interval = setInterval(() => {
+      if (selectedContact) fetchMessages(selectedContact.id);
+      fetchUnreadCounts();
+    }, 5000);
+    return () => clearInterval(interval);
   }, [currentUserId, selectedContact?.id]);
 
   // Fetch messages when contact changes
@@ -293,12 +256,13 @@ export default function MessagesPage() {
 
   const markConversationAsRead = async (contactId: string) => {
     try {
-      await supabase
+      await db
         .from('messages')
         .update({ read_at: new Date().toISOString() })
         .eq('sender_id', contactId)
         .eq('recipient_id', currentUserId)
-        .is('read_at', null);
+        .is('read_at', null)
+        .dbName('DB_PROFILES');
       fetchUnreadCounts();
     } catch (err) {
       console.error('Error marking as read:', err);
@@ -308,11 +272,12 @@ export default function MessagesPage() {
   const fetchUnreadCounts = async () => {
     if (!currentUserId) return;
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('messages')
         .select('sender_id')
         .eq('recipient_id', currentUserId)
-        .is('read_at', null);
+        .is('read_at', null)
+        .dbName('DB_PROFILES');
       if (error) throw error;
       const counts: Record<string, number> = {};
       (data || []).forEach((m) => {
@@ -345,10 +310,11 @@ export default function MessagesPage() {
       prev.map((o) => (o.id === id ? { ...o, completed: !o.completed } : o))
     );
     try {
-      const { error } = await supabase
+      const { error } = await db
         .from('employee_objectives')
         .update({ status: newStatus })
-        .eq('id', id);
+        .eq('id', id)
+        .dbName('DB_OPS');
       if (error) throw error;
     } catch (err) {
       console.error('Error toggling objective:', err);
@@ -369,7 +335,7 @@ export default function MessagesPage() {
     ]);
     setNewObjective('');
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('employee_objectives')
         .insert({
           title: text,
@@ -379,6 +345,7 @@ export default function MessagesPage() {
           employee_id: currentUser.id,
           created_by: currentUser.id,
         })
+        .dbName('DB_OPS')
         .select()
         .single();
       if (error) throw error;
@@ -402,17 +369,18 @@ export default function MessagesPage() {
     setShowQuoteInput(false);
     try {
       // Upsert: update the most recent active quote, or insert new
-      const { data: existing } = await supabase
+      const { data: existing } = await db
         .from('daily_quotes')
         .select('id')
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .single()
+        .dbName('DB_OPS');
       if (existing) {
-        await supabase.from('daily_quotes').update({ quote: text }).eq('id', existing.id);
+        await db.from('daily_quotes').update({ quote: text }).eq('id', existing.id).dbName('DB_OPS');
       } else {
-        await supabase.from('daily_quotes').insert({ quote: text, is_active: true });
+        await db.from('daily_quotes').insert({ quote: text, is_active: true }).dbName('DB_OPS');
       }
     } catch (err) {
       console.error('Error saving daily quote:', err);

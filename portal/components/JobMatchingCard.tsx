@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface JobMatch {
   id: string;
@@ -33,7 +33,9 @@ export const JobMatchingCard: React.FC<JobMatchingCardProps> = ({ userId }) => {
   const [loading, setLoading] = useState(true);
   const [pilotProfile, setPilotProfile] = useState<PilotProfile | null>(null);
 
-  // Fetch pilot profile from Supabase
+  // Fetch pilot profile
+  const { callApi } = useWorkerAuth();
+
   useEffect(() => {
     const fetchPilotProfile = async () => {
       if (!userId) {
@@ -43,42 +45,44 @@ export const JobMatchingCard: React.FC<JobMatchingCardProps> = ({ userId }) => {
 
       try {
         // Fetch user profile
-        const { data: userData, error: userError } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', userId)
-          .single();
-
-        if (userError) {
-          console.warn('Could not fetch user profile:', userError);
-        }
+        const userRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: userId },
+          limit: 1,
+        });
+        const userData = userRows?.[0];
 
         // Fetch flight logbook hours
-        const { data: logbookData, error: logbookError } = await supabase
-          .from('pilot_logbook')
-          .select('total_hours')
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(1);
+        const logbookRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_flight_logs',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const logbookData = (logbookRows || []).sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || ''));
 
         // Fetch exam results
-        const { data: examData, error: examError } = await supabase
-          .from('pilot_exams')
-          .select('score')
-          .eq('user_id', userId);
+        const examRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_exams',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const examData = examRows || [];
 
-        const totalHours = logbookData?.[0]?.total_hours || userData?.flight_hours || 0;
-        const licenseType = userData?.license_type || 'PPL';
-        
+        const totalHours = (logbookData[0]?.total_hours as number) || (userData?.flight_hours as number) || 0;
+        const licenseType = (userData?.license_type as string) || 'PPL';
+
         // Calculate average pass rate from exams
         let passRate = '75%';
-        if (examData && examData.length > 0) {
-          const avgScore = (examData as ExamScoreRow[]).reduce((sum: number, e: ExamScoreRow) => sum + (e.score || 0), 0) / examData.length;
+        if (examData.length > 0) {
+          const avgScore = (examData as any[]).reduce((sum: number, e: any) => sum + ((e.score || 0) as number), 0) / examData.length;
           passRate = `${Math.round(avgScore)}%`;
         }
 
         // Get aircraft types from user data
-        const aircraftTypes = userData?.aircraft_types || ['A320'];
+        const aircraftTypes = (userData?.aircraft_types as string[]) || ['A320'];
 
         const profile: PilotProfile = {
           flightHours: totalHours,

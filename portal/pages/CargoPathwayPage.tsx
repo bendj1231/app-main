@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 // TYPE DEFINITIONS
 interface PathwayJob {
@@ -277,17 +278,26 @@ export const CargoPathwayPage: React.FC<CargoPathwayPageProps> = ({ onBack, onLo
   const [searchQuery, setSearchQuery] = useState('');
   const [profile, setProfile] = useState<UserProfileData | null>(null);
 
+  const { user } = useAuth0();
+  const { callApi } = useWorkerAuth();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data } = await supabase.from('pilot_recognition_matches').select('total_hours, logged_hours, program_inputs').eq('user_id', user.id).maybeSingle();
-        if (data) setProfile({ total_hours: data.total_hours, logged_hours: data.logged_hours, program_inputs: data.program_inputs });
+        const auth0UserId = user?.sub;
+        if (!auth0UserId) return;
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_recognition_matches',
+          operation: 'select',
+          where: { user_id: auth0UserId },
+          limit: 1,
+        });
+        const data = rows?.[0];
+        if (data) setProfile({ total_hours: data.total_hours as number, logged_hours: data.logged_hours as number, program_inputs: data.program_inputs as any });
       } catch (err) { console.error('Error:', err); }
     };
     fetchProfile();
-  }, []);
+  }, [user, callApi]);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: isDarkMode ? '#0B0F19' : '#f8fafc', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>

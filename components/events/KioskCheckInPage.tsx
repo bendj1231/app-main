@@ -6,7 +6,7 @@ import {
   User, Calendar, Clock, MapPin, RefreshCw, X, Camera,
   ScanLine, BadgeCheck
 } from 'lucide-react';
-import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface KioskCheckInPageProps {
   eventId: string;
@@ -16,6 +16,7 @@ interface KioskCheckInPageProps {
 }
 
 export function KioskCheckInPage({ eventId, eventTitle, user, onCancel }: KioskCheckInPageProps) {
+  const { callApi } = useWorkerAuth();
   const [qrInput, setQrInput] = useState('');
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -28,13 +29,14 @@ export function KioskCheckInPage({ eventId, eventTitle, user, onCancel }: KioskC
 
   const loadCheckInCount = async () => {
     try {
-      const { data } = await supabase
-        .from('events')
-        .select('checkins_count')
-        .eq('id', eventId)
-        .single();
-      
-      if (data) setCheckInCount(data.checkins_count || 0);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'events',
+        operation: 'select',
+        where: { id: eventId },
+        limit: 1,
+      });
+      const data = rows?.[0];
+      if (data) setCheckInCount((data.checkins_count as number) || 0);
     } catch (err) {
       console.error('Error loading check-in count:', err);
     }
@@ -52,18 +54,15 @@ export function KioskCheckInPage({ eventId, eventTitle, user, onCancel }: KioskC
 
     try {
       // Look up registration by QR code
-      const { data: registration, error: regError } = await supabase
-        .from('event_registrations')
-        .select(`
-          *,
-          events (title, start_date, venue_city),
-          profiles (display_name, email, profile_image_url)
-        `)
-        .eq('event_id', eventId)
-        .eq('qr_code', qrInput.trim())
-        .single();
+      const regRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_registrations',
+        operation: 'select',
+        where: { event_id: eventId, qr_code: qrInput.trim() },
+        limit: 1,
+      });
+      const registration = regRows?.[0] as any;
 
-      if (regError || !registration) {
+      if (!registration) {
         setError('QR code not found. Please check and try again.');
         setScanning(false);
         return;
@@ -74,34 +73,36 @@ export function KioskCheckInPage({ eventId, eventTitle, user, onCancel }: KioskC
         setResult({
           type: 'already_checked_in',
           registration,
-          message: `${registration.profiles?.display_name || 'Attendee'} is already checked in`
+          message: `${registration.display_name || registration.email || 'Attendee'} is already checked in`
         });
         setScanning(false);
         return;
       }
 
       // Check in the attendee
-      const { error: updateError } = await supabase
-        .from('event_registrations')
-        .update({
+      await callApi('queryTable', {
+        table: 'event_registrations',
+        operation: 'update',
+        id: registration.id,
+        data: {
           checked_in: true,
           checked_in_at: new Date().toISOString(),
           checked_in_by: user?.id || null,
-        })
-        .eq('id', registration.id);
-
-      if (updateError) throw updateError;
+        },
+      });
 
       // Update event check-in count
-      await supabase
-        .from('events')
-        .update({ checkins_count: (checkInCount || 0) + 1 })
-        .eq('id', eventId);
+      await callApi('queryTable', {
+        table: 'events',
+        operation: 'update',
+        id: eventId,
+        data: { checkins_count: (checkInCount || 0) + 1 },
+      });
 
       setResult({
         type: 'success',
         registration,
-        message: `${registration.profiles?.display_name || 'Attendee'} checked in successfully`
+        message: `${registration.display_name || registration.email || 'Attendee'} checked in successfully`
       });
 
       setCheckInCount(prev => prev + 1);

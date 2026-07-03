@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -79,20 +80,23 @@ export default function InvoicesPage() {
   useEffect(() => { if (isAdmin) fetchInvoices(); }, [isAdmin]);
   useEffect(() => { if (isAdmin && activeTab === 'dodo') fetchDodoData(); }, [isAdmin, activeTab]);
 
+  const { callApi } = useWorkerAuth();
+  const { getIdTokenClaims } = useAuth0();
+
   const fetchDodoData = async () => {
     setDodoLoading(true);
     console.log('[Invoices] fetchDodoData() starting ...');
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('[Invoices] Session present:', !!session);
-      console.log('[Invoices] VITE_SUPABASE_URL:', import.meta.env.VITE_SUPABASE_URL);
-      const edgeUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dodo-payments-proxy?detail=true`;
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
+      console.log('[Invoices] Token present:', !!token);
+      console.log('[Invoices] VITE_PILOT_API_URL:', import.meta.env.VITE_PILOT_API_URL);
+      const edgeUrl = `${import.meta.env.VITE_PILOT_API_URL}/api/dodo-payments-proxy?detail=true`;
       console.log('[Invoices] Edge URL:', edgeUrl);
 
       const res = await fetch(edgeUrl, {
         headers: {
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${token}`,
         },
       });
       console.log('[Invoices] Edge response status:', res.status, res.statusText);
@@ -120,9 +124,17 @@ export default function InvoicesPage() {
   const fetchInvoices = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('proforma_invoices').select('*').order('created_at', { ascending: false });
-      if (error) throw error;
-      setInvoices(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'proforma_invoices',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      setInvoices(data as any);
     } catch (err) { console.error('Error fetching invoices:', err); }
     finally { setLoading(false); }
   };
@@ -162,25 +174,28 @@ export default function InvoicesPage() {
   const handleCreate = async () => {
     if (!clientName || !clientEmail || lineItems.length === 0) return;
     try {
-      const { error } = await supabase.from('proforma_invoices').insert({
-        client_name: clientName,
-        client_email: clientEmail,
-        client_company: clientCompany || null,
-        client_address: clientAddress || null,
-        client_tax_id: clientTaxId || null,
-        line_items: lineItems.filter((li) => li.description.trim()),
-        subtotal,
-        tax_rate: taxRate,
-        tax_amount: taxAmount,
-        total,
-        currency: 'USD',
-        status: 'draft',
-        invoice_type: invoiceType,
-        notes: notes || null,
-        due_date: dueDate || null,
-        created_by: currentUser?.id,
+      await callApi('queryTable', {
+        table: 'proforma_invoices',
+        operation: 'insert',
+        data: {
+          client_name: clientName,
+          client_email: clientEmail,
+          client_company: clientCompany || null,
+          client_address: clientAddress || null,
+          client_tax_id: clientTaxId || null,
+          line_items: lineItems.filter((li) => li.description.trim()),
+          subtotal,
+          tax_rate: taxRate,
+          tax_amount: taxAmount,
+          total,
+          currency: 'USD',
+          status: 'draft',
+          invoice_type: invoiceType,
+          notes: notes || null,
+          due_date: dueDate || null,
+          created_by: currentUser?.id,
+        },
       });
-      if (error) throw error;
       resetForm();
       setShowCreate(false);
       fetchInvoices();
@@ -208,8 +223,12 @@ export default function InvoicesPage() {
       const updates: any = { status };
       if (status === 'sent') updates.sent_at = new Date().toISOString();
       if (status === 'paid') updates.paid_at = new Date().toISOString();
-      const { error } = await supabase.from('proforma_invoices').update(updates).eq('id', id);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'proforma_invoices',
+        operation: 'update',
+        id,
+        data: updates,
+      });
       fetchInvoices();
       if (selectedInvoice?.id === id) {
         setSelectedInvoice({ ...selectedInvoice, status: status as any, ...updates });

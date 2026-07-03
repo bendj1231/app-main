@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { UserProfile } from '../types/user';
 
 interface FlightLogEntry {
@@ -41,6 +41,8 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
     fetchFlightLogs();
   }, [userProfile?.id]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchFlightLogs = async () => {
     if (!userProfile?.id) {
       setLoading(false);
@@ -49,25 +51,23 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('pilot_flight_logs')
-        .select('*')
-        .eq('user_id', userProfile.id)
-        .order('date', { ascending: false });
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_flight_logs',
+        operation: 'select',
+        where: { user_id: userProfile.id },
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (b.date || '').localeCompare(a.date || ''));
 
-      if (error) {
-        throw error;
-      }
-
-      const entries: FlightLogEntry[] = (data || []).map((log) => ({
-        id: log.id,
-        date: log.date,
-        aircraftType: log.aircraft_type || log.aircraft || '',
-        registration: log.registration || '',
-        route: log.route || '',
-        category: log.category || '',
+      const entries: FlightLogEntry[] = data.map((log: any) => ({
+        id: log.id as string,
+        date: log.date as string,
+        aircraftType: (log.aircraft_type || log.aircraft || '') as string,
+        registration: (log.registration || '') as string,
+        route: (log.route || '') as string,
+        category: (log.category || '') as string,
         hours: Number(log.hours) || 0,
-        remarks: log.remarks || ''
+        remarks: (log.remarks || '') as string
       }));
 
       setFlightLogs(entries);
@@ -98,21 +98,21 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
     }
 
     try {
-      const { error } = await supabase.from('pilot_flight_logs').insert({
-        user_id: userProfile.id,
-        date: formData.date,
-        aircraft_type: formData.aircraftType,
-        registration: formData.registration,
-        route: formData.route,
-        category: formData.category || 'flight',
-        hours: parseFloat(formData.hours),
-        remarks: formData.remarks,
-        created_at: new Date().toISOString()
+      await callApi('queryTable', {
+        table: 'pilot_flight_logs',
+        operation: 'insert',
+        data: {
+          user_id: userProfile.id,
+          date: formData.date,
+          aircraft_type: formData.aircraftType,
+          registration: formData.registration,
+          route: formData.route,
+          category: formData.category || 'flight',
+          hours: parseFloat(formData.hours),
+          remarks: formData.remarks,
+          created_at: new Date().toISOString()
+        },
       });
-
-      if (error) {
-        throw error;
-      }
 
       alert('Flight entry saved successfully!');
       setFormData({
@@ -137,15 +137,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
     if (!confirm('Are you sure you want to delete this flight entry?')) return;
 
     try {
-      const { error } = await supabase
-        .from('pilot_flight_logs')
-        .delete()
-        .eq('id', entryId)
-        .eq('user_id', userProfile.id);
-
-      if (error) {
-        throw error;
-      }
+      await callApi('queryTable', {
+        table: 'pilot_flight_logs',
+        operation: 'delete',
+        id: entryId,
+      });
 
       fetchFlightLogs();
     } catch (error) {

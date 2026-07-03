@@ -7,7 +7,7 @@ import {
   Play, Pause, RotateCcw, FileText, Send, ChevronRight,
   Shield, Star, TrendingUp
 } from 'lucide-react';
-import { supabase } from './hooks/useEnterpriseAuth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface InterviewRecordingPageProps {
   interviewId?: string;
@@ -22,6 +22,7 @@ export function InterviewRecordingPage({
   onComplete,
   onCancel
 }: InterviewRecordingPageProps) {
+  const { callApi } = useWorkerAuth();
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -257,14 +258,18 @@ export function InterviewRecordingPage({
       };
 
       if (interviewId) {
-        await supabase
-          .from('interviews')
-          .update(interviewData)
-          .eq('id', interviewId);
+        await callApi('queryTable', {
+          table: 'interviews',
+          operation: 'update',
+          id: interviewId,
+          data: interviewData,
+        });
       } else {
-        await supabase
-          .from('interviews')
-          .insert(interviewData);
+        await callApi('queryTable', {
+          table: 'interviews',
+          operation: 'insert',
+          data: interviewData,
+        });
       }
 
       if (onComplete) {

@@ -83,8 +83,8 @@ jobs:
         run: |
           cp .env.example .env.test
           echo "DATABASE_URL=postgresql://test:test@localhost:5432/test_db" >> .env.test
-          echo "SUPABASE_URL=https://test-project.supabase.co" >> .env.test
-          echo "SUPABASE_ANON_KEY=test-anon-key" >> .env.test
+          echo "PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev" >> .env.test
+          echo "PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev" >> .env.test
 
       - name: Run integration tests
         run: npm run test:integration
@@ -154,18 +154,16 @@ jobs:
       - name: Setup test environment
         run: |
           cp .env.example .env.test
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.test
-          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.test
-          echo "EDGE_FUNCTION_URL=${{ secrets.EDGE_FUNCTION_URL }}" >> .env.test
+          echo "PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev" >> .env.test
+          echo "PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev" >> .env.test
           echo "TEST_EMAIL=${{ secrets.TEST_EMAIL }}" >> .env.test
           echo "TEST_PASSWORD=${{ secrets.TEST_PASSWORD }}" >> .env.test
 
       - name: Run auth test suite
         run: node tests/run-auth-tests.ts
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          EDGE_FUNCTION_URL: ${{ secrets.EDGE_FUNCTION_URL }}
+          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
+          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
@@ -196,14 +194,14 @@ jobs:
       - name: Setup test environment
         run: |
           cp .env.example .env.test
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.test
-          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.test
+          echo "PILOT_API_URL=https://pilotrecognition-api.benjamintigerbowler.workers.dev" >> .env.test
+          echo "PLATFORM_API_URL=https://platform-api.benjamintigerbowler.workers.dev" >> .env.test
 
       - name: Run performance tests
         run: k6 run tests/performance/load-test.js
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
+          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
 
       - name: Upload performance results
         if: always()

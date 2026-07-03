@@ -6,12 +6,12 @@ import {
   ChevronRight, TrendingUp, Award, Clock,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Star, Target,
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
-  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Copy,
+  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Plus,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
   Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { safeRedirect } from '@/lib/url-validator';
 import ProfileImage from '@/components/ProfileImage';
 import { GettingStartedBar } from '../../GettingStartedBar';
@@ -41,7 +41,9 @@ export const HomeTab: React.FC<{
   avatarUploading?: boolean;
   avatarError?: string;
   handleAvatarUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, currentUser, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload }) => {
+  isDarkMode?: boolean;
+}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, currentUser, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload, isDarkMode = false }) => {
+  const { callApi } = useWorkerAuth();
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -76,7 +78,6 @@ export const HomeTab: React.FC<{
   const [obHoursBand, setObHoursBand] = React.useState('');
   const [obHoursHashing, setObHoursHashing] = useState(false);
   const [obHoursHashed, setObHoursHashed] = useState(false);
-  const [copiedUrl, setCopiedUrl] = React.useState(false);
   const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
   const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
 
@@ -181,9 +182,19 @@ export const HomeTab: React.FC<{
     const id = profile?.id;
     if (!id) return;
     let active = true;
-    supabase.from('pilot_flight_logs').select('*').eq('user_id', id).order('date', { ascending: false }).limit(50).then(({ data }) => {
+    callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'pilot_flight_logs',
+      operation: 'select',
+      where: { user_id: id },
+      limit: 50,
+    }).then((data) => {
       if (!active) return;
-      setLogbookEntries(data ?? []);
+      const sorted = (data || []).sort((a: any, b: any) => {
+        const da = a.date || '';
+        const db = b.date || '';
+        return db.localeCompare(da);
+      });
+      setLogbookEntries(sorted);
       setLogbookLoaded(true);
     });
     return () => { active = false; };
@@ -196,7 +207,7 @@ export const HomeTab: React.FC<{
   const currentUserName = currentUser?.display_name || currentUser?.displayName || currentUser?.email?.split('@')[0];
   const nameFromProfile = (rawName && !isCiphertext(rawName)) ? rawName : '';
   const name    = (nameFromProfile && !looksLikeEmailPrefix(nameFromProfile)) ? nameFromProfile : (auth0Name || currentUserName || 'Pilot');
-  const firstName = profile?.first_name || auth0User?.given_name || (name.includes('@') ? name.split('@')[0] : name).split(/[\s._-]+/)[0];
+  const firstName = profile?.first_name || auth0User?.given_name || (name && !name.includes('@') && !looksLikeEmailPrefix(name) ? name.split(/[\s._-]+/)[0] : 'Pilot');
   const rawLevel = profile?.current_occupation || profile?.license_type;
   const level   = (rawLevel && !isCiphertext(rawLevel)) ? rawLevel : 'Student Pilot';
   const pilotTierLines = (() => {
@@ -246,11 +257,13 @@ export const HomeTab: React.FC<{
   const isAuthenticated = Boolean(profile || auth0User?.sub || currentUser?.id);
   const isAuthenticatedWithoutProfile = isAuthenticated && !profile;
   const hasLogbookSync = !!profile?.logbook_sync_valid || !!profile?.logbook_provider || logbookEntries.length > 0;
+  const discoveryDone = (() => {
+    try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
+  })();
   const steps = [
     { step: 1, label: 'Account Created',     sublabel: 'Profile activated',          done: !!profile,                                          tab: 'profile'   as TabId, icon: User,       highlight: false },
     { step: 2, label: 'Complete Advanced Profile & Sync Logbook', sublabel: 'Add ratings, hours, and logbook', done: hasLogbookSync, tab: 'advanced-profile' as TabId, icon: RefreshCw,  highlight: false },
-    { step: 3, label: 'Browse Pathways',     sublabel: 'Submit your interest',       done: score > 0,                                           tab: 'pathways'  as TabId, icon: Map,        highlight: false },
-    { step: 4, label: 'Verify Credentials',    sublabel: 'Recognition+ preferred',     done: walletChecks.some(c => c.status === 'verified'),     tab: 'wallet'    as TabId, icon: Shield,     highlight: false },
+    { step: 3, label: 'Discover Pathways',     sublabel: 'Choose what to explore',     done: discoveryDone,                                       tab: 'pathways-discovery' as TabId, icon: Compass,    highlight: false },
   ];
   const completedCount = steps.filter(s => s.done).length;
 
@@ -263,6 +276,17 @@ export const HomeTab: React.FC<{
       (enrolledInFoundation ? 15 : 0)
     ), 100
   );
+
+  // Auto-redirect to pathways discovery when advanced profile completes
+  React.useEffect(() => {
+    if (!hasLogbookSync || discoveryDone) return;
+    const alreadyRedirected = (() => {
+      try { return sessionStorage.getItem('pathways_discovery_redirected') === '1'; } catch { return false; }
+    })();
+    if (alreadyRedirected) return;
+    try { sessionStorage.setItem('pathways_discovery_redirected', '1'); } catch {}
+    setTab('pathways-discovery' as TabId);
+  }, [hasLogbookSync, discoveryDone, setTab]);
 
   const bCards = [
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
@@ -494,7 +518,7 @@ export const HomeTab: React.FC<{
 
           {/* ACCESS RECOGNITION — goes to profile */}
           <motion.div
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => setTab('profile' as TabId)}
             variants={{ hidden: {}, visible: {} }}
             whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(220,38,38,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
@@ -509,17 +533,21 @@ export const HomeTab: React.FC<{
                   <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
                   <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
                   <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
-                    style={{
-                      background: 'rgba(255,255,255,0.08)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.18)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+                    style={isDarkMode ? {
+                      background: 'rgba(8,8,12,0.95)',
+                      border: '1px solid rgba(77,208,225,0.35)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+                    } : {
+                      background: 'rgba(240,245,250,0.75)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255,255,255,0.45)',
+                      boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
                     }}>
-                    <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>
+                    <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>
                       {isPremium ? 'Verified' : 'Profile'}
                     </p>
-                    <h3 className="text-lg font-black text-white tracking-tight leading-tight">ACCESS<br/>RECOGNITION</h3>
+                    <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>ACCESS</span><br/><span style={{ color: '#dc2626' }}>RECOGNITION</span></h3>
                   </div>
                   <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
                   {isPremium && (
@@ -535,7 +563,7 @@ export const HomeTab: React.FC<{
 
           {/* DISCOVER PROGRAMS */}
           <div
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => {
               localStorage.setItem('careerpathways_mode', 'true');
               window.location.href = `${window.location.origin}/?product=careerpathways`;
@@ -544,36 +572,44 @@ export const HomeTab: React.FC<{
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/airline-operations.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
             <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+              style={isDarkMode ? {
+                background: 'rgba(8,8,12,0.95)',
+                border: '1px solid rgba(77,208,225,0.35)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+              } : {
+                background: 'rgba(240,245,250,0.75)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.45)',
+                boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>Career</p>
-              <h3 className="text-lg font-black text-white tracking-tight leading-tight">DISCOVER<br/>PATHWAYS</h3>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Career</p>
+              <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>DISCOVER</span><br/><span style={{ color: '#dc2626' }}>PATHWAYS</span></h3>
             </div>
             <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
           </div>
 
-          {/* THE PILOT GAP — pilotshortage.org */}
+          {/* THE PILOT SHORTAGE — pilotshortage.org in-app */}
           <div
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
+            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
+            onClick={() => onNavigate('pilotshortage')}
           >
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
             <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15)',
+              style={isDarkMode ? {
+                background: 'rgba(8,8,12,0.95)',
+                border: '1px solid rgba(77,208,225,0.35)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+              } : {
+                background: 'rgba(240,245,250,0.75)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.45)',
+                boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(248,113,113,0.85)' }}>Association</p>
-              <h3 className="text-lg font-black text-white tracking-tight leading-tight">THE PILOT<br/>SHORTAGE</h3>
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Association</p>
+              <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>THE PILOT</span><br/><span style={{ color: '#dc2626' }}>SHORTAGE</span></h3>
             </div>
             <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
 
@@ -583,17 +619,28 @@ export const HomeTab: React.FC<{
       </div>
 
       {/* ── RIGHT PROFILE CARD ── */}
-      <motion.div variants={itemVariants} className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)] relative h-full" style={{ background: 'rgba(15,22,35,0.97)' }}>
-        {/* Premium dark-blue metallic shimmer background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(56,189,248,0.18), transparent 45%), radial-gradient(circle at 70% 80%, rgba(99,102,241,0.14), transparent 45%), radial-gradient(circle at 50% 50%, rgba(15,23,42,0.6), transparent 70%)' }} />
-          <motion.div
-            className="absolute inset-[-50%]"
-            style={{ background: 'conic-gradient(from 0deg, transparent, rgba(56,189,248,0.08), transparent, rgba(99,102,241,0.08), transparent)' }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-          />
-        </div>
+      <motion.div
+        variants={itemVariants}
+        className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] relative h-full"
+        style={isDarkMode
+          ? { background: 'rgba(8,8,12,0.95)', border: '1px solid rgba(77,208,225,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)' }
+          : { background: 'rgba(240,245,250,0.38)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }
+        }
+      >
+        {isDarkMode ? (
+          /* Aviation PFD dark display background */
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+            <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(77,208,225,0.12), transparent 45%), radial-gradient(circle at 70% 80%, rgba(233,30,140,0.08), transparent 45%)' }} />
+          </div>
+        ) : (
+          /* Milky cloud shimmer + brightness cap overlay */
+          <>
+            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 45%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.15), transparent 45%), radial-gradient(circle at 50% 50%, rgba(15,39,71,0.08), transparent 70%)' }} />
+            </div>
+            <div className="absolute inset-0 bg-[#0f2747]/10 pointer-events-none" />
+          </>
+        )}
 
         {/* ── PROFILE CARD HEADER ── */}
         <div className="relative px-5 pt-5 pb-4 flex-shrink-0 border-b border-white/10">
@@ -608,7 +655,10 @@ export const HomeTab: React.FC<{
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-[15px] font-black text-white tracking-tight">Welcome Capt, {firstName || 'Pilot'}</h2>
+              <h2 className="text-[15px] font-black tracking-tight">
+                <span style={{ color: isDarkMode ? '#4dd0e1' : '#dc2626', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Welcome Capt, </span>
+                <span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>{firstName || 'Pilot'}</span>
+              </h2>
             </div>
           </div>
         </div>
@@ -628,7 +678,7 @@ export const HomeTab: React.FC<{
                   title="Customize background"
                   onClick={() => {/* TODO: open background picker */}}
                 >
-                  <Camera size={12} className="text-white/70" />
+                  <Camera size={12} style={{ color: isDarkMode ? 'rgba(255,255,255,0.7)' : '#5e85a8' }} />
                 </button>
               ) : null;
               if (isSplOrPpl) {
@@ -704,69 +754,87 @@ export const HomeTab: React.FC<{
                   : displayName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
                 return (
                   <div className="flex flex-col items-center w-full">
-                    <p className="text-lg font-black text-white text-center truncate w-full tracking-tight">{displayName}</p>
-                    <p className="text-[11px] font-bold text-white/50 text-center mt-1">@{handle || 'pilot'}</p>
+                    <p className="text-lg font-black text-center truncate w-full tracking-tight" style={{ color: '#ffffff' }}>{displayName}</p>
+                    {handle && !handleSource.includes('@') && (
+                      <p className="text-[11px] font-bold text-center mt-1" style={{ color: isDarkMode ? '#FF00FF' : '#5e85a8' }}>@{handle}</p>
+                    )}
                   </div>
                 );
               })()}
-              <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider mt-2">{level}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider mt-2" style={{ color: isDarkMode ? '#ffffff' : '#dc2626', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>{level}</p>
 
               {/* Social links */}
               <div className="flex items-center gap-3 mt-2">
                 {profile?.linkedin_url ? (
-                  <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}>
-                    <span className="flex items-center justify-center leading-none"><Linkedin size={15} className="text-white" /></span>
+                  <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: isDarkMode ? 'rgba(255,255,255,0.06)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.25)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none"><Linkedin size={15} style={{ color: '#ffffff' }} /></span>
                   </a>
                 ) : (
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(255,255,255,0.12)' }}>
-                    <span className="flex items-center justify-center leading-none"><Linkedin size={15} className="text-white/30" /></span>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: isDarkMode ? 'rgba(255,255,255,0.04)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.12)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none"><Linkedin size={15} style={{ color: '#ffffff' }} /></span>
                   </div>
                 )}
                 {profile?.instagram_url ? (
-                  <a href={profile.instagram_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.25)' }}>
-                    <span className="flex items-center justify-center leading-none"><Instagram size={15} className="text-white" /></span>
+                  <a href={profile.instagram_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: isDarkMode ? 'rgba(255,255,255,0.06)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.25)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none"><Instagram size={15} style={{ color: '#ffffff' }} /></span>
                   </a>
                 ) : (
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(255,255,255,0.12)' }}>
-                    <span className="flex items-center justify-center leading-none"><Instagram size={15} className="text-white/30" /></span>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: isDarkMode ? 'rgba(255,255,255,0.04)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.12)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none"><Instagram size={15} style={{ color: '#ffffff' }} /></span>
                   </div>
                 )}
-                {/* Copy Profile URL */}
+                {profile?.x_url ? (
+                  <a href={profile.x_url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20" style={{ background: isDarkMode ? 'rgba(255,255,255,0.06)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.25)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#ffffff' }}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                  </a>
+                ) : (
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: isDarkMode ? 'rgba(255,255,255,0.04)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.12)' : '1.5px solid #1e3a5f' }}>
+                    <span className="flex items-center justify-center leading-none">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#ffffff' }}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                  </div>
+                )}
+                {/* Add / manage social accounts */}
                 <button
-                  onClick={() => {
-                    const displayHandle = (profile?.display_name || profile?.full_name || name || 'pilot').toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
-                    const url = `${window.location.origin}/p/${displayHandle || 'pilot'}`;
-                    navigator.clipboard.writeText(url).then(() => { setCopiedUrl(true); setTimeout(() => setCopiedUrl(false), 1500); });
-                  }}
-                  className="relative w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
-                  style={{ background: copiedUrl ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)', border: `1.5px solid ${copiedUrl ? 'rgba(16,185,129,0.5)' : 'rgba(255,255,255,0.25)'}` }}
-                  title={copiedUrl ? 'Copied!' : 'Copy Profile URL'}
+                  onClick={() => setTab('settings' as TabId)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
+                  style={{ background: isDarkMode ? 'rgba(255,255,255,0.06)' : '#1e3a5f', border: isDarkMode ? '1.5px solid rgba(255,255,255,0.25)' : '1.5px solid #1e3a5f' }}
+                  title="Manage social accounts"
                 >
-                  <span className="flex items-center justify-center leading-none">{copiedUrl ? <CheckCircle size={15} className="text-emerald-400" /> : <Copy size={15} className="text-white/70" />}</span>
+                  <span className="flex items-center justify-center leading-none"><Plus size={15} style={{ color: '#ffffff' }} /></span>
                 </button>
               </div>
+
+              {/* Sync social media accounts — only show if none connected */}
+              {!profile?.linkedin_url && !profile?.instagram_url && !profile?.x_url && (
+                <button
+                  onClick={() => setTab('settings' as TabId)}
+                  className="flex items-center gap-1.5 mt-2 text-[10px] font-bold hover:text-blue-400 transition-colors" style={{ color: isDarkMode ? '#FF00FF' : '#2b9eb3', fontFamily: "'G1000', 'VT323', monospace", textTransform: 'uppercase' }}
+                >
+                  <ExternalLink size={12} />
+                  Sync social media accounts
+                </button>
+              )}
 
               {/* Account tier & invite code */}
               {(() => {
                 const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
                 const isFree = tier === 'free' || tier === 'bronze';
-                const inviteCode = profile?.referral_code || (profile?.id ? profile.id.slice(0, 8).toUpperCase() : '');
                 return isFree ? (
                   <div className="flex items-center gap-2 mt-3">
                     <button
                       onClick={() => setTab('settings' as TabId)}
-                      className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:bg-blue-500/20"
-                      style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.4)', color: '#60a5fa' }}
+                      className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:brightness-110"
+                      style={{ background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)', border: '1px solid rgba(77,208,225,0.35)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)', color: '#ffffff' }}
                     >
-                      Get Invite Code With Recognition+
+                      <span style={{ fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Get Invite Code With </span><span style={{ color: '#ff0000', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Recognition</span><span style={{ color: '#ff0000', verticalAlign: 'middle', position: 'relative', top: '-1px' }}>+</span>
                     </button>
-                    {inviteCode && (
-                      <span className="text-[9px] font-mono text-white/40 tracking-wider">{inviteCode}</span>
-                    )}
                   </div>
                 ) : (
                   <div className="mt-3">
-                    <span className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', color: '#34d399' }}>
+                    <span className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase" style={{ background: 'rgba(77,208,225,0.1)', border: '1px solid rgba(77,208,225,0.35)', color: '#4dd0e1', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>
                       {tier === 'plus' || tier === 'silver' ? 'Recognition+' : tier === 'enterprise' || tier === 'gold' ? 'Enterprise' : tier.charAt(0).toUpperCase() + tier.slice(1)}
                     </span>
                   </div>
@@ -776,44 +844,47 @@ export const HomeTab: React.FC<{
 
             {/* Compact stat row */}
             <div className="grid grid-cols-3 gap-2 px-4 mb-2">
-              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <p className="text-base font-black text-white tracking-tight">{profile?.pic_hours || '0'}</p>
-                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">PIC Time</p>
+              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.pic_hours || '0'}</p>
+                <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>PIC Time</p>
               </div>
-              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <p className="text-base font-black text-white tracking-tight">{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
-                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Total Hours</p>
+              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
+                <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Total Hours</p>
                 {!profile?.license_number && (
-                  <p className="text-[8px] font-bold mt-0.5" style={{ color: '#f59e0b', textDecoration: 'underline' }}>unverified</p>
+                  <p className="text-[8px] font-bold mt-0.5 uppercase" style={{ color: '#dc2626', textDecoration: 'underline', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>UNVERIFIED</p>
                 )}
               </div>
-              <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <p className="text-base font-black text-white tracking-tight">{profile?.dual_hours || '0'}</p>
-                <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mt-0.5">Dual Time</p>
+              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.dual_hours || '0'}</p>
+                <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Dual Time</p>
               </div>
             </div>
 
             {/* Recent activity / last flown */}
             <div className="px-4 mb-4">
               {hasLogbookSync ? (
-                <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                   <div className="flex items-center gap-2">
-                    <Clock size={12} className="text-white/30" />
-                    <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Last Flown</span>
+                    <Clock size={12} style={{ color: isDarkMode ? '#4dd0e1' : '#9ab0c8' }} />
+                    <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: isDarkMode ? '#4dd0e1' : '#9ab0c8', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Last Flown</span>
                   </div>
-                  <span className="text-[11px] font-black text-white">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</span>
+                  <span className="text-[11px] font-black" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>{profile?.last_flown || profile?.last_flight_date || 'N/A'}</span>
                 </div>
               ) : (
                 <button
                   onClick={() => setTab('wallet' as TabId)}
                   className="w-full rounded-full px-4 py-2.5 flex items-center justify-between transition-all hover:brightness-110"
-                  style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.15)' }}
+                  style={isDarkMode
+                    ? { background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)', border: '1px solid rgba(77,208,225,0.3)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)' }
+                    : { background: '#f0f5fa', border: '1px solid rgba(30,58,95,0.15)' }
+                  }
                 >
                   <div className="flex items-center gap-2">
-                    <RefreshCw size={12} className="text-white" />
-                    <span className="text-[10px] font-bold text-white uppercase tracking-wider">Connect Logbook</span>
+                    <RefreshCw size={12} style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f' }} />
+                    <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Connect Logbook</span>
                   </div>
-                  <span className="text-[11px] font-black text-white">→</span>
+                  <span className="text-[11px] font-black" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>→</span>
                 </button>
               )}
             </div>
@@ -822,16 +893,16 @@ export const HomeTab: React.FC<{
             {airportTags.length > 0 && (
               <div className="px-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <MapPin size={12} className="text-white/30" />
-                  <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Airport Tags</span>
+                  <MapPin size={12} style={{ color: isDarkMode ? 'rgba(255,255,255,0.3)' : '#9ab0c8' }} />
+                  <span className="text-[9px] font-black uppercase tracking-wider" style={{ color: isDarkMode ? 'rgba(255,255,255,0.4)' : '#9ab0c8', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Airport Tags</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {airportTags.map(({ code, name, difficulty, classes }) => (
                     <div key={code} className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                      <span className="text-[9px] font-black text-white">{code}</span>
-                      <span className="text-[8px] text-white/40">{name}</span>
-                      <span className="text-[7px] font-black px-1 rounded" style={{ background: difficulty === 'Expert' ? 'rgba(239,68,68,0.2)' : difficulty === 'Advanced' ? 'rgba(245,158,11,0.2)' : 'rgba(16,185,129,0.2)', color: difficulty === 'Expert' ? '#f87171' : difficulty === 'Advanced' ? '#fbbf24' : '#34d399' }}>{difficulty}</span>
-                      {classes.map(c => <span key={c} className="text-[7px] font-black text-white/50">{c}</span>)}
+                      <span className="text-[9px] font-black" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>{code}</span>
+                      <span className="text-[8px]" style={{ color: isDarkMode ? 'rgba(255,255,255,0.4)' : '#9ab0c8' }}>{name}</span>
+                      <span className="text-[7px] font-black px-1 rounded" style={{ background: difficulty === 'Expert' ? 'rgba(239,68,68,0.2)' : difficulty === 'Advanced' ? 'rgba(245,158,11,0.2)' : 'rgba(16,185,129,0.2)', color: difficulty === 'Expert' ? '#f87171' : difficulty === 'Advanced' ? '#fbbf24' : '#34d399', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>{difficulty}</span>
+                      {classes.map(c => <span key={c} className="text-[7px] font-black" style={{ color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ab0c8' }}>{c}</span>)}
                     </div>
                   ))}
                 </div>
@@ -841,14 +912,14 @@ export const HomeTab: React.FC<{
             {/* Profile Strength */}
             <div className="px-4 mb-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[9px] font-black text-white/40 uppercase tracking-wider">Profile Strength</span>
-                <span className="text-[9px] font-black text-white/70">{matchPct}%</span>
+                <span className="text-[9px] font-black uppercase tracking-wider" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Profile Strength</span>
+                <span className="text-[9px] font-black" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>{matchPct}%</span>
               </div>
-              <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${matchPct}%`, background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)' }} />
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: isDarkMode ? '#000000' : '#e2e8f0', border: isDarkMode ? '1px solid rgba(255,255,255,0.15)' : '1px solid #cbd5e1' }}>
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${matchPct}%`, background: isDarkMode ? '#4dd0e1' : '#dc2626' }} />
               </div>
               {matchPct < 100 && (
-                <p className="text-[8px] text-white/40 mt-1.5 leading-snug">
+                <p className="text-[8px] mt-1.5 leading-snug" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>
                   Complete your profile, log hours, and verify credentials to unlock pathways.
                 </p>
               )}
@@ -857,11 +928,14 @@ export const HomeTab: React.FC<{
             {/* Actions */}
             <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
               {profile?.license_number ? (
-                <button onClick={() => setTab('profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600 shadow-lg shadow-blue-600/20" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                <button onClick={() => setTab('profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider rounded-xl transition-all hover:brightness-110" style={isDarkMode
+                  ? { background: 'linear-gradient(180deg, #4a4a5a 0%, #3a3a48 100%)', border: '1px solid rgba(77,208,225,0.35)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.3)', color: '#ffffff', fontFamily: "'G1000', 'VT323', monospace" }
+                  : { background: 'linear-gradient(135deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9))', color: '#ffffff', boxShadow: '0 8px 32px rgba(37,99,235,0.2)' }
+                }>
                   VIEW DASHBOARD →
                 </button>
               ) : (
-                <button onClick={() => setTab('advanced-profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600 shadow-lg shadow-red-600/20" style={{ background: 'linear-gradient(135deg, rgba(220,38,38,0.9), rgba(185,28,28,0.9))', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                <button onClick={() => setTab('advanced-profile' as TabId)} className="w-full py-2.5 text-[11px] font-black tracking-wider rounded-xl transition-all hover:brightness-110" style={{ background: 'linear-gradient(135deg, rgba(220,38,38,0.9), rgba(185,28,28,0.9))', color: '#ffffff', boxShadow: '0 8px 32px rgba(220,38,38,0.2)', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined }}>
                   COMPLETE ADVANCED PROFILE →
                 </button>
               )}
@@ -871,19 +945,25 @@ export const HomeTab: React.FC<{
           /* Not logged in */
           <div className="flex flex-col flex-1 items-center justify-center px-6 gap-5">
             <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <User size={28} className="text-white/25" />
+              <User size={28} style={{ color: isDarkMode ? 'rgba(255,255,255,0.25)' : '#c8d8e8' }} />
             </div>
             <div className="text-center">
-              <p className="text-[15px] font-black text-white tracking-tight mb-1">Welcome Aboard</p>
-              <p className="text-[10px] text-white/30 leading-snug max-w-[200px]">
+              <p className="text-[15px] font-black tracking-tight mb-1" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Welcome Aboard</p>
+              <p className="text-[10px] leading-snug max-w-[200px]" style={{ color: isDarkMode ? 'rgba(255,255,255,0.3)' : '#9ab0c8', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>
                 Sign in to activate your pilot profile.
               </p>
             </div>
             <div className="w-full flex flex-col gap-2">
-              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-red-600" style={{ background: 'rgba(220,38,38,0.85)' }}>
+              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider rounded-xl transition-all hover:brightness-110" style={isDarkMode
+                ? { background: 'linear-gradient(180deg, #4a4a5a 0%, #3a3a48 100%)', border: '1px solid rgba(233,30,140,0.4)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 16px rgba(233,30,140,0.15)', color: '#ffffff', fontFamily: "'G1000', 'VT323', monospace" }
+                : { background: 'rgba(220,38,38,0.85)', color: '#ffffff' }
+              }>
                 Get Recognition Free
               </button>
-              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider text-white rounded-xl transition-all hover:bg-blue-600" style={{ background: 'rgba(37,99,235,0.85)' }}>
+              <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-3 text-[11px] font-black tracking-wider rounded-xl transition-all hover:brightness-110" style={isDarkMode
+                ? { background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)', border: '1px solid rgba(77,208,225,0.3)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)', color: '#ffffff', fontFamily: "'G1000', 'VT323', monospace" }
+                : { background: 'rgba(37,99,235,0.85)', color: '#ffffff' }
+              }>
                 Pilot Sign In
               </button>
             </div>
@@ -1439,14 +1519,14 @@ export const HomeTab: React.FC<{
                           {/* Card header */}
                           <div className="flex items-center justify-between px-3 py-2" style={{ borderBottom: '1px solid #e2e8f0' }}>
                             <p className="text-[8px] font-black text-gray-800 uppercase tracking-widest">Database Protocol &amp; Ledger Architecture</p>
-                            <span className="text-[7px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#e2e8f0', color: '#64748b' }}>Supabase Vault Status: Neutral Node</span>
+                            <span className="text-[7px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#e2e8f0', color: '#64748b' }}>D1 Vault Status: Neutral Node</span>
                           </div>
                           {/* Architecture rows */}
                           <div className="px-3 py-2.5 space-y-2">
                             {[
-                              { label: 'Host Domain Storage', value: 'Supabase Neutral Node Ledger' },
+                              { label: 'Host Domain Storage', value: 'D1 Neutral Node Ledger' },
                               { label: 'Ingestion Vector', value: 'Secure Auth0 Identity Protocol Layer' },
-                              { label: 'Storage Target', value: 'Encrypted Supabase Database Network (profiles schema)' },
+                              { label: 'Storage Target', value: 'Encrypted D1 Database Network (profiles schema)' },
                               { label: 'Retention State', value: 'Permanent Cryptographic Hash Tokenization Only' },
                             ].map(row => (
                               <div key={row.label} className="flex items-baseline gap-2">
@@ -1491,7 +1571,7 @@ export const HomeTab: React.FC<{
                                     <span className="text-[8px] font-black text-gray-700 w-20 flex-shrink-0">Hour Band</span>
                                     <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>{obHoursBand}</span>
                                   </div>
-                                  <p className="text-[7px] text-green-700 font-medium">Raw hours discarded. Hash + band ready for Supabase ledger commit on consent sign-off.</p>
+                                  <p className="text-[7px] text-green-700 font-medium">Raw hours discarded. Hash + band ready for D1 ledger commit on consent sign-off.</p>
                                 </div>
                               )}
                             </div>
@@ -1500,7 +1580,7 @@ export const HomeTab: React.FC<{
                           <div className="px-3 pb-3">
                             <div className="px-2.5 py-2 rounded" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
                               <p className="text-[7px] font-black text-gray-700 uppercase tracking-wide mb-1">System Architecture Directive</p>
-                              <p className="text-[8px] text-gray-500 leading-relaxed">Flight hour records are ingested exclusively via the secure Auth0 session layer, where they are immediately converted into one-way cryptographic hashes. This interface passes the resulting hash token directly to a neutral, read-only storage partition on Supabase. Because the platform possesses no structural decryption keys, the raw integer values are completely unrecoverable by the database host. The local database remains entirely neutral, retaining zero visible or readable logbook assets.</p>
+                              <p className="text-[8px] text-gray-500 leading-relaxed">Flight hour records are ingested exclusively via the secure Auth0 session layer, where they are immediately converted into one-way cryptographic hashes. This interface passes the resulting hash token directly to a neutral, read-only storage partition on D1. Because the platform possesses no structural decryption keys, the raw integer values are completely unrecoverable by the database host. The local database remains entirely neutral, retaining zero visible or readable logbook assets.</p>
                             </div>
                           </div>
                         </div>
@@ -1681,7 +1761,12 @@ export const HomeTab: React.FC<{
                             updatePayload.logbook_hash_updated_at = new Date().toISOString();
                             updatePayload.logbook_total_hours_band = obHoursBand;
                           }
-                          await supabase.from('profiles').update(updatePayload).eq('id', profile.id);
+                          await callApi('queryTable', {
+                            table: 'profiles',
+                            operation: 'update',
+                            id: profile.id,
+                            data: updatePayload,
+                          });
                         }
                         setOnboardingStep(2);
                       }}

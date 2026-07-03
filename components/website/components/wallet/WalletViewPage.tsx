@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   buildInitialWalletState,
   buildAviationRecordSummaryVP,
@@ -30,7 +31,7 @@ import type { EnclaveStatus } from '../../../../lib/wallet/enclave';
 import type { StorageHealthReport } from '../../../../lib/wallet/storage';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const PILOT_API_URL = (import.meta as any).env?.VITE_PILOT_API_URL as string;
 
 interface WalletViewPageProps {
   userId?: string;
@@ -134,18 +135,22 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
     { key: 'identity',                   label: 'Identity / Passport',          icon: '🪪' },
   ];
 
+  const { callApi } = useWorkerAuth();
+  const { getIdTokenClaims } = useAuth0();
+
   const initiateVeremark = async () => {
     setVeremarkInitiating(true);
     setVeremarkError(null);
     try {
-      const session = (await supabase.auth.getSession()).data.session;
-      if (!session) throw new Error('Not authenticated');
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) throw new Error('Not authenticated');
       const res = await fetch(
-        `${SUPABASE_URL}/functions/v1/veremark-initiate`,
+        `${PILOT_API_URL}/api/veremark-initiate`,
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${session.access_token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         }
@@ -180,13 +185,26 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
 
   useEffect(() => {
     const load = async () => {
-      const uid = userId || (await supabase.auth.getSession()).data.session?.user?.id;
+      const claims = await getIdTokenClaims();
+      const uid = userId || claims?.sub;
       if (!uid) { setLoading(false); return; }
 
-      const [{ data: p }, { data: c }] = await Promise.all([
-        supabase.from('profiles').select('*').eq('id', uid).single(),
-        supabase.from('pilot_credentials').select('*').eq('user_id', uid),
+      const [pRows, cRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: uid },
+          limit: 1,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_credentials',
+          operation: 'select',
+          where: { user_id: uid },
+          limit: 500,
+        }),
       ]);
+      const p = pRows?.[0] as any;
+      const c = cRows as any[];
       setProfile(p);
       const resolvedChecks = c || [];
       setChecks(resolvedChecks);
@@ -339,8 +357,18 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
     if (!profile?.id) return;
     setSaving(true);
     setSaveError(null);
-    const { error } = await supabase.from('profiles').update(patch).eq('id', profile.id);
-    if (error) { setSaveError(error.message); setSaving(false); return; }
+    try {
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: profile.id,
+        data: patch,
+      });
+    } catch (err: any) {
+      setSaveError(err?.message || 'Save failed');
+      setSaving(false);
+      return;
+    }
     setProfile((prev: any) => prev ? { ...prev, ...patch } : prev);
     setSaving(false);
     setEditingSlot(null);
@@ -351,14 +379,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
     setPhotoUploading(p => ({ ...p, [slotKey]: true }));
     setPhotoError(p => ({ ...p, [slotKey]: null }));
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token || !session.user?.id) throw new Error('Not logged in');
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      const uid = claims?.sub;
+      if (!token || !uid) throw new Error('Not logged in');
 
       // ── STEP 1: Client-side AES-256-GCM encryption ──────────────────────────
       // Key is derived from the stable userId (UUID) — same key every session.
       // The access_token rotates and must NOT be used as key material.
       // PBKDF2(userId, salt="pr-vault-v1"+userId, 200k rounds) → AES-256-GCM key
-      const uid = session.user.id;
       const keyMaterial = await crypto.subtle.importKey(
         'raw',
         new TextEncoder().encode(uid),
@@ -384,10 +413,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
       // Edge function scopes the object key to userId — cross-user access impossible
       const ext = file.name.split('.').pop() || 'bin';
       const presignRes = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/r2-presign-upload`,
+        `${PILOT_API_URL}/api/r2-presign-upload`,
         {
           method: 'POST',
-          headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ credentialType: slotKey, fileExt: ext, fileSizeBytes: encryptedBlob.size }),
         }
       );
@@ -406,7 +435,12 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
 
       // ── STEP 4: Store object key reference (NOT a URL) on profile ───────────
       const pathField = `${slotKey}_photo_path`;
-      await supabase.from('profiles').update({ [pathField]: objectKey }).eq('id', session.user.id);
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: uid,
+        data: { [pathField]: objectKey },
+      });
       setProfile((prev: any) => prev ? { ...prev, [pathField]: objectKey } : prev);
 
     } catch (err: any) {
@@ -1448,14 +1482,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
               <button
                 onClick={async () => {
                   try {
-                    const session = (await supabase.auth.getSession()).data.session;
-                    if (!session) throw new Error('Not authenticated');
+                    const claims = await getIdTokenClaims();
+                    const token = claims?.__raw;
+                    if (!token) throw new Error('Not authenticated');
                     const blob = new Blob([JSON.stringify(walletState.activePresentation, null, 2)], { type: 'application/json' });
                     const { uploadUrl, objectKey } = await fetch(
-                      `${SUPABASE_URL}/functions/v1/r2-presign-upload`,
+                      `${PILOT_API_URL}/api/r2-presign-upload`,
                       {
                         method: 'POST',
-                        headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                         body: JSON.stringify({ credentialType: 'vp-export', fileExt: 'json', fileSizeBytes: blob.size }),
                       }
                     ).then(r => r.json());

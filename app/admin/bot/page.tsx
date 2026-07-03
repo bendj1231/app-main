@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -112,15 +112,16 @@ export default function AIBotPage() {
     setError('');
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { getIdTokenClaims } = useAuth0();
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
       const history = messages.map((m) => ({ role: m.role, content: m.content }));
 
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/groq-chat`, {
+      const res = await fetch(`${import.meta.env.VITE_PILOT_API_URL}/api/groq-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           message: userMsg.content,

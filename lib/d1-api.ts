@@ -23,8 +23,8 @@
 
 // ── Config ─────────────────────────────────────────────────────
 
-const PLATFORM_API_URL = import.meta.env.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
-const PILOT_API_URL    = import.meta.env.VITE_PILOT_API_URL    || 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
+const PLATFORM_API_URL = (import.meta.env as any).VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev';
+const PILOT_API_URL    = (import.meta.env as any).VITE_PILOT_API_URL    || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 async function fetchAPI(
   accessToken: string,
@@ -50,7 +50,7 @@ async function fetchAPI(
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const msg = (data as Record<string, unknown>)?.error || `HTTP ${res.status}`;
+        const msg = String((data as Record<string, unknown>)?.error || `HTTP ${res.status}`);
         throw new Error(msg);
       }
       return data;
@@ -74,6 +74,21 @@ const PROFILE_ACTIONS = new Set([
   'getVerificationReceipts', 'submitVerification', 'getVerificationByAccountNumber', 'updateVerificationStatus',
 ]);
 
+// Tables that still reference Supabase and are not yet migrated to D1.
+// Stub them locally so components don't crash with Worker 400 errors.
+const STUBBED_TABLES = new Set([
+  'pilot_flight_logs',
+  'pilot_passkeys',
+  'pilot_documents',
+  'pilot_notifications',
+]);
+
+function isStubbedQuery(action: string, params?: unknown): boolean {
+  if (action !== 'queryTable') return false;
+  const table = (params as Record<string, unknown> | undefined)?.table;
+  return typeof table === 'string' && STUBBED_TABLES.has(table);
+}
+
 export async function api(
   accessToken: string,
   action: string,
@@ -81,6 +96,9 @@ export async function api(
 ): Promise<unknown> {
   if (PROFILE_ACTIONS.has(action)) {
     return pilotApi(accessToken, action, params);
+  }
+  if (isStubbedQuery(action, params)) {
+    return [];
   }
   return fetchAPI(accessToken, '/api', {
     method: 'POST',
@@ -285,6 +303,12 @@ export async function deleteProfile(accessToken: string, profileId: string) {
   return pilotApi(accessToken, 'deleteProfile', { id: profileId });
 }
 
+// ── Admin Dashboard ──────────────────────────────────────────────
+
+export async function getAdminDashboardStats(accessToken: string) {
+  return api(accessToken, 'getAdminDashboardStats');
+}
+
 // ── Health ─────────────────────────────────────────────────────
 
 export async function healthCheck() {
@@ -295,6 +319,6 @@ export async function healthCheck() {
 // ── Compatibility helpers (drop-in replacements for Supabase patterns) ──
 
 // NOTE: getProfileById and getMe are the replacements for:
-//   supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
+//   Old Supabase pattern: supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
 // Use getMe() when you want the current logged-in user's profile.
 // Use getProfileById() when you have a specific profile UUID.

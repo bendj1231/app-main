@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { UserProfile } from '../types/user';
 
 interface PilotRecognitionMatchPageProps {
@@ -55,43 +55,57 @@ export const PilotRecognitionMatchPage: React.FC<PilotRecognitionMatchPageProps>
     }
   }, [userProfile?.uid]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchMatches = async () => {
     try {
       setLoading(true);
-      
-      // First, calculate matches for all active jobs
-      const { data: jobs, error: jobsError } = await supabase
-        .from('job_opportunities')
-        .select('*')
-        .eq('is_active', true);
 
-      if (jobsError) throw jobsError;
+      // First, calculate matches for all active jobs
+      const jobRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'job_opportunities',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 500,
+      });
+      const jobs = jobRows || [];
 
       // Get pilot's complete profile data
-      const { data: pilotProfile } = await supabase
-        .from('pilot_profiles')
-        .select('*')
-        .eq('user_id', userProfile?.uid)
-        .single();
+      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_profiles',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 1,
+      });
+      const pilotProfile = profileRows?.[0];
 
-      const { data: flightLogs } = await supabase
-        .from('pilot_flight_logs')
-        .select('hours')
-        .eq('user_id', userProfile?.uid);
+      const flightLogRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_flight_logs',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 500,
+      });
+      const flightLogs = flightLogRows || [];
 
-      const { data: exams } = await supabase
-        .from('pilot_exams')
-        .select('exam_name, exam_type, passed')
-        .eq('user_id', userProfile?.uid);
+      const examRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_exams',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 500,
+      });
+      const exams = examRows || [];
 
-      const { data: achievements } = await supabase
-        .from('achievements')
-        .select('title, category')
-        .eq('user_id', userProfile?.uid);
+      const achievementRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'achievements',
+        operation: 'select',
+        where: { user_id: userProfile?.uid },
+        limit: 500,
+      });
+      const achievements = achievementRows || [];
 
       // Calculate matches for each job
-      const calculatedMatches: JobMatch[] = (jobs || []).map(job => {
-        return calculateJobMatch(job, pilotProfile, flightLogs || [], exams || [], achievements || []);
+      const calculatedMatches: JobMatch[] = (jobs || []).map((job: any) => {
+        return calculateJobMatch(job as JobOpportunity, pilotProfile, flightLogs, exams, achievements);
       });
 
       // Sort by match score
@@ -107,14 +121,14 @@ export const PilotRecognitionMatchPage: React.FC<PilotRecognitionMatchPageProps>
 
   const fetchJobOpportunities = async () => {
     try {
-      const { data, error } = await supabase
-        .from('job_opportunities')
-        .select('*')
-        .eq('is_active', true)
-        .order('priority_level', { ascending: true });
-
-      if (error) throw error;
-      setJobOpportunities(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'job_opportunities',
+        operation: 'select',
+        where: { is_active: true },
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => (a.priority_level || 0) - (b.priority_level || 0));
+      setJobOpportunities(data as any);
     } catch (error) {
       console.error('Error fetching job opportunities:', error);
     }

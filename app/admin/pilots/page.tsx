@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { logAuditAction } from '@/lib/auditLog';
 import { canEdit, canDelete, canVerify, type AdminPermissions } from '@/lib/permissions';
 import { TableSkeleton } from '@/components/admin/LoadingSpinner';
@@ -59,6 +60,7 @@ export default function PilotManagementPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, userProfile } = useAuth();
+  const { getIdTokenClaims } = useAuth0();
   const currentPath = location.pathname;
 
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
@@ -87,61 +89,101 @@ export default function PilotManagementPage() {
   const _canDeletePilots = canDelete(adminPermissions, 'pilots');
   const canVerifyPilots = canVerify(adminPermissions);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchPilots = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setPilots(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      setPilots(data);
     } catch (err) {
       console.error('Error fetching pilots:', err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [callApi]);
 
   const loadDocs = useCallback(async () => {
     setLoading(true);
-    let query = supabase
-      .from('pilot_documents')
-      .select(
-        `
-        *,
-        pilot:profiles!pilot_id (
-          full_name, email, country, verified_account, license_number
-        )
-      `
-      )
-      .order('uploaded_at', { ascending: true });
+    try {
+      const [docRows, profileRows] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_documents',
+          operation: 'select',
+          limit: 500,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          limit: 500,
+        }),
+      ]);
 
-    if (filterStatus !== 'all') query = query.eq('status', filterStatus);
+      const profilesMap = new Map<string, any>();
+      (profileRows || []).forEach((p: any) => { if (p.id) profilesMap.set(p.id, p); });
 
-    const { data } = await query;
-    setDocs((data as PilotDocument[]) ?? []);
-
-    // Stats
-    const { data: allDocs } = await supabase.from('pilot_documents').select('status');
-    if (allDocs) {
-      setStats({
-        pending: allDocs.filter((d: { status: string }) => d.status === 'pending_review').length,
-        verified: allDocs.filter((d: { status: string }) => d.status === 'verified').length,
-        rejected: allDocs.filter((d: { status: string }) => d.status === 'rejected').length,
-        total: allDocs.length,
+      let docsData = (docRows || []).map((d: any) => {
+        const pilot = profilesMap.get(d.pilot_id);
+        return {
+          ...d,
+          pilot: pilot ? {
+            full_name: pilot.full_name,
+            email: pilot.email,
+            country: pilot.country,
+            verified_account: pilot.verified_account,
+            license_number: pilot.license_number,
+          } : undefined,
+        };
+      }).sort((a: any, b: any) => {
+        const ua = a.uploaded_at || '';
+        const ub = b.uploaded_at || '';
+        return ua.localeCompare(ub);
       });
+
+      if (filterStatus !== 'all') {
+        docsData = docsData.filter((d: any) => d.status === filterStatus);
+      }
+
+      setDocs(docsData as PilotDocument[]);
+
+      // Stats
+      setStats({
+        pending: (docRows || []).filter((d: any) => d.status === 'pending_review').length,
+        verified: (docRows || []).filter((d: any) => d.status === 'verified').length,
+        rejected: (docRows || []).filter((d: any) => d.status === 'rejected').length,
+        total: (docRows || []).length,
+      });
+    } catch (err) {
+      console.error('Error loading docs:', err);
     }
     setLoading(false);
-  }, [filterStatus]);
+  }, [callApi, filterStatus]);
 
   const openDoc = async (doc: PilotDocument) => {
     setSelectedDoc(doc);
     setAdminNotes(doc.admin_notes ?? '');
     setSignedUrl(null);
-    const { data } = await supabase.storage
-      .from(doc.storage_bucket)
-      .createSignedUrl(doc.storage_path, 300);
-    if (data?.signedUrl) setSignedUrl(data.signedUrl);
+    try {
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw || '';
+      const fileUrl = `${import.meta.env.VITE_PILOT_API_URL}/api/files/${encodeURIComponent(doc.storage_bucket)}/${encodeURIComponent(doc.storage_path)}`;
+      const res = await fetch(fileUrl, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setSignedUrl(fileUrl);
+      }
+    } catch (err) {
+      console.error('Error fetching file URL:', err);
+    }
   };
 
   const updateStatus = async (newStatus: DocStatus) => {
@@ -154,30 +196,33 @@ export default function PilotManagementPage() {
     }
 
     setUpdating(true);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const oldStatus = selectedDoc.status;
-
-    const { error } = await supabase
-      .from('pilot_documents')
-      .update({
-        status: newStatus,
-        admin_notes: adminNotes || null,
-        reviewed_by: user?.id ?? null,
-        reviewed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', selectedDoc.id);
-
-    if (error) {
+    const adminId = currentUser?.uid;
+    const claims = await getIdTokenClaims();
+    const accessToken = claims?.__raw;
+    if (!adminId || !accessToken) {
       setUpdating(false);
+      alert('Admin session not available');
       return;
     }
 
+    const oldStatus = selectedDoc.status;
+
+    await callApi('queryTable', {
+      table: 'pilot_documents',
+      operation: 'update',
+      id: selectedDoc.id,
+      data: {
+        status: newStatus,
+        admin_notes: adminNotes || null,
+        reviewed_by: adminId,
+        reviewed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    });
+
     // Log audit action
-    await logAuditAction({
+    await logAuditAction(accessToken, {
+      adminId,
       actionType:
         newStatus === 'verified' ? 'verify' : newStatus === 'rejected' ? 'reject' : 'update',
       targetTable: 'pilot_documents',
@@ -189,28 +234,33 @@ export default function PilotManagementPage() {
 
     // If verified — check if ALL docs for this pilot are verified → flip verified_account = true
     if (newStatus === 'verified') {
-      const { data: pilotDocs } = await supabase
-        .from('pilot_documents')
-        .select('id, status, doc_type')
-        .eq('pilot_id', selectedDoc.pilot_id);
+      const pilotDocRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_documents',
+        operation: 'select',
+        where: { pilot_id: selectedDoc.pilot_id },
+        limit: 500,
+      });
 
-      const updatedStatuses = pilotDocs?.map((d: { id: string; status: string }) =>
+      const updatedStatuses = (pilotDocRows || []).map((d: any) =>
         d.id === selectedDoc.id ? newStatus : d.status
       ) ?? [newStatus];
 
       const allVerified = updatedStatuses.every((s: string) => s === 'verified');
-      const hasCritical = (pilotDocs ?? []).some((d: { doc_type: string }) =>
+      const hasCritical = (pilotDocRows || []).some((d: any) =>
         ['license', 'medical'].includes(d.doc_type)
       );
 
       if (allVerified && hasCritical) {
-        await supabase
-          .from('profiles')
-          .update({ verified_account: true, updated_at: new Date().toISOString() })
-          .eq('id', selectedDoc.pilot_id);
+        await callApi('queryTable', {
+          table: 'profiles',
+          operation: 'update',
+          id: selectedDoc.pilot_id,
+          data: { verified_account: true, updated_at: new Date().toISOString() },
+        });
 
         // Log pilot verification
-        await logAuditAction({
+        await logAuditAction(accessToken, {
+          adminId,
           actionType: 'verify',
           targetTable: 'profiles',
           targetId: selectedDoc.pilot_id,
@@ -223,13 +273,16 @@ export default function PilotManagementPage() {
 
     // If rejected — ensure verified_account is false
     if (newStatus === 'rejected') {
-      await supabase
-        .from('profiles')
-        .update({ verified_account: false, updated_at: new Date().toISOString() })
-        .eq('id', selectedDoc.pilot_id);
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: selectedDoc.pilot_id,
+        data: { verified_account: false, updated_at: new Date().toISOString() },
+      });
 
       // Log pilot verification removal
-      await logAuditAction({
+      await logAuditAction(accessToken, {
+        adminId,
         actionType: 'reject',
         targetTable: 'profiles',
         targetId: selectedDoc.pilot_id,
@@ -255,17 +308,12 @@ export default function PilotManagementPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPilots();
 
-    // Real-time subscription for profiles
-    const profilesSubscription = supabase
-      .channel('pilots-profiles-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-        fetchPilots();
-      })
-      .subscribe();
+    // Poll every 30s as replacement for real-time subscription
+    const interval = setInterval(() => {
+      fetchPilots();
+    }, 30000);
 
-    return () => {
-      profilesSubscription.unsubscribe();
-    };
+    return () => clearInterval(interval);
   }, [currentUser, isAdmin, fetchPilots]);
 
   useEffect(() => {
@@ -273,17 +321,12 @@ export default function PilotManagementPage() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       loadDocs();
 
-      // Real-time subscription for pilot_documents
-      const docsSubscription = supabase
-        .channel('pilot-documents-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'pilot_documents' }, () => {
-          loadDocs();
-        })
-        .subscribe();
+      // Poll every 30s as replacement for real-time subscription
+      const interval = setInterval(() => {
+        loadDocs();
+      }, 30000);
 
-      return () => {
-        docsSubscription.unsubscribe();
-      };
+      return () => clearInterval(interval);
     }
   }, [activeTab, filterStatus, currentUser, isAdmin, loadDocs]);
 

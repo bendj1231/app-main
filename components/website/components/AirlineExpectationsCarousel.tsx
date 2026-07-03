@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { IMAGES } from '@/lib/website-constants';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
 import { AirlineDetailModal } from './AirlineDetailModal';
 import { usePathwaysIntelligence } from '../../../portal/hooks/usePathwaysIntelligence';
 import { AirlineReadinessBanner } from '../../../portal/components/PathwaysIntelligenceWidgets';
@@ -789,59 +788,10 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
   // Firebase R-formula powered airline intelligence
   const airlineIntelligence = usePathwaysIntelligence(currentUser?.id || undefined);
 
-  // Fetch match scores from Supabase
+  // Fetch match scores from Firebase R-formula intelligence
   useEffect(() => {
     const fetchMatchScores = async () => {
       try {
-        // Get the current Supabase session to get the user ID
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (!session?.user?.id) {
-          setMatchScores({});
-          return;
-        }
-
-        const { data, error } = await supabase.rpc('calculate_airline_match_score', {
-          p_user_id: session.user.id,
-          p_airline_id: null
-        });
-
-        if (error) {
-          console.error('Error fetching match scores:', error);
-          // Fallback: use Firebase intelligence if available
-          if (airlineIntelligence.airlineMatches?.airlineMatches) {
-            const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
-            airlineIntelligence.airlineMatches.airlineMatches.forEach((match: any) => {
-              const airlineId = mapAirlineNameToId(match.name);
-              if (airlineId) {
-                scoresMap[airlineId] = {
-                  matchPercentage: match.matchPct,
-                  prScore: 0
-                };
-              }
-            });
-            setMatchScores(scoresMap);
-          }
-          return;
-        }
-
-        if (data) {
-          const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
-          data.forEach((item: any) => {
-            // Map airline name to airline ID
-            const airlineId = mapAirlineNameToId(item.airline_name);
-            if (airlineId) {
-              scoresMap[airlineId] = {
-                matchPercentage: item.match_percentage,
-                prScore: item.pr_score
-              };
-            }
-          });
-          setMatchScores(scoresMap);
-        }
-      } catch (error) {
-        console.error('Error fetching match scores:', error);
-        // Fallback to Firebase intelligence
         if (airlineIntelligence.airlineMatches?.airlineMatches) {
           const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
           airlineIntelligence.airlineMatches.airlineMatches.forEach((match: any) => {
@@ -854,7 +804,12 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
             }
           });
           setMatchScores(scoresMap);
+        } else {
+          setMatchScores({});
         }
+      } catch (error) {
+        console.error('Error fetching match scores:', error);
+        setMatchScores({});
       }
     };
 

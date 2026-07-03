@@ -8,8 +8,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Target, Loader2 } from 'lucide-react';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ScoreOptimizationPageProps {
     onNavigate: (page: string) => void;
@@ -23,6 +23,7 @@ export const ScoreOptimizationPage: React.FC<ScoreOptimizationPageProps> = ({
     profileData: externalProfileData,
 }) => {
     const { currentUser } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [profileData, setProfileData] = useState<any>(externalProfileData || null);
 
     // Fetch profile data if not provided externally
@@ -38,16 +39,14 @@ export const ScoreOptimizationPage: React.FC<ScoreOptimizationPageProps> = ({
             }
 
             try {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', currentUser.uid)
-                    .maybeSingle();
-
-                if (error) {
-                    console.error('Error fetching profile data:', error);
-                } else if (data) {
-                    setProfileData(data);
+                const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'profiles',
+                    operation: 'select',
+                    where: { id: currentUser.uid },
+                    limit: 1,
+                });
+                if (rows?.[0]) {
+                    setProfileData(rows[0]);
                 }
             } catch (err) {
                 console.error('Error fetching profile data:', err);

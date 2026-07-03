@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Icons } from '../icons';
-import { signIn } from '../lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import styles from './LoginPage.module.css';
 
@@ -24,6 +24,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
     const [rememberMe, setRememberMe] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const { loginWithRedirect } = useAuth0();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,17 +32,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
         setLoading(true);
 
         try {
-            const authResult = await signIn(email, password);
-
-            const supabaseUserId = authResult?.user?.id || authResult?.session?.user?.id;
-            if (!supabaseUserId) {
-                throw new Error('Authentication succeeded but no Supabase user ID was returned.');
-            }
-
-            onLogin(email);
+            // Auth0 handles authentication via Universal Login
+            await loginWithRedirect({
+                authorizationParams: {
+                    login_hint: email,
+                },
+            });
         } catch (err: any) {
             console.error("Login error:", err);
-            setError(err.message || 'Failed to sign in. Please check your credentials.');
+            setError(err.message || 'Failed to sign in. Please try again.');
         } finally {
             setLoading(false);
         }

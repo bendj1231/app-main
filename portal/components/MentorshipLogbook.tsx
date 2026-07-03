@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import { auth } from '../lib/firebase-stub';
 import { submitMentorshipLog, getUserLogs, type MentorshipLog } from '../lib/firestore';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export const MentorshipLogbook: React.FC = () => {
     const [mentorId, setMentorId] = useState('');
@@ -43,24 +43,26 @@ export const MentorshipLogbook: React.FC = () => {
                 program: 'Foundational'
             });
 
-            // Also sync to Supabase mentor_logs table
+            // Also sync to mentor_logs table
             const userId = auth.currentUser?.uid;
             if (userId) {
-                const { error: supabaseError } = await supabase
-                    .from('mentor_logs')
-                    .insert({
-                        user_id: userId,
-                        session_date: new Date().toISOString(),
-                        mentor_name: mentorId,
-                        session_type: 'Foundational',
-                        duration: hours,
-                        notes: description,
-                        created_at: new Date().toISOString()
+                try {
+                    const { callApi } = useWorkerAuth();
+                    await callApi('queryTable', {
+                        table: 'mentor_logs',
+                        operation: 'insert',
+                        data: {
+                            user_id: userId,
+                            session_date: new Date().toISOString(),
+                            mentor_name: mentorId,
+                            session_type: 'Foundational',
+                            duration: hours,
+                            notes: description,
+                            created_at: new Date().toISOString()
+                        },
                     });
-
-                if (supabaseError) {
-                    console.error('Supabase sync error (non-critical):', supabaseError);
-                } else {
+                } catch (syncError) {
+                    console.error('Sync error (non-critical):', syncError);
                 }
             }
 

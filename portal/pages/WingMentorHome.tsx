@@ -32,7 +32,7 @@ import { PathwayCarousel } from '../components/PathwayCarousel';
 // import SubscriptionDashboard from '../../components/SubscriptionDashboard';
 import AtlasResumeBuilder from '../../components/AtlasResumeBuilder';
 import { getUserTrack, getTrackConfig, canAccessPage, getRedirectPage } from '../config/accessControl';
-import { getEnrollmentStatus, supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import PilotGapModulePage from './PilotGapModulePage';
 import MentorModulesPage from './MentorModulesPage';
 import { AviationIndustryExpectationsPage } from './AviationIndustryExpectationsPage';
@@ -70,11 +70,11 @@ const FoundationalEnrollmentCheck: React.FC<{
       // Mark as checked
       hasCheckedEnrollment.current = true;
       
-      // Try both Supabase ID and Firebase UID
-      const supabaseId = userProfile?.id || userId;
+      // Try both profile ID and Firebase UID
+      const profileId = userProfile?.id || userId;
       const firebaseUid = userProfile?.firebase_uid || userProfile?.uid || userId;
-      
-      if (!supabaseId && !firebaseUid) {
+
+      if (!profileId && !firebaseUid) {
         onResult(false);
         setIsLoading(false);
         return;
@@ -105,14 +105,27 @@ const FoundationalEnrollmentCheck: React.FC<{
       }
 
       try {
-        // Try Supabase ID first, then Firebase UID
-        let enrolledPrograms = [];
-        if (supabaseId) {
-          enrolledPrograms = await getEnrollmentStatus(supabaseId);
+        const { callApi } = useWorkerAuth();
+        // Try profile ID first, then Firebase UID
+        let enrolledPrograms: any[] = [];
+        if (profileId) {
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'profiles',
+            operation: 'select',
+            where: { id: profileId },
+            limit: 1,
+          });
+          enrolledPrograms = (rows?.[0]?.enrolled_programs as any[]) || [];
         }
-        // If no results with Supabase ID, try Firebase UID
-        if (enrolledPrograms.length === 0 && firebaseUid && firebaseUid !== supabaseId) {
-          enrolledPrograms = await getEnrollmentStatus(firebaseUid);
+        // If no results with profile ID, try Firebase UID
+        if (enrolledPrograms.length === 0 && firebaseUid && firebaseUid !== profileId) {
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'profiles',
+            operation: 'select',
+            where: { id: firebaseUid },
+            limit: 1,
+          });
+          enrolledPrograms = (rows?.[0]?.enrolled_programs as any[]) || [];
         }
         const isEnrolled = enrolledPrograms.includes('Foundational');
         onResult(isEnrolled);
@@ -351,7 +364,9 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
   const [programProgress, setProgramProgress] = useState<any>(null);
   const [loadingProgress, setLoadingProgress] = useState(true);
 
-  // Fetch program progress from Supabase
+  const { callApi } = useWorkerAuth();
+
+  // Fetch program progress
   useEffect(() => {
     const fetchProgramProgress = async () => {
       if (!userProfile?.id) {
@@ -360,14 +375,15 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
       }
 
       try {
-        const { data, error } = await supabase
-          .from('program_progress')
-          .select('*')
-          .eq('user_id', userProfile.id)
-          .eq('program_type', 'Foundational')
-          .single();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'program_progress',
+          operation: 'select',
+          where: { user_id: userProfile.id, program_type: 'Foundational' },
+          limit: 1,
+        });
+        const data = rows?.[0];
 
-        if (error || !data) {
+        if (!data) {
           setProgramProgress({
             completion_percentage: 0,
             modules_completed: [],
@@ -390,7 +406,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
     };
 
     fetchProgramProgress();
-  }, [userProfile?.id]);
+  }, [userProfile?.id, callApi]);
 
   // Calculate progress values
   const completedCount = programProgress?.modules_completed?.length || 0;

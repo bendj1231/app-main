@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface PilotLicensureExperiencePageProps {
   onBack: () => void;
@@ -222,7 +222,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return () => clearTimeout(timer);
   }, [dataLoaded, userProfile?.id]);
 
-  // Load existing data from Supabase
+  const { callApi } = useWorkerAuth();
+
+  // Load existing data
   useEffect(() => {
     const loadExistingData = async () => {
       const userId = userProfile?.id || userProfile?.uid;
@@ -233,31 +235,31 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
       try {
         // First, fetch from profiles table (account creation data)
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('full_name, display_name, phone, country, date_of_birth, email, onboarding_responses')
-          .eq('id', userId)
-          .single();
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: userId },
+          limit: 1,
+        });
+        const profileData: any = profileRows?.[0];
 
         // Set initial values from profiles (if available)
         let initialData: any = {};
-        
-        if (profileError) {
-        } else if (profileData) {
-          
+
+        if (profileData) {
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
-          
+
           // Handle empty strings as well as null/undefined
           const hasValue = (val: any) => val && val.trim && val.trim() !== '';
-          
+
           initialData = {
             fullLegalName: hasValue(profileData.full_name) ? profileData.full_name : (hasValue(onboarding.full_name) ? onboarding.full_name : ''),
             contactNumber: hasValue(profileData.phone) ? profileData.phone : (hasValue(onboarding.phone) ? onboarding.phone : ''),
             residingCountry: hasValue(profileData.country) ? profileData.country : (hasValue(onboarding.country) ? onboarding.country : ''),
             dateOfBirth: hasValue(profileData.date_of_birth) ? profileData.date_of_birth : (hasValue(onboarding.date_of_birth) ? onboarding.date_of_birth : '')
           };
-          
+
           // Parse display_name into first/last name (check for empty string)
           if (hasValue(profileData.display_name)) {
             const nameParts = profileData.display_name.split(' ');
@@ -277,7 +279,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               .replace(/[._-]/g, ' ') // Replace separators with space
               .replace(/\s+/g, ' ') // Collapse multiple spaces
               .trim();
-            
+
             if (cleanName) {
               const nameParts = cleanName.split(' ').filter((p: string) => p.length > 0);
               if (nameParts.length >= 2) {
@@ -293,85 +295,89 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         }
 
         // Then, fetch from pilot_licensure_experience table
-        const { data, error } = await supabase
-          .from('pilot_licensure_experience')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
+        const licensureRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const data = licensureRows?.[0];
 
         // Also fetch from pilot_profiles for flight hours and license data
-        const { data: pilotProfileData, error: pilotProfileError } = await supabase
-          .from('pilot_profiles')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
+        const pilotProfileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_profiles',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 1,
+        });
+        const pilotProfileData: any = pilotProfileRows?.[0];
 
-        if (pilotProfileError) {
-        } else if (pilotProfileData) {
+        if (pilotProfileData) {
         }
 
-        if (error) {
+        if (!data) {
           // Only use profile data as fallback if we haven't already set the values
-          if (!fullLegalName) setFullLegalName(initialData.fullLegalName || '');
-          if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
-          if (!lastName) setLastName(initialData.lastName || userProfile?.lastName || '');
-          if (!contactNumber) setContactNumber(initialData.contactNumber || '');
-          if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
-          if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
-        } else if (data) {
+          if (!fullLegalName) setFullLegalName((initialData.fullLegalName as string) || '');
+          if (!firstName) setFirstName((initialData.firstName as string) || userProfile?.firstName || '');
+          if (!lastName) setLastName((initialData.lastName as string) || userProfile?.lastName || '');
+          if (!contactNumber) setContactNumber((initialData.contactNumber as string) || '');
+          if (!residingCountry) setResidingCountry((initialData.residingCountry as string) || '');
+          if (!dateOfBirth) setDateOfBirth((initialData.dateOfBirth as string) || '');
+        } else {
+          const d: any = data;
           // Personal Info - use licensure data if available, fallback to profiles
-          setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
-          setMiddleName(data.middle_name || '');
-          setLastName(data.last_name || initialData.lastName || userProfile?.lastName || '');
-          setFullLegalName(data.full_legal_name || initialData.fullLegalName || '');
-          setDateOfBirth(data.date_of_birth || initialData.dateOfBirth || '');
-          setNationality(data.nationality || '');
-          setResidingCountry(data.residing_country || initialData.residingCountry || '');
-          setContactNumber(data.contact_number || initialData.contactNumber || '');
-          setFlightSchoolAddress(data.flight_school_address || '');
-          setLanguages(data.languages || '');
-          setEnglishProficiency(data.english_proficiency || '');
+          setFirstName(d.first_name || initialData.firstName || userProfile?.firstName || '');
+          setMiddleName(d.middle_name || '');
+          setLastName(d.last_name || initialData.lastName || userProfile?.lastName || '');
+          setFullLegalName(d.full_legal_name || initialData.fullLegalName || '');
+          setDateOfBirth(d.date_of_birth || initialData.dateOfBirth || '');
+          setNationality(d.nationality || '');
+          setResidingCountry(d.residing_country || initialData.residingCountry || '');
+          setContactNumber(d.contact_number || initialData.contactNumber || '');
+          setFlightSchoolAddress(d.flight_school_address || '');
+          setLanguages(d.languages || '');
+          setEnglishProficiency(d.english_proficiency || '');
 
           // License Info
-          setCurrentLicenses(data.current_license || []);
-          setLicenseNumber(data.license_number || '');
-          setLicenseExpiry(data.license_expiry || '');
-          setLicenseCountryOfIssue(data.license_country_of_issue || '');
+          setCurrentLicenses(d.current_license || []);
+          setLicenseNumber(d.license_number || '');
+          setLicenseExpiry(d.license_expiry || '');
+          setLicenseCountryOfIssue(d.license_country_of_issue || '');
 
           // Medical Info
-          setMedicalExpiry(data.medical_expiry || '');
-          setMedicalCountry(data.medical_country || '');
-          setMedicalClass(data.medical_class || '');
-          setRadioLicenseExpiry(data.radio_license_expiry || '');
+          setMedicalExpiry(d.medical_expiry || '');
+          setMedicalCountry(d.medical_country || '');
+          setMedicalClass(d.medical_class || '');
+          setRadioLicenseExpiry(d.radio_license_expiry || '');
 
           // Aircraft Ratings
-          setAircraftRatings(data.aircraft_ratings || []);
+          setAircraftRatings(d.aircraft_ratings || []);
 
           // Job Experiences
-          setJobExperiences(data.job_experiences || []);
+          setJobExperiences(d.job_experiences || []);
 
           // Current Occupation
-          setCurrentOccupation(data.current_occupation || '');
-          setCurrentEmployer(data.current_employer || '');
-          setCurrentPosition(data.current_position || '');
+          setCurrentOccupation(d.current_occupation || '');
+          setCurrentEmployer(d.current_employer || '');
+          setCurrentPosition(d.current_position || '');
 
           // Pilot Interests
-          setCountriesVisited(data.countries_visited?.toString() || '');
-          setFavoriteAircraft(data.favorite_aircraft || '');
-          setWhyBecomePilot(data.why_become_pilot || '');
-          setOtherSkills(data.other_skills || '');
-          setAviationPathwaysInterests(data.aviation_pathways_interests || []);
-          setPilotJobPositionsInterests(data.pilot_job_positions_interests || []);
+          setCountriesVisited(d.countries_visited?.toString() || '');
+          setFavoriteAircraft(d.favorite_aircraft || '');
+          setWhyBecomePilot(d.why_become_pilot || '');
+          setOtherSkills(d.other_skills || '');
+          setAviationPathwaysInterests(d.aviation_pathways_interests || []);
+          setPilotJobPositionsInterests(d.pilot_job_positions_interests || []);
         }
-        
+
         // Apply all profile data fallbacks if no licensure data was found
         if (!data) {
-          setFullLegalName(initialData.fullLegalName || '');
-          setFirstName(initialData.firstName || userProfile?.firstName || '');
-          setLastName(initialData.lastName || userProfile?.lastName || '');
-          setContactNumber(initialData.contactNumber || '');
-          setResidingCountry(initialData.residingCountry || '');
-          setDateOfBirth(initialData.dateOfBirth || '');
+          setFullLegalName((initialData.fullLegalName as string) || '');
+          setFirstName((initialData.firstName as string) || userProfile?.firstName || '');
+          setLastName((initialData.lastName as string) || userProfile?.lastName || '');
+          setContactNumber((initialData.contactNumber as string) || '');
+          setResidingCountry((initialData.residingCountry as string) || '');
+          setDateOfBirth((initialData.dateOfBirth as string) || '');
         }
         
         // Mark data as loaded - the separate effect will handle hiding the loader after min time
@@ -461,7 +467,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     }
   };
 
-  // Save all data to Supabase
+  // Save all data
   const handleSave = async () => {
     const userId = userProfile?.id || userProfile?.uid;
     if (!userId) {
@@ -506,14 +512,26 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-      
-      const { error } = await supabase
-        .from('pilot_licensure_experience')
-        .upsert(data, { onConflict: 'user_id' });
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+      // Upsert: try update first, then insert
+      const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_licensure_experience',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      if (existingRows?.[0]?.id) {
+        await callApi('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'update',
+          id: existingRows[0].id as string,
+          data,
+        });
+      } else {
+        await callApi('queryTable', {
+          table: 'pilot_licensure_experience',
+          operation: 'insert',
+          data,
+        });
       }
 
       // Also sync with profiles table for consistency
@@ -542,17 +560,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-        
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update(profileUpdateData)
-          .eq('id', userId);
-
-        if (profileError) {
-          console.error('Profile sync error (non-critical):', profileError);
-          // Non-critical: main data is saved to pilot_licensure_experience
-        } else {
-        }
+        await callApi('queryTable', {
+          table: 'profiles',
+          operation: 'update',
+          id: userId,
+          data: profileUpdateData,
+        });
       }
 
       setSaveMessage('Data saved successfully!');

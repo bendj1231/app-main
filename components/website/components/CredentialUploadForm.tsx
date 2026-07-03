@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
+import { uploadDocument } from '@/lib/cloudinaryClient';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface CredentialUploadFormProps {
   onCredentialUploaded: (credentialData: any) => void;
@@ -10,6 +11,7 @@ export const CredentialUploadForm: React.FC<CredentialUploadFormProps> = ({
   onCredentialUploaded,
   auth0Id
 }) => {
+  const { callApi } = useWorkerAuth();
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState('');
@@ -33,23 +35,12 @@ export const CredentialUploadForm: React.FC<CredentialUploadFormProps> = ({
 
   const handleFileUpload = async (file: File, type: 'license' | 'medical') => {
     if (!file) return null;
-
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${auth0Id}_${type}_${Date.now()}.${fileExt}`;
-    
-    const { data, error } = await supabase.storage
-      .from('pilot-documents')
-      .upload(fileName, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
-
-    if (error) {
-      console.error('Upload error:', error);
+    const result = await uploadDocument(file, auth0Id, type);
+    if (!result.success) {
+      console.error('Upload error:', result.error);
       return null;
     }
-
-    return data.path;
+    return result.url || null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,11 +97,13 @@ export const CredentialUploadForm: React.FC<CredentialUploadFormProps> = ({
         submitted_at: new Date().toISOString()
       };
 
-      const { error: dbError } = await supabase
-        .from('pilot_documents')
-        .insert([credentialData]);
-
-      if (dbError) {
+      try {
+        await callApi('queryTable', {
+          table: 'pilot_documents',
+          operation: 'insert',
+          data: credentialData,
+        });
+      } catch {
         setError('Failed to save credential data');
         return;
       }

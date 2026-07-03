@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Building2, ShieldCheck, Info } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props {
   onBack: () => void;
@@ -72,6 +72,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function ATORegisterPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
   const [selectedTier, setSelectedTier] = useState('basic');
@@ -101,9 +102,10 @@ export function ATORegisterPage({ onBack, onNavigate }: Props) {
     setError(null);
 
     try {
-      const { error: err } = await supabase
-        .from('ato_applications')
-        .insert({
+      await callApi('queryTable', {
+        table: 'ato_applications',
+        operation: 'insert',
+        data: {
           applicant_user_id: currentUser?.id ?? null,
           institution_name: form.institution_name,
           country: form.country,
@@ -117,8 +119,8 @@ export function ATORegisterPage({ onBack, onNavigate }: Props) {
           requested_tier: selectedTier,
           motivation: form.motivation || null,
           status: 'submitted',
-        });
-      if (err) throw err;
+        },
+      });
       setStatus('success');
     } catch (e: any) {
       setError(e?.message ?? 'Submission failed.');

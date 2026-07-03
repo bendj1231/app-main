@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap, Smartphone, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { FoundationLoadingScreen } from '@/components/website/components/programs/FoundationLoadingScreen';
 import { shouldEnableHeavyAnimations, shouldEnable3DEffects } from '@/lib/device-detection';
 
@@ -511,7 +511,8 @@ const AccessPlatformCard: React.FC<{
     onBecomeMemberOpen?: () => void;
     onNavigate: (page: string) => void;
     isLoggedIn: boolean;
-}> = ({ onLogin, onBecomeMemberOpen, onNavigate, isLoggedIn }) => {
+    isMobile?: boolean;
+}> = ({ onLogin, onBecomeMemberOpen, onNavigate, isLoggedIn, isMobile = false }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [direction, setDirection] = useState(0);
 
@@ -575,17 +576,21 @@ const AccessPlatformCard: React.FC<{
                         alt="Flight Deck"
                         className="w-full h-full object-cover"
                         style={{
-                            objectPosition: 'right top',
-                            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
-                            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)'
+                            objectPosition: isMobile ? 'center top' : 'right top',
+                            maskImage: isMobile
+                                ? 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.95) 100%)'
+                                : 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
+                            WebkitMaskImage: isMobile
+                                ? 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.95) 100%)'
+                                : 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)'
                         }}
                     />
                 </motion.div>
             </AnimatePresence>
             
             {/* Content layer with shuffle animation */}
-            <div className="absolute inset-0 flex items-center px-10 py-8">
-                <div className="relative w-[44%] overflow-hidden">
+            <div className={`absolute inset-0 flex ${isMobile ? 'flex-col justify-end' : 'items-center'} px-6 md:px-10 py-6 md:py-8`}>
+                <div className={`relative ${isMobile ? 'w-full mb-6' : 'w-[44%]'} overflow-hidden`}>
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={slide.id}
@@ -595,7 +600,7 @@ const AccessPlatformCard: React.FC<{
                             animate="center"
                             exit="exit"
                             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                            className="relative z-10 scale-90 origin-top-left"
+                            className={`relative z-10 ${isMobile ? 'scale-100 origin-bottom-left' : 'scale-90 origin-top-left'}`}
                         >
                             {/* Micro-header with chevron */}
                             <div className="flex items-center gap-1.5 mb-4">
@@ -604,17 +609,17 @@ const AccessPlatformCard: React.FC<{
                             </div>
                             
                             {/* Main headline */}
-                            <h1 className="text-3xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
+                            <h1 className={`font-extrabold text-white uppercase tracking-tight leading-tight mb-4 ${isMobile ? 'text-xl md:text-3xl' : 'text-3xl'}`}>
                                 {slide.title}<span className="text-red-600 font-extrabold uppercase tracking-tight">{slide.titleHighlight}</span><span className="text-white">{slide.titleSuffix}</span>
                             </h1>
                             
                             {/* Body text */}
-                            <p className="text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
+                            <p className={`text-slate-300 leading-relaxed mb-6 ${isMobile ? 'text-xs max-w-full' : 'text-sm max-w-sm'}`}>
                                 {slide.description}
                             </p>
                             
                             {/* Buttons */}
-                            <div className="flex flex-row gap-3">
+                            <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-3`}>
                                 {!isLoggedIn && (
                                     <button
                                         onClick={() => slide.primaryButtonAction === 'become-member' && onBecomeMemberOpen ? onBecomeMemberOpen() : onNavigate(slide.primaryButtonAction)}
@@ -635,17 +640,19 @@ const AccessPlatformCard: React.FC<{
                 </div>
                 
                 {/* Right side callout with blur gradient overlay */}
-                <div className="flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
+                <div className={`${isMobile ? 'relative w-full' : 'flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]'}`}>
                     {/* Blur + gradient overlay - dark navy to match left side */}
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            background: 'linear-gradient(to right, rgba(15,23,42,0) 0%, rgba(20,30,60,0.65) 30%, rgba(25,35,70,0.85) 100%)',
-                            backdropFilter: 'blur(6px)',
-                            WebkitBackdropFilter: 'blur(6px)',
-                        }}
-                    />
-                    <div className="relative z-10 text-right pr-10 pl-8 overflow-hidden">
+                    {!isMobile && (
+                        <div
+                            className="absolute inset-0"
+                            style={{
+                                background: 'linear-gradient(to right, rgba(15,23,42,0) 0%, rgba(20,30,60,0.65) 30%, rgba(25,35,70,0.85) 100%)',
+                                backdropFilter: 'blur(6px)',
+                                WebkitBackdropFilter: 'blur(6px)',
+                            }}
+                        />
+                    )}
+                    <div className={`relative z-10 ${isMobile ? 'text-left py-4 border-t border-white/10' : 'text-right pr-10 pl-8'} overflow-hidden`}>
                         <AnimatePresence mode="wait" custom={direction}>
                             <motion.div
                                 key={slide.id}
@@ -657,10 +664,10 @@ const AccessPlatformCard: React.FC<{
                                 transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
                             >
                                 <p className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-2`}>&#8811; {slide.rightMicroHeader}</p>
-                                <h2 className="text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
+                                <h2 className={`font-extrabold uppercase tracking-tight leading-tight mb-3 text-white ${isMobile ? 'text-xl' : 'text-2xl'}`}>
                                     {slide.rightTitle}<span className="text-red-500">{slide.rightTitleHighlight}</span>
                                 </h2>
-                                <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
+                                <p className={`text-xs text-slate-300 leading-relaxed ${isMobile ? 'max-w-full' : 'max-w-[220px] ml-auto'}`}>
                                     {slide.rightDescription} <span className="text-red-400">{slide.rightHighlightText}</span>
                                 </p>
                             </motion.div>
@@ -681,6 +688,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     onBecomeMemberOpen,
 }) => {
     const { currentUser, userProfile, refreshUserProfile } = useAuth();
+    const { callApi } = useWorkerAuth();
     const isLoggedIn = !!currentUser;
 
     // Robust enrollment check - same logic as portal dashboard
@@ -1060,29 +1068,33 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         setFoundationNavTarget('home');
         setShowFoundationLoading(true);
         try {
-            const { data: existingProfile } = await supabase
-                .from('profiles')
-                .select('enrolled_programs')
-                .eq('id', currentUser.uid)
-                .maybeSingle();
-            const currentPrograms = existingProfile?.enrolled_programs || [];
+            const existingProfiles = await callApi<Record<string, unknown>[]>('queryTable', {
+                table: 'profiles',
+                operation: 'select',
+                where: { id: currentUser.uid },
+                limit: 1,
+            });
+            const existingProfile = existingProfiles?.[0];
+            const currentPrograms = (existingProfile?.enrolled_programs as string[]) || [];
             const updatedPrograms = currentPrograms.includes('Foundational')
                 ? currentPrograms
                 : [...currentPrograms, 'Foundational'];
-            const { error } = await supabase
-                .from('profiles')
-                .update({ enrolled_programs: updatedPrograms })
-                .eq('id', currentUser.uid);
-            if (error) {
-                console.error('Profile update error details:', error);
-                throw error;
-            }
-            await supabase.from('notifications').insert({
-                user_id: currentUser.uid,
-                title: 'Congratulations!',
-                message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
-                type: 'success',
-                is_read: false,
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: currentUser.uid,
+                data: { enrolled_programs: updatedPrograms },
+            });
+            await callApi('queryTable', {
+                table: 'notifications',
+                operation: 'insert',
+                data: {
+                    user_id: currentUser.uid,
+                    title: 'Congratulations!',
+                    message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
+                    type: 'success',
+                    is_read: false,
+                },
             });
             // Refresh user profile to update enrollment state immediately
             if (refreshUserProfile) {
@@ -1223,31 +1235,50 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             initial="hidden"
                             animate={isVisible ? "visible" : "hidden"}
                         >
-                            {/* Layout 1: Home - Viewport-locked desktop reference frame */}
+                            {/* Layout 1: Home - Responsive desktop/mobile reference frame */}
                             {currentViewKey === 'home' && (
-                                <div className="w-full flex items-start justify-center">
-                                    <div
-                                        style={{
-                                            width: HOME_BASE_WIDTH,
-                                            transform: `scale(${homeViewportScale})`,
-                                            transformOrigin: 'top center',
-                                            flexShrink: 0,
-                                        }}
-                                    >
-                                        {/* Full-width panoramic hero card */}
-                                        <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[380px]">
-                                            <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
-                                        </motion.div>
-                                        {/* Bottom 3 cards — desktop reference sizes */}
-                                        <div className="grid grid-cols-3 gap-6">
-                                            {currentCards.slice(2, 5).map((card) => (
-                                                <motion.div key={card.id} variants={cardVariants} className="h-[245px]">
-                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} forceDesktop={true} />
-                                                </motion.div>
-                                            ))}
+                                <>
+                                    {isMobileView ? (
+                                        <div className="w-full flex flex-col gap-4">
+                                            {/* Full-width panoramic hero card - mobile stacked */}
+                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[520px]">
+                                                <AccessPlatformCard isMobile onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                            </motion.div>
+                                            {/* Bottom 3 cards — stacked on mobile */}
+                                            <div className="grid grid-cols-1 gap-4">
+                                                {currentCards.slice(2, 5).map((card) => (
+                                                    <motion.div key={card.id} variants={cardVariants} className="h-[200px]">
+                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} forceDesktop={true} />
+                                                    </motion.div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    ) : (
+                                        <div className="w-full flex items-start justify-center">
+                                            <div
+                                                style={{
+                                                    width: HOME_BASE_WIDTH,
+                                                    transform: `scale(${homeViewportScale})`,
+                                                    transformOrigin: 'top center',
+                                                    flexShrink: 0,
+                                                }}
+                                            >
+                                                {/* Full-width panoramic hero card */}
+                                                <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[380px]">
+                                                    <AccessPlatformCard onLogin={onLogin || (() => {})} onBecomeMemberOpen={onBecomeMemberOpen} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                                </motion.div>
+                                                {/* Bottom 3 cards — desktop reference sizes */}
+                                                <div className="grid grid-cols-3 gap-6">
+                                                    {currentCards.slice(2, 5).map((card) => (
+                                                        <motion.div key={card.id} variants={cardVariants} className="h-[245px]">
+                                                            <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} forceDesktop={true} />
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
 
                             {/* Layout 2: Programs - Foundation video hero + 3 stacked info cards */}

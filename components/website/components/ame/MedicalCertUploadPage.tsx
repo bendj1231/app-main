@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, Heart, AlertTriangle } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface Props { onBack: () => void; onNavigate: (page: string) => void; }
 
@@ -24,6 +24,7 @@ interface CertRecord { id: string; medical_class: string; issuing_authority: str
 
 export function MedicalCertUploadPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus] = useState<Status>('loading');
   const [error, setError] = useState<string | null>(null);
   const [certs, setCerts] = useState<CertRecord[]>([]);
@@ -36,8 +37,18 @@ export function MedicalCertUploadPage({ onBack, onNavigate }: Props) {
   const load = useCallback(async () => {
     if (!currentUser?.id) return;
     setStatus('loading');
-    const { data } = await supabase.from('medical_certificate_records').select('id, medical_class, issuing_authority, certificate_number, date_issued, date_expires, status, limitations').eq('pilot_id', currentUser.id).order('date_expires', { ascending: false });
-    setCerts(data ?? []);
+    const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'medical_certificate_records',
+      operation: 'select',
+      where: { pilot_id: currentUser.id },
+      limit: 500,
+    });
+    const sorted = (rows || []).sort((a: any, b: any) => {
+      const ea = a.date_expires || '';
+      const eb = b.date_expires || '';
+      return eb.localeCompare(ea);
+    });
+    setCerts((sorted as unknown) as CertRecord[]);
     setStatus('idle');
   }, [currentUser?.id]);
 
@@ -52,19 +63,22 @@ export function MedicalCertUploadPage({ onBack, onNavigate }: Props) {
     setStatus('submitting'); setError(null);
     try {
       const expiryDays = daysDiff(form.date_expires);
-      const { error: err } = await supabase.from('medical_certificate_records').insert({
-        pilot_id: currentUser!.id,
-        medical_class: form.medical_class,
-        issuing_authority: form.issuing_authority,
-        certificate_number: form.certificate_number || null,
-        date_of_examination: form.date_of_examination || form.date_issued,
-        date_issued: form.date_issued,
-        date_expires: form.date_expires,
-        limitations: limitations.length ? limitations : null,
-        status: expiryDays <= 0 ? 'expired' : 'active',
-        visible_to_operators: form.visible_to_operators,
+      await callApi('queryTable', {
+        table: 'medical_certificate_records',
+        operation: 'insert',
+        data: {
+          pilot_id: currentUser!.id,
+          medical_class: form.medical_class,
+          issuing_authority: form.issuing_authority,
+          certificate_number: form.certificate_number || null,
+          date_of_examination: form.date_of_examination || form.date_issued,
+          date_issued: form.date_issued,
+          date_expires: form.date_expires,
+          limitations: limitations.length ? limitations : null,
+          status: expiryDays <= 0 ? 'expired' : 'active',
+          visible_to_operators: form.visible_to_operators,
+        },
       });
-      if (err) throw err;
       setStatus('success');
       await load();
       setShowForm(false);

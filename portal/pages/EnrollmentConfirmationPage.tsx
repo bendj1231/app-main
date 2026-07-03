@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Icons } from '../icons';
-import { supabase } from '../lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface EnrollmentConfirmationPageProps {
     onComplete: () => void;
@@ -93,22 +93,28 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
     userEmail,
     userProfile
 }) => {
+    const { getAccessTokenSilently } = useAuth0();
+
     useEffect(() => {
         // Send enrollment confirmation email
         const sendEnrollmentEmail = async () => {
             try {
-                const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
-                    body: {
+                const token = await getAccessTokenSilently();
+                const res = await fetch(`${import.meta.env.VITE_PILOT_API_URL}/api/send-enrollment-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
                         email: userProfile?.email || userEmail,
                         name: userProfile?.firstName,
                         program: 'Foundation Program',
                         type: 'enrollment-confirmation'
-                    }
+                    }),
                 });
-
-                if (error) {
-                    console.error('❌ Failed to send enrollment confirmation email:', error);
-                } else {
+                if (!res.ok) {
+                    console.error('❌ Failed to send enrollment confirmation email:', await res.text());
                 }
             } catch (error) {
                 console.error('❌ Error sending enrollment confirmation email:', error);

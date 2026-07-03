@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface FlightDeckLoginPageProps {
   onNavigate: (page: string) => void;
@@ -12,7 +12,8 @@ interface FlightDeckLoginPageProps {
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
-  const { currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
+  const { currentUser, oauthAccountCheck, resetOauthAccountCheck, devLogin } = useAuth();
+  const { callApi } = useWorkerAuth();
 
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -23,13 +24,46 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   const [checkingOAuth, setCheckingOAuth] = useState(false);
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [error, setError] = useState('');
+  const logoClickCount = useRef(0);
+  const logoClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleLogoClick = () => {
+    // Dev-only easter egg: 5 rapid clicks on the logo logs in a dummy account on localhost.
+    if (typeof window === 'undefined') return;
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      return;
+    }
+
+    logoClickCount.current += 1;
+    if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+    logoClickTimer.current = setTimeout(() => {
+      logoClickCount.current = 0;
+    }, 2000);
+
+    if (logoClickCount.current === 5) {
+      logoClickCount.current = 0;
+      devLogin().then(() => {
+        navigate('/platform', { replace: true });
+      });
+    }
+  };
 
   // Helper: check if a profile row exists for a given user id (Auth0 sub)
   const profileExists = async (userId: string): Promise<boolean> => {
-    const { data: byId } = await supabase.from('profiles').select('id').eq('id', userId).maybeSingle();
-    if (byId) return true;
-    const { data: byAuth0Id } = await supabase.from('profiles').select('id').eq('auth0_id', userId).maybeSingle();
-    return !!byAuth0Id;
+    const byId = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'profiles',
+      operation: 'select',
+      where: { id: userId },
+      limit: 1,
+    });
+    if (byId?.length) return true;
+    const byAuth0Id = await callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'profiles',
+      operation: 'select',
+      where: { auth0_id: userId },
+      limit: 1,
+    });
+    return !!byAuth0Id?.length;
   };
 
   // Watch currentUser and verify they have a valid profile row in the database.
@@ -306,7 +340,19 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           animation: 'glassMaterialize 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards',
         }}
       >
-        <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6 }}>
+        <div
+          onClick={handleLogoClick}
+          style={{
+            fontSize: 28,
+            fontWeight: 800,
+            letterSpacing: '-0.5px',
+            marginBottom: 6,
+            cursor: 'pointer',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+          }}
+          title="Localhost dev shortcut: click 5 times to sign in with a dummy account"
+        >
           <span style={{ color: '#ffffff' }}>pilot</span>
           <span style={{ color: '#ef4444' }}>recognition</span>
           <span style={{ color: '#ffffff' }}>.com</span>

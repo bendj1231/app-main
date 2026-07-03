@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cloudflare-api": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.cloudflare.com/mcp"]
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/git-mcp-server"]
+    }
+  }
+}

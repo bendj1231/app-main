@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface WalletProfile {
   display_name: string;
@@ -46,22 +46,24 @@ const formatDate = (dateStr: string | null) => {
 };
 
 export const WalletPublicCard: React.FC<{ token: string; onManage: () => void }> = ({ token, onManage }) => {
+  const { callApi } = useWorkerAuth();
   const [profile, setProfile] = useState<WalletProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('display_name, license_id, license_types, license_expiry, country_of_license, medical_class, medical_expiry, total_flight_hours, english_proficiency_level, language_icao_level, profile_token, profile_token_generated_at, profile_image_url, verified_account, ratings')
-        .eq('profile_token', token)
-        .maybeSingle();
-
-      if (error || !data) {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { profile_token: token },
+        limit: 1,
+      });
+      const data = rows?.[0];
+      if (!data) {
         setNotFound(true);
       } else {
-        setProfile(data as WalletProfile);
+        setProfile((data as unknown) as WalletProfile);
       }
       setLoading(false);
     };

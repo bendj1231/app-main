@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2, Download } from 'lucide-react';
 import { StorageEngineCard } from './StorageEngineCard';
-import { supabase } from '@/lib/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth } from '@/contexts/AuthContext';
+
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 interface SettingsDirectoryPageProps {
     onBack: () => void;
@@ -11,6 +14,8 @@ interface SettingsDirectoryPageProps {
 }
 
 export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ onBack, onNavigate, onLogin }) => {
+    const { getIdTokenClaims } = useAuth0();
+    const { logout } = useAuth();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
     const [deleting, setDeleting] = useState(false);
@@ -22,15 +27,16 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
         setExporting(true);
         setExportError('');
         try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.access_token) throw new Error('Not authenticated');
+            const claims = await getIdTokenClaims();
+            const token = claims?.__raw;
+            if (!token) throw new Error('Not authenticated');
 
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/data-export`,
+                `${PILOT_API_URL}/api/data-export`,
                 {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${session.access_token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 }
@@ -62,16 +68,17 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
         setDeleting(true);
         setDeleteError('');
         try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.access_token) throw new Error('Not authenticated');
+            const claims = await getIdTokenClaims();
+            const token = claims?.__raw;
+            if (!token) throw new Error('Not authenticated');
 
-            // Call the delete-account edge function for complete DCA-compliant purge
+            // Call the delete-account endpoint for complete DCA-compliant purge
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/delete-account`,
+                `${PILOT_API_URL}/api/delete-account`,
                 {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${session.access_token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 }
@@ -82,7 +89,7 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
                 throw new Error(err.error || `Delete failed (${res.status})`);
             }
 
-            await supabase.auth.signOut();
+            await logout();
             safeRedirect('/');
         } catch (e: any) {
             setDeleteError(e?.message || 'Failed to delete account.');

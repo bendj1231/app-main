@@ -1,9 +1,8 @@
-// CUTOFF — Supabase no longer supported. Work in progress to migrate to Cloudflare D1 / R2.
 // Pathway Matching Hook - Browser-Based Calculation
 // All matching happens locally in the browser for privacy and speed
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 import { 
   pathwayEngine, 
   extractPilotProfile, 
@@ -42,6 +41,7 @@ export function usePathwayMatching({
   const [error, setError] = useState<string | null>(null);
   const [pilotSummary, setPilotSummary] = useState<MatchCalculationResult['pilot_summary'] | null>(null);
   const engineRef = useRef(pathwayEngine);
+  const { callApi } = useWorkerAuth();
 
   // Load pathways and pilot profile, then calculate matches
   const calculateMatches = useCallback(async (forceRecalculate = false) => {
@@ -58,15 +58,20 @@ export function usePathwayMatching({
       let pathways: Pathway[] | null = forceRecalculate ? null : getCachedPathways();
       
       if (!pathways) {
-        const { data: pathwayData, error: pathwayError } = await supabase
-          .from('pathways')
-          .select('*')
-          .eq('status', 'active')
-          .order('featured', { ascending: false })
-          .order('display_order', { ascending: true });
-
-        if (pathwayError) throw pathwayError;
-        pathways = pathwayData || [];
+        const pathwayData = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pathways',
+          operation: 'select',
+          where: { status: 'active' },
+          limit: 500,
+        });
+        pathways = (pathwayData || []).map((p: any) => ({
+          ...p,
+          featured: p.featured ? 1 : 0,
+          display_order: p.display_order || 0,
+        })).sort((a: any, b: any) => {
+          if (b.featured !== a.featured) return b.featured - a.featured;
+          return (a.display_order || 0) - (b.display_order || 0);
+        }) as Pathway[];
         cachePathways(pathways);
       }
 
@@ -74,13 +79,7 @@ export function usePathwayMatching({
       engineRef.current.setPathways(pathways);
 
       // Step 2: Load pilot profile
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', pilotId)
-        .single();
-
-      if (profileError) throw profileError;
+      const profile = await callApi<Record<string, unknown>>('getProfile', { id: pilotId });
       if (!profile) throw new Error('Profile not found');
 
       // Convert to local format
@@ -111,8 +110,8 @@ export function usePathwayMatching({
         medical_status: localProfile.medical_expiry && new Date(localProfile.medical_expiry) > new Date() 
           ? 'valid' 
           : 'expired',
-        pilot_name: profile.full_name || profile.display_name || undefined,
-        license_type: profile.license_type || profile.highest_certification || undefined,
+        pilot_name: (profile.full_name || profile.display_name || undefined) as string | undefined,
+        license_type: (profile.license_type || profile.highest_certification || undefined) as string | undefined,
         profile_readiness: profileReadiness
       });
 
@@ -154,17 +153,18 @@ export function usePathwayMatching({
     ));
 
     // Optionally sync to server (fire-and-forget)
-    supabase
-      .from('pathway_matches')
-      .upsert({
+    callApi('queryTable', {
+      table: 'pathway_matches',
+      operation: 'insert',
+      data: {
         id: matchId,
         pilot_id: pilotId,
         pilot_interested: true,
         pilot_interested_at: new Date().toISOString()
-      })
-      .then(({ error }) => {
-        if (error) console.error('Failed to sync interest:', error);
-      });
+      }
+    }).catch((error) => {
+      console.error('Failed to sync interest:', error);
+    });
   }, [pilotId]);
 
   useEffect(() => {
@@ -200,39 +200,33 @@ export function usePathways(options?: {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { callApi: callPathwayApi } = useWorkerAuth();
+
   useEffect(() => {
     const fetchPathways = async () => {
       setLoading(true);
       
       try {
-        let query = supabase
-          .from('pathways')
-          .select('*')
-          .eq('status', 'active')
-          .order('featured', { ascending: false })
-          .order('display_order', { ascending: true });
+        const where: Record<string, unknown> = { status: 'active' };
+        if (options?.category) where.category = options.category;
+        if (options?.featured) where.featured = true;
+        if (options?.hiringStatus) where.hiring_status = options.hiringStatus;
 
-        if (options?.category) {
-          query = query.eq('category', options.category);
-        }
+        const data = await callPathwayApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pathways',
+          operation: 'select',
+          where,
+          limit: options?.limit || 500,
+        });
         
-        if (options?.featured) {
-          query = query.eq('featured', true);
-        }
-        
-        if (options?.hiringStatus) {
-          query = query.eq('hiring_status', options.hiringStatus);
-        }
-        
-        if (options?.limit) {
-          query = query.limit(options.limit);
-        }
-
-        const { data, error: fetchError } = await query;
-
-        if (fetchError) throw fetchError;
-        
-        setPathways(data || []);
+        setPathways((data || []).map((p: any) => ({
+          ...p,
+          featured: p.featured ? 1 : 0,
+          display_order: p.display_order || 0,
+        })).sort((a: any, b: any) => {
+          if (b.featured !== a.featured) return b.featured - a.featured;
+          return (a.display_order || 0) - (b.display_order || 0);
+        }));
       } catch (err: any) {
         console.error('Fetch pathways error:', err);
         setError(err.message);

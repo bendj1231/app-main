@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -26,14 +26,20 @@ export default function EnterpriseManagementPage() {
     fetchEnterprises();
   }, [currentUser, isAdmin]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchEnterprises = async () => {
     try {
-      const { data, error } = await supabase
-        .from('enterprise_accounts')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      const list = data || [];
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'enterprise_accounts',
+        operation: 'select',
+        limit: 500,
+      });
+      const list = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
       setEnterprises(list);
       setStats({
         total: list.length,

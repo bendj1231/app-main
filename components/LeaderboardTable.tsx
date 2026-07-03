@@ -6,7 +6,22 @@
 
 import React, { useState } from 'react';
 import { getScoreColor } from '../lib/pilot-recognition-score';
-import type { RecognitionScoreRecord } from '../services/recognition-score-service';
+
+interface RecognitionScoreRecord {
+  id: string;
+  user_id: string;
+  total_score: number;
+  hours_score: number;
+  experience_score: number;
+  assessment_score: number;
+  mentorship_score: number;
+  score_tier: string;
+  breakdown: any;
+  recommendations: string[];
+  last_calculated_at: string;
+  created_at: string;
+  updated_at: string;
+}
 
 interface LeaderboardTableProps {
   leaderboard: RecognitionScoreRecord[];

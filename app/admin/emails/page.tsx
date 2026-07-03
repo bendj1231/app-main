@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useDb } from '@/components/enterprise/hooks/useDb';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
 
@@ -51,6 +51,7 @@ export default function EmailManagementPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, userProfile } = useAuth();
+  const db = useDb();
   const currentPath = location.pathname;
 
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
@@ -105,10 +106,11 @@ export default function EmailManagementPage() {
 
   const fetchEmails = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('admin_emails')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .dbName('DB_OPS');
       if (error) throw error;
       setEmails(data || []);
     } catch (err) {
@@ -122,25 +124,9 @@ export default function EmailManagementPage() {
     if (!userEmail) return;
     setFetchingResend(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const sentRes = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-list-emails`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token || ''}`,
-            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-          },
-          body: JSON.stringify({ type: 'sent', email: userEmail }),
-        }
-      );
-      const sentData = await sentRes.json();
-      if (sentRes.ok && sentData.emails) {
-        setResendEmails(sentData.emails);
-      } else {
-        console.warn('Resend list error:', sentData.error || 'Unknown');
-      }
+      // Resend email listing via Supabase edge function is temporarily disabled; use Worker API when endpoint is ready
+      console.log('[EmailManagement] Resend list fetch disabled');
+      setResendEmails([]);
     } catch (err) {
       console.error('Error fetching Resend emails:', err);
     } finally {
@@ -152,11 +138,12 @@ export default function EmailManagementPage() {
     if (!userEmail) return;
     setFetchingInbox(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('received_emails')
         .select('*')
         .eq('to_email', userEmail)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .dbName('DB_OPS');
       if (error) throw error;
       setReceivedEmails(data || []);
     } catch (err) {
@@ -169,7 +156,7 @@ export default function EmailManagementPage() {
   const saveDraft = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     try {
-      const { error } = await supabase.from('admin_emails').insert([{
+      const { error } = await db.from('admin_emails').dbName('DB_OPS').insert([{
         recipient: composeData.recipient,
         subject: composeData.subject,
         body: composeData.body,
@@ -190,7 +177,7 @@ export default function EmailManagementPage() {
 
   const submitForReview = async (id: string) => {
     try {
-      const { error } = await supabase.from('admin_emails').update({
+      const { error } = await db.from('admin_emails').dbName('DB_OPS').update({
         status: 'pending_review',
         updated_at: new Date().toISOString(),
       }).eq('id', id);
@@ -204,52 +191,16 @@ export default function EmailManagementPage() {
   const approveAndSend = async (id: string) => {
     try {
       // Get the email details first
-      const { data: email } = await supabase.from('admin_emails').select('*').eq('id', id).single();
+      const { data: email } = await db.from('admin_emails').select('*').eq('id', id).single().dbName('DB_OPS');
       if (!email) {
         alert('Email not found');
         return;
       }
 
-      // Call edge function to send via Resend
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-admin-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-        },
-        body: JSON.stringify({
-          email_id: id,
-          recipient: email.recipient,
-          subject: email.subject,
-          body: email.body,
-          from_email: userEmail,
-          from_name: fromName,
-        }),
-      });
-
-      const result = await res.json();
-      if (!res.ok) {
-        console.error('Send failed:', result);
-        alert('Failed to send email: ' + (result.error || 'Unknown error'));
-        return;
-      }
-
-      // Update status in Supabase
-      const { error } = await supabase.from('admin_emails').update({
-        status: 'sent',
-        reviewer_id: currentUser?.id,
-        review_notes: reviewNotes || null,
-        sent_at: new Date().toISOString(),
-        resend_message_id: result.message_id || null,
-        updated_at: new Date().toISOString(),
-      }).eq('id', id);
-
-      if (error) throw error;
-      setReviewNotes('');
-      setSelectedEmail(null);
-      fetchEmails();
+      // Send via Resend edge function is temporarily disabled; Worker endpoint needed
+      console.log('[EmailManagement] Admin email send via Resend disabled');
+      alert('Email sending is temporarily disabled until the Worker endpoint is ready');
+      return;
     } catch (err) {
       console.error('Error approving email:', err);
       alert('Failed to send email');
@@ -258,7 +209,7 @@ export default function EmailManagementPage() {
 
   const rejectDraft = async (id: string) => {
     try {
-      const { error } = await supabase.from('admin_emails').update({
+      const { error } = await db.from('admin_emails').dbName('DB_OPS').update({
         status: 'rejected',
         reviewer_id: currentUser?.id,
         review_notes: reviewNotes || null,
@@ -275,7 +226,7 @@ export default function EmailManagementPage() {
 
   const markAsReviewed = async (id: string) => {
     try {
-      const { error } = await supabase.from('admin_emails').update({ status: 'reviewed' }).eq('id', id);
+      const { error } = await db.from('admin_emails').dbName('DB_OPS').update({ status: 'reviewed' }).eq('id', id);
       if (error) throw error;
       fetchEmails();
     } catch (err) {

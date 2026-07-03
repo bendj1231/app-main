@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { supabase } from '@/lib/shared/supabase';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface WalletLoadingScreenProps {
   onComplete: () => void;
@@ -18,7 +18,7 @@ const PRE_AUTH_STEPS = [
 
 // Steps after passkey cleared (indices 3-6)
 const POST_AUTH_STEPS = [
-  'Reconciling Supabase ↔ Walt.id credential bundles…',
+  'Reconciling D1 ↔ Walt.id credential bundles…',
   'Decrypting payload with AES-256-GCM…',
   'Verifying cryptographic signatures…',
   'Wallet ready.',
@@ -58,15 +58,15 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const { user: auth0User, isAuthenticated } = useAuth0();
+
   // Check for existing session on mount
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setHasSession(true);
-        setSessionUser(session.user);
-      }
-    });
-  }, []);
+    if (isAuthenticated && auth0User) {
+      setHasSession(true);
+      setSessionUser(auth0User);
+    }
+  }, [isAuthenticated, auth0User]);
 
   const runPostAuth = useCallback(() => {
     setAuthStage('post');
@@ -137,8 +137,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       const challengeBytes = new Uint8Array(32);
       crypto.getRandomValues(challengeBytes);
 
-      // Resolve user identity — try Supabase session first, then fallback to Auth0 cache
-      const userId = sessionUser?.id
+      // Resolve user identity — try Auth0 session first, then fallback to Auth0 cache
+      const userId = sessionUser?.sub || sessionUser?.id
         || sessionStorage.getItem('mfb_auth0_id')
         || sessionStorage.getItem('auth0_user_id')
         || 'pilot-wallet-user';
@@ -254,14 +254,14 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   // After OAuth redirect, check session and auto-resume + offer passkey registration
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session && authStage === 'gate') {
+    (async () => {
+    if (isAuthenticated && auth0User && authStage === 'gate') {
         // Try to register a passkey silently for future logins
-        if (window.PublicKeyCredential && session.user) {
+        if (window.PublicKeyCredential && auth0User) {
           try {
             const challengeBytes = new Uint8Array(32);
             crypto.getRandomValues(challengeBytes);
-            const userIdBytes = new TextEncoder().encode(session.user.id);
+            const userIdBytes = new TextEncoder().encode(auth0User.sub);
 
             await navigator.credentials.create({
               publicKey: {
@@ -272,8 +272,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
                 },
                 user: {
                   id: userIdBytes.buffer,
-                  name: session.user.email || session.user.id,
-                  displayName: session.user.user_metadata?.full_name || session.user.email || 'Pilot',
+                  name: auth0User.email || auth0User.sub,
+                  displayName: (auth0User as any).user_metadata?.full_name || auth0User.email || 'Pilot',
                 },
                 pubKeyCredParams: [
                   { type: 'public-key', alg: -7 },   // ES256
@@ -295,8 +295,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         }
         runPostAuth();
       }
-    });
-  }, [authStage, runPostAuth]);
+    })();
+  }, [authStage, runPostAuth, isAuthenticated, auth0User]);
 
   const shieldColor = '#dc2626';
   const ringPaused = authStage === 'gate' || authStage === 'verifying';
@@ -373,7 +373,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         }
       </h1>
       <p style={{ fontSize: 12, color: embedded ? 'rgba(255,255,255,0.7)' : '#94a3b8', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
-        Supabase · Walt.id · Zero-knowledge · AES-256-GCM
+        Cloudflare D1 · Walt.id · Zero-knowledge · AES-256-GCM
       </p>
 
       {/* Progress bar */}

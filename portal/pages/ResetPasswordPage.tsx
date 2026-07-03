@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Icons } from '../icons';
 import { safeRedirect } from '@/lib/url-validator';
 
@@ -12,82 +12,16 @@ export const ResetPasswordPage: React.FC = () => {
     const [email, setEmail] = useState<string | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    useEffect(() => {
-        const initializePage = async () => {
-            console.log('🔍 Reset password page - URL hash:', window.location.hash);
-            
-            try {
-                // Get the session from the URL hash
-                const hash = window.location.hash;
-                const urlParams = new URLSearchParams(hash.substring(1));
-                const accessToken = urlParams.get('access_token');
-                const refreshToken = urlParams.get('refresh_token');
-                const type = urlParams.get('type');
-                
-                console.log('🔍 Parsed params:', { 
-                    accessToken: accessToken?.substring(0, 20) + '...', 
-                    refreshToken: refreshToken?.substring(0, 20) + '...', 
-                    type,
-                    hashLength: hash.length,
-                    fullHash: hash.substring(0, 100) + '...'
-                });
-                
-                // Simplified approach - just try to get current user
-                if (hash.includes('access_token') && hash.includes('type=recovery')) {
-                    console.log('� Recovery tokens detected, attempting to set session...');
-                    
-                    try {
-                        // Try direct session setup first
-                        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-                            access_token: accessToken || '',
-                            refresh_token: refreshToken || ''
-                        });
-                        
-                        console.log('🔍 Session result:', { 
-                            hasData: !!sessionData, 
-                            hasUser: !!sessionData?.user, 
-                            userEmail: sessionData?.user?.email,
-                            error: sessionError?.message
-                        });
-                        
-                        if (!sessionError && sessionData.user?.email) {
-                            setEmail(sessionData.user.email);
-                            console.log('✅ Session setup successful for:', sessionData.user.email);
-                        } else {
-                            throw new Error(sessionError?.message || 'Session setup failed');
-                        }
-                    } catch (err: any) {
-                        console.error('❌ Session setup failed:', err.message);
-                        
-                        // Try alternative approach
-                        try {
-                            console.log('🔄 Trying alternative approach...');
-                            const { data: altData, error: altError } = await supabase.auth.getUser(accessToken || undefined);
-                            
-                            if (!altError && altData.user?.email) {
-                                setEmail(altData.user.email);
-                                console.log('✅ Alternative approach successful for:', altData.user.email);
-                            } else {
-                                throw new Error(altError?.message || 'Alternative approach failed');
-                            }
-                        } catch (altErr: any) {
-                            console.error('❌ All approaches failed');
-                            throw new Error('Unable to process reset link. The link may be expired or invalid.');
-                        }
-                    }
-                } else {
-                    throw new Error('Invalid reset link format. Missing required tokens.');
-                }
-            } catch (err: any) {
-                console.error('❌ Unexpected error:', err);
-                setError(`Reset link error: ${err.message || 'Unknown error occurred'}. Please request a new password reset.`);
-            } finally {
-                setIsInitialized(true);
-            }
-        };
+    const { user } = useAuth0();
 
-        initializePage();
-    }, []);
+    useEffect(() => {
+        // Auth0 handles password reset via its Universal Login.
+        // If a user is already logged in, show their email.
+        if (user?.email) {
+            setEmail(user.email);
+        }
+        setIsInitialized(true);
+    }, [user]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -101,15 +35,9 @@ export const ResetPasswordPage: React.FC = () => {
         setError(null);
 
         try {
-            const { error } = await supabase.auth.updateUser({
-                password: newPassword
-            });
-
-            if (error) throw error;
-
-            setSuccess(true);
-        } catch (err: any) {
-            setError(err.message || 'Failed to reset password');
+            // Auth0 handles password reset via its Universal Login.
+            // Direct password updates from the client are not supported.
+            setError('Password reset is handled through Auth0. Please use the "Forgot Password" link on the login page.');
         } finally {
             setLoading(false);
         }

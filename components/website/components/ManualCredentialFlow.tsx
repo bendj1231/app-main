@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CredentialUploadForm } from './CredentialUploadForm';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ManualCredentialFlowProps {
   auth0Id: string;
@@ -11,6 +11,7 @@ export const ManualCredentialFlow: React.FC<ManualCredentialFlowProps> = ({
   auth0Id,
   onCredentialClaimed
 }) => {
+  const { callApi } = useWorkerAuth();
   const [step, setStep] = useState<'upload' | 'pending' | 'ready'>('upload');
   const [credentialData, setCredentialData] = useState<any>(null);
   const [credentialUrl, setCredentialUrl] = useState<string | null>(null);
@@ -98,14 +99,16 @@ export const ManualCredentialFlow: React.FC<ManualCredentialFlowProps> = ({
       setStep('ready');
       
       // Update database to mark as verified
-      await supabase
-        .from('pilot_documents')
-        .update({ 
+      await callApi('queryTable', {
+        table: 'pilot_documents',
+        operation: 'update',
+        id: auth0Id,
+        data: {
           status: 'verified',
           verified_at: new Date().toISOString(),
-          credential_issued: true 
-        })
-        .eq('auth0_id', auth0Id);
+          credential_issued: true,
+        },
+      });
 
     } catch (err) {
       console.error('Failed to issue credential:', err);

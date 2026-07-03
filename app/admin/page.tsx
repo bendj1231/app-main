@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useDb } from '@/components/enterprise/hooks/useDb';
 import AdminSidebar from './components/AdminSidebar';
 import AdminNotificationBell from './components/AdminNotificationBell';
 import { cachedFetch, invalidateCache } from './lib/cache';
@@ -37,6 +37,7 @@ const Background = ({ children }: { children: React.ReactNode }) => {
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const { currentUser, userProfile, login } = useAuth();
+  const db = useDb();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,7 +86,7 @@ export default function AdminDashboardPage() {
     customers: 0,
     products: 0,
     loading: true,
-    source: 'supabase_fallback' as string,
+    source: 'db_fallback' as string,
   });
 
   const [inviteCodes, setInviteCodes] = useState<
@@ -137,12 +138,13 @@ export default function AdminDashboardPage() {
         let adminProfileId = '';
         let adminInviteCode = '';
         try {
-          console.log('[AdminDashboard] Calling supabase.from(profiles).select() for admin profile...');
-          const { data: adminProfile } = await supabase
+          console.log('[AdminDashboard] Calling db.from(profiles).select() for admin profile...');
+          const { data: adminProfile } = await db
             .from('profiles')
             .select('id, referral_code, display_name')
             .eq('id', currentUser?.id)
-            .single();
+            .single()
+            .dbName('DB_PROFILES');
           adminProfileId = adminProfile?.id || '';
           adminInviteCode = adminProfile?.referral_code || '';
           console.log('[AdminDashboard] adminProfile:', adminProfile);
@@ -152,12 +154,13 @@ export default function AdminDashboardPage() {
         let pilotsReferred = 0;
         if (adminProfileId) {
           try {
-            console.log('[AdminDashboard] Calling supabase.from(referrals).select(count)...');
-            const { count, error } = await supabase
+            console.log('[AdminDashboard] Calling db.from(referrals).select(count)...');
+            const { count, error } = await db
               .from('referrals')
               .select('id', { count: 'exact', head: true })
               .eq('referrer_profile_id', adminProfileId)
-              .eq('status', 'credited');
+              .eq('status', 'credited')
+              .dbName('DB_OPS');
             pilotsReferred = count || 0;
             console.log('[AdminDashboard] referrals count:', count, 'error:', error?.message);
           } catch (e) { console.log('[AdminDashboard] referrals query failed:', (e as Error).message); }
@@ -173,7 +176,7 @@ export default function AdminDashboardPage() {
         let pilots = 0;
         try {
           pilots = await cachedFetch('count_profiles', async () => {
-            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+            const { count } = await db.from('profiles').select('*', { count: 'exact', head: true }).dbName('DB_PROFILES');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] profiles count query failed'); }
@@ -181,7 +184,7 @@ export default function AdminDashboardPage() {
         let enterprises = 0;
         try {
           enterprises = await cachedFetch('count_enterprise_profiles', async () => {
-            const { count } = await supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true });
+            const { count } = await db.from('enterprise_profiles').select('*', { count: 'exact', head: true }).dbName('DB_OPS');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] enterprise_profiles query failed'); }
@@ -189,7 +192,7 @@ export default function AdminDashboardPage() {
         let verifiedPilots = 0;
         try {
           verifiedPilots = await cachedFetch('count_verified_profiles', async () => {
-            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true);
+            const { count } = await db.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true).dbName('DB_PROFILES');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] verified profiles query failed'); }
@@ -197,7 +200,7 @@ export default function AdminDashboardPage() {
         let pendingDocs = 0;
         try {
           pendingDocs = await cachedFetch('count_pending_docs', async () => {
-            const { count } = await supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review');
+            const { count } = await db.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review').dbName('DB_PROFILES');
             return count || 0;
           }, undefined, 0);
         } catch { console.log('[AdminDashboard] pilot_documents query failed'); }
@@ -205,7 +208,7 @@ export default function AdminDashboardPage() {
         let openTickets = 0;
         try {
           openTickets = await cachedFetch('count_open_tickets', async () => {
-            const { count } = await supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved');
+            const { count } = await db.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved').dbName('DB_OPS');
             return count || 0;
           }, undefined, 0);
         } catch { console.log('[AdminDashboard] support_enquiries query failed'); }
@@ -213,7 +216,7 @@ export default function AdminDashboardPage() {
         let upcomingMeetings = 0;
         try {
           upcomingMeetings = await cachedFetch('count_upcoming_meetings', async () => {
-            const { count } = await supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed');
+            const { count } = await db.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed').dbName('DB_OPS');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] meetings query failed'); }
@@ -227,40 +230,10 @@ export default function AdminDashboardPage() {
         });
         console.log('[AdminDashboard] setStats:', { pilots, enterprises, verifications: verifiedPilots, events: upcomingMeetings });
 
-        // Fetch Dodo Payments revenue stats
+        // Fetch Dodo Payments revenue stats via Worker API (placeholder)
         try {
-          console.log('[AdminDashboard] Fetching Dodo Payments via edge function...');
-          const { data: { session } } = await supabase.auth.getSession();
-          const edgeUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dodo-payments-proxy`;
-          console.log('[AdminDashboard] Edge function URL:', edgeUrl);
-          const dodoRes = await fetch(edgeUrl, {
-            headers: {
-              'Authorization': `Bearer ${session?.access_token || ''}`,
-              'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-            },
-          });
-          console.log('[AdminDashboard] Dodo edge response status:', dodoRes.status, dodoRes.statusText);
-          if (dodoRes.ok) {
-            const dodo = await dodoRes.json();
-            console.log('[AdminDashboard] Dodo data:', dodo);
-            setDodoStats({
-              totalRevenue: dodo.totalRevenue || 0,
-              revenueThisMonth: dodo.revenueThisMonth || 0,
-              revenueLastMonth: dodo.revenueLastMonth || 0,
-              mrr: dodo.mrr || 0,
-              activeSubscriptions: dodo.activeSubscriptions || 0,
-              totalPayments: dodo.totalPayments || 0,
-              failedPayments: dodo.failedPayments || 0,
-              customers: dodo.customers || 0,
-              products: dodo.products || 0,
-              loading: false,
-              source: dodo.source || 'supabase_fallback',
-            });
-            console.log('[AdminDashboard] setDodoStats from source:', dodo.source);
-          } else {
-            const text = await dodoRes.text();
-            console.log('[AdminDashboard] Dodo edge error response:', dodoRes.status, text);
-          }
+          console.log('[AdminDashboard] Dodo Payments fetch temporarily disabled until Worker endpoint is added');
+          setDodoStats((s) => ({ ...s, loading: false }));
         } catch (dodoErr) {
           console.log('[AdminDashboard] Dodo fetch threw:', dodoErr);
           setDodoStats((s) => ({ ...s, loading: false }));
@@ -269,12 +242,13 @@ export default function AdminDashboardPage() {
         // Fetch invite codes used by this admin's referrals
         if (adminProfileId) {
           try {
-            console.log('[AdminDashboard] Calling supabase.from(referrals).select(*) for invite codes...');
-            const { data: referralsData, error } = await supabase
+            console.log('[AdminDashboard] Calling db.from(referrals).select(*) for invite codes...');
+            const { data: referralsData, error } = await db
               .from('referrals')
               .select('pilot_email, status, created_at, referrer_profile_id')
               .eq('referrer_profile_id', adminProfileId)
-              .order('created_at', { ascending: false });
+              .order('created_at', { ascending: false })
+              .dbName('DB_OPS');
             console.log('[AdminDashboard] referrals rows:', (referralsData || []).length, 'error:', error?.message);
             setInviteCodes(
               (referralsData || []).map((r: any) => ({
@@ -295,7 +269,7 @@ export default function AdminDashboardPage() {
         let blogPosts = 0;
         try {
           blogPosts = await cachedFetch('count_blog_posts', async () => {
-            const { count } = await supabase.from('blog_posts').select('*', { count: 'exact', head: true });
+            const { count } = await db.from('blog_posts').select('*', { count: 'exact', head: true }).dbName('DB');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] blog_posts query failed'); }
@@ -303,7 +277,7 @@ export default function AdminDashboardPage() {
         let prospects = 0;
         try {
           prospects = await cachedFetch('count_prospects', async () => {
-            const { count } = await supabase.from('prospects').select('*', { count: 'exact', head: true });
+            const { count } = await db.from('prospects').select('*', { count: 'exact', head: true }).dbName('DB_OPS');
             return count || 0;
           }, undefined, 0);
         } catch { console.log('[AdminDashboard] prospects query failed'); }
@@ -311,7 +285,7 @@ export default function AdminDashboardPage() {
         let objectives = 0;
         try {
           objectives = await cachedFetch('count_objectives', async () => {
-            const { count } = await supabase.from('employee_objectives').select('*', { count: 'exact', head: true });
+            const { count } = await db.from('employee_objectives').select('*', { count: 'exact', head: true }).dbName('DB_OPS');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] employee_objectives query failed'); }
@@ -319,7 +293,7 @@ export default function AdminDashboardPage() {
         let upcomingEvents = 0;
         try {
           upcomingEvents = await cachedFetch('count_upcoming_events', async () => {
-            const { count } = await supabase.from('events').select('*', { count: 'exact', head: true }).gte('start_date', new Date().toISOString());
+            const { count } = await db.from('events').select('*', { count: 'exact', head: true }).gte('start_date', new Date().toISOString()).dbName('DB_OPS');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] events query failed'); }
@@ -327,7 +301,7 @@ export default function AdminDashboardPage() {
         let adminUsers = 0;
         try {
           adminUsers = await cachedFetch('count_admin_users', async () => {
-            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).in('role', ['admin', 'super_admin']);
+            const { count } = await db.from('profiles').select('*', { count: 'exact', head: true }).in('role', ['admin', 'super_admin']).dbName('DB_PROFILES');
             return count || 0;
           });
         } catch { console.log('[AdminDashboard] admin users query failed'); }
@@ -363,41 +337,9 @@ export default function AdminDashboardPage() {
 
     fetchStats();
 
-    // Real-time subscriptions — invalidate cache on data changes instead of blind refetch
-    const profilesSubscription = supabase
-      .channel('profiles-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-        void invalidateCache('count_profiles');
-        void invalidateCache('count_verified_profiles');
-        void invalidateCache('count_admin_users');
-      })
-      .subscribe();
-
-    const enterprisesSubscription = supabase
-      .channel('enterprises-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'enterprise_profiles' }, () => {
-        void invalidateCache('count_enterprise_profiles');
-      })
-      .subscribe();
-
-    const referralsSubscription = supabase
-      .channel('referrals-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'referrals' }, () => {
-        void invalidateCache(); // Clear all since referrals affects multiple counts
-      })
-      .subscribe();
-
-    const meetingsSubscription = supabase
-      .channel('meetings-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'meetings' }, () => { void invalidateCache('count_upcoming_meetings'); })
-      .subscribe();
-
-    return () => {
-      profilesSubscription.unsubscribe();
-      enterprisesSubscription.unsubscribe();
-      referralsSubscription.unsubscribe();
-      meetingsSubscription.unsubscribe();
-    };
+    // Real-time subscriptions are temporarily disabled (Worker API does not expose Supabase realtime channels)
+    // TODO: re-implement via polling or Durable Object WebSocket when needed
+    return () => {};
   }, [currentUser, isAdmin]);
 
   const _createNotification = async (
@@ -407,7 +349,7 @@ export default function AdminDashboardPage() {
   ) => {
     if (!currentUser?.id) return;
     try {
-      await supabase.from('admin_notifications').insert({
+      await db.from('admin_notifications').dbName('DB_OPS').insert({
         admin_id: currentUser.id,
         title,
         message,
@@ -1294,7 +1236,7 @@ export default function AdminDashboardPage() {
                     onClick={async () => {
                       if (!inviteCodeInput.trim() || !currentUser?.id) return;
                       try {
-                        await supabase.from('profiles').update({ referral_code: inviteCodeInput.trim() }).eq('id', currentUser.id);
+                        await db.from('profiles').update({ referral_code: inviteCodeInput.trim() }).eq('id', currentUser.id).dbName('DB_PROFILES');
                         setDashboardData((prev) => ({ ...prev, karlInviteCode: inviteCodeInput.trim() }));
                         setInviteCodeInput('');
                       } catch (err) {

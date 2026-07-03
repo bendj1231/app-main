@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { X, User, Camera, Award, Clock, Edit } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { uploadProfileImage } from '@/lib/cloudinaryClient';
 
 interface ProfileModalProps {
     isOpen: boolean;
@@ -11,6 +12,7 @@ interface ProfileModalProps {
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onNavigate }) => {
     const { currentUser } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const [pilotId, setPilotId] = useState<string>('');
     const [totalHours, setTotalHours] = useState<number>(0);
@@ -25,19 +27,22 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onN
     const fetchProfileData = async () => {
         if (currentUser?.uid) {
             try {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('pilot_id, profile_image_url, total_flight_hours, mentorship_hours, recognition_score, enrolled_programs')
-                    .eq('id', currentUser.uid)
-                    .maybeSingle();
+                const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+                    table: 'profiles',
+                    operation: 'select',
+                    where: { id: currentUser.uid },
+                    limit: 1,
+                });
+                const data = rows?.[0];
                 
                 if (data) {
-                    setPilotId(data.pilot_id || '');
-                    setProfileImageUrl(data.profile_image_url || null);
-                    setTotalHours(data.total_flight_hours || 0);
-                    setMentorshipHours(data.mentorship_hours || 0);
-                    setRecognitionScore(data.recognition_score || 0);
-                    setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
+                    setPilotId((data.pilot_id as string) || '');
+                    setProfileImageUrl((data.profile_image_url as string) || '');
+                    setTotalHours((data.total_flight_hours as number) || 0);
+                    setMentorshipHours((data.mentorship_hours as number) || 0);
+                    setRecognitionScore((data.recognition_score as number) || 0);
+                    const enrolled = data.enrolled_programs;
+                    setIsEnrolledInFoundation(Array.isArray(enrolled) ? enrolled.includes('Foundational') : false);
                 }
             } catch (err) {
                 console.error('Error fetching profile data:', err);
@@ -59,26 +64,16 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onN
 
         setUploading(true);
         try {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
-            const filePath = `profile-images/${fileName}`;
+            const result = await uploadProfileImage(file, currentUser.uid);
+            if (!result.success) throw new Error(result.error || 'Upload failed');
+            const publicUrl = result.url!;
 
-            const { error: uploadError } = await supabase.storage
-                .from('profile pics')
-                .upload(filePath, file);
-
-            if (uploadError) throw uploadError;
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('profile pics')
-                .getPublicUrl(filePath);
-
-            const { error: updateError } = await supabase
-                .from('profiles')
-                .update({ profile_image_url: publicUrl })
-                .eq('id', currentUser.uid);
-
-            if (updateError) throw updateError;
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: currentUser.uid,
+                data: { profile_image_url: publicUrl },
+            });
 
             setProfileImageUrl(publicUrl);
         } catch (err) {

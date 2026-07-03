@@ -4,6 +4,15 @@ export const Styles = () => (
     <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    @font-face {
+      font-family: 'G1000';
+      src: url('/fonts/g1000.otf') format('opentype');
+      font-weight: 400 700;
+      font-style: normal;
+      font-display: swap;
+    }
 
     body {
       margin: 0;

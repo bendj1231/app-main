@@ -36,11 +36,13 @@ import {
   Target,
   TrendingUp,
   Star,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { supabase } from '@/lib/shared/supabase';
+import { ThemeContext } from '../context/ThemeContext';
 import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import ProfileImage from '@/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
@@ -104,12 +106,24 @@ import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
 import { FoundationWelcomeTab } from './unified-platform/tabs/FoundationWelcomeTab';
 import { PathwaysWelcomeTab } from './unified-platform/tabs/PathwaysWelcomeTab';
+import { PathwaysDiscoveryTab } from './unified-platform/tabs/PathwaysDiscoveryTab';
 import { RecognitionPlusTab } from './unified-platform/tabs/RecognitionPlusTab';
 import { InboxTab } from './unified-platform/tabs/InboxTab';
 import { PilotShortageSupportPage } from './PilotShortageSupportPage';
 
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
+// Safe hook that handles missing ThemeProvider
+const useSafeTheme = () => {
+  try {
+    const context = React.useContext(ThemeContext);
+    return context || { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
+  } catch {
+    return { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
+  }
+};
+
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
+  const { isDarkMode, toggleTheme } = useSafeTheme();
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User, getIdTokenClaims, logout: auth0Logout } = useAuth0();
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
@@ -210,14 +224,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     };
   }, [activeTab]);
 
-  // Check email verification status
+  // Check email verification status via Auth0
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setEmailVerified(!!session.user.email_confirmed_at);
-      }
-    });
-  }, []);
+    if (auth0User) {
+      setEmailVerified(!!(auth0User as any).email_verified);
+    }
+  }, [auth0User]);
 
   // Check if T&C version has been updated since user last accepted
   useEffect(() => {
@@ -227,6 +239,21 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       setTcUpdatePending(true);
     }
   }, [profileData?.consent_version]);
+
+  // Auto-redirect to pathways discovery when logbook sync completes on advanced-profile tab
+  useEffect(() => {
+    const hasLogbookSync = !!profileData?.logbook_sync_valid || !!profileData?.logbook_provider;
+    const discoveryDone = (() => {
+      try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
+    })();
+    const alreadyRedirected = (() => {
+      try { return sessionStorage.getItem('pathways_discovery_redirected') === '1'; } catch { return false; }
+    })();
+    if (hasLogbookSync && !discoveryDone && !alreadyRedirected && activeTab === 'advanced-profile') {
+      try { sessionStorage.setItem('pathways_discovery_redirected', '1'); } catch {}
+      setActiveTab('pathways-discovery');
+    }
+  }, [profileData?.logbook_sync_valid, profileData?.logbook_provider, activeTab]);
 
   // Sync URL with active tab — preserve hash for scroll targets
   useEffect(() => {
@@ -519,7 +546,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               );
               setNotifCount((payload as { notifCount?: number }).notifCount || 0);
               console.log('[dashboard] loaded from IndexedDB cache');
-              // Continue below to fetch fresh data from Worker and update state
+              return; // Valid cache — skip Worker call
             }
           } catch {
             /* invalid cache, fetch fresh */
@@ -683,6 +710,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             avatarUploading={avatarUploading}
             avatarError={avatarError}
             handleAvatarUpload={handleAvatarUpload}
+            isDarkMode={isDarkMode}
           />
         );
       case 'profile':
@@ -698,7 +726,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           <EmailVerifyGate
             onResend={async () => {
               setResendingSent(true);
-              await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' });
+              // Auth0 handles email verification; no direct client-side resend available
             }}
             sent={resendingSent}
           />
@@ -712,6 +740,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         return <PathwaysTab onNavigate={onNavigate} />;
       case 'pathways-directory':
         return <PathwaysWelcomeTab setTab={setTab} onNavigate={onNavigate} profile={profileData} />;
+      case 'pathways-discovery':
+        return <PathwaysDiscoveryTab setTab={setTab} profile={profileData} />;
       case 'programs':
         return <ProgramsTab onNavigate={onNavigate} />;
       case 'foundation-welcome':
@@ -1004,19 +1034,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           <SettingsTab
             onLogout={handleLogout}
             getToken={async () => {
-              try {
-                const claims = await getIdTokenClaims();
-                const t = claims?.__raw;
-                if (t) return t;
-                throw new Error('no id token');
-              } catch {
-                const {
-                  data: { session },
-                } = await supabase.auth.getSession();
-                const t = session?.access_token;
-                if (!t) throw new Error('No auth token available — please log out and back in');
-                return t;
-              }
+              const claims = await getIdTokenClaims();
+              const t = claims?.__raw;
+              if (t) return t;
+              throw new Error('No auth token available — please log out and back in');
             }}
             profileId={profileData?.id ?? null}
             profile={profileData}
@@ -1084,7 +1105,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         {graphicsConfig.enableMeshGradient ? (
           <MeshGradient
             className="w-full h-full"
-            colors={[
+            colors={isDarkMode ? [
               '#dbeafe',
               '#94a3b8',
               '#64748b',
@@ -1093,21 +1114,30 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               '#1e3a5f',
               '#1e3a8a',
               '#0f172a',
+            ] : [
+              '#ffffff',
+              '#f0f5fa',
+              '#c8d8e8',
+              '#9ab0c8',
+              '#5e85a8',
+              '#345a7d',
+              '#1e3a5f',
+              '#0f2747',
             ]}
             speed={graphicsConfig.meshGradientSpeed}
           />
         ) : (
           <div
             className="w-full h-full"
-            style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}
+            style={{ background: isDarkMode ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)' }}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-        <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+        <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`} />
+        <div className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`} />
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)',
+            background: isDarkMode ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
           }}
         />
       </div>
@@ -1380,6 +1410,37 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   }}
                 >
                   <Settings size={20} className="text-white" strokeWidth={2} />
+                </button>
+
+                {/* Theme toggle tile */}
+                <button
+                  onClick={toggleTheme}
+                  title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className="transition-all duration-150"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: 'rgba(0,0,0,0.25)',
+                    border: '2px solid rgba(255,255,255,0.15)',
+                    borderRadius: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
+                  }}
+                >
+                  {isDarkMode ? (
+                    <Sun size={20} className="text-amber-400" strokeWidth={2} />
+                  ) : (
+                    <Moon size={20} className="text-white" strokeWidth={2} />
+                  )}
                 </button>
 
                 {/* Avatar + Hamburger unified island */}

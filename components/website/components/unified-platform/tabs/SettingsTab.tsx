@@ -11,14 +11,17 @@ import {
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { SectionCard } from '../shared';
 import type { TabId } from '../types';
+
+const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile }) => {
   const { user } = useAuth0();
   const navigate = useNavigate();
+  const { callApi } = useWorkerAuth();
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
@@ -68,19 +71,44 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     if (!uid) { setLoadingExport(false); return; }
 
     const [vcsRes, hoursRes, resumeRes, programRes, interviewRes] = await Promise.all([
-      supabase.from('pilot_verification_wallet').select('credential_type,credential_jwt,issued_at,status').eq('profile_id', uid),
-      supabase.from('logbook_hour_tokens').select('issuer_name,total_hours,pic_hours,aircraft_type,period_from,period_to,verification_level,attestation_token,status').eq('pilot_id', uid),
-      supabase.from('atlas_resumes').select('*').eq('user_id', uid).maybeSingle(),
-      supabase.from('program_progress').select('program_type,completion_percentage,modules_completed,total_modules,status,start_date').eq('user_id', uid),
-      supabase.from('interview_assessments').select('overall_score,overall_grade,technical_knowledge_score,communication_score,decision_making_score,strengths,areas_for_improvement,detailed_feedback,recommendation').eq('interviewer_id', uid).maybeSingle(),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_verification_wallet',
+        operation: 'select',
+        where: { profile_id: uid },
+        limit: 500,
+      }),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'logbook_hour_tokens',
+        operation: 'select',
+        where: { pilot_id: uid },
+        limit: 500,
+      }),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'atlas_resumes',
+        operation: 'select',
+        where: { user_id: uid },
+        limit: 1,
+      }),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'program_progress',
+        operation: 'select',
+        where: { user_id: uid },
+        limit: 500,
+      }),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'interview_assessments',
+        operation: 'select',
+        where: { interviewer_id: uid },
+        limit: 1,
+      }),
     ]);
 
     setExportData({
-      vcs: vcsRes.data ?? [],
-      hourTokens: hoursRes.data ?? [],
-      resume: resumeRes.data ?? null,
-      program: (programRes.data && programRes.data.length > 0) ? programRes.data : null,
-      interview: interviewRes.data ?? null,
+      vcs: vcsRes ?? [],
+      hourTokens: hoursRes ?? [],
+      resume: resumeRes?.[0] ?? null,
+      program: (programRes && programRes.length > 0) ? programRes : null,
+      interview: interviewRes?.[0] ?? null,
     });
     setLoadingExport(false);
   };
@@ -120,17 +148,13 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
   };
 
   const verifyPasskeyForDeletion = async (token: string): Promise<void> => {
-    const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
-    const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
-
-    // 1. Fetch the user's registered passkey credential IDs from Supabase
+    // 1. Fetch the user's registered passkey credential IDs from D1
     const uid = profileId;
     if (!uid) throw new Error('No session');
 
-    // Use authenticated fetch so RLS passes for Auth0 users (supabase client has no session)
     const passkeysRes = await fetch(
-      `${supabaseUrl}/rest/v1/pilot_passkeys?select=credential_id&user_id=eq.${uid}`,
-      { headers: { 'apikey': anonKey, 'Authorization': `Bearer ${token}` } }
+      `${PILOT_API_URL}/api/pilot_passkeys?select=credential_id&user_id=eq.${uid}`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
     );
     const passkeys: { credential_id: string }[] = passkeysRes.ok ? await passkeysRes.json() : [];
 
@@ -143,9 +167,9 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     const credentialId = passkeys[0].credential_id;
 
     // 2. Get a single-use challenge from the server
-    const challengeRes = await fetch(`${supabaseUrl}/functions/v1/passkey-challenge`, {
+    const challengeRes = await fetch(`${PILOT_API_URL}/api/passkey-challenge`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': anonKey },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credentialId }),
     });
     if (!challengeRes.ok) throw new Error('Could not generate passkey challenge');
@@ -170,9 +194,9 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     const resp = assertion.response as AuthenticatorAssertionResponse;
 
     // 4. Verify signature server-side
-    const verifyRes = await fetch(`${supabaseUrl}/functions/v1/passkey-verify`, {
+    const verifyRes = await fetch(`${PILOT_API_URL}/api/passkey-verify`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': anonKey },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         credentialId: b64urlEncode(assertion.rawId),
         authenticatorData: b64urlEncode(resp.authenticatorData),
@@ -207,12 +231,11 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
         setPasskeyPending(false);
       }
 
-      const res = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL}/functions/v1/delete-account`, {
+      const res = await fetch(`${PILOT_API_URL}/api/delete-account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'apikey': (import.meta as any).env?.VITE_SUPABASE_ANON_KEY,
         },
       });
       const json = await res.json().catch(() => ({}));

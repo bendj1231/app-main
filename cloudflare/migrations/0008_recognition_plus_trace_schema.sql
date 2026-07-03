@@ -97,3 +97,16 @@ CREATE TABLE IF NOT EXISTS flight_hours (
 );
 CREATE INDEX IF NOT EXISTS idx_flight_hours_user_id ON flight_hours(user_id);
 CREATE INDEX IF NOT EXISTS idx_flight_hours_date ON flight_hours(log_date);
+
+-- VC Revocation Registry (verifiable credential revocations)
+CREATE TABLE IF NOT EXISTS vc_revocation_registry (
+    id                  TEXT PRIMARY KEY,
+    credential_id       TEXT NOT NULL,
+    pilot_id            TEXT NOT NULL,
+    reason              TEXT NOT NULL,
+    revoked_by          TEXT,
+    revocation_proof    TEXT,
+    revoked_at          TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_vc_revocation_credential ON vc_revocation_registry(credential_id);
+CREATE INDEX IF NOT EXISTS idx_vc_revocation_pilot ON vc_revocation_registry(pilot_id);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 interface ExaminationResultsPageProps {
   onBack: () => void;
@@ -35,22 +35,19 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
       const userId = userProfile?.id || userProfile?.uid;
       
       try {
-        const { data, error } = await supabase
-          .from('pilot_exams')
-          .select('*')
-          .eq('user_id', userId)
-          .order('exam_date', { ascending: false });
+        const { callApi } = useWorkerAuth();
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'pilot_exams',
+          operation: 'select',
+          where: { user_id: userId },
+          limit: 500,
+        });
+        const data = (rows || []).sort((a: any, b: any) => (b.exam_date || '').localeCompare(a.exam_date || ''));
 
-        if (error) {
-          console.error('Error fetching exam results:', error);
-          setLoading(false);
-          return;
-        }
-
-        if (data && data.length > 0) {
+        if (data.length > 0) {
           const formattedExams: Exam[] = data.map((exam: any) => ({
-            id: exam.id,
-            name: exam.exam_name || 'Exam',
+            id: exam.id as string,
+            name: (exam.exam_name || 'Exam') as string,
             date: new Date(exam.exam_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
             overall: exam.score ? Number(exam.score) : 0,
             status: exam.status || exam.passed ? 'Passed' : 'Pending',

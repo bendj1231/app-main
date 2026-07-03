@@ -4,12 +4,12 @@ import {
   ArrowLeft, CheckCircle2, XCircle, Clock, ShieldCheck, Users,
   Award, AlertTriangle, Loader2, ChevronDown, ChevronUp, RefreshCw, Plus, CreditCard, Send
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { CSVUploadBox } from './CSVUploadBox';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const PILOT_API_URL = (import.meta as any).env?.VITE_PILOT_API_URL as string;
 
 interface Props {
   onBack: () => void;
@@ -93,6 +93,7 @@ const TOKEN_LABELS: Record<string, string> = {
 
 export function ATODashboardPage({ onBack, onNavigate }: Props) {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [ato, setAto]         = useState<ATOInstitution | null>(null);
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [tokens, setTokens]   = useState<IssuedToken[]>([]);
@@ -130,32 +131,68 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
     if (!currentUser?.id) return;
     setLoading(true);
     try {
-      const { data: atoData } = await supabase
-        .from('ato_institutions')
-        .select('*')
-        .eq('admin_user_id', currentUser.id)
-        .maybeSingle();
+      const atoRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ato_institutions',
+        operation: 'select',
+        where: { admin_user_id: currentUser.id },
+        limit: 1,
+      });
+      const atoData = atoRows?.[0] as any;
 
       if (!atoData) { setNoATO(true); setLoading(false); return; }
       setAto(atoData);
 
-      const [{ data: reqs }, { data: toks }, { data: grads }] = await Promise.all([
-        supabase.from('ato_verification_requests').select('*').eq('ato_id', atoData.id).order('created_at', { ascending: false }).limit(50),
-        supabase.from('ato_issued_tokens').select('*').eq('ato_id', atoData.id).order('created_at', { ascending: false }).limit(50),
-        // Fetch graduates: pilots who've made verification requests to this ATO
-        supabase.from('ato_verification_requests')
-          .select('pilot_id, status, ato_confirmed_hours, profiles(id, display_name, full_name, email, total_flight_hours, overall_recognition_score, pathway_interests)')
-          .eq('ato_id', atoData.id)
-          .order('created_at', { ascending: false }),
+      const [reqs, toks, grads] = await Promise.all([
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'ato_verification_requests',
+          operation: 'select',
+          where: { ato_id: atoData.id },
+          limit: 50,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'ato_issued_tokens',
+          operation: 'select',
+          where: { ato_id: atoData.id },
+          limit: 50,
+        }),
+        callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'ato_verification_requests',
+          operation: 'select',
+          where: { ato_id: atoData.id },
+          limit: 500,
+        }),
       ]);
-      setRequests(reqs ?? []);
-      setTokens(toks ?? []);
+      const sortedReqs = (reqs || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      const sortedToks = (toks || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      setRequests(sortedReqs as any[]);
+      setTokens(sortedToks as any[]);
+
+      // Fetch profiles for graduate data
+      const pilotIds = (grads || []).map((g: any) => g.pilot_id).filter(Boolean);
+      let profileMap: Record<string, any> = {};
+      if (pilotIds.length) {
+        const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { id: pilotIds[0] },
+          limit: 500,
+        });
+        (profileRows || []).forEach((p: any) => { if (p.id) profileMap[p.id] = p; });
+      }
 
       // Deduplicate graduates by pilot_id, keep most recent request details
       const gradMap = new Map<string, Graduate>();
-      (grads ?? []).forEach((g: any) => {
+      (grads || []).forEach((g: any) => {
         const pilotId = g.pilot_id;
-        const prof = g.profiles;
+        const prof = profileMap[pilotId];
         if (!gradMap.has(pilotId)) {
           gradMap.set(pilotId, {
             id: pilotId,
@@ -201,20 +238,23 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const signatureHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      const { error } = await supabase.from('ato_issued_tokens').insert({
-        ato_id:              ato.id,
-        pilot_id:            issueForm.pilot_id,
-        issued_by_user_id:   currentUser?.id,
-        token_type:          issueForm.token_type,
-        token_label:         issueForm.token_label,
-        total_hours_verified: hours,
-        graduation_date:     issueForm.graduation_date || null,
-        aircraft_ratings:    ratings.length ? ratings : null,
-        status:              'active',
-        signature_hash:      signatureHash,
-        signature_algorithm: 'SHA-256',
+      await callApi('queryTable', {
+        table: 'ato_issued_tokens',
+        operation: 'insert',
+        data: {
+          ato_id:              ato.id,
+          pilot_id:            issueForm.pilot_id,
+          issued_by_user_id:   currentUser?.id,
+          token_type:          issueForm.token_type,
+          token_label:         issueForm.token_label,
+          total_hours_verified: hours,
+          graduation_date:     issueForm.graduation_date || null,
+          aircraft_ratings:    ratings.length ? ratings : null,
+          status:              'active',
+          signature_hash:      signatureHash,
+          signature_algorithm: 'SHA-256',
+        },
       });
-      if (error) throw error;
       setIssueSuccess(true);
       setIssueForm({ pilot_id: '', token_type: 'cpl_complete', token_label: '', total_hours_verified: '', graduation_date: '', aircraft_ratings: '' });
       await load();
@@ -230,44 +270,59 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
     setResponding(true);
     try {
       // Get the request details first
-      const { data: reqData } = await supabase
-        .from('ato_verification_requests')
-        .select('pilot_id, claimed_total_hours')
-        .eq('id', reqId)
-        .single();
+      const reqRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ato_verification_requests',
+        operation: 'select',
+        where: { id: reqId },
+        limit: 1,
+      });
+      const reqData = reqRows?.[0] as any;
 
       const confirmedHours = respondForm.confirmed_hours ? parseFloat(respondForm.confirmed_hours) : null;
 
-      const { error } = await supabase.from('ato_verification_requests').update({
-        status:               respondForm.outcome,
-        ato_confirmed_hours:  confirmedHours,
-        ato_response_note:    respondForm.note || null,
-        responded_at:         new Date().toISOString(),
-        responded_by:         currentUser?.id,
-      }).eq('id', reqId);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'ato_verification_requests',
+        operation: 'update',
+        id: reqId,
+        data: {
+          status:               respondForm.outcome,
+          ato_confirmed_hours:  confirmedHours,
+          ato_response_note:    respondForm.note || null,
+          responded_at:         new Date().toISOString(),
+          responded_by:         currentUser?.id,
+        },
+      });
 
       // Step 26: On confirm, auto-update pilot profile hours
       if (respondForm.outcome === 'confirmed' && reqData?.pilot_id && confirmedHours) {
-        await supabase.from('profiles').update({
-          total_flight_hours: confirmedHours,
-          updated_at: new Date().toISOString(),
-        }).eq('id', reqData.pilot_id);
+        await callApi('queryTable', {
+          table: 'profiles',
+          operation: 'update',
+          id: reqData.pilot_id,
+          data: {
+            total_flight_hours: confirmedHours,
+            updated_at: new Date().toISOString(),
+          },
+        });
       }
 
       // Step 29: Log to user_activity_log
-      await supabase.from('user_activity_log').insert({
-        user_id: reqData?.pilot_id,
-        action: `ato_verification_${respondForm.outcome}`,
-        details: {
-          request_id: reqId,
-          ato_id: ato?.id,
-          ato_name: ato?.institution_name,
-          outcome: respondForm.outcome,
-          confirmed_hours: confirmedHours,
-          note: respondForm.note,
+      await callApi('queryTable', {
+        table: 'user_activity_log',
+        operation: 'insert',
+        data: {
+          user_id: reqData?.pilot_id,
+          action: `ato_verification_${respondForm.outcome}`,
+          details: {
+            request_id: reqId,
+            ato_id: ato?.id,
+            ato_name: ato?.institution_name,
+            outcome: respondForm.outcome,
+            confirmed_hours: confirmedHours,
+            note: respondForm.note,
+          },
+          created_at: new Date().toISOString(),
         },
-        created_at: new Date().toISOString(),
       });
 
       setRespondingId(null);
@@ -279,9 +334,16 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
 
   async function revokeToken(tokenId: string) {
     if (!window.confirm('Revoke this credential? This action is permanent and visible in the audit trail.')) return;
-    await supabase.from('ato_issued_tokens').update({
-      status: 'revoked', revoked_at: new Date().toISOString(), revoked_by: currentUser?.id,
-    }).eq('id', tokenId);
+    await callApi('queryTable', {
+      table: 'ato_issued_tokens',
+      operation: 'update',
+      id: tokenId,
+      data: {
+        status: 'revoked',
+        revoked_at: new Date().toISOString(),
+        revoked_by: currentUser?.id,
+      },
+    });
     await load();
   }
 
@@ -560,7 +622,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   {/* QR Code */}
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`)}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`${PILOT_API_URL}/api/verify-token?tokenId=${tok.id}`)}`}
                     alt="Verify QR"
                     style={{ width: 32, height: 32, borderRadius: 4, opacity: 0.8 }}
                     title="Scan to verify credential"
@@ -574,7 +636,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                   </button>
                   <button
                     onClick={() => {
-                      const url = `${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`;
+                      const url = `${PILOT_API_URL}/api/verify-token?tokenId=${tok.id}`;
                       window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                     style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', border: '1px solid rgba(14,165,233,0.3)', background: 'transparent', color: '#38bdf8', fontSize: '0.72rem', cursor: 'pointer' }}
@@ -610,7 +672,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Pilot User ID <span style={{ color: '#ef4444' }}>*</span></label>
-                <input type="text" placeholder="Pilot's Supabase user ID (UUID)" value={issueForm.pilot_id} onChange={e => setIssueForm(f => ({ ...f, pilot_id: e.target.value }))} style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
+                <input type="text" placeholder="Pilot's user ID (UUID)" value={issueForm.pilot_id} onChange={e => setIssueForm(f => ({ ...f, pilot_id: e.target.value }))} style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Record Type</label>
@@ -704,7 +766,12 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                           const placed = parseInt(e.target.value) || 0;
                           const total = graduates.length || 1;
                           const pct = Math.round((placed / total) * 100);
-                          await supabase.from('ato_institutions').update({ placement_rate_pct: pct }).eq('id', ato!.id);
+                          await callApi('queryTable', {
+                            table: 'ato_institutions',
+                            operation: 'update',
+                            id: ato!.id,
+                            data: { placement_rate_pct: pct },
+                          });
                           setAto({ ...ato!, placement_rate_pct: pct });
                         }}
                         style={{ width: '80px', padding: '0.4rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none' }}
@@ -784,7 +851,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
       {viewCredentialId && (() => {
         const tok = tokens.find(t => t.id === viewCredentialId);
         if (!tok) return null;
-        const verifyUrl = `${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`;
+        const verifyUrl = `${PILOT_API_URL}/api/verify-token?tokenId=${tok.id}`;
         return (
           <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={(e) => { if (e.target === e.currentTarget) setViewCredentialId(null); }}>
             <div style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', maxWidth: '480px', width: '100%', padding: '2rem', position: 'relative' }}>

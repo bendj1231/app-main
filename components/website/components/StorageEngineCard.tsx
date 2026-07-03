@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
-type StoragePreference = 'multi' | 'supabase' | 'firebase';
+type StoragePreference = 'multi' | 'd1' | 'firebase';
 
 const ENGINE_OPTIONS: {
     value: StoragePreference;
@@ -16,20 +16,20 @@ const ENGINE_OPTIONS: {
     {
         value: 'multi',
         label: 'Active-Active Multi-Engine',
-        sublabel: 'Supabase Inc. + Google LLC (Firebase)',
+        sublabel: 'Cloudflare D1 + Google LLC (Firebase)',
         badge: 'Recommended',
         badgeColor: 'bg-emerald-100 text-emerald-700 border-emerald-200',
         description:
             'Simultaneous AES-256-GCM ciphertext mirroring to both database engines. Maximum redundancy — if one engine experiences an outage, your encrypted data remains fully available on the other.',
     },
     {
-        value: 'supabase',
-        label: 'Supabase Engine Only',
+        value: 'd1',
+        label: 'Cloudflare D1 Engine Only',
         sublabel: 'Single-engine configuration',
         description:
-            'Encrypted ciphertext routed exclusively to the Supabase Inc. infrastructure environment.',
+            'Encrypted ciphertext routed exclusively to the Cloudflare D1 infrastructure environment.',
         risk:
-            'You assume all operational risks for localized Supabase Inc. outages or downtime. This downgrades your disaster recovery posture below GDPR Art. 32 recommended redundancy.',
+            'You assume all operational risks for localized Cloudflare D1 outages or downtime. This downgrades your disaster recovery posture below GDPR Art. 32 recommended redundancy.',
     },
     {
         value: 'firebase',
@@ -48,6 +48,7 @@ interface StorageEngineCardProps {
 
 export const StorageEngineCard: React.FC<StorageEngineCardProps> = ({ className = '' }) => {
     const { currentUser } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [preference, setPreference] = useState<StoragePreference>('multi');
     const [pendingPreference, setPendingPreference] = useState<StoragePreference | null>(null);
     const [saving, setSaving] = useState(false);
@@ -59,16 +60,17 @@ export const StorageEngineCard: React.FC<StorageEngineCardProps> = ({ className 
     // Load current preference from profiles on mount
     useEffect(() => {
         if (!currentUser?.id) return;
-        supabase
-            .from('profiles')
-            .select('storage_preference')
-            .eq('id', currentUser.id)
-            .maybeSingle()
-            .then(({ data }) => {
-                if (data?.storage_preference) {
-                    setPreference(data.storage_preference as StoragePreference);
-                }
-            });
+        callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'profiles',
+            operation: 'select',
+            where: { id: currentUser.id },
+            limit: 1,
+        }).then((rows) => {
+            const data = rows?.[0];
+            if (data?.storage_preference) {
+                setPreference(data.storage_preference as StoragePreference);
+            }
+        });
     }, [currentUser?.id]);
 
     const handleSelect = (value: StoragePreference) => {
@@ -89,27 +91,30 @@ export const StorageEngineCard: React.FC<StorageEngineCardProps> = ({ className 
         setSaving(true);
         setError('');
         try {
-            const { error: dbError } = await supabase
-                .from('profiles')
-                .update({
+            await callApi('queryTable', {
+                table: 'profiles',
+                operation: 'update',
+                id: currentUser.id,
+                data: {
                     storage_preference: value,
                     updated_at: new Date().toISOString(),
-                })
-                .eq('id', currentUser.id);
-
-            if (dbError) throw dbError;
+                },
+            });
 
             // Log operational risk acknowledgment timestamp if downgrading from multi
             if (value !== 'multi' && acknowledged) {
                 try {
-                    await supabase.rpc('append_storage_risk_acknowledgment', {
-                        p_user_id: currentUser.id,
-                        p_engine: value,
-                        p_acknowledged_at: new Date().toISOString(),
+                    await callApi('queryTable', {
+                        table: 'storage_risk_acknowledgments',
+                        operation: 'insert',
+                        data: {
+                            user_id: currentUser.id,
+                            engine: value,
+                            acknowledged_at: new Date().toISOString(),
+                        },
                     });
                 } catch {
-                    // RPC not deployed yet — acknowledgment captured in profiles.storage_preference update above
-                    console.warn('[storage] Risk acknowledgment RPC not available — preference saved to profiles table');
+                    console.warn('[storage] Risk acknowledgment insert failed — preference saved to profiles table');
                 }
             }
 

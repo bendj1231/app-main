@@ -4,8 +4,17 @@ import React, { useState, useEffect, Suspense, useRef, useCallback } from 'react
 // CSS import disabled for integration to prevent MIME type errors
 // import './App.css';
 
-// Mentor Management System Imports
-import { onAuthStateChange, type AuthState, SUPER_ADMIN_EMAIL, signOut, supabase } from './lib/supabase-auth';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import type { UserProfile } from './types/user';
+import { SUPER_ADMIN_EMAIL } from './lib/supabase-auth';
+
+interface AuthState {
+  user: any | null;
+  userProfile: UserProfile | null;
+  loading: boolean;
+  currentSystem: 'pms' | 'wms' | 'super_admin';
+}
 import { PilotProfilePage } from './pages/PilotProfilePage';
 import { PilotPortfolioPage } from './pages/PilotPortfolioPage';
 import FoundationalProgramPage from './pages/FoundationalProgramPage';
@@ -223,6 +232,8 @@ const detectGraphicsPreset = (): DetectionResult => {
 };
 
 function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateToMainApp?: (page: string) => void; directToEnrollment?: boolean }) {
+  const { user: auth0User, isLoading: auth0Loading, isAuthenticated, logout } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [showLoading, setShowLoading] = useState(!directToEnrollment);
   const [loginBlurred, setLoginBlurred] = useState(false);
@@ -359,8 +370,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       }
     }, 300);
 
-    // Clear cache on page reload
-
+    // Clear legacy Supabase cache on page reload
     window.localStorage.removeItem('supabase.auth.token');
     window.localStorage.removeItem('supabase.auth.refreshToken');
     window.localStorage.removeItem('supabase.auth.codeVerifier');
@@ -520,39 +530,53 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   useEffect(() => {
 
 
-    // Set up auth state listener
-    const { data: { subscription } } = onAuthStateChange((nextState) => {
+    // Auth0 handles auth state; sync into local authState for compatibility
+    const syncAuthState = async () => {
+      if (auth0Loading) return;
 
-      setAuthState(nextState);
-      if (nextState.user?.email) {
-        setLastLoginEmail(nextState.user.email);
-      }
-
-      const isResetPasswordPage = window.location.pathname.includes('/reset-password') ||
-                                  window.location.hash.includes('type=recovery');
-
+      const isResetPasswordPage = window.location.pathname.includes('/reset-password');
       if (isResetPasswordPage) {
         setCurrentView('reset-password');
         setIsInitializing(false);
         return;
       }
 
-      // Auth check complete
-
+      if (isAuthenticated && auth0User) {
+        setLastLoginEmail(auth0User.email || '');
+        try {
+          const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'profiles',
+            operation: 'select',
+            where: { id: auth0User.sub },
+            limit: 1,
+          });
+          const profile = rows?.[0] as any;
+          setAuthState({
+            user: auth0User,
+            userProfile: profile || null,
+            loading: false,
+            currentSystem: 'pms',
+          });
+        } catch {
+          setAuthState({
+            user: auth0User,
+            userProfile: null,
+            loading: false,
+            currentSystem: 'pms',
+          });
+        }
+      } else {
+        setAuthState({
+          user: null,
+          userProfile: null,
+          loading: false,
+          currentSystem: 'pms',
+        });
+      }
       setIsInitializing(false);
-
-      // No loading sequence - portal loads directly
-    });
-
-    // Also check for existing session immediately
-    supabase.auth.getSession().then(({ data: { session } }) => {
-
-      // Don't force login view here - let the auth state listener handle it
-      // This allows the listener to properly detect existing sessions from the home page
-    });
-
-    return () => subscription?.unsubscribe();
-  }, []);
+    };
+    syncAuthState();
+  }, [auth0Loading, isAuthenticated, auth0User, callApi]);
 
 
   const startLoadingSequence = useCallback(async (pendingView: MainView = 'pilot-profile', userId?: string) => {
@@ -654,30 +678,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
 
       // Clear any stored session data
-
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('supabase.auth.refreshToken');
       localStorage.removeItem('supabase.auth.codeVerifier');
       localStorage.removeItem('supabase.auth.pkceVerifier');
-
-
-      // Clear IndexedDB session from main app
-      try {
-
-        const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
-        const transaction = db.transaction(['authSession'], 'readwrite');
-        if (transaction && transaction.objectStore) {
-          const store = transaction.objectStore('authSession');
-          store.delete('currentSession');
-
-        } else {
-
-        }
-      } catch (error) {
-        console.error('❌ [LOGOUT DEBUG] Error clearing IndexedDB session from portal:', error);
-        // Continue with logout even if IndexedDB clearing fails
-      }
-
 
       // Reset auth state
       setAuthState({
@@ -688,26 +692,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         preloadedData: {}
       });
 
-
       // Navigate back to main app home page immediately
-
-
       if (onNavigateToMainApp) {
-
         onNavigateToMainApp('home');
-      } else {
-
       }
 
-
-
-      // Try to sign out from Supabase in background, don't block navigation
-      signOut().then(() => {
-
-        supabase.auth.setSession({ access_token: '', refresh_token: '' });
-
-      }).catch((error: any) => {
-        console.error('⚠️ [LOGOUT DEBUG] Supabase logout error (non-blocking):', error.message);
+      // Sign out from Auth0 in background
+      logout({ logoutParams: { returnTo: window.location.origin } }).catch((error: any) => {
+        console.error('⚠️ [LOGOUT DEBUG] Auth0 logout error (non-blocking):', error.message);
       });
     } catch (error) {
       console.error('❌ [LOGOUT DEBUG] Logout error:', error);
@@ -721,25 +713,21 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   const refreshUserProfile = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
+      if (!auth0User?.sub) return;
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { id: auth0User.sub },
+        limit: 1,
+      });
+      const profile = rows?.[0] as any;
       if (profile) {
-
-
         setAuthState(prev => ({
           ...prev,
           userProfile: profile
         }));
-
       } else {
-        console.warn('⚠️ No profile data returned from Supabase');
+        console.warn('⚠️ No profile data returned from Worker API');
       }
     } catch (error) {
       console.error('❌ Error refreshing profile:', error);

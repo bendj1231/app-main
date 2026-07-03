@@ -4,8 +4,8 @@
 
 ### Hour 0: Deploy
 - [ ] DNS records fully propagated (all 6 subdomains)
-- [ ] SSL certificates auto-provisioned on Vercel
-- [ ] Deploy to production via Vercel
+- [ ] SSL certificates auto-provisioned on Cloudflare
+- [ ] Deploy to production via Cloudflare Pages
 - [ ] Verify build successful
 
 ### Hour 0-4: Immediate Checks
@@ -31,7 +31,7 @@
 ### Hour 12-24: Load & Performance
 - [ ] Google PageSpeed Insights > 80 on all pages
 - [ ] Core Web Vitals passing
-- [ ] No 404 errors in Vercel logs
+- [ ] No 404 errors in Cloudflare Pages logs
 - [ ] Database connections stable
 - [ ] API response times < 500ms
 
@@ -46,11 +46,11 @@
 
 ## Monitoring Dashboard
 
-### Vercel Dashboard
+### Cloudflare Dashboard
 Watch for:
 - Build errors
 - Function errors
-- Edge function logs
+- Worker logs
 - Bandwidth usage
 
 ### Google Analytics 4
@@ -60,12 +60,12 @@ Watch for:
 - Cross-domain session tracking
 - Conversion rate
 
-### Supabase Dashboard
+### Cloudflare Dashboard
 Watch for:
-- Auth error spikes
-- Database connection limits
-- Storage usage
-- Real-time subscription load
+- Worker error spikes
+- D1 database usage
+- R2 storage usage
+- Pages deployment health
 
 ### Google Search Console
 Watch for:
@@ -83,10 +83,10 @@ If critical issues detected:
 1. **Identify issue** (DNS, routing, auth, performance)
 2. **Check if rollback needed** or hotfix possible
 3. **Revert DNS** if subdomain issues
-4. **Revert vercel.json** if routing issues
+4. **Revert Cloudflare Pages redirects/rewrites** if routing issues
 5. **Communicate** to users via email/social
 
-**Rollback Time:** < 5 minutes via Vercel or DNS switch
+**Rollback Time:** < 5 minutes via Cloudflare Pages or DNS switch
 
 ---
 

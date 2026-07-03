@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase-auth';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
 export interface PilotPortfolio {
   id: string;
@@ -74,6 +74,8 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchPortfolio = useCallback(async () => {
     if (!userId) {
       setLoading(false);
@@ -84,18 +86,16 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
       setLoading(true);
       setError(null);
 
-      const { data, error: fetchError } = await supabase
-        .from('pilot_portfolio_data')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-
-      if (fetchError && fetchError.code !== 'PGRST116') {
-        throw fetchError;
-      }
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const data = rows?.[0];
 
       if (data) {
-        setPortfolio(data);
+        setPortfolio(data as PilotPortfolio);
       } else {
         // Create default portfolio if none exists
         await createDefaultPortfolio();
@@ -106,7 +106,7 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, callApi]);
 
   const createDefaultPortfolio = async () => {
     if (!userId) return;
@@ -135,14 +135,12 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
         certifications_count: 0
       };
 
-      const { data, error: insertError } = await supabase
-        .from('pilot_portfolio_data')
-        .insert(defaultPortfolio)
-        .select()
-        .single();
-
-      if (insertError) throw insertError;
-      setPortfolio(data);
+      const data = await callApi('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'insert',
+        data: defaultPortfolio,
+      });
+      setPortfolio(data as PilotPortfolio);
     } catch (err: any) {
       console.error('Error creating default portfolio:', err);
       setError(err.message);
@@ -155,15 +153,24 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
     try {
       setError(null);
 
-      const { error: updateError } = await supabase
-        .from('pilot_portfolio_data')
-        .update({
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const id = existing?.[0]?.id as string;
+      if (!id) throw new Error('Portfolio not found');
+
+      await callApi('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'update',
+        id,
+        data: {
           ...data,
           updated_at: new Date().toISOString()
-        })
-        .eq('user_id', userId);
-
-      if (updateError) throw updateError;
+        },
+      });
 
       await fetchPortfolio();
     } catch (err: any) {
@@ -197,12 +204,21 @@ export const usePilotPortfolio = (userId?: string): UsePilotPortfolioReturn => {
         synced_from_recognition: true
       };
 
-      const { error: updateError } = await supabase
-        .from('pilot_portfolio_data')
-        .update(syncData)
-        .eq('user_id', userId);
+      const existing = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'select',
+        where: { user_id: userId },
+        limit: 1,
+      });
+      const id = existing?.[0]?.id as string;
+      if (!id) throw new Error('Portfolio not found');
 
-      if (updateError) throw updateError;
+      await callApi('queryTable', {
+        table: 'pilot_portfolio_data',
+        operation: 'update',
+        id,
+        data: syncData,
+      });
 
       await fetchPortfolio();
     } catch (err: any) {

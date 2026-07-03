@@ -6,7 +6,6 @@ import { CareerPathwaysNavbar } from '../layout/CareerPathwaysNavbar';
 import { BreadcrumbSchema } from '../../website/components/seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '@/lib/device-detection';
 import { DataControllerAgreementModal } from '../../website/components/DataControllerAgreementModal';
-import { supabase } from '@/lib/supabase';
 import { WalletFirstCredentialFlow } from '../../website/components/WalletFirstCredentialFlow';
 import { issueAndStoreCredential } from '@/lib/wallet';
 
@@ -214,7 +213,7 @@ export const GetStartedPage: React.FC = () => {
         setSubmitStatus('idle');
 
         try {
-            // Here you would typically save to Supabase
+            // Here you would typically save to D1 via Worker API
             // For now, just simulate success
             await new Promise(resolve => setTimeout(resolve, 2000));
             setSubmitStatus('success');

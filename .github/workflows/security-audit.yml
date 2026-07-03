@@ -1,0 +1,108 @@
+name: Monthly Security Audit
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for hardcoded secrets in source code
+        run: |
+          echo "🔍 Scanning for potential secrets..."
+          # Check for JWT tokens, API keys, and secrets
+          SECRETS_FOUND=false
+          
+          # Check for Supabase service role JWTs (eyJ... with "service_role")
+          if grep -rE "eyJ[a-zA-Z0-9_-]{30,}\.eyJ[a-zA-Z0-9_-]{30,}\.[a-zA-Z0-9_-]{20,}" \
+             --include="*.ts" --include="*.tsx" --include="*.js" \
+             --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=archive \
+             . 2>/dev/null | grep -v "your_" | grep -v "example"; then
+            echo "⚠️  Potential JWT tokens found in source code!"
+            SECRETS_FOUND=true
+          fi
+          
+          # Check for Resend keys
+          if grep -rE "re_[A-Za-z0-9]{20,}" \
+             --include="*.ts" --include="*.tsx" --include="*.js" \
+             --exclude-dir=node_modules --exclude-dir=dist \
+             . 2>/dev/null | grep -v "your_"; then
+            echo "⚠️  Potential Resend API keys found!"
+            SECRETS_FOUND=true
+          fi
+          
+          # Check for Stripe secret keys
+          if grep -rE "sk_(live|test)_[a-zA-Z0-9]{20,}" \
+             --include="*.ts" --include="*.tsx" --include="*.js" \
+             --exclude-dir=node_modules --exclude-dir=dist \
+             . 2>/dev/null; then
+            echo "⚠️  Potential Stripe secret keys found!"
+            SECRETS_FOUND=true
+          fi
+          
+          # Check for hardcoded passwords
+          if grep -riE "password\s*[:=]\s*['\"][^'\"]{8,}['\"]" \
+             --include="*.ts" --include="*.tsx" --include="*.js" \
+             --exclude-dir=node_modules --exclude-dir=dist \
+             . 2>/dev/null | grep -v "your_" | grep -v "example"; then
+            echo "⚠️  Potential hardcoded passwords found!"
+            SECRETS_FOUND=true
+          fi
+          
+          if [ "$SECRETS_FOUND" = true ]; then
+            echo ""
+            echo "❌ FAIL: Potential secrets detected in source code!"
+            echo "   Review the matches above and remove any real secrets."
+            exit 1
+          fi
+          
+          echo "✅ No hardcoded secrets detected in source code"
+
+      - name: Check .env.example has no real keys
+        run: |
+          echo "🔍 Checking .env.example for real keys..."
+          
+          if grep -vE "^#|^$" .env.example | grep -E "(eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}|re_[A-Za-z0-9]{20,}|sk_(live|test)_[a-zA-Z0-9]{20,}|gsk_[a-zA-Z0-9]{20,})"; then
+            echo "❌ FAIL: Real API keys found in .env.example!"
+            echo "   .env.example should only contain placeholder values."
+            exit 1
+          fi
+          
+          echo "✅ .env.example contains only placeholder values"
+
+      - name: Check .env.local is not committed
+        run: |
+          if git ls-files | grep -q "\.env\.local"; then
+            echo "❌ FAIL: .env.local is tracked in Git!"
+            echo "   Run: git rm --cached .env.local && git commit -m 'Remove .env.local from tracking'"
+            exit 1
+          fi
+          echo "✅ .env.local is not tracked in Git"
+
+      - name: Run npm audit
+        run: |
+          echo "🔍 Running npm audit..."
+          npm audit --audit-level=high || true
+          # Note: We don't fail on audit, just report. Fix vulnerabilities separately.
+
+      - name: Security Audit Summary
+        if: always()
+        run: |
+          echo ""
+          echo "================================================"
+          echo "📋 Monthly Security Audit Complete"
+          echo "================================================"
+          echo ""
+          echo "Next audit: $(date -d '+1 month' +%Y-%m-%d)"
+          echo "Next key rotation: $(date -d '+90 days' +%Y-%m-%d)"

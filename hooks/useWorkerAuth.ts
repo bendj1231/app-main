@@ -1,8 +1,8 @@
 /**
  * useWorkerAuth — Bridge hook for Cloudflare Worker API + Auth0
  *
- * Replaces Supabase data fetching with Worker API calls.
- * All hooks that previously imported `supabase` should use this instead.
+ * Fetches data via the Cloudflare Worker API (D1 backend).
+ * All hooks that previously imported a database client should use this instead.
  */
 
 import { useCallback, useRef } from 'react';

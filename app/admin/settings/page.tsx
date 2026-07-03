@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { uploadProfileImage, type CloudinaryUploadResult } from '@/lib/cloudinaryClient';
 import { logAuditAction } from '@/lib/auditLog';
 import { type AdminPermissions, type PermissionSet, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/lib/permissions';
 import AdminSidebar from '../components/AdminSidebar';
@@ -14,6 +16,7 @@ export default function AdminSettingsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, userProfile } = useAuth();
+  const { getIdTokenClaims } = useAuth0();
   const currentPath = location.pathname;
 
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
@@ -55,15 +58,19 @@ export default function AdminSettingsPage() {
     }
   }, [userProfile, isAdmin]);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchAdminUsers = async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, display_name, email, role, admin_permissions')
-        .in('role', ['super_admin', 'admin'])
-        .order('display_name', { ascending: true });
-      if (error) throw error;
-      setAdminUsers(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || [])
+        .filter((p: any) => ['super_admin', 'admin'].includes(p.role))
+        .sort((a: any, b: any) => (a.display_name || '').localeCompare(b.display_name || ''));
+      setAdminUsers(data as any);
     } catch (err) {
       console.error('Error fetching admin users:', err);
     }
@@ -72,13 +79,17 @@ export default function AdminSettingsPage() {
   const fetchSecurityEvents = async () => {
     setEventsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('security_events')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
-      if (error) throw error;
-      setSecurityEvents(data || []);
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'security_events',
+        operation: 'select',
+        limit: 50,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
+      setSecurityEvents(data as any);
     } catch (err) {
       console.error('Error fetching security events:', err);
     } finally {
@@ -89,13 +100,19 @@ export default function AdminSettingsPage() {
   const handleSavePermissions = async (permissions: AdminPermissions) => {
     if (!selectedAdmin) return;
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ admin_permissions: permissions })
-        .eq('id', selectedAdmin.id);
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: selectedAdmin.id,
+        data: { admin_permissions: permissions },
+      });
       
-      await logAuditAction({
+      const claims = await getIdTokenClaims();
+      const accessToken = claims?.__raw;
+      if (!accessToken || !currentUser?.uid) return;
+      
+      await logAuditAction(accessToken, {
+        adminId: currentUser.uid,
         actionType: 'update',
         targetTable: 'profiles',
         targetId: selectedAdmin.id,
@@ -121,25 +138,17 @@ export default function AdminSettingsPage() {
     setMessage('');
 
     try {
-      // Upload to Supabase storage
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${currentUser?.id}-${Date.now()}.${fileExt}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('profile-photos')
-        .upload(fileName, file);
+      const result: CloudinaryUploadResult = await uploadProfileImage(file, currentUser?.id || 'unknown');
+      if (!result.success || !result.url) {
+        throw new Error(result.error || 'Upload failed');
+      }
 
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('profile-photos')
-        .getPublicUrl(fileName);
-      
-      const { error } = await supabase
-        .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', currentUser?.id);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: currentUser?.id,
+        data: { avatar_url: result.url },
+      });
 
       setMessage('Profile photo updated successfully');
       setMessageType('success');
@@ -168,33 +177,35 @@ export default function AdminSettingsPage() {
         region: userProfile?.region,
       };
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({ 
-          display_name: formData.displayName,
-          phone_number: formData.phoneNumber,
-          region: formData.region,
-        })
-        .eq('id', currentUser.id);
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-
-      // Log audit action
-      await logAuditAction({
-        actionType: 'update',
-        targetTable: 'profiles',
-        targetId: currentUser.id,
-        oldValues,
-        newValues: {
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: currentUser.id,
+        data: {
           display_name: formData.displayName,
           phone_number: formData.phoneNumber,
           region: formData.region,
         },
-        description: 'Admin updated their profile settings',
       });
+
+      // Log audit action
+      const claims = await getIdTokenClaims();
+      const accessToken = claims?.__raw;
+      if (accessToken && currentUser?.uid) {
+        await logAuditAction(accessToken, {
+          adminId: currentUser.uid,
+          actionType: 'update',
+          targetTable: 'profiles',
+          targetId: currentUser.uid,
+          oldValues,
+          newValues: {
+            display_name: formData.displayName,
+            phone_number: formData.phoneNumber,
+            region: formData.region,
+          },
+          description: 'Admin updated their profile settings',
+        });
+      }
 
       setMessage('Profile updated successfully');
       setMessageType('success');
@@ -225,17 +236,13 @@ export default function AdminSettingsPage() {
 
     try {
       // Check if code is already taken by another user
-      const { data: existing, error: checkError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('referral_code', formData.referralCode.toUpperCase())
-        .neq('id', currentUser.id)
-        .single();
-
-      if (checkError && checkError.code !== 'PGRST116') {
-        console.error('Error checking referral code:', checkError);
-        throw checkError;
-      }
+      const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'profiles',
+        operation: 'select',
+        where: { referral_code: formData.referralCode.toUpperCase() },
+        limit: 500,
+      });
+      const existing = (existingRows || []).find((p: any) => p.id !== currentUser.id);
 
       if (existing) {
         setMessage('This referral code is already taken');
@@ -244,15 +251,12 @@ export default function AdminSettingsPage() {
         return;
       }
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({ referral_code: formData.referralCode.toUpperCase() })
-        .eq('id', currentUser.id);
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
+      await callApi('queryTable', {
+        table: 'profiles',
+        operation: 'update',
+        id: currentUser.id,
+        data: { referral_code: formData.referralCode.toUpperCase() },
+      });
 
       setMessage('Referral code updated successfully');
       setMessageType('success');

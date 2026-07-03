@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft, X, Send, Bot, User, Upload } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { CockpitFlightHoursDashboard } from '../unified-platform/CockpitFlightHoursDashboard';
 
@@ -251,6 +251,7 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
 type SubPage = 'hub' | 'logbook' | 'sync';
 
 export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onCompleteProfile }) => {
+  const { callApi } = useWorkerAuth();
   const providersRef = useRef<HTMLDivElement>(null);
   const [subPage, setSubPage] = useState<SubPage>('hub');
   const [providers, setProviders] = useState<SyncedProvider[]>([]);
@@ -327,22 +328,40 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
   const loadData = async () => {
     setRefreshing(true);
     setLoading(true);
-    const [{ data: syncData }, { data: flightData }] = await Promise.all([
-      supabase.from('logbook_provider_sync').select('*').eq('user_id', profile.id).order('connected_at', { ascending: false }),
-      supabase.from('pilot_flight_logs').select('id,date,aircraft_type,route,hours,category').eq('user_id', profile.id).order('date', { ascending: false }).limit(5),
+    const [syncRows, flightRows] = await Promise.all([
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'logbook_provider_sync',
+        operation: 'select',
+        where: { user_id: profile.id },
+        limit: 500,
+      }),
+      callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_flight_logs',
+        operation: 'select',
+        where: { user_id: profile.id },
+        limit: 5,
+      }),
     ]);
-
-    const synced = syncData ?? [];
-    setProviders(synced);
+    const synced = (syncRows || []).sort((a: any, b: any) => {
+      const ca = a.connected_at || '';
+      const cb = b.connected_at || '';
+      return cb.localeCompare(ca);
+    });
+    const flightData = (flightRows || []).sort((a: any, b: any) => {
+      const da = a.date || '';
+      const db = b.date || '';
+      return db.localeCompare(da);
+    });
+    setProviders((synced as unknown) as SyncedProvider[]);
 
     // Aggregate totals from synced providers
-    const hrs = synced.reduce((sum: number, p: SyncedProvider) => sum + (p.total_hours ?? 0), 0);
-    const flt = synced.reduce((sum: number, p: SyncedProvider) => sum + (p.flight_count ?? 0), 0);
+    const hrs = synced.reduce((sum: number, p: any) => sum + (p.total_hours ?? 0), 0);
+    const flt = synced.reduce((sum: number, p: any) => sum + (p.flight_count ?? 0), 0);
 
     // Fallback to profile total_flight_hours if no synced providers
     setTotalHours(hrs > 0 ? hrs : (profile?.total_flight_hours ?? 0));
-    setTotalFlights(flt > 0 ? flt : (flightData?.length ?? 0));
-    setRecentFlights(flightData ?? []);
+    setTotalFlights(flt > 0 ? flt : (flightData.length ?? 0));
+    setRecentFlights(flightData);
     setLoading(false);
     setRefreshing(false);
   };

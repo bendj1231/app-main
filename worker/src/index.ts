@@ -5,8 +5,12 @@
 
 export interface Env {
   pilotrecognition_profiles: D1Database;
+  ops_db: D1Database;
+  wingmentor_program?: D1Database;
+  reference_data?: D1Database;
   AUTH0_DOMAIN: string;
   OPENROUTER_API_KEY: string;
+  CHAT?: KVNamespace;
 }
 
 const corsHeaders = {
@@ -47,6 +51,11 @@ export default {
       // Resend email endpoint
       if (url.pathname === '/api/email/send') {
         return await handleEmailSend(request, env);
+      }
+
+      // Community chat endpoints
+      if (url.pathname.startsWith('/api/chat')) {
+        return await handleChatRoutes(request, env, url);
       }
 
       // Health check
@@ -516,9 +525,17 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
           const { results } = await db.prepare(`SELECT * FROM ${table} LIMIT ?`).bind(limit || 100).all();
           return results || [];
         }
-        const clauses = whereKeys.map(k => `${k} = ?`).join(' AND ');
+        const values: any[] = [];
+        const clauses = whereKeys.map((k) => {
+          const v = where[k];
+          if (v === null || v === undefined) {
+            return `${k} IS NULL`;
+          }
+          values.push(v);
+          return `${k} = ?`;
+        }).join(' AND ');
         const { results } = await db.prepare(`SELECT * FROM ${table} WHERE ${clauses} LIMIT ?`)
-          .bind(...whereKeys.map(k => where[k]), limit || 1)
+          .bind(...values, limit || 1)
           .all();
         return results || [];
       }
@@ -621,16 +638,23 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
 
       const profileId = profile.id;
 
-      const [{ results: fhResults }, { results: badgeResults }, { results: receiptResults }, { results: credentialResults }, { results: licensureResults }] = await Promise.all([
+      const [{ results: fhResults }, { results: badgeResults }, { results: receiptResults }, { results: credentialResults }, { results: licensureResults }, { results: notificationResults }] = await Promise.all([
         db.prepare('SELECT * FROM flight_hours WHERE user_id = ?').bind(profileId).all(),
         db.prepare('SELECT * FROM mentorship_badges WHERE user_id = ? ORDER BY earned_at DESC').bind(profileId).all(),
         db.prepare('SELECT * FROM verification_receipts WHERE user_id = ? ORDER BY updated_at DESC').bind(profileId).all(),
         db.prepare('SELECT * FROM pilot_credentials WHERE user_id = ? ORDER BY issued_at DESC').bind(profileId).all(),
         db.prepare('SELECT * FROM pilot_licensure_experience WHERE user_id = ?').bind(profileId).all(),
+        db.prepare('SELECT id, type, title, message, data, is_read as read_at, created_at FROM pilot_notifications WHERE pilot_id = ? ORDER BY created_at DESC LIMIT 50').bind(profileId).all(),
       ]);
 
       const licensure = (licensureResults?.[0] || null) as Record<string, unknown> | null;
       const parsedLicensure = licensure?.license_data ? JSON.parse(licensure.license_data as string) : null;
+
+      // Convert is_read integer to read_at string for frontend compatibility
+      const notifications = (notificationResults || []).map((n: any) => ({
+        ...n,
+        read_at: n.read_at ? new Date().toISOString() : undefined,
+      }));
 
       return {
         profile,
@@ -639,6 +663,111 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         verification_receipts: receiptResults || [],
         credentials: credentialResults || [],
         licensure: parsedLicensure,
+        notifications,
+        unread_count: notifications.filter((n: any) => !n.read_at).length,
+      };
+    }
+
+    // ── Admin infrastructure dashboard stats ─────────────────
+    case 'getAdminDashboardStats': {
+      const today = new Date().toISOString().slice(0, 10);
+      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+
+      const profileDb = env.pilotrecognition_profiles;
+      const opsDb = env.ops_db;
+      const refDb = env.reference_data;
+
+      const run = async (db: D1Database | undefined, sql: string, ...bind: any[]) => {
+        if (!db) return { results: [], count: 0 };
+        const { results } = await db.prepare(sql).bind(...bind).all();
+        return { results: results || [], count: results?.length || 0 };
+      };
+
+      const countOne = (res: any) => Number((res.results?.[0] as any)?.count ?? 0);
+
+      const [
+        pilots, pilotsWeek, activeSubs, totalCredentials, totalEnrollments, totalFlightLogs,
+        totalReferrals, activityToday, aiToday, aiTotal, aiUsers, notifToday, notifTotal,
+        images, logbookTotal, logbookActive, logbookProviders, mfaRequired, payoutsPending,
+        atoComm, atoVerif, recScores, atlasResumes, refConversions, refDividends,
+      ] = await Promise.all([
+        run(profileDb, "SELECT COUNT(*) as count FROM profiles"),
+        run(profileDb, "SELECT COUNT(*) as count FROM profiles WHERE created_at >= ?", weekAgo),
+        run(opsDb, "SELECT COUNT(*) as count FROM subscriptions WHERE status = 'active'"),
+        run(opsDb, "SELECT COUNT(*) as count FROM pilot_credentials"),
+        run(refDb, "SELECT COUNT(*) as count FROM enrollments"),
+        run(profileDb, "SELECT COUNT(*) as count FROM flight_hours"),
+        run(opsDb, "SELECT COUNT(*) as count FROM referral_uses"),
+        run(opsDb, "SELECT COUNT(*) as count FROM user_activity_log WHERE created_at >= ?", today),
+        run(opsDb, "SELECT COUNT(*) as count FROM ai_usage_log WHERE date = ?", today),
+        run(opsDb, "SELECT COUNT(*) as count FROM ai_usage_log"),
+        run(opsDb, "SELECT DISTINCT user_id FROM ai_usage_log WHERE date = ?", today),
+        run(profileDb, "SELECT COUNT(*) as count FROM pilot_notifications WHERE created_at >= ?", today),
+        run(profileDb, "SELECT COUNT(*) as count FROM pilot_notifications"),
+        run(profileDb, "SELECT COUNT(*) as count FROM profiles WHERE profile_image_url IS NOT NULL"),
+        run(profileDb, "SELECT COUNT(*) as count FROM pilot_platform_connections"),
+        run(profileDb, "SELECT COUNT(*) as count FROM pilot_platform_connections WHERE connection_status = 'active'"),
+        run(profileDb, "SELECT provider_name FROM pilot_platform_connections"),
+        run(profileDb, "SELECT COUNT(*) as count FROM mfa_settings WHERE mfa_required = 1"),
+        run(opsDb, "SELECT COUNT(*) as count FROM payouts WHERE status = 'pending'"),
+        run(opsDb, "SELECT COUNT(*) as count FROM ato_pending_commissions"),
+        run(opsDb, "SELECT COUNT(*) as count FROM ato_verification_requests"),
+        run(opsDb, "SELECT COUNT(*) as count FROM recognition_scores"),
+        run(refDb, "SELECT COUNT(*) as count FROM atlas_resumes"),
+        run(opsDb, "SELECT COUNT(*) as count FROM referral_conversions"),
+        run(opsDb, "SELECT COUNT(*) as count FROM referral_dividend_ledger"),
+      ]);
+
+      const connectedProviders = [...new Set((logbookProviders.results || []).map((r: any) => String(r.provider_name)).filter(Boolean))];
+      const uniqueAIUsers = new Set((aiUsers.results || []).map((r: any) => r.user_id)).size;
+
+      return {
+        totalPilots: countOne(pilots),
+        pilotsToday: 0,
+        pilotsWeek: countOne(pilotsWeek),
+        activeSubscriptions: countOne(activeSubs),
+        totalCredentials: countOne(totalCredentials),
+        totalEnrollments: countOne(totalEnrollments),
+        totalFlightLogs: countOne(totalFlightLogs),
+        totalReferrals: countOne(totalReferrals),
+        securityEventsToday: 0, // Auth0 handles
+        activityToday: countOne(activityToday),
+        aiRequestsToday: countOne(aiToday),
+        aiRequestsTotal: countOne(aiTotal),
+        aiUniqueUsersToday: uniqueAIUsers,
+        veremarkWebhooksTotal: 0, // Veremark handles
+        veremarkWebhooksWeek: 0,
+        veremarkWebhooksProcessed: 0,
+        veremarkWebhooksErrored: 0,
+        vcTotal: 0, vcPending: 0, vcInProgress: 0, vcVerified: 0, vcFailed: 0, vcFlagged: 0, vcExpired: 0, vcManuallyOverridden: 0, // Veremark handles
+        profilesWithImages: countOne(images),
+        notificationsToday: countOne(notifToday),
+        notificationsTotal: countOne(notifTotal),
+        pilotWallets: 0, // trace DB not bound
+        vcRevocations: 0, // trace DB not bound
+        rateLimitBuckets: 0, // rate limit query omitted
+        auth0LoginsToday: 0, // Auth0 handles
+        auth0EventsTotal: 0,
+        logbookConnectionsTotal: countOne(logbookTotal),
+        logbookConnectionsActive: countOne(logbookActive),
+        connectedProviders,
+        pilotDids: 0, // trace DB not bound
+        pilotWalletsActive: 0,
+        emailsSentTotal: 0, // admin_emails not queried
+        ipfsPins: 0, // reference DB not bound
+        mfaRequiredUsers: countOne(mfaRequired),
+        passkeysRegistered: 0, // Auth0 handles
+        pilotDocuments: 0, // trace DB not bound
+        payoutsPending: countOne(payoutsPending),
+        atoPendingCommissions: countOne(atoComm),
+        helioTokensTotal: 0,
+        paymentSplitsTotal: 0,
+        atoVerificationRequests: countOne(atoVerif),
+        recognitionScores: countOne(recScores),
+        atlasResumes: countOne(atlasResumes),
+        referralConversions: countOne(refConversions),
+        referralDividends: countOne(refDividends),
+        cacheStatRows: 0,
       };
     }
 
@@ -984,17 +1113,46 @@ async function handleDodoWebhook(request: Request, env: Env): Promise<Response> 
   return jsonResponse({ received: true }, 200);
 }
 
-async function handleEmailSend(request: Request, _env: Env): Promise<Response> {
+async function handleEmailSend(request: Request, env: Env): Promise<Response> {
+  // Only accept POST requests
+  if (request.method !== 'POST') {
+    return jsonResponse({ error: 'Method not allowed' }, 405);
+  }
+
   const body = await request.json().catch(() => ({}));
-  const { to, subject, html, text } = body;
+  const { to, subject, html, text, from_name } = body;
 
   if (!to || !subject) {
     return jsonResponse({ error: 'to and subject required' }, 400);
   }
 
-  const resendKey = (request.headers.get('X-Resend-Key') || '');
+  // Validate recipient is an email address
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(to)) {
+    return jsonResponse({ error: 'Invalid recipient email' }, 400);
+  }
+
+  // API key validation — use worker secret, not client-provided header
+  const apiSecret = (env as any).EMAIL_API_SECRET;
+  const clientSecret = request.headers.get('X-Email-Secret') || '';
+  if (!apiSecret || clientSecret !== apiSecret) {
+    return jsonResponse({ error: 'Unauthorized' }, 401);
+  }
+
+  // Rate limit: max 5 sends per IP per hour
+  const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rateLimitKey = `email_rate:${clientIp}`;
+  // In production, use KV or D1 for rate limiting. For now, log and proceed.
+  console.log(`[EmailSend] IP: ${clientIp}, To: ${to}`);
+
+  // Only allow sending from verified domain
+  const fromEmail = from_name
+    ? `${from_name} <noreply@pilotrecognition.com>`
+    : 'PilotRecognition <noreply@pilotrecognition.com>';
+
+  const resendKey = (env as any).RESEND_API_KEY;
   if (!resendKey) {
-    return jsonResponse({ error: 'X-Resend-Key header required' }, 401);
+    return jsonResponse({ error: 'Email service not configured' }, 500);
   }
 
   try {
@@ -1005,7 +1163,7 @@ async function handleEmailSend(request: Request, _env: Env): Promise<Response> {
         'Authorization': `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: 'PilotRecognition <noreply@pilotrecognition.com>',
+        from: fromEmail,
         to,
         subject,
         html,
@@ -1015,12 +1173,14 @@ async function handleEmailSend(request: Request, _env: Env): Promise<Response> {
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      return jsonResponse({ error: data.message || 'Email send failed' }, res.status);
+      console.error('[EmailSend] Resend error:', data);
+      return jsonResponse({ error: 'Email send failed' }, res.status);
     }
 
     return jsonResponse({ success: true, id: data.id });
   } catch (err: any) {
-    return jsonResponse({ error: err.message }, 500);
+    console.error('[EmailSend] exception:', err.message);
+    return jsonResponse({ error: 'Internal error' }, 500);
   }
 }
 
@@ -1081,6 +1241,73 @@ async function handleCheckout(request: Request, env: Env, tier: string): Promise
     console.error('[Dodo Checkout] exception:', err.message);
     return jsonResponse({ error: err.message || 'Checkout creation failed' }, 500);
   }
+}
+
+async function handleChatRoutes(request: Request, env: Env, url: URL): Promise<Response> {
+  const chat = env.CHAT;
+  if (!chat) {
+    return jsonResponse({ error: 'Chat not configured. Add KV namespace binding "CHAT" in wrangler.toml.' }, 503);
+  }
+
+  const pathParts = url.pathname.split('/');
+  const room = pathParts[3] || 'general';
+
+  // GET /api/chat/:room — list recent messages
+  if (request.method === 'GET') {
+    const prefix = `chat:${room}:`;
+    try {
+      // KV list returns keys with prefix
+      const keys = await chat.list({ prefix });
+      const messages = [];
+      for (const key of keys.keys) {
+        const value = await chat.get(key.name);
+        if (value) {
+          try {
+            messages.push(JSON.parse(value));
+          } catch {
+            // skip invalid JSON
+          }
+        }
+      }
+      // Sort by timestamp ascending
+      messages.sort((a: any, b: any) => (a.ts || 0) - (b.ts || 0));
+      return jsonResponse({ room, messages });
+    } catch (err: any) {
+      console.error('[Chat GET] error:', err.message);
+      return jsonResponse({ error: 'Failed to fetch messages' }, 500);
+    }
+  }
+
+  // POST /api/chat/:room — send a message
+  if (request.method === 'POST') {
+    const body = await request.json().catch(() => ({}));
+    const { user_id, display_name, message } = body as any;
+
+    if (!user_id || !message) {
+      return jsonResponse({ error: 'user_id and message required' }, 400);
+    }
+
+    const ts = Date.now();
+    const key = `chat:${room}:${ts}:${crypto.randomUUID()}`;
+    const payload = JSON.stringify({
+      id: key,
+      user_id,
+      display_name: display_name || 'Anonymous',
+      message: String(message).slice(0, 500), // max 500 chars
+      ts,
+    });
+
+    try {
+      // Store with 24h TTL (86400 seconds)
+      await chat.put(key, payload, { expirationTtl: 86400 });
+      return jsonResponse({ success: true, id: key });
+    } catch (err: any) {
+      console.error('[Chat POST] error:', err.message);
+      return jsonResponse({ error: 'Failed to send message' }, 500);
+    }
+  }
+
+  return jsonResponse({ error: 'Method not allowed' }, 405);
 }
 
 function generateReferralCode(userId: string): string {

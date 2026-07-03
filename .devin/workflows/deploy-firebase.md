@@ -45,7 +45,7 @@ firebase deploy --only functions --project programs
 ### Set environment variables (run once per project)
 ```
 cd /Users/bowler/Documents/apps/app-main/functions
-firebase functions:config:set supabase.url="https://gkbhgrozrzhalnjherfu.supabase.co" supabase.anon_key="<KEY>" --project airline
+firebase functions:config:set pilot_api.url="https://pilotrecognition-api.benjamintigerbowler.workers.dev" platform_api.url="https://platform-api.benjamintigerbowler.workers.dev" --project airline
 ```
 
 ### Check function logs
@@ -68,7 +68,7 @@ firebase functions:log --project pathways
 | `getEnterprisePathwayCards` | GET | Fetch published enterprise pathway cards for PathwaysPageModern |
 | `checkPathwayPostingAccess` | GET | Check if user can post (enterprise_access OR verified_account) |
 
-## Supabase Tables
+## D1 Tables
 
 | Table | Purpose |
 |---|---|

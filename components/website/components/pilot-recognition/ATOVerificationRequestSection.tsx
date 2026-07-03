@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { Send, Clock, CheckCircle2, XCircle, AlertCircle, Loader2, School, Calendar, MessageSquare, TrendingUp, ShieldCheck } from 'lucide-react';
 
 interface ATOInstitution {
@@ -36,7 +37,9 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 
 export function ATOVerificationRequestSection() {
   const { currentUser } = useAuth();
-  const [supabaseProfileId, setSupabaseProfileId] = useState<string | null>(null);
+  const { getIdTokenClaims } = useAuth0();
+  const { callApi } = useWorkerAuth();
+  const [profileId, setProfileId] = useState<string | null>(null);
   const [atos, setAtos] = useState<ATOInstitution[]>([]);
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,34 +63,56 @@ export function ATOVerificationRequestSection() {
     setLoadTimedOut(false);
     loadTimer.current = setTimeout(() => setLoadTimedOut(true), 2500);
     try {
-      // Resolve Supabase UUID — Auth0 currentUser.id is not a UUID
-      let pilotId = supabaseProfileId;
+      // Resolve profile UUID
+      let pilotId = profileId;
       if (!pilotId) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('email', currentUser.email)
-          .single();
-        pilotId = profile?.id ?? null;
-        if (pilotId) setSupabaseProfileId(pilotId);
+        const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'profiles',
+          operation: 'select',
+          where: { email: currentUser.email },
+          limit: 1,
+        });
+        pilotId = (rows?.[0]?.id as string) ?? null;
+        if (pilotId) setProfileId(pilotId);
       }
 
       // Fetch active ATOs
-      const { data: atoData } = await supabase
-        .from('ato_institutions')
-        .select('id, institution_name, country, tier')
-        .eq('onboarding_status', 'active')
-        .order('institution_name');
-      setAtos(atoData ?? []);
+      const atoRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ato_institutions',
+        operation: 'select',
+        where: { onboarding_status: 'active' },
+        limit: 500,
+      });
+      const atoData = (atoRows || []).sort((a: any, b: any) => (a.institution_name || '').localeCompare(b.institution_name || ''));
+      setAtos((atoData as unknown) as ATOInstitution[]);
 
       if (pilotId) {
-        // Fetch pilot's verification requests with ATO names
-        const { data: reqData } = await supabase
-          .from('ato_verification_requests')
-          .select('*, ato:ato_id(institution_name)')
-          .eq('pilot_id', pilotId)
-          .order('created_at', { ascending: false });
-        setRequests(reqData ?? []);
+        // Fetch pilot's verification requests
+        const reqRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'ato_verification_requests',
+          operation: 'select',
+          where: { pilot_id: pilotId },
+          limit: 500,
+        });
+        const sortedReqs = (reqRows || []).sort((a: any, b: any) => {
+          const ca = a.created_at || '';
+          const cb = b.created_at || '';
+          return cb.localeCompare(ca);
+        });
+        // Fetch ATO names for join
+        const atoIds = sortedReqs.map((r: any) => r.ato_id).filter(Boolean);
+        let atoMap: Record<string, string> = {};
+        if (atoIds.length) {
+          const atoNameRows = await callApi<Record<string, unknown>[]>('queryTable', {
+            table: 'ato_institutions',
+            operation: 'select',
+            where: { id: atoIds[0] },
+            limit: 500,
+          });
+          (atoNameRows || []).forEach((a: any) => { if (a.id) atoMap[a.id] = a.institution_name; });
+        }
+        const merged = sortedReqs.map((r: any) => ({ ...r, ato: { institution_name: atoMap[r.ato_id] || 'Unknown ATO' } }));
+        setRequests((merged as unknown) as VerificationRequest[]);
       }
     } finally {
       if (loadTimer.current) clearTimeout(loadTimer.current);
@@ -100,32 +125,36 @@ export function ATOVerificationRequestSection() {
   const canSubmit = form.ato_id && form.claimed_total_hours && parseFloat(form.claimed_total_hours) > 0;
 
   async function handleSubmit() {
-    if (!canSubmit || !supabaseProfileId || submitting) return;
+    if (!canSubmit || !profileId || submitting) return;
     setSubmitting(true);
     try {
-      const { data: inserted, error } = await supabase.from('ato_verification_requests').insert({
-        pilot_id: supabaseProfileId,
-        ato_id: form.ato_id,
-        request_type: 'hour_verification',
-        claimed_total_hours: parseFloat(form.claimed_total_hours),
-        claimed_pic_hours: form.claimed_pic_hours ? parseFloat(form.claimed_pic_hours) : null,
-        claimed_period_from: form.claimed_period_from || null,
-        claimed_period_to: form.claimed_period_to || null,
-        pilot_message: form.pilot_message || null,
-        status: 'pending',
-      }).select('id').single();
-      if (error) throw error;
+      const insertedRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ato_verification_requests',
+        operation: 'insert',
+        data: {
+          pilot_id: profileId,
+          ato_id: form.ato_id,
+          request_type: 'hour_verification',
+          claimed_total_hours: parseFloat(form.claimed_total_hours),
+          claimed_pic_hours: form.claimed_pic_hours ? parseFloat(form.claimed_pic_hours) : null,
+          claimed_period_from: form.claimed_period_from || null,
+          claimed_period_to: form.claimed_period_to || null,
+          pilot_message: form.pilot_message || null,
+          status: 'pending',
+        },
+      });
+      const inserted = insertedRows?.[0];
 
       // Notify ATO admin (fire-and-forget)
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string;
-        await fetch(`${supabaseUrl}/functions/v1/ato-notification`, {
+        const claims = await getIdTokenClaims();
+        const token = claims?.__raw;
+        const apiUrl = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
+        await fetch(`${apiUrl}/api/ato-notification`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token ?? ''}`,
+            'Authorization': `Bearer ${token ?? ''}`,
           },
           body: JSON.stringify({
             atoId: form.ato_id,
@@ -255,14 +284,14 @@ export function ATOVerificationRequestSection() {
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                           <button
                             onClick={async () => {
-                              await supabase.from('ato_verification_requests').update({ status: 'confirmed' }).eq('id', req.id);
+                              await callApi('queryTable', { table: 'ato_verification_requests', operation: 'update', id: req.id, data: { status: 'confirmed' } });
                               await load();
                             }}
                             style={{ padding: '0.35rem 0.8rem', borderRadius: '6px', border: '1px solid #10b981', background: 'transparent', color: '#34d399', fontSize: '0.75rem', cursor: 'pointer' }}
                           >Accept</button>
                           <button
                             onClick={async () => {
-                              await supabase.from('ato_verification_requests').update({ status: 'rejected' }).eq('id', req.id);
+                              await callApi('queryTable', { table: 'ato_verification_requests', operation: 'update', id: req.id, data: { status: 'rejected' } });
                               await load();
                             }}
                             style={{ padding: '0.35rem 0.8rem', borderRadius: '6px', border: '1px solid #ef4444', background: 'transparent', color: '#f87171', fontSize: '0.75rem', cursor: 'pointer' }}
@@ -280,10 +309,15 @@ export function ATOVerificationRequestSection() {
                           onClick={async () => {
                             const reason = window.prompt('Enter additional details or documentation for your appeal:');
                             if (!reason) return;
-                            await supabase.from('ato_verification_requests').update({
-                              status: 'pending',
-                              pilot_message: (req.pilot_message || '') + '\n[APPEAL]: ' + reason,
-                            }).eq('id', req.id);
+                            await callApi('queryTable', {
+                              table: 'ato_verification_requests',
+                              operation: 'update',
+                              id: req.id,
+                              data: {
+                                status: 'pending',
+                                pilot_message: (req.pilot_message || '') + '\n[APPEAL]: ' + reason,
+                              },
+                            });
                             await load();
                           }}
                           style={{ padding: '0.35rem 0.8rem', borderRadius: '6px', border: '1px solid #f59e0b', background: 'transparent', color: '#fcd34d', fontSize: '0.75rem', cursor: 'pointer' }}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { uploadProfileImage, type CloudinaryUploadResult } from '@/lib/cloudinaryClient';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminNotificationBell from '../components/AdminNotificationBell';
@@ -90,17 +90,23 @@ export default function BlogsPage() {
   const [reviewNotes, setReviewNotes] = useState('');
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
 
+  const { callApi } = useWorkerAuth();
+
   const fetchBlogs = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) {
-      console.error('Error fetching blogs:', error);
-    } else {
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'blog_posts',
+        operation: 'select',
+        limit: 500,
+      });
+      const data = (rows || []).sort((a: any, b: any) => {
+        const ca = a.created_at || '';
+        const cb = b.created_at || '';
+        return cb.localeCompare(ca);
+      });
       setBlogs(
-        (data || []).map((row: any) => ({
+        data.map((row: any) => ({
           id: row.id,
           title: row.title,
           author: row.author,
@@ -114,6 +120,8 @@ export default function BlogsPage() {
           reviewScreenshots: row.featured_image_url ? [row.featured_image_url] : [],
         }))
       );
+    } catch (err) {
+      console.error('Error fetching blogs:', err);
     }
     setLoading(false);
   };
@@ -148,12 +156,17 @@ export default function BlogsPage() {
   };
 
   const handleUpdateStatus = async (id: string, status: BlogPost['status']) => {
-    const { error } = await supabase.from('blog_posts').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
-    if (error) {
-      console.error('Error updating blog status:', error);
-      return;
+    try {
+      await callApi('queryTable', {
+        table: 'blog_posts',
+        operation: 'update',
+        id,
+        data: { status, updated_at: new Date().toISOString() },
+      });
+      setBlogs((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+    } catch (err) {
+      console.error('Error updating blog status:', err);
     }
-    setBlogs((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
   };
 
   const handleScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

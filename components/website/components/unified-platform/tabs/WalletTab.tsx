@@ -10,7 +10,7 @@ import {
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
 } from 'lucide-react';
-import { supabase } from '@/lib/shared/supabase';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { safeRedirect } from '@/lib/url-validator';
 import { WalletPageWithSidebar } from '../../wallet/WalletPageWithSidebar';
 import { PilotLicensureExperiencePage } from '../../pilot-recognition/PilotLicensureExperiencePage';
@@ -24,6 +24,7 @@ const ATO_LIST = [
 ];
 
 export const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?: any[]; hasActiveSession?: boolean }> = ({ walletChecks, profile, pendingRequests = [], hasActiveSession = false }) => {
+  const { callApi } = useWorkerAuth();
   // 'landing' | 'credentials' | 'documents' | 'verification'
   const [screen, setScreen] = React.useState<'landing' | 'credentials' | 'documents' | 'verification'>('landing');
   const [vaultUnlocking, setVaultUnlocking] = React.useState(false);
@@ -95,7 +96,7 @@ export const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingReq
           return;
         }
         // NotSupportedError, no credential found, or no passkey registered yet —
-        // fall back to verifying active session (Auth0 or Supabase)
+        // fall back to verifying active session (Auth0)
         if (!hasActiveSession) return; // truly not authenticated
         // Session confirmed — proceed to unlock without passkey
       }
@@ -518,12 +519,30 @@ export const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingReq
               <div className="px-5 pb-4 space-y-3">
                 {pendingRequests.map((req: any) => (
                   <CredentialRequestCard key={req.id} request={req} onRespond={async (approved: boolean) => {
-                    await supabase.from('credential_requests').update({
-                      status: approved ? 'approved' : 'denied',
-                      responded_at: new Date().toISOString(),
-                      ...(approved ? { access_granted_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() } : {}),
-                    }).eq('id', req.id);
-                    await supabase.from('pilot_notifications').update({ is_read: true }).eq('related_id', req.id);
+                    await callApi('queryTable', {
+                      table: 'credential_requests',
+                      operation: 'update',
+                      id: req.id,
+                      data: {
+                        status: approved ? 'approved' : 'denied',
+                        responded_at: new Date().toISOString(),
+                        ...(approved ? { access_granted_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() } : {}),
+                      },
+                    });
+                    const notifications = await callApi<Record<string, unknown>[]>('queryTable', {
+                      table: 'pilot_notifications',
+                      operation: 'select',
+                      where: { related_id: req.id },
+                      limit: 10,
+                    });
+                    await Promise.all((notifications || []).map((n: any) =>
+                      callApi('queryTable', {
+                        table: 'pilot_notifications',
+                        operation: 'update',
+                        id: n.id,
+                        data: { is_read: true },
+                      })
+                    ));
                   }} />
                 ))}
               </div>
@@ -760,23 +779,23 @@ export const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingReq
     const handleSave = async () => {
       setSaving(true);
       try {
-        const { createClient } = await import('@supabase/supabase-js');
-        const sb = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
-        await sb.from('profiles').update({
-          display_name:            editValues.display_name        || undefined,
-          license_id:              editValues.license_number      || undefined,
-          license_number:          editValues.license_number      || undefined,
-          current_occupation:      editValues.license_type        || undefined,
-          country_of_license:      editValues.issuing_authority   || undefined,
-          license_issuing_authority: editValues.issuing_authority || undefined,
-          nationality:             editValues.nationality         || undefined,
-          medical_class:           editValues.medical_class       || undefined,
-          medical_expiry:          editValues.medical_expiry      || undefined,
-          current_flight_hours:    editValues.total_flight_hours ? Number(editValues.total_flight_hours) : undefined,
-        }).eq('id', profile?.id);
+        await callApi('queryTable', {
+          table: 'profiles',
+          operation: 'update',
+          id: profile?.id,
+          data: {
+            display_name:            editValues.display_name        || undefined,
+            license_id:              editValues.license_number      || undefined,
+            license_number:          editValues.license_number      || undefined,
+            current_occupation:      editValues.license_type        || undefined,
+            country_of_license:      editValues.issuing_authority   || undefined,
+            license_issuing_authority: editValues.issuing_authority || undefined,
+            nationality:             editValues.nationality         || undefined,
+            medical_class:           editValues.medical_class       || undefined,
+            medical_expiry:          editValues.medical_expiry      || undefined,
+            current_flight_hours:    editValues.total_flight_hours ? Number(editValues.total_flight_hours) : undefined,
+          },
+        });
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } catch (err) {

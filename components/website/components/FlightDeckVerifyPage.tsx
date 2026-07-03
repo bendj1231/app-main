@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { getAuth0RedirectUri } from '@/lib/auth0';
 
 // Read pending login state set by FlightDeckLoginPage before Auth0
 function getPendingEmail(): string { return sessionStorage.getItem('fd_pending_email') || ''; }
 function getPendingConnection(): string { return sessionStorage.getItem('fd_pending_connection') || 'email'; }
 function clearPending() { sessionStorage.removeItem('fd_pending_email'); sessionStorage.removeItem('fd_pending_connection'); }
-
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
-const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
 
 interface FlightDeckVerifyPageProps {
     onNavigate: (page: string) => void;
@@ -22,6 +20,8 @@ type Stage = 'passkey' | 'otp-sending' | 'otp-entry' | 'success' | 'wallet-key';
 export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNavigate }) => {
     const navigate = useNavigate();
     const { loginWithRedirect, isAuthenticated, user } = useAuth0();
+    const { sendOtp: authSendOtp, verifyOtp: authVerifyOtp } = useAuth();
+    const { callApi } = useWorkerAuth();
     const [stage, setStage] = useState<Stage>('passkey');
     const [passkeyLoading, setPasskeyLoading] = useState(false);
     const [otp, setOtp] = useState('');
@@ -107,14 +107,18 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                 localStorage.setItem('pr_passkey_credential_id', credential.id);
 
                 // Persist to pilot_passkeys
-                await supabase.from('pilot_passkeys').upsert({
-                    user_id: userId,
-                    credential_id: credential.id,
-                    public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
-                    sign_count: 0,
-                    device_name: navigator.userAgent.includes('Mac') ? 'Mac / iCloud Keychain' : 'Device Passkey',
-                    transports: (credential as any).response?.getTransports?.() ?? [],
-                }, { onConflict: 'credential_id' });
+                await callApi('queryTable', {
+                    table: 'pilot_passkeys',
+                    operation: 'insert',
+                    data: {
+                        user_id: userId,
+                        credential_id: credential.id,
+                        public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
+                        sign_count: 0,
+                        device_name: navigator.userAgent.includes('Mac') ? 'Mac / iCloud Keychain' : 'Device Passkey',
+                        transports: (credential as any).response?.getTransports?.() ?? [],
+                    },
+                });
 
                 setStage('success');
                 setTimeout(() => proceedToAuth0(), 1200);
@@ -140,11 +144,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             return;
         }
         try {
-            const { error } = await supabase.auth.signInWithOtp({
-                email,
-                options: { shouldCreateUser: false },
-            });
-            if (error) throw error;
+            await authSendOtp(email);
             setStage('otp-entry');
         } catch {
             setOtpError('Could not send code. Please try again.');
@@ -157,12 +157,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
         setOtpError('');
         const email = pendingEmail;
         try {
-            const { error } = await supabase.auth.verifyOtp({
-                email,
-                token: otp.trim(),
-                type: 'email',
-            });
-            if (error) throw error;
+            await authVerifyOtp(email, otp.trim());
             setStage('success');
             setTimeout(() => proceedToAuth0(), 1200);
         } catch {

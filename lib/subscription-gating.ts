@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/shared/supabase';
+import { api } from './d1-api';
 
 export interface SubscriptionStatus {
   isPremium: boolean;
@@ -8,15 +8,17 @@ export interface SubscriptionStatus {
   cancelAtPeriodEnd: boolean;
 }
 
-export async function getUserSubscription(userId: string): Promise<SubscriptionStatus> {
+export async function getUserSubscription(accessToken: string, userId: string): Promise<SubscriptionStatus> {
   try {
-    const { data: subscription, error } = await supabase
-      .from('subscriptions')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
+    const subscriptions = await api(accessToken, 'queryTable', {
+      table: 'subscriptions',
+      operation: 'select',
+      where: { user_id: userId },
+      limit: 1,
+    }) as Record<string, unknown>[];
 
-    if (error || !subscription) {
+    const subscription = subscriptions?.[0];
+    if (!subscription) {
       return {
         isPremium: false,
         isActive: false,
@@ -25,15 +27,16 @@ export async function getUserSubscription(userId: string): Promise<SubscriptionS
       };
     }
 
-    const isActive = subscription.status === 'active' || subscription.status === 'trialing';
+    const status = subscription.status as string;
+    const isActive = status === 'active' || status === 'trialing';
     const isPremium = isActive && !subscription.cancel_at_period_end;
 
     return {
       isPremium,
       isActive,
-      status: subscription.status,
-      currentPeriodEnd: subscription.current_period_end,
-      cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      status,
+      currentPeriodEnd: subscription.current_period_end as string | undefined,
+      cancelAtPeriodEnd: !!subscription.cancel_at_period_end,
     };
   } catch (error) {
     console.error('Error fetching subscription:', error);
