@@ -1780,7 +1780,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <img
               src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80"
               alt="Aviation career pathways"
-              style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }}
+              style={{ width: '100%', height: '200px', objectFit: 'cover', objectPosition: 'center 65%', display: 'block' }}
             />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.7) 0%, transparent 60%)' }} />
             <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem' }}>
