@@ -1582,7 +1582,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   transition: 'all 0.2s ease'
                 }}
               >
-                Student / Active Pilot
+                Student / Cadet Pilot
               </button>
               <button
                 type="button"
@@ -1601,7 +1601,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   transition: 'all 0.2s ease'
                 }}
               >
-                Operator
+                Active Pilot / Newly Licensed CPL / Graduates
               </button>
             </div>
 
@@ -1888,9 +1888,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   left: 0,
                   right: 0,
                   zIndex: 100,
-                  background: 'rgba(15, 23, 42, 0.85)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
+                  background: '#1e293b',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
                   borderRadius: '12px',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
