@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, LogOut, Bell, Search,
@@ -16,6 +17,7 @@ import type { TabId } from '../types';
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile }) => {
+  const { user } = useAuth0();
   const navigate = useNavigate();
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
@@ -44,6 +46,7 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     shortageAlerts: false,
     shortageEmails: false,
     shortagePush: false,
+    marketingEmails: false,
   });
 
   const isPlus = (profile?.subscription_tier as string) === 'plus' || (profile?.subscription_tier as string) === 'enterprise';
@@ -270,6 +273,51 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     );
   }
 
+  if (activeSubPage === 'email-preferences') {
+    const userEmail = (user?.email as string) || (profile?.email as string) || 'No email on file';
+    return (
+      <div className="space-y-5 max-w-2xl mx-auto w-full">
+        <div className="flex items-center gap-3 mb-4">
+          <button onClick={() => setActiveSubPage(null)} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
+            <ChevronRight size={16} className="text-white/40 rotate-180" />
+          </button>
+          <p className="text-sm font-black text-white tracking-wide">Email Preferences</p>
+        </div>
+
+        {/* Current Email */}
+        <SectionCard title="Current Email Address">
+          <div className="px-3 py-4 space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.1)' }}>
+                <Mail size={16} className="text-red-400" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white">{userEmail}</p>
+                <p className="text-[10px] text-white/40">Primary contact email</p>
+              </div>
+            </div>
+          </div>
+        </SectionCard>
+
+        {/* Email Settings */}
+        <SectionCard title="Email Subscriptions">
+          <NotifToggle label="Pathway opportunity alerts" active={notifSettings.pathwaysEmails} onClick={() => toggleSetting('pathwaysEmails')} />
+          <NotifToggle label="Recognition+ updates" active={notifSettings.recognitionEmails} onClick={() => toggleSetting('recognitionEmails')} />
+          <NotifToggle label="Shortage.org alerts" active={notifSettings.shortageEmails} onClick={() => toggleSetting('shortageEmails')} />
+          <NotifToggle label="Marketing & promotions" active={notifSettings.marketingEmails} onClick={() => toggleSetting('marketingEmails')} />
+        </SectionCard>
+
+        {/* Verified status */}
+        {user?.email_verified && (
+          <div className="px-3 py-2 rounded-lg flex items-center gap-2" style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)' }}>
+            <CheckCircle size={14} className="text-emerald-400" />
+            <p className="text-[11px] font-bold text-emerald-400">Email verified</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-5 max-w-2xl mx-auto w-full">
       {/* Account */}
@@ -317,15 +365,20 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
             )}
           </div>
 
-          {['Change Password', 'Email Preferences'].map(item => (
-            <button key={item} onClick={() => console.log(`[DEBUG] ${item} clicked`)} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-            >
-              {item.toUpperCase()}
-              <ChevronRight size={12} className="text-white/25" />
-            </button>
-          ))}
+          <button onClick={() => console.log('[DEBUG] Change Password clicked')} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+          >
+            CHANGE PASSWORD
+            <ChevronRight size={12} className="text-white/25" />
+          </button>
+          <button onClick={() => { console.log('[DEBUG] Email Preferences clicked'); setActiveSubPage('email-preferences'); }} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+          >
+            EMAIL PREFERENCES
+            <ChevronRight size={12} className="text-white/25" />
+          </button>
         </div>
       </SectionCard>
 
