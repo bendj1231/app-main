@@ -878,6 +878,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [otherSkills, setOtherSkills] = useState('');
   const [pilotJourneyStory, setPilotJourneyStory] = useState('');
   const [englishProficiency, setEnglishProficiency] = useState('');
+  const [englishProficiencySearch, setEnglishProficiencySearch] = useState('');
+  const [showEnglishProficiencyDropdown, setShowEnglishProficiencyDropdown] = useState(false);
+  const englishProficiencyRef = useRef<HTMLDivElement>(null);
   
   // Pilot Interests State
   const [aviationPathwaysInterests, setAviationPathwaysInterests] = useState<string[]>([]);
@@ -931,6 +934,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     if (!pilotStatus) return PREDEFINED_PILOT_STATUSES;
     return PREDEFINED_PILOT_STATUSES.filter(s => s.toLowerCase().includes(pilotStatus.toLowerCase()));
   }, [pilotStatus]);
+
+  // Filtered english proficiency levels based on search
+  const filteredEnglishProficiencyLevels = useMemo(() => {
+    if (!englishProficiencySearch) return ENGLISH_PROFICIENCY_LEVELS;
+    return ENGLISH_PROFICIENCY_LEVELS.filter(l => l.toLowerCase().includes(englishProficiencySearch.toLowerCase()));
+  }, [englishProficiencySearch]);
 
   // Filtered options based on search
   const filteredCountries = useMemo(() => {
@@ -1052,6 +1061,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showPilotStatusDropdown]);
+
+  useEffect(() => {
+    if (!showEnglishProficiencyDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (englishProficiencyRef.current && !englishProficiencyRef.current.contains(e.target as Node)) {
+        setShowEnglishProficiencyDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showEnglishProficiencyDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -1195,6 +1215,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setFlightSchoolAddress(data.flight_school_address || initialData.flightSchoolAddress || '');
           setLanguages(data.languages || '');
           setEnglishProficiency(data.english_proficiency || initialData.elpLevel || '');
+          setEnglishProficiencySearch(data.english_proficiency || initialData.elpLevel || '');
 
           // License Info — extract short codes from full names
           const licFromProfile = initialData.licenseType ? [extractLicenseCode(initialData.licenseType)].filter(Boolean) : [];
@@ -1279,7 +1300,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           ].filter(Boolean) as string[];
           if (licCodes.length) setCurrentLicenses([...new Set(licCodes)]);
           if (initialData.licenseIssuingAuthority) setLicenseCountryOfIssue(initialData.licenseIssuingAuthority);
-          if (initialData.elpLevel) setEnglishProficiency(initialData.elpLevel);
+          if (initialData.elpLevel) { setEnglishProficiency(initialData.elpLevel); setEnglishProficiencySearch(initialData.elpLevel); }
           if (initialData.medicalClass) setMedicalClass(initialData.medicalClass);
           if (initialData.currentOccupation) setCurrentOccupation(initialData.currentOccupation);
           if (initialData.totalFlightHours) setCountriesVisited(initialData.totalFlightHours.toString());
@@ -2786,27 +2807,149 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
 
           {/* English Proficiency */}
-          <div style={{ marginTop: '1.5rem' }}>
+          <div ref={englishProficiencyRef} style={{ marginTop: '1.5rem', position: 'relative' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
               English Proficiency Level *
             </label>
-            <select
-              value={englishProficiency}
-              onChange={(e) => setEnglishProficiency(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid rgba(255,255,255,0.25)',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                background: 'rgba(255,255,255,0.95)'
-              }}
-            >
-              <option value="">Select proficiency level</option>
-              {ENGLISH_PROFICIENCY_LEVELS.map(level => (
-                <option key={level} value={level}>{level}</option>
-              ))}
-            </select>
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                value={englishProficiencySearch}
+                onChange={(e) => {
+                  setEnglishProficiencySearch(e.target.value);
+                  setShowEnglishProficiencyDropdown(true);
+                }}
+                onFocus={() => setShowEnglishProficiencyDropdown(true)}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setEnglishProficiency(englishProficiencySearch);
+                    setShowEnglishProficiencyDropdown(false);
+                  }
+                }}
+                placeholder={englishProficiency ? englishProficiency : "Type to search proficiency level..."}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                  border: '2px solid rgba(255,255,255,0.35)',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocusCapture={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+              />
+              <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+            </div>
+            {showEnglishProficiencyDropdown && (
+              <div style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: 0,
+                right: 0,
+                zIndex: 20,
+                background: 'rgba(15, 23, 42, 0.92)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+                overflow: 'hidden'
+              }}>
+                <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '0.5rem' }}>
+                  {filteredEnglishProficiencyLevels.map((level) => (
+                    <button
+                      key={level}
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setEnglishProficiency(level);
+                        setEnglishProficiencySearch(level);
+                        setShowEnglishProficiencyDropdown(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        textAlign: 'left',
+                        border: 'none',
+                        borderRadius: '6px',
+                        background: englishProficiency === level ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                        color: englishProficiency === level ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (englishProficiency !== level) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (englishProficiency !== level) e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: englishProficiency === level ? '#dc2626' : 'rgba(255,255,255,0.25)',
+                        flexShrink: 0
+                      }} />
+                      {level}
+                    </button>
+                  ))}
+                  {englishProficiencySearch && !ENGLISH_PROFICIENCY_LEVELS.includes(englishProficiencySearch) && (
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setEnglishProficiency(englishProficiencySearch);
+                        setShowEnglishProficiencyDropdown(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        marginTop: '0.5rem',
+                        padding: '0.6rem 0.75rem',
+                        textAlign: 'left',
+                        border: 'none',
+                        borderRadius: '6px',
+                        background: 'rgba(220, 38, 38, 0.15)',
+                        color: '#ffffff',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        borderTop: filteredEnglishProficiencyLevels.length > 0 ? '1px solid rgba(255,255,255,0.08)' : 'none'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(220, 38, 38, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(220, 38, 38, 0.15)';
+                      }}
+                    >
+                      <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+                      Use custom: "{englishProficiencySearch}"
+                    </button>
+                  )}
+                  {filteredEnglishProficiencyLevels.length === 0 && !englishProficiencySearch && (
+                    <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                      Start typing to search proficiency levels...
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
               ICAO English Language Proficiency Rating
             </p>
@@ -3271,7 +3414,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   </div>
 
                   {/* Authority list */}
-                  <div className="authority-scroll" style={{
+                  <div key={medicalAuthoritySearch} className="authority-scroll" style={{
                     maxHeight: '280px',
                     overflowY: 'scroll',
                     padding: '0.5rem',
