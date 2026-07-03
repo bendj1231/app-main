@@ -1768,13 +1768,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           border: '1px solid rgba(255, 255, 255, 0.25)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
         }}>
-          <h2 style={{ fontSize: '1.35rem', fontWeight: 700, marginBottom: '0.35rem', textAlign: 'center' }}>
-            <span style={{ color: '#ffffff' }}>Your Advanced </span><span style={{ color: '#dc2626' }}>Pilot Profile</span>
-          </h2>
-          <p style={{ textAlign: 'center', color: '#0f172a', fontSize: '0.9rem', marginBottom: '2rem', maxWidth: '560px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5 }}>
-            Complete every section to unlock the full power of your profile — airlines and operators are watching.
-          </p>
-
           {/* Hero Image */}
           <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '1.25rem', position: 'relative', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
             <img
@@ -1785,10 +1778,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.7) 0%, transparent 60%)' }} />
             <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem' }}>
               <p style={{ margin: 0, color: '#ffffff', fontSize: '1.1rem', fontWeight: 700, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
-                One profile. Global opportunities.
+                Your Advanced Pilot Profile
               </p>
               <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
-                Airlines, ATOs, and operators use this data to match you with the right pathways.
+                Complete every section to unlock the full power of your profile — airlines and operators are watching.
               </p>
             </div>
           </div>
