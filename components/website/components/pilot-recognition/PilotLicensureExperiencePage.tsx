@@ -7,7 +7,7 @@ import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAccountTier } from '@/hooks/useAccountTier';
-import { Search, HelpCircle, ChevronRight, ChevronDown, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap, IdCard, Radio } from 'lucide-react';
+import { Search, HelpCircle, ChevronRight, ChevronDown, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap, IdCard, Radio, Mail, Inbox, MessageSquare, Globe } from 'lucide-react';
 
 interface UploadedDoc {
   id: string;
@@ -1790,6 +1790,171 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             In support of <span style={{ color: '#111827' }}>pilot</span><span style={{ color: '#dc2626' }}>shortage</span><span style={{ color: '#dc2626' }}>.org</span>
           </div>
         </motion.div>
+
+        {/* Advanced Profile Introduction */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'rgba(255, 255, 255, 0.35)',
+          backdropFilter: 'blur(32px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(32px) saturate(1.5)',
+          borderRadius: '20px',
+          padding: '2rem',
+          marginBottom: '2rem',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+        }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center' }}>
+            <span style={{ color: '#ffffff' }}>Your Advanced </span><span style={{ color: '#dc2626' }}>Pilot Profile</span>
+          </h2>
+          <p style={{ textAlign: 'center', color: '#0f172a', fontSize: '0.9rem', marginBottom: '2rem', maxWidth: '560px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5 }}>
+            Complete every section to unlock the full power of your profile — airlines and operators are watching.
+          </p>
+
+          {/* Hero Image */}
+          <div style={{ borderRadius: '16px', overflow: 'hidden', marginBottom: '2rem', position: 'relative', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
+            <img
+              src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80"
+              alt="Aviation career pathways"
+              style={{ width: '100%', height: '280px', objectFit: 'cover', display: 'block' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.7) 0%, transparent 60%)' }} />
+            <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem' }}>
+              <p style={{ margin: 0, color: '#ffffff', fontSize: '1.1rem', fontWeight: 700, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+                One profile. Global opportunities.
+              </p>
+              <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+                Airlines, ATOs, and operators use this data to match you with the right pathways.
+              </p>
+            </div>
+          </div>
+
+          {/* Feature Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
+            {/* Pathways Eligibility */}
+            <div style={{
+              background: 'rgba(255,255,255,0.5)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              border: '1px solid rgba(255,255,255,0.4)',
+              backdropFilter: 'blur(12px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start'
+            }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1rem',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}>
+                <Globe style={{ width: '22px', height: '22px', color: '#ffffff' }} />
+              </div>
+              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Pathways Eligibility</h3>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: '#334155', lineHeight: 1.5 }}>
+                Your completed profile automatically qualifies you for curated career pathways matched to your experience, ratings, and career stage.
+              </p>
+            </div>
+
+            {/* Unlocking Inbox */}
+            <div style={{
+              background: 'rgba(255,255,255,0.5)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              border: '1px solid rgba(255,255,255,0.4)',
+              backdropFilter: 'blur(12px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start'
+            }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1rem',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}>
+                <Inbox style={{ width: '22px', height: '22px', color: '#ffffff' }} />
+              </div>
+              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Unlocking Inbox</h3>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: '#334155', lineHeight: 1.5 }}>
+                Once your profile is complete, your inbox opens to direct messages from recruiters, airlines, and pathway coordinators seeking pilots like you.
+              </p>
+            </div>
+
+            {/* Communication */}
+            <div style={{
+              background: 'rgba(255,255,255,0.5)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              border: '1px solid rgba(255,255,255,0.4)',
+              backdropFilter: 'blur(12px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start'
+            }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1rem',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}>
+                <MessageSquare style={{ width: '22px', height: '22px', color: '#ffffff' }} />
+              </div>
+              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Communication</h3>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: '#334155', lineHeight: 1.5 }}>
+                Stay connected with the aviation community. Receive updates on new pathways, assessment invitations, and industry news tailored to your profile.
+              </p>
+            </div>
+          </div>
+
+          {/* CTA Row */}
+          <div style={{
+            marginTop: '2rem',
+            padding: '1.25rem 1.5rem',
+            background: 'rgba(220, 38, 38, 0.08)',
+            borderRadius: '12px',
+            border: '1px solid rgba(220, 38, 38, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem'
+          }}>
+            <div>
+              <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>
+                Ready to unlock your profile?
+              </p>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: '#475569' }}>
+                Start by filling out your Personal Details, then move through each section.
+              </p>
+            </div>
+            <div style={{
+              padding: '0.75rem 1.5rem',
+              background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+              color: '#ffffff',
+              borderRadius: '10px',
+              fontSize: '0.875rem',
+              fontWeight: 700,
+              boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
+            }}>
+              Use the sidebar to navigate →
+            </div>
+          </div>
+        </motion.section>
         </>)}
 
         {/* Save Message */}
