@@ -83,44 +83,222 @@ const MEDICAL_CLASSES = [
 ];
 
 const AVIATION_AUTHORITIES = [
-  { country: 'Philippines', authority: 'CAAP', fullName: 'Civil Aviation Authority of the Philippines' },
-  { country: 'United States', authority: 'FAA', fullName: 'Federal Aviation Administration' },
-  { country: 'European Union', authority: 'EASA', fullName: 'European Union Aviation Safety Agency' },
-  { country: 'United Kingdom', authority: 'CAA UK', fullName: 'Civil Aviation Authority (UK)' },
-  { country: 'Australia', authority: 'CASA', fullName: 'Civil Aviation Safety Authority' },
-  { country: 'United Arab Emirates', authority: 'GCAA', fullName: 'General Civil Aviation Authority' },
-  { country: 'Singapore', authority: 'CAAS', fullName: 'Civil Aviation Authority of Singapore' },
-  { country: 'Malaysia', authority: 'CAAM', fullName: 'Civil Aviation Authority of Malaysia' },
-  { country: 'Indonesia', authority: 'DGCA', fullName: 'Directorate General of Civil Aviation' },
-  { country: 'India', authority: 'DGCA India', fullName: 'Directorate General of Civil Aviation (India)' },
-  { country: 'South Africa', authority: 'SACAA', fullName: 'South African Civil Aviation Authority' },
-  { country: 'Nigeria', authority: 'NCAA', fullName: 'Nigerian Civil Aviation Authority' },
-  { country: 'Kenya', authority: 'KCAA', fullName: 'Kenya Civil Aviation Authority' },
-  { country: 'Mauritius', authority: 'CAD', fullName: 'Civil Aviation Department' },
-  { country: 'Canada', authority: 'TC Canada', fullName: 'Transport Canada' },
-  { country: 'Japan', authority: 'JCAB', fullName: 'Japan Civil Aviation Bureau' },
-  { country: 'China', authority: 'CAAC', fullName: 'Civil Aviation Administration of China' },
-  { country: 'Thailand', authority: 'DCA Thailand', fullName: 'Department of Civil Aviation' },
-  { country: 'Vietnam', authority: 'CAA Vietnam', fullName: 'Civil Aviation Authority of Vietnam' },
-  { country: 'Saudi Arabia', authority: 'GACA', fullName: 'General Authority of Civil Aviation' },
-  { country: 'Qatar', authority: 'CAA Qatar', fullName: 'Civil Aviation Authority' },
-  { country: 'Oman', authority: 'PACA', fullName: 'Public Authority for Civil Aviation' },
-  { country: 'Kuwait', authority: 'DGCA Kuwait', fullName: 'Directorate General of Civil Aviation' },
-  { country: 'New Zealand', authority: 'CAA NZ', fullName: 'Civil Aviation Authority of New Zealand' },
-  { country: 'Pakistan', authority: 'CAA Pakistan', fullName: 'Civil Aviation Authority' },
-  { country: 'Brazil', authority: 'ANAC', fullName: 'National Civil Aviation Agency' },
-  { country: 'Mexico', authority: 'DGAC Mexico', fullName: 'Directorate General of Civil Aeronautics' },
+  // A
+  { country: 'Albania', authority: 'AAC Albania', fullName: 'Albanian Civil Aviation Authority' },
+  { country: 'Algeria', authority: 'DACM', fullName: 'Direction de l\'Aviation Civile et de la Meteorologie' },
+  { country: 'Angola', authority: 'INAVIC', fullName: 'National Institute of Civil Aviation' },
+  { country: 'Antigua and Barbuda', authority: 'ABAA', fullName: 'Antigua and Barbuda Aviation Authority' },
   { country: 'Argentina', authority: 'ANAC Argentina', fullName: 'National Civil Aviation Administration' },
-  { country: 'Russia', authority: 'Rosaviatsia', fullName: 'Federal Air Transport Agency' },
-  { country: 'Turkey', authority: 'DGCA Turkey', fullName: 'Directorate General of Civil Aviation' },
+  { country: 'Armenia', authority: 'CAA Armenia', fullName: 'Civil Aviation Committee of Armenia' },
+  { country: 'Australia', authority: 'CASA', fullName: 'Civil Aviation Safety Authority' },
+  { country: 'Austria', authority: 'ACA Austria', fullName: 'Austrian Civil Aviation Authority' },
+  // B
+  { country: 'Bahamas', authority: 'BCAA', fullName: 'Bahamas Civil Aviation Authority' },
+  { country: 'Bahrain', authority: 'CAA Bahrain', fullName: 'Civil Aviation Affairs' },
+  { country: 'Bangladesh', authority: 'CAAB', fullName: 'Civil Aviation Authority of Bangladesh' },
+  { country: 'Barbados', authority: 'CAA Barbados', fullName: 'Civil Aviation Department' },
+  { country: 'Belarus', authority: 'CAA Belarus', fullName: 'Department for Aviation' },
+  { country: 'Belgium', authority: 'BCAA', fullName: 'Belgian Civil Aviation Authority' },
+  { country: 'Belize', authority: 'BCAD', fullName: 'Belize Civil Aviation Department' },
+  { country: 'Benin', authority: 'ANAC Benin', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Bermuda', authority: 'DCA Bermuda', fullName: 'Department of Civil Aviation' },
+  { country: 'Bhutan', authority: 'DoAT Bhutan', fullName: 'Department of Air Transport' },
+  { country: 'Bolivia', authority: 'DGAC Bolivia', fullName: 'Direccion General de Aeronautica Civil' },
+  { country: 'Bosnia and Herzegovina', authority: 'BHDCA', fullName: 'Directorate of Civil Aviation' },
+  { country: 'Botswana', authority: 'CAAB', fullName: 'Civil Aviation Authority of Botswana' },
+  { country: 'Brazil', authority: 'ANAC', fullName: 'National Civil Aviation Agency' },
+  { country: 'Brunei', authority: 'DCA Brunei', fullName: 'Department of Civil Aviation' },
+  { country: 'Bulgaria', authority: 'CAA Bulgaria', fullName: 'Civil Aviation Administration' },
+  { country: 'Burkina Faso', authority: 'ANAC BF', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Burundi', authority: 'OGAC Burundi', fullName: 'Office de Gestion et de Contrôle des Aéronefs' },
+  // C
+  { country: 'Cambodia', authority: 'SSCA', fullName: 'State Secretariat of Civil Aviation' },
+  { country: 'Cameroon', authority: 'CCAA', fullName: 'Cameroon Civil Aviation Authority' },
+  { country: 'Canada', authority: 'TC Canada', fullName: 'Transport Canada' },
+  { country: 'Cape Verde', authority: 'IAC Cape Verde', fullName: 'Instituto de Aviação Civil' },
+  { country: 'Cayman Islands', authority: 'CAACI', fullName: 'Civil Aviation Authority of the Cayman Islands' },
+  { country: 'Central African Republic', authority: 'DGAC CAR', fullName: 'Direction Generale de l\'Aviation Civile' },
+  { country: 'Chad', authority: 'ANAC Chad', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Chile', authority: 'DGAC Chile', fullName: 'Direccion General de Aeronautica Civil' },
+  { country: 'China', authority: 'CAAC', fullName: 'Civil Aviation Administration of China' },
+  { country: 'Colombia', authority: 'Aerocivil', fullName: 'Unidad Administrativa Especial de Aeronautica Civil' },
+  { country: 'Comoros', authority: 'ANAC Comoros', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Congo', authority: 'ANAC Congo', fullName: 'Autorite de l\'Aviation Civile' },
+  { country: 'Congo DRC', authority: 'RVA DRC', fullName: 'Regie des Voies Aériennes' },
+  { country: 'Costa Rica', authority: 'DGAC CR', fullName: 'Direccion General de Aviacion Civil' },
+  { country: 'Croatia', authority: 'CCAA', fullName: 'Croatian Civil Aviation Agency' },
+  { country: 'Cuba', authority: 'IACC', fullName: 'Instituto de Aeronautica Civil de Cuba' },
+  { country: 'Cyprus', authority: 'DCA Cyprus', fullName: 'Department of Civil Aviation' },
+  { country: 'Czech Republic', authority: 'CAA Czech', fullName: 'Civil Aviation Authority' },
+  // D
+  { country: 'Denmark', authority: 'Trafikstyrelsen', fullName: 'Danish Transport Authority' },
+  { country: 'Djibouti', authority: 'ANAC Djibouti', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Dominica', authority: 'CAD Dominica', fullName: 'Civil Aviation Department' },
+  { country: 'Dominican Republic', authority: 'IDAC', fullName: 'Instituto Dominicano de Aviacion Civil' },
+  // E
+  { country: 'Ecuador', authority: 'DGAC Ecuador', fullName: 'Direccion General de Aviacion Civil' },
   { country: 'Egypt', authority: 'ECAA', fullName: 'Egyptian Civil Aviation Authority' },
-  { country: 'Morocco', authority: 'CAA Morocco', fullName: 'Civil Aviation Authority' },
-  { country: 'Ghana', authority: 'GCAA', fullName: 'Ghana Civil Aviation Authority' },
+  { country: 'El Salvador', authority: 'CAA El Salvador', fullName: 'Civil Aviation Authority' },
+  { country: 'Equatorial Guinea', authority: 'DGAC EG', fullName: 'Direccion General de Aviacion Civil' },
+  { country: 'Eritrea', authority: 'DCA Eritrea', fullName: 'Department of Civil Aviation' },
+  { country: 'Estonia', authority: 'CAA Estonia', fullName: 'Civil Aviation Administration' },
+  { country: 'Eswatini', authority: 'CAA Eswatini', fullName: 'Civil Aviation Authority' },
   { country: 'Ethiopia', authority: 'ECAA', fullName: 'Ethiopian Civil Aviation Authority' },
-  { country: 'Israel', authority: 'CAAI', fullName: 'Civil Aviation Authority of Israel' },
-  { country: 'South Korea', authority: 'MOLIT', fullName: 'Ministry of Land, Infrastructure and Transport' },
+  { country: 'European Union', authority: 'EASA', fullName: 'European Union Aviation Safety Agency' },
+  // F
+  { country: 'Fiji', authority: 'CAA Fiji', fullName: 'Civil Aviation Authority of Fiji' },
+  { country: 'Finland', authority: 'Trafi', fullName: 'Finnish Transport and Communications Agency' },
+  { country: 'France', authority: 'DGAC France', fullName: 'Direction Generale de l\'Aviation Civile' },
+  // G
+  { country: 'Gabon', authority: 'ANAC Gabon', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Gambia', authority: 'GCAA Gambia', fullName: 'Gambia Civil Aviation Authority' },
+  { country: 'Georgia', authority: 'GCAA Georgia', fullName: 'Georgian Civil Aviation Agency' },
+  { country: 'Germany', authority: 'LBA', fullName: 'Federal Aviation Office' },
+  { country: 'Ghana', authority: 'GCAA', fullName: 'Ghana Civil Aviation Authority' },
+  { country: 'Greece', authority: 'HCAA', fullName: 'Hellenic Civil Aviation Authority' },
+  { country: 'Grenada', authority: 'CAD Grenada', fullName: 'Civil Aviation Division' },
+  { country: 'Guatemala', authority: 'DGAC Guatemala', fullName: 'Direccion General de Aeronautica Civil' },
+  { country: 'Guinea', authority: 'ANAC Guinea', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Guinea-Bissau', authority: 'ANAC GB', fullName: 'Autoridade Nacional da Aviacao Civil' },
+  { country: 'Guyana', authority: 'GCAA Guyana', fullName: 'Guyana Civil Aviation Authority' },
+  // H
+  { country: 'Haiti', authority: 'OFNAC Haiti', fullName: 'Office National de l\'Aviation Civile' },
+  { country: 'Honduras', authority: 'DGAC Honduras', fullName: 'Direccion General de Aeronautica Civil' },
   { country: 'Hong Kong', authority: 'CAD HK', fullName: 'Civil Aviation Department' },
+  { country: 'Hungary', authority: 'CAA Hungary', fullName: 'Civil Aviation Authority' },
+  // I
+  { country: 'Iceland', authority: 'ICETRA', fullName: 'Icelandic Transport Authority' },
+  { country: 'India', authority: 'DGCA India', fullName: 'Directorate General of Civil Aviation (India)' },
+  { country: 'Indonesia', authority: 'DGCA', fullName: 'Directorate General of Civil Aviation' },
+  { country: 'Iran', authority: 'CAO Iran', fullName: 'Civil Aviation Organization' },
+  { country: 'Iraq', authority: 'ICAO Iraq', fullName: 'Iraqi Civil Aviation Authority' },
+  { country: 'Ireland', authority: 'IAA', fullName: 'Irish Aviation Authority' },
+  { country: 'Israel', authority: 'CAAI', fullName: 'Civil Aviation Authority of Israel' },
+  { country: 'Italy', authority: 'ENAC', fullName: 'Ente Nazionale per l\'Aviazione Civile' },
+  // J
+  { country: 'Jamaica', authority: 'JCAA', fullName: 'Jamaica Civil Aviation Authority' },
+  { country: 'Japan', authority: 'JCAB', fullName: 'Japan Civil Aviation Bureau' },
+  { country: 'Jordan', authority: 'CARC', fullName: 'Civil Aviation Regulatory Commission' },
+  // K
+  { country: 'Kazakhstan', authority: 'AAK', fullName: 'Aviation Administration of Kazakhstan' },
+  { country: 'Kenya', authority: 'KCAA', fullName: 'Kenya Civil Aviation Authority' },
+  { country: 'Kiribati', authority: 'CAA Kiribati', fullName: 'Civil Aviation Authority' },
+  { country: 'Kuwait', authority: 'DGCA Kuwait', fullName: 'Directorate General of Civil Aviation' },
+  { country: 'Kyrgyzstan', authority: 'CAA Kyrgyzstan', fullName: 'Civil Aviation Agency' },
+  // L
+  { country: 'Laos', authority: 'DCA Laos', fullName: 'Department of Civil Aviation' },
+  { country: 'Latvia', authority: 'CAA Latvia', fullName: 'Civil Aviation Agency' },
+  { country: 'Lebanon', authority: 'DGCA Lebanon', fullName: 'Directorate General of Civil Aviation' },
+  { country: 'Lesotho', authority: 'DCA Lesotho', fullName: 'Department of Civil Aviation' },
+  { country: 'Liberia', authority: 'LCAA', fullName: 'Liberia Civil Aviation Authority' },
+  { country: 'Libya', authority: 'LYCAA', fullName: 'Libyan Civil Aviation Authority' },
+  { country: 'Lithuania', authority: 'CAA Lithuania', fullName: 'Civil Aviation Administration' },
+  { country: 'Luxembourg', authority: 'DAC Luxembourg', fullName: 'Direction de l\'Aviation Civile' },
+  // M
+  { country: 'Madagascar', authority: 'ACM Madagascar', fullName: 'Autorite de l\'Aviation Civile de Madagascar' },
+  { country: 'Malawi', authority: 'DCA Malawi', fullName: 'Department of Civil Aviation' },
+  { country: 'Malaysia', authority: 'CAAM', fullName: 'Civil Aviation Authority of Malaysia' },
+  { country: 'Maldives', authority: 'CAA Maldives', fullName: 'Civil Aviation Authority' },
+  { country: 'Mali', authority: 'ANAC Mali', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Malta', authority: 'TM-CAD', fullName: 'Transport Malta Civil Aviation Directorate' },
+  { country: 'Marshall Islands', authority: 'RMI CAA', fullName: 'Republic of the Marshall Islands CAA' },
+  { country: 'Mauritania', authority: 'ANAC Mauritania', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Mauritius', authority: 'CAD', fullName: 'Civil Aviation Department' },
+  { country: 'Mexico', authority: 'DGAC Mexico', fullName: 'Directorate General of Civil Aeronautics' },
+  { country: 'Micronesia', authority: 'FSM CAA', fullName: 'Federated States of Micronesia CAA' },
+  { country: 'Moldova', authority: 'CAA Moldova', fullName: 'Civil Aviation Authority' },
+  { country: 'Monaco', authority: 'DCA Monaco', fullName: 'Direction de l\'Aviation Civile' },
+  { country: 'Mongolia', authority: 'MCAA', fullName: 'Mongolian Civil Aviation Authority' },
+  { country: 'Montenegro', authority: 'CAA Montenegro', fullName: 'Civil Aviation Authority' },
+  { country: 'Morocco', authority: 'CAA Morocco', fullName: 'Civil Aviation Authority' },
+  { country: 'Mozambique', authority: 'IACM', fullName: 'Instituto de Aviacao Civil de Mocambique' },
+  { country: 'Myanmar', authority: 'DCA Myanmar', fullName: 'Department of Civil Aviation' },
+  // N
+  { country: 'Namibia', authority: 'DCA Namibia', fullName: 'Directorate of Civil Aviation' },
+  { country: 'Nauru', authority: 'CAA Nauru', fullName: 'Civil Aviation Authority' },
+  { country: 'Nepal', authority: 'CAAN', fullName: 'Civil Aviation Authority of Nepal' },
+  { country: 'Netherlands', authority: 'ILT', fullName: 'Human Environment and Transport Inspectorate' },
+  { country: 'New Zealand', authority: 'CAA NZ', fullName: 'Civil Aviation Authority of New Zealand' },
+  { country: 'Nicaragua', authority: 'INAC Nicaragua', fullName: 'Instituto Nicaragüense de Aeronautica Civil' },
+  { country: 'Niger', authority: 'ANAC Niger', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Nigeria', authority: 'NCAA', fullName: 'Nigerian Civil Aviation Authority' },
+  { country: 'North Macedonia', authority: 'CAA NMK', fullName: 'Civil Aviation Agency' },
+  { country: 'Norway', authority: 'CAA Norway', fullName: 'Civil Aviation Authority of Norway' },
+  // O
+  { country: 'Oman', authority: 'PACA', fullName: 'Public Authority for Civil Aviation' },
+  // P
+  { country: 'Pakistan', authority: 'CAA Pakistan', fullName: 'Civil Aviation Authority' },
+  { country: 'Palau', authority: 'CAA Palau', fullName: 'Civil Aviation Authority' },
+  { country: 'Panama', authority: 'AAC Panama', fullName: 'Autoridad Aeronautica Civil' },
+  { country: 'Papua New Guinea', authority: 'CASAPNG', fullName: 'Civil Aviation Safety Authority PNG' },
+  { country: 'Paraguay', authority: 'DINAC Paraguay', fullName: 'Direccion Nacional de Aeronautica Civil' },
+  { country: 'Peru', authority: 'DGAC Peru', fullName: 'Direccion General de Aeronautica Civil' },
+  { country: 'Philippines', authority: 'CAAP', fullName: 'Civil Aviation Authority of the Philippines' },
+  { country: 'Poland', authority: 'ULC', fullName: 'Civil Aviation Authority of Poland' },
+  { country: 'Portugal', authority: 'ANAC Portugal', fullName: 'Autoridade Nacional da Aviacao Civil' },
+  // Q
+  { country: 'Qatar', authority: 'CAA Qatar', fullName: 'Civil Aviation Authority' },
+  // R
+  { country: 'Romania', authority: 'RCAA', fullName: 'Romanian Civil Aeronautical Authority' },
+  { country: 'Russia', authority: 'Rosaviatsia', fullName: 'Federal Air Transport Agency' },
+  { country: 'Rwanda', authority: 'RCAA', fullName: 'Rwanda Civil Aviation Authority' },
+  // S
+  { country: 'Saint Kitts and Nevis', authority: 'SCAA', fullName: 'Saint Kitts and Nevis Civil Aviation' },
+  { country: 'Saint Lucia', authority: 'SLASPA', fullName: 'Saint Lucia Air and Sea Ports Authority' },
+  { country: 'Saint Vincent', authority: 'SVGAA', fullName: 'Saint Vincent and the Grenadines CAA' },
+  { country: 'Samoa', authority: 'SAA Samoa', fullName: 'Samoa Airport Authority' },
+  { country: 'Sao Tome and Principe', authority: 'IASTP', fullName: 'Instituto de Aviacao Civil' },
+  { country: 'Saudi Arabia', authority: 'GACA', fullName: 'General Authority of Civil Aviation' },
+  { country: 'Senegal', authority: 'ANAC Senegal', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Serbia', authority: 'CAD Serbia', fullName: 'Civil Aviation Directorate' },
+  { country: 'Seychelles', authority: 'SCAA', fullName: 'Seychelles Civil Aviation Authority' },
+  { country: 'Sierra Leone', authority: 'SLCAA', fullName: 'Sierra Leone Civil Aviation Authority' },
+  { country: 'Singapore', authority: 'CAAS', fullName: 'Civil Aviation Authority of Singapore' },
+  { country: 'Slovakia', authority: 'CAA Slovakia', fullName: 'Civil Aviation Authority' },
+  { country: 'Slovenia', authority: 'CAA Slovenia', fullName: 'Civil Aviation Agency' },
+  { country: 'Solomon Islands', authority: 'CAASI', fullName: 'Civil Aviation Authority of Solomon Islands' },
+  { country: 'Somalia', authority: 'Somaliland CAA', fullName: 'Civil Aviation and Airport Authority' },
+  { country: 'South Africa', authority: 'SACAA', fullName: 'South African Civil Aviation Authority' },
+  { country: 'South Korea', authority: 'MOLIT', fullName: 'Ministry of Land, Infrastructure and Transport' },
+  { country: 'South Sudan', authority: 'SSCA', fullName: 'South Sudan Civil Aviation Authority' },
+  { country: 'Spain', authority: 'AESA', fullName: 'State Aviation Safety Agency' },
+  { country: 'Sri Lanka', authority: 'CAASL', fullName: 'Civil Aviation Authority of Sri Lanka' },
+  { country: 'Sudan', authority: 'SCAA', fullName: 'Sudan Civil Aviation Authority' },
+  { country: 'Suriname', authority: 'CAD Suriname', fullName: 'Civil Aviation Department' },
+  { country: 'Sweden', authority: 'STA Sweden', fullName: 'Swedish Transport Agency' },
+  { country: 'Switzerland', authority: 'FOCA', fullName: 'Federal Office of Civil Aviation' },
+  { country: 'Syria', authority: 'SCA Syria', fullName: 'Syrian Civil Aviation Authority' },
+  // T
   { country: 'Taiwan', authority: 'CAA Taiwan', fullName: 'Civil Aeronautics Administration' },
+  { country: 'Tajikistan', authority: 'Tajik CAA', fullName: 'Tajikistan Civil Aviation Authority' },
+  { country: 'Tanzania', authority: 'TCAA', fullName: 'Tanzania Civil Aviation Authority' },
+  { country: 'Thailand', authority: 'DCA Thailand', fullName: 'Department of Civil Aviation' },
+  { country: 'Timor-Leste', authority: 'CIVTL', fullName: 'Civil Aviation Authority of Timor-Leste' },
+  { country: 'Togo', authority: 'ANAC Togo', fullName: 'Agence Nationale de l\'Aviation Civile' },
+  { country: 'Tonga', authority: 'DCA Tonga', fullName: 'Ministry of Civil Aviation' },
+  { country: 'Trinidad and Tobago', authority: 'TTCAA', fullName: 'Trinidad and Tobago Civil Aviation Authority' },
+  { country: 'Tunisia', authority: 'OACA', fullName: 'Office de l\'Aviation Civile et des Aeroports' },
+  { country: 'Turkey', authority: 'DGCA Turkey', fullName: 'Directorate General of Civil Aviation' },
+  { country: 'Turkmenistan', authority: 'CAA Turkmenistan', fullName: 'Civil Aviation Agency' },
+  { country: 'Tuvalu', authority: 'CAA Tuvalu', fullName: 'Civil Aviation Authority' },
+  // U
+  { country: 'Uganda', authority: 'UCAA', fullName: 'Uganda Civil Aviation Authority' },
+  { country: 'Ukraine', authority: 'SACA Ukraine', fullName: 'State Aviation Administration of Ukraine' },
+  { country: 'United Arab Emirates', authority: 'GCAA', fullName: 'General Civil Aviation Authority' },
+  { country: 'United Kingdom', authority: 'CAA UK', fullName: 'Civil Aviation Authority (UK)' },
+  { country: 'United States', authority: 'FAA', fullName: 'Federal Aviation Administration' },
+  { country: 'Uruguay', authority: 'DINACIA', fullName: 'Direccion Nacional de Aviacion Civil e Infraestructura Aeronautica' },
+  { country: 'Uzbekistan', authority: 'CAA Uzbekistan', fullName: 'Civil Aviation Agency' },
+  // V
+  { country: 'Vanuatu', authority: 'CAA Vanuatu', fullName: 'Civil Aviation Authority' },
+  { country: 'Vatican City', authority: 'Vatican CAA', fullName: 'Vatican Aviation Authority' },
+  { country: 'Venezuela', authority: 'INAC Venezuela', fullName: 'National Institute of Civil Aeronautics' },
+  { country: 'Vietnam', authority: 'CAA Vietnam', fullName: 'Civil Aviation Authority of Vietnam' },
+  // Y
+  { country: 'Yemen', authority: 'CAA Yemen', fullName: 'Civil Aviation and Meteorology Authority' },
+  // Z
+  { country: 'Zambia', authority: 'DCA Zambia', fullName: 'Department of Civil Aviation' },
+  { country: 'Zimbabwe', authority: 'CAA Zimbabwe', fullName: 'Civil Aviation Authority of Zimbabwe' },
   { country: 'Other', authority: 'Other', fullName: 'Not listed above' },
 ];
 
@@ -1644,11 +1822,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             ) : (
               <>
                 {/* Pilot Operational Status Header */}
-                <div style={{ marginBottom: '0.75rem' }}>
-                  <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#dc2626' }}>
+                <div style={{ marginBottom: '1.25rem', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#dc2626', marginBottom: '0.5rem' }}>
                     your current Pilot Operational Status<span style={{ color: '#dc2626' }}>?</span>
-                  </span>
-                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
                     We need to know your status so that pathways can be catered to your career stage.
                   </p>
                 </div>
@@ -1941,10 +2119,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   </div>
 
                   {/* Authority list */}
-                  <div style={{
+                  <div className="authority-scroll" style={{
                     maxHeight: '280px',
-                    overflowY: 'auto',
-                    padding: '0.5rem'
+                    overflowY: 'scroll',
+                    padding: '0.5rem',
+                    scrollbarColor: '#dc2626 #334155',
+                    scrollbarWidth: 'thin'
                   }}>
                     {filteredAuthorities.length === 0 && (
                       <div style={{
