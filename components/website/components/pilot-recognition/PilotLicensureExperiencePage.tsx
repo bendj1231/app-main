@@ -1643,15 +1643,24 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </>
             ) : (
               <>
+                {/* Pilot Operational Status Header */}
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#dc2626' }}>
+                    your current Pilot Operational Status<span style={{ color: '#dc2626' }}>?</span>
+                  </span>
+                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>
+                    We need to know your status so that pathways can be catered to your career stage.
+                  </p>
+                </div>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
-                  Operator / Airline
+                  Operator / ATO / Type Rating Center
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
                     type="text"
                     value={operatorSearch}
                     onChange={(e) => setOperatorSearch(e.target.value)}
-                    placeholder="Search airline or operator (e.g., 'Emirates', 'Delta', 'NetJets')..."
+                    placeholder="e.g. employed, waiting for CFI, low hours, Active CFI operations, Airline mention..."
                     style={{
                       width: '100%',
                       padding: '0.75rem 2.5rem 0.75rem 0.75rem',
