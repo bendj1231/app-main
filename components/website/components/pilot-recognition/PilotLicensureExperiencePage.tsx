@@ -1194,7 +1194,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         position: 'fixed',
         inset: 0,
         pointerEvents: 'none',
-        zIndex: 9999,
+        zIndex: 1,
         background: 'radial-gradient(circle, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35) 100%)',
         mixBlendMode: 'multiply'
       }} />
@@ -1316,8 +1316,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           border: '1px solid rgba(255, 255, 255, 0.25)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.5rem', borderBottom: '2px solid rgba(255,255,255,0.2)', paddingBottom: '0.75rem' }}>
-            Personal Information
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem', borderBottom: '2px solid rgba(255,255,255,0.2)', paddingBottom: '0.75rem' }}>
+            <span style={{ color: '#ffffff' }}>Personal </span><span style={{ color: '#dc2626' }}>Information</span>
           </h2>
           
           {/* Two Column Layout for Personal Info */}
@@ -1747,7 +1747,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', zIndex: showAuthorityDropdown ? 100 : undefined }}>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Issuing Authority / Governing Aviation Authority
               </label>
@@ -1796,7 +1796,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   top: 'calc(100% + 4px)',
                   left: 0,
                   right: 0,
-                  zIndex: 20,
+                  zIndex: 100,
                   background: 'rgba(15, 23, 42, 0.85)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
