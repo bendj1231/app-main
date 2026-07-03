@@ -766,6 +766,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showMedicalAuthorityDropdown, setShowMedicalAuthorityDropdown] = useState(false);
   const medicalDropdownRef = useRef<HTMLDivElement>(null);
   const medicalTriggerRef = useRef<HTMLDivElement>(null);
+  const medicalPortalRef = useRef<HTMLDivElement>(null);
   const [medicalDropdownPos, setMedicalDropdownPos] = useState<{top: number; left: number; width: number} | null>(null);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
@@ -943,7 +944,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   useEffect(() => {
     if (!showMedicalAuthorityDropdown) return;
     const handleClick = (e: MouseEvent) => {
-      if (medicalDropdownRef.current && !medicalDropdownRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const inTrigger = medicalTriggerRef.current && medicalTriggerRef.current.contains(target);
+      const inWrapper = medicalDropdownRef.current && medicalDropdownRef.current.contains(target);
+      const inPortal = medicalPortalRef.current && medicalPortalRef.current.contains(target);
+      if (!inTrigger && !inWrapper && !inPortal) {
         setShowMedicalAuthorityDropdown(false);
       }
     };
@@ -2238,11 +2243,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         overflow: 'hidden'
                       }}>
                         <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '0.5rem' }}>
-                          {filteredFlightSchools.length === 0 && (
-                            <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
-                              No flight schools found
-                            </div>
-                          )}
                           {filteredFlightSchools.map((school) => (
                             <button
                               key={school}
@@ -2275,6 +2275,48 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                               {school}
                             </button>
                           ))}
+                          {atoFlightSchoolSearch && (
+                            <button
+                              type="button"
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={() => {
+                                setFlightSchoolAddress(atoFlightSchoolSearch);
+                                setShowFlightSchoolDropdown(false);
+                              }}
+                              style={{
+                                width: '100%',
+                                marginTop: '0.5rem',
+                                padding: '0.6rem 0.75rem',
+                                textAlign: 'left',
+                                border: 'none',
+                                borderRadius: '6px',
+                                background: 'rgba(220, 38, 38, 0.15)',
+                                color: '#ffffff',
+                                fontSize: '0.85rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.15s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                borderTop: filteredFlightSchools.length > 0 ? '1px solid rgba(255,255,255,0.08)' : 'none'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(220, 38, 38, 0.3)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(220, 38, 38, 0.15)';
+                              }}
+                            >
+                              <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+                              Add custom: "{atoFlightSchoolSearch}"
+                            </button>
+                          )}
+                          {filteredFlightSchools.length === 0 && !atoFlightSchoolSearch && (
+                            <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                              Start typing to search flight schools...
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -2396,11 +2438,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         overflow: 'hidden'
                       }}>
                         <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '0.5rem' }}>
-                          {filteredOperators.length === 0 && (
-                            <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
-                              No operators found
-                            </div>
-                          )}
                           {(() => {
                             const groups: Record<string, typeof filteredOperators> = {};
                             filteredOperators.forEach(op => {
@@ -2408,68 +2445,116 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                               groups[op.type].push(op);
                             });
                             const typeOrder = ['Airline', 'Operator', 'Type Rating Center', 'ATO', 'Other'];
-                            return typeOrder.map(type => {
-                              const items = groups[type];
-                              if (!items || items.length === 0) return null;
-                              return (
-                                <div key={type}>
-                                  <div style={{
-                                    padding: '0.35rem 0.75rem',
-                                    fontSize: '0.7rem',
-                                    fontWeight: 700,
-                                    color: 'rgba(220, 38, 38, 0.85)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
-                                    borderBottom: '1px solid rgba(255,255,255,0.06)',
-                                    marginTop: '0.25rem'
-                                  }}>
-                                    {type}
+                            const hasMatches = filteredOperators.length > 0;
+                            return (
+                              <>
+                                {typeOrder.map(type => {
+                                  const items = groups[type];
+                                  if (!items || items.length === 0) return null;
+                                  return (
+                                    <div key={type}>
+                                      <div style={{
+                                        padding: '0.35rem 0.75rem',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 700,
+                                        color: 'rgba(220, 38, 38, 0.85)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                                        marginTop: '0.25rem'
+                                      }}>
+                                        {type}
+                                      </div>
+                                      {items.map(op => (
+                                        <button
+                                          key={op.name}
+                                          type="button"
+                                          onMouseDown={(e) => e.preventDefault()}
+                                          onClick={() => {
+                                            setOperatorNameSearch(op.name);
+                                            setOperatorSearch(op.name);
+                                            setShowOperatorNameDropdown(false);
+                                          }}
+                                          style={{
+                                            width: '100%',
+                                            padding: '0.5rem 0.75rem',
+                                            textAlign: 'left',
+                                            border: 'none',
+                                            borderRadius: '6px',
+                                            background: operatorNameSearch === op.name ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                                            color: operatorNameSearch === op.name ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.15s',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem'
+                                          }}
+                                          onMouseEnter={(e) => {
+                                            if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                                          }}
+                                          onMouseLeave={(e) => {
+                                            if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'transparent';
+                                          }}
+                                        >
+                                          <span style={{
+                                            width: '6px',
+                                            height: '6px',
+                                            borderRadius: '50%',
+                                            background: operatorNameSearch === op.name ? '#dc2626' : 'rgba(255,255,255,0.25)',
+                                            flexShrink: 0
+                                          }} />
+                                          {op.name}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  );
+                                })}
+                                {operatorNameSearch && (
+                                  <button
+                                    type="button"
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={() => {
+                                      setOperatorNameSearch(operatorNameSearch);
+                                      setOperatorSearch(operatorNameSearch);
+                                      setShowOperatorNameDropdown(false);
+                                    }}
+                                    style={{
+                                      width: '100%',
+                                      marginTop: '0.5rem',
+                                      padding: '0.6rem 0.75rem',
+                                      textAlign: 'left',
+                                      border: 'none',
+                                      borderRadius: '6px',
+                                      background: 'rgba(220, 38, 38, 0.15)',
+                                      color: '#ffffff',
+                                      fontSize: '0.85rem',
+                                      fontWeight: 600,
+                                      cursor: 'pointer',
+                                      transition: 'all 0.15s',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.5rem',
+                                      borderTop: hasMatches ? '1px solid rgba(255,255,255,0.08)' : 'none'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.background = 'rgba(220, 38, 38, 0.3)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.background = 'rgba(220, 38, 38, 0.15)';
+                                    }}
+                                  >
+                                    <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+                                    Add custom: "{operatorNameSearch}"
+                                  </button>
+                                )}
+                                {!hasMatches && !operatorNameSearch && (
+                                  <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                                    Start typing to search operators...
                                   </div>
-                                  {items.map(op => (
-                                    <button
-                                      key={op.name}
-                                      type="button"
-                                      onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => {
-                                        setOperatorNameSearch(op.name);
-                                        setOperatorSearch(op.name);
-                                        setShowOperatorNameDropdown(false);
-                                      }}
-                                      style={{
-                                        width: '100%',
-                                        padding: '0.5rem 0.75rem',
-                                        textAlign: 'left',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        background: operatorNameSearch === op.name ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
-                                        color: operatorNameSearch === op.name ? '#ffffff' : 'rgba(255,255,255,0.85)',
-                                        fontSize: '0.85rem',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.15s',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem'
-                                      }}
-                                      onMouseEnter={(e) => {
-                                        if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'transparent';
-                                      }}
-                                    >
-                                      <span style={{
-                                        width: '6px',
-                                        height: '6px',
-                                        borderRadius: '50%',
-                                        background: operatorNameSearch === op.name ? '#dc2626' : 'rgba(255,255,255,0.25)',
-                                        flexShrink: 0
-                                      }} />
-                                      {op.name}
-                                    </button>
-                                  ))}
-                                </div>
-                              );
-                            });
+                                )}
+                              </>
+                            );
                           })()}
                         </div>
                       </div>
@@ -2986,8 +3071,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 }} />
               </div>
 
-              {showMedicalAuthorityDropdown && medicalDropdownPos && (
-                <div style={{
+              {showMedicalAuthorityDropdown && medicalDropdownPos && createPortal(
+                <div ref={medicalPortalRef} style={{
                   position: 'fixed',
                   top: medicalDropdownPos.top,
                   left: medicalDropdownPos.left,
@@ -3138,7 +3223,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     })()}
                   </div>
                 </div>
-              )}
+              , document.body)}
             </div>
             
             <div>
