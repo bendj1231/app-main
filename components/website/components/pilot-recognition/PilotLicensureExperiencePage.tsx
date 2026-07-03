@@ -1879,6 +1879,41 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
 
+          {/* CTA Row */}
+          <div style={{
+            marginTop: '1.25rem',
+            padding: '1rem 1.25rem',
+            background: 'rgba(220, 38, 38, 0.08)',
+            borderRadius: '10px',
+            border: '1px solid rgba(220, 38, 38, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem'
+          }}>
+            <div>
+              <p style={{ margin: '0 0 0.15rem', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
+                Complete your profile to unlock everything.
+              </p>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569' }}>
+                Every field you fill increases your visibility to airlines and pathway coordinators.
+              </p>
+            </div>
+            <div style={{
+              padding: '0.65rem 1.25rem',
+              background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+              color: '#ffffff',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
+            }}>
+              Get Started
+            </div>
+          </div>
+
         </motion.section>
         </div>)}
 
