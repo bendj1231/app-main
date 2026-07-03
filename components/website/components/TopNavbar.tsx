@@ -13,9 +13,9 @@ import { ThemeContext } from '../context/ThemeContext';
 const useSafeTheme = () => {
     try {
         const context = useContext(ThemeContext);
-        return context || { isDarkMode: false, toggleTheme: () => {} };
+        return context || { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
     } catch {
-        return { isDarkMode: false, toggleTheme: () => {} };
+        return { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
     }
 };
 

@@ -6,7 +6,7 @@ import { ThemeContext } from '../context/ThemeContext';
 const useSafeTheme = () => {
   try {
     const context = useContext(ThemeContext);
-    const resolved = context || { isDarkMode: false, toggleTheme: () => {} };
+    const resolved = context || { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
     console.log('[RecognitionATC] useSafeTheme', {
       hasContext: Boolean(context),
       isDarkMode: resolved.isDarkMode,
@@ -14,7 +14,7 @@ const useSafeTheme = () => {
     return resolved;
   } catch (error) {
     console.log('[RecognitionATC] useSafeTheme error:', error);
-    return { isDarkMode: false, toggleTheme: () => {} };
+    return { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
   }
 };
 
