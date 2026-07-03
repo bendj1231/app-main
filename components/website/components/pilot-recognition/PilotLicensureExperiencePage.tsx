@@ -1842,13 +1842,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               }}>
                 <Inbox style={{ width: '22px', height: '22px', color: '#ffffff' }} />
               </div>
-              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Unlocking Inbox</h3>
+              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Inbox &amp; Communication</h3>
               <p style={{ margin: 0, fontSize: '0.8rem', color: '#334155', lineHeight: 1.5 }}>
-                Once your profile is complete, your inbox opens to direct messages from recruiters, airlines, and pathway coordinators seeking pilots like you.
+                Once complete, your inbox opens to direct messages from recruiters and pathway coordinators. Stay connected with industry updates and assessment invitations.
               </p>
             </div>
 
-            {/* Communication */}
+            {/* Logbook Sync */}
             <div style={{
               background: 'rgba(255,255,255,0.5)',
               borderRadius: '12px',
@@ -1870,11 +1870,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 marginBottom: '1rem',
                 boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
               }}>
-                <MessageSquare style={{ width: '22px', height: '22px', color: '#ffffff' }} />
+                <BookOpen style={{ width: '22px', height: '22px', color: '#ffffff' }} />
               </div>
-              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Communication</h3>
+              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Logbook Sync &amp; Auditable</h3>
               <p style={{ margin: 0, fontSize: '0.8rem', color: '#334155', lineHeight: 1.5 }}>
-                Stay connected with the aviation community. Receive updates on new pathways, assessment invitations, and industry news tailored to your profile.
+                Sync your flight hours and logbook entries automatically. Maintain an auditable, timestamped record that airlines and regulators can verify instantly.
               </p>
             </div>
           </div>
