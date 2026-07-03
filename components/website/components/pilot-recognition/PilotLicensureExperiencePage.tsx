@@ -1841,8 +1841,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               <>
                 {/* Pilot Operational Status Header */}
                 <div style={{ marginBottom: '1.25rem', textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#dc2626', marginBottom: '0.5rem' }}>
-                    your current Pilot Operational Status<span style={{ color: '#dc2626' }}>?</span>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+                    <span style={{ color: '#0f172a' }}>Current</span> <span style={{ color: '#dc2626' }}>Pilot Operational Status?</span>
                   </div>
                   <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(15,23,42,0.85)', lineHeight: 1.5, maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
                     We need to know your status so that pathways can be catered to your career stage.
@@ -2234,7 +2234,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                           )}
                         </button>
                       );
-                    })}
+                    });
+                  })()}
                   </div>
                 </div>
               )}
