@@ -428,6 +428,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showNationalityDropdown, setShowNationalityDropdown] = useState(false);
   const [flightSchoolSearch, setFlightSchoolSearch] = useState('');
+  const [affiliationTab, setAffiliationTab] = useState<'student' | 'operator'>('student');
+  const [operatorSearch, setOperatorSearch] = useState('');
   const [interestSearchQuery, setInterestSearchQuery] = useState('');
   const [interestSearchFocused, setInterestSearchFocused] = useState(false);
   const interestSearchRef = useRef<HTMLDivElement>(null);
@@ -1441,18 +1443,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div style={{ position: 'relative' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
                 Residing Country *
-                <button
-                  onMouseEnter={() => setActiveTooltip('country')}
-                  onMouseLeave={() => setActiveTooltip(null)}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
-                >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
-                </button>
-                {activeTooltip === 'country' && (
-                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
-                    Used for timezone and regulatory jurisdiction matching
-                  </span>
-                )}
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button
+                    onMouseEnter={() => setActiveTooltip('country')}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                  >
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  </button>
+                  {activeTooltip === 'country' && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                      Used for timezone and regulatory jurisdiction matching
+                    </span>
+                  )}
+                </span>
               </label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -1499,18 +1503,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div style={{ position: 'relative' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                 Nationality *
-                <button
-                  onMouseEnter={() => setActiveTooltip('nationality')}
-                  onMouseLeave={() => setActiveTooltip(null)}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
-                >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
-                </button>
-                {activeTooltip === 'nationality' && (
-                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
-                    Required for visa and work permit processing
-                  </span>
-                )}
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button
+                    onMouseEnter={() => setActiveTooltip('nationality')}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                  >
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  </button>
+                  {activeTooltip === 'nationality' && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                      Required for visa and work permit processing
+                    </span>
+                  )}
+                </span>
               </label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -1555,41 +1561,122 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
           
-          {/* Row 4: Flight School Search - Full Width */}
+          {/* Row 4: Affiliation Tabs - Flight School / Operator */}
           <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
-              Flight School Search
-              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
-            </label>
-            <div style={{ position: 'relative' }}>
-              <input
-                type="text"
-                value={flightSchoolAddress}
-                onChange={(e) => setFlightSchoolSearch(e.target.value)}
-                placeholder="Search flight school (e.g., 'WCC Aviation', 'CAE Oxford')..."
+            {/* Tab Switcher */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+              <button
+                type="button"
+                onClick={() => setAffiliationTab('student')}
                 style={{
-                  width: '100%',
-                  padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  flex: 1,
+                  padding: '0.6rem 1rem',
                   borderRadius: '8px',
+                  border: 'none',
                   fontSize: '0.875rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: affiliationTab === 'student' ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(255,255,255,0.08)',
+                  color: affiliationTab === 'student' ? '#ffffff' : 'rgba(255,255,255,0.7)',
+                  boxShadow: affiliationTab === 'student' ? '0 4px 12px rgba(220,38,38,0.25)' : 'none',
+                  transition: 'all 0.2s ease'
                 }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#dc2626';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+              >
+                Student / Active Pilot
+              </button>
+              <button
+                type="button"
+                onClick={() => setAffiliationTab('operator')}
+                style={{
+                  flex: 1,
+                  padding: '0.6rem 1rem',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: affiliationTab === 'operator' ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(255,255,255,0.08)',
+                  color: affiliationTab === 'operator' ? '#ffffff' : 'rgba(255,255,255,0.7)',
+                  boxShadow: affiliationTab === 'operator' ? '0 4px 12px rgba(220,38,38,0.25)' : 'none',
+                  transition: 'all 0.2s ease'
                 }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              />
-              <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+              >
+                Operator
+              </button>
             </div>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
-              Auto-completes address, ICAO code, and school details
-            </p>
+
+            {affiliationTab === 'student' ? (
+              <>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                  Flight School Search
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="text"
+                    value={flightSchoolAddress}
+                    onChange={(e) => setFlightSchoolSearch(e.target.value)}
+                    placeholder="Search flight school (e.g., 'WCC Aviation', 'CAE Oxford')..."
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                      border: '2px solid rgba(255,255,255,0.35)',
+                      borderRadius: '8px',
+                      fontSize: '0.875rem',
+                      outline: 'none',
+                      transition: 'border-color 0.2s, box-shadow 0.2s'
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = '#dc2626';
+                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  />
+                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                </div>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+                  Auto-completes address, ICAO code, and school details
+                </p>
+              </>
+            ) : (
+              <>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                  Operator / Airline
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="text"
+                    value={operatorSearch}
+                    onChange={(e) => setOperatorSearch(e.target.value)}
+                    placeholder="Search airline or operator (e.g., 'Emirates', 'Delta', 'NetJets')..."
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                      border: '2px solid rgba(255,255,255,0.35)',
+                      borderRadius: '8px',
+                      fontSize: '0.875rem',
+                      outline: 'none',
+                      transition: 'border-color 0.2s, box-shadow 0.2s'
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = '#dc2626';
+                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  />
+                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                </div>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+                  Current or most recent airline / operator affiliation
+                </p>
+              </>
+            )}
           </div>
 
           {/* Row 5: Contact + Languages */}
@@ -1597,18 +1684,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                 Contact Number *
-                <button
-                  onMouseEnter={() => setActiveTooltip('contact')}
-                  onMouseLeave={() => setActiveTooltip(null)}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
-                >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
-                </button>
-                {activeTooltip === 'contact' && (
-                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
-                    Used by recruiters for urgent interview scheduling
-                  </span>
-                )}
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button
+                    onMouseEnter={() => setActiveTooltip('contact')}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                  >
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  </button>
+                  {activeTooltip === 'contact' && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                      Used by recruiters for urgent interview scheduling
+                    </span>
+                  )}
+                </span>
               </label>
               <input
                 type="tel"
@@ -1700,6 +1789,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         {/* License Information Section - Glassy UI */}
         {visibleSection === 'license-medical' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          position: 'relative',
+          zIndex: showAuthorityDropdown ? 100 : undefined,
           background: 'rgba(255, 255, 255, 0.35)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
