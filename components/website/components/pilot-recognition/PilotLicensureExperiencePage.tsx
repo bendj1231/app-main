@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
 import { useAuth } from '@/contexts/AuthContext';
@@ -456,30 +457,117 @@ const FLIGHT_SCHOOLS_BY_COUNTRY: Record<string, string[]> = {
   'Other': ['Other / Not Listed']
 };
 
-const OPERATORS_BY_COUNTRY: Record<string, string[]> = {
-  'Philippines': ['Cebu Pacific', 'Philippine Airlines', 'PAL Express', 'AirAsia Philippines', 'Skyjet', 'Air Juan', 'CebGo', 'WCC Aviation (ATO)', 'Orient Flights (ATO)', 'AAA Academy (ATO)', 'APC Aviation (ATO)'],
-  'United States of America': ['Delta Air Lines', 'American Airlines', 'United Airlines', 'Southwest Airlines', 'FedEx Express', 'UPS Airlines', 'JetBlue', 'Alaska Airlines', 'Spirit Airlines', 'NetJets', 'Flexjet', 'CAE USA (ATO/TR)', 'FlightSafety International (ATO/TR)', 'ATP Flight School (ATO)', 'L3Harris (ATO/TR)'],
-  'United Kingdom': ['British Airways', 'EasyJet', 'Virgin Atlantic', 'TUI Airways', 'Jet2', 'Ryanair UK', 'CAE Oxford (ATO/TR)', 'L3Harris UK (ATO/TR)', 'FTA Global (ATO)', 'Skyborne Airline Academy (ATO)'],
-  'Australia': ['Qantas', 'Virgin Australia', 'Jetstar', 'Rex Airlines', 'Alliance Airlines', 'BAe Systems Flight Training (ATO)', 'Flight Training Adelaide (ATO)', 'Soar Aviation (ATO)'],
-  'New Zealand': ['Air New Zealand', 'Mainland Air', 'Southern Wings (ATO)', 'International Aviation Academy (ATO)'],
-  'United Arab Emirates': ['Emirates', 'Etihad Airways', 'Air Arabia', 'flydubai', 'Emirates Flight Training Academy (ATO)', 'Gulf Aviation Academy (ATO/TR)', 'Alpha Aviation Academy UAE (ATO)'],
-  'Saudi Arabia': ['Saudia', 'flynas', 'flyadeal', 'Saudi Aramco Aviation', 'Saudi Aviation Flight Academy (ATO)', 'Prince Sultan Aviation Academy (ATO)'],
-  'Canada': ['Air Canada', 'WestJet', 'Sunwing', 'Porter Airlines', 'Air Transat', 'Flair Airlines', 'Montair Aviation (ATO)', 'Harv\'s Air (ATO)', 'Seneca College Aviation (ATO)', 'Canadian Flight Centre (ATO)'],
-  'Germany': ['Lufthansa', 'Eurowings', 'Condor', 'TUIfly', 'Lufthansa Aviation Training (ATO/TR)', 'European Aviation School (ATO)', 'F AIR Flight School (ATO)'],
-  'France': ['Air France', 'Transavia France', 'Corsair', 'Air Caraibes', 'ENAC (ATO)', 'Airways Aviation (ATO)', 'Chalair Aviation Academy (ATO)'],
-  'Spain': ['Iberia', 'Air Europa', 'Vueling', 'Volotea', 'Binter Canarias', 'FTE Jerez (ATO/TR)', 'FlyBy Aviation Academy (ATO)', 'European Flyers (ATO)', 'Barcelona Flight School (ATO)'],
-  'India': ['Air India', 'IndiGo', 'SpiceJet', 'Vistara', 'Akasa Air', 'Indira Gandhi Rashtriya Uran Akademi (ATO)', 'Chimes Aviation Academy (ATO)', 'Madras Flying Club (ATO)', 'Bombay Flying Club (ATO)'],
-  'Singapore': ['Singapore Airlines', 'Scoot', 'Jetstar Asia', 'Singapore Flying College (ATO)', 'ST Aerospace Academy (ATO)', 'Singapore Aviation Academy (ATO)'],
-  'Malaysia': ['Malaysia Airlines', 'AirAsia', 'Malindo Air', 'Firefly', 'MASwings', 'HM Aerospace (ATO)', 'Malaysia Flying Academy (ATO)', 'Asia Pacific Flight Training (ATO)'],
-  'Thailand': ['Thai Airways', 'Bangkok Airways', 'Thai AirAsia', 'Thai Lion Air', 'Nok Air', 'Thai Aviation Academy (ATO)', 'Bangkok Aviation Centre (ATO)'],
-  'South Africa': ['South African Airways', 'FlySafair', 'Airlink', 'Lift', 'CemAir', '43 Air School (ATO)', 'Cranfield Aviation Training (ATO)', 'Eagle Flight Academy (ATO)'],
-  'Mauritius': ['Air Mauritius', 'Air Mauritius Training Centre (ATO)', 'SkyDive Mauritius Academy (ATO)'],
-  'Japan': ['JAL', 'ANA', 'Peach Aviation', 'Jetstar Japan', 'Spring Japan', 'Fuji Dream Airlines', 'Solaseed Air', 'Star Flyer'],
-  'China': ['Air China', 'China Southern', 'China Eastern', 'Hainan Airlines', 'XiamenAir', 'Shenzhen Airlines', 'Sichuan Airlines', 'Juneyao Air', 'Spring Airlines'],
-  'Qatar': ['Qatar Airways', 'Qatar Executive', 'Gulf Helicopters', 'Doha Aviation Academy (ATO)'],
-  'Turkey': ['Turkish Airlines', 'Pegasus Airlines', 'SunExpress', 'AnadoluJet', 'Corendon Airlines', 'Freebird Airlines'],
-  'Netherlands': ['KLM', 'Transavia', 'TUI fly Netherlands', 'Corendon Dutch Airlines'],
-  'Other': ['Other / Not Listed']
+const OPERATORS_BY_COUNTRY: Record<string, { name: string; type: string }[]> = {
+  'Philippines': [
+    { name: 'Cebu Pacific', type: 'Airline' }, { name: 'Philippine Airlines', type: 'Airline' }, { name: 'PAL Express', type: 'Airline' },
+    { name: 'AirAsia Philippines', type: 'Airline' }, { name: 'Skyjet', type: 'Airline' }, { name: 'Air Juan', type: 'Airline' }, { name: 'CebGo', type: 'Airline' },
+    { name: 'WCC Aviation', type: 'ATO' }, { name: 'Orient Flights', type: 'ATO' }, { name: 'AAA Academy', type: 'ATO' }, { name: 'APC Aviation', type: 'ATO' }
+  ],
+  'United States of America': [
+    { name: 'Delta Air Lines', type: 'Airline' }, { name: 'American Airlines', type: 'Airline' }, { name: 'United Airlines', type: 'Airline' },
+    { name: 'Southwest Airlines', type: 'Airline' }, { name: 'FedEx Express', type: 'Airline' }, { name: 'UPS Airlines', type: 'Airline' },
+    { name: 'JetBlue', type: 'Airline' }, { name: 'Alaska Airlines', type: 'Airline' }, { name: 'Spirit Airlines', type: 'Airline' },
+    { name: 'NetJets', type: 'Operator' }, { name: 'Flexjet', type: 'Operator' },
+    { name: 'CAE USA', type: 'Type Rating Center' }, { name: 'FlightSafety International', type: 'Type Rating Center' },
+    { name: 'ATP Flight School', type: 'ATO' }, { name: 'L3Harris', type: 'Type Rating Center' }
+  ],
+  'United Kingdom': [
+    { name: 'British Airways', type: 'Airline' }, { name: 'EasyJet', type: 'Airline' }, { name: 'Virgin Atlantic', type: 'Airline' },
+    { name: 'TUI Airways', type: 'Airline' }, { name: 'Jet2', type: 'Airline' }, { name: 'Ryanair UK', type: 'Airline' },
+    { name: 'CAE Oxford', type: 'Type Rating Center' }, { name: 'L3Harris UK', type: 'Type Rating Center' },
+    { name: 'FTA Global', type: 'ATO' }, { name: 'Skyborne Airline Academy', type: 'ATO' }
+  ],
+  'Australia': [
+    { name: 'Qantas', type: 'Airline' }, { name: 'Virgin Australia', type: 'Airline' }, { name: 'Jetstar', type: 'Airline' },
+    { name: 'Rex Airlines', type: 'Airline' }, { name: 'Alliance Airlines', type: 'Airline' },
+    { name: 'BAe Systems Flight Training', type: 'ATO' }, { name: 'Flight Training Adelaide', type: 'ATO' }, { name: 'Soar Aviation', type: 'ATO' }
+  ],
+  'New Zealand': [
+    { name: 'Air New Zealand', type: 'Airline' }, { name: 'Mainland Air', type: 'Airline' },
+    { name: 'Southern Wings', type: 'ATO' }, { name: 'International Aviation Academy', type: 'ATO' }
+  ],
+  'United Arab Emirates': [
+    { name: 'Emirates', type: 'Airline' }, { name: 'Etihad Airways', type: 'Airline' }, { name: 'Air Arabia', type: 'Airline' }, { name: 'flydubai', type: 'Airline' },
+    { name: 'Emirates Flight Training Academy', type: 'ATO' }, { name: 'Gulf Aviation Academy', type: 'Type Rating Center' },
+    { name: 'Alpha Aviation Academy UAE', type: 'ATO' }
+  ],
+  'Saudi Arabia': [
+    { name: 'Saudia', type: 'Airline' }, { name: 'flynas', type: 'Airline' }, { name: 'flyadeal', type: 'Airline' },
+    { name: 'Saudi Aramco Aviation', type: 'Operator' },
+    { name: 'Saudi Aviation Flight Academy', type: 'ATO' }, { name: 'Prince Sultan Aviation Academy', type: 'ATO' }
+  ],
+  'Canada': [
+    { name: 'Air Canada', type: 'Airline' }, { name: 'WestJet', type: 'Airline' }, { name: 'Sunwing', type: 'Airline' },
+    { name: 'Porter Airlines', type: 'Airline' }, { name: 'Air Transat', type: 'Airline' }, { name: 'Flair Airlines', type: 'Airline' },
+    { name: 'Montair Aviation', type: 'ATO' }, { name: 'Harv\'s Air', type: 'ATO' },
+    { name: 'Seneca College Aviation', type: 'ATO' }, { name: 'Canadian Flight Centre', type: 'ATO' }
+  ],
+  'Germany': [
+    { name: 'Lufthansa', type: 'Airline' }, { name: 'Eurowings', type: 'Airline' }, { name: 'Condor', type: 'Airline' }, { name: 'TUIfly', type: 'Airline' },
+    { name: 'Lufthansa Aviation Training', type: 'Type Rating Center' }, { name: 'European Aviation School', type: 'ATO' }, { name: 'F AIR Flight School', type: 'ATO' }
+  ],
+  'France': [
+    { name: 'Air France', type: 'Airline' }, { name: 'Transavia France', type: 'Airline' }, { name: 'Corsair', type: 'Airline' }, { name: 'Air Caraibes', type: 'Airline' },
+    { name: 'ENAC', type: 'ATO' }, { name: 'Airways Aviation', type: 'ATO' }, { name: 'Chalair Aviation Academy', type: 'ATO' }
+  ],
+  'Spain': [
+    { name: 'Iberia', type: 'Airline' }, { name: 'Air Europa', type: 'Airline' }, { name: 'Vueling', type: 'Airline' },
+    { name: 'Volotea', type: 'Airline' }, { name: 'Binter Canarias', type: 'Airline' },
+    { name: 'FTE Jerez', type: 'Type Rating Center' }, { name: 'FlyBy Aviation Academy', type: 'ATO' },
+    { name: 'European Flyers', type: 'ATO' }, { name: 'Barcelona Flight School', type: 'ATO' }
+  ],
+  'India': [
+    { name: 'Air India', type: 'Airline' }, { name: 'IndiGo', type: 'Airline' }, { name: 'SpiceJet', type: 'Airline' },
+    { name: 'Vistara', type: 'Airline' }, { name: 'Akasa Air', type: 'Airline' },
+    { name: 'Indira Gandhi Rashtriya Uran Akademi', type: 'ATO' }, { name: 'Chimes Aviation Academy', type: 'ATO' },
+    { name: 'Madras Flying Club', type: 'ATO' }, { name: 'Bombay Flying Club', type: 'ATO' }
+  ],
+  'Singapore': [
+    { name: 'Singapore Airlines', type: 'Airline' }, { name: 'Scoot', type: 'Airline' }, { name: 'Jetstar Asia', type: 'Airline' },
+    { name: 'Singapore Flying College', type: 'ATO' }, { name: 'ST Aerospace Academy', type: 'ATO' }, { name: 'Singapore Aviation Academy', type: 'ATO' }
+  ],
+  'Malaysia': [
+    { name: 'Malaysia Airlines', type: 'Airline' }, { name: 'AirAsia', type: 'Airline' }, { name: 'Malindo Air', type: 'Airline' },
+    { name: 'Firefly', type: 'Airline' }, { name: 'MASwings', type: 'Airline' },
+    { name: 'HM Aerospace', type: 'ATO' }, { name: 'Malaysia Flying Academy', type: 'ATO' }, { name: 'Asia Pacific Flight Training', type: 'ATO' }
+  ],
+  'Thailand': [
+    { name: 'Thai Airways', type: 'Airline' }, { name: 'Bangkok Airways', type: 'Airline' }, { name: 'Thai AirAsia', type: 'Airline' },
+    { name: 'Thai Lion Air', type: 'Airline' }, { name: 'Nok Air', type: 'Airline' },
+    { name: 'Thai Aviation Academy', type: 'ATO' }, { name: 'Bangkok Aviation Centre', type: 'ATO' }
+  ],
+  'South Africa': [
+    { name: 'South African Airways', type: 'Airline' }, { name: 'FlySafair', type: 'Airline' }, { name: 'Airlink', type: 'Airline' },
+    { name: 'Lift', type: 'Airline' }, { name: 'CemAir', type: 'Airline' },
+    { name: '43 Air School', type: 'ATO' }, { name: 'Cranfield Aviation Training', type: 'ATO' }, { name: 'Eagle Flight Academy', type: 'ATO' }
+  ],
+  'Mauritius': [
+    { name: 'Air Mauritius', type: 'Airline' },
+    { name: 'Air Mauritius Training Centre', type: 'ATO' }, { name: 'SkyDive Mauritius Academy', type: 'ATO' }
+  ],
+  'Japan': [
+    { name: 'JAL', type: 'Airline' }, { name: 'ANA', type: 'Airline' }, { name: 'Peach Aviation', type: 'Airline' },
+    { name: 'Jetstar Japan', type: 'Airline' }, { name: 'Spring Japan', type: 'Airline' },
+    { name: 'Fuji Dream Airlines', type: 'Airline' }, { name: 'Solaseed Air', type: 'Airline' }, { name: 'Star Flyer', type: 'Airline' }
+  ],
+  'China': [
+    { name: 'Air China', type: 'Airline' }, { name: 'China Southern', type: 'Airline' }, { name: 'China Eastern', type: 'Airline' },
+    { name: 'Hainan Airlines', type: 'Airline' }, { name: 'XiamenAir', type: 'Airline' }, { name: 'Shenzhen Airlines', type: 'Airline' },
+    { name: 'Sichuan Airlines', type: 'Airline' }, { name: 'Juneyao Air', type: 'Airline' }, { name: 'Spring Airlines', type: 'Airline' }
+  ],
+  'Qatar': [
+    { name: 'Qatar Airways', type: 'Airline' }, { name: 'Qatar Executive', type: 'Operator' }, { name: 'Gulf Helicopters', type: 'Operator' },
+    { name: 'Doha Aviation Academy', type: 'ATO' }
+  ],
+  'Turkey': [
+    { name: 'Turkish Airlines', type: 'Airline' }, { name: 'Pegasus Airlines', type: 'Airline' }, { name: 'SunExpress', type: 'Airline' },
+    { name: 'AnadoluJet', type: 'Airline' }, { name: 'Corendon Airlines', type: 'Airline' }, { name: 'Freebird Airlines', type: 'Airline' }
+  ],
+  'Netherlands': [
+    { name: 'KLM', type: 'Airline' }, { name: 'Transavia', type: 'Airline' }, { name: 'TUI fly Netherlands', type: 'Airline' },
+    { name: 'Corendon Dutch Airlines', type: 'Airline' }
+  ],
+  'Other': [{ name: 'Other / Not Listed', type: 'Other' }]
 };
 
 const ENGLISH_PROFICIENCY_LEVELS = [
@@ -676,6 +764,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [medicalAuthoritySearch, setMedicalAuthoritySearch] = useState('');
   const [showMedicalAuthorityDropdown, setShowMedicalAuthorityDropdown] = useState(false);
   const medicalDropdownRef = useRef<HTMLDivElement>(null);
+  const medicalTriggerRef = useRef<HTMLDivElement>(null);
+  const [medicalDropdownPos, setMedicalDropdownPos] = useState<{top: number; left: number; width: number} | null>(null);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [residingCountry, setResidingCountry] = useState('');
@@ -809,7 +899,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const filteredOperators = useMemo(() => {
     const operators = operatorCountry ? (OPERATORS_BY_COUNTRY[operatorCountry] || []) : [];
     if (!operatorNameSearch) return operators;
-    return operators.filter(o => o.toLowerCase().includes(operatorNameSearch.toLowerCase()));
+    return operators.filter(o => o.name.toLowerCase().includes(operatorNameSearch.toLowerCase()));
   }, [operatorCountry, operatorNameSearch]);
 
   // Filtered options based on search
@@ -858,6 +948,31 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     };
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
+  }, [showMedicalAuthorityDropdown]);
+
+  // Measure medical dropdown trigger position for fixed positioning
+  useEffect(() => {
+    if (!showMedicalAuthorityDropdown) {
+      setMedicalDropdownPos(null);
+      return;
+    }
+    const measure = () => {
+      if (medicalTriggerRef.current) {
+        const rect = medicalTriggerRef.current.getBoundingClientRect();
+        setMedicalDropdownPos({
+          top: rect.bottom + window.scrollY + 4,
+          left: rect.left + window.scrollX,
+          width: rect.width
+        });
+      }
+    };
+    measure();
+    window.addEventListener('scroll', measure, true);
+    window.addEventListener('resize', measure);
+    return () => {
+      window.removeEventListener('scroll', measure, true);
+      window.removeEventListener('resize', measure);
+    };
   }, [showMedicalAuthorityDropdown]);
 
   useEffect(() => {
@@ -2261,37 +2376,75 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                               No operators found
                             </div>
                           )}
-                          {filteredOperators.map((op) => (
-                            <button
-                              key={op}
-                              type="button"
-                              onClick={() => {
-                                setOperatorNameSearch(op);
-                                setOperatorSearch(op);
-                                setShowOperatorNameDropdown(false);
-                              }}
-                              style={{
-                                width: '100%',
-                                padding: '0.6rem 0.75rem',
-                                textAlign: 'left',
-                                border: 'none',
-                                borderRadius: '6px',
-                                background: operatorNameSearch === op ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
-                                color: operatorNameSearch === op ? '#ffffff' : 'rgba(255,255,255,0.85)',
-                                fontSize: '0.875rem',
-                                cursor: 'pointer',
-                                transition: 'all 0.15s'
-                              }}
-                              onMouseEnter={(e) => {
-                                if (operatorNameSearch !== op) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                              }}
-                              onMouseLeave={(e) => {
-                                if (operatorNameSearch !== op) e.currentTarget.style.background = 'transparent';
-                              }}
-                            >
-                              {op}
-                            </button>
-                          ))}
+                          {(() => {
+                            const groups: Record<string, typeof filteredOperators> = {};
+                            filteredOperators.forEach(op => {
+                              if (!groups[op.type]) groups[op.type] = [];
+                              groups[op.type].push(op);
+                            });
+                            const typeOrder = ['Airline', 'Operator', 'Type Rating Center', 'ATO', 'Other'];
+                            return typeOrder.map(type => {
+                              const items = groups[type];
+                              if (!items || items.length === 0) return null;
+                              return (
+                                <div key={type}>
+                                  <div style={{
+                                    padding: '0.35rem 0.75rem',
+                                    fontSize: '0.7rem',
+                                    fontWeight: 700,
+                                    color: 'rgba(220, 38, 38, 0.85)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                    borderBottom: '1px solid rgba(255,255,255,0.06)',
+                                    marginTop: '0.25rem'
+                                  }}>
+                                    {type}
+                                  </div>
+                                  {items.map(op => (
+                                    <button
+                                      key={op.name}
+                                      type="button"
+                                      onClick={() => {
+                                        setOperatorNameSearch(op.name);
+                                        setOperatorSearch(op.name);
+                                        setShowOperatorNameDropdown(false);
+                                      }}
+                                      style={{
+                                        width: '100%',
+                                        padding: '0.5rem 0.75rem',
+                                        textAlign: 'left',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        background: operatorNameSearch === op.name ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                                        color: operatorNameSearch === op.name ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                                        fontSize: '0.85rem',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.15s',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem'
+                                      }}
+                                      onMouseEnter={(e) => {
+                                        if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        if (operatorNameSearch !== op.name) e.currentTarget.style.background = 'transparent';
+                                      }}
+                                    >
+                                      <span style={{
+                                        width: '6px',
+                                        height: '6px',
+                                        borderRadius: '50%',
+                                        background: operatorNameSearch === op.name ? '#dc2626' : 'rgba(255,255,255,0.25)',
+                                        flexShrink: 0
+                                      }} />
+                                      {op.name}
+                                    </button>
+                                  ))}
+                                </div>
+                              );
+                            });
+                          })()}
                         </div>
                       </div>
                     )}
@@ -2474,7 +2627,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            <div ref={authorityDropdownRef} style={{ position: 'relative', zIndex: showAuthorityDropdown ? 100 : undefined }}>
+            <div ref={authorityDropdownRef} style={{ position: 'relative', zIndex: showAuthorityDropdown ? 9999 : undefined }}>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Issuing Authority / Governing Aviation Authority
               </label>
@@ -2523,7 +2676,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   top: 'calc(100% + 4px)',
                   left: 0,
                   right: 0,
-                  zIndex: 100,
+                  zIndex: 9999,
                   background: '#1e293b',
                   backdropFilter: 'none',
                   WebkitBackdropFilter: 'none',
@@ -2768,6 +2921,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 Governing Aviation Authority Issuer *
               </label>
               <div
+                ref={medicalTriggerRef}
                 style={{ position: 'relative', cursor: 'pointer' }}
                 onClick={() => setShowMedicalAuthorityDropdown(!showMedicalAuthorityDropdown)}
               >
@@ -2806,13 +2960,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 }} />
               </div>
 
-              {showMedicalAuthorityDropdown && (
+              {showMedicalAuthorityDropdown && medicalDropdownPos && (
                 <div style={{
-                  position: 'absolute',
-                  top: 'calc(100% + 4px)',
-                  left: 0,
-                  right: 0,
-                  zIndex: 100,
+                  position: 'fixed',
+                  top: medicalDropdownPos.top,
+                  left: medicalDropdownPos.left,
+                  width: medicalDropdownPos.width,
+                  zIndex: 99999,
                   background: '#1e293b',
                   backdropFilter: 'none',
                   WebkitBackdropFilter: 'none',
