@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "devin/cloudflare-docs": {
-      "registry": "devin/cloudflare-docs",
-      "url": "https://docs.mcp.cloudflare.com/mcp"
-    },
     "cloudflare-api": {
       "command": "npx",
       "args": ["mcp-remote", "https://mcp.cloudflare.com/mcp"]

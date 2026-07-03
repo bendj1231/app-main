@@ -839,7 +839,7 @@ export const HomeTab: React.FC<{
                 <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
                 <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Total Hours</p>
                 {!profile?.license_number && (
-                  <p className="text-[8px] font-bold mt-0.5" style={{ color: isDarkMode ? '#facc15' : '#dc2626', textDecoration: 'underline', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>unverified</p>
+                  <p className="text-[8px] font-bold mt-0.5 uppercase" style={{ color: '#dc2626', textDecoration: 'underline', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>UNVERIFIED</p>
                 )}
               </div>
               <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
