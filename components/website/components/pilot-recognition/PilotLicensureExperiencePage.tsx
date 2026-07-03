@@ -1369,6 +1369,24 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
   return (
     <div className="dashboard-container animate-fade-in" style={{ minHeight: '100vh', background: embedded ? 'transparent' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)', position: 'relative' }}>
+      {/* Custom scrollbar styles for authority dropdown */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .authority-scroll::-webkit-scrollbar {
+          width: 8px;
+        }
+        .authority-scroll::-webkit-scrollbar-track {
+          background: #334155;
+          border-radius: 4px;
+        }
+        .authority-scroll::-webkit-scrollbar-thumb {
+          background: #dc2626;
+          border-radius: 4px;
+          min-height: 48px;
+        }
+        .authority-scroll::-webkit-scrollbar-thumb:hover {
+          background: #ef4444;
+        }
+      `}} />
       {/* Vignette shader overlay */}
       <div style={{
         position: 'fixed',
@@ -1487,9 +1505,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         {/* Personal Information Section */}
         {visibleSection === 'personal' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
-          background: 'rgba(255, 255, 255, 0.12)', 
-          backdropFilter: 'blur(24px) saturate(1.4)',
-          WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+          background: 'rgba(255, 255, 255, 0.55)', 
+          backdropFilter: 'blur(40px) saturate(1.6)',
+          WebkitBackdropFilter: 'blur(40px) saturate(1.6)',
           borderRadius: '20px', 
           padding: '2rem', 
           marginBottom: '2rem',
@@ -1503,7 +1521,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           {/* Two Column Layout for Personal Info */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', alignItems: 'end' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 First Name *
               </label>
               <input
@@ -1532,7 +1550,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Middle Name
               </label>
               <input
@@ -1561,7 +1579,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Last Name *
               </label>
               <input
@@ -1619,7 +1637,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             
             {/* Row 3: Country + Contact */}
             <div style={{ position: 'relative' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Residing Country *
                 <span style={{ position: 'relative', display: 'inline-flex' }}>
                   <button
@@ -1627,7 +1645,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     onMouseLeave={() => setActiveTooltip(null)}
                     style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                   >
-                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(15,23,42,0.4)' }} />
                   </button>
                   {activeTooltip === 'country' && (
                     <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
@@ -1657,7 +1675,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   }}
                   onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
                 />
-                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
               </div>
               {showCountryDropdown && filteredCountries.length > 0 && (
                 <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
@@ -1669,7 +1687,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         setCountrySearch('');
                         setShowCountryDropdown(false);
                       }}
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: residingCountry === country ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: 'rgba(255,255,255,0.92)', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: residingCountry === country ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: '#0f172a', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
                     >
                       {country}
                     </button>
@@ -1687,7 +1705,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     onMouseLeave={() => setActiveTooltip(null)}
                     style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                   >
-                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(15,23,42,0.4)' }} />
                   </button>
                   {activeTooltip === 'nationality' && (
                     <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
@@ -1717,7 +1735,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   }}
                   onBlur={() => setTimeout(() => setShowNationalityDropdown(false), 200)}
                 />
-                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
               </div>
               {showNationalityDropdown && filteredNationalities.length > 0 && (
                 <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
@@ -1729,7 +1747,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         setNationalitySearch('');
                         setShowNationalityDropdown(false);
                       }}
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: nationality === nat ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: 'rgba(255,255,255,0.92)', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: nationality === nat ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: '#0f172a', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
                     >
                       {nat}
                     </button>
@@ -1787,7 +1805,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               <>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                   Flight School Search
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -1813,9 +1831,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       e.currentTarget.style.boxShadow = 'none';
                     }}
                   />
-                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
                 </div>
-                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
                   Auto-completes address, ICAO code, and school details
                 </p>
               </>
@@ -1826,7 +1844,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#dc2626', marginBottom: '0.5rem' }}>
                     your current Pilot Operational Status<span style={{ color: '#dc2626' }}>?</span>
                   </div>
-                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
+                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(15,23,42,0.85)', lineHeight: 1.5, maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
                     We need to know your status so that pathways can be catered to your career stage.
                   </p>
                 </div>
@@ -1857,9 +1875,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       e.currentTarget.style.boxShadow = 'none';
                     }}
                   />
-                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
                 </div>
-                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
                   Current or most recent airline / operator affiliation
                 </p>
               </>
@@ -1877,7 +1895,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     onMouseLeave={() => setActiveTooltip(null)}
                     style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                   >
-                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(15,23,42,0.4)' }} />
                   </button>
                   {activeTooltip === 'contact' && (
                     <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
@@ -1912,7 +1930,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Languages You Speak *
               </label>
               <input
@@ -1938,7 +1956,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               />
-              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
                 Enter languages separated by commas
               </p>
             </div>
@@ -1966,7 +1984,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 <option key={level} value={level}>{level}</option>
               ))}
             </select>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
               ICAO English Language Proficiency Rating
             </p>
           </div>
@@ -2126,17 +2144,28 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     scrollbarColor: '#dc2626 #334155',
                     scrollbarWidth: 'thin'
                   }}>
-                    {filteredAuthorities.length === 0 && (
-                      <div style={{
-                        padding: '1rem',
-                        textAlign: 'center',
-                        color: 'rgba(255,255,255,0.4)',
-                        fontSize: '0.8rem'
-                      }}>
-                        No authorities found
-                      </div>
-                    )}
-                    {filteredAuthorities.map((auth) => {
+                    {(() => {
+                      const q = authoritySearch.toLowerCase().trim();
+                      const list = q
+                        ? AVIATION_AUTHORITIES.filter(a =>
+                            a.authority.toLowerCase().includes(q) ||
+                            a.country.toLowerCase().includes(q) ||
+                            a.fullName.toLowerCase().includes(q)
+                          )
+                        : AVIATION_AUTHORITIES;
+                      if (list.length === 0) {
+                        return (
+                          <div style={{
+                            padding: '1rem',
+                            textAlign: 'center',
+                            color: 'rgba(255,255,255,0.4)',
+                            fontSize: '0.8rem'
+                          }}>
+                            No authorities found
+                          </div>
+                        );
+                      }
+                      return list.map((auth) => {
                       const isSelected = licenseCountryOfIssue === auth.authority;
                       return (
                         <button
@@ -2172,11 +2201,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                             <span style={{
                               fontSize: '0.7rem',
                               fontWeight: 700,
-                              color: isSelected ? '#f87171' : 'rgba(255,255,255,0.5)',
-                              background: isSelected ? 'rgba(220,38,38,0.3)' : 'rgba(255,255,255,0.08)',
-                              padding: '0.15rem 0.4rem',
-                              borderRadius: '4px',
-                              whiteSpace: 'nowrap'
+                              color: 'white',
+                              background: '#dc2626',
+                              padding: '0.15rem 0.5rem',
+                              borderRadius: '9999px',
+                              whiteSpace: 'nowrap',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.15)'
                             }}>
                               {auth.authority}
                             </span>
