@@ -1773,7 +1773,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   fontWeight: 600,
                   cursor: 'pointer',
                   background: affiliationTab === 'student' ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(255,255,255,0.08)',
-                  color: affiliationTab === 'student' ? '#ffffff' : 'rgba(255,255,255,0.7)',
+                  color: affiliationTab === 'student' ? '#ffffff' : '#0f172a',
                   boxShadow: affiliationTab === 'student' ? '0 4px 12px rgba(220,38,38,0.25)' : 'none',
                   transition: 'all 0.2s ease'
                 }}
@@ -1792,7 +1792,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   fontWeight: 600,
                   cursor: 'pointer',
                   background: affiliationTab === 'operator' ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'rgba(255,255,255,0.08)',
-                  color: affiliationTab === 'operator' ? '#ffffff' : 'rgba(255,255,255,0.7)',
+                  color: affiliationTab === 'operator' ? '#ffffff' : '#0f172a',
                   boxShadow: affiliationTab === 'operator' ? '0 4px 12px rgba(220,38,38,0.25)' : 'none',
                   transition: 'all 0.2s ease'
                 }}
