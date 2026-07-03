@@ -435,6 +435,27 @@ const NATIONALITIES = [
   'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'
 ];
 
+const FLIGHT_SCHOOLS_BY_COUNTRY: Record<string, string[]> = {
+  'Philippines': ['WCC Aviation', 'SkyDive Academy', 'Orient Flights', 'First Aviation Academy', 'APC Aviation', 'AAA Academy', 'Aero Equation Aviation', 'Airworks Aviation', 'Alpha Aviation', 'Leading Edge Aviation'],
+  'United States of America': ['Embry-Riddle Aeronautical University', 'University of North Dakota', 'Purdue University Aviation', 'Ohio State University Aviation', 'Spartan College of Aeronautics', 'FlightSafety Academy', 'ATP Flight School', 'American Flyers', 'Phoenix East Aviation', 'L3Harris Airline Academy'],
+  'United Kingdom': ['CAE Oxford Aviation Academy', 'L3Harris Airline Academy UK', 'FTA Global', 'Diamond Flight Centre', 'Skyborne Airline Academy', 'BRAviation', 'Stapleford Flight Centre'],
+  'Australia': ['BAe Systems Flight Training', 'AFT Aviation', 'Flight Training Adelaide', 'Basair Aviation College', 'Soar Aviation', 'Aero Club Western Australia', 'Kingfisher Aviation', 'CAE Oxford Aviation Academy Australia'],
+  'New Zealand': ['New Zealand Flying School', 'Mainland Air', 'Southern Wings', 'International Aviation Academy', 'Canterbury Aero Club', 'Mount Cook Airline Training', 'Air Hawke\'s Bay'],
+  'South Africa': ['43 Air School', 'Cranfield Aviation Training', 'Blue Chip Flight School', 'Eagle Flight Academy', 'Progress Flight Academy', 'Cape Town Flight Training Centre'],
+  'Canada': ['Montair Aviation', 'Harv\'s Air', 'Spectrum Airways', 'Pacific Rim Aviation Academy', 'Canadian Flight Centre', 'Seneca College Aviation', 'Canadore College Aviation', 'Coast Flight Centre'],
+  'Spain': ['FTE Jerez', 'CAE Global Academy', 'FlyBy Aviation Academy', 'Aeroflota Flight School', 'European Flyers', 'Top Fly', 'Barcelona Flight School'],
+  'France': ['ENAC (École Nationale de l\'Aviation Civile)', 'ISAE-SUPAERO', 'Airways Aviation', 'L\'Etoile Flight School', 'Chalair Aviation Academy'],
+  'Germany': ['Lufthansa Aviation Training', 'European Aviation School', 'Rheinland Air Service', 'F AIR Flight School', 'Air Alliance Flight School'],
+  'India': ['Indira Gandhi Rashtriya Uran Akademi', 'Chimes Aviation Academy', 'Flight Cube Aviation', 'Madras Flying Club', 'Bombay Flying Club', 'Ahmedabad Aviation Academy', 'Rajiv Gandhi Academy'],
+  'Singapore': ['Singapore Flying College', 'ST Aerospace Academy', 'Singapore Aviation Academy', 'Seletar Flying Club'],
+  'Malaysia': ['HM Aerospace', 'Malaysia Flying Academy', 'Asia Pacific Flight Training', 'Borneo Airways Flying School', 'Elite Flying School'],
+  'Thailand': ['Thai Aviation Academy', 'Bangkok Aviation Centre', 'Phuket Flying Club', 'Chiang Mai Flying Club'],
+  'United Arab Emirates': ['Emirates Flight Training Academy', 'Etihad Aviation Training', 'Alpha Aviation Academy UAE', 'Gulf Aviation Academy'],
+  'Saudi Arabia': ['Saudi Aviation Flight Academy', 'Prince Sultan Aviation Academy', 'Saudi Aramco Aviation'],
+  'Mauritius': ['SkyDive Mauritius Academy', 'Air Mauritius Training Centre'],
+  'Other': ['Other / Not Listed']
+};
+
 const ENGLISH_PROFICIENCY_LEVELS = [
   'Level 1 - Pre-Elementary',
   'Level 2 - Elementary',
@@ -611,6 +632,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showNationalityDropdown, setShowNationalityDropdown] = useState(false);
   const [flightSchoolSearch, setFlightSchoolSearch] = useState('');
   const [affiliationTab, setAffiliationTab] = useState<'student' | 'operator'>('student');
+  const [atoCountry, setAtoCountry] = useState('');
+  const [atoFlightSchoolSearch, setAtoFlightSchoolSearch] = useState('');
+  const [showFlightSchoolDropdown, setShowFlightSchoolDropdown] = useState(false);
+  const flightSchoolDropdownRef = useRef<HTMLDivElement>(null);
   const [operatorSearch, setOperatorSearch] = useState('');
   const [interestSearchQuery, setInterestSearchQuery] = useState('');
   const [interestSearchFocused, setInterestSearchFocused] = useState(false);
@@ -618,6 +643,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [authoritySearch, setAuthoritySearch] = useState('');
   const [showAuthorityDropdown, setShowAuthorityDropdown] = useState(false);
   const authorityDropdownRef = useRef<HTMLDivElement>(null);
+  const [medicalAuthoritySearch, setMedicalAuthoritySearch] = useState('');
+  const [showMedicalAuthorityDropdown, setShowMedicalAuthorityDropdown] = useState(false);
+  const medicalDropdownRef = useRef<HTMLDivElement>(null);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [residingCountry, setResidingCountry] = useState('');
@@ -739,7 +767,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   
   // Tier gating
   const { isRecognitionPlus, tier, loading: tierLoading } = useAccountTier(userProfile?.id || currentUser?.id);
-  
+
+  // Filtered flight schools based on ATO country + search
+  const filteredFlightSchools = useMemo(() => {
+    const schools = atoCountry ? (FLIGHT_SCHOOLS_BY_COUNTRY[atoCountry] || []) : [];
+    if (!atoFlightSchoolSearch) return schools;
+    return schools.filter(s => s.toLowerCase().includes(atoFlightSchoolSearch.toLowerCase()));
+  }, [atoCountry, atoFlightSchoolSearch]);
+
   // Filtered options based on search
   const filteredCountries = useMemo(() => {
     if (!countrySearch) return NATIONALITIES;
@@ -776,6 +811,18 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showAuthorityDropdown]);
 
+  // Close medical authority dropdown on click outside
+  useEffect(() => {
+    if (!showMedicalAuthorityDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (medicalDropdownRef.current && !medicalDropdownRef.current.contains(e.target as Node)) {
+        setShowMedicalAuthorityDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showMedicalAuthorityDropdown]);
+
   useEffect(() => {
     if (!showCountryDropdown) return;
     const handleClick = (e: MouseEvent) => {
@@ -786,6 +833,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showCountryDropdown]);
+
+  useEffect(() => {
+    if (!showFlightSchoolDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (flightSchoolDropdownRef.current && !flightSchoolDropdownRef.current.contains(e.target as Node)) {
+        setShowFlightSchoolDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showFlightSchoolDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -1918,38 +1976,136 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
             {affiliationTab === 'student' ? (
               <>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
-                  Flight School Search
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={flightSchoolAddress}
-                    onChange={(e) => setFlightSchoolSearch(e.target.value)}
-                    placeholder="Search flight school (e.g., 'WCC Aviation', 'CAE Oxford')..."
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                      border: '2px solid rgba(255,255,255,0.35)',
-                      borderRadius: '8px',
-                      fontSize: '0.875rem',
-                      outline: 'none',
-                      transition: 'border-color 0.2s, box-shadow 0.2s'
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#dc2626';
-                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  />
-                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  {/* Country of ATO */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                      Country of ATO *
+                    </label>
+                    <select
+                      value={atoCountry}
+                      onChange={(e) => {
+                        setAtoCountry(e.target.value);
+                        setAtoFlightSchoolSearch('');
+                        setFlightSchoolAddress('');
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem',
+                        border: '2px solid rgba(255,255,255,0.35)',
+                        borderRadius: '8px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        background: 'white',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="">Select country...</option>
+                      {Object.keys(FLIGHT_SCHOOLS_BY_COUNTRY).sort().map(country => (
+                        <option key={country} value={country}>{country}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Name of Flight School */}
+                  <div ref={flightSchoolDropdownRef} style={{ position: 'relative' }}>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                      Name of Flight School / ATO *
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        value={atoFlightSchoolSearch}
+                        onChange={(e) => {
+                          setAtoFlightSchoolSearch(e.target.value);
+                          setShowFlightSchoolDropdown(true);
+                        }}
+                        onFocus={() => setShowFlightSchoolDropdown(true)}
+                        placeholder={atoCountry ? "Type to search flight schools..." : "Select a country first"}
+                        disabled={!atoCountry}
+                        style={{
+                          width: '100%',
+                          padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                          border: '2px solid rgba(255,255,255,0.35)',
+                          borderRadius: '8px',
+                          fontSize: '0.875rem',
+                          outline: 'none',
+                          transition: 'border-color 0.2s, box-shadow 0.2s',
+                          opacity: atoCountry ? 1 : 0.6,
+                          cursor: atoCountry ? 'text' : 'not-allowed'
+                        }}
+                        onFocusCapture={(e) => {
+                          if (atoCountry) {
+                            e.currentTarget.style.borderColor = '#dc2626';
+                            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                          }
+                        }}
+                        onBlurCapture={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      />
+                      <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+                    </div>
+                    {showFlightSchoolDropdown && atoCountry && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 4px)',
+                        left: 0,
+                        right: 0,
+                        zIndex: 20,
+                        background: 'rgba(15, 23, 42, 0.92)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+                        overflow: 'hidden'
+                      }}>
+                        <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '0.5rem' }}>
+                          {filteredFlightSchools.length === 0 && (
+                            <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                              No flight schools found
+                            </div>
+                          )}
+                          {filteredFlightSchools.map((school) => (
+                            <button
+                              key={school}
+                              type="button"
+                              onClick={() => {
+                                setAtoFlightSchoolSearch(school);
+                                setFlightSchoolAddress(school);
+                                setShowFlightSchoolDropdown(false);
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '0.6rem 0.75rem',
+                                textAlign: 'left',
+                                border: 'none',
+                                borderRadius: '6px',
+                                background: atoFlightSchoolSearch === school ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                                color: atoFlightSchoolSearch === school ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                                fontSize: '0.875rem',
+                                cursor: 'pointer',
+                                transition: 'all 0.15s'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (atoFlightSchoolSearch !== school) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                              }}
+                              onMouseLeave={(e) => {
+                                if (atoFlightSchoolSearch !== school) e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              {school}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
-                  Auto-completes address, ICAO code, and school details
+                <p style={{ margin: '0.5rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
+                  Select your country first, then search and select your ATO. More schools added regularly.
                 </p>
               </>
             ) : (
@@ -2084,12 +2240,32 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               <span style={{ color: '#dc2626' }}>Information</span>
             </h2>
           </div>
+
+          {/* License Claim Notice */}
+          <div style={{
+            background: 'rgba(220, 38, 38, 0.08)',
+            border: '1px solid rgba(220, 38, 38, 0.2)',
+            borderRadius: '8px',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '0.5rem'
+          }}>
+            <Shield style={{ width: '14px', height: '14px', color: '#dc2626', marginTop: '2px', flexShrink: 0 }} />
+            <p style={{ margin: 0, fontSize: '0.75rem', color: '#374151', lineHeight: 1.5 }}>
+              We only hold the claim data of your license governing authority and expiration date as a withholding claim, so that operators will see your current status as a pilot as a free user non-verified through pathway submission of interests.
+            </p>
+          </div>
           
           {/* Pilot Licenses - Multi Select */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.25rem' }}>
               Current License(s) Held *
             </label>
+            <p style={{ margin: '0 0 0.75rem', fontSize: '0.7rem', color: 'rgba(55,65,81,0.7)', lineHeight: 1.5 }}>
+              A detailed audit of individual licenses will undergo the <strong style={{ color: '#dc2626' }}>Recognition+ Verification Process</strong> and will be verified with the governing aviation authority that you provide us.
+            </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {LICENSE_TYPES.map(license => (
                 <button
@@ -2318,7 +2494,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                License Expiration Date *
+                Pilot License Expiration Date *
                 {isDateExpired(licenseExpiry) && (
                   <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 500 }}>(Expired)</span>
                 )}
@@ -2356,9 +2532,27 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
             <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
-            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
-              Medical Certificate
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              <span style={{ color: 'white' }}>Medical License</span>{' '}
+              <span style={{ color: '#dc2626' }}>Validity</span>
             </h2>
+          </div>
+
+          {/* Medical Claim Notice */}
+          <div style={{
+            background: 'rgba(220, 38, 38, 0.08)',
+            border: '1px solid rgba(220, 38, 38, 0.2)',
+            borderRadius: '8px',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '0.5rem'
+          }}>
+            <Shield style={{ width: '14px', height: '14px', color: '#dc2626', marginTop: '2px', flexShrink: 0 }} />
+            <p style={{ margin: 0, fontSize: '0.75rem', color: '#374151', lineHeight: 1.5 }}>
+              This medical information is a claim until proven to be verified by the governing aviation authority that issued your medical, through the <strong style={{ color: '#dc2626' }}>Recognition+ Verification Process</strong>.
+            </p>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
@@ -2387,27 +2581,202 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
             
-            <div>
+            <div ref={medicalDropdownRef} style={{ position: 'relative', zIndex: showMedicalAuthorityDropdown ? 100 : undefined }}>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                Country Medical License Issued *
+                Governing Aviation Authority Issuer *
               </label>
-              <select
-                value={medicalCountry}
-                onChange={(e) => setMedicalCountry(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid rgba(0,0,0,0.08)',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem',
-                  background: 'white'
-                }}
+              <div
+                style={{ position: 'relative', cursor: 'pointer' }}
+                onClick={() => setShowMedicalAuthorityDropdown(!showMedicalAuthorityDropdown)}
               >
-                <option value="">Select country</option>
-                {NATIONALITIES.map(country => (
-                  <option key={country} value={country}>{country}</option>
-                ))}
-              </select>
+                <div
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem',
+                    background: 'white',
+                    color: medicalCountry ? '#0f172a' : '#9ca3af',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {medicalCountry
+                      ? (() => {
+                          const a = AVIATION_AUTHORITIES.find(x => x.authority === medicalCountry);
+                          return a ? `${a.authority} — ${a.fullName}` : medicalCountry;
+                        })()
+                      : 'Select authority'}
+                  </span>
+                </div>
+                <ChevronDown style={{
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: `translateY(-50%) ${showMedicalAuthorityDropdown ? 'rotate(180deg)' : ''}`,
+                  width: '16px',
+                  height: '16px',
+                  color: '#9ca3af',
+                  transition: 'transform 0.2s'
+                }} />
+              </div>
+
+              {showMedicalAuthorityDropdown && (
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
+                  left: 0,
+                  right: 0,
+                  zIndex: 100,
+                  background: '#1e293b',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+                  overflow: 'hidden'
+                }}>
+                  {/* Search header */}
+                  <div style={{
+                    padding: '0.75rem',
+                    borderBottom: '1px solid rgba(255,255,255,0.08)',
+                    position: 'relative'
+                  }}>
+                    <Search style={{
+                      position: 'absolute',
+                      left: '1.25rem',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '14px',
+                      height: '14px',
+                      color: 'rgba(255,255,255,0.4)'
+                    }} />
+                    <input
+                      type="text"
+                      autoFocus
+                      placeholder="Search authority or country..."
+                      value={medicalAuthoritySearch}
+                      onChange={(e) => setMedicalAuthoritySearch(e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem 0.5rem 2rem',
+                        background: 'rgba(255,255,255,0.08)',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        color: 'white',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+
+                  {/* Authority list */}
+                  <div className="authority-scroll" style={{
+                    maxHeight: '280px',
+                    overflowY: 'scroll',
+                    padding: '0.5rem',
+                    scrollbarColor: '#dc2626 #334155',
+                    scrollbarWidth: 'thin'
+                  }}>
+                    {(() => {
+                      const q = medicalAuthoritySearch.toLowerCase().trim();
+                      const list = q
+                        ? AVIATION_AUTHORITIES.filter(a =>
+                            a.authority.toLowerCase().includes(q) ||
+                            a.country.toLowerCase().includes(q) ||
+                            a.fullName.toLowerCase().includes(q)
+                          )
+                        : AVIATION_AUTHORITIES;
+                      if (list.length === 0) {
+                        return (
+                          <div style={{
+                            padding: '1rem',
+                            textAlign: 'center',
+                            color: 'rgba(255,255,255,0.4)',
+                            fontSize: '0.8rem'
+                          }}>
+                            No authorities found
+                          </div>
+                        );
+                      }
+                      return list.map((auth) => {
+                        const isSelected = medicalCountry === auth.authority;
+                        return (
+                          <button
+                            key={auth.authority}
+                            type="button"
+                            onClick={() => {
+                              setMedicalCountry(auth.authority);
+                              setMedicalAuthoritySearch('');
+                              setShowMedicalAuthorityDropdown(false);
+                            }}
+                            style={{
+                              width: '100%',
+                              padding: '0.6rem 0.75rem',
+                              textAlign: 'left',
+                              border: 'none',
+                              borderRadius: '6px',
+                              background: isSelected ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '0.5rem',
+                              transition: 'all 0.15s'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isSelected) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isSelected) e.currentTarget.style.background = 'transparent';
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+                              <span style={{
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: 'white',
+                                background: '#dc2626',
+                                padding: '0.15rem 0.5rem',
+                                borderRadius: '9999px',
+                                whiteSpace: 'nowrap',
+                                boxShadow: '0 1px 3px rgba(0,0,0,0.15)'
+                              }}>
+                                {auth.authority}
+                              </span>
+                              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                                <span style={{
+                                  fontSize: '0.8rem',
+                                  fontWeight: isSelected ? 600 : 400,
+                                  color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis'
+                                }}>
+                                  {auth.fullName}
+                                </span>
+                                <span style={{
+                                  fontSize: '0.7rem',
+                                  color: 'rgba(255,255,255,0.4)'
+                                }}>
+                                  {auth.country}
+                                </span>
+                              </div>
+                            </div>
+                            {isSelected && (
+                              <Check style={{ width: '14px', height: '14px', color: '#f87171', flexShrink: 0 }} />
+                            )}
+                          </button>
+                        );
+                      });
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
             
             <div>
