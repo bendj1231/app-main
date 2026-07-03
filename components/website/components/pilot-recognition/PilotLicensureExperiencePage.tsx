@@ -34,6 +34,7 @@ interface PilotLicensureExperiencePageProps {
   } | null;
   embedded?: boolean;
   visibleSection?: 'personal' | 'license-medical' | 'ratings-endorsements' | 'experience-career';
+  onNavigateSection?: (section: 'personal' | 'license-medical' | 'aircraft-ratings' | 'endorsements' | 'experience-career') => void;
 }
 
 interface JobExperience {
@@ -727,11 +728,12 @@ const OTHER_INDUSTRY_EXPERIENCE_OPTIONS = [
   'None — Aviation only'
 ];
 
-export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePageProps> = ({ 
-  onBack, 
+export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePageProps> = ({
+  onBack,
   userProfile: userProfileProp,
   embedded = false,
-  visibleSection
+  visibleSection,
+  onNavigateSection
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
@@ -811,7 +813,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Radio License State
   const [radioLicenseExpiry, setRadioLicenseExpiry] = useState('');
   const [radioLicenseCountry, setRadioLicenseCountry] = useState('');
-  
+
+  // License & Medical staged wizard (0=License, 1=Medical, 2=Radio)
+  const [licenseStage, setLicenseStage] = useState(0);
+
   // Aircraft Ratings State
   const [aircraftRatings, setAircraftRatings] = useState<AircraftRating[]>([]);
 
@@ -1737,7 +1742,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </p>
         </div>
       ) : (
-      <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <main style={{ padding: embedded && visibleSection ? '1rem 3rem 1rem 1rem' : '2rem', maxWidth: embedded && visibleSection ? '100%' : '1200px', margin: '0 auto', overflowX: 'hidden' }}>
         {!visibleSection && (<div style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
         {/* Get Recognition+ Promo */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ marginBottom: '1.25rem', background: 'white', borderRadius: '12px', padding: '1.25rem 1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', position: 'relative' }}>
@@ -1934,12 +1939,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
         {/* Personal Information Section */}
         {visibleSection === 'personal' && (<>
-        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
-          background: 'rgba(255, 255, 255, 0.35)', 
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'rgba(255, 255, 255, 0.35)',
           backdropFilter: 'blur(32px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(32px) saturate(1.5)',
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '20px',
+          padding: embedded ? '1.25rem 2rem 1.25rem 1.25rem' : '2rem',
           marginBottom: '2rem',
           border: '1px solid rgba(255, 255, 255, 0.25)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
@@ -3084,6 +3089,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
         {/* License Information Section - Glassy UI */}
         {visibleSection === 'license-medical' && (<>
+        {licenseStage === 0 && (
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
           position: 'relative',
           zIndex: showAuthorityDropdown ? 100 : undefined,
@@ -3091,7 +3097,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
           borderRadius: '16px',
-          padding: '1.5rem',
+          padding: embedded ? '1.25rem 2rem 1.25rem 1.25rem' : '1.5rem',
           marginBottom: '2rem',
           border: '1px solid rgba(255, 255, 255, 0.45)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4)'
@@ -3380,9 +3386,29 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+            <button
+              onClick={() => setLicenseStage(1)}
+              style={{
+                padding: '0.6rem 1.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                color: '#ffffff',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}
+            >
+              Next →
+            </button>
+          </div>
         </motion.section>
+        )}
 
         {/* Medical Certificate Section - Glassy UI */}
+        {licenseStage === 1 && (
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
           background: 'rgba(255, 255, 255, 0.35)',
           backdropFilter: 'blur(24px)',
@@ -3690,10 +3716,29 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </div>
             </div>
           </div>
-          
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+            <button
+              onClick={() => setLicenseStage(2)}
+              style={{
+                padding: '0.6rem 1.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                color: '#ffffff',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}
+            >
+              Next →
+            </button>
+          </div>
         </motion.section>
+        )}
 
         {/* Radio License Section - Glassy UI */}
+        {licenseStage === 2 && (
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
           background: 'rgba(255, 255, 255, 0.35)',
           backdropFilter: 'blur(24px)',
@@ -3772,7 +3817,26 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+            <button
+              onClick={() => onNavigateSection?.('aircraft-ratings')}
+              style={{
+                padding: '0.6rem 1.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                color: '#ffffff',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+              }}
+            >
+              Continue to Aircraft Ratings →
+            </button>
+          </div>
         </motion.section>
+        )}
         </>)}
 
         {/* Aircraft Type Ratings Section - Glassy UI */}

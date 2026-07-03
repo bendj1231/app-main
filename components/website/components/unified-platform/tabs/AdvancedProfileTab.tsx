@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  LayoutDashboard, User, BookOpen, FileText, Shield, ChevronRight
+  LayoutDashboard, User, BookOpen, FileText, Shield, Star, ChevronRight
 } from 'lucide-react';
 import { PilotLicensureExperiencePage } from '../../pilot-recognition/PilotLicensureExperiencePage';
 import { LogbookHub } from '../../pilot-recognition/LogbookHub';
@@ -10,7 +10,8 @@ type SidebarSection =
   | 'profile-information'
   | 'personal-details'
   | 'license-medical'
-  | 'ratings-endorsements'
+  | 'aircraft-ratings'
+  | 'endorsements'
   | 'experience-career'
   | 'flight-logbooks'
   | 'documents'
@@ -20,7 +21,8 @@ const SECTIONS: { id: SidebarSection; label: string; icon: React.ComponentType<{
   { id: 'profile-information',  label: 'Profile Information',      icon: LayoutDashboard },
   { id: 'personal-details',     label: 'Personal Details',         icon: User },
   { id: 'license-medical',      label: 'License & Medical',        icon: Shield },
-  { id: 'ratings-endorsements', label: 'Ratings & Endorsements',   icon: BookOpen },
+  { id: 'aircraft-ratings',     label: 'Aircraft Ratings',         icon: Star },
+  { id: 'endorsements',         label: 'Endorsements',             icon: BookOpen },
   { id: 'experience-career',    label: 'Experience & Career',      icon: FileText },
   { id: 'flight-logbooks',      label: 'Flight Logbooks',          icon: BookOpen },
   { id: 'documents',            label: 'Documents',                icon: FileText },
@@ -46,10 +48,10 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
     : null;
 
   return (
-    <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7 relative min-h-screen flex">
+    <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7 relative h-screen flex overflow-hidden">
       {/* ─── Sidebar — old card style ─── */}
       <aside
-        className="hidden md:flex flex-col flex-shrink-0 sticky top-0 h-screen overflow-y-auto"
+        className="hidden md:flex flex-col flex-shrink-0 sticky top-0 h-screen overflow-hidden"
         style={{
           width: '280px',
           padding: '5rem 1rem 2rem 1.5rem',
@@ -186,11 +188,12 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
       </div>
 
       {/* ─── Content Area ─── */}
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 overflow-y-auto">
         {(activeSection === 'profile-information' ||
           activeSection === 'personal-details' ||
           activeSection === 'license-medical' ||
-          activeSection === 'ratings-endorsements' ||
+          activeSection === 'aircraft-ratings' ||
+          activeSection === 'endorsements' ||
           activeSection === 'experience-career') && (
           <PilotLicensureExperiencePage
             onBack={() => setTab('verification')}
@@ -199,10 +202,18 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
             visibleSection={
               activeSection === 'personal-details' ? 'personal' :
               activeSection === 'license-medical' ? 'license-medical' :
-              activeSection === 'ratings-endorsements' ? 'ratings-endorsements' :
+              activeSection === 'aircraft-ratings' ? 'aircraft-ratings' :
+              activeSection === 'endorsements' ? 'endorsements' :
               activeSection === 'experience-career' ? 'experience-career' :
               undefined
             }
+            onNavigateSection={(section) => {
+              if (section === 'personal') setActiveSection('personal-details');
+              else if (section === 'license-medical') setActiveSection('license-medical');
+              else if (section === 'aircraft-ratings') setActiveSection('aircraft-ratings');
+              else if (section === 'endorsements') setActiveSection('endorsements');
+              else if (section === 'experience-career') setActiveSection('experience-career');
+            }}
           />
         )}
 
