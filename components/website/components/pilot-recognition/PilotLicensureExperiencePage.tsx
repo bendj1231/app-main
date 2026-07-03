@@ -579,6 +579,26 @@ const ENGLISH_PROFICIENCY_LEVELS = [
   'Level 6 - Expert'
 ];
 
+const PREDEFINED_PILOT_STATUSES = [
+  'Employed – Active airline pilot',
+  'Employed – Corporate / Business aviation',
+  'Employed – Cargo / Freighter pilot',
+  'Employed – Charter / Tour operations',
+  'Waiting for CFI (Certified Flight Instructor) position',
+  'Active CFI operations',
+  'Low hours – seeking first flying job',
+  'Low hours – building time as CFI',
+  'Newly licensed CPL – no job yet',
+  'Recently graduated from ATO – job hunting',
+  'Type rating in progress',
+  'Awaiting airline assessment / simulator check',
+  'Furloughed / laid off – seeking new role',
+  'Transitioning from military to civilian aviation',
+  'Career break – planning return to flying',
+  'Considering aviation career change',
+  'Other'
+];
+
 const SLATE = {
   50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
   400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a'
@@ -752,6 +772,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const flightSchoolDropdownRef = useRef<HTMLDivElement>(null);
   const [operatorSearch, setOperatorSearch] = useState('');
   const [pilotStatus, setPilotStatus] = useState('');
+  const [showPilotStatusDropdown, setShowPilotStatusDropdown] = useState(false);
+  const pilotStatusRef = useRef<HTMLDivElement>(null);
   const [operatorCountry, setOperatorCountry] = useState('');
   const [operatorNameSearch, setOperatorNameSearch] = useState('');
   const [showOperatorNameDropdown, setShowOperatorNameDropdown] = useState(false);
@@ -904,6 +926,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return operators.filter(o => o.name.toLowerCase().includes(operatorNameSearch.toLowerCase()));
   }, [operatorCountry, operatorNameSearch]);
 
+  // Filtered pilot statuses based on search
+  const filteredPilotStatuses = useMemo(() => {
+    if (!pilotStatus) return PREDEFINED_PILOT_STATUSES;
+    return PREDEFINED_PILOT_STATUSES.filter(s => s.toLowerCase().includes(pilotStatus.toLowerCase()));
+  }, [pilotStatus]);
+
   // Filtered options based on search
   const filteredCountries = useMemo(() => {
     if (!countrySearch) return NATIONALITIES;
@@ -966,8 +994,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
       if (medicalTriggerRef.current) {
         const rect = medicalTriggerRef.current.getBoundingClientRect();
         setMedicalDropdownPos({
-          top: rect.bottom + window.scrollY + 4,
-          left: rect.left + window.scrollX,
+          top: rect.bottom + 4,
+          left: rect.left,
           width: rect.width
         });
       }
@@ -1013,6 +1041,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showOperatorNameDropdown]);
+
+  useEffect(() => {
+    if (!showPilotStatusDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (pilotStatusRef.current && !pilotStatusRef.current.contains(e.target as Node)) {
+        setShowPilotStatusDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showPilotStatusDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -2563,7 +2602,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 </div>
 
                 {/* Row 2: Their Status — Custom based on situation */}
-                <div>
+                <div ref={pilotStatusRef} style={{ position: 'relative' }}>
                   <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                     Your Current Pilot Status *
                   </label>
@@ -2571,7 +2610,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     <input
                       type="text"
                       value={pilotStatus}
-                      onChange={(e) => setPilotStatus(e.target.value)}
+                      onChange={(e) => {
+                        setPilotStatus(e.target.value);
+                        setShowPilotStatusDropdown(true);
+                      }}
+                      onFocus={() => setShowPilotStatusDropdown(true)}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          setShowPilotStatusDropdown(false);
+                        }
+                      }}
                       placeholder="e.g. employed, waiting for CFI, low hours, Active CFI operations, Airline mention..."
                       style={{
                         width: '100%',
@@ -2582,17 +2634,114 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         outline: 'none',
                         transition: 'border-color 0.2s, box-shadow 0.2s'
                       }}
-                      onFocus={(e) => {
+                      onFocusCapture={(e) => {
                         e.currentTarget.style.borderColor = '#dc2626';
                         e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-                        e.currentTarget.style.boxShadow = 'none';
                       }}
                     />
                     <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
                   </div>
+                  {showPilotStatusDropdown && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 4px)',
+                      left: 0,
+                      right: 0,
+                      zIndex: 20,
+                      background: 'rgba(15, 23, 42, 0.92)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{ maxHeight: '280px', overflowY: 'auto', padding: '0.5rem' }}>
+                        {filteredPilotStatuses.map((status) => (
+                          <button
+                            key={status}
+                            type="button"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => {
+                              setPilotStatus(status);
+                              setShowPilotStatusDropdown(false);
+                            }}
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem 0.75rem',
+                              textAlign: 'left',
+                              border: 'none',
+                              borderRadius: '6px',
+                              background: pilotStatus === status ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                              color: pilotStatus === status ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                              fontSize: '0.8rem',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (pilotStatus !== status) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                            }}
+                            onMouseLeave={(e) => {
+                              if (pilotStatus !== status) e.currentTarget.style.background = 'transparent';
+                            }}
+                          >
+                            <span style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: pilotStatus === status ? '#dc2626' : 'rgba(255,255,255,0.25)',
+                              flexShrink: 0
+                            }} />
+                            {status}
+                          </button>
+                        ))}
+                        {pilotStatus && !PREDEFINED_PILOT_STATUSES.includes(pilotStatus) && (
+                          <button
+                            type="button"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => {
+                              setShowPilotStatusDropdown(false);
+                            }}
+                            style={{
+                              width: '100%',
+                              marginTop: '0.5rem',
+                              padding: '0.6rem 0.75rem',
+                              textAlign: 'left',
+                              border: 'none',
+                              borderRadius: '6px',
+                              background: 'rgba(220, 38, 38, 0.15)',
+                              color: '#ffffff',
+                              fontSize: '0.85rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              borderTop: filteredPilotStatuses.length > 0 ? '1px solid rgba(255,255,255,0.08)' : 'none'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'rgba(220, 38, 38, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'rgba(220, 38, 38, 0.15)';
+                            }}
+                          >
+                            <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+                            Use custom: "{pilotStatus}"
+                          </button>
+                        )}
+                        {filteredPilotStatuses.length === 0 && !pilotStatus && (
+                          <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                            Start typing to describe your status...
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
                     Describe your current situation so pathways can be tailored to your career stage.
                   </p>
