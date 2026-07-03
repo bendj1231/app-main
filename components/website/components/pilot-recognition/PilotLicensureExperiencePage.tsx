@@ -1739,40 +1739,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
       ) : (
       <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
         {!visibleSection && (<>
-        {/* Header */}
-        <header style={{ marginBottom: '2rem', textAlign: 'center', position: 'relative' }}>
-          <button
-            onClick={onBack}
-            style={{
-              position: 'absolute',
-              top: '2rem',
-              left: '2rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.5rem 1rem',
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              color: embedded ? '#94a3b8' : '#475569',
-              fontWeight: 500
-            }}
-          >
-            ← Back to Dashboard
-          </button>
-          
-          <p style={{ letterSpacing: '0.2em', color: embedded ? '#60a5fa' : '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', marginTop: '1rem' }}>
-            Pilot Recognition Profile
-          </p>
-          <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: embedded ? '#f8fafc' : '#0f172a', fontWeight: 600 }}>
-            Pilot Licensure & Experience Data Entry
-          </h1>
-          <p style={{ marginTop: '1rem', color: embedded ? '#cbd5e1' : '#64748b', maxWidth: '600px', margin: '1rem auto' }}>
-            This information will be visible to aviation industry manufacturers and airlines who will see your current state, qualifications, and experience.
-          </p>
-        </header>
-
         {/* Get Recognition+ Promo */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ marginBottom: '2rem', background: 'white', borderRadius: '12px', padding: '1.5rem 2rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', position: 'relative' }}>
           <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem', fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
