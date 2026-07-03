@@ -6,7 +6,7 @@ import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAccountTier } from '@/hooks/useAccountTier';
-import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap } from 'lucide-react';
+import { Search, HelpCircle, ChevronRight, ChevronDown, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap } from 'lucide-react';
 
 interface UploadedDoc {
   id: string;
@@ -33,6 +33,7 @@ interface PilotLicensureExperiencePageProps {
   } | null;
   embedded?: boolean;
   visibleSection?: 'personal' | 'license-medical' | 'ratings-endorsements' | 'experience-career';
+  isDarkMode?: boolean;
 }
 
 interface JobExperience {
@@ -353,7 +354,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   onBack, 
   userProfile: userProfileProp,
   embedded = false,
-  visibleSection
+  visibleSection,
+  isDarkMode = true,
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
@@ -1244,23 +1246,23 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         {/* Personal Information Section */}
         {visibleSection === 'personal' && (<>
         <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
-          background: 'rgba(255, 255, 255, 0.12)', 
-          backdropFilter: 'blur(24px) saturate(1.4)',
-          WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
-          borderRadius: '20px', 
-          padding: '2rem', 
+          background: isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'white',
+          backdropFilter: isDarkMode ? 'blur(24px) saturate(1.4)' : 'none',
+          WebkitBackdropFilter: isDarkMode ? 'blur(24px) saturate(1.4)' : 'none',
+          borderRadius: '20px',
+          padding: '2rem',
           marginBottom: '2rem',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+          border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid #e2e8f0',
+          boxShadow: isDarkMode ? '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.5rem', borderBottom: '2px solid rgba(255,255,255,0.2)', paddingBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#ffffff' : '#dc2626', marginBottom: '1.5rem', borderBottom: isDarkMode ? '2px solid rgba(255,255,255,0.2)' : '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
             Personal Information
           </h2>
           
           {/* Two Column Layout for Personal Info */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', alignItems: 'end' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 First Name *
               </label>
               <input
@@ -1270,7 +1272,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1281,7 +1283,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                  e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.35)' : '#d1d5db';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
                 placeholder="Enter first name"
@@ -1289,7 +1291,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Middle Name
               </label>
               <input
@@ -1299,7 +1301,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1318,7 +1320,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Last Name *
               </label>
               <input
@@ -1328,7 +1330,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1347,7 +1349,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Date of Birth *
               </label>
               <input
@@ -1357,7 +1359,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1376,14 +1378,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             
             {/* Row 3: Country + Contact */}
             <div style={{ position: 'relative' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Residing Country *
                 <button
                   onMouseEnter={() => setActiveTooltip('country')}
                   onMouseLeave={() => setActiveTooltip(null)}
                   style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                 >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  <HelpCircle style={{ width: '14px', height: '14px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
                 </button>
                 {activeTooltip === 'country' && (
                   <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
@@ -1404,7 +1406,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   style={{
                     width: '100%',
                     padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                    border: '2px solid rgba(255,255,255,0.35)',
+                    border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                     borderRadius: '8px',
                     fontSize: '0.875rem',
                     outline: 'none',
@@ -1412,10 +1414,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   }}
                   onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
                 />
-                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
               </div>
               {showCountryDropdown && filteredCountries.length > 0 && (
-                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: isDarkMode ? '1px solid rgba(255,255,255,0.25)' : '1px solid #d1d5db', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
                   {filteredCountries.slice(0, 8).map(country => (
                     <button
                       key={country}
@@ -1424,7 +1426,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         setCountrySearch('');
                         setShowCountryDropdown(false);
                       }}
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: residingCountry === country ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: 'rgba(255,255,255,0.92)', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: residingCountry === country ? (isDarkMode ? 'rgba(239,246,255,0.9)' : '#eff6ff') : (isDarkMode ? 'rgba(255,255,255,0.95)' : 'white'), color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
                     >
                       {country}
                     </button>
@@ -1434,14 +1436,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div style={{ position: 'relative' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Nationality *
                 <button
                   onMouseEnter={() => setActiveTooltip('nationality')}
                   onMouseLeave={() => setActiveTooltip(null)}
                   style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                 >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  <HelpCircle style={{ width: '14px', height: '14px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
                 </button>
                 {activeTooltip === 'nationality' && (
                   <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
@@ -1462,7 +1464,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   style={{
                     width: '100%',
                     padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                    border: '2px solid rgba(255,255,255,0.35)',
+                    border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                     borderRadius: '8px',
                     fontSize: '0.875rem',
                     outline: 'none',
@@ -1470,10 +1472,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   }}
                   onBlur={() => setTimeout(() => setShowNationalityDropdown(false), 200)}
                 />
-                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
               </div>
               {showNationalityDropdown && filteredNationalities.length > 0 && (
-                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: isDarkMode ? '1px solid rgba(255,255,255,0.25)' : '1px solid #d1d5db', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
                   {filteredNationalities.slice(0, 8).map(nat => (
                     <button
                       key={nat}
@@ -1482,7 +1484,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         setNationalitySearch('');
                         setShowNationalityDropdown(false);
                       }}
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: nationality === nat ? 'rgba(239,246,255,0.9)' : 'rgba(255,255,255,0.95)', color: 'rgba(255,255,255,0.92)', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: nationality === nat ? (isDarkMode ? 'rgba(239,246,255,0.9)' : '#eff6ff') : (isDarkMode ? 'rgba(255,255,255,0.95)' : 'white'), color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
                     >
                       {nat}
                     </button>
@@ -1494,9 +1496,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           
           {/* Row 4: Flight School Search - Full Width */}
           <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
               Flight School Search
-              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
+              <span style={{ fontSize: '0.75rem', color: isDarkMode ? 'rgba(255,255,255,0.55)' : '#475569', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
             </label>
             <div style={{ position: 'relative' }}>
               <input
@@ -1507,7 +1509,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1522,9 +1524,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               />
-              <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(255,255,255,0.5)' }} />
+              <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
             </div>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: isDarkMode ? 'rgba(255,255,255,0.55)' : '#475569' }}>
               Auto-completes address, ICAO code, and school details
             </p>
           </div>
@@ -1532,14 +1534,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           {/* Row 5: Contact + Languages */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1.5rem' }}>
             <div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Contact Number *
                 <button
                   onMouseEnter={() => setActiveTooltip('contact')}
                   onMouseLeave={() => setActiveTooltip(null)}
                   style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
                 >
-                  <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(255,255,255,0.5)' }} />
+                  <HelpCircle style={{ width: '14px', height: '14px', color: isDarkMode ? 'rgba(255,255,255,0.5)' : '#9ca3af' }} />
                 </button>
                 {activeTooltip === 'contact' && (
                   <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
@@ -1555,7 +1557,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1573,7 +1575,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
                 Languages You Speak *
               </label>
               <input
@@ -1584,7 +1586,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  border: isDarkMode ? '2px solid rgba(255,255,255,0.35)' : '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -1599,7 +1601,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               />
-              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: isDarkMode ? 'rgba(255,255,255,0.55)' : '#475569' }}>
                 Enter languages separated by commas
               </p>
             </div>
@@ -1607,7 +1609,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
           {/* English Proficiency */}
           <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? 'rgba(255,255,255,0.92)' : '#0f172a', marginBottom: '0.5rem' }}>
               English Proficiency Level *
             </label>
             <select
@@ -1616,10 +1618,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               style={{
                 width: '100%',
                 padding: '0.75rem',
-                border: '1px solid rgba(255,255,255,0.25)',
+                border: isDarkMode ? '1px solid rgba(255,255,255,0.25)' : '1px solid #d1d5db',
                 borderRadius: '8px',
                 fontSize: '0.875rem',
-                background: 'rgba(255,255,255,0.95)'
+                background: isDarkMode ? 'rgba(255,255,255,0.95)' : 'white'
               }}
             >
               <option value="">Select proficiency level</option>
@@ -1627,7 +1629,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 <option key={level} value={level}>{level}</option>
               ))}
             </select>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: isDarkMode ? 'rgba(255,255,255,0.55)' : '#475569' }}>
               ICAO English Language Proficiency Rating
             </p>
           </div>
@@ -1851,15 +1853,18 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           
         </motion.section>
 
-        {/* Radio License Section - Terminal Style */}
-        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ 
-          background: 'white', 
-          borderRadius: '8px', 
-          padding: '1.5rem', 
+        {/* Radio License Section - Glassy UI */}
+        <motion.section initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{
+          background: 'rgba(255, 255, 255, 0.35)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderRadius: '16px',
+          padding: '1.5rem',
           marginBottom: '2rem',
-          border: `1px solid ${SLATE[200]}`
+          border: '1px solid rgba(255, 255, 255, 0.45)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
             <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
             <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
               Radio License
@@ -1877,7 +1882,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid rgba(0,0,0,0.08)',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                   background: 'white'
@@ -1901,7 +1906,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: `1px solid ${SLATE[300]}`,
+                  background: 'white',
+                  border: '1px solid rgba(0,0,0,0.08)',
                   borderRadius: '6px',
                   fontSize: '0.875rem',
                   fontFamily: MONO_FONT

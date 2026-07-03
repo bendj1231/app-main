@@ -1062,7 +1062,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'inbox':
         return <InboxTab profile={profileData} onNavigate={onNavigate} />;
       case 'advanced-profile':
-        return <AdvancedProfileTab setTab={setTab} profile={profileData} />;
+        return <AdvancedProfileTab setTab={setTab} profile={profileData} isDarkMode={isDarkMode} />;
       default:
         return null;
     }

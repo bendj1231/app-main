@@ -30,9 +30,10 @@ const SECTIONS: { id: SidebarSection; label: string; icon: React.ComponentType<{
 interface AdvancedProfileTabProps {
   setTab: (tab: TabId) => void;
   profile?: any;
+  isDarkMode?: boolean;
 }
 
-export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, profile }) => {
+export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, profile, isDarkMode = true }) => {
   const [activeSection, setActiveSection] = useState<SidebarSection>('profile-information');
 
   const userProfile = profile
@@ -196,6 +197,7 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
             onBack={() => setTab('verification')}
             userProfile={userProfile}
             embedded={true}
+            isDarkMode={isDarkMode}
             visibleSection={
               activeSection === 'personal-details' ? 'personal' :
               activeSection === 'license-medical' ? 'license-medical' :
