@@ -751,6 +751,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showFlightSchoolDropdown, setShowFlightSchoolDropdown] = useState(false);
   const flightSchoolDropdownRef = useRef<HTMLDivElement>(null);
   const [operatorSearch, setOperatorSearch] = useState('');
+  const [pilotStatus, setPilotStatus] = useState('');
   const [operatorCountry, setOperatorCountry] = useState('');
   const [operatorNameSearch, setOperatorNameSearch] = useState('');
   const [showOperatorNameDropdown, setShowOperatorNameDropdown] = useState(false);
@@ -2184,6 +2185,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                           setShowFlightSchoolDropdown(true);
                         }}
                         onFocus={() => setShowFlightSchoolDropdown(true)}
+                        onBlur={() => {
+                          if (atoCountry && atoFlightSchoolSearch) {
+                            setFlightSchoolAddress(atoFlightSchoolSearch);
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && atoCountry && atoFlightSchoolSearch) {
+                            setFlightSchoolAddress(atoFlightSchoolSearch);
+                            setShowFlightSchoolDropdown(false);
+                          }
+                        }}
                         placeholder={atoCountry ? "Type to search flight schools..." : "Select a country first"}
                         disabled={!atoCountry}
                         style={{
@@ -2235,6 +2247,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                             <button
                               key={school}
                               type="button"
+                              onMouseDown={(e) => e.preventDefault()}
                               onClick={() => {
                                 setAtoFlightSchoolSearch(school);
                                 setFlightSchoolAddress(school);
@@ -2296,6 +2309,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                         setOperatorCountry(e.target.value);
                         setOperatorNameSearch('');
                         setOperatorSearch('');
+                        setPilotStatus('');
                       }}
                       style={{
                         width: '100%',
@@ -2329,6 +2343,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                           setShowOperatorNameDropdown(true);
                         }}
                         onFocus={() => setShowOperatorNameDropdown(true)}
+                        onBlur={() => {
+                          if (operatorCountry && operatorNameSearch) {
+                            setOperatorSearch(operatorNameSearch);
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && operatorCountry && operatorNameSearch) {
+                            setOperatorSearch(operatorNameSearch);
+                            setShowOperatorNameDropdown(false);
+                          }
+                        }}
                         placeholder={operatorCountry ? "Type to search operators..." : "Select a country first"}
                         disabled={!operatorCountry}
                         style={{
@@ -2404,6 +2429,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                                     <button
                                       key={op.name}
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => {
                                         setOperatorNameSearch(op.name);
                                         setOperatorSearch(op.name);
@@ -2459,8 +2485,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   <div style={{ position: 'relative' }}>
                     <input
                       type="text"
-                      value={operatorSearch}
-                      onChange={(e) => setOperatorSearch(e.target.value)}
+                      value={pilotStatus}
+                      onChange={(e) => setPilotStatus(e.target.value)}
                       placeholder="e.g. employed, waiting for CFI, low hours, Active CFI operations, Airline mention..."
                       style={{
                         width: '100%',
