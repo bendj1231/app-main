@@ -1410,7 +1410,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                 Date of Birth *
               </label>
               <input
@@ -1497,7 +1497,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div style={{ position: 'relative' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                 Nationality *
                 <button
                   onMouseEnter={() => setActiveTooltip('nationality')}
@@ -1557,7 +1557,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           
           {/* Row 4: Flight School Search - Full Width */}
           <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
               Flight School Search
               <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
             </label>
@@ -1595,7 +1595,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           {/* Row 5: Contact + Languages */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1.5rem' }}>
             <div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
                 Contact Number *
                 <button
                   onMouseEnter={() => setActiveTooltip('contact')}
@@ -1670,7 +1670,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
           {/* English Proficiency */}
           <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginBottom: '0.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
               English Proficiency Level *
             </label>
             <select
