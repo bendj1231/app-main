@@ -616,6 +616,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const interestSearchRef = useRef<HTMLDivElement>(null);
   const [authoritySearch, setAuthoritySearch] = useState('');
   const [showAuthorityDropdown, setShowAuthorityDropdown] = useState(false);
+  const authorityDropdownRef = useRef<HTMLDivElement>(null);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [residingCountry, setResidingCountry] = useState('');
@@ -749,18 +750,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return NATIONALITIES.filter(n => n.toLowerCase().includes(nationalitySearch.toLowerCase()));
   }, [nationalitySearch]);
 
-  const filteredAuthorities = useMemo(() => {
-    if (!authoritySearch) return AVIATION_AUTHORITIES;
-    const q = authoritySearch.toLowerCase().trim();
-    const results = AVIATION_AUTHORITIES.filter(a =>
-      a.authority.toLowerCase().includes(q) ||
-      a.country.toLowerCase().includes(q) ||
-      a.fullName.toLowerCase().includes(q)
-    );
-    console.log('[AUTH SEARCH]', q, '=>', results.length, 'results');
-    return results;
-  }, [authoritySearch]);
-
   // Separate effect to handle minimum display time for loading screen
   useEffect(() => {
     // Always show loading for at least 1 second when component mounts
@@ -773,6 +762,18 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
     return () => clearTimeout(timer);
   }, [dataLoaded, userProfile?.id]);
+
+  // Close authority dropdown on click outside
+  useEffect(() => {
+    if (!showAuthorityDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (authorityDropdownRef.current && !authorityDropdownRef.current.contains(e.target as Node)) {
+        setShowAuthorityDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showAuthorityDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -1555,13 +1556,28 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
-                Middle Name
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                Contact Number *
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button
+                    onMouseEnter={() => setActiveTooltip('contact')}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                  >
+                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(15,23,42,0.4)' }} />
+                  </button>
+                  {activeTooltip === 'contact' && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                      Used by recruiters for urgent interview scheduling
+                    </span>
+                  )}
+                </span>
               </label>
               <input
-                type="text"
-                value={middleName}
-                onChange={(e) => setMiddleName(e.target.value)}
+                type="tel"
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+                placeholder="+1 (555) 000-0000"
                 style={{
                   width: '100%',
                   padding: '0.75rem',
@@ -1579,7 +1595,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
-                placeholder="Enter middle name (optional)"
               />
             </div>
             
@@ -1640,7 +1655,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
             
-            {/* Row 3: Country + Contact */}
+            {/* Row 3: Country + Nationality */}
             <div style={{ position: 'relative' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Residing Country *
@@ -1974,51 +1989,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             )}
           </div>
 
-          {/* Row 5: Contact + Languages */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1.5rem' }}>
-            <div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
-                Contact Number *
-                <span style={{ position: 'relative', display: 'inline-flex' }}>
-                  <button
-                    onMouseEnter={() => setActiveTooltip('contact')}
-                    onMouseLeave={() => setActiveTooltip(null)}
-                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
-                  >
-                    <HelpCircle style={{ width: '14px', height: '14px', color: 'rgba(15,23,42,0.4)' }} />
-                  </button>
-                  {activeTooltip === 'contact' && (
-                    <span style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
-                      Used by recruiters for urgent interview scheduling
-                    </span>
-                  )}
-                </span>
-              </label>
-              <input
-                type="tel"
-                value={contactNumber}
-                onChange={(e) => setContactNumber(e.target.value)}
-                placeholder="+1 (555) 000-0000"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '2px solid rgba(255,255,255,0.35)',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#dc2626';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              />
-            </div>
-            
+          {/* Row 5: Languages */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
                 Languages You Speak *
@@ -2227,7 +2199,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   </div>
 
                   {/* Authority list */}
-                  <div className="authority-scroll" style={{
+                  {(() => {
+                    const q = authoritySearch.toLowerCase().trim();
+                    const list = q
+                      ? AVIATION_AUTHORITIES.filter(a =>
+                          a.authority.toLowerCase().includes(q) ||
+                          a.country.toLowerCase().includes(q) ||
+                          a.fullName.toLowerCase().includes(q)
+                        )
+                      : AVIATION_AUTHORITIES;
+                    return (
+                  <div key={authoritySearch} className="authority-scroll" style={{
                     maxHeight: '280px',
                     overflowY: 'scroll',
                     padding: '0.5rem',
@@ -2235,9 +2217,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     scrollbarWidth: 'thin'
                   }}>
                     <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', padding: '0 0.5rem 0.25rem', fontFamily: 'monospace' }}>
-                      search: "{authoritySearch}" | results: {filteredAuthorities.length}
+                      search: "{authoritySearch}" | results: {list.length}
                     </div>
-                    {filteredAuthorities.length === 0 ? (
+                    {list.length === 0 ? (
                       <div style={{
                         padding: '1rem',
                         textAlign: 'center',
@@ -2246,7 +2228,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       }}>
                         No authorities found
                       </div>
-                    ) : filteredAuthorities.map((auth) => {
+                    ) : list.map((auth) => {
                       const isSelected = licenseCountryOfIssue === auth.authority;
                       return (
                         <button
@@ -2317,6 +2299,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                       );
                     })}
                   </div>
+                  );
+                })()}
                 </div>
               )}
             </div>
