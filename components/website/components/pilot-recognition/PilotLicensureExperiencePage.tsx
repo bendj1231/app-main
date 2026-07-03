@@ -6,7 +6,7 @@ import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { useAccountTier } from '@/hooks/useAccountTier';
-import { Search, HelpCircle, ChevronRight, ChevronDown, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap } from 'lucide-react';
+import { Search, HelpCircle, ChevronRight, ChevronDown, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star, Plus, BookOpen, Zap, IdCard, Radio } from 'lucide-react';
 
 interface UploadedDoc {
   id: string;
@@ -456,6 +456,32 @@ const FLIGHT_SCHOOLS_BY_COUNTRY: Record<string, string[]> = {
   'Other': ['Other / Not Listed']
 };
 
+const OPERATORS_BY_COUNTRY: Record<string, string[]> = {
+  'Philippines': ['Cebu Pacific', 'Philippine Airlines', 'PAL Express', 'AirAsia Philippines', 'Skyjet', 'Air Juan', 'CebGo', 'WCC Aviation (ATO)', 'Orient Flights (ATO)', 'AAA Academy (ATO)', 'APC Aviation (ATO)'],
+  'United States of America': ['Delta Air Lines', 'American Airlines', 'United Airlines', 'Southwest Airlines', 'FedEx Express', 'UPS Airlines', 'JetBlue', 'Alaska Airlines', 'Spirit Airlines', 'NetJets', 'Flexjet', 'CAE USA (ATO/TR)', 'FlightSafety International (ATO/TR)', 'ATP Flight School (ATO)', 'L3Harris (ATO/TR)'],
+  'United Kingdom': ['British Airways', 'EasyJet', 'Virgin Atlantic', 'TUI Airways', 'Jet2', 'Ryanair UK', 'CAE Oxford (ATO/TR)', 'L3Harris UK (ATO/TR)', 'FTA Global (ATO)', 'Skyborne Airline Academy (ATO)'],
+  'Australia': ['Qantas', 'Virgin Australia', 'Jetstar', 'Rex Airlines', 'Alliance Airlines', 'BAe Systems Flight Training (ATO)', 'Flight Training Adelaide (ATO)', 'Soar Aviation (ATO)'],
+  'New Zealand': ['Air New Zealand', 'Mainland Air', 'Southern Wings (ATO)', 'International Aviation Academy (ATO)'],
+  'United Arab Emirates': ['Emirates', 'Etihad Airways', 'Air Arabia', 'flydubai', 'Emirates Flight Training Academy (ATO)', 'Gulf Aviation Academy (ATO/TR)', 'Alpha Aviation Academy UAE (ATO)'],
+  'Saudi Arabia': ['Saudia', 'flynas', 'flyadeal', 'Saudi Aramco Aviation', 'Saudi Aviation Flight Academy (ATO)', 'Prince Sultan Aviation Academy (ATO)'],
+  'Canada': ['Air Canada', 'WestJet', 'Sunwing', 'Porter Airlines', 'Air Transat', 'Flair Airlines', 'Montair Aviation (ATO)', 'Harv\'s Air (ATO)', 'Seneca College Aviation (ATO)', 'Canadian Flight Centre (ATO)'],
+  'Germany': ['Lufthansa', 'Eurowings', 'Condor', 'TUIfly', 'Lufthansa Aviation Training (ATO/TR)', 'European Aviation School (ATO)', 'F AIR Flight School (ATO)'],
+  'France': ['Air France', 'Transavia France', 'Corsair', 'Air Caraibes', 'ENAC (ATO)', 'Airways Aviation (ATO)', 'Chalair Aviation Academy (ATO)'],
+  'Spain': ['Iberia', 'Air Europa', 'Vueling', 'Volotea', 'Binter Canarias', 'FTE Jerez (ATO/TR)', 'FlyBy Aviation Academy (ATO)', 'European Flyers (ATO)', 'Barcelona Flight School (ATO)'],
+  'India': ['Air India', 'IndiGo', 'SpiceJet', 'Vistara', 'Akasa Air', 'Indira Gandhi Rashtriya Uran Akademi (ATO)', 'Chimes Aviation Academy (ATO)', 'Madras Flying Club (ATO)', 'Bombay Flying Club (ATO)'],
+  'Singapore': ['Singapore Airlines', 'Scoot', 'Jetstar Asia', 'Singapore Flying College (ATO)', 'ST Aerospace Academy (ATO)', 'Singapore Aviation Academy (ATO)'],
+  'Malaysia': ['Malaysia Airlines', 'AirAsia', 'Malindo Air', 'Firefly', 'MASwings', 'HM Aerospace (ATO)', 'Malaysia Flying Academy (ATO)', 'Asia Pacific Flight Training (ATO)'],
+  'Thailand': ['Thai Airways', 'Bangkok Airways', 'Thai AirAsia', 'Thai Lion Air', 'Nok Air', 'Thai Aviation Academy (ATO)', 'Bangkok Aviation Centre (ATO)'],
+  'South Africa': ['South African Airways', 'FlySafair', 'Airlink', 'Lift', 'CemAir', '43 Air School (ATO)', 'Cranfield Aviation Training (ATO)', 'Eagle Flight Academy (ATO)'],
+  'Mauritius': ['Air Mauritius', 'Air Mauritius Training Centre (ATO)', 'SkyDive Mauritius Academy (ATO)'],
+  'Japan': ['JAL', 'ANA', 'Peach Aviation', 'Jetstar Japan', 'Spring Japan', 'Fuji Dream Airlines', 'Solaseed Air', 'Star Flyer'],
+  'China': ['Air China', 'China Southern', 'China Eastern', 'Hainan Airlines', 'XiamenAir', 'Shenzhen Airlines', 'Sichuan Airlines', 'Juneyao Air', 'Spring Airlines'],
+  'Qatar': ['Qatar Airways', 'Qatar Executive', 'Gulf Helicopters', 'Doha Aviation Academy (ATO)'],
+  'Turkey': ['Turkish Airlines', 'Pegasus Airlines', 'SunExpress', 'AnadoluJet', 'Corendon Airlines', 'Freebird Airlines'],
+  'Netherlands': ['KLM', 'Transavia', 'TUI fly Netherlands', 'Corendon Dutch Airlines'],
+  'Other': ['Other / Not Listed']
+};
+
 const ENGLISH_PROFICIENCY_LEVELS = [
   'Level 1 - Pre-Elementary',
   'Level 2 - Elementary',
@@ -637,6 +663,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [showFlightSchoolDropdown, setShowFlightSchoolDropdown] = useState(false);
   const flightSchoolDropdownRef = useRef<HTMLDivElement>(null);
   const [operatorSearch, setOperatorSearch] = useState('');
+  const [operatorCountry, setOperatorCountry] = useState('');
+  const [operatorNameSearch, setOperatorNameSearch] = useState('');
+  const [showOperatorNameDropdown, setShowOperatorNameDropdown] = useState(false);
+  const operatorNameRef = useRef<HTMLDivElement>(null);
   const [interestSearchQuery, setInterestSearchQuery] = useState('');
   const [interestSearchFocused, setInterestSearchFocused] = useState(false);
   const interestSearchRef = useRef<HTMLDivElement>(null);
@@ -775,6 +805,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     return schools.filter(s => s.toLowerCase().includes(atoFlightSchoolSearch.toLowerCase()));
   }, [atoCountry, atoFlightSchoolSearch]);
 
+  // Filtered operators based on country + search
+  const filteredOperators = useMemo(() => {
+    const operators = operatorCountry ? (OPERATORS_BY_COUNTRY[operatorCountry] || []) : [];
+    if (!operatorNameSearch) return operators;
+    return operators.filter(o => o.toLowerCase().includes(operatorNameSearch.toLowerCase()));
+  }, [operatorCountry, operatorNameSearch]);
+
   // Filtered options based on search
   const filteredCountries = useMemo(() => {
     if (!countrySearch) return NATIONALITIES;
@@ -844,6 +881,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showFlightSchoolDropdown]);
+
+  useEffect(() => {
+    if (!showOperatorNameDropdown) return;
+    const handleClick = (e: MouseEvent) => {
+      if (operatorNameRef.current && !operatorNameRef.current.contains(e.target as Node)) {
+        setShowOperatorNameDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showOperatorNameDropdown]);
 
   // Load existing data from D1
   useEffect(() => {
@@ -2119,38 +2167,172 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                     We need to know your status so that pathways can be catered to your career stage.
                   </p>
                 </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
-                  Operator / ATO / Type Rating Center
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={operatorSearch}
-                    onChange={(e) => setOperatorSearch(e.target.value)}
-                    placeholder="e.g. employed, waiting for CFI, low hours, Active CFI operations, Airline mention..."
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem 2.5rem 0.75rem 0.75rem',
-                      border: '2px solid rgba(255,255,255,0.35)',
-                      borderRadius: '8px',
-                      fontSize: '0.875rem',
-                      outline: 'none',
-                      transition: 'border-color 0.2s, box-shadow 0.2s'
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#dc2626';
-                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  />
-                  <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+
+                {/* Row 1: Country + Operator/ATO */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  {/* Country of Operator / ATO / TR Center */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                      Country of Operator / ATO / TR Center *
+                    </label>
+                    <select
+                      value={operatorCountry}
+                      onChange={(e) => {
+                        setOperatorCountry(e.target.value);
+                        setOperatorNameSearch('');
+                        setOperatorSearch('');
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem',
+                        border: '2px solid rgba(255,255,255,0.35)',
+                        borderRadius: '8px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        background: 'white',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="">Select country...</option>
+                      {Object.keys(OPERATORS_BY_COUNTRY).sort().map(country => (
+                        <option key={country} value={country}>{country}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Operator / ATO / Type Rating Center / Other */}
+                  <div ref={operatorNameRef} style={{ position: 'relative' }}>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                      Operator / ATO / Type Rating Center / Other *
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        value={operatorNameSearch}
+                        onChange={(e) => {
+                          setOperatorNameSearch(e.target.value);
+                          setShowOperatorNameDropdown(true);
+                        }}
+                        onFocus={() => setShowOperatorNameDropdown(true)}
+                        placeholder={operatorCountry ? "Type to search operators..." : "Select a country first"}
+                        disabled={!operatorCountry}
+                        style={{
+                          width: '100%',
+                          padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                          border: '2px solid rgba(255,255,255,0.35)',
+                          borderRadius: '8px',
+                          fontSize: '0.875rem',
+                          outline: 'none',
+                          transition: 'border-color 0.2s, box-shadow 0.2s',
+                          opacity: operatorCountry ? 1 : 0.6,
+                          cursor: operatorCountry ? 'text' : 'not-allowed'
+                        }}
+                        onFocusCapture={(e) => {
+                          if (operatorCountry) {
+                            e.currentTarget.style.borderColor = '#dc2626';
+                            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                          }
+                        }}
+                        onBlurCapture={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      />
+                      <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+                    </div>
+                    {showOperatorNameDropdown && operatorCountry && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 4px)',
+                        left: 0,
+                        right: 0,
+                        zIndex: 20,
+                        background: 'rgba(15, 23, 42, 0.92)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+                        overflow: 'hidden'
+                      }}>
+                        <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '0.5rem' }}>
+                          {filteredOperators.length === 0 && (
+                            <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                              No operators found
+                            </div>
+                          )}
+                          {filteredOperators.map((op) => (
+                            <button
+                              key={op}
+                              type="button"
+                              onClick={() => {
+                                setOperatorNameSearch(op);
+                                setOperatorSearch(op);
+                                setShowOperatorNameDropdown(false);
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '0.6rem 0.75rem',
+                                textAlign: 'left',
+                                border: 'none',
+                                borderRadius: '6px',
+                                background: operatorNameSearch === op ? 'rgba(220, 38, 38, 0.25)' : 'transparent',
+                                color: operatorNameSearch === op ? '#ffffff' : 'rgba(255,255,255,0.85)',
+                                fontSize: '0.875rem',
+                                cursor: 'pointer',
+                                transition: 'all 0.15s'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (operatorNameSearch !== op) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                              }}
+                              onMouseLeave={(e) => {
+                                if (operatorNameSearch !== op) e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              {op}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
-                  Current or most recent airline / operator affiliation
-                </p>
+
+                {/* Row 2: Their Status — Custom based on situation */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#dc2626', marginBottom: '0.5rem' }}>
+                    Your Current Pilot Status *
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      value={operatorSearch}
+                      onChange={(e) => setOperatorSearch(e.target.value)}
+                      placeholder="e.g. employed, waiting for CFI, low hours, Active CFI operations, Airline mention..."
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                        border: '2px solid rgba(255,255,255,0.35)',
+                        borderRadius: '8px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        transition: 'border-color 0.2s, box-shadow 0.2s'
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = '#dc2626';
+                        e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    />
+                    <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: 'rgba(15,23,42,0.4)' }} />
+                  </div>
+                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'rgba(15,23,42,0.55)' }}>
+                    Describe your current situation so pathways can be tailored to your career stage.
+                  </p>
+                </div>
               </>
             )}
           </div>
@@ -2234,7 +2416,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
-            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <IdCard style={{ width: '20px', height: '20px', color: '#001E3C' }} />
             <h2 style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
               <span style={{ color: 'white' }}>License</span>{' '}
               <span style={{ color: '#dc2626' }}>Information</span>
@@ -2531,7 +2713,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
-            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <Plus style={{ width: '20px', height: '20px', color: '#dc2626' }} />
             <h2 style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
               <span style={{ color: 'white' }}>Medical License</span>{' '}
               <span style={{ color: '#dc2626' }}>Validity</span>
@@ -2581,7 +2763,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               />
             </div>
             
-            <div ref={medicalDropdownRef} style={{ position: 'relative', zIndex: showMedicalAuthorityDropdown ? 100 : undefined }}>
+            <div ref={medicalDropdownRef} style={{ position: 'relative', zIndex: showMedicalAuthorityDropdown ? 9999 : undefined }}>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Governing Aviation Authority Issuer *
               </label>
@@ -2841,10 +3023,27 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.35)' }}>
-            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <Radio style={{ width: '20px', height: '20px', color: '#001E3C' }} />
             <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
               Radio License
             </h2>
+          </div>
+
+          {/* Radio License Claim Notice */}
+          <div style={{
+            background: 'rgba(220, 38, 38, 0.08)',
+            border: '1px solid rgba(220, 38, 38, 0.2)',
+            borderRadius: '8px',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '0.5rem'
+          }}>
+            <Shield style={{ width: '14px', height: '14px', color: '#dc2626', marginTop: '2px', flexShrink: 0 }} />
+            <p style={{ margin: 0, fontSize: '0.75rem', color: '#374151', lineHeight: 1.5 }}>
+              This radio license information is a claim until proven to be verified by the governing aviation authority that issued your radio license, through the <strong style={{ color: '#dc2626' }}>Recognition+ Verification Process</strong>.
+            </p>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
