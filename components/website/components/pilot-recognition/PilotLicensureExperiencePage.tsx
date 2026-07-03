@@ -1738,9 +1738,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         </div>
       ) : (
       <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-        {!visibleSection && (<>
+        {!visibleSection && (<div style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
         {/* Get Recognition+ Promo */}
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ marginBottom: '2rem', background: 'white', borderRadius: '12px', padding: '1.5rem 2rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', position: 'relative' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ marginBottom: '1.25rem', background: 'white', borderRadius: '12px', padding: '1.25rem 1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', position: 'relative' }}>
           <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem', fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
             Get <span style={{ color: '#dc2626' }}>Recognition+</span> — Don&apos;t miss a thing. One{' '}
             <span style={{ color: '#dc2626' }}>verification</span>, one{' '}
@@ -1762,13 +1762,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           background: 'rgba(255, 255, 255, 0.35)',
           backdropFilter: 'blur(32px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(32px) saturate(1.5)',
-          borderRadius: '20px',
-          padding: '2rem',
-          marginBottom: '2rem',
+          borderRadius: '16px',
+          padding: '1.25rem',
+          marginBottom: '1.25rem',
           border: '1px solid rgba(255, 255, 255, 0.25)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: 700, marginBottom: '0.35rem', textAlign: 'center' }}>
             <span style={{ color: '#ffffff' }}>Your Advanced </span><span style={{ color: '#dc2626' }}>Pilot Profile</span>
           </h2>
           <p style={{ textAlign: 'center', color: '#0f172a', fontSize: '0.9rem', marginBottom: '2rem', maxWidth: '560px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5 }}>
@@ -1776,11 +1776,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </p>
 
           {/* Hero Image */}
-          <div style={{ borderRadius: '16px', overflow: 'hidden', marginBottom: '2rem', position: 'relative', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
+          <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '1.25rem', position: 'relative', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
             <img
               src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80"
               alt="Aviation career pathways"
-              style={{ width: '100%', height: '280px', objectFit: 'cover', display: 'block' }}
+              style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }}
             />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.7) 0%, transparent 60%)' }} />
             <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem' }}>
@@ -1798,8 +1798,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             {/* Pathways Eligibility */}
             <div style={{
               background: 'rgba(255,255,255,0.5)',
-              borderRadius: '16px',
-              padding: '1.5rem',
+              borderRadius: '12px',
+              padding: '1rem',
               border: '1px solid rgba(255,255,255,0.4)',
               backdropFilter: 'blur(12px)',
               display: 'flex',
@@ -1828,8 +1828,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             {/* Unlocking Inbox */}
             <div style={{
               background: 'rgba(255,255,255,0.5)',
-              borderRadius: '16px',
-              padding: '1.5rem',
+              borderRadius: '12px',
+              padding: '1rem',
               border: '1px solid rgba(255,255,255,0.4)',
               backdropFilter: 'blur(12px)',
               display: 'flex',
@@ -1858,8 +1858,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             {/* Communication */}
             <div style={{
               background: 'rgba(255,255,255,0.5)',
-              borderRadius: '16px',
-              padding: '1.5rem',
+              borderRadius: '12px',
+              padding: '1rem',
               border: '1px solid rgba(255,255,255,0.4)',
               backdropFilter: 'blur(12px)',
               display: 'flex',
@@ -1888,7 +1888,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
           {/* CTA Row */}
           <div style={{
-            marginTop: '2rem',
+            marginTop: '1.25rem',
             padding: '1.25rem 1.5rem',
             background: 'rgba(220, 38, 38, 0.08)',
             borderRadius: '12px',
@@ -1921,7 +1921,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           </div>
         </motion.section>
-        </>)}
+        </div>)}
 
         {/* Save Message */}
         {saveMessage && (
