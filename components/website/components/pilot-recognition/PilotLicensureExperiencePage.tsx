@@ -5531,7 +5531,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         </motion.section>
         </>)}
 
-        {/* Save Button */}
+        {/* Save Button — hidden on overview and personal tabs */}
+        {visibleSection && visibleSection !== 'personal' && (
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>
           <button
             onClick={handleSave}
@@ -5552,6 +5553,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             {isSaving ? 'Saving...' : 'Save All Information'}
           </button>
         </motion.div>
+        )}
       </main>
       )}
     </div>
