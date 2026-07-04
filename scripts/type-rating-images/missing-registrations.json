@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bird-of-prey",
+    "manufacturer_id": "airbus",
+    "model": "Bird of Prey"
+  },
+  {
+    "id": "zephyr",
+    "manufacturer_id": "airbus",
+    "model": "Zephyr"
+  },
+  {
+    "id": "capa-x",
+    "manufacturer_id": "airbus",
+    "model": "Capa-X"
+  },
+  {
+    "id": "bird-of-prey",
+    "manufacturer_id": "airbus",
+    "model": "Bird of Prey"
+  },
+  {
+    "id": "zephyr",
+    "manufacturer_id": "airbus",
+    "model": "Zephyr"
+  },
+  {
+    "id": "capa-x",
+    "manufacturer_id": "airbus",
+    "model": "Capa-X"
+  }
+]

@@ -361,7 +361,7 @@ export const manufacturers: Manufacturer[] = [
     id: 'boeing',
     name: 'Boeing',
     logo: '',
-    description: 'The Boeing Company is an American multinational corporation that designs, manufactures, and sells airplanes, rotorcraft, rockets, satellites, and missiles worldwide.',
+    description: 'Boeing has manufactured well over 25,000 aircraft throughout its century-long history, a total that includes more than 14,000 commercial jetliners currently in active service. Because they do not publish cumulative historical totals for all military and commercial planes ever built, the exact grand total is an ongoing, shifting count. As the world\'s largest aerospace company, Boeing dominates both commercial aviation and defense sectors with iconic platforms like the 737, 777, and 787 families alongside military staples such as the F-15, F/A-18, and C-17. A Boeing type rating opens doors to virtually every major airline and government operator on Earth.',
     founded: 1916,
     headquarters: 'Chicago, Illinois, USA',
     website: 'https://www.boeing.com',
@@ -2964,7 +2964,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220-100',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a220-100.jpg',
     description: 'The A220-100 is the "specialist" of the family. While it shares 99% commonality with the larger -300, it is the version pilots choose for high-performance missions. It is specifically engineered for steep approaches and short runways that traditional jets can\'t touch. It occupies a niche (100-135 seats) that Boeing currently has no answer for, providing A220 pilots with unique market leverage.',
     why_choose_rating: 'The A220-100 offers pilots the quietest cockpit in the narrow-body world with full sidestick control and active feedback—no legacy cables or pulleys. It flies like a "sports car" compared to the heavier -300, offering superior climb rates and maneuverability. With 25% less CO2 emissions, it is the "greenest" rating a pilot can hold, protecting against future environmental flight caps and ensuring long-term fleet sustainability.',
     first_flight: 2013,
@@ -3065,7 +3065,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220-300',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a220-300.jpg',
     description: 'The Airbus A220 is a modern, single-aisle aircraft family designed for the 100 to 160-seat market. Originally developed by Bombardier as the CSeries, it was rebranded as the A220 after Airbus acquired a majority stake in July 2018. Known for high efficiency, advanced Fly-By-Wire cockpit, and superior passenger comfort. The A220-300 is tailored for larger markets with typical seating of 120-150 passengers. As of March 2026, there are 501 aircraft delivered and 25 commercial operators worldwide. Delta Air Lines leads with 85 active A220s, followed by JetBlue (61), Air France (55), Breeze Airways (54), and airBaltic (54).',
     why_choose_rating: 'With advanced fly-by-wire systems, fuel efficiency, and growing airline adoption worldwide, the A220-300 type rating offers pilots excellent career opportunities. The aircraft\'s modern cockpit and commonality with Airbus systems provide a solid foundation for progression to larger Airbus aircraft like the A320neo and A350 families. Pilots rated on the A220-300 gain access to a rapidly expanding fleet with strong demand across Europe, Asia, and North America.',
     demandLevel: 'high',
@@ -3164,7 +3164,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320',
     category: 'flagship',
     subcategory: 'versatile-champion',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a320.jpg',
     sketchfab_id: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is the world\'s best-selling airliner family and the pioneer of digital Fly-By-Wire technology in commercial aviation. It replaced traditional cables and pulleys with electronic signals and a sidestick controller, setting the standard for every subsequent Airbus model. Today, the A320neo variant offers 20% lower fuel burn, making it the primary choice for airlines worldwide.',
     why_choose_rating: 'An A320 rating is the most portable credential in aviation. With one landing or takeoff occurring every two seconds globally, job security is unrivaled. Pilots rated on the A320 can transition to the widebody A330 or A350 in as little as 8-10 days due to cockpit commonality through Cross-Crew Qualification (CCQ).',
@@ -3261,7 +3261,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'flagship',
     subcategory: 'widebody',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330.jpg',
     description: 'The A330 is one of the most successful wide-body aircraft in history. It was designed alongside the four-engine A340, sharing a near-identical flight deck. Today, the family has evolved into the A330neo (-800 and -900 variants), which uses Rolls-Royce Trent 7000 engines and A350-style wings to fly further and more efficiently. For pilots, the A330 offers a seamless step up from the A320 with minimal "Difference Training."',
     why_choose_rating: 'The A330 rating is a "passport" to global wide-body carriers. It is the backbone of major carriers like Delta, Cathay Pacific, Qatar Airways, and Turkish Airlines. For A320-rated pilots, the transition is famously smooth via Cross-Crew Qualification (CCQ) - only 8-10 working days of training instead of a full month-long type rating.',
     first_flight: 1992,
@@ -3337,7 +3337,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A318',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a318.jpg',
     description: 'The Airbus A318 is the smallest member of the A320 family, known as the "Baby Bus". It was designed for short-haul routes with limited passenger demand.',
     first_flight: 2002,
     specifications: {
@@ -3400,7 +3400,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A319',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a319.jpg',
     description: 'The Airbus A319 is a shortened version of the A320, designed for routes with lower passenger demand while maintaining the A320 family\'s commonality.',
     first_flight: 1995,
     specifications: {
@@ -3463,7 +3463,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a321.jpg',
     description: 'The Airbus A321 is the stretched, highest-capacity version of the A320 family, designed for medium-haul routes with higher passenger demand.',
     first_flight: 1993,
     specifications: {
@@ -3526,7 +3526,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A319neo',
     category: 'commercial',
     subcategory: 'narrow-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a319neo.jpg',
     description: 'The Airbus A319neo is the upgraded A319 featuring larger, more efficient engines and aerodynamic "Sharklets" for improved fuel efficiency.',
     first_flight: 2017,
     specifications: {
@@ -3589,7 +3589,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320neo',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a320neo.jpg',
     description: 'The Airbus A320neo is the backbone of global low-cost carriers like IndiGo and Air India. It is the most frequent choice for fresh pilots due to high hiring volume.',
     first_flight: 2015,
     specifications: {
@@ -3652,7 +3652,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321neo',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a321neo.jpg',
     description: 'The Airbus A321neo is the current "king" of narrow-body jets. With the introduction of the A321XLR, pilots can now fly 11-hour transatlantic routes previously reserved for widebodies, making this rating highly lucrative.',
     first_flight: 2016,
     specifications: {
@@ -3715,7 +3715,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321LR',
     category: 'commercial',
     subcategory: 'narrow-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a321lr.jpg',
     description: 'The Airbus A321LR (Long Range) is a modified A321neo with extra fuel tanks, enabling transatlantic flights and long-haul routes.',
     first_flight: 2018,
     specifications: {
@@ -3778,7 +3778,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321XLR',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a321xlr.jpg',
     description: 'The Airbus A321XLR is a game-changer in 2026 that allows single-aisle pilots to earn "long-haul" pay scales with 11-hour transatlantic capability.',
     first_flight: 2022,
     specifications: {
@@ -3905,7 +3905,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-200.jpg',
     description: 'The Airbus A330-200 is the shorter fuselage, longer-range variant of the A330 family, designed for medium-to-long-haul routes.',
     first_flight: 1997,
     specifications: {
@@ -3968,7 +3968,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-300.jpg',
     description: 'The Airbus A330-300ceo is an older generation that remains heavily in service with a large pool of rated pilots, often serving as a bridge to the A350.',
     first_flight: 1992,
     specifications: {
@@ -4031,7 +4031,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-800',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-800neo.jpg',
     description: 'The Airbus A330-800 is the upgraded A330-200 featuring Rolls-Royce Trent 7000 engines and aerodynamic improvements for better fuel efficiency.',
     first_flight: 2018,
     specifications: {
@@ -4094,7 +4094,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-900',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-900neo.jpg',
     description: 'The Airbus A330-900neo is a fuel-efficient widebody favorite for airlines like Delta Air Lines and TAP Air Portugal.',
     first_flight: 2017,
     specifications: {
@@ -4157,7 +4157,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a350.jpg',
     sketchfab_id: '0703224a1a7e497eaa2a860e1d3b1774',
     description: 'The Airbus A350 is a long-range, wide-body, twin-engine jet airliner. It is the first Airbus aircraft with both fuselage and wing structures made primarily of carbon-fiber-reinforced polymer.',
     first_flight: 2013,
@@ -4221,7 +4221,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-900',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a350-900.jpg',
     description: 'The Airbus A350-900 is a highly sought-after long-haul rating. It shares a Common Type Rating with the A330, allowing pilots to fly both with only eight days of additional training.',
     first_flight: 2013,
     specifications: {
@@ -4284,7 +4284,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a350f.jpg',
     description: 'The Airbus A350F is the newest flagship freighter entering service in 2026. It is a clean-sheet freighter designed to replace the Boeing 777F, featuring a massive main deck cargo door and carbon-fiber technology for maximum efficiency.',
     first_flight: 2024,
     specifications: {
@@ -4347,7 +4347,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a321p2f.jpg',
     description: 'The Airbus A321P2F is the modernized "iPhone of cargo" - a narrow-body passenger-to-freighter conversion rapidly replacing older Boeing 737 freighters for short-range express delivery with operators like DHL and Qantas.',
     first_flight: 2020,
     specifications: {
@@ -4410,7 +4410,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a320p2f.jpg',
     description: 'The Airbus A320P2F is the smaller sibling of the A321P2F, a narrow-body passenger-to-freighter conversion used for lower-volume regional cargo routes.',
     first_flight: 2019,
     specifications: {
@@ -4473,7 +4473,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-300p2f.jpg',
     description: 'The Airbus A330-300P2F is the most popular medium-to-long-range freighter conversion today, offering high volume and excellent efficiency for e-commerce with operators like FedEx, UPS, and DHL.',
     first_flight: 2017,
     specifications: {
@@ -4536,7 +4536,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-200f.jpg',
     description: 'The Airbus A330-200F is one of the few wide-body aircraft originally built by Airbus as a freighter from day one, featuring a distinctive "nose bubble" to keep the cargo floor level on the ground.',
     first_flight: 2009,
     specifications: {
@@ -4599,7 +4599,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330-200p2f.jpg',
     description: 'The Airbus A330-200P2F is a converted version of the A330-200, offering longer range than the -300P2F but slightly less volume for medium-to-long-range cargo operations.',
     first_flight: 2018,
     specifications: {
@@ -4662,7 +4662,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300-600F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300-600f.jpg',
     description: 'The Airbus A300-600F is the "Grandfather" of the fleet, a reliable but aging heavy lifter. UPS and FedEx still operate large numbers, but many carriers completed final retirements in 2025/early 2026. Most will be phased out by the end of the decade.',
     first_flight: 1983,
     specifications: {
@@ -4725,7 +4725,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-300F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a310-300f.jpg',
     description: 'The Airbus A310-300F is a legacy freighter about to retire. Very few remain in commercial service, mostly used by niche regional cargo airlines or as military transports.',
     first_flight: 1985,
     specifications: {
@@ -4788,7 +4788,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BelugaXL (A330-743L)',
     category: 'cargo',
     subcategory: 'outsize-transport',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-belugaxl__a330-743l_.jpg',
     description: 'The Airbus BelugaXL (A330-743L) is the newest "Mega-Lifter" for Airbus internal logistics. Six are currently in service, handling the massive parts like wings and fuselages for the A350 and A320 programs between Airbus factories.',
     first_flight: 2018,
     specifications: {
@@ -4851,7 +4851,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BelugaST (A300-600ST)',
     category: 'cargo',
     subcategory: 'outsize-transport',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-belugast__a300-600st_.jpg',
     description: 'The Airbus BelugaST (A300-600ST) is the original "Mega-Lifter" that is now legacy/retired. Airbus officially began retiring this fleet in 2025. As of January 2026, Beluga #5 performed its final flight. Only 1 or 2 remain operational for "Airbus Beluga Transport" missions in their final months of service.',
     first_flight: 1994,
     specifications: {
@@ -4914,7 +4914,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300 B2/B4 Cargo',
     category: 'cargo',
     subcategory: 'historical-cargo',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300_b2_b4_cargo.jpg',
     description: 'The Airbus A300 B2/B4 Cargo are the original 1970s conversions. None are in active commercial service today. They exist only in memories or museums as historical aircraft.',
     first_flight: 1972,
     specifications: {
@@ -4977,7 +4977,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Super Guppy',
     category: 'cargo',
     subcategory: 'historical-cargo',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-super_guppy.jpg',
     description: 'The Super Guppy was the NASA/Airbus predecessor to the Beluga. Airbus retired its last one in the 1990s (though NASA still flies one). It was a specialized outsize transport aircraft with a uniquely enlarged fuselage for carrying large aerospace components.',
     first_flight: 1965,
     specifications: {
@@ -5040,7 +5040,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-900ULR',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a350-900ulr.jpg',
     description: 'The Airbus A350-900ULR (Ultra Long Range) is a variant capable of flying the world\'s longest routes, currently used by Singapore Airlines for non-stop flights between Singapore and New York. It is the flagship of long-range aviation.',
     first_flight: 2018,
     specifications: {
@@ -5103,7 +5103,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-1000',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a350-1000.jpg',
     description: 'The Airbus A350-1000 is the stretched, highest-capacity model of the A350 family, featuring advanced carbon-composite construction. It is the flagship of Airbus\'s current wide-body lineup.',
     first_flight: 2016,
     specifications: {
@@ -5166,7 +5166,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A380',
     category: 'flagship',
     subcategory: 'resurgent',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a380.jpg',
     sketchfab_id: 'b4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A380 is the iconic double-decker quad-engine jet, the largest commercial passenger aircraft ever built. While production ended in 2021, it remains the flagship of Airbus engineering excellence.',
     first_flight: 2005,
@@ -5230,7 +5230,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-200',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a340-200.jpg',
     description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. End of Life. No commercial airline flies this version anymore. Only 28 were ever built, and the last few were used as government "Air Force One" style planes for countries like Egypt or Qatar, but even those have largely been replaced by modern A350s.',
     first_flight: 1991,
     specifications: {
@@ -5293,7 +5293,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-300',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a340-300.jpg',
     description: 'The Airbus A340-300 is the most popular variant of the A340 family, featuring a longer fuselage and higher capacity. Production ended in 2011.',
     first_flight: 1991,
     specifications: {
@@ -5356,7 +5356,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-500',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a340-500.jpg',
     description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Almost Extinct. This was a "niche" ultra-long-range plane. Almost every airline has retired them because they have four engines and burn too much fuel. Only a tiny handful exist as private VIP jets.',
     first_flight: 2002,
     specifications: {
@@ -5419,7 +5419,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300.jpg',
     description: 'The Airbus A300 was the first twin-engine wide-body aircraft, a pioneer in modern aviation. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
     first_flight: 1972,
     specifications: {
@@ -5482,7 +5482,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a310.jpg',
     description: 'The Airbus A310 was a smaller version of the A300, designed for medium-haul routes. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
     first_flight: 1982,
     specifications: {
@@ -5545,7 +5545,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Concorde',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-concorde.jpg',
     description: 'Concorde was the world\'s first supersonic passenger airliner, a joint venture between Aérospatiale and BAC. While technically not exclusively Airbus, it remains the most iconic retired flagship in the Airbus heritage. It operated from 1976 to 2003, flying at Mach 2.04.',
     first_flight: 1969,
     specifications: {
@@ -5608,7 +5608,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-600',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a340-600.jpg',
     description: 'The Airbus A340-600 is the stretched, high-capacity version of the A340 family, the longest Airbus aircraft until the A350-1000. Production ended in 2011.',
     first_flight: 2001,
     specifications: {
@@ -5671,7 +5671,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B1',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300b1.jpg',
     description: 'The Airbus A300B1 was the first variant of the A300, the world\'s first twin-engine wide-body airliner. Retired. Only two were ever built. Both are long gone.',
     first_flight: 1972,
     specifications: {
@@ -5734,7 +5734,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B2',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300b2.jpg',
     description: 'The Airbus A300B2 was the production version of the A300 with increased range and capacity compared to the B1. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     first_flight: 1974,
     specifications: {
@@ -5797,7 +5797,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B4',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300b4.jpg',
     description: 'The Airbus A300B4 was an extended range version of the A300 with center fuel tank for longer flights. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     first_flight: 1976,
     specifications: {
@@ -5860,7 +5860,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300-600',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a300-600.jpg',
     description: 'The Airbus A300-600 was the modernized, definitive version of the A300 family with glass cockpit and improved aerodynamics.',
     first_flight: 1983,
     specifications: {
@@ -5923,7 +5923,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-200',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a310-200.jpg',
     description: 'The Airbus A310-200 is a shorter, longer-range derivative of the A300 family. It was the first Airbus aircraft with a two-crew glass cockpit. Retired. Most were scrapped or converted years ago.',
     first_flight: 1982,
     specifications: {
@@ -5986,7 +5986,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-300',
     category: 'legacy',
     subcategory: 'reaching-end-of-service',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a310-300.jpg',
     description: 'The Airbus A310-300 is the extended range version of the A310 family with center fuel tank and increased MTOW. Final Phase. You won\'t find these at major airports like London or New York. They are mostly flying in Iran (Mahan Air) or as specialized military tankers (A310 MRTT) that are currently being replaced by the newer A330 MRTT.',
     first_flight: 1985,
     specifications: {
@@ -6049,7 +6049,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310F',
     category: 'cargo',
     subcategory: 'freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a310f.jpg',
     description: 'The Airbus A310F is a freighter variant of the A310, featuring a large cargo door and reinforced floor for cargo operations.',
     first_flight: 1988,
     specifications: {
@@ -6112,7 +6112,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330P2F',
     category: 'cargo',
     subcategory: 'p2f-conversion',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330p2f.jpg',
     description: 'The Airbus A330P2F is a passenger-to-freighter conversion of the A330, featuring a large cargo door and reinforced floor for cargo operations.',
     first_flight: 2017,
     specifications: {
@@ -6175,7 +6175,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ TwoTwenty',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj_twotwenty.jpg',
     description: 'The Airbus ACJ TwoTwenty is the corporate jet version of the A220, offering long-range capability in a compact size.',
     first_flight: 2018,
     specifications: {
@@ -6238,7 +6238,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ318',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj318.jpg',
     description: 'The Airbus ACJ318 is the corporate jet version of the A318, offering long-range capability in a compact size.',
     first_flight: 2005,
     specifications: {
@@ -6301,7 +6301,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ319',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj319.jpg',
     description: 'The Airbus ACJ319 is the corporate jet version of the A319, offering long-range capability and spacious cabin.',
     first_flight: 2003,
     specifications: {
@@ -6364,7 +6364,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ320',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj320.jpg',
     description: 'The Airbus ACJ320 is the corporate jet version of the A320, offering long-range capability and spacious cabin.',
     first_flight: 2001,
     specifications: {
@@ -6427,7 +6427,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ321',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj321.jpg',
     description: 'The Airbus ACJ321 is the corporate jet version of the A321, offering the longest range and most spacious cabin in the A320 family.',
     first_flight: 2004,
     specifications: {
@@ -6490,7 +6490,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ330',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj330.jpg',
     description: 'The Airbus ACJ330 is the corporate jet version of the A330, offering ultra-long-range capability and spacious cabin.',
     first_flight: 2008,
     specifications: {
@@ -6553,7 +6553,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ340',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj340.jpg',
     description: 'The Airbus ACJ340 is the corporate jet version of the A340, offering ultra-long-range capability with four engines.',
     first_flight: 2005,
     specifications: {
@@ -6616,7 +6616,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ350',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-acj350.jpg',
     description: 'The Airbus ACJ350 is the corporate jet version of the A350, featuring advanced carbon-composite construction and ultra-long-range capability.',
     first_flight: 2015,
     specifications: {
@@ -6679,7 +6679,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A400M Atlas',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a400m_atlas.jpg',
     description: 'The Airbus A400M Atlas is a four-engine turboprop tactical airlifter with strategic capabilities, designed to replace older military transport aircraft.',
     first_flight: 2009,
     specifications: {
@@ -6742,7 +6742,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330 MRTT',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a330_mrtt.jpg',
     description: 'The Airbus A330 MRTT (Multi Role Tanker Transport) is a military derivative of the A330 used for aerial refueling and transport.',
     first_flight: 2007,
     specifications: {
@@ -6931,7 +6931,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Eurofighter Typhoon',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-eurofighter_typhoon.jpg',
     description: 'The Eurofighter Typhoon is a twin-engine, canard-delta wing, multirole fighter. Airbus is a major partner in the consortium that builds this aircraft.',
     first_flight: 1994,
     specifications: {
@@ -7430,7 +7430,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'NH90',
     category: 'military',
     subcategory: 'attack-tactical-helicopter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-nh90.jpg',
     description: 'The NH90 is a medium-sized, twin-engine multi-role military helicopter developed by NHIndustries (Airbus is a partner).',
     first_flight: 1995,
     specifications: {
@@ -7493,7 +7493,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Tiger',
     category: 'military',
     subcategory: 'attack-tactical-helicopter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-tiger.jpg',
     description: 'The Airbus Tiger is a four-bladed, twin-engine attack helicopter developed by Eurocopter (now Airbus Helicopters).',
     first_flight: 1991,
     specifications: {
@@ -7740,7 +7740,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H160',
     category: 'helicopter',
     subcategory: 'medium-twin-engine',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-h160.jpg',
     description: 'The Airbus H160 is the "Next-Gen" medium twin-engine helicopter featuring massive technological leaps like curved "Blue Edge" blades to make it incredibly quiet. It represents the future of the medium class.',
     first_flight: 2015,
     specifications: {
@@ -7798,7 +7798,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H140',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-h140.jpg',
     description: 'The Airbus H140 is a brand new light twin-engine model introduced around 2025, designed to bridge the gap between the H135 and H145 with enhanced performance and capacity.',
     first_flight: 2025,
     specifications: {
@@ -7914,7 +7914,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'nEUROn',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-neuron.jpg',
     description: 'The nEUROn is an experimental European stealth combat drone (UCAV). Airbus (CASA/EADS) was a major partner in developing its stealth and flight systems. It serves as a technology demonstrator.',
     first_flight: 2012,
     specifications: {
@@ -8262,7 +8262,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BK-117',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-bk-117.jpg',
     description: 'The Airbus BK-117 is the predecessor to the H145 and still widely seen as life-flight/medical helicopters. It was developed in partnership with Kawasaki.',
     first_flight: 1979,
     specifications: {
@@ -8320,7 +8320,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Gazelle',
     category: 'military',
     subcategory: 'utility-helicopter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-gazelle.jpg',
     description: 'The Airbus Gazelle is a fast, thin scout helicopter with a very distinctive look, still used by many militaries for reconnaissance and light attack missions.',
     first_flight: 1967,
     specifications: {
@@ -8378,7 +8378,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'CityAirbus',
     category: 'helicopter',
     subcategory: 'evtol',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-cityairbus.jpg',
     description: 'The Airbus CityAirbus is an all-electric "flying taxi" (eVTOL) project designed for urban air mobility and short-range passenger transport.',
     first_flight: 2024,
     specifications: {
@@ -8436,7 +8436,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'VSR700',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-vsr700.jpg',
     description: 'The Airbus VSR700 is an unmanned (drone) helicopter designed for navies to launch from ships for reconnaissance and surveillance missions.',
     first_flight: 2022,
     specifications: {
@@ -8493,7 +8493,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A220',
     category: 'regional',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/airbus/airbus-a220.jpg',
     sketchfab_id: 'ce4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A220 is a family of narrow-body, twin-engine, medium-range jet airliners. It was originally developed by Bombardier as the CSeries.',
     first_flight: 2013,
@@ -8557,7 +8557,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 172',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/cessna/cessna-cessna_172.jpg',
     sketchfab_id: 'd1b15841c29c43d0862667300bad55a4',
     description: 'The Cessna 172 Skyhawk is a four-seat, single-engine, high wing, fixed-wing aircraft. It is the most produced aircraft in history.',
     first_flight: 1955,
@@ -8852,7 +8852,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna Citation X',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/cessna/cessna-cessna_citation_x.jpg',
     sketchfab_id: 'a9eac6363d7f4bfaa7f0ee3b9beca604',
     description: 'The Cessna Citation X is a long-range, medium-sized business jet. It was one of the fastest business jets in production.',
     first_flight: 1993,
@@ -8917,9 +8917,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737 MAX',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-737_max.jpg',
     sketchfab_id: '7a548b5ba64340f78f7c58d23781ffe9',
-    description: 'The Boeing 737 MAX is the backbone of global short-haul operations in 2026. With the MAX 8, 9, and 10 variants, it dominates the narrow-body market and remains the most sought-after rating for rapid employment.',
+    description: 'The Boeing 737 MAX is the backbone of global short-haul operations in 2026. With the MAX 8, 9, and 10 variants, it dominates the narrow-body market and remains the most sought-after rating for rapid employment. The data-backed estimate for active, type-rated Boeing 737 pilots worldwide is between 110,000 and 130,000 pilots.',
     first_flight: 2016,
     specifications: {
       max_takeoff_weight: '79,000 kg',
@@ -8981,9 +8981,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '747-8F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-747-8f.jpg',
     sketchfab_id: '86ec524a08e74e5e8907771c2d96b525',
-    description: 'The Boeing 747-8F is the final iteration of the iconic Queen of the Skies freighter. The 747-8F continues to serve cargo operations as the largest cargo aircraft in Boeing fleet.',
+    description: 'There are an estimated 3,500 to 4,500 active pilots globally who hold the specific type rating required to fly the Boeing 747-8F. There will be no "next" Boeing 747-8F built, as Boeing officially ended the 747 production line. The final Boeing 747 ever manufactured—a 747-8 Freighter—rolled out of the Everett, Washington factory and was delivered to Atlas Air. Because the production tooling has been dismantled and the assembly line repurposed, no future factory-built 747-8F aircraft will ever be made. The Immediate Successor: Boeing 777-8F. Boeing has positioned the upcoming 777X Freighter (777-8F) as the direct replacement for the aging 747-400F and 747-8F fleets. Payload Capacity: It carries up to 118 tonnes of revenue payload. This is slightly less than the 747-8F (137 tonnes) but features a massive structural efficiency advantage. Efficiency: It reduces fuel use and carbon emissions by up to 30% compared to the 747-8, running on two massive GE9X engines instead of four GEnx engines. The Main Loss: The critical operational feature pilots and cargo loaders will lose with the 777-8F is the nose-loading door. The 747-8F remains unique for its capability to lift its nose to load oversized, out-of-gauge military and industrial freight. The Used Market: 747-8F Fleet Movements. While no new planes are being built, the "next" 747-8Fs appearing in airline liveries are existing airframes moving through the secondary market. Long Lifespans: Because the 747-8F fleet is relatively young (built between 2011 and 2023), these aircraft are expected to fly for another 20 to 30 years. Operator Consolidation: Major cargo giants like Atlas Air, UPS, FedEx, and CargoLux are actively acquiring any used 747-8F airframes that become available from passenger-to-freighter transitions or smaller cargo airline liquidations.',
     first_flight: 2010,
     specifications: {
       max_takeoff_weight: '447,700 kg',
@@ -9045,9 +9045,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777-300ER',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-777-300er.jpg',
     sketchfab_id: 'c4b6d9e7f8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4',
-    description: 'The Boeing 777-300ER is a workhorse of long-haul operations. With its exceptional range and capacity, it remains a primary flagship for major airlines, particularly for premium routes and cargo operations.',
+    description: 'There are an estimated 38,000 to 45,000 active pilots globally who fly the Boeing 777-300ER. The Boeing 777-300ER is a workhorse of long-haul operations. With its exceptional range and capacity, it remains a primary flagship for major airlines, particularly for premium routes and cargo operations.',
     first_flight: 2002,
     specifications: {
       max_takeoff_weight: '351,000 kg',
@@ -9109,9 +9109,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '787 Dreamliner',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-787_dreamliner.jpg',
     sketchfab_id: 'd5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
-    description: 'The Boeing 787 Dreamliner revolutionized long-haul travel with its composite airframe and fuel efficiency. The 787-8, 787-9, and 787-10 variants are in active production and highly sought-after for medium-to-long-haul routes.',
+    description: 'There are an estimated 48,000 to 55,000 active pilots globally who hold the type rating required to fly the Boeing 787 Dreamliner. The Boeing 787 Dreamliner revolutionized long-haul travel with its composite airframe and fuel efficiency. The 787-8, 787-9, and 787-10 variants are in active production and highly sought-after for medium-to-long-haul routes.',
     first_flight: 2009,
     specifications: {
       max_takeoff_weight: '254,000 kg',
@@ -9173,9 +9173,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777X (777-8, 777-9)',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-777x__777-8__777-9_.jpg',
     sketchfab_id: 'e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
-    description: 'The Boeing 777X represents the future of long-haul travel with folding wingtips and advanced engines. The 777-8 and 777-9 are in testing and early delivery phases, set to become the new flagship for premium airlines in 2026.',
+    description: 'There are currently zero commercial airline pilots rated to fly the Boeing 777X (777-8 and 777-9) in active revenue service. Because the 777X program is still navigating the intensive FAA Type Inspection Authorization (TIA) certification process—with first commercial deliveries expected in 2027—no standard airline crews are flying the aircraft. The Boeing 777X represents the future of long-haul travel with folding wingtips and advanced engines. The 777-8 and 777-9 are in testing and early delivery phases, set to become the new flagship for premium airlines.',
     first_flight: 2019,
     specifications: {
       max_takeoff_weight: '351,500 kg',
@@ -9237,9 +9237,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '767-300F',
     category: 'cargo',
     subcategory: 'p2f-conversion',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-767-300er.jpg',
     sketchfab_id: 'f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7',
-    description: 'The Boeing 767-300F is a converted freighter variant of the 767-300ER. Active in cargo operations, it serves as a medium-haul freighter with excellent range and capacity.',
+    description: 'There are an estimated 15,000 to 18,000 active pilots globally who fly the Boeing 767-300F (Freighter). The Boeing 767-300F is a converted freighter variant of the 767-300ER. Active in cargo operations, it serves as a medium-haul freighter with excellent range and capacity.',
     first_flight: 1986,
     specifications: {
       max_takeoff_weight: '186,880 kg',
@@ -9301,9 +9301,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737 NG (-700, -800, -900)',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-737_ng__-700__-800__-900_.jpg',
     sketchfab_id: '7a548b5ba64340f78f7c58d23781ffe9',
-    description: 'The Boeing 737 Next Generation (-700, -800, -900) is in legacy-retired status as airlines transition to the 737 MAX. Once the backbone of short-haul operations, it is being rapidly phased out.',
+    description: 'There are an estimated 110,000 to 130,000 active pilots globally who are rated to fly the Boeing 737 NG (-700, -800, -900). The Boeing 737 Next Generation (-700, -800, -900) is in legacy-retired status as airlines transition to the 737 MAX. Once the backbone of short-haul operations, it is being rapidly phased out.',
     first_flight: 1997,
     specifications: {
       max_takeoff_weight: '79,000 kg',
@@ -9365,9 +9365,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '757-200 / -300',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-757-200___-300.jpg',
     sketchfab_id: 'g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7',
-    description: 'The Boeing 757-200 and -300 are in legacy-retired status. Once a popular medium-haul aircraft, it has been retired by most airlines and replaced by more efficient 737 MAX and A321neo variants.',
+    description: 'There are an estimated 14,000 to 17,000 active pilots globally who fly the Boeing 757-200 and -300. The Boeing 757-200 and -300 are in legacy-retired status. Once a popular medium-haul aircraft, it has been retired by most airlines and replaced by more efficient 737 MAX and A321neo variants.',
     first_flight: 1982,
     specifications: {
       max_takeoff_weight: '115,660 kg',
@@ -9429,9 +9429,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '717 (formerly MD-95)',
     category: 'regional',
     subcategory: 'regional-jet',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-717__formerly_md-95_.jpg',
     sketchfab_id: 'h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8',
-    description: 'The Boeing 717, originally the McDonnell Douglas MD-95, was the last narrow-body aircraft designed by McDonnell Douglas before the Boeing merger. A regional jet that served short-haul routes efficiently.',
+    description: 'There are an estimated 1,200 to 1,500 active pilots globally who fly the Boeing 717 (formerly known as the McDonnell Douglas MD-95). The Boeing 717, originally the McDonnell Douglas MD-95, was the last narrow-body aircraft designed by McDonnell Douglas before the Boeing merger. A regional jet that served short-haul routes efficiently.',
     first_flight: 1998,
     specifications: {
       max_takeoff_weight: '79,380 kg',
@@ -9493,9 +9493,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '727',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-727.jpg',
     sketchfab_id: 'i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9',
-    description: 'The Boeing 727 was a pioneering narrow-body trijet that revolutionized short-to-medium-haul travel. Now in legacy-retired status, it was once one of the most popular aircraft globally.',
+    description: 'There are an estimated 300 to 500 active pilots globally who are still certified and actively flying the iconic Boeing 727. The Boeing 727 was a pioneering narrow-body trijet that revolutionized short-to-medium-haul travel. Now in legacy-retired status, it was once one of the most popular aircraft globally.',
     first_flight: 1963,
     specifications: {
       max_takeoff_weight: '95,300 kg',
@@ -9557,7 +9557,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '707 / 720',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-707___720.jpg',
     sketchfab_id: 'j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0',
     description: 'The Boeing 707 and its shorter variant 720 were the first successful commercial jet airliners, revolutionizing air travel. Now in legacy-retired status, they established Boeing as a global aviation leader.',
     first_flight: 1957,
@@ -9813,7 +9813,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F-15EX Eagle II',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-f-15ex_eagle_ii.jpg',
     sketchfab_id: 'n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4',
     description: 'The F-15EX Eagle II is the latest iteration of the iconic F-15 Eagle, featuring advanced avionics, weapons systems, and improved range. A modern multirole fighter serving as the backbone of air superiority operations.',
     first_flight: 2021,
@@ -9877,7 +9877,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F/A-18E/F Super Hornet',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-f_a-18f_super_hornet.jpg',
     sketchfab_id: 'o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5',
     description: 'The F/A-18E/F Super Hornet is a multirole fighter serving as the primary strike fighter for the US Navy and Marine Corps. Features advanced avionics, AESA radar, and extended range capabilities.',
     first_flight: 1995,
@@ -9941,7 +9941,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-52H Stratofortress',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-b-52h_stratofortress.jpg',
     sketchfab_id: 'p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6',
     description: 'The B-52H Stratofortress is a legendary strategic bomber scheduled to fly until 2050+. With continuous upgrades, it remains the backbone of US strategic bombing capabilities and will serve for over 90 years.',
     first_flight: 1961,
@@ -10005,9 +10005,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'C-17 Globemaster III',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-c-17_globemaster_iii.jpg',
     sketchfab_id: 'q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7',
-    description: 'The C-17 Globemaster III is a large military transport aircraft capable of rapid strategic delivery of troops and cargo to main operating bases or forward operating bases worldwide. Active in service with global air forces.',
+    description: 'The C-17 Globemaster III is a large military transport aircraft capable of rapid strategic delivery of troops and cargo to main operating bases or forward operating bases worldwide. Active in service with global air forces. There are an estimated 3,800 to 4,500 active military pilots globally who are fully certified to fly the Boeing C-17 Globemaster III.',
     first_flight: 1991,
     specifications: {
       max_takeoff_weight: '285,700 kg',
@@ -10069,9 +10069,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'AH-64 Apache',
     category: 'helicopter',
     subcategory: 'attack-helicopter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-ah-64_apache.jpg',
     sketchfab_id: 'r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8',
-    description: 'The AH-64 Apache is the world\'s most advanced multi-role combat helicopter. With advanced avionics, weapons systems, and night vision capabilities, it serves as the primary attack helicopter for the US Army and allied forces.',
+    description: 'The AH-64 Apache is the world\'s most advanced multi-role combat helicopter. With advanced avionics, weapons systems, and night vision capabilities, it serves as the primary attack helicopter for the US Army and allied forces. There are an estimated 3,400 to 4,200 active military aviators globally who are fully certified to fly the Boeing AH-64 Apache attack helicopter.',
     first_flight: 1975,
     specifications: {
       max_takeoff_weight: '10,400 kg',
@@ -10133,9 +10133,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'CH-47 Chinook',
     category: 'helicopter',
     subcategory: 'heavy-lift-helicopter',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-ch-47_chinook.jpg',
     sketchfab_id: 's0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9',
-    description: 'The CH-47 Chinook is a tandem-rotor heavy-lift helicopter serving as the primary transport helicopter for the US Army and allied forces. Known for its exceptional lifting capacity and versatility in combat operations.',
+    description: 'The CH-47 Chinook is a tandem-rotor heavy-lift helicopter serving as the primary transport helicopter for the US Army and allied forces. Known for its exceptional lifting capacity and versatility in combat operations. There are an estimated 3,200 to 3,800 active military aviators globally who are fully certified to fly the Boeing CH-47 Chinook heavy-lift helicopter.',
     first_flight: 1961,
     specifications: {
       max_takeoff_weight: '22,680 kg',
@@ -10197,7 +10197,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'P-8 Poseidon',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-p-8_poseidon.jpg',
     sketchfab_id: 't1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0',
     description: 'The P-8 Poseidon is a military maritime patrol aircraft based on the 737-800ERX. Active in service with the US Navy and allied forces for anti-submarine warfare, anti-surface warfare, and intelligence gathering.',
     first_flight: 2009,
@@ -10261,7 +10261,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'KC-46 Pegasus',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-kc-46_pegasus.jpg',
     sketchfab_id: 'u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1',
     description: 'The KC-46 Pegasus is a military aerial refueling and strategic military transport aircraft based on the 767-200ER. Active in service with the USAF and allied forces, replacing the aging KC-135 Stratotanker fleet.',
     first_flight: 2015,
@@ -10325,7 +10325,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'V-22 Osprey',
     category: 'helicopter',
     subcategory: 'tiltrotor',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-v-22_osprey.jpg',
     sketchfab_id: 'v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2',
     description: 'The V-22 Osprey is a multi-mission, tiltrotor military aircraft with both vertical takeoff and landing (VTOL), and short takeoff and landing (STOL) capabilities. Joint development with Bell, serving USMC, USAF, and USN.',
     first_flight: 1989,
@@ -10389,7 +10389,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-17 Flying Fortress',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-b-17_flying_fortress.jpg',
     sketchfab_id: 'w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3',
     description: 'The B-17 Flying Fortress was a four-engine heavy bomber developed in the 1930s for the US Army Air Corps. A historical WWII icon that played a crucial role in the strategic bombing campaign over Europe.',
     first_flight: 1935,
@@ -10453,7 +10453,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-29 Superfortress',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-b-29_superfortress.jpg',
     sketchfab_id: 'x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4',
     description: 'The B-29 Superfortress was a four-engine heavy bomber used by the US in WWII and Korea. The most advanced bomber of its time, it introduced pressurized cabins, remote-controlled turrets, and advanced fire control systems.',
     first_flight: 1942,
@@ -10517,7 +10517,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F-86 Sabre',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/boeing/boeing-f-86_sabre.jpg',
     sketchfab_id: 'y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4a5',
     description: 'The F-86 Sabre was a transonic jet fighter aircraft produced by North American Aviation (acquired by Rockwell, later Boeing). A historical Korean War icon and the first swept-wing fighter in the US inventory.',
     first_flight: 1947,
@@ -10581,7 +10581,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P92',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/tecnam/tecnam-tecnam_p92.jpg',
     sketchfab_id: '4b1c90cce7f14fa3bcbade0bb8c3d855',
     description: 'The Tecnam P92 is a high-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
     first_flight: 1993,
@@ -10639,7 +10639,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P2002 Sierra',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/tecnam/tecnam-tecnam_p2002_sierra.jpg',
     sketchfab_id: '5325a60e1c2f402a8b5b71656ffaea66',
     description: 'The Tecnam P2002 Sierra is a low-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
     first_flight: 2003,
@@ -10697,7 +10697,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P2006T',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/tecnam/tecnam-tecnam_p2006t.jpg',
     sketchfab_id: 'a0a4d717a8c94a17b958eb69c4efc352',
     description: 'The Tecnam P2006T is a twin-engine, high-wing, light aircraft. It is designed for multi-engine training and utility operations.',
     first_flight: 2007,
@@ -10873,7 +10873,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'embraer',
     model: 'Embraer E190',
     category: 'regional',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/embraer/embraer-embraer_e190.jpg',
     sketchfab_id: 'b971aca02af4435db7104c8c2ce9bbdd',
     description: 'The Embraer E190 is a medium-range, twin-engine, narrow-body jet airliner. It is part of the E-Jet family.',
     first_flight: 2004,
@@ -10936,7 +10936,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'embraer',
     model: 'Embraer Phenom 300',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/embraer/embraer-embraer_phenom_300.jpg',
     sketchfab_id: 'cdc1ecc85bf345b788e0094f2fb7e91e',
     description: 'The Embraer Phenom 300 is a light jet aircraft. It is one of the best-selling light jets in the world.',
     first_flight: 2008,
@@ -11000,7 +11000,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cirrus',
     model: 'Cirrus SR22',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/cirrus/cirrus-cirrus_sr22.jpg',
     sketchfab_id: 'cba602c99c524cd4b40e5c2e5f9c5b4f',
     description: 'The Cirrus SR22 is a single-engine, composite aircraft. It is known for its ballistic parachute recovery system.',
     first_flight: 2001,
@@ -11058,7 +11058,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cirrus',
     model: 'Cirrus Vision SF50',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/cirrus/cirrus-cirrus_vision_sf50.jpg',
     sketchfab_id: 'd46dd06b4b5646acaed90993db34d639',
     description: 'The Cirrus Vision SF50 is a single-engine, very light jet. It is the first single-engine jet to receive FAA certification.',
     first_flight: 2008,
@@ -11122,7 +11122,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'atr',
     model: 'ATR 72-600',
     category: 'regional',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/atr/atr-atr_72-600.jpg',
     sketchfab_id: '1e1a7186f7444d288675262fcee44744',
     description: 'The ATR 72-600 is a twin-engine turboprop regional airliner. It is an upgraded version of the ATR 72 with improved performance and avionics.',
     first_flight: 2009,
@@ -11186,7 +11186,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'let',
     model: 'Let L410 Turbolet',
     category: 'regional',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/let/let-let_l410_turbolet.jpg',
     sketchfab_id: '38c3aaea4de54eb1a20634586c2a215f',
     description: 'The Let L410 Turbolet is a twin-engine turboprop regional airliner. It is widely used in Eastern Europe and Africa.',
     first_flight: 1969,
@@ -11250,7 +11250,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'gulfstream',
     model: 'Gulfstream G650',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/gulfstream/gulfstream-gulfstream_g650.jpg',
     sketchfab_id: '67451e56d38746de86667347d7a56587',
     description: 'The Gulfstream G650 is a long-range, large-cabin business jet. It is one of the fastest business jets in production.',
     first_flight: 2009,
@@ -11314,7 +11314,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Bombardier Challenger 350',
     category: 'private',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/bombardier/bombardier-bombardier_challenger_350.jpg',
     sketchfab_id: '5f7af63167374f98a3a457f38818b996',
     description: 'The Bombardier Challenger 350 is a super mid-size business jet. It offers a spacious cabin and long-range capabilities.',
     first_flight: 2013,
@@ -11377,7 +11377,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-700',
     category: 'regional',
-    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+    image: '/images/manufacturers/bombardier/bombardier-crj-700.jpg',
     sketchfab_id: '98e4de0ba2b6489c896f224fb70c5e75',
     description: 'The CRJ-700 is a regional jet airliner. It is part of the CRJ series of regional jets.',
     first_flight: 1999,
@@ -11493,7 +11493,14812 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       validity: '2 years',
       renewal_requirements: ['Flight Review', 'BFR']
     }
+  },
+  {
+    id: 'falcon-8x',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 8X',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_8x.jpg',
+    description: 'The Dassault Falcon 8X is an ultra-long-range business jet with three engines. It offers a spacious cabin, intercontinental range, and excellent short-field performance.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '33,113 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '11,945 km',
+      capacity: 14,
+      engines: 3,
+      engine_type: 'Pratt & Whitney Canada PW307D',
+      length: '24.46 m',
+      wingspan: '26.29 m',
+      height: '7.94 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'falcon-7x',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 7X',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_7x.jpg',
+    description: 'The Dassault Falcon 7X is a large-cabin, long-range business jet. It was the first business jet with a digital flight control system.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '31,751 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '11,019 km',
+      capacity: 14,
+      engines: 3,
+      engine_type: 'Pratt & Whitney Canada PW307A',
+      length: '23.38 m',
+      wingspan: '26.21 m',
+      height: '7.83 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'falcon-900',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 900',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_900.jpg',
+    description: 'The Dassault Falcon 900 is a long-range trijet business aircraft. It is known for its reliability and long-range capability.',
+    first_flight: 1984,
+    specifications: {
+      max_takeoff_weight: '22,225 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '8,890 km',
+      capacity: 12,
+      engines: 3,
+      engine_type: 'Honeywell TFE731-5',
+      length: '20.21 m',
+      wingspan: '19.33 m',
+      height: '7.55 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pc-12',
+    manufacturer_id: 'pilatus',
+    model: 'PC-12',
+    category: 'private',
+    image: '/images/manufacturers/pilatus/pilatus-pc-12.jpg',
+    description: 'The Pilatus PC-12 is a single-engine turboprop aircraft. It is popular for corporate transport, air ambulance, and regional airline operations.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '4,740 kg',
+      cruising_speed: '528 km/h',
+      range: '3,426 km',
+      capacity: 11,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-67B',
+      length: '14.4 m',
+      wingspan: '16.28 m',
+      height: '4.26 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pc-24',
+    manufacturer_id: 'pilatus',
+    model: 'PC-24',
+    category: 'private',
+    image: '/images/manufacturers/pilatus/pilatus-pc-24.jpg',
+    description: 'The Pilatus PC-24 is a light business jet capable of operating from short and unpaved runways. It is known as the "Super Versatile Jet".',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: '815 km/h',
+      range: '3,704 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'Williams FJ44-4A',
+      length: '16.8 m',
+      wingspan: '17.0 m',
+      height: '5.35 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pc-21',
+    manufacturer_id: 'pilatus',
+    model: 'PC-21',
+    category: 'military',
+    image: '/images/manufacturers/pilatus/pilatus-pc-21.jpg',
+    description: 'The Pilatus PC-21 is a turboprop military trainer aircraft. It is used by air forces around the world for pilot training.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: '4,250 kg',
+      cruising_speed: '685 km/h',
+      range: '1,333 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-68B',
+      length: '11.23 m',
+      wingspan: '9.34 m',
+      height: '3.74 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'king-air-350',
+    manufacturer_id: 'beechcraft',
+    model: 'King Air 350',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-king_air_350.jpg',
+    description: 'The Beechcraft King Air 350 is a twin-turboprop aircraft. It is one of the most popular business turboprops in the world.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '7,484 kg',
+      cruising_speed: '577 km/h',
+      range: '3,338 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6A-60A',
+      length: '14.22 m',
+      wingspan: '16.61 m',
+      height: '4.37 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'baron-g58',
+    manufacturer_id: 'beechcraft',
+    model: 'Baron G58',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-baron_g58.jpg',
+    description: 'The Beechcraft Baron G58 is a twin-engine piston aircraft. It is a popular light twin for personal and business aviation.',
+    first_flight: 1960,
+    specifications: {
+      max_takeoff_weight: '2,500 kg',
+      cruising_speed: '368 km/h',
+      range: '1,555 km',
+      capacity: 6,
+      engines: 2,
+      engine_type: 'Continental IO-550-C',
+      length: '9.09 m',
+      wingspan: '11.48 m',
+      height: '3.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bonanza-g36',
+    manufacturer_id: 'beechcraft',
+    model: 'Bonanza G36',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-bonanza_g36.jpg',
+    description: 'The Beechcraft Bonanza G36 is a single-engine piston aircraft. It is one of the longest-running production aircraft in history.',
+    first_flight: 1949,
+    specifications: {
+      max_takeoff_weight: '1,657 kg',
+      cruising_speed: '326 km/h',
+      range: '1,864 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Continental IO-550-B',
+      length: '8.38 m',
+      wingspan: '10.21 m',
+      height: '2.62 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 's-92',
+    manufacturer_id: 'sikorsky',
+    model: 'S-92',
+    category: 'helicopter',
+    image: '/images/manufacturers/sikorsky/sikorsky-s-92.jpg',
+    description: 'The Sikorsky S-92 is a twin-engine medium-lift helicopter. It is used for offshore oil transport, search and rescue, and VIP transport.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '12,020 kg',
+      cruising_speed: '280 km/h',
+      range: '1,000 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'General Electric CT7-8A',
+      length: '17.12 m',
+      wingspan: '17.17 m',
+      height: '6.45 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 's-76',
+    manufacturer_id: 'sikorsky',
+    model: 'S-76',
+    category: 'helicopter',
+    image: '/images/manufacturers/sikorsky/sikorsky-s-76.jpg',
+    description: 'The Sikorsky S-76 is a medium-size commercial utility helicopter. It is widely used for corporate transport, offshore oil, and air ambulance.',
+    first_flight: 1977,
+    specifications: {
+      max_takeoff_weight: '5,306 kg',
+      cruising_speed: '287 km/h',
+      range: '761 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6B-67A',
+      length: '13.22 m',
+      wingspan: '13.41 m',
+      height: '4.42 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'uh-60-blackhawk',
+    manufacturer_id: 'sikorsky',
+    model: 'UH-60 Black Hawk',
+    category: 'military',
+    image: '/images/manufacturers/sikorsky/sikorsky-uh-60_blackhawk.jpg',
+    description: 'The Sikorsky UH-60 Black Hawk is a four-blade, twin-engine, medium-lift utility helicopter. It is the primary utility helicopter of the U.S. Army.',
+    first_flight: 1974,
+    specifications: {
+      max_takeoff_weight: '9,979 kg',
+      cruising_speed: '280 km/h',
+      range: '590 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'General Electric T700-GE-701D',
+      length: '15.26 m',
+      wingspan: '16.36 m',
+      height: '5.13 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'aw139',
+    manufacturer_id: 'leonardo',
+    model: 'AW139',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw139.jpg',
+    description: 'The Leonardo AW139 is a 15-seat medium-lift twin-engine helicopter. It is used for offshore transport, search and rescue, and VIP transport.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '6,400 kg',
+      cruising_speed: '306 km/h',
+      range: '1,000 km',
+      capacity: 15,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6C-67C',
+      length: '13.76 m',
+      wingspan: '13.80 m',
+      height: '4.98 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'aw169',
+    manufacturer_id: 'leonardo',
+    model: 'AW169',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw169.jpg',
+    description: 'The Leonardo AW169 is a 10-seat light-intermediate twin-engine helicopter. It is used for EMS, law enforcement, and corporate transport.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '4,800 kg',
+      cruising_speed: '272 km/h',
+      range: '820 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW210A',
+      length: '12.96 m',
+      wingspan: '12.12 m',
+      height: '3.60 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'aw189',
+    manufacturer_id: 'leonardo',
+    model: 'AW189',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw189.jpg',
+    description: 'The Leonardo AW189 is a long-range, heavy-lift twin-engine helicopter. It is used for offshore transport, search and rescue, and firefighting.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: '287 km/h',
+      range: '1,111 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'General Electric CT7-2E1',
+      length: '17.57 m',
+      wingspan: '14.60 m',
+      height: '5.13 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'm-346-master',
+    manufacturer_id: 'leonardo',
+    model: 'M-346 Master',
+    category: 'military',
+    image: '/images/manufacturers/leonardo/leonardo-m-346_master.jpg',
+    description: 'The Leonardo M-346 Master is a military twin-engine transonic trainer aircraft. It is used for advanced pilot training and light combat roles.',
+    first_flight: 2004,
+    specifications: {
+      max_takeoff_weight: '9,600 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '2,722 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'Honeywell F124-GA-200',
+      length: '11.49 m',
+      wingspan: '9.72 m',
+      height: '4.76 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dash-8-q400',
+    manufacturer_id: 'de-havilland',
+    model: 'Dash 8 Q400',
+    category: 'regional',
+    image: '/images/manufacturers/de-havilland/de-havilland-dash_8_q400.jpg',
+    description: 'The De Havilland Canada Dash 8 Q400 is a high-wing turboprop regional airliner with seating for up to 90 passengers. It is renowned for its short-field performance, fuel efficiency, and quiet operation.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '29,260 kg',
+      cruising_speed: '667 km/h',
+      range: '2,040 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW150A',
+      length: '32.84 m',
+      wingspan: '28.4 m',
+      height: '8.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dhc-6-twin-otter',
+    manufacturer_id: 'de-havilland',
+    model: 'DHC-6 Twin Otter',
+    category: 'regional',
+    image: '/images/manufacturers/de-havilland/de-havilland-dhc-6_twin_otter.jpg',
+    description: 'The De Havilland Canada DHC-6 Twin Otter is a Canadian 19-passenger STOL utility aircraft. It is popular for skydiving, remote area operations, and commuter flights.',
+    first_flight: 1965,
+    specifications: {
+      max_takeoff_weight: '5,670 kg',
+      cruising_speed: '278 km/h',
+      range: '1,427 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6A-34',
+      length: '15.77 m',
+      wingspan: '19.8 m',
+      height: '5.94 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'mrj90',
+    manufacturer_id: 'mitsubishi-mrj',
+    model: 'Mitsubishi MRJ90',
+    category: 'regional',
+    image: '/images/manufacturers/mitsubishi-mrj/mitsubishi-mrj-mitsubishi_mrj90.jpg',
+    description: 'The Mitsubishi SpaceJet (formerly MRJ) was a regional jet program by Mitsubishi Aircraft Corporation. The MRJ90 was designed to seat 80-92 passengers with advanced fuel-efficient engines.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '42,800 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,770 km',
+      capacity: 88,
+      engines: 2,
+      engine_type: 'Pratt & Whitney PW1200G',
+      length: '33.6 m',
+      wingspan: '29.2 m',
+      height: '10.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'c919',
+    manufacturer_id: 'comac-c919',
+    model: 'COMAC C919',
+    category: 'commercial',
+    image: '/images/manufacturers/comac-c919/comac-c919-comac_c919.jpg',
+    description: 'The COMAC C919 is a Chinese narrow-body airliner. It is designed to compete with the Airbus A320neo and Boeing 737 MAX families in the single-aisle market.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '72,500 kg',
+      cruising_speed: 'Mach 0.785',
+      range: '5,555 km',
+      capacity: 168,
+      engines: 2,
+      engine_type: 'CFM International LEAP-1C',
+      length: '38.9 m',
+      wingspan: '35.8 m',
+      height: '11.95 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'arj21',
+    manufacturer_id: 'comac-c919',
+    model: 'COMAC ARJ21',
+    category: 'regional',
+    image: '/images/manufacturers/comac-c919/comac-c919-comac_arj21.jpg',
+    description: 'The COMAC ARJ21 is a regional jet produced by Commercial Aircraft Corporation of China. It seats 78-90 passengers and is designed for short to medium-haul routes.',
+    first_flight: 2008,
+    specifications: {
+      max_takeoff_weight: '43,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,700 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'General Electric CF34-10A',
+      length: '33.46 m',
+      wingspan: '27.28 m',
+      height: '8.44 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+,
+  {
+    id: 'an-124',
+    manufacturer_id: 'antonov',
+    model: 'An-124 Ruslan',
+    category: 'cargo',
+    image: '/images/manufacturers/antonov/antonov-an-124_ruslan.jpg',
+    description: 'The Antonov An-124 Ruslan is a strategic airlift, four-engined aircraft. It is one of the largest cargo aircraft in the world.',
+    first_flight: 1982,
+    specifications: {
+      max_takeoff_weight: '402,000 kg',
+      cruising_speed: '865 km/h',
+      range: '3,700 km',
+      capacity: 88,
+      engines: 4,
+      engine_type: 'Progress D-18T',
+      length: '69.1 m',
+      wingspan: '73.3 m',
+      height: '20.78 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'an-225',
+    manufacturer_id: 'antonov',
+    model: 'An-225 Mriya',
+    category: 'cargo',
+    image: '/images/manufacturers/antonov/antonov-an-225_mriya.jpg',
+    description: 'The Antonov An-225 Mriya was the largest cargo aircraft ever built. It was designed for oversized payloads and heavy lift missions.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '640,000 kg',
+      cruising_speed: '850 km/h',
+      range: '15,400 km',
+      capacity: 88,
+      engines: 6,
+      engine_type: 'Progress D-18T',
+      length: '84 m',
+      wingspan: '88.4 m',
+      height: '18.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'an-148',
+    manufacturer_id: 'antonov',
+    model: 'An-148',
+    category: 'regional',
+    image: '/images/manufacturers/antonov/antonov-an-148.jpg',
+    description: 'The Antonov An-148 is a regional jet designed for short to medium-haul routes. It seats up to 85 passengers.',
+    first_flight: 2004,
+    specifications: {
+      max_takeoff_weight: '43,700 kg',
+      cruising_speed: '820 km/h',
+      range: '3,500 km',
+      capacity: 85,
+      engines: 2,
+      engine_type: 'Motor Sich D-436',
+      length: '29.13 m',
+      wingspan: '28.91 m',
+      height: '8.19 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'il-96',
+    manufacturer_id: 'ilyushin',
+    model: 'Il-96',
+    category: 'commercial',
+    image: '/images/manufacturers/ilyushin/ilyushin-il-96.jpg',
+    description: 'The Ilyushin Il-96 is a long-haul wide-body airliner. It is used by Russian airlines and government operators.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '250,000 kg',
+      cruising_speed: '850 km/h',
+      range: '11,500 km',
+      capacity: 300,
+      engines: 4,
+      engine_type: 'Aviadvigatel PS-90A',
+      length: '55.3 m',
+      wingspan: '60.1 m',
+      height: '17.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'il-76',
+    manufacturer_id: 'ilyushin',
+    model: 'Il-76',
+    category: 'cargo',
+    image: '/images/manufacturers/ilyushin/ilyushin-il-76.jpg',
+    description: 'The Ilyushin Il-76 is a multi-purpose four-engine turbofan strategic airlifter. It is widely used for cargo and military transport.',
+    first_flight: 1971,
+    specifications: {
+      max_takeoff_weight: '195,000 kg',
+      cruising_speed: '850 km/h',
+      range: '6,700 km',
+      capacity: 126,
+      engines: 4,
+      engine_type: 'Aviadvigatel PS-90A',
+      length: '46.59 m',
+      wingspan: '50.5 m',
+      height: '14.76 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dhruv',
+    manufacturer_id: 'hindustan-aeronautics',
+    model: 'ALH Dhruv',
+    category: 'helicopter',
+    image: '/images/manufacturers/hindustan-aeronautics/hindustan-aeronautics-dhruv.jpg',
+    description: 'The HAL Dhruv is a utility helicopter developed by Hindustan Aeronautics Limited. It is used by military and civilian operators in India.',
+    first_flight: 1992,
+    specifications: {
+      max_takeoff_weight: '5,500 kg',
+      cruising_speed: '250 km/h',
+      range: '630 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'Turbomeca TM 333',
+      length: '15.87 m',
+      wingspan: '13.2 m',
+      height: '4.98 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tejas',
+    manufacturer_id: 'hindustan-aeronautics',
+    model: 'Tejas',
+    category: 'military',
+    image: '/images/manufacturers/hindustan-aeronautics/hindustan-aeronautics-tejas.jpg',
+    description: 'The HAL Tejas is a single-engine, delta wing, multirole light fighter. It is the first Indian-designed and developed supersonic fighter.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '13,500 kg',
+      cruising_speed: 'Mach 1.6',
+      range: '1,850 km',
+      capacity: 1,
+      engines: 1,
+      engine_type: 'General Electric F404',
+      length: '13.2 m',
+      wingspan: '8.2 m',
+      height: '4.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'do-228',
+    manufacturer_id: 'dornier',
+    model: 'Do 228',
+    category: 'regional',
+    image: '/images/manufacturers/dornier/dornier-do_228.jpg',
+    description: 'The Dornier Do 228 is a versatile, short takeoff and landing utility aircraft. It is used for commuter transport, surveillance, and maritime patrol.',
+    first_flight: 1981,
+    specifications: {
+      max_takeoff_weight: '6,600 kg',
+      cruising_speed: '370 km/h',
+      range: '1,111 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'Garrett TPE331',
+      length: '16.56 m',
+      wingspan: '16.97 m',
+      height: '4.86 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'do-328',
+    manufacturer_id: 'dornier',
+    model: 'Do 328',
+    category: 'regional',
+    image: '/images/manufacturers/dornier/dornier-do_328.jpg',
+    description: 'The Dornier 328 is a turboprop-powered commuter airliner. It seats up to 33 passengers and is known for its short-field performance.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '13,990 kg',
+      cruising_speed: '620 km/h',
+      range: '1,852 km',
+      capacity: 33,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW119',
+      length: '21.11 m',
+      wingspan: '20.98 m',
+      height: '7.06 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'archer-midnight',
+    manufacturer_id: 'archer',
+    model: 'Midnight',
+    category: 'private',
+    image: '/images/manufacturers/archer/archer-archer-midnight.jpg',
+    description: 'The Archer Midnight is an electric vertical takeoff and landing (eVTOL) aircraft. It is designed for urban air mobility and short-range passenger transport.',
+    first_flight: 2023,
+    specifications: {
+      max_takeoff_weight: '3,175 kg',
+      cruising_speed: '240 km/h',
+      range: '97 km',
+      capacity: 4,
+      engines: 12,
+      engine_type: 'Electric motors',
+      length: '12.2 m',
+      wingspan: '13.4 m',
+      height: '2.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'joby-s4',
+    manufacturer_id: 'joby',
+    model: 'S4',
+    category: 'private',
+    image: '/images/manufacturers/joby/joby-joby-s4.jpg',
+    description: 'The Joby S4 is an all-electric eVTOL aircraft. It is designed for commercial air taxi services with near-silent operation.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '2,200 kg',
+      cruising_speed: '320 km/h',
+      range: '241 km',
+      capacity: 4,
+      engines: 6,
+      engine_type: 'Electric motors',
+      length: '10.1 m',
+      wingspan: '11.6 m',
+      height: '2.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'mlg-1',
+    manufacturer_id: 'mlg',
+    model: 'MLG Concept',
+    category: 'private',
+    image: '/images/manufacturers/mlg/mlg-mlg-1.jpg',
+    description: 'Multi Level Group aviation concept aircraft for advanced urban air mobility platforms.',
+    first_flight: 2025,
+    specifications: {
+      max_takeoff_weight: '1,500 kg',
+      cruising_speed: '200 km/h',
+      range: '100 km',
+      capacity: 2,
+      engines: 4,
+      engine_type: 'Electric motors',
+      length: '8 m',
+      wingspan: '8 m',
+      height: '2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bell-407',
+    manufacturer_id: 'bell',
+    model: 'Bell 407',
+    category: 'helicopter',
+    image: '/images/manufacturers/bell/bell-bell-407.jpg',
+    description: 'The Bell 407 is a four-blade, single-engine, civil utility helicopter. It is popular for corporate transport, EMS, and law enforcement.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '2,268 kg',
+      cruising_speed: '246 km/h',
+      range: '598 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Allison 250-C47B',
+      length: '12.7 m',
+      wingspan: '10.67 m',
+      height: '3.56 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bell-429',
+    manufacturer_id: 'bell',
+    model: 'Bell 429',
+    category: 'helicopter',
+    image: '/images/manufacturers/bell/bell-bell-429.jpg',
+    description: 'The Bell 429 is a twin-engine helicopter. It is used for EMS, corporate transport, and law enforcement operations.',
+    first_flight: 2007,
+    specifications: {
+      max_takeoff_weight: '3,400 kg',
+      cruising_speed: '278 km/h',
+      range: '649 km',
+      capacity: 7,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW207D',
+      length: '13.07 m',
+      wingspan: '10.97 m',
+      height: '3.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bell-505',
+    manufacturer_id: 'bell',
+    model: 'Bell 505',
+    category: 'helicopter',
+    image: '/images/manufacturers/bell/bell-bell-505.jpg',
+    description: 'The Bell 505 Jet Ranger X is a light helicopter. It is used for training, tourism, and private aviation.',
+    first_flight: 2013,
+    specifications: {
+      max_takeoff_weight: '1,668 kg',
+      cruising_speed: '231 km/h',
+      range: '566 km',
+      capacity: 4,
+      engines: 1,
+      engine_type: 'Safran Arrius 2R',
+      length: '12.93 m',
+      wingspan: '10.49 m',
+      height: '3.25 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ehang-216',
+    manufacturer_id: 'ehang',
+    model: 'EHang 216',
+    category: 'private',
+    image: '/images/manufacturers/ehang/ehang-ehang-216.jpg',
+    description: 'The EHang 216 is an autonomous passenger-grade eVTOL aircraft. It is designed for urban air mobility and aerial tourism.',
+    first_flight: 2016,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '130 km/h',
+      range: '35 km',
+      capacity: 2,
+      engines: 16,
+      engine_type: 'Electric motors',
+      length: '5.6 m',
+      wingspan: '5.6 m',
+      height: '1.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b250',
+    manufacturer_id: 'raytheon',
+    model: 'Beechcraft B250 King Air',
+    category: 'private',
+    image: '/images/manufacturers/raytheon/raytheon-beechcraft_b250_king_air.jpg',
+    description: 'The Beechcraft King Air 250 is a twin-turboprop aircraft. It is a popular business and utility aircraft.',
+    first_flight: 2010,
+    specifications: {
+      max_takeoff_weight: '5,670 kg',
+      cruising_speed: '574 km/h',
+      range: '3,184 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6A-52',
+      length: '13.36 m',
+      wingspan: '16.61 m',
+      height: '4.32 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'lilium-jet',
+    manufacturer_id: 'lilium',
+    model: 'Lilium Jet',
+    category: 'private',
+    image: '/images/manufacturers/lilium/lilium-lilium_jet.jpg',
+    description: 'The Lilium Jet is an all-electric eVTOL jet. It is designed for regional air mobility with high speed and low noise.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '3,500 kg',
+      cruising_speed: '300 km/h',
+      range: '250 km',
+      capacity: 6,
+      engines: 30,
+      engine_type: 'Electric ducted fans',
+      length: '9.8 m',
+      wingspan: '13.9 m',
+      height: '2.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'wisk-corvi',
+    manufacturer_id: 'wisk',
+    model: 'Wisk Cora',
+    category: 'private',
+    image: '/images/manufacturers/wisk/wisk-wisk-corvi.jpg',
+    description: 'The Wisk Cora is an autonomous eVTOL aircraft. It is designed for self-flying air taxi services.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '1,134 kg',
+      cruising_speed: '180 km/h',
+      range: '40 km',
+      capacity: 2,
+      engines: 12,
+      engine_type: 'Electric motors',
+      length: '6.5 m',
+      wingspan: '11 m',
+      height: '2.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'beta-ava',
+    manufacturer_id: 'beta',
+    model: 'Alia CX300',
+    category: 'private',
+    image: '/images/manufacturers/beta/beta-alia_cx300.jpg',
+    description: 'The Beta Alia CX300 is an electric conventional takeoff and landing aircraft. It is designed for cargo and passenger transport.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '2,268 kg',
+      cruising_speed: '270 km/h',
+      range: '463 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Electric motor',
+      length: '12.8 m',
+      wingspan: '15 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'autoflight-prosperity',
+    manufacturer_id: 'autoflight',
+    model: 'Prosperity I',
+    category: 'private',
+    image: '/images/manufacturers/autoflight/autoflight-autoflight-prosperity.jpg',
+    description: 'The AutoFlight Prosperity I is an eVTOL aircraft. It is designed for inter-city air taxi services.',
+    first_flight: 2022,
+    specifications: {
+      max_takeoff_weight: '2,200 kg',
+      cruising_speed: '200 km/h',
+      range: '250 km',
+      capacity: 4,
+      engines: 6,
+      engine_type: 'Electric motors',
+      length: '10.5 m',
+      wingspan: '13.5 m',
+      height: '2.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'eve-evtol',
+    manufacturer_id: 'eve',
+    model: 'Eve eVTOL',
+    category: 'private',
+    image: '/images/manufacturers/eve/eve-eve-evtol.jpg',
+    description: 'The Eve eVTOL is an electric vertical takeoff and landing aircraft. It is being developed for urban air mobility operations.',
+    first_flight: 2024,
+    specifications: {
+      max_takeoff_weight: '2,400 kg',
+      cruising_speed: '220 km/h',
+      range: '100 km',
+      capacity: 4,
+      engines: 8,
+      engine_type: 'Electric motors',
+      length: '10 m',
+      wingspan: '12 m',
+      height: '2.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'mooney-m20',
+    manufacturer_id: 'mooney',
+    model: 'M20',
+    category: 'private',
+    image: '/images/manufacturers/mooney/mooney-mooney-m20.jpg',
+    description: 'The Mooney M20 is a family of single-engine piston-powered aircraft. They are known for their speed, efficiency, and distinctive vertical stabilizer.',
+    first_flight: 1955,
+    specifications: {
+      max_takeoff_weight: '1,430 kg',
+      cruising_speed: '401 km/h',
+      range: '2,600 km',
+      capacity: 4,
+      engines: 1,
+      engine_type: 'Continental IO-550',
+      length: '7.67 m',
+      wingspan: '10.97 m',
+      height: '2.49 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pipistrel-panthera',
+    manufacturer_id: 'pipistrel',
+    model: 'Panthera',
+    category: 'private',
+    image: '/images/manufacturers/pipistrel/pipistrel-pipistrel-panthera.jpg',
+    description: 'The Pipistrel Panthera is a four-seat, single-engine piston aircraft. It is designed for efficiency and comfort.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '1,310 kg',
+      cruising_speed: '368 km/h',
+      range: '1,850 km',
+      capacity: 4,
+      engines: 1,
+      engine_type: 'Lycoming IO-390',
+      length: '7.9 m',
+      wingspan: '10.86 m',
+      height: '2.35 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pipistrel-velis',
+    manufacturer_id: 'pipistrel',
+    model: 'Velis Electro',
+    category: 'private',
+    image: '/images/manufacturers/pipistrel/pipistrel-pipistrel-velis.jpg',
+    description: 'The Pipistrel Velis Electro is the first type-certified electric aircraft. It is designed for flight training and local flying.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '170 km/h',
+      range: '108 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Electric motor',
+      length: '6.5 m',
+      wingspan: '10.7 m',
+      height: '2.05 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'aviat-husky',
+    manufacturer_id: 'aviat',
+    model: 'Husky',
+    category: 'private',
+    image: '/images/manufacturers/aviat/aviat-husky.jpg',
+    description: 'The Aviat Husky is a tandem two-seat, high-wing, utility light aircraft. It is popular for bush flying and tailwheel training.',
+    first_flight: 1987,
+    specifications: {
+      max_takeoff_weight: '907 kg',
+      cruising_speed: '220 km/h',
+      range: '1,112 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Lycoming O-360',
+      length: '6.83 m',
+      wingspan: '10.67 m',
+      height: '2.16 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'champion-decathlon',
+    manufacturer_id: 'american-champion',
+    model: 'Super Decathlon',
+    category: 'private',
+    image: '/images/manufacturers/american-champion/american-champion-champion-decathlon.jpg',
+    description: 'The American Champion Super Decathlon is a two-seat, fixed tricycle gear, light aerobatic aircraft. It is widely used for aerobatic training.',
+    first_flight: 1970,
+    specifications: {
+      max_takeoff_weight: '884 kg',
+      cruising_speed: '204 km/h',
+      range: '680 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Lycoming AEIO-360',
+      length: '6.86 m',
+      wingspan: '9.75 m',
+      height: '2.31 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'sling-4',
+    manufacturer_id: 'sling',
+    model: 'Sling 4',
+    category: 'private',
+    image: '/images/manufacturers/sling/sling-sling_4.jpg',
+    description: 'The Sling 4 is a four-seat, low-wing, all-metal light aircraft. It is designed for recreational and touring flights.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '1,000 kg',
+      cruising_speed: '240 km/h',
+      range: '1,200 km',
+      capacity: 4,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '7.1 m',
+      wingspan: '9.6 m',
+      height: '2.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'epic-e1000',
+    manufacturer_id: 'epic',
+    model: 'E1000 GX',
+    category: 'private',
+    image: '/images/manufacturers/epic/epic-epic-e1000.jpg',
+    description: 'The Epic E1000 GX is a single-engine, six-seat turboprop aircraft. It is known for its high speed and carbon fiber construction.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '3,500 kg',
+      cruising_speed: '611 km/h',
+      range: '1,926 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Pratt & Whitney PT6A-67A',
+      length: '10.97 m',
+      wingspan: '11.9 m',
+      height: '3.94 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tbm-910',
+    manufacturer_id: 'socata',
+    model: 'TBM 910',
+    category: 'private',
+    image: '/images/manufacturers/socata/socata-tbm_910.jpg',
+    description: 'The Daher TBM 910 is a single-engine turboprop business aircraft. It is one of the fastest single-engine aircraft in the world.',
+    first_flight: 2016,
+    specifications: {
+      max_takeoff_weight: '3,353 kg',
+      cruising_speed: '611 km/h',
+      range: '3,329 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-66D',
+      length: '10.72 m',
+      wingspan: '12.83 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tbm-960',
+    manufacturer_id: 'socata',
+    model: 'TBM 960',
+    category: 'private',
+    image: '/images/manufacturers/socata/socata-tbm-960.jpg',
+    description: 'The Daher TBM 960 is an advanced single-engine turboprop. It features digital engine control and luxury cabin appointments.',
+    first_flight: 2022,
+    specifications: {
+      max_takeoff_weight: '3,353 kg',
+      cruising_speed: '611 km/h',
+      range: '3,329 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6E-66XT',
+      length: '10.72 m',
+      wingspan: '12.83 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'hondajet',
+    manufacturer_id: 'hondajet',
+    model: 'HondaJet',
+    category: 'private',
+    image: '/images/manufacturers/hondajet/hondajet-hondajet.jpg',
+    description: 'The HondaJet is a light business jet. It features over-the-wing engine mounts for improved aerodynamics and cabin space.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '4,173 kg',
+      cruising_speed: '782 km/h',
+      range: '2,661 km',
+      capacity: 6,
+      engines: 2,
+      engine_type: 'GE Honda HF120',
+      length: '12.99 m',
+      wingspan: '12.12 m',
+      height: '4.54 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'hondajet-2600',
+    manufacturer_id: 'hondajet',
+    model: 'HondaJet 2600',
+    category: 'private',
+    image: '/images/manufacturers/hondajet/hondajet-hondajet-2600.jpg',
+    description: 'The HondaJet 2600 Concept is a stretched version of the HondaJet. It is designed for transcontinental range.',
+    first_flight: 2021,
+    specifications: {
+      max_takeoff_weight: '6,000 kg',
+      cruising_speed: '800 km/h',
+      range: '4,800 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'GE Honda HF120',
+      length: '15.8 m',
+      wingspan: '13.4 m',
+      height: '4.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'air-tractor-802',
+    manufacturer_id: 'airtractor',
+    model: 'AT-802',
+    category: 'private',
+    image: '/images/manufacturers/airtractor/airtractor-at-802.jpg',
+    description: 'The Air Tractor AT-802 is a single-engine turboprop agricultural and firefighting aircraft. It is the largest single-engine aircraft in production.',
+    first_flight: 1990,
+    specifications: {
+      max_takeoff_weight: '7,257 kg',
+      cruising_speed: '356 km/h',
+      range: '1,852 km',
+      capacity: 1,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-67F',
+      length: '11.07 m',
+      wingspan: '18.04 m',
+      height: '3.53 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'thrush-510',
+    manufacturer_id: 'thrush',
+    model: 'Thrush 510',
+    category: 'private',
+    image: '/images/manufacturers/thrush/thrush-thrush_510.jpg',
+    description: 'The Thrush 510 is an agricultural aircraft. It is used for crop dusting and aerial application.',
+    first_flight: 1956,
+    specifications: {
+      max_takeoff_weight: '4,536 kg',
+      cruising_speed: '240 km/h',
+      range: '520 km',
+      capacity: 1,
+      engines: 1,
+      engine_type: 'Pratt & Whitney R-1340',
+      length: '8.1 m',
+      wingspan: '11.5 m',
+      height: '2.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'elixir-elixir',
+    manufacturer_id: 'elixir',
+    model: 'Elixir',
+    category: 'private',
+    image: '/images/manufacturers/elixir/elixir-elixir-elixir.jpg',
+    description: 'The Elixir Aircraft Elixir is a two-seat, high-wing, carbon fiber light aircraft. It is designed for flight training and touring.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '1,000 kg',
+      cruising_speed: '240 km/h',
+      range: '1,250 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '7.1 m',
+      wingspan: '9.6 m',
+      height: '2.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'icon-a5',
+    manufacturer_id: 'icon',
+    model: 'A5',
+    category: 'private',
+    image: '/images/manufacturers/icon/icon-icon-a5.jpg',
+    description: 'The Icon A5 is a two-seat amphibious light sport aircraft. It features folding wings for easy trailer transport.',
+    first_flight: 2008,
+    specifications: {
+      max_takeoff_weight: '686 kg',
+      cruising_speed: '176 km/h',
+      range: '555 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '7.01 m',
+      wingspan: '9.4 m',
+      height: '2.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'waco-ymf',
+    manufacturer_id: 'waco',
+    model: 'YMF-5',
+    category: 'private',
+    image: '/images/manufacturers/waco/waco-ymf-5.jpg',
+    description: 'The Waco YMF-5 is a classic biplane. It is built with modern materials and engines for recreation and touring.',
+    first_flight: 1986,
+    specifications: {
+      max_takeoff_weight: '1,406 kg',
+      cruising_speed: '257 km/h',
+      range: '760 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Jacobs R-755',
+      length: '7.39 m',
+      wingspan: '9.14 m',
+      height: '2.69 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'vulcanair-p68',
+    manufacturer_id: 'vulcanair',
+    model: 'P.68',
+    category: 'private',
+    image: '/images/manufacturers/vulcanair/vulcanair-vulcanair-p68.jpg',
+    description: 'The Vulcanair P.68 is a twin-engine, high-wing, six-seat light aircraft. It is used for utility and surveillance missions.',
+    first_flight: 1970,
+    specifications: {
+      max_takeoff_weight: '1,998 kg',
+      cruising_speed: '300 km/h',
+      range: '1,620 km',
+      capacity: 6,
+      engines: 2,
+      engine_type: 'Lycoming IO-360',
+      length: '9.55 m',
+      wingspan: '12 m',
+      height: '3.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'mahindra-airvan',
+    manufacturer_id: 'mahindra',
+    model: 'Airvan 8',
+    category: 'private',
+    image: '/images/manufacturers/mahindra/mahindra-mahindra-airvan.jpg',
+    description: 'The Mahindra Airvan 8 is a single-engine utility aircraft. It is used for cargo, surveillance, and passenger transport.',
+    first_flight: 2000,
+    specifications: {
+      max_takeoff_weight: '1,500 kg',
+      cruising_speed: '230 km/h',
+      range: '1,200 km',
+      capacity: 8,
+      engines: 1,
+      engine_type: 'Lycoming IO-540',
+      length: '8.8 m',
+      wingspan: '12.1 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'commander-690',
+    manufacturer_id: 'twin-commander',
+    model: 'Commander 690',
+    category: 'private',
+    image: '/images/manufacturers/twin-commander/twin-commander-commander-690.jpg',
+    description: 'The Twin Commander 690 is a twin-turboprop aircraft. It is used for executive transport and special missions.',
+    first_flight: 1964,
+    specifications: {
+      max_takeoff_weight: '4,899 kg',
+      cruising_speed: '520 km/h',
+      range: '2,963 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'Honeywell TPE331',
+      length: '13.11 m',
+      wingspan: '14.95 m',
+      height: '4.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bn-2-islander',
+    manufacturer_id: 'britten-norman',
+    model: 'BN-2 Islander',
+    category: 'regional',
+    image: '/images/manufacturers/britten-norman/britten-norman-bn-2_islander.jpg',
+    description: 'The Britten-Norman BN-2 Islander is a twin-engine, high-wing utility aircraft. It is popular for short-haul island operations.',
+    first_flight: 1965,
+    specifications: {
+      max_takeoff_weight: '2,994 kg',
+      cruising_speed: '273 km/h',
+      range: '1,400 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'Lycoming O-540',
+      length: '10.86 m',
+      wingspan: '14.94 m',
+      height: '4.18 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'evektor-sportstar',
+    manufacturer_id: 'evektor',
+    model: 'SportStar RTC',
+    category: 'private',
+    image: '/images/manufacturers/evektor/evektor-evektor-sportstar.jpg',
+    description: 'The Evektor SportStar RTC is a two-seat, low-wing light sport aircraft. It is designed for flight training.',
+    first_flight: 1996,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '200 km/h',
+      range: '700 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '6.4 m',
+      wingspan: '9.2 m',
+      height: '2.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bristell',
+    manufacturer_id: 'bristell',
+    model: 'Bristell',
+    category: 'private',
+    image: '/images/manufacturers/bristell/bristell-bristell.jpg',
+    description: 'The Bristell is a modern, all-metal, low-wing light sport aircraft. It is popular for flight training and recreational flying.',
+    first_flight: 2010,
+    specifications: {
+      max_takeoff_weight: '750 kg',
+      cruising_speed: '240 km/h',
+      range: '1,000 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '6.9 m',
+      wingspan: '9.1 m',
+      height: '2.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'velocity-xl',
+    manufacturer_id: 'velocity',
+    model: 'Velocity XL',
+    category: 'private',
+    image: '/images/manufacturers/velocity/velocity-velocity_xl.jpg',
+    description: 'The Velocity XL is a four-seat, composite canard aircraft. It is built from kits by amateur builders.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '1,500 kg',
+      cruising_speed: '320 km/h',
+      range: '1,600 km',
+      capacity: 4,
+      engines: 1,
+      engine_type: 'Lycoming IO-540',
+      length: '6.3 m',
+      wingspan: '9.8 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'kodiak-100',
+    manufacturer_id: 'quest',
+    model: 'Kodiak 100',
+    category: 'private',
+    image: '/images/manufacturers/quest/quest-kodiak-100.jpg',
+    description: 'The Quest Kodiak 100 is a single-engine turboprop utility aircraft. It is designed for short and unimproved runways.',
+    first_flight: 2004,
+    specifications: {
+      max_takeoff_weight: '3,340 kg',
+      cruising_speed: '340 km/h',
+      range: '1,718 km',
+      capacity: 9,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-34',
+      length: '10.5 m',
+      wingspan: '13.72 m',
+      height: '4.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'p750-xstol',
+    manufacturer_id: 'pacific-aerospace',
+    model: 'P-750 XSTOL',
+    category: 'regional',
+    image: '/images/manufacturers/pacific-aerospace/pacific-aerospace-p750-xstol.jpg',
+    description: 'The Pacific Aerospace P-750 XSTOL is a single-engine turboprop utility aircraft. It is used for skydiving, cargo, and passenger transport.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '1,905 kg',
+      cruising_speed: '259 km/h',
+      range: '1,218 km',
+      capacity: 9,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-34',
+      length: '9.9 m',
+      wingspan: '11.8 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'aero-east-silatus',
+    manufacturer_id: 'aero-east-europe',
+    model: 'Silatus',
+    category: 'private',
+    image: '/images/manufacturers/aero-east-europe/aero-east-europe-aero-east-silatus.jpg',
+    description: 'The Aero East Europe Silatus is a light sport aircraft. It is designed for recreational flying and flight training.',
+    first_flight: 2010,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '190 km/h',
+      range: '600 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '6.3 m',
+      wingspan: '9.2 m',
+      height: '2.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'jmb-evolution',
+    manufacturer_id: 'jmb',
+    model: 'Evolution',
+    category: 'private',
+    image: '/images/manufacturers/jmb/jmb-jmb-evolution.jpg',
+    description: 'The JMB Aircraft Evolution is a composite light sport aircraft. It is designed for flight training and touring.',
+    first_flight: 2010,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '200 km/h',
+      range: '700 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '6.4 m',
+      wingspan: '8.9 m',
+      height: '2.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'foxcon-terrier',
+    manufacturer_id: 'foxcon',
+    model: 'Terrier 200',
+    category: 'private',
+    image: '/images/manufacturers/foxcon/foxcon-foxcon-terrier.jpg',
+    description: 'The Foxcon Aviation Terrier 200 is a light sport aircraft. It is used for flight training and recreational flying.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '190 km/h',
+      range: '650 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Rotax 912',
+      length: '6.2 m',
+      wingspan: '9.1 m',
+      height: '2.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'grob-120',
+    manufacturer_id: 'grob',
+    model: 'G 120',
+    category: 'military',
+    image: '/images/manufacturers/grob/grob-g_120.jpg',
+    description: 'The Grob G 120 is a two-seat, low-wing military trainer aircraft. It is used for basic and advanced pilot training.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '1,440 kg',
+      cruising_speed: '365 km/h',
+      range: '1,380 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Diamond AE300',
+      length: '8.4 m',
+      wingspan: '10.2 m',
+      height: '2.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'elroy-chaparral',
+    manufacturer_id: 'elroy-air',
+    model: 'Chaparral',
+    category: 'cargo',
+    image: '/images/manufacturers/elroy-air/elroy-air-elroy-chaparral.jpg',
+    description: 'The Elroy Air Chaparral is an autonomous, hybrid-electric cargo VTOL aircraft. It is designed for middle-mile logistics.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '1,200 kg',
+      cruising_speed: '160 km/h',
+      range: '483 km',
+      capacity: 0,
+      engines: 6,
+      engine_type: 'Hybrid-electric',
+      length: '7.6 m',
+      wingspan: '8.6 m',
+      height: '2.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'pyka-pelican',
+    manufacturer_id: 'pyka',
+    model: 'Pelican',
+    category: 'cargo',
+    image: '/images/manufacturers/pyka/pyka-pyka-pelican.jpg',
+    description: 'The Pyka Pelican is an autonomous electric cargo aircraft. It is used for agricultural spraying and cargo transport.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '600 kg',
+      cruising_speed: '130 km/h',
+      range: '160 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'Electric motors',
+      length: '6.5 m',
+      wingspan: '11.5 m',
+      height: '1.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'sabrewing-rhaegal',
+    manufacturer_id: 'sabrewing',
+    model: 'Rhaegal',
+    category: 'cargo',
+    image: '/images/manufacturers/sabrewing/sabrewing-rhaegal.jpg',
+    description: 'The Sabrewing Rhaegal is an unmanned cargo aircraft. It is designed for heavy lift and long-range cargo missions.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '1,500 kg',
+      cruising_speed: '220 km/h',
+      range: '1,000 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'Hybrid-electric',
+      length: '8 m',
+      wingspan: '12 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'fugro-1',
+    manufacturer_id: 'fugro',
+    model: 'Fugro Survey Aircraft',
+    category: 'private',
+    image: '/images/manufacturers/fugro/fugro-fugro_survey_aircraft.jpg',
+    description: 'Fugro aviation platforms for aerial survey and geospatial data collection.',
+    first_flight: 2010,
+    specifications: {
+      max_takeoff_weight: '2,000 kg',
+      cruising_speed: '250 km/h',
+      range: '800 km',
+      capacity: 4,
+      engines: 2,
+      engine_type: 'Turboprop',
+      length: '9 m',
+      wingspan: '13 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'supernal-sa-1',
+    manufacturer_id: 'supernal',
+    model: 'S-A1',
+    category: 'private',
+    image: '/images/manufacturers/supernal/supernal-s-a1.jpg',
+    description: 'There are currently zero pilots rated on the Supernal S-A1. The S-A1—introduced as a concept vehicle—was an early stage prototype and has since been succeeded by the S-A2. Because the aircraft is still in the research and development phase and has not yet received FAA type certification, no pilot ratings currently exist for it.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '3,200 kg',
+      cruising_speed: '240 km/h',
+      range: '100 km',
+      capacity: 4,
+      engines: 8,
+      engine_type: 'Electric motors',
+      length: '10 m',
+      wingspan: '12 m',
+      height: '2.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'regent-seaglider',
+    manufacturer_id: 'regent-craft',
+    model: 'Seaglider',
+    category: 'private',
+    image: '/images/manufacturers/regent-craft/regent-craft-seaglider.jpg',
+    description: 'The Regent Craft Seaglider is an electric wing-in-ground-effect vehicle. It is designed for coastal passenger transport.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '2,700 kg',
+      cruising_speed: '290 km/h',
+      range: '290 km',
+      capacity: 12,
+      engines: 8,
+      engine_type: 'Electric motors',
+      length: '11 m',
+      wingspan: '14 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+,
+  {
+    id: 'a220-100',
+    manufacturer_id: 'airbus',
+    model: 'A220-100',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a220-100.jpg',
+    description: 'Modern efficient narrow-body seating 100-135.',
+    first_flight: 2013,
+    specifications: {
+      max_takeoff_weight: '63,100 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,390 km',
+      capacity: 135,
+      engines: 2,
+      engine_type: 'PW PW1500G',
+      length: '35.0 m',
+      wingspan: '35.1 m',
+      height: '11.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a220-300',
+    manufacturer_id: 'airbus',
+    model: 'A220-300',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a220-300.jpg',
+    description: 'Larger A220 seating 120-160.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '69,900 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,297 km',
+      capacity: 160,
+      engines: 2,
+      engine_type: 'PW PW1500G',
+      length: '38.7 m',
+      wingspan: '35.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b1',
+    manufacturer_id: 'airbus',
+    model: 'A300B1',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a300b1.jpg',
+    description: 'First Airbus wide-body twinjet.',
+    first_flight: 1972,
+    specifications: {
+      max_takeoff_weight: '132,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,600 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'GE CF6-50',
+      length: '53.6 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b2',
+    manufacturer_id: 'airbus',
+    model: 'A300B2',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a300b2.jpg',
+    description: 'First production A300.',
+    first_flight: 1973,
+    specifications: {
+      max_takeoff_weight: '137,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,600 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'GE CF6-50',
+      length: '53.6 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b4',
+    manufacturer_id: 'airbus',
+    model: 'A300B4',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a300b4.jpg',
+    description: 'Improved A300 with more fuel.',
+    first_flight: 1974,
+    specifications: {
+      max_takeoff_weight: '157,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,400 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'GE CF6-50',
+      length: '53.6 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600',
+    manufacturer_id: 'airbus',
+    model: 'A300-600',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a300-600.jpg',
+    description: 'A300 with two-person cockpit and EFIS.',
+    first_flight: 1983,
+    specifications: {
+      max_takeoff_weight: '170,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '7,540 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.1 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600r',
+    manufacturer_id: 'airbus',
+    model: 'A300-600R',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a300-600r.jpg',
+    description: 'A300-600 with extended range.',
+    first_flight: 1987,
+    specifications: {
+      max_takeoff_weight: '170,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '9,050 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.1 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600f',
+    manufacturer_id: 'airbus',
+    model: 'A300-600F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a300-600f.jpg',
+    description: 'Freighter version of A300-600.',
+    first_flight: 1992,
+    specifications: {
+      max_takeoff_weight: '170,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '4,800 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.1 m',
+      wingspan: '44.8 m',
+      height: '16.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600st',
+    manufacturer_id: 'airbus',
+    model: 'A300-600ST Beluga',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a300-600st_beluga.jpg',
+    description: 'Modified A300 for oversized cargo.',
+    first_flight: 1994,
+    specifications: {
+      max_takeoff_weight: '155,000 kg',
+      cruising_speed: 'Mach 0.68',
+      range: '2,500 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '56.2 m',
+      wingspan: '44.8 m',
+      height: '17.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-200',
+    manufacturer_id: 'airbus',
+    model: 'A310-200',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a310-200.jpg',
+    description: 'Shortened A300 derivative.',
+    first_flight: 1982,
+    specifications: {
+      max_takeoff_weight: '132,000 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '6,800 km',
+      capacity: 280,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '46.7 m',
+      wingspan: '43.9 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-300',
+    manufacturer_id: 'airbus',
+    model: 'A310-300',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a310-300.jpg',
+    description: 'A310 with winglets.',
+    first_flight: 1985,
+    specifications: {
+      max_takeoff_weight: '164,000 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '9,600 km',
+      capacity: 280,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '46.7 m',
+      wingspan: '43.9 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-f',
+    manufacturer_id: 'airbus',
+    model: 'A310F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a310f.jpg',
+    description: 'Freighter version of A310.',
+    first_flight: 1986,
+    specifications: {
+      max_takeoff_weight: '164,000 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '4,500 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '46.7 m',
+      wingspan: '43.9 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-mrtt',
+    manufacturer_id: 'airbus',
+    model: 'A310 MRTT',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-a310_mrtt.jpg',
+    description: 'Multi-role tanker transport.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '164,000 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '9,600 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '46.7 m',
+      wingspan: '43.9 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320-100',
+    manufacturer_id: 'airbus',
+    model: 'A320-100',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a320-100.jpg',
+    description: 'Original A320 with fly-by-wire.',
+    first_flight: 1987,
+    specifications: {
+      max_takeoff_weight: '68,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,700 km',
+      capacity: 150,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '37.6 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320-200',
+    manufacturer_id: 'airbus',
+    model: 'A320-200',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a320-200.jpg',
+    description: 'Standard A320 with wingtip fences.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '73,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,150 km',
+      capacity: 180,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '37.6 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320-neo',
+    manufacturer_id: 'airbus',
+    model: 'A320neo',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a320neo.jpg',
+    description: 'Re-engined A320 with sharklets.',
+    first_flight: 2014,
+    specifications: {
+      max_takeoff_weight: '79,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,850 km',
+      capacity: 180,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '37.6 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a318',
+    manufacturer_id: 'airbus',
+    model: 'A318',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a318.jpg',
+    description: 'Smallest A320 family member.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: '68,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,700 km',
+      capacity: 132,
+      engines: 2,
+      engine_type: 'CFM56-5B9',
+      length: '31.4 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a318-elite',
+    manufacturer_id: 'airbus',
+    model: 'A318 Elite',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a318_elite.jpg',
+    description: 'VIP configuration of the A318.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '68,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '7,000 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-5B9',
+      length: '31.4 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319',
+    manufacturer_id: 'airbus',
+    model: 'A319',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a319.jpg',
+    description: 'Shortened A320 seating 124-156.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '64,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,850 km',
+      capacity: 156,
+      engines: 2,
+      engine_type: 'CFM56-5B',
+      length: '33.8 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319-neo',
+    manufacturer_id: 'airbus',
+    model: 'A319neo',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a319neo.jpg',
+    description: 'Re-engined A319.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '75,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '7,000 km',
+      capacity: 156,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '33.8 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319-acj',
+    manufacturer_id: 'airbus',
+    model: 'A319 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a319_acj.jpg',
+    description: 'Corporate jet A319.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '75,500 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '11,100 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-5B',
+      length: '33.8 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319-mmr',
+    manufacturer_id: 'airbus',
+    model: 'A319 MMR',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-a319_mmr.jpg',
+    description: 'Multi-role tanker transport variant.',
+    first_flight: 2008,
+    specifications: {
+      max_takeoff_weight: '75,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,850 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'CFM56-5B',
+      length: '33.8 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-100',
+    manufacturer_id: 'airbus',
+    model: 'A321-100',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a321-100.jpg',
+    description: 'Stretched A320 seating 185-220.',
+    first_flight: 1993,
+    specifications: {
+      max_takeoff_weight: '83,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '4,700 km',
+      capacity: 220,
+      engines: 2,
+      engine_type: 'CFM56-5B3',
+      length: '44.5 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-200',
+    manufacturer_id: 'airbus',
+    model: 'A321-200',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a321-200.jpg',
+    description: 'Higher-weight A321.',
+    first_flight: 1994,
+    specifications: {
+      max_takeoff_weight: '89,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,600 km',
+      capacity: 220,
+      engines: 2,
+      engine_type: 'CFM56-5B3',
+      length: '44.5 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-neo',
+    manufacturer_id: 'airbus',
+    model: 'A321neo',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a321neo.jpg',
+    description: 'Stretched re-engined A320 flagship.',
+    first_flight: 2016,
+    specifications: {
+      max_takeoff_weight: '97,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '7,400 km',
+      capacity: 244,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '44.5 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-lr',
+    manufacturer_id: 'airbus',
+    model: 'A321LR',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a321lr.jpg',
+    description: 'A321neo with extra fuel tanks.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '97,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '7,400 km',
+      capacity: 206,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '44.5 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-xlr',
+    manufacturer_id: 'airbus',
+    model: 'A321XLR',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a321xlr.jpg',
+    description: 'Ultra-long range A321neo.',
+    first_flight: 2022,
+    specifications: {
+      max_takeoff_weight: '101,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '8,700 km',
+      capacity: 200,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '44.5 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-acj',
+    manufacturer_id: 'airbus',
+    model: 'A321 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a321_acj.jpg',
+    description: 'Largest ACJ narrow-body.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '97,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '11,100 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '44.5 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320-p2f',
+    manufacturer_id: 'airbus',
+    model: 'A320P2F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a320p2f.jpg',
+    description: 'Passenger-to-freighter A320.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '73,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '4,500 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '37.6 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321-p2f',
+    manufacturer_id: 'airbus',
+    model: 'A321P2F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a321p2f.jpg',
+    description: 'Passenger-to-freighter A321.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '89,000 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '4,800 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'CFM56-5B3',
+      length: '44.5 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200',
+    manufacturer_id: 'airbus',
+    model: 'A330-200',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a330-200.jpg',
+    description: 'Shortened longer-range A330.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '238,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '13,450 km',
+      capacity: 250,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '58.8 m',
+      wingspan: '60.3 m',
+      height: '17.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-300',
+    manufacturer_id: 'airbus',
+    model: 'A330-300',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a330-300.jpg',
+    description: 'Original longer A330.',
+    first_flight: 1992,
+    specifications: {
+      max_takeoff_weight: '242,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '11,750 km',
+      capacity: 295,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '63.7 m',
+      wingspan: '60.3 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-800',
+    manufacturer_id: 'airbus',
+    model: 'A330-800neo',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a330-800.jpg',
+    description: 'Re-engined shortened A330.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '251,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '15,090 km',
+      capacity: 260,
+      engines: 2,
+      engine_type: 'RR Trent 7000',
+      length: '58.8 m',
+      wingspan: '64.0 m',
+      height: '17.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-900',
+    manufacturer_id: 'airbus',
+    model: 'A330-900neo',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a330-900.jpg',
+    description: 'Re-engined longer A330.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '251,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '13,400 km',
+      capacity: 300,
+      engines: 2,
+      engine_type: 'RR Trent 7000',
+      length: '63.7 m',
+      wingspan: '64.0 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200f',
+    manufacturer_id: 'airbus',
+    model: 'A330-200F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a330-200f.jpg',
+    description: 'Freighter based on A330-200.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '233,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '7,400 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'PW PW4000',
+      length: '58.8 m',
+      wingspan: '60.3 m',
+      height: '17.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-mrtt',
+    manufacturer_id: 'airbus',
+    model: 'A330 MRTT',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-a330-mrtt.jpg',
+    description: 'Multi-role tanker transport.',
+    first_flight: 2007,
+    specifications: {
+      max_takeoff_weight: '233,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '14,800 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'RR Trent 700',
+      length: '58.8 m',
+      wingspan: '60.3 m',
+      height: '17.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-300-p2f',
+    manufacturer_id: 'airbus',
+    model: 'A330-300P2F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a330-300p2f.jpg',
+    description: 'P2F conversion for A330-300.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '242,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '8,200 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '63.7 m',
+      wingspan: '60.3 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200-acj',
+    manufacturer_id: 'airbus',
+    model: 'A330-200 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a330-200_acj.jpg',
+    description: 'Ultra-long range VIP transport.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '238,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '17,700 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '58.8 m',
+      wingspan: '60.3 m',
+      height: '17.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-300-acj',
+    manufacturer_id: 'airbus',
+    model: 'A330-300 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a330-300_acj.jpg',
+    description: 'Largest ACJ cabin.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '242,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '14,800 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '63.7 m',
+      wingspan: '60.3 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-700l',
+    manufacturer_id: 'airbus',
+    model: 'A330-700L BelugaXL',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a330-700l_belugaxl.jpg',
+    description: 'Next-gen oversized cargo aircraft.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '227,000 kg',
+      cruising_speed: 'Mach 0.69',
+      range: '4,000 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'RR Trent 700',
+      length: '63.1 m',
+      wingspan: '60.3 m',
+      height: '18.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-200',
+    manufacturer_id: 'airbus',
+    model: 'A340-200',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a340-200.jpg',
+    description: 'Shortest longest-range A340 quadjet.',
+    first_flight: 1992,
+    specifications: {
+      max_takeoff_weight: '275,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '14,800 km',
+      capacity: 260,
+      engines: 4,
+      engine_type: 'CFM56-5C2',
+      length: '59.4 m',
+      wingspan: '60.3 m',
+      height: '17.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-300',
+    manufacturer_id: 'airbus',
+    model: 'A340-300',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a340-300.jpg',
+    description: 'Original A340.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '271,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '13,700 km',
+      capacity: 295,
+      engines: 4,
+      engine_type: 'CFM56-5C4',
+      length: '63.7 m',
+      wingspan: '60.3 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-500',
+    manufacturer_id: 'airbus',
+    model: 'A340-500',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a340-500.jpg',
+    description: 'Longest-range airliner at introduction.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: '380,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '16,700 km',
+      capacity: 375,
+      engines: 4,
+      engine_type: 'RR Trent 500',
+      length: '67.9 m',
+      wingspan: '63.5 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-600',
+    manufacturer_id: 'airbus',
+    model: 'A340-600',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a340-600.jpg',
+    description: 'Longest airliner at 75.4 m when introduced.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '380,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '14,600 km',
+      capacity: 380,
+      engines: 4,
+      engine_type: 'RR Trent 500',
+      length: '75.4 m',
+      wingspan: '63.5 m',
+      height: '17.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900',
+    manufacturer_id: 'airbus',
+    model: 'A350-900',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a350-900.jpg',
+    description: 'Base variant composite wide-body.',
+    first_flight: 2013,
+    specifications: {
+      max_takeoff_weight: '283,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '15,000 km',
+      capacity: 315,
+      engines: 2,
+      engine_type: 'RR Trent XWB',
+      length: '66.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-1000',
+    manufacturer_id: 'airbus',
+    model: 'A350-1000',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a350-1000.jpg',
+    description: 'Stretched A350.',
+    first_flight: 2016,
+    specifications: {
+      max_takeoff_weight: '319,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '16,100 km',
+      capacity: 369,
+      engines: 2,
+      engine_type: 'RR Trent XWB-97',
+      length: '73.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900-ulr',
+    manufacturer_id: 'airbus',
+    model: 'A350-900ULR',
+    category: 'commercial',
+    image: '/images/manufacturers/airbus/airbus-a350-900ulr.jpg',
+    description: 'Ultra-long range variant.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '283,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '18,000 km',
+      capacity: 170,
+      engines: 2,
+      engine_type: 'RR Trent XWB',
+      length: '66.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900-f',
+    manufacturer_id: 'airbus',
+    model: 'A350F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a350f.jpg',
+    description: 'Dedicated freighter based on A350.',
+    first_flight: 2025,
+    specifications: {
+      max_takeoff_weight: '319,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '8,700 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'RR Trent XWB-97',
+      length: '70.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900-acj',
+    manufacturer_id: 'airbus',
+    model: 'A350-900 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a350-900_acj.jpg',
+    description: 'Longest range business jet.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '283,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '20,000 km',
+      capacity: 25,
+      engines: 2,
+      engine_type: 'RR Trent XWB',
+      length: '66.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-1000-acj',
+    manufacturer_id: 'airbus',
+    model: 'A350-1000 ACJ',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-a350-1000_acj.jpg',
+    description: 'Largest ACJ cabin.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '319,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '18,000 km',
+      capacity: 25,
+      engines: 2,
+      engine_type: 'RR Trent XWB-97',
+      length: '73.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a380-800',
+    manufacturer_id: 'airbus',
+    model: 'A380-800',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-a380-800.jpg',
+    description: 'Worlds largest passenger airliner.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '560,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '15,200 km',
+      capacity: 525,
+      engines: 4,
+      engine_type: 'Engine Alliance GP7200',
+      length: '72.7 m',
+      wingspan: '79.8 m',
+      height: '24.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a380-800f',
+    manufacturer_id: 'airbus',
+    model: 'A380-800F',
+    category: 'cargo',
+    image: '/images/manufacturers/airbus/airbus-a380-800f.jpg',
+    description: 'Proposed freighter cancelled.',
+    first_flight: 2006,
+    specifications: {
+      max_takeoff_weight: '590,000 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '10,400 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'Engine Alliance GP7200',
+      length: '72.7 m',
+      wingspan: '79.8 m',
+      height: '24.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-220',
+    manufacturer_id: 'airbus',
+    model: 'ACJ TwoTwenty',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj_twotwenty.jpg',
+    description: 'Newest ACJ based on A220.',
+    first_flight: 2021,
+    specifications: {
+      max_takeoff_weight: '63,100 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '10,460 km',
+      capacity: 18,
+      engines: 2,
+      engine_type: 'PW PW1500G',
+      length: '35.0 m',
+      wingspan: '35.1 m',
+      height: '11.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-318',
+    manufacturer_id: 'airbus',
+    model: 'ACJ318',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj318.jpg',
+    description: 'VIP configuration of A318.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '68,000 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '7,700 km',
+      capacity: 14,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '31.4 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-319',
+    manufacturer_id: 'airbus',
+    model: 'ACJ319',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj319.jpg',
+    description: 'Popular corporate jet A319.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '75,500 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '11,100 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '33.8 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-320',
+    manufacturer_id: 'airbus',
+    model: 'ACJ320',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj320.jpg',
+    description: 'Corporate jet A320.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '73,500 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '7,800 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '37.6 m',
+      wingspan: '34.1 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-321',
+    manufacturer_id: 'airbus',
+    model: 'ACJ321',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj321.jpg',
+    description: 'Largest ACJ narrow-body.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '97,000 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '11,100 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM LEAP-1A',
+      length: '44.5 m',
+      wingspan: '35.8 m',
+      height: '11.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-330',
+    manufacturer_id: 'airbus',
+    model: 'ACJ330',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj330.jpg',
+    description: 'Wide-body VIP transport.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '242,000 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '17,700 km',
+      capacity: 25,
+      engines: 2,
+      engine_type: 'CFM56-5A1',
+      length: '63.7 m',
+      wingspan: '60.3 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-340',
+    manufacturer_id: 'airbus',
+    model: 'ACJ340',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj340.jpg',
+    description: 'Quadjet VIP transport.',
+    first_flight: 1993,
+    specifications: {
+      max_takeoff_weight: '380,000 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '17,700 km',
+      capacity: 25,
+      engines: 4,
+      engine_type: 'CFM56-5C4',
+      length: '67.9 m',
+      wingspan: '63.5 m',
+      height: '17.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-350',
+    manufacturer_id: 'airbus',
+    model: 'ACJ350',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-acj350.jpg',
+    description: 'Latest wide-body ACJ.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '283,000 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '20,000 km',
+      capacity: 25,
+      engines: 2,
+      engine_type: 'RR Trent XWB',
+      length: '66.8 m',
+      wingspan: '64.8 m',
+      height: '17.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a400m',
+    manufacturer_id: 'airbus',
+    model: 'A400M Atlas',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-a400m.jpg',
+    description: 'Military transport aircraft.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '141,000 kg',
+      cruising_speed: 'Mach 0.68',
+      range: '6,400 km',
+      capacity: 116,
+      engines: 4,
+      engine_type: 'EuroProp TP400',
+      length: '45.1 m',
+      wingspan: '42.4 m',
+      height: '14.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'c295',
+    manufacturer_id: 'airbus',
+    model: 'C295',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-c295.jpg',
+    description: 'Tactical transport.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '23,200 kg',
+      cruising_speed: 'Mach 0.52',
+      range: '5,000 km',
+      capacity: 73,
+      engines: 2,
+      engine_type: 'PWC PW127',
+      length: '24.5 m',
+      wingspan: '25.8 m',
+      height: '8.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'cn235',
+    manufacturer_id: 'airbus',
+    model: 'CN-235',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-cn235.jpg',
+    description: 'Medium-range military transport.',
+    first_flight: 1983,
+    specifications: {
+      max_takeoff_weight: '16,100 kg',
+      cruising_speed: 'Mach 0.47',
+      range: '3,600 km',
+      capacity: 51,
+      engines: 2,
+      engine_type: 'GE CT7',
+      length: '21.4 m',
+      wingspan: '25.8 m',
+      height: '8.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'eurofighter',
+    manufacturer_id: 'airbus',
+    model: 'Eurofighter Typhoon',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-eurofighter_typhoon.jpg',
+    description: 'Delta-wing multirole fighter.',
+    first_flight: 1994,
+    specifications: {
+      max_takeoff_weight: '23,500 kg',
+      cruising_speed: 'Mach 2.0',
+      range: '3,790 km',
+      capacity: 1,
+      engines: 2,
+      engine_type: 'Eurojet EJ200',
+      length: '15.96 m',
+      wingspan: '10.95 m',
+      height: '5.28 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'neuron',
+    manufacturer_id: 'airbus',
+    model: 'nEUROn',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-neuron.jpg',
+    description: 'European UCAV demonstrator.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '7,000 kg',
+      cruising_speed: 'Mach 0.8',
+      range: '1,500 km',
+      capacity: 0,
+      engines: 1,
+      engine_type: 'RR Adour',
+      length: '9.5 m',
+      wingspan: '7.5 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tiger',
+    manufacturer_id: 'airbus',
+    model: 'Tiger',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-tiger.jpg',
+    description: 'Attack helicopter.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '6,000 kg',
+      cruising_speed: 'Mach 0.3',
+      range: '800 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'MTR390',
+      length: '14.0 m',
+      wingspan: '13.0 m',
+      height: '3.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h125',
+    manufacturer_id: 'airbus',
+    model: 'H125',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h125.jpg',
+    description: 'Single-engine light utility helicopter.',
+    first_flight: 1974,
+    specifications: {
+      max_takeoff_weight: '2,250 kg',
+      cruising_speed: '250 km/h',
+      range: '680 km',
+      capacity: 5,
+      engines: 1,
+      engine_type: 'Turbomeca Arriel 2D',
+      length: '10.9 m',
+      wingspan: '10.7 m',
+      height: '3.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h130',
+    manufacturer_id: 'airbus',
+    model: 'H130',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h130.jpg',
+    description: 'Light helicopter with Fenestron tail.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '2,500 kg',
+      cruising_speed: '230 km/h',
+      range: '610 km',
+      capacity: 7,
+      engines: 1,
+      engine_type: 'Turbomeca Arriel 2D',
+      length: '10.7 m',
+      wingspan: '10.7 m',
+      height: '3.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h135',
+    manufacturer_id: 'airbus',
+    model: 'H135',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h135.jpg',
+    description: 'Twin-engine light helicopter.',
+    first_flight: 1996,
+    specifications: {
+      max_takeoff_weight: '2,980 kg',
+      cruising_speed: '254 km/h',
+      range: '635 km',
+      capacity: 7,
+      engines: 2,
+      engine_type: 'Turbomeca Arrius 2B2',
+      length: '10.2 m',
+      wingspan: '10.2 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h145',
+    manufacturer_id: 'airbus',
+    model: 'H145',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h145.jpg',
+    description: 'Twin-engine light helicopter.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '3,700 kg',
+      cruising_speed: '260 km/h',
+      range: '680 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'Turbomeca Arriel 2E',
+      length: '11.0 m',
+      wingspan: '11.0 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h145m',
+    manufacturer_id: 'airbus',
+    model: 'H145M',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-h145m.jpg',
+    description: 'Military variant of H145.',
+    first_flight: 2014,
+    specifications: {
+      max_takeoff_weight: '3,700 kg',
+      cruising_speed: '260 km/h',
+      range: '680 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Turbomeca Arriel 2E',
+      length: '11.0 m',
+      wingspan: '11.0 m',
+      height: '3.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h155',
+    manufacturer_id: 'airbus',
+    model: 'H155',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h155.jpg',
+    description: 'Medium twin-engine helicopter.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '4,920 kg',
+      cruising_speed: '278 km/h',
+      range: '857 km',
+      capacity: 13,
+      engines: 2,
+      engine_type: 'Turbomeca Arriel 2C2',
+      length: '14.3 m',
+      wingspan: '12.0 m',
+      height: '4.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h160',
+    manufacturer_id: 'airbus',
+    model: 'H160',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h160.jpg',
+    description: 'New-gen medium helicopter.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '6,050 kg',
+      cruising_speed: '325 km/h',
+      range: '880 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'Turbomeca Arrano',
+      length: '13.7 m',
+      wingspan: '11.8 m',
+      height: '4.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h175',
+    manufacturer_id: 'airbus',
+    model: 'H175',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h175.jpg',
+    description: 'Medium twin-engine for offshore SAR.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '7,800 kg',
+      cruising_speed: '324 km/h',
+      range: '1,111 km',
+      capacity: 18,
+      engines: 2,
+      engine_type: 'PWC PT6C-67E',
+      length: '18.1 m',
+      wingspan: '14.8 m',
+      height: '5.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h215',
+    manufacturer_id: 'airbus',
+    model: 'H215',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h215.jpg',
+    description: 'Medium twin-engine utility.',
+    first_flight: 1978,
+    specifications: {
+      max_takeoff_weight: '9,300 kg',
+      cruising_speed: '327 km/h',
+      range: '1,000 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'Turbomeca Makila 1A1',
+      length: '18.7 m',
+      wingspan: '16.2 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h225',
+    manufacturer_id: 'airbus',
+    model: 'H225',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-h225.jpg',
+    description: 'Super Puma successor.',
+    first_flight: 2000,
+    specifications: {
+      max_takeoff_weight: '11,200 kg',
+      cruising_speed: '324 km/h',
+      range: '1,113 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'Turbomeca Makila 2A1',
+      length: '19.5 m',
+      wingspan: '16.2 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h225m',
+    manufacturer_id: 'airbus',
+    model: 'H225M Caracal',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-h225m.jpg',
+    description: 'Military transport and CSAR.',
+    first_flight: 2000,
+    specifications: {
+      max_takeoff_weight: '11,200 kg',
+      cruising_speed: '324 km/h',
+      range: '1,113 km',
+      capacity: 28,
+      engines: 2,
+      engine_type: 'Turbomeca Makila 2A1',
+      length: '19.5 m',
+      wingspan: '16.2 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'nh90',
+    manufacturer_id: 'airbus',
+    model: 'NH90',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-nh90.jpg',
+    description: 'NATO Frigate Helicopter.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '10,600 kg',
+      cruising_speed: '300 km/h',
+      range: '800 km',
+      capacity: 20,
+      engines: 2,
+      engine_type: 'RR Turbomeca RTM322',
+      length: '16.1 m',
+      wingspan: '13.3 m',
+      height: '5.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'as365',
+    manufacturer_id: 'airbus',
+    model: 'AS365 Dauphin',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-as365.jpg',
+    description: 'Twin-engine light helicopter.',
+    first_flight: 1975,
+    specifications: {
+      max_takeoff_weight: '4,300 kg',
+      cruising_speed: '306 km/h',
+      range: '820 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'Turbomeca Arriel 2C',
+      length: '13.7 m',
+      wingspan: '11.9 m',
+      height: '4.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bo105',
+    manufacturer_id: 'airbus',
+    model: 'BO-105',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-bo105.jpg',
+    description: 'Light twin-engine helicopter.',
+    first_flight: 1967,
+    specifications: {
+      max_takeoff_weight: '2,500 kg',
+      cruising_speed: '242 km/h',
+      range: '572 km',
+      capacity: 5,
+      engines: 2,
+      engine_type: 'Allison 250-C20',
+      length: '8.6 m',
+      wingspan: '9.8 m',
+      height: '3.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bk117',
+    manufacturer_id: 'airbus',
+    model: 'BK-117',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-bk-117.jpg',
+    description: 'Twin-engine light utility helicopter.',
+    first_flight: 1979,
+    specifications: {
+      max_takeoff_weight: '3,350 kg',
+      cruising_speed: '250 km/h',
+      range: '745 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Allison 250-C1',
+      length: '9.9 m',
+      wingspan: '11.0 m',
+      height: '3.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'gazelle',
+    manufacturer_id: 'airbus',
+    model: 'Gazelle',
+    category: 'helicopter',
+    image: '/images/manufacturers/airbus/airbus-gazelle.jpg',
+    description: 'Light utility helicopter.',
+    first_flight: 1967,
+    specifications: {
+      max_takeoff_weight: '1,800 kg',
+      cruising_speed: '310 km/h',
+      range: '670 km',
+      capacity: 5,
+      engines: 1,
+      engine_type: 'Turbomeca Astazou',
+      length: '11.9 m',
+      wingspan: '10.5 m',
+      height: '3.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'cityairbus',
+    manufacturer_id: 'airbus',
+    model: 'CityAirbus',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-cityairbus.jpg',
+    description: 'Urban air mobility demonstrator.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '2,200 kg',
+      cruising_speed: '120 km/h',
+      range: '100 km',
+      capacity: 4,
+      engines: 4,
+      engine_type: 'Electric motors',
+      length: '8.0 m',
+      wingspan: '12.0 m',
+      height: '3.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'vsr700',
+    manufacturer_id: 'airbus',
+    model: 'VSR700',
+    category: 'military',
+    image: '/images/manufacturers/airbus/airbus-vsr700.jpg',
+    description: 'Autonomous naval VTOL drone.',
+    first_flight: 2020,
+    specifications: {
+      max_takeoff_weight: '700 kg',
+      cruising_speed: '200 km/h',
+      range: '300 km',
+      capacity: 0,
+      engines: 1,
+      engine_type: 'Turbomeca Arriel',
+      length: '6.5 m',
+      wingspan: '10.7 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bird-of-prey',
+    manufacturer_id: 'airbus',
+    model: 'Bird of Prey',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-bird-of-prey.jpg',
+    description: 'Concept aircraft with biomimetic wing design.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: 'N/A',
+      cruising_speed: 'N/A',
+      range: 'N/A',
+      capacity: 0,
+      engines: 0,
+      engine_type: 'Concept',
+      length: 'N/A',
+      wingspan: 'N/A',
+      height: 'N/A'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'zephyr',
+    manufacturer_id: 'airbus',
+    model: 'Zephyr',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-zephyr.jpg',
+    description: 'High-altitude solar-powered UAV.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '65 kg',
+      cruising_speed: '55 km/h',
+      range: 'N/A',
+      capacity: 0,
+      engines: 0,
+      engine_type: 'Solar electric',
+      length: '25.0 m',
+      wingspan: '25.0 m',
+      height: 'N/A'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'capa-x',
+    manufacturer_id: 'airbus',
+    model: 'Capa-X',
+    category: 'private',
+    image: '/images/manufacturers/airbus/airbus-capa-x.jpg',
+    description: 'Urban air mobility concept.',
+    first_flight: 2024,
+    specifications: {
+      max_takeoff_weight: '2,000 kg',
+      cruising_speed: '200 km/h',
+      range: '150 km',
+      capacity: 4,
+      engines: 4,
+      engine_type: 'Electric motors',
+      length: '6.0 m',
+      wingspan: '8.0 m',
+      height: '2.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'concorde',
+    manufacturer_id: 'airbus',
+    model: 'Concorde',
+    category: 'legacy',
+    image: '/images/manufacturers/airbus/airbus-concorde.jpg',
+    description: 'Supersonic passenger airliner Mach 2.04.',
+    first_flight: 1969,
+    specifications: {
+      max_takeoff_weight: '185,070 kg',
+      cruising_speed: 'Mach 2.04',
+      range: '7,250 km',
+      capacity: 100,
+      engines: 4,
+      engine_type: 'RR Snecma Olympus 593',
+      length: '62.2 m',
+      wingspan: '25.6 m',
+      height: '12.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
   }
+,
+  {
+    id: 'b707-120',
+    manufacturer_id: 'boeing',
+    model: 'B707-120',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b707-120.jpg',
+    description: 'First commercial jetliner from Boeing.',
+    first_flight: 1957,
+    specifications: {
+      max_takeoff_weight: '111,130 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '9,200 km',
+      capacity: 179,
+      engines: 4,
+      engine_type: 'PW JT3C',
+      length: '44.2 m',
+      wingspan: '39.9 m',
+      height: '12.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b707-320',
+    manufacturer_id: 'boeing',
+    model: 'B707-320',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b707-320.jpg',
+    description: 'Intercontinental variant of the 707.',
+    first_flight: 1958,
+    specifications: {
+      max_takeoff_weight: '151,318 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '10,010 km',
+      capacity: 189,
+      engines: 4,
+      engine_type: 'PW JT4A',
+      length: '46.6 m',
+      wingspan: '43.4 m',
+      height: '12.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b707-320b',
+    manufacturer_id: 'boeing',
+    model: 'B707-320B',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b707-320b.jpg',
+    description: 'Improved 707-320 with turbofans.',
+    first_flight: 1962,
+    specifications: {
+      max_takeoff_weight: '151,318 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '11,050 km',
+      capacity: 189,
+      engines: 4,
+      engine_type: 'PW JT3D',
+      length: '46.6 m',
+      wingspan: '43.4 m',
+      height: '12.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b707-320c',
+    manufacturer_id: 'boeing',
+    model: 'B707-320C',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-b707-320c.jpg',
+    description: 'Convertible passenger freight variant.',
+    first_flight: 1963,
+    specifications: {
+      max_takeoff_weight: '151,318 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '9,800 km',
+      capacity: 189,
+      engines: 4,
+      engine_type: 'PW JT3D',
+      length: '46.6 m',
+      wingspan: '43.4 m',
+      height: '12.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b720',
+    manufacturer_id: 'boeing',
+    model: 'B720',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b720.jpg',
+    description: 'Shorter-range 707 derivative.',
+    first_flight: 1960,
+    specifications: {
+      max_takeoff_weight: '104,325 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '9,700 km',
+      capacity: 156,
+      engines: 4,
+      engine_type: 'PW JT3C',
+      length: '41.4 m',
+      wingspan: '39.9 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b727-100',
+    manufacturer_id: 'boeing',
+    model: 'B727-100',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b727-100.jpg',
+    description: 'Short trijet for short to medium routes.',
+    first_flight: 1963,
+    specifications: {
+      max_takeoff_weight: '77,111 kg',
+      cruising_speed: 'Mach 0.90',
+      range: '3,500 km',
+      capacity: 131,
+      engines: 3,
+      engine_type: 'PW JT8D',
+      length: '40.6 m',
+      wingspan: '32.9 m',
+      height: '10.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b727-200',
+    manufacturer_id: 'boeing',
+    model: 'B727-200',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b727-200.jpg',
+    description: 'Stretched 727 seating up to 189.',
+    first_flight: 1967,
+    specifications: {
+      max_takeoff_weight: '95,028 kg',
+      cruising_speed: 'Mach 0.90',
+      range: '3,220 km',
+      capacity: 189,
+      engines: 3,
+      engine_type: 'PW JT8D',
+      length: '46.7 m',
+      wingspan: '32.9 m',
+      height: '10.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b727-200f',
+    manufacturer_id: 'boeing',
+    model: 'B727-200F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-b727-200f.jpg',
+    description: 'Dedicated freighter conversion.',
+    first_flight: 1981,
+    specifications: {
+      max_takeoff_weight: '95,028 kg',
+      cruising_speed: 'Mach 0.90',
+      range: '3,000 km',
+      capacity: 0,
+      engines: 3,
+      engine_type: 'PW JT8D',
+      length: '46.7 m',
+      wingspan: '32.9 m',
+      height: '10.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-100',
+    manufacturer_id: 'boeing',
+    model: 'B737-100',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-100.jpg',
+    description: 'Original 737 seating 103.',
+    first_flight: 1967,
+    specifications: {
+      max_takeoff_weight: '50,350 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '3,600 km',
+      capacity: 103,
+      engines: 2,
+      engine_type: 'PW JT8D',
+      length: '28.6 m',
+      wingspan: '28.3 m',
+      height: '11.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-200',
+    manufacturer_id: 'boeing',
+    model: 'B737-200',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-200.jpg',
+    description: 'Improved 737 with higher weights.',
+    first_flight: 1968,
+    specifications: {
+      max_takeoff_weight: '58,740 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '4,020 km',
+      capacity: 130,
+      engines: 2,
+      engine_type: 'PW JT8D',
+      length: '30.5 m',
+      wingspan: '28.3 m',
+      height: '11.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-200f',
+    manufacturer_id: 'boeing',
+    model: 'B737-200F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-b737-200f.jpg',
+    description: 'Freighter conversion of 737-200.',
+    first_flight: 1975,
+    specifications: {
+      max_takeoff_weight: '58,740 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '3,200 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'PW JT8D',
+      length: '30.5 m',
+      wingspan: '28.3 m',
+      height: '11.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-300',
+    manufacturer_id: 'boeing',
+    model: 'B737-300',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-300.jpg',
+    description: 'Classic 737 with CFM56 engines.',
+    first_flight: 1980,
+    specifications: {
+      max_takeoff_weight: '62,822 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '4,400 km',
+      capacity: 149,
+      engines: 2,
+      engine_type: 'CFM56-3',
+      length: '33.4 m',
+      wingspan: '28.9 m',
+      height: '11.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-400',
+    manufacturer_id: 'boeing',
+    model: 'B737-400',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-400.jpg',
+    description: 'Stretched 737 Classic seating 188.',
+    first_flight: 1984,
+    specifications: {
+      max_takeoff_weight: '68,038 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '4,000 km',
+      capacity: 188,
+      engines: 2,
+      engine_type: 'CFM56-3',
+      length: '36.5 m',
+      wingspan: '28.9 m',
+      height: '11.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-500',
+    manufacturer_id: 'boeing',
+    model: 'B737-500',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-500.jpg',
+    description: 'Shortened 737 Classic seating 132.',
+    first_flight: 1987,
+    specifications: {
+      max_takeoff_weight: '60,554 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '4,400 km',
+      capacity: 132,
+      engines: 2,
+      engine_type: 'CFM56-3',
+      length: '31.0 m',
+      wingspan: '28.9 m',
+      height: '11.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-600',
+    manufacturer_id: 'boeing',
+    model: 'B737-600',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b737-600.jpg',
+    description: 'Shortest 737 NG seating 132.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '65,090 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,648 km',
+      capacity: 132,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '31.2 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-700',
+    manufacturer_id: 'boeing',
+    model: 'B737-700',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b737-700.jpg',
+    description: 'Base 737 NG seating 149.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '70,080 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,230 km',
+      capacity: 149,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '33.6 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-800',
+    manufacturer_id: 'boeing',
+    model: 'B737-800',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b737-800.jpg',
+    description: 'Stretched 737 NG seating 189.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '79,010 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '5,665 km',
+      capacity: 189,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '39.5 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-900',
+    manufacturer_id: 'boeing',
+    model: 'B737-900',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b737-900.jpg',
+    description: 'Longest 737 NG seating 189.',
+    first_flight: 2000,
+    specifications: {
+      max_takeoff_weight: '85,130 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,045 km',
+      capacity: 189,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '42.1 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-900er',
+    manufacturer_id: 'boeing',
+    model: 'B737-900ER',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b737-900er.jpg',
+    description: 'Extended range 737-900.',
+    first_flight: 2006,
+    specifications: {
+      max_takeoff_weight: '85,130 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '6,045 km',
+      capacity: 220,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '42.1 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max7',
+    manufacturer_id: 'boeing',
+    model: '737 MAX 7',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-737_max_7.jpg',
+    description: 'Shortest 737 MAX seating 172.',
+    first_flight: 2018,
+    specifications: {
+      max_takeoff_weight: '80,286 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '7,130 km',
+      capacity: 172,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '35.6 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max8',
+    manufacturer_id: 'boeing',
+    model: '737 MAX 8',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-737_max_8.jpg',
+    description: 'Base 737 MAX seating 210.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '82,191 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '6,570 km',
+      capacity: 210,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '39.5 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max9',
+    manufacturer_id: 'boeing',
+    model: '737 MAX 9',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-737_max_9.jpg',
+    description: 'Stretched 737 MAX seating 220.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '88,314 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '6,570 km',
+      capacity: 220,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '42.1 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max10',
+    manufacturer_id: 'boeing',
+    model: '737 MAX 10',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-737_max_10.jpg',
+    description: 'Longest 737 MAX seating 230.',
+    first_flight: 2021,
+    specifications: {
+      max_takeoff_weight: '89,790 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '6,110 km',
+      capacity: 230,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '43.8 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-700-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 737-700',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_737-700.jpg',
+    description: 'Business jet based on 737-700.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '77,564 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '11,480 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '33.6 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-800-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 737-800',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_737-800.jpg',
+    description: 'Business jet based on 737-800.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '79,010 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '11,480 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '39.5 m',
+      wingspan: '34.3 m',
+      height: '12.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max8-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ MAX 8',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_max_8.jpg',
+    description: 'Business jet based on 737 MAX 8.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '82,191 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '11,710 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '39.5 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b737-max9-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ MAX 9',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_max_9.jpg',
+    description: 'Business jet based on 737 MAX 9.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '88,314 kg',
+      cruising_speed: 'Mach 0.79',
+      range: '11,710 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'CFM LEAP-1B',
+      length: '42.1 m',
+      wingspan: '35.9 m',
+      height: '12.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-100',
+    manufacturer_id: 'boeing',
+    model: 'B747-100',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-100.jpg',
+    description: 'Original Jumbo Jet seating 452.',
+    first_flight: 1969,
+    specifications: {
+      max_takeoff_weight: '333,390 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '9,800 km',
+      capacity: 452,
+      engines: 4,
+      engine_type: 'PW JT9D',
+      length: '70.7 m',
+      wingspan: '59.6 m',
+      height: '19.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-200',
+    manufacturer_id: 'boeing',
+    model: 'B747-200',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-200.jpg',
+    description: 'Higher weight Jumbo Jet.',
+    first_flight: 1971,
+    specifications: {
+      max_takeoff_weight: '377,840 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '10,650 km',
+      capacity: 400,
+      engines: 4,
+      engine_type: 'PW JT9D',
+      length: '70.7 m',
+      wingspan: '59.6 m',
+      height: '19.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-300',
+    manufacturer_id: 'boeing',
+    model: 'B747-300',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-300.jpg',
+    description: 'Stretched upper deck Jumbo Jet.',
+    first_flight: 1982,
+    specifications: {
+      max_takeoff_weight: '377,840 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '12,400 km',
+      capacity: 660,
+      engines: 4,
+      engine_type: 'PW JT9D',
+      length: '70.7 m',
+      wingspan: '59.6 m',
+      height: '19.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400',
+    manufacturer_id: 'boeing',
+    model: 'B747-400',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-400.jpg',
+    description: 'Glass cockpit two-crew Jumbo Jet.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '13,450 km',
+      capacity: 660,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400f',
+    manufacturer_id: 'boeing',
+    model: 'B747-400F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-b747-400f.jpg',
+    description: 'Dedicated freighter 747-400.',
+    first_flight: 1993,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '8,230 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400erf',
+    manufacturer_id: 'boeing',
+    model: 'B747-400ERF',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-b747-400erf.jpg',
+    description: 'Extended range freighter.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '9,200 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400m',
+    manufacturer_id: 'boeing',
+    model: 'B747-400M',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-400m.jpg',
+    description: 'Combi passenger/freight variant.',
+    first_flight: 1989,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '13,270 km',
+      capacity: 660,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400d',
+    manufacturer_id: 'boeing',
+    model: 'B747-400D',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747-400d.jpg',
+    description: 'Domestic high-capacity variant.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '13,450 km',
+      capacity: 660,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-8i',
+    manufacturer_id: 'boeing',
+    model: '747-8 Intercontinental',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-747-8_intercontinental.jpg',
+    description: 'Latest passenger 747 seating 605.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '442,253 kg',
+      cruising_speed: 'Mach 0.855',
+      range: '14,815 km',
+      capacity: 605,
+      engines: 4,
+      engine_type: 'GE GEnx',
+      length: '76.3 m',
+      wingspan: '68.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-8f',
+    manufacturer_id: 'boeing',
+    model: '747-8F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-747-8f.jpg',
+    description: 'Latest freighter 747.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '442,253 kg',
+      cruising_speed: 'Mach 0.855',
+      range: '8,130 km',
+      capacity: 0,
+      engines: 4,
+      engine_type: 'GE GEnx',
+      length: '76.3 m',
+      wingspan: '68.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-sp',
+    manufacturer_id: 'boeing',
+    model: 'B747SP',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b747sp.jpg',
+    description: 'Short body long range 747.',
+    first_flight: 1975,
+    specifications: {
+      max_takeoff_weight: '317,466 kg',
+      cruising_speed: 'Mach 0.88',
+      range: '12,320 km',
+      capacity: 375,
+      engines: 4,
+      engine_type: 'PW JT9D',
+      length: '56.3 m',
+      wingspan: '59.6 m',
+      height: '19.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-400-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 747-400',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_747-400.jpg',
+    description: 'VIP 747-400.',
+    first_flight: 1996,
+    specifications: {
+      max_takeoff_weight: '412,769 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '14,815 km',
+      capacity: 19,
+      engines: 4,
+      engine_type: 'PW PW4000',
+      length: '70.7 m',
+      wingspan: '64.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b747-8-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 747-8',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_747-8.jpg',
+    description: 'VIP 747-8.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '442,253 kg',
+      cruising_speed: 'Mach 0.855',
+      range: '17,020 km',
+      capacity: 19,
+      engines: 4,
+      engine_type: 'GE GEnx',
+      length: '76.3 m',
+      wingspan: '68.4 m',
+      height: '19.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b757-200',
+    manufacturer_id: 'boeing',
+    model: '757-200',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-757-200.jpg',
+    description: 'Narrow-body for medium routes seating 239.',
+    first_flight: 1982,
+    specifications: {
+      max_takeoff_weight: '115,680 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,222 km',
+      capacity: 239,
+      engines: 2,
+      engine_type: 'RR RB211',
+      length: '47.3 m',
+      wingspan: '38.1 m',
+      height: '13.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b757-200f',
+    manufacturer_id: 'boeing',
+    model: '757-200F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-757-200f.jpg',
+    description: 'Dedicated freighter 757-200.',
+    first_flight: 1987,
+    specifications: {
+      max_takeoff_weight: '115,680 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '5,834 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'RR RB211',
+      length: '47.3 m',
+      wingspan: '38.1 m',
+      height: '13.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b757-200-mrtt',
+    manufacturer_id: 'boeing',
+    model: '757-200 MRTT',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-757-200_mrtt.jpg',
+    description: 'Multi-role tanker transport.',
+    first_flight: 1984,
+    specifications: {
+      max_takeoff_weight: '115,680 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,222 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'RR RB211',
+      length: '47.3 m',
+      wingspan: '38.1 m',
+      height: '13.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b757-300',
+    manufacturer_id: 'boeing',
+    model: '757-300',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-757-300.jpg',
+    description: 'Stretched 757 seating 289.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '123,831 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '6,287 km',
+      capacity: 289,
+      engines: 2,
+      engine_type: 'RR RB211',
+      length: '54.4 m',
+      wingspan: '38.1 m',
+      height: '13.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-200',
+    manufacturer_id: 'boeing',
+    model: '767-200',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-767-200.jpg',
+    description: 'First wide-body twinjet from Boeing.',
+    first_flight: 1981,
+    specifications: {
+      max_takeoff_weight: '143,789 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,300 km',
+      capacity: 216,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '48.5 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-200er',
+    manufacturer_id: 'boeing',
+    model: '767-200ER',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-767-200er.jpg',
+    description: 'Extended range 767-200.',
+    first_flight: 1984,
+    specifications: {
+      max_takeoff_weight: '179,170 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '12,200 km',
+      capacity: 216,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '48.5 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-300',
+    manufacturer_id: 'boeing',
+    model: '767-300',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-767-300.jpg',
+    description: 'Stretched 767 seating 269.',
+    first_flight: 1986,
+    specifications: {
+      max_takeoff_weight: '158,758 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,100 km',
+      capacity: 269,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.9 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-300er',
+    manufacturer_id: 'boeing',
+    model: '767-300ER',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b767-300er.jpg',
+    description: 'Extended range 767-300.',
+    first_flight: 1986,
+    specifications: {
+      max_takeoff_weight: '186,880 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '11,070 km',
+      capacity: 269,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.9 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-300f',
+    manufacturer_id: 'boeing',
+    model: '767-300F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-767-300f.jpg',
+    description: 'Dedicated freighter 767-300.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '186,880 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '6,025 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '54.9 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-400er',
+    manufacturer_id: 'boeing',
+    model: '767-400ER',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-767-400er.jpg',
+    description: 'Further stretched 767 seating 304.',
+    first_flight: 1999,
+    specifications: {
+      max_takeoff_weight: '204,120 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '10,415 km',
+      capacity: 304,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '61.4 m',
+      wingspan: '51.9 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b767-200-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 767-200',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_767-200.jpg',
+    description: 'VIP 767-200.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '143,789 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '12,200 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE CF6-80',
+      length: '48.5 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-200',
+    manufacturer_id: 'boeing',
+    model: '777-200',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-200.jpg',
+    description: 'First fly-by-wire Boeing seating 305.',
+    first_flight: 1994,
+    specifications: {
+      max_takeoff_weight: '247,210 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '9,700 km',
+      capacity: 305,
+      engines: 2,
+      engine_type: 'GE GE90',
+      length: '63.7 m',
+      wingspan: '60.9 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-200er',
+    manufacturer_id: 'boeing',
+    model: '777-200ER',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-200er.jpg',
+    description: 'Extended range 777-200.',
+    first_flight: 1996,
+    specifications: {
+      max_takeoff_weight: '297,560 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '14,260 km',
+      capacity: 305,
+      engines: 2,
+      engine_type: 'GE GE90',
+      length: '63.7 m',
+      wingspan: '60.9 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-200lr',
+    manufacturer_id: 'boeing',
+    model: '777-200LR',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-200lr.jpg',
+    description: 'Ultra-long range 777.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '347,450 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '17,370 km',
+      capacity: 301,
+      engines: 2,
+      engine_type: 'GE GE90-110B',
+      length: '63.7 m',
+      wingspan: '64.8 m',
+      height: '18.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-300',
+    manufacturer_id: 'boeing',
+    model: '777-300',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-300.jpg',
+    description: 'Stretched 777 seating 368.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '299,370 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '11,120 km',
+      capacity: 368,
+      engines: 2,
+      engine_type: 'GE GE90',
+      length: '73.9 m',
+      wingspan: '60.9 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-300er',
+    manufacturer_id: 'boeing',
+    model: '777-300ER',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-b777-300er.jpg',
+    description: 'Extended range 777-300.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '351,534 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '13,650 km',
+      capacity: 368,
+      engines: 2,
+      engine_type: 'GE GE90-115B',
+      length: '73.9 m',
+      wingspan: '64.8 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777f',
+    manufacturer_id: 'boeing',
+    model: '777F',
+    category: 'cargo',
+    image: '/images/manufacturers/boeing/boeing-777f.jpg',
+    description: 'Dedicated freighter based on 777-200LR.',
+    first_flight: 2008,
+    specifications: {
+      max_takeoff_weight: '347,450 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '9,038 km',
+      capacity: 0,
+      engines: 2,
+      engine_type: 'GE GE90-110B',
+      length: '63.7 m',
+      wingspan: '64.8 m',
+      height: '18.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-8',
+    manufacturer_id: 'boeing',
+    model: '777-8',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-8.jpg',
+    description: 'Next-gen stretched 777 with folding wingtips.',
+    first_flight: 2025,
+    specifications: {
+      max_takeoff_weight: '351,500 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '16,190 km',
+      capacity: 384,
+      engines: 2,
+      engine_type: 'GE GE9X',
+      length: '73.7 m',
+      wingspan: '71.8 m',
+      height: '18.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-9',
+    manufacturer_id: 'boeing',
+    model: '777-9',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-777-9.jpg',
+    description: 'Next-gen longest 777 with folding wingtips.',
+    first_flight: 2025,
+    specifications: {
+      max_takeoff_weight: '351,500 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '13,500 km',
+      capacity: 426,
+      engines: 2,
+      engine_type: 'GE GE9X',
+      length: '76.7 m',
+      wingspan: '71.8 m',
+      height: '18.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-200-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 777-200',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_777-200.jpg',
+    description: 'VIP 777-200.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '247,210 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '14,260 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE GE90',
+      length: '63.7 m',
+      wingspan: '60.9 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b777-300-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 777-300',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_777-300.jpg',
+    description: 'VIP 777-300.',
+    first_flight: 2004,
+    specifications: {
+      max_takeoff_weight: '351,534 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '13,650 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE GE90-115B',
+      length: '73.9 m',
+      wingspan: '64.8 m',
+      height: '18.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b787-8',
+    manufacturer_id: 'boeing',
+    model: '787-8 Dreamliner',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-787-8_dreamliner.jpg',
+    description: 'First composite airliner seating 248.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '227,930 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '13,620 km',
+      capacity: 248,
+      engines: 2,
+      engine_type: 'GE GEnx',
+      length: '56.7 m',
+      wingspan: '60.1 m',
+      height: '16.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b787-9',
+    manufacturer_id: 'boeing',
+    model: '787-9 Dreamliner',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-787-9_dreamliner.jpg',
+    description: 'Stretched Dreamliner seating 296.',
+    first_flight: 2013,
+    specifications: {
+      max_takeoff_weight: '254,011 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '14,010 km',
+      capacity: 296,
+      engines: 2,
+      engine_type: 'GE GEnx',
+      length: '63.0 m',
+      wingspan: '60.1 m',
+      height: '17.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b787-10',
+    manufacturer_id: 'boeing',
+    model: '787-10 Dreamliner',
+    category: 'commercial',
+    image: '/images/manufacturers/boeing/boeing-787-10_dreamliner.jpg',
+    description: 'Further stretched Dreamliner seating 336.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '254,011 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '11,730 km',
+      capacity: 336,
+      engines: 2,
+      engine_type: 'GE GEnx',
+      length: '68.3 m',
+      wingspan: '60.1 m',
+      height: '17.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b787-8-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 787-8',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_787-8.jpg',
+    description: 'VIP 787-8.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '227,930 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '17,220 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE GEnx',
+      length: '56.7 m',
+      wingspan: '60.1 m',
+      height: '16.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b787-9-bbj',
+    manufacturer_id: 'boeing',
+    model: 'BBJ 787-9',
+    category: 'private',
+    image: '/images/manufacturers/boeing/boeing-bbj_787-9.jpg',
+    description: 'VIP 787-9.',
+    first_flight: 2014,
+    specifications: {
+      max_takeoff_weight: '254,011 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '17,960 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'GE GEnx',
+      length: '63.0 m',
+      wingspan: '60.1 m',
+      height: '17.0 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b377',
+    manufacturer_id: 'boeing',
+    model: 'B377 Stratocruiser',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b377.jpg',
+    description: 'Post-war propeller airliner.',
+    first_flight: 1947,
+    specifications: {
+      max_takeoff_weight: '67,133 kg',
+      cruising_speed: '480 km/h',
+      range: '6,290 km',
+      capacity: 100,
+      engines: 4,
+      engine_type: 'PW R-4360',
+      length: '33.6 m',
+      wingspan: '43.1 m',
+      height: '11.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b247',
+    manufacturer_id: 'boeing',
+    model: 'B247',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b247.jpg',
+    description: 'Early all-metal monoplane airliner.',
+    first_flight: 1933,
+    specifications: {
+      max_takeoff_weight: '26,308 kg',
+      cruising_speed: '320 km/h',
+      range: '1,200 km',
+      capacity: 10,
+      engines: 4,
+      engine_type: 'PW Wasp',
+      length: '15.2 m',
+      wingspan: '22.9 m',
+      height: '3.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b314',
+    manufacturer_id: 'boeing',
+    model: 'B314 Clipper',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b314.jpg',
+    description: 'Long-range flying boat.',
+    first_flight: 1938,
+    specifications: {
+      max_takeoff_weight: '38,102 kg',
+      cruising_speed: '320 km/h',
+      range: '5,700 km',
+      capacity: 74,
+      engines: 4,
+      engine_type: 'PW R-1830',
+      length: '32.3 m',
+      wingspan: '46.3 m',
+      height: '8.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'f15ex',
+    manufacturer_id: 'boeing',
+    model: 'F-15EX Eagle II',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-f15ex.jpg',
+    description: 'Latest variant of F-15 fighter.',
+    first_flight: 2021,
+    specifications: {
+      max_takeoff_weight: '36,741 kg',
+      cruising_speed: 'Mach 2.5',
+      range: '2,100 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE F110-GE-129',
+      length: '19.4 m',
+      wingspan: '13.1 m',
+      height: '5.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'f15e',
+    manufacturer_id: 'boeing',
+    model: 'F-15E Strike Eagle',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-f-15e_strike_eagle.jpg',
+    description: 'Dual-role fighter bomber.',
+    first_flight: 1986,
+    specifications: {
+      max_takeoff_weight: '36,741 kg',
+      cruising_speed: 'Mach 2.5',
+      range: '2,100 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'PW F100-PW-229',
+      length: '19.4 m',
+      wingspan: '13.1 m',
+      height: '5.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'fa18e',
+    manufacturer_id: 'boeing',
+    model: 'F/A-18E Super Hornet',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-fa18e.jpg',
+    description: 'Carrier-based multirole fighter.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '29,937 kg',
+      cruising_speed: 'Mach 1.8',
+      range: '2,346 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE F414-GE-400',
+      length: '18.3 m',
+      wingspan: '13.6 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'fa18f',
+    manufacturer_id: 'boeing',
+    model: 'F/A-18F Super Hornet',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-fa18f.jpg',
+    description: 'Two-seat Super Hornet.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '29,937 kg',
+      cruising_speed: 'Mach 1.8',
+      range: '2,346 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE F414-GE-400',
+      length: '18.3 m',
+      wingspan: '13.6 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b52h',
+    manufacturer_id: 'boeing',
+    model: 'B-52H Stratofortress',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-b52h.jpg',
+    description: 'Long-range strategic bomber.',
+    first_flight: 1961,
+    specifications: {
+      max_takeoff_weight: '220,000 kg',
+      cruising_speed: 'Mach 0.86',
+      range: '14,080 km',
+      capacity: 5,
+      engines: 8,
+      engine_type: 'PW TF33-P-3',
+      length: '48.5 m',
+      wingspan: '56.4 m',
+      height: '12.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'c17',
+    manufacturer_id: 'boeing',
+    model: 'C-17 Globemaster III',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-c17.jpg',
+    description: 'Large military transport.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '265,352 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '4,480 km',
+      capacity: 134,
+      engines: 4,
+      engine_type: 'PW F117-PW-100',
+      length: '53.0 m',
+      wingspan: '51.7 m',
+      height: '16.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ah64',
+    manufacturer_id: 'boeing',
+    model: 'AH-64 Apache',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-ah64.jpg',
+    description: 'Attack helicopter.',
+    first_flight: 1975,
+    specifications: {
+      max_takeoff_weight: '10,433 kg',
+      cruising_speed: '293 km/h',
+      range: '476 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE T700-GE-701',
+      length: '17.7 m',
+      wingspan: '14.6 m',
+      height: '4.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ah64e',
+    manufacturer_id: 'boeing',
+    model: 'AH-64E Guardian',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-ah64e.jpg',
+    description: 'Latest Apache variant.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '10,433 kg',
+      cruising_speed: '293 km/h',
+      range: '476 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE T700-GE-701D',
+      length: '17.7 m',
+      wingspan: '14.6 m',
+      height: '4.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ch47',
+    manufacturer_id: 'boeing',
+    model: 'CH-47 Chinook',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-ch47.jpg',
+    description: 'Tandem rotor heavy-lift helicopter.',
+    first_flight: 1961,
+    specifications: {
+      max_takeoff_weight: '22,680 kg',
+      cruising_speed: '315 km/h',
+      range: '400 km',
+      capacity: 55,
+      engines: 2,
+      engine_type: 'Honeywell T55-GA-714',
+      length: '30.1 m',
+      wingspan: '18.3 m',
+      height: '5.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ch47f',
+    manufacturer_id: 'boeing',
+    model: 'CH-47F Chinook',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-ch47f.jpg',
+    description: 'Improved Chinook.',
+    first_flight: 2006,
+    specifications: {
+      max_takeoff_weight: '22,680 kg',
+      cruising_speed: '315 km/h',
+      range: '400 km',
+      capacity: 55,
+      engines: 2,
+      engine_type: 'Honeywell T55-GA-714A',
+      length: '30.1 m',
+      wingspan: '18.3 m',
+      height: '5.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'p8',
+    manufacturer_id: 'boeing',
+    model: 'P-8 Poseidon',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-p8.jpg',
+    description: 'Maritime patrol based on 737-800.',
+    first_flight: 2009,
+    specifications: {
+      max_takeoff_weight: '85,820 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '2,220 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '39.5 m',
+      wingspan: '37.6 m',
+      height: '12.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'kc46',
+    manufacturer_id: 'boeing',
+    model: 'KC-46 Pegasus',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-kc46.jpg',
+    description: 'Aerial refueling based on 767-200ER.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '188,240 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '11,830 km',
+      capacity: 114,
+      engines: 2,
+      engine_type: 'CFM56-7',
+      length: '50.5 m',
+      wingspan: '47.6 m',
+      height: '15.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'v22',
+    manufacturer_id: 'boeing',
+    model: 'V-22 Osprey',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-v22.jpg',
+    description: 'Tiltrotor aircraft.',
+    first_flight: 1989,
+    specifications: {
+      max_takeoff_weight: '27,443 kg',
+      cruising_speed: '565 km/h',
+      range: '1,627 km',
+      capacity: 24,
+      engines: 2,
+      engine_type: 'Rolls-Royce AE1107C',
+      length: '17.5 m',
+      wingspan: '14.0 m',
+      height: '6.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b17',
+    manufacturer_id: 'boeing',
+    model: 'B-17 Flying Fortress',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b17.jpg',
+    description: 'WWII heavy bomber.',
+    first_flight: 1935,
+    specifications: {
+      max_takeoff_weight: '29,700 kg',
+      cruising_speed: '462 km/h',
+      range: '3,219 km',
+      capacity: 10,
+      engines: 4,
+      engine_type: 'Wright R-1820',
+      length: '22.7 m',
+      wingspan: '31.6 m',
+      height: '5.8 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'b29',
+    manufacturer_id: 'boeing',
+    model: 'B-29 Superfortress',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-b29.jpg',
+    description: 'WWII long-range bomber.',
+    first_flight: 1942,
+    specifications: {
+      max_takeoff_weight: '54,000 kg',
+      cruising_speed: '574 km/h',
+      range: '5,230 km',
+      capacity: 11,
+      engines: 4,
+      engine_type: 'Wright R-3350',
+      length: '30.2 m',
+      wingspan: '43.1 m',
+      height: '8.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'f86',
+    manufacturer_id: 'boeing',
+    model: 'F-86 Sabre',
+    category: 'legacy',
+    image: '/images/manufacturers/boeing/boeing-f86.jpg',
+    description: 'Korean War era jet fighter.',
+    first_flight: 1947,
+    specifications: {
+      max_takeoff_weight: '6,894 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '1,074 km',
+      capacity: 1,
+      engines: 1,
+      engine_type: 'GE J47-GE-27',
+      length: '11.4 m',
+      wingspan: '11.3 m',
+      height: '4.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 't45',
+    manufacturer_id: 'boeing',
+    model: 'T-45 Goshawk',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-t-45_goshawk.jpg',
+    description: 'Naval training aircraft.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '6,214 kg',
+      cruising_speed: '1,038 km/h',
+      range: '1,278 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'RR F405-RR-401',
+      length: '11.6 m',
+      wingspan: '9.4 m',
+      height: '4.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'ea18g',
+    manufacturer_id: 'boeing',
+    model: 'EA-18G Growler',
+    category: 'military',
+    image: '/images/manufacturers/boeing/boeing-ea-18g_growler.jpg',
+    description: 'Electronic warfare variant of F/A-18F.',
+    first_flight: 2006,
+    specifications: {
+      max_takeoff_weight: '29,937 kg',
+      cruising_speed: 'Mach 1.8',
+      range: '2,346 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'GE F414-GE-400',
+      length: '18.3 m',
+      wingspan: '13.6 m',
+      height: '4.9 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  }
+,
+  {
+    id: 'crj100',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-100',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj100.jpg',
+    description: 'Original Canadair Regional Jet seating 50.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '21,523 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '2,400 km',
+      capacity: 50,
+      engines: 2,
+      engine_type: 'GE CF34-3A1',
+      length: '26.8 m',
+      wingspan: '21.2 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj200',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-200',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj200.jpg',
+    description: 'Improved CRJ-100 with better engines.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '23,995 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '3,700 km',
+      capacity: 50,
+      engines: 2,
+      engine_type: 'GE CF34-3B1',
+      length: '26.8 m',
+      wingspan: '21.2 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj440',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-440',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj440.jpg',
+    description: 'Lower-capacity CRJ-200 for regional.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '23,995 kg',
+      cruising_speed: 'Mach 0.74',
+      range: '3,700 km',
+      capacity: 44,
+      engines: 2,
+      engine_type: 'GE CF34-3B1',
+      length: '26.8 m',
+      wingspan: '21.2 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj700',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-700',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj-700.jpg',
+    description: 'Stretched CRJ seating 70.',
+    first_flight: 1997,
+    specifications: {
+      max_takeoff_weight: '32,999 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,650 km',
+      capacity: 70,
+      engines: 2,
+      engine_type: 'GE CF34-8C1',
+      length: '32.5 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj701',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-701',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj701.jpg',
+    description: 'Extended range CRJ-700.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '34,019 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,650 km',
+      capacity: 70,
+      engines: 2,
+      engine_type: 'GE CF34-8C5',
+      length: '32.5 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj702',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-702',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj702.jpg',
+    description: 'Higher capacity CRJ-700 variant.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '34,019 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,650 km',
+      capacity: 75,
+      engines: 2,
+      engine_type: 'GE CF34-8C5',
+      length: '32.5 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj705',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-705',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj705.jpg',
+    description: 'CRJ-900 variant for Air Canada.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '36,995 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,650 km',
+      capacity: 75,
+      engines: 2,
+      engine_type: 'GE CF34-8C5',
+      length: '36.2 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj900',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-900',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj900.jpg',
+    description: 'Further stretched CRJ seating 90.',
+    first_flight: 2000,
+    specifications: {
+      max_takeoff_weight: '36,995 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,400 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'GE CF34-8C5',
+      length: '36.2 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj1000',
+    manufacturer_id: 'bombardier',
+    model: 'CRJ-1000',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-crj1000.jpg',
+    description: 'Largest CRJ seating 100.',
+    first_flight: 2007,
+    specifications: {
+      max_takeoff_weight: '38,995 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,000 km',
+      capacity: 100,
+      engines: 2,
+      engine_type: 'GE CF34-8C5',
+      length: '39.1 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-300',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 300',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-300.jpg',
+    description: 'Super-midsize business jet.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '17,622 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '5,926 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'Honeywell HTF7000',
+      length: '20.9 m',
+      wingspan: '19.5 m',
+      height: '6.2 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-350',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 350',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-350.jpg',
+    description: 'Enhanced Challenger 300.',
+    first_flight: 2013,
+    specifications: {
+      max_takeoff_weight: '18,416 kg',
+      cruising_speed: 'Mach 0.83',
+      range: '5,926 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Honeywell HTF7350',
+      length: '20.9 m',
+      wingspan: '19.5 m',
+      height: '6.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-3500',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 3500',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-3500.jpg',
+    description: 'Latest Challenger with advanced avionics.',
+    first_flight: 2021,
+    specifications: {
+      max_takeoff_weight: '18,600 kg',
+      cruising_speed: 'Mach 0.83',
+      range: '5,926 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Honeywell HTF7350',
+      length: '20.9 m',
+      wingspan: '19.5 m',
+      height: '6.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-600',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 600',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-600.jpg',
+    description: 'Original Challenger large cabin jet.',
+    first_flight: 1977,
+    specifications: {
+      max_takeoff_weight: '19,618 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '6,600 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'GE CF34-3B',
+      length: '20.8 m',
+      wingspan: '19.6 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-601',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 601',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-601.jpg',
+    description: 'Improved Challenger with winglets.',
+    first_flight: 1983,
+    specifications: {
+      max_takeoff_weight: '19,550 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '6,600 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'GE CF34-3A2',
+      length: '20.8 m',
+      wingspan: '19.6 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-604',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 604',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-604.jpg',
+    description: 'Major upgrade with EFIS and FMS.',
+    first_flight: 1995,
+    specifications: {
+      max_takeoff_weight: '21,863 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,500 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'GE CF34-3B',
+      length: '21.1 m',
+      wingspan: '19.6 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-605',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 605',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-605.jpg',
+    description: 'Enhanced Challenger 604.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '21,863 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,400 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'GE CF34-3B',
+      length: '20.8 m',
+      wingspan: '19.6 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-650',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 650',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-650.jpg',
+    description: 'Latest Challenger 600 series.',
+    first_flight: 2014,
+    specifications: {
+      max_takeoff_weight: '21,863 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '7,400 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'GE CF34-3B',
+      length: '20.8 m',
+      wingspan: '19.6 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'challenger-850',
+    manufacturer_id: 'bombardier',
+    model: 'Challenger 850',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-challenger-850.jpg',
+    description: 'Business jet based on CRJ-200.',
+    first_flight: 2006,
+    specifications: {
+      max_takeoff_weight: '24,040 kg',
+      cruising_speed: 'Mach 0.80',
+      range: '5,206 km',
+      capacity: 14,
+      engines: 2,
+      engine_type: 'GE CF34-3B1',
+      length: '26.8 m',
+      wingspan: '21.2 m',
+      height: '6.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-5000',
+    manufacturer_id: 'bombardier',
+    model: 'Global 5000',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-5000.jpg',
+    description: 'Ultra-long range business jet.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '41,957 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '9,630 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'RR BR710-A2-20',
+      length: '29.5 m',
+      wingspan: '28.7 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-5500',
+    manufacturer_id: 'bombardier',
+    model: 'Global 5500',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-5500.jpg',
+    description: 'Enhanced Global 5000.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '42,500 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '10,900 km',
+      capacity: 16,
+      engines: 2,
+      engine_type: 'RR Pearl 15',
+      length: '29.5 m',
+      wingspan: '28.7 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-6000',
+    manufacturer_id: 'bombardier',
+    model: 'Global 6000',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-6000.jpg',
+    description: 'Extended range Global 5000.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '45,132 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '11,112 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'RR BR710-A2-20',
+      length: '30.3 m',
+      wingspan: '28.7 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-6500',
+    manufacturer_id: 'bombardier',
+    model: 'Global 6500',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-6500.jpg',
+    description: 'Enhanced Global 6000.',
+    first_flight: 2019,
+    specifications: {
+      max_takeoff_weight: '45,800 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '12,200 km',
+      capacity: 17,
+      engines: 2,
+      engine_type: 'RR Pearl 15',
+      length: '30.3 m',
+      wingspan: '28.7 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-7500',
+    manufacturer_id: 'bombardier',
+    model: 'Global 7500',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-7500.jpg',
+    description: 'Flagship ultra-long range jet.',
+    first_flight: 2016,
+    specifications: {
+      max_takeoff_weight: '52,096 kg',
+      cruising_speed: 'Mach 0.925',
+      range: '14,260 km',
+      capacity: 19,
+      engines: 4,
+      engine_type: 'GE Passport',
+      length: '33.9 m',
+      wingspan: '31.7 m',
+      height: '8.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-8000',
+    manufacturer_id: 'bombardier',
+    model: 'Global 8000',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-8000.jpg',
+    description: 'Extended range Global 7500.',
+    first_flight: 2022,
+    specifications: {
+      max_takeoff_weight: '52,096 kg',
+      cruising_speed: 'Mach 0.94',
+      range: '14,630 km',
+      capacity: 19,
+      engines: 4,
+      engine_type: 'GE Passport',
+      length: '33.9 m',
+      wingspan: '31.7 m',
+      height: '8.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-express',
+    manufacturer_id: 'bombardier',
+    model: 'Global Express',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-express.jpg',
+    description: 'Original ultra-long range business jet.',
+    first_flight: 1996,
+    specifications: {
+      max_takeoff_weight: '42,411 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '11,690 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'RR BR710',
+      length: '30.3 m',
+      wingspan: '28.6 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'global-express-xrs',
+    manufacturer_id: 'bombardier',
+    model: 'Global Express XRS',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-global-express-xrs.jpg',
+    description: 'Enhanced Global Express.',
+    first_flight: 2003,
+    specifications: {
+      max_takeoff_weight: '43,318 kg',
+      cruising_speed: 'Mach 0.89',
+      range: '11,390 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'RR BR710',
+      length: '30.3 m',
+      wingspan: '28.6 m',
+      height: '7.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-35',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 35',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-35.jpg',
+    description: 'Light business jet.',
+    first_flight: 1973,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '2,800 km',
+      capacity: 8,
+      engines: 2,
+      engine_type: 'GE CJ610',
+      length: '14.8 m',
+      wingspan: '12.0 m',
+      height: '3.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-36',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 36',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-36.jpg',
+    description: 'Longer range Learjet 35.',
+    first_flight: 1973,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,600 km',
+      capacity: 6,
+      engines: 2,
+      engine_type: 'GE CJ610',
+      length: '14.8 m',
+      wingspan: '12.0 m',
+      height: '3.7 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-55',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 55',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-55.jpg',
+    description: 'Midsize business jet.',
+    first_flight: 1979,
+    specifications: {
+      max_takeoff_weight: '8,481 kg',
+      cruising_speed: 'Mach 0.81',
+      range: '2,700 km',
+      capacity: 8,
+      engines: 2,
+      engine_type: 'GE CJ610',
+      length: '15.6 m',
+      wingspan: '13.4 m',
+      height: '4.3 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-60',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 60',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-60.jpg',
+    description: 'Improved midsize jet.',
+    first_flight: 1990,
+    specifications: {
+      max_takeoff_weight: '10,660 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '2,880 km',
+      capacity: 8,
+      engines: 2,
+      engine_type: 'PW PW305A',
+      length: '17.9 m',
+      wingspan: '13.9 m',
+      height: '4.6 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-70',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 70',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-70.jpg',
+    description: 'Light jet with modern avionics.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '9,752 kg',
+      cruising_speed: 'Mach 0.81',
+      range: '3,700 km',
+      capacity: 7,
+      engines: 2,
+      engine_type: 'Honeywell TFE731',
+      length: '17.0 m',
+      wingspan: '14.6 m',
+      height: '4.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-75',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 75',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-75.jpg',
+    description: 'Enhanced Learjet 70.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '9,752 kg',
+      cruising_speed: 'Mach 0.81',
+      range: '3,800 km',
+      capacity: 9,
+      engines: 2,
+      engine_type: 'Honeywell TFE731',
+      length: '17.7 m',
+      wingspan: '14.6 m',
+      height: '4.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'learjet-85',
+    manufacturer_id: 'bombardier',
+    model: 'Learjet 85',
+    category: 'private',
+    image: '/images/manufacturers/bombardier/bombardier-learjet-85.jpg',
+    description: 'Composite light business jet.',
+    first_flight: 2007,
+    specifications: {
+      max_takeoff_weight: '15,195 kg',
+      cruising_speed: 'Mach 0.82',
+      range: '5,560 km',
+      capacity: 8,
+      engines: 2,
+      engine_type: 'Honeywell HTF7000',
+      length: '20.8 m',
+      wingspan: '18.8 m',
+      height: '6.1 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dash8-q100',
+    manufacturer_id: 'bombardier',
+    model: 'Dash 8-100',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-dash8-q100.jpg',
+    description: 'Original Dash 8 regional turboprop.',
+    first_flight: 1983,
+    specifications: {
+      max_takeoff_weight: '15,649 kg',
+      cruising_speed: '496 km/h',
+      range: '1,889 km',
+      capacity: 37,
+      engines: 2,
+      engine_type: 'PW PW120',
+      length: '22.3 m',
+      wingspan: '25.9 m',
+      height: '7.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dash8-q200',
+    manufacturer_id: 'bombardier',
+    model: 'Dash 8-200',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-dash8-q200.jpg',
+    description: 'Improved Dash 8-100.',
+    first_flight: 1992,
+    specifications: {
+      max_takeoff_weight: '16,466 kg',
+      cruising_speed: '496 km/h',
+      range: '1,713 km',
+      capacity: 37,
+      engines: 2,
+      engine_type: 'PW PW123',
+      length: '22.3 m',
+      wingspan: '25.9 m',
+      height: '7.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dash8-q300',
+    manufacturer_id: 'bombardier',
+    model: 'Dash 8-300',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-dash8-q300.jpg',
+    description: 'Stretched Dash 8 seating 50.',
+    first_flight: 1989,
+    specifications: {
+      max_takeoff_weight: '18,185 kg',
+      cruising_speed: '470 km/h',
+      range: '1,558 km',
+      capacity: 50,
+      engines: 2,
+      engine_type: 'PW PW123',
+      length: '25.7 m',
+      wingspan: '27.4 m',
+      height: '7.5 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'dash8-q400',
+    manufacturer_id: 'bombardier',
+    model: 'Dash 8-Q400',
+    category: 'commercial',
+    image: '/images/manufacturers/bombardier/bombardier-dash8-q400.jpg',
+    description: 'Latest Dash 8 with active noise cancellation.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '29,574 kg',
+      cruising_speed: '667 km/h',
+      range: '2,040 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'PW PW150A',
+      length: '32.8 m',
+      wingspan: '28.4 m',
+      height: '8.4 m'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      { phase: 'Ground School', duration: '4 weeks', topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'] },
+      { phase: 'Simulator Training', duration: '3 weeks', topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'] },
+      { phase: 'Flight Training', duration: '2 weeks', topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'] }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      { type: 'Type Rating Instructor', requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'] }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  }
+
 ];
 
 // Helper functions

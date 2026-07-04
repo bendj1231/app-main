@@ -1,0 +1,520 @@
+const fs = require('fs');
+const path = require('path');
+
+const DATA_FILE = path.resolve(__dirname, '../../data/aircraft-manufacturers.ts');
+
+const entries = [
+  // Dassault Falcon
+  {
+    id: 'falcon-8x',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 8X',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_8x.jpg',
+    description: 'The Dassault Falcon 8X is an ultra-long-range business jet with three engines. It offers a spacious cabin, intercontinental range, and excellent short-field performance.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '33,113 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '11,945 km',
+      capacity: 14,
+      engines: 3,
+      engine_type: 'Pratt & Whitney Canada PW307D',
+      length: '24.46 m',
+      wingspan: '26.29 m',
+      height: '7.94 m',
+    },
+  },
+  {
+    id: 'falcon-7x',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 7X',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_7x.jpg',
+    description: 'The Dassault Falcon 7X is a large-cabin, long-range business jet. It was the first business jet with a digital flight control system.',
+    first_flight: 2005,
+    specifications: {
+      max_takeoff_weight: '31,751 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '11,019 km',
+      capacity: 14,
+      engines: 3,
+      engine_type: 'Pratt & Whitney Canada PW307A',
+      length: '23.38 m',
+      wingspan: '26.21 m',
+      height: '7.83 m',
+    },
+  },
+  {
+    id: 'falcon-900',
+    manufacturer_id: 'dassault-falcon',
+    model: 'Falcon 900',
+    category: 'private',
+    image: '/images/manufacturers/dassault-falcon/dassault-falcon-falcon_900.jpg',
+    description: 'The Dassault Falcon 900 is a long-range trijet business aircraft. It is known for its reliability and long-range capability.',
+    first_flight: 1984,
+    specifications: {
+      max_takeoff_weight: '22,225 kg',
+      cruising_speed: 'Mach 0.84',
+      range: '8,890 km',
+      capacity: 12,
+      engines: 3,
+      engine_type: 'Honeywell TFE731-5',
+      length: '20.21 m',
+      wingspan: '19.33 m',
+      height: '7.55 m',
+    },
+  },
+  // Pilatus
+  {
+    id: 'pc-12',
+    manufacturer_id: 'pilatus',
+    model: 'PC-12',
+    category: 'private',
+    image: '/images/manufacturers/pilatus/pilatus-pc-12.jpg',
+    description: 'The Pilatus PC-12 is a single-engine turboprop aircraft. It is popular for corporate transport, air ambulance, and regional airline operations.',
+    first_flight: 1991,
+    specifications: {
+      max_takeoff_weight: '4,740 kg',
+      cruising_speed: '528 km/h',
+      range: '3,426 km',
+      capacity: 11,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-67B',
+      length: '14.4 m',
+      wingspan: '16.28 m',
+      height: '4.26 m',
+    },
+  },
+  {
+    id: 'pc-24',
+    manufacturer_id: 'pilatus',
+    model: 'PC-24',
+    category: 'private',
+    image: '/images/manufacturers/pilatus/pilatus-pc-24.jpg',
+    description: 'The Pilatus PC-24 is a light business jet capable of operating from short and unpaved runways. It is known as the "Super Versatile Jet".',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: '815 km/h',
+      range: '3,704 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'Williams FJ44-4A',
+      length: '16.8 m',
+      wingspan: '17.0 m',
+      height: '5.35 m',
+    },
+  },
+  {
+    id: 'pc-21',
+    manufacturer_id: 'pilatus',
+    model: 'PC-21',
+    category: 'military',
+    image: '/images/manufacturers/pilatus/pilatus-pc-21.jpg',
+    description: 'The Pilatus PC-21 is a turboprop military trainer aircraft. It is used by air forces around the world for pilot training.',
+    first_flight: 2002,
+    specifications: {
+      max_takeoff_weight: '4,250 kg',
+      cruising_speed: '685 km/h',
+      range: '1,333 km',
+      capacity: 2,
+      engines: 1,
+      engine_type: 'Pratt & Whitney Canada PT6A-68B',
+      length: '11.23 m',
+      wingspan: '9.34 m',
+      height: '3.74 m',
+    },
+  },
+  // Beechcraft
+  {
+    id: 'king-air-350',
+    manufacturer_id: 'beechcraft',
+    model: 'King Air 350',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-king_air_350.jpg',
+    description: 'The Beechcraft King Air 350 is a twin-turboprop aircraft. It is one of the most popular business turboprops in the world.',
+    first_flight: 1988,
+    specifications: {
+      max_takeoff_weight: '7,484 kg',
+      cruising_speed: '577 km/h',
+      range: '3,338 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6A-60A',
+      length: '14.22 m',
+      wingspan: '16.61 m',
+      height: '4.37 m',
+    },
+  },
+  {
+    id: 'baron-g58',
+    manufacturer_id: 'beechcraft',
+    model: 'Baron G58',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-baron_g58.jpg',
+    description: 'The Beechcraft Baron G58 is a twin-engine piston aircraft. It is a popular light twin for personal and business aviation.',
+    first_flight: 1960,
+    specifications: {
+      max_takeoff_weight: '2,500 kg',
+      cruising_speed: '368 km/h',
+      range: '1,555 km',
+      capacity: 6,
+      engines: 2,
+      engine_type: 'Continental IO-550-C',
+      length: '9.09 m',
+      wingspan: '11.48 m',
+      height: '3.0 m',
+    },
+  },
+  {
+    id: 'bonanza-g36',
+    manufacturer_id: 'beechcraft',
+    model: 'Bonanza G36',
+    category: 'private',
+    image: '/images/manufacturers/beechcraft/beechcraft-bonanza_g36.jpg',
+    description: 'The Beechcraft Bonanza G36 is a single-engine piston aircraft. It is one of the longest-running production aircraft in history.',
+    first_flight: 1949,
+    specifications: {
+      max_takeoff_weight: '1,657 kg',
+      cruising_speed: '326 km/h',
+      range: '1,864 km',
+      capacity: 6,
+      engines: 1,
+      engine_type: 'Continental IO-550-B',
+      length: '8.38 m',
+      wingspan: '10.21 m',
+      height: '2.62 m',
+    },
+  },
+  // Sikorsky
+  {
+    id: 's-92',
+    manufacturer_id: 'sikorsky',
+    model: 'S-92',
+    category: 'helicopter',
+    image: '/images/manufacturers/sikorsky/sikorsky-s-92.jpg',
+    description: 'The Sikorsky S-92 is a twin-engine medium-lift helicopter. It is used for offshore oil transport, search and rescue, and VIP transport.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '12,020 kg',
+      cruising_speed: '280 km/h',
+      range: '1,000 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'General Electric CT7-8A',
+      length: '17.12 m',
+      wingspan: '17.17 m',
+      height: '6.45 m',
+    },
+  },
+  {
+    id: 's-76',
+    manufacturer_id: 'sikorsky',
+    model: 'S-76',
+    category: 'helicopter',
+    image: '/images/manufacturers/sikorsky/sikorsky-s-76.jpg',
+    description: 'The Sikorsky S-76 is a medium-size commercial utility helicopter. It is widely used for corporate transport, offshore oil, and air ambulance.',
+    first_flight: 1977,
+    specifications: {
+      max_takeoff_weight: '5,306 kg',
+      cruising_speed: '287 km/h',
+      range: '761 km',
+      capacity: 12,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6B-67A',
+      length: '13.22 m',
+      wingspan: '13.41 m',
+      height: '4.42 m',
+    },
+  },
+  {
+    id: 'uh-60-blackhawk',
+    manufacturer_id: 'sikorsky',
+    model: 'UH-60 Black Hawk',
+    category: 'military',
+    image: '/images/manufacturers/sikorsky/sikorsky-uh-60_blackhawk.jpg',
+    description: 'The Sikorsky UH-60 Black Hawk is a four-blade, twin-engine, medium-lift utility helicopter. It is the primary utility helicopter of the U.S. Army.',
+    first_flight: 1974,
+    specifications: {
+      max_takeoff_weight: '9,979 kg',
+      cruising_speed: '280 km/h',
+      range: '590 km',
+      capacity: 11,
+      engines: 2,
+      engine_type: 'General Electric T700-GE-701D',
+      length: '15.26 m',
+      wingspan: '16.36 m',
+      height: '5.13 m',
+    },
+  },
+  // Leonardo
+  {
+    id: 'aw139',
+    manufacturer_id: 'leonardo',
+    model: 'AW139',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw139.jpg',
+    description: 'The Leonardo AW139 is a 15-seat medium-lift twin-engine helicopter. It is used for offshore transport, search and rescue, and VIP transport.',
+    first_flight: 2001,
+    specifications: {
+      max_takeoff_weight: '6,400 kg',
+      cruising_speed: '306 km/h',
+      range: '1,000 km',
+      capacity: 15,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6C-67C',
+      length: '13.76 m',
+      wingspan: '13.80 m',
+      height: '4.98 m',
+    },
+  },
+  {
+    id: 'aw169',
+    manufacturer_id: 'leonardo',
+    model: 'AW169',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw169.jpg',
+    description: 'The Leonardo AW169 is a 10-seat light-intermediate twin-engine helicopter. It is used for EMS, law enforcement, and corporate transport.',
+    first_flight: 2012,
+    specifications: {
+      max_takeoff_weight: '4,800 kg',
+      cruising_speed: '272 km/h',
+      range: '820 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW210A',
+      length: '12.96 m',
+      wingspan: '12.12 m',
+      height: '3.60 m',
+    },
+  },
+  {
+    id: 'aw189',
+    manufacturer_id: 'leonardo',
+    model: 'AW189',
+    category: 'helicopter',
+    image: '/images/manufacturers/leonardo/leonardo-aw189.jpg',
+    description: 'The Leonardo AW189 is a long-range, heavy-lift twin-engine helicopter. It is used for offshore transport, search and rescue, and firefighting.',
+    first_flight: 2011,
+    specifications: {
+      max_takeoff_weight: '8,300 kg',
+      cruising_speed: '287 km/h',
+      range: '1,111 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'General Electric CT7-2E1',
+      length: '17.57 m',
+      wingspan: '14.60 m',
+      height: '5.13 m',
+    },
+  },
+  {
+    id: 'm-346-master',
+    manufacturer_id: 'leonardo',
+    model: 'M-346 Master',
+    category: 'military',
+    image: '/images/manufacturers/leonardo/leonardo-m-346_master.jpg',
+    description: 'The Leonardo M-346 Master is a military twin-engine transonic trainer aircraft. It is used for advanced pilot training and light combat roles.',
+    first_flight: 2004,
+    specifications: {
+      max_takeoff_weight: '9,600 kg',
+      cruising_speed: 'Mach 0.85',
+      range: '2,722 km',
+      capacity: 2,
+      engines: 2,
+      engine_type: 'Honeywell F124-GA-200',
+      length: '11.49 m',
+      wingspan: '9.72 m',
+      height: '4.76 m',
+    },
+  },
+  // De Havilland Canada
+  {
+    id: 'dash-8-q400',
+    manufacturer_id: 'de-havilland',
+    model: 'Dash 8 Q400',
+    category: 'regional',
+    image: '/images/manufacturers/de-havilland/de-havilland-dash_8_q400.jpg',
+    description: 'The De Havilland Canada Dash 8 Q400 is a high-wing turboprop regional airliner with seating for up to 90 passengers. It is renowned for its short-field performance, fuel efficiency, and quiet operation.',
+    first_flight: 1998,
+    specifications: {
+      max_takeoff_weight: '29,260 kg',
+      cruising_speed: '667 km/h',
+      range: '2,040 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PW150A',
+      length: '32.84 m',
+      wingspan: '28.4 m',
+      height: '8.4 m',
+    },
+  },
+  {
+    id: 'dhc-6-twin-otter',
+    manufacturer_id: 'de-havilland',
+    model: 'DHC-6 Twin Otter',
+    category: 'regional',
+    image: '/images/manufacturers/de-havilland/de-havilland-dhc-6_twin_otter.jpg',
+    description: 'The De Havilland Canada DHC-6 Twin Otter is a Canadian 19-passenger STOL utility aircraft. It is popular for skydiving, remote area operations, and commuter flights.',
+    first_flight: 1965,
+    specifications: {
+      max_takeoff_weight: '5,670 kg',
+      cruising_speed: '278 km/h',
+      range: '1,427 km',
+      capacity: 19,
+      engines: 2,
+      engine_type: 'Pratt & Whitney Canada PT6A-34',
+      length: '15.77 m',
+      wingspan: '19.8 m',
+      height: '5.94 m',
+    },
+  },
+  // Mitsubishi MRJ
+  {
+    id: 'mrj90',
+    manufacturer_id: 'mitsubishi-mrj',
+    model: 'Mitsubishi MRJ90',
+    category: 'regional',
+    image: '/images/manufacturers/mitsubishi-mrj/mitsubishi-mrj-mrj90.jpg',
+    description: 'The Mitsubishi SpaceJet (formerly MRJ) was a regional jet program by Mitsubishi Aircraft Corporation. The MRJ90 was designed to seat 80-92 passengers with advanced fuel-efficient engines.',
+    first_flight: 2015,
+    specifications: {
+      max_takeoff_weight: '42,800 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,770 km',
+      capacity: 88,
+      engines: 2,
+      engine_type: 'Pratt & Whitney PW1200G',
+      length: '33.6 m',
+      wingspan: '29.2 m',
+      height: '10.4 m',
+    },
+  },
+  // COMAC
+  {
+    id: 'c919',
+    manufacturer_id: 'comac-c919',
+    model: 'COMAC C919',
+    category: 'commercial',
+    image: '/images/manufacturers/comac-c919/comac-c919-c919.jpg',
+    description: 'The COMAC C919 is a Chinese narrow-body airliner. It is designed to compete with the Airbus A320neo and Boeing 737 MAX families in the single-aisle market.',
+    first_flight: 2017,
+    specifications: {
+      max_takeoff_weight: '72,500 kg',
+      cruising_speed: 'Mach 0.785',
+      range: '5,555 km',
+      capacity: 168,
+      engines: 2,
+      engine_type: 'CFM International LEAP-1C',
+      length: '38.9 m',
+      wingspan: '35.8 m',
+      height: '11.95 m',
+    },
+  },
+  {
+    id: 'arj21',
+    manufacturer_id: 'comac-c919',
+    model: 'COMAC ARJ21',
+    category: 'regional',
+    image: '/images/manufacturers/comac-c919/comac-c919-arj21.jpg',
+    description: 'The COMAC ARJ21 is a regional jet produced by Commercial Aircraft Corporation of China. It seats 78-90 passengers and is designed for short to medium-haul routes.',
+    first_flight: 2008,
+    specifications: {
+      max_takeoff_weight: '43,500 kg',
+      cruising_speed: 'Mach 0.78',
+      range: '3,700 km',
+      capacity: 90,
+      engines: 2,
+      engine_type: 'General Electric CF34-10A',
+      length: '33.46 m',
+      wingspan: '27.28 m',
+      height: '8.44 m',
+    },
+  },
+];
+
+function makeEntry(e) {
+  return `  {
+    id: '${e.id}',
+    manufacturer_id: '${e.manufacturer_id}',
+    model: '${e.model}',
+    category: '${e.category}',
+    image: '${e.image}',
+    description: '${e.description}',
+    first_flight: ${e.first_flight},
+    specifications: {
+      max_takeoff_weight: '${e.specifications.max_takeoff_weight}',
+      cruising_speed: '${e.specifications.cruising_speed}',
+      range: '${e.specifications.range}',
+      capacity: ${e.specifications.capacity},
+      engines: ${e.specifications.engines},
+      engine_type: '${e.specifications.engine_type}',
+      length: '${e.specifications.length}',
+      wingspan: '${e.specifications.wingspan}',
+      height: '${e.specifications.height}'
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },`;
+}
+
+let content = fs.readFileSync(DATA_FILE, 'utf8');
+const marker = 'export const getManufacturerById';
+const markerIndex = content.indexOf(marker);
+
+// Insert the new entries before the closing `];` of the aircraftTypeRatings array
+const bracketBefore = content.lastIndexOf('\n];', markerIndex);
+const insertAt = bracketBefore >= 0 ? bracketBefore : markerIndex;
+
+// Skip entries that already exist
+const existingIds = new Set(content.match(/\n\s+id:\s+'([^']+)',\n\s+manufacturer_id:/g)?.map(s => s.match(/'([^']+)'/)[1]) || []);
+const newEntries = entries.filter(e => !existingIds.has(e.id)).map(makeEntry).join('\n');
+
+if (newEntries.length > 0) {
+  content = content.slice(0, insertAt) + ',\n' + newEntries + '\n' + content.slice(insertAt);
+  fs.writeFileSync(DATA_FILE, content);
+  console.log(`Added ${newEntries.split('id:').length - 1} aircraft entries for ${[...new Set(entries.filter(e => !existingIds.has(e.id)).map(e => e.manufacturer_id))].join(', ')}`);
+} else {
+  console.log('No new entries to add; all IDs already exist.');
+}
