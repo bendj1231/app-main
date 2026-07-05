@@ -7,7 +7,6 @@ import { InfrastructureDashboard } from '../../InfrastructureDashboard';
 import { RecognitionAIChat } from '../RecognitionAIChat';
 import { LogbookHub } from '@/components/website/components/pilot-recognition/LogbookHub';
 import { InteractiveProfilePreview } from '../InteractiveProfilePreview';
-import { VerificationRecurrencyTab } from './VerificationRecurrencyTab';
 import type { TabId } from '../types';
 import {
   BookOpen, Globe, User, Shield, Target, Zap, GraduationCap, Plane, Award,
@@ -23,7 +22,7 @@ const PATHWAY_CARDS = [
 
 const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 
-export const DashboardTab: React.FC<{ profile: any; walletChecks?: any[]; credentials?: any[]; onNavigate: (p: string) => void; setTab?: (tab: TabId) => void }> = ({ profile, walletChecks = [], credentials = [], onNavigate, setTab }) => {
+export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void; setTab?: (tab: TabId) => void }> = ({ profile, onNavigate, setTab }) => {
   const { currentUser } = useAuth();
   const [carouselIdx, setCarouselIdx] = useState(0);
   const paused = React.useRef(false);
@@ -442,15 +441,6 @@ export const DashboardTab: React.FC<{ profile: any; walletChecks?: any[]; creden
           <p className="text-slate-300 text-sm leading-relaxed">Your profile matches <span className="text-white font-bold">6 high-potential pathways</span> with 80%+ compatibility. Focus on completing the <span className="text-blue-400 font-bold">Transition Program</span> to increase your match score by an average of <span className="text-green-400 font-bold">12%</span>.</p>
         </div>
       </div>
-
-      {/* Compliance & Verification */}
-      <VerificationRecurrencyTab
-        profile={profile}
-        walletChecks={walletChecks}
-        credentials={credentials}
-        setTab={setTab}
-        onNavigate={onNavigate}
-      />
     </div>
   );
 };
