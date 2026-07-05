@@ -60,6 +60,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
   const [animatedHours, setAnimatedHours] = useState(0);
   const [isBooting, setIsBooting] = useState(true);
   const [bootProgress, setBootProgress] = useState(0);
+  const [expandedPathway, setExpandedPathway] = useState<number | null>(null);
 
   const displayName = profile?.display_name || profile?.full_name || 'Captain';
   const totalHours = profile?.total_flight_hours || 0;
@@ -553,7 +554,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Submitted Pathways */}
+                {/* Submitted Pathways — interactive dense tracker */}
                 <div
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
@@ -563,76 +564,140 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       <FolderOpen size={14} className="text-blue-500" />
                       <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
                     </div>
-                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
-                      3
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        <span className="text-[9px] text-slate-400">Submitted</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 ml-2" />
+                        <span className="text-[9px] text-slate-400">Review</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 ml-2" />
+                        <span className="text-[9px] text-slate-400">Pooled</span>
+                      </div>
+                      <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">3</span>
+                    </div>
                   </div>
-                  <div>
+                  <div className="space-y-2">
                     {[
-                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, status: 'Interest Submitted', statusColor: '#3b82f6', statusBg: 'rgba(59,130,246,0.1)', actionLabel: 'View Pathway' },
-                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, status: 'Under Review', statusColor: '#f59e0b', statusBg: 'rgba(245,158,11,0.1)', actionLabel: 'View Pathway' },
-                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, status: 'Pooled', statusColor: '#10b981', statusBg: 'rgba(16,185,129,0.1)', actionLabel: 'Manage Interest' },
-                    ].map((row, i, arr) => (
-                      <div key={i}>
-                        <div className="flex items-start gap-3 py-3">
-                          {/* Left: Logo + Provider + Pathway */}
-                          <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <img
-                              src={row.logo}
-                              alt={row.provider}
-                              className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                              style={{ background: '#ffffff' }}
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                            />
-                            <div className="min-w-0">
-                              <p className="text-[11px] font-bold text-slate-700 truncate">{row.provider}</p>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">{row.type}</span>
-                                <span className="text-[10px] text-slate-400">{row.pathway}</span>
+                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, match: 94, status: 'Interest Submitted', statusColor: '#3b82f6', statusDot: '#3b82f6', reqs: [{ label: 'ATPL', met: true }, { label: '1,500h', met: true }, { label: 'Class 1', met: true }] },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, match: 78, status: 'Under Review', statusColor: '#f59e0b', statusDot: '#f59e0b', reqs: [{ label: 'PPL', met: true }, { label: 'Medical', met: false }, { label: 'English', met: true }] },
+                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, match: 88, status: 'Pooled', statusColor: '#10b981', statusDot: '#10b981', reqs: [{ label: 'CPL', met: true }, { label: 'IFR', met: true }, { label: '500h', met: true }] },
+                    ].map((row, i) => {
+                      const isExpanded = expandedPathway === i;
+                      const actionLabel = row.status === 'Pooled' ? 'Manage Interest' : row.status === 'Under Review' ? 'Action Required' : 'View Pathway';
+                      return (
+                        <div
+                          key={i}
+                          className="border border-gray-200 rounded-lg transition-all cursor-pointer"
+                          style={{
+                            background: isExpanded ? '#f8fafc' : '#ffffff',
+                            borderColor: isExpanded ? '#cbd5e1' : '#e2e8f0',
+                          }}
+                        >
+                          {/* Main row */}
+                          <div
+                            className="flex items-center gap-3 p-3"
+                            onClick={() => setExpandedPathway(isExpanded ? null : i)}
+                          >
+                            {/* Left: Logo + Provider */}
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              <img
+                                src={row.logo}
+                                alt={row.provider}
+                                className="w-9 h-9 rounded-lg object-contain flex-shrink-0 border border-gray-100"
+                                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                              />
+                              <div className="min-w-0">
+                                <p className="text-[11px] font-bold text-slate-800 truncate">{row.provider}</p>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">{row.type}</span>
+                                  <span className="text-[10px] text-slate-400 truncate">{row.pathway}</span>
+                                </div>
                               </div>
                             </div>
+                            {/* Match % mini ring */}
+                            <div className="hidden sm:flex flex-col items-center flex-shrink-0 w-14">
+                              <div className="relative w-8 h-8">
+                                <svg className="w-8 h-8 -rotate-90" viewBox="0 0 32 32">
+                                  <circle cx="16" cy="16" r="13" fill="none" stroke="#f1f5f9" strokeWidth="3" />
+                                  <circle
+                                    cx="16" cy="16" r="13" fill="none"
+                                    stroke={row.match >= 90 ? '#10b981' : row.match >= 70 ? '#f59e0b' : '#ef4444'}
+                                    strokeWidth="3"
+                                    strokeDasharray={`${(row.match / 100) * 81.6} 81.6`}
+                                    strokeLinecap="round"
+                                  />
+                                </svg>
+                                <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black text-slate-600">{row.match}</span>
+                              </div>
+                              <span className="text-[8px] text-slate-400 mt-0.5">Match</span>
+                            </div>
+                            {/* Deadline */}
+                            <div className="hidden md:flex flex-col items-end flex-shrink-0 w-20">
+                              <p className="text-[10px] font-bold text-slate-500">Deadline</p>
+                              <p className="text-[10px] font-semibold" style={{ color: row.deadlineUrgent ? '#ef4444' : '#94a3b8' }}>{row.deadline}</p>
+                            </div>
+                            {/* Status badge with dot */}
+                            <div className="hidden md:block flex-shrink-0">
+                              <span className="inline-flex items-center gap-1 text-[9px] font-black px-2 py-1 rounded-full border"
+                                style={{
+                                  color: row.statusColor,
+                                  background: row.statusColor + '15',
+                                  borderColor: row.statusColor + '30',
+                                }}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ background: row.statusDot }} />
+                                {row.status}
+                              </span>
+                            </div>
+                            {/* Expand chevron */}
+                            <ChevronRight size={14} className="text-slate-300 flex-shrink-0 transition-transform" style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
                           </div>
-                          {/* Center-left: Deadline urgency */}
-                          <div className="flex-shrink-0 hidden sm:flex flex-col items-end w-24">
-                            <p className="text-[10px] font-bold text-slate-500">Deadline</p>
-                            <p className="text-[10px] font-semibold" style={{ color: row.deadlineUrgent ? '#ef4444' : '#94a3b8' }}>
-                              {row.deadline}
-                            </p>
-                          </div>
-                          {/* Center: Status badge */}
-                          <div className="flex-shrink-0 hidden md:flex flex-col items-center w-28">
-                            <span
-                              className="text-[9px] font-black px-2 py-0.5 rounded-full"
-                              style={{ color: row.statusColor, background: row.statusBg }}
+                          {/* Expanded detail panel */}
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              transition={{ duration: 0.2 }}
+                              className="border-t border-gray-100 px-3 pb-3"
                             >
-                              {row.status}
-                            </span>
-                            <p className="text-[9px] text-slate-400 mt-1">{row.submitted}</p>
-                          </div>
-                          {/* Right: Action */}
-                          <div className="flex-shrink-0 self-center">
-                            <button
-                              onClick={() => setTab?.('pathways' as TabId)}
-                              className="px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-all border"
-                              style={{
-                                background: row.status === 'Pooled' ? '#10b981' : '#f8fafc',
-                                color: row.status === 'Pooled' ? '#ffffff' : '#475569',
-                                borderColor: row.status === 'Pooled' ? '#059669' : '#e2e8f0',
-                              }}
-                            >
-                              {row.actionLabel}
-                            </button>
-                          </div>
+                              <div className="pt-3 space-y-3">
+                                <div className="grid grid-cols-3 gap-2">
+                                  {row.reqs.map((req, ri) => (
+                                    <div key={ri} className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 p-2">
+                                      {req.met ? (
+                                        <CheckCircle size={12} className="text-emerald-500" />
+                                      ) : (
+                                        <AlertCircle size={12} className="text-amber-500" />
+                                      )}
+                                      <span className={`text-[10px] font-semibold ${req.met ? 'text-slate-700' : 'text-amber-700'}`}>{req.label}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <div className="h-1.5 w-24 rounded-full bg-gray-100 overflow-hidden">
+                                      <div className="h-full rounded-full transition-all" style={{ width: `${row.match}%`, background: row.match >= 90 ? '#10b981' : row.match >= 70 ? '#f59e0b' : '#ef4444' }} />
+                                    </div>
+                                    <span className="text-[10px] text-slate-500">Profile match {row.match}%</span>
+                                  </div>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setTab?.('pathways' as TabId); }}
+                                    className="px-4 py-1.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                                    style={{ background: row.status === 'Pooled' ? '#10b981' : row.status === 'Under Review' ? '#f59e0b' : '#3b82f6' }}
+                                  >
+                                    {actionLabel} →
+                                  </button>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
                         </div>
-                        {i < arr.length - 1 && (
-                          <div className="border-t border-gray-100" />
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Recent Replies — pathway status updates from all provider types */}
+                {/* Pathway Status Updates — rich reply cards */}
                 <div
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
@@ -641,77 +706,77 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     <Mail size={14} className="text-emerald-500" />
                     <p className="text-xs font-bold text-slate-800">Pathway Status Updates</p>
                   </div>
-                  <div>
+                  <div className="space-y-2">
                     {[
-                      { provider: 'Delta Air Lines', type: 'Airline', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c' },
-                      { provider: 'CAE Oxford Aviation', type: 'Flight School', reply: 'Entry assessment scheduled for next week', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c' },
-                      { provider: 'L3Harris Training', type: 'Type Rating', reply: 'Prerequisites verified — slot reserved', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c' },
-                    ].map((reply, i, arr) => (
-                      <div key={i}>
-                        <button
-                          onClick={() => setTab?.('pathways' as TabId)}
-                          className="w-full flex items-start gap-3 py-3 text-left hover:bg-slate-50 rounded-lg transition-colors"
-                        >
+                      { provider: 'Delta Air Lines', type: 'Airline', reply: 'Application under review — expect update within 5 days', time: '2h ago', accent: '#3b82f6', logoUrl: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c' },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', reply: 'Entry assessment scheduled for next week', time: '1d ago', accent: '#f59e0b', logoUrl: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c' },
+                      { provider: 'L3Harris Training', type: 'Type Rating', reply: 'Prerequisites verified — slot reserved', time: '2d ago', accent: '#10b981', logoUrl: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c' },
+                    ].map((reply, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setTab?.('pathways' as TabId)}
+                        className="w-full flex items-start gap-3 p-3 text-left rounded-lg border transition-all hover:shadow-sm"
+                        style={{ background: '#ffffff', borderColor: '#f1f5f9' }}
+                      >
+                        <div className="relative flex-shrink-0">
                           <img
                             src={reply.logoUrl}
                             alt={reply.provider}
-                            className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                            style={{ background: '#ffffff' }}
+                            className="w-9 h-9 rounded-lg object-contain border border-gray-100"
                             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                           />
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center justify-between mb-0.5">
-                              <div className="flex items-center gap-1.5">
-                                <p className="text-[11px] font-bold text-slate-700">{reply.provider}</p>
-                                <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-slate-100 text-slate-500">{reply.type}</span>
-                              </div>
-                              <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
+                          <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white" style={{ background: reply.accent }} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-[11px] font-bold text-slate-800">{reply.provider}</p>
+                              <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-slate-100 text-slate-500">{reply.type}</span>
                             </div>
-                            <p className="text-[10px] text-slate-500 leading-relaxed truncate">{reply.reply}</p>
+                            <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
                           </div>
-                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0 self-center" />
-                        </button>
-                        {i < arr.length - 1 && (
-                          <div className="border-t border-gray-100" />
-                        )}
-                      </div>
+                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
+                        </div>
+                        <ChevronRight size={14} className="text-slate-300 flex-shrink-0 self-center" />
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Recommended by Recognition AI — predictive fast-track matchmaking */}
+                {/* Fast-Track Match — prominent match card */}
                 <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
+                  className="rounded-xl p-4 border border-amber-200 shadow-sm"
+                  style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(251,191,36,0.04))' }}
                 >
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
                     <Star size={14} className="text-amber-500" />
                     <p className="text-xs font-bold text-slate-800">Fast-Track Match</p>
+                    <span className="ml-auto text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">RECOMMENDED</span>
                   </div>
-                  <div
-                    className="rounded-lg p-3 mb-3"
-                    style={{ background: 'rgba(245,158,11,0.06)' }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ background: 'rgba(245,158,11,0.12)' }}
-                      >
-                        <Target size={14} style={{ color: '#d97706' }} />
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-14 h-14 flex-shrink-0">
+                      <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+                        <circle cx="28" cy="28" r="24" fill="none" stroke="#f1f5f9" strokeWidth="4" />
+                        <circle cx="28" cy="28" r="24" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="141.3 150.8" strokeLinecap="round" />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-base font-black text-amber-700">94</span>
+                        <span className="text-[8px] text-amber-500 font-bold">%</span>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
-                          <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">94%</span>
-                        </div>
-                        <p className="text-[10px] text-slate-400">License and hours align · Priority pool access</p>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-bold text-slate-800">Delta Air Lines — A320 FO Pathway</p>
+                      <p className="text-[10px] text-slate-500 mt-0.5">License and hours align · Priority pool access</p>
+                      <div className="flex items-center gap-1.5 mt-2">
+                        {['ATPL', '1,500h', 'Class 1'].map((tag) => (
+                          <span key={tag} className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-100">{tag}</span>
+                        ))}
                       </div>
-                      <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
                     </div>
                   </div>
                   <button
                     onClick={() => setTab?.('pathways' as TabId)}
-                    className="w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-slate-600 hover:text-slate-800 transition-all border border-gray-300 hover:border-gray-400 bg-gray-100 hover:bg-gray-200"
+                    className="mt-4 w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 bg-amber-600 hover:bg-amber-700"
                   >
                     Submit Interest →
                   </button>
