@@ -1513,18 +1513,17 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
       {searchQuery.trim() && (
-      <>
-        <div className="relative z-30 px-5 -mt-2 mb-0 text-center" style={{ marginLeft: '280px' }}>
+      <div className="relative z-20 -mt-12 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
+        <div className="text-center -mt-3 mb-1">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-xl border border-white/20" style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
             <h2 className="text-sm font-serif font-normal text-white drop-shadow-md">
               Browse Manufacturers <span className="text-xs text-white/60">({manufacturers.length})</span>
             </h2>
           </div>
         </div>
-        <div className="relative z-20 -mt-12 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div
           ref={manufacturerCarouselRef}
-          className="flex gap-3 overflow-x-auto pt-3 pb-3 px-5 scroll-smooth"
+          className="flex gap-3 overflow-x-auto pt-1 pb-3 px-5 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {manufacturers.map(manufacturer => (
@@ -1572,7 +1571,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           ))}
         </div>
       </div>
-      </>
       )}
 
       {/* Main Content with sidebar margin */}
