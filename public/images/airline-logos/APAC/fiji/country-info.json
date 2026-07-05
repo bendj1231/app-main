@@ -1,0 +1,17 @@
+{
+  "country": "fiji",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Fiji Airways",
+      "file": "fiji-airways.svg",
+      "title": "Logo.wine: Fiji Airways",
+      "url": "https://www.logo.wine/a/logo/Fiji_Airways/Fiji_Airways-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

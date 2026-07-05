@@ -1,0 +1,17 @@
+{
+  "country": "maldives",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [],
+  "regionalOperators": [
+    {
+      "name": "Maldivian",
+      "file": "maldivian.svg",
+      "title": "File:Villa air logo 2024.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Villa_air_logo_2024.svg",
+      "width": 384,
+      "height": 169,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "country": "south-korea",
+  "region": "APAC",
+  "totalOperators": 7,
+  "internationalOperators": [
+    {
+      "name": "Korean Air",
+      "file": "korean-air.svg",
+      "title": "File:Korean Air logo (Hangul).svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Korean_Air_logo_%28Hangul%29.svg",
+      "width": 512,
+      "height": 512,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Asiana Airlines",
+      "file": "asiana-airlines.svg",
+      "title": "File:Asiana Airlines-Logo New.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Asiana_Airlines-Logo_New.svg",
+      "width": 927,
+      "height": 334,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Jeju Air",
+      "file": "jeju-air.svg",
+      "title": "File:Jeju Air Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Jeju_Air_Logo.svg",
+      "width": 610,
+      "height": 120,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Tway Air",
+      "file": "tway-air.svg",
+      "title": "File:T'way Air logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/T'way_Air_logo.svg",
+      "width": 107,
+      "height": 45,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Air Busan",
+      "file": "air-busan.svg",
+      "title": "File:Air Busan logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Air_Busan_logo.svg",
+      "width": 3427,
+      "height": 1063,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Air Seoul",
+      "file": "air-seoul.svg",
+      "title": "File:Logo of Air Seoul.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Logo_of_Air_Seoul.svg",
+      "width": 512,
+      "height": 71,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Eastar Jet",
+      "file": "eastar-jet.svg",
+      "title": "File:Eastar Jet Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Eastar_Jet_Logo.svg",
+      "width": 400,
+      "height": 150,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

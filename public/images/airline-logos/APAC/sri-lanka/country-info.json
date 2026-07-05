@@ -1,0 +1,17 @@
+{
+  "country": "sri-lanka",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "SriLankan Airlines",
+      "file": "srilankan-airlines.svg",
+      "title": "Logo.wine: SriLankan Airlines",
+      "url": "https://www.logo.wine/a/logo/SriLankan_Airlines/SriLankan_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

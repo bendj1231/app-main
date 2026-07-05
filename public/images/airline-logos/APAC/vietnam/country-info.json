@@ -1,0 +1,36 @@
+{
+  "country": "vietnam",
+  "region": "APAC",
+  "totalOperators": 3,
+  "internationalOperators": [
+    {
+      "name": "Vietnam Airlines",
+      "file": "vietnam-airlines.svg",
+      "title": "File:Vietnam Airlines 2015 wordmark.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Vietnam_Airlines_2015_wordmark.svg",
+      "width": 500,
+      "height": 53,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "VietJet Air",
+      "file": "vietjet-air.svg",
+      "title": "File:VietJet Air logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/VietJet_Air_logo.svg",
+      "width": 221,
+      "height": 41,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Bamboo Airways",
+      "file": "bamboo-airways.svg",
+      "title": "File:Bamboo Airways Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Bamboo_Airways_Logo.svg",
+      "width": 349,
+      "height": 85,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

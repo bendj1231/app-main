@@ -1,0 +1,45 @@
+{
+  "country": "indonesia",
+  "region": "APAC",
+  "totalOperators": 4,
+  "internationalOperators": [
+    {
+      "name": "Garuda Indonesia",
+      "file": "garuda-indonesia.png",
+      "title": "File:Garuda Indonesia 1969.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Garuda_Indonesia_1969.png",
+      "width": 277,
+      "height": 117,
+      "mime": "image/png"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Lion Air",
+      "file": "lion-air.svg",
+      "title": "Logo.wine: Lion Air",
+      "url": "https://www.logo.wine/a/logo/Lion_Air/Lion_Air-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Batik Air",
+      "file": "batik-air.svg",
+      "title": "File:Malindo Air logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Malindo_Air_logo.svg",
+      "width": 200,
+      "height": 40,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Citilink",
+      "file": "citilink.svg",
+      "title": "File:2012 Citilink Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/2012_Citilink_Logo.svg",
+      "width": 512,
+      "height": 128,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

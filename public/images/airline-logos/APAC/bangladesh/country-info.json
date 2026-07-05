@@ -1,0 +1,17 @@
+{
+  "country": "bangladesh",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Biman Bangladesh Airlines",
+      "file": "biman-bangladesh-airlines.svg",
+      "title": "Logo.wine: Biman Bangladesh Airlines",
+      "url": "https://www.logo.wine/a/logo/Biman_Bangladesh_Airlines/Biman_Bangladesh_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

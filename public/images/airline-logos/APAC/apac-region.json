@@ -1,0 +1,145 @@
+{
+  "region": "APAC",
+  "totalCountries": 23,
+  "totalOperators": 71,
+  "countries": [
+    {
+      "country": "singapore",
+      "internationalCount": 1,
+      "regionalCount": 1,
+      "totalCount": 2
+    },
+    {
+      "country": "hong-kong",
+      "internationalCount": 2,
+      "regionalCount": 1,
+      "totalCount": 3
+    },
+    {
+      "country": "japan",
+      "internationalCount": 3,
+      "regionalCount": 4,
+      "totalCount": 7
+    },
+    {
+      "country": "south-korea",
+      "internationalCount": 2,
+      "regionalCount": 5,
+      "totalCount": 7
+    },
+    {
+      "country": "thailand",
+      "internationalCount": 1,
+      "regionalCount": 4,
+      "totalCount": 5
+    },
+    {
+      "country": "malaysia",
+      "internationalCount": 2,
+      "regionalCount": 0,
+      "totalCount": 2
+    },
+    {
+      "country": "indonesia",
+      "internationalCount": 1,
+      "regionalCount": 3,
+      "totalCount": 4
+    },
+    {
+      "country": "philippines",
+      "internationalCount": 1,
+      "regionalCount": 2,
+      "totalCount": 3
+    },
+    {
+      "country": "vietnam",
+      "internationalCount": 1,
+      "regionalCount": 2,
+      "totalCount": 3
+    },
+    {
+      "country": "india",
+      "internationalCount": 1,
+      "regionalCount": 3,
+      "totalCount": 4
+    },
+    {
+      "country": "china",
+      "internationalCount": 5,
+      "regionalCount": 4,
+      "totalCount": 9
+    },
+    {
+      "country": "taiwan",
+      "internationalCount": 3,
+      "regionalCount": 3,
+      "totalCount": 6
+    },
+    {
+      "country": "brunei",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "laos",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "sri-lanka",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "nepal",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "maldives",
+      "internationalCount": 0,
+      "regionalCount": 1,
+      "totalCount": 1
+    },
+    {
+      "country": "bangladesh",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "australia",
+      "internationalCount": 3,
+      "regionalCount": 1,
+      "totalCount": 4
+    },
+    {
+      "country": "new-zealand",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "fiji",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "papua-new-guinea",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    },
+    {
+      "country": "new-caledonia",
+      "internationalCount": 1,
+      "regionalCount": 0,
+      "totalCount": 1
+    }
+  ]
+}

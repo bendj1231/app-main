@@ -1,0 +1,17 @@
+{
+  "country": "laos",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Laos Airlines",
+      "file": "laos-airlines.png",
+      "title": "File:Langxang Airways International.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Langxang_Airways_International.png",
+      "width": 1500,
+      "height": 418,
+      "mime": "image/png"
+    }
+  ],
+  "regionalOperators": []
+}

@@ -130,7 +130,7 @@ function sanitizeFilename(name) {
 const BAD_KEYWORDS = ['airport', 'terminal', 'check-in', 'entrance', 'aircraft', 'boeing', 'airbus', 'dreamliner', 'air force', 'military', 'runway', 'hangar', 'uniform', 'cockpit', 'cabin', 'flight attendant', 'photo', 'search areas', 'flight 370', 'cargo', 'express', 'expo', 'b-', '@'];
 const GOOD_KEYWORDS = ['logo', 'wordmark', 'emblem', 'symbol'];
 
-// Manual overrides for known exact files on Wikimedia Commons
+// Manual overrides for known exact files from Wikimedia Commons, logo.wine, and cdnlogo
 const MANUAL_OVERRIDES = {
   'Malaysia Airlines': {
     title: 'File:MalaysiaAirlinesLogo Enrich.png',
@@ -145,6 +145,146 @@ const MANUAL_OVERRIDES = {
     mime: 'image/svg+xml',
     width: 168,
     height: 39,
+  },
+  'China Eastern Airlines': {
+    title: 'Logo.wine: China Eastern Airlines',
+    url: 'https://www.logo.wine/a/logo/China_Eastern_Airlines/China_Eastern_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'China Southern Airlines': {
+    title: 'Logo.wine: China Southern Airlines',
+    url: 'https://www.logo.wine/a/logo/China_Southern_Airlines/China_Southern_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Hainan Airlines': {
+    title: 'Logo.wine: Hainan Airlines',
+    url: 'https://www.logo.wine/a/logo/Hainan_Airlines/Hainan_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Shanghai Airlines': {
+    title: 'Logo.wine: Shanghai Airlines',
+    url: 'https://www.logo.wine/a/logo/Shanghai_Airlines/Shanghai_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Shenzhen Airlines': {
+    title: 'Logo.wine: Shenzhen Airlines',
+    url: 'https://www.logo.wine/a/logo/Shenzhen_Airlines/Shenzhen_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Sichuan Airlines': {
+    title: 'Logo.wine: Sichuan Airlines',
+    url: 'https://www.logo.wine/a/logo/Sichuan_Airlines/Sichuan_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Spring Airlines': {
+    title: 'Logo.wine: Spring Airlines',
+    url: 'https://www.logo.wine/a/logo/Spring_Airlines/Spring_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'PAL Express': {
+    title: 'Logo.wine: PAL Express',
+    url: 'https://www.logo.wine/a/logo/PAL_Express/PAL_Express-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Virgin Australia': {
+    title: 'Logo.wine: Virgin Australia',
+    url: 'https://www.logo.wine/a/logo/Virgin_Australia/Virgin_Australia-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'SriLankan Airlines': {
+    title: 'Logo.wine: SriLankan Airlines',
+    url: 'https://www.logo.wine/a/logo/SriLankan_Airlines/SriLankan_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Lion Air': {
+    title: 'Logo.wine: Lion Air',
+    url: 'https://www.logo.wine/a/logo/Lion_Air/Lion_Air-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Hong Kong Airlines': {
+    title: 'Logo.wine: Hong Kong Airlines',
+    url: 'https://www.logo.wine/a/logo/Hong_Kong_Airlines/Hong_Kong_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Hong Kong Express': {
+    title: 'Logo.wine: HK Express',
+    url: 'https://www.logo.wine/a/logo/HK_Express/HK_Express-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Biman Bangladesh Airlines': {
+    title: 'Logo.wine: Biman Bangladesh Airlines',
+    url: 'https://www.logo.wine/a/logo/Biman_Bangladesh_Airlines/Biman_Bangladesh_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Air Niugini': {
+    title: 'Logo.wine: Air Niugini',
+    url: 'https://www.logo.wine/a/logo/Air_Niugini/Air_Niugini-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Tway Air': {
+    title: "File:T'way Air logo.svg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/f/f0/T'way_Air_logo.svg",
+    mime: 'image/svg+xml',
+    width: 107,
+    height: 45,
+  },
+  'Starlux Airlines': {
+    title: 'cdnlogo: Starlux Airlines',
+    url: 'https://static.cdnlogo.com/logos/s/84/starlux-airlines.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Mandarin Airlines': {
+    title: 'Logo.wine: Mandarin Airlines',
+    url: 'https://www.logo.wine/a/logo/Mandarin_Airlines/Mandarin_Airlines-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Fiji Airways': {
+    title: 'Logo.wine: Fiji Airways',
+    url: 'https://www.logo.wine/a/logo/Fiji_Airways/Fiji_Airways-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
+  },
+  'Air Calin': {
+    title: 'Logo.wine: Aircalin',
+    url: 'https://www.logo.wine/a/logo/Aircalin/Aircalin-Logo.wine.svg',
+    mime: 'image/svg+xml',
+    width: 300,
+    height: 100,
   },
 };
 

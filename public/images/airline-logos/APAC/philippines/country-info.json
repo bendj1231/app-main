@@ -1,0 +1,36 @@
+{
+  "country": "philippines",
+  "region": "APAC",
+  "totalOperators": 3,
+  "internationalOperators": [
+    {
+      "name": "Philippine Airlines",
+      "file": "philippine-airlines.svg",
+      "title": "File:Philippine Airlines logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Philippine_Airlines_logo.svg",
+      "width": 512,
+      "height": 85,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Cebu Pacific",
+      "file": "cebu-pacific.svg",
+      "title": "File:Cebu Pacific wordmark.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Cebu_Pacific_wordmark.svg",
+      "width": 500,
+      "height": 98,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "PAL Express",
+      "file": "pal-express.svg",
+      "title": "Logo.wine: PAL Express",
+      "url": "https://www.logo.wine/a/logo/PAL_Express/PAL_Express-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

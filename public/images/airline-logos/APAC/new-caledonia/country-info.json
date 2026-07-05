@@ -1,0 +1,17 @@
+{
+  "country": "new-caledonia",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Air Calin",
+      "file": "air-calin.svg",
+      "title": "Logo.wine: Aircalin",
+      "url": "https://www.logo.wine/a/logo/Aircalin/Aircalin-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

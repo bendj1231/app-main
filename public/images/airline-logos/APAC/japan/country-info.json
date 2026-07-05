@@ -1,0 +1,72 @@
+{
+  "country": "japan",
+  "region": "APAC",
+  "totalOperators": 7,
+  "internationalOperators": [
+    {
+      "name": "Japan Airlines",
+      "file": "japan-airlines.svg",
+      "title": "File:Japan Airlines Logo (1989 - 2002).svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Japan_Airlines_Logo_%281989_-_2002%29.svg",
+      "width": 187,
+      "height": 95,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "All Nippon Airways",
+      "file": "all-nippon-airways.svg",
+      "title": "File:All Nippon Airways Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/All_Nippon_Airways_Logo.svg",
+      "width": 300,
+      "height": 78,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Zipair",
+      "file": "zipair.svg",
+      "title": "File:ZIPAIR Tokyo logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/ZIPAIR_Tokyo_logo.svg",
+      "width": 500,
+      "height": 117,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Peach Aviation",
+      "file": "peach-aviation.svg",
+      "title": "File:Peach Aviation Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Peach_Aviation_Logo.svg",
+      "width": 2494,
+      "height": 779,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Skymark Airlines",
+      "file": "skymark-airlines.svg",
+      "title": "File:Skymark Airlines company logos.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Skymark_Airlines_company_logos.svg",
+      "width": 640,
+      "height": 427,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Star Flyer",
+      "file": "star-flyer.svg",
+      "title": "File:StarFlyer logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/StarFlyer_logo.svg",
+      "width": 1024,
+      "height": 850,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Solaseed Air",
+      "file": "solaseed-air.svg",
+      "title": "File:Solaseed Air logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Solaseed_Air_logo.svg",
+      "width": 1024,
+      "height": 255,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

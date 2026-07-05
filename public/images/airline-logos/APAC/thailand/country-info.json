@@ -1,0 +1,54 @@
+{
+  "country": "thailand",
+  "region": "APAC",
+  "totalOperators": 5,
+  "internationalOperators": [
+    {
+      "name": "Thai Airways",
+      "file": "thai-airways.svg",
+      "title": "File:Thai Airways logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Thai_Airways_logo.svg",
+      "width": 512,
+      "height": 150,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Thai AirAsia",
+      "file": "thai-airasia.png",
+      "title": "File:Logo Thai AirAsia.gif",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/28/Logo_Thai_AirAsia.gif",
+      "width": 200,
+      "height": 98,
+      "mime": "image/gif"
+    },
+    {
+      "name": "Thai Lion Air",
+      "file": "thai-lion-air.svg",
+      "title": "File:Muay Thai pictogram.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Muay_Thai_pictogram.svg",
+      "width": 1358,
+      "height": 1355,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Nok Air",
+      "file": "nok-air.jpg",
+      "title": "File:Nokair logo.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Nokair_logo.jpg",
+      "width": 300,
+      "height": 300,
+      "mime": "image/jpeg"
+    },
+    {
+      "name": "Bangkok Airways",
+      "file": "bangkok-airways.svg",
+      "title": "File:Bangkok Airways Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Bangkok_Airways_Logo.svg",
+      "width": 431,
+      "height": 381,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

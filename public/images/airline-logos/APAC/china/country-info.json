@@ -1,0 +1,90 @@
+{
+  "country": "china",
+  "region": "APAC",
+  "totalOperators": 9,
+  "internationalOperators": [
+    {
+      "name": "China Eastern Airlines",
+      "file": "china-eastern-airlines.svg",
+      "title": "Logo.wine: China Eastern Airlines",
+      "url": "https://www.logo.wine/a/logo/China_Eastern_Airlines/China_Eastern_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "China Southern Airlines",
+      "file": "china-southern-airlines.svg",
+      "title": "Logo.wine: China Southern Airlines",
+      "url": "https://www.logo.wine/a/logo/China_Southern_Airlines/China_Southern_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Air China",
+      "file": "air-china.svg",
+      "title": "File:Air China wordmark.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Air_China_wordmark.svg",
+      "width": 344,
+      "height": 52,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Hainan Airlines",
+      "file": "hainan-airlines.svg",
+      "title": "Logo.wine: Hainan Airlines",
+      "url": "https://www.logo.wine/a/logo/Hainan_Airlines/Hainan_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Xiamen Airlines",
+      "file": "xiamen-airlines.jpg",
+      "title": "File:Xiamen airlines logo.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/69/Xiamen_airlines_logo.jpg",
+      "width": 518,
+      "height": 129,
+      "mime": "image/jpeg"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Shanghai Airlines",
+      "file": "shanghai-airlines.svg",
+      "title": "Logo.wine: Shanghai Airlines",
+      "url": "https://www.logo.wine/a/logo/Shanghai_Airlines/Shanghai_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Shenzhen Airlines",
+      "file": "shenzhen-airlines.svg",
+      "title": "Logo.wine: Shenzhen Airlines",
+      "url": "https://www.logo.wine/a/logo/Shenzhen_Airlines/Shenzhen_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Sichuan Airlines",
+      "file": "sichuan-airlines.svg",
+      "title": "Logo.wine: Sichuan Airlines",
+      "url": "https://www.logo.wine/a/logo/Sichuan_Airlines/Sichuan_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Spring Airlines",
+      "file": "spring-airlines.png",
+      "title": "File:Spring Airlines Japan Logo.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Spring_Airlines_Japan_Logo.png",
+      "width": 328,
+      "height": 188,
+      "mime": "image/png"
+    }
+  ]
+}

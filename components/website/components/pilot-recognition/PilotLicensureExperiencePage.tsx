@@ -395,18 +395,18 @@ const MANUFACTURER_MODELS: Record<string, string[]> = {
 };
 
 const MANUFACTURER_LOGOS: Record<string, string> = {
-  Airbus: '/images/manufacturer-logos/images/set-01-logos/airbus-logo.png',
-  Boeing: '/images/manufacturer-logos/boeing-logo.png',
-  Cessna: '/images/manufacturer-logos/images/set-01-logos/cessna-logo.png',
-  Piper: 'https://en.wikipedia.org/wiki/Special:FilePath/Piper_Aircraft_logo.svg',
+  Airbus: '/images/manufacturer-logos/commercial-jets/airbus-logo.png',
+  Boeing: '/images/manufacturer-logos/commercial-jets/boeing-logo.png',
+  Cessna: '/images/manufacturer-logos/business-private-jets/cessna-logo.png',
+  Piper: '/images/manufacturer-logos/general-aviation/piper-logo.svg',
   Diamond: '',
-  Beechcraft: '/images/manufacturer-logos/beechcraft-logo.png',
-  Embraer: 'https://en.wikipedia.org/wiki/Special:FilePath/Embraer_logo.svg',
-  Bombardier: '/images/manufacturer-logos/images/set-01-logos/bombardier-logo.svg',
-  ATR: '/images/manufacturer-logos/images/set-01-logos/atr-logo.png',
-  Tecnam: '/images/manufacturer-logos/images/set-01-logos/tecnam-logo.png',
-  Cirrus: '/images/manufacturer-logos/cirrus-logo.png',
-  Mooney: '/images/manufacturer-logos/images/set-01-logos/mooney-logo.png',
+  Beechcraft: '/images/manufacturer-logos/business-private-jets/beechcraft-logo.png',
+  Embraer: '/images/manufacturer-logos/regional-aircraft/embraer-logo.svg',
+  Bombardier: '/images/manufacturer-logos/regional-aircraft/bombardier-logo.svg',
+  ATR: '/images/manufacturer-logos/regional-aircraft/atr-logo.png',
+  Tecnam: '/images/manufacturer-logos/general-aviation/tecnam-logo.png',
+  Cirrus: '/images/manufacturer-logos/general-aviation/cirrus-logo.png',
+  Mooney: '/images/manufacturer-logos/general-aviation/mooney-logo.png',
 };
 
 const getManufacturerLogo = (name: string) => MANUFACTURER_LOGOS[name] || '';

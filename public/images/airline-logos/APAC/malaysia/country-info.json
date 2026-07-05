@@ -1,0 +1,26 @@
+{
+  "country": "malaysia",
+  "region": "APAC",
+  "totalOperators": 2,
+  "internationalOperators": [
+    {
+      "name": "Malaysia Airlines",
+      "file": "malaysia-airlines.png",
+      "title": "File:MalaysiaAirlinesLogo Enrich.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/MalaysiaAirlinesLogo_Enrich.png",
+      "width": 400,
+      "height": 200,
+      "mime": "image/png"
+    },
+    {
+      "name": "AirAsia",
+      "file": "airasia.svg",
+      "title": "File:AirAsia Logo Red.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/AirAsia_Logo_Red.svg",
+      "width": 193,
+      "height": 102,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

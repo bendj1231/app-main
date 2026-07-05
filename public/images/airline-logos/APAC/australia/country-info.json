@@ -1,0 +1,45 @@
+{
+  "country": "australia",
+  "region": "APAC",
+  "totalOperators": 4,
+  "internationalOperators": [
+    {
+      "name": "Qantas",
+      "file": "qantas.svg",
+      "title": "File:Qantas Empire Airways Kangaroo Service logo 1944–1947.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Qantas_Empire_Airways_Kangaroo_Service_logo_1944%E2%80%931947.svg",
+      "width": 140,
+      "height": 140,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Virgin Australia",
+      "file": "virgin-australia.svg",
+      "title": "Logo.wine: Virgin Australia",
+      "url": "https://www.logo.wine/a/logo/Virgin_Australia/Virgin_Australia-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Jetstar",
+      "file": "jetstar.svg",
+      "title": "File:Jetstar logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Jetstar_logo.svg",
+      "width": 183,
+      "height": 51,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Rex Airlines",
+      "file": "rex-airlines.svg",
+      "title": "File:Rex Airlines logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/Rex_Airlines_logo.svg",
+      "width": 158,
+      "height": 50,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

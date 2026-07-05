@@ -1,0 +1,17 @@
+{
+  "country": "nepal",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Nepal Airlines",
+      "file": "nepal-airlines.png",
+      "title": "File:Nepal Airlines logo.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Nepal_Airlines_logo.png",
+      "width": 416,
+      "height": 129,
+      "mime": "image/png"
+    }
+  ],
+  "regionalOperators": []
+}

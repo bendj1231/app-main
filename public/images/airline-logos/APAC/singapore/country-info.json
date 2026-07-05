@@ -1,0 +1,27 @@
+{
+  "country": "singapore",
+  "region": "APAC",
+  "totalOperators": 2,
+  "internationalOperators": [
+    {
+      "name": "Singapore Airlines",
+      "file": "singapore-airlines.svg",
+      "title": "File:Singapore Airlines Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Singapore_Airlines_Logo.svg",
+      "width": 1658,
+      "height": 169,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Scoot",
+      "file": "scoot.svg",
+      "title": "File:Scoot logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Scoot_logo.svg",
+      "width": 476,
+      "height": 420,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

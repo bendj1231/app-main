@@ -1,0 +1,36 @@
+{
+  "country": "hong-kong",
+  "region": "APAC",
+  "totalOperators": 3,
+  "internationalOperators": [
+    {
+      "name": "Cathay Pacific",
+      "file": "cathay-pacific.svg",
+      "title": "File:Cathay Pacific Ltd. logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Cathay_Pacific_Ltd._logo.svg",
+      "width": 100,
+      "height": 14,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Hong Kong Airlines",
+      "file": "hong-kong-airlines.svg",
+      "title": "Logo.wine: Hong Kong Airlines",
+      "url": "https://www.logo.wine/a/logo/Hong_Kong_Airlines/Hong_Kong_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Hong Kong Express",
+      "file": "hong-kong-express.svg",
+      "title": "Logo.wine: HK Express",
+      "url": "https://www.logo.wine/a/logo/HK_Express/HK_Express-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

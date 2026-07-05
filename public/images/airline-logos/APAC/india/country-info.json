@@ -1,0 +1,45 @@
+{
+  "country": "india",
+  "region": "APAC",
+  "totalOperators": 4,
+  "internationalOperators": [
+    {
+      "name": "Air India",
+      "file": "air-india.svg",
+      "title": "File:Air India 2023.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Air_India_2023.svg",
+      "width": 168,
+      "height": 39,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "IndiGo",
+      "file": "indigo.svg",
+      "title": "File:IndiGo Airlines logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/69/IndiGo_Airlines_logo.svg",
+      "width": 84,
+      "height": 23,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "SpiceJet",
+      "file": "spicejet.png",
+      "title": "File:New SpiceJet Logo.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/New_SpiceJet_Logo.png",
+      "width": 250,
+      "height": 90,
+      "mime": "image/png"
+    },
+    {
+      "name": "Akasa Air",
+      "file": "akasa-air.svg",
+      "title": "File:Akasa Air logo and motto.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Akasa_Air_logo_and_motto.svg",
+      "width": 1274,
+      "height": 120,
+      "mime": "image/svg+xml"
+    }
+  ]
+}

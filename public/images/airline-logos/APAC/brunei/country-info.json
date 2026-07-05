@@ -1,0 +1,17 @@
+{
+  "country": "brunei",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Royal Brunei Airlines",
+      "file": "royal-brunei-airlines.svg",
+      "title": "File:Royal Brunei Airlines logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Royal_Brunei_Airlines_logo.svg",
+      "width": 377,
+      "height": 153,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

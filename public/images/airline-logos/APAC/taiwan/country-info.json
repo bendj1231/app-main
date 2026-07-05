@@ -1,0 +1,63 @@
+{
+  "country": "taiwan",
+  "region": "APAC",
+  "totalOperators": 6,
+  "internationalOperators": [
+    {
+      "name": "EVA Air",
+      "file": "eva-air.svg",
+      "title": "File:Logo EVA Air.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Logo_EVA_Air.svg",
+      "width": 600,
+      "height": 95,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "China Airlines",
+      "file": "china-airlines.png",
+      "title": "File:China eastern KLIA JPG.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/China_eastern_KLIA_JPG.png",
+      "width": 889,
+      "height": 492,
+      "mime": "image/png"
+    },
+    {
+      "name": "Starlux Airlines",
+      "file": "starlux-airlines.svg",
+      "title": "cdnlogo: Starlux Airlines",
+      "url": "https://static.cdnlogo.com/logos/s/84/starlux-airlines.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": [
+    {
+      "name": "Tigerair Taiwan",
+      "file": "tigerair-taiwan.svg",
+      "title": "File:Tigerair Taiwan logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Tigerair_Taiwan_logo.svg",
+      "width": 409,
+      "height": 152,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Mandarin Airlines",
+      "file": "mandarin-airlines.svg",
+      "title": "Logo.wine: Mandarin Airlines",
+      "url": "https://www.logo.wine/a/logo/Mandarin_Airlines/Mandarin_Airlines-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "UNI Air",
+      "file": "uni-air.png",
+      "title": "File:Uni Air International.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Uni_Air_International.png",
+      "width": 170,
+      "height": 47,
+      "mime": "image/png"
+    }
+  ]
+}

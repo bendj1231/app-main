@@ -1,0 +1,17 @@
+{
+  "country": "papua-new-guinea",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Air Niugini",
+      "file": "air-niugini.svg",
+      "title": "Logo.wine: Air Niugini",
+      "url": "https://www.logo.wine/a/logo/Air_Niugini/Air_Niugini-Logo.wine.svg",
+      "width": 300,
+      "height": 100,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}

@@ -1,0 +1,17 @@
+{
+  "country": "new-zealand",
+  "region": "APAC",
+  "totalOperators": 1,
+  "internationalOperators": [
+    {
+      "name": "Air New Zealand",
+      "file": "air-new-zealand.svg",
+      "title": "File:Air New Zealand logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Air_New_Zealand_logo.svg",
+      "width": 217,
+      "height": 37,
+      "mime": "image/svg+xml"
+    }
+  ],
+  "regionalOperators": []
+}
