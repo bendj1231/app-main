@@ -860,8 +860,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             {/* Press/media style repeating selected manufacturer logo wall */}
             {selectedManufacturer && (
               <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none opacity-[0.25]" style={{ filter: 'grayscale(100%) brightness(200%)' }}>
-                <div className="flex flex-wrap gap-x-10 gap-y-6 p-6 justify-around content-around">
-                  {[...Array(90)].map((_, i) => (
+                <div className="flex flex-wrap gap-x-10 gap-y-6 justify-around content-around">
+                  {[...Array(120)].map((_, i) => (
                     <img key={`${selectedManufacturer.id}-${i}`} src={selectedManufacturer.logo} alt={selectedManufacturer.name} className="h-9 w-auto object-contain opacity-80" />
                   ))}
                 </div>
