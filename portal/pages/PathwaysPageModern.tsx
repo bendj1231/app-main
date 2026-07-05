@@ -4979,7 +4979,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   {/* Left: Entity selector card */}
                   <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(15,23,42,0.35)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
                     <div className="p-3">
-                      <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color: '#06b6d4' }}>Manufacturer</p>
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color: '#06b6d4' }}>Pathways</p>
                       <div className="relative">
                         <select
                           value={activeEntity}
