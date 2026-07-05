@@ -852,7 +852,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           </>
         )}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-6">
+        <div className={`relative z-10 max-w-7xl mx-auto px-6 ${selectedManufacturer ? 'pt-[70px] pb-2' : 'pt-20 pb-6'}`}>
           {!selectedManufacturer ? (
             <div className="text-white px-4 md:px-8 lg:px-12 py-4 md:py-6">
               <div className="max-w-2xl mx-auto text-center flex flex-col items-center backdrop-blur-xl rounded-2xl border border-white/25 p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.15)', boxShadow: '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
@@ -917,7 +917,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         {selectedManufacturer ? (
           <div className="pt-1 pb-3 px-5">
             {/* Stage 2 category filter tabs */}
-            <div className="flex gap-2 overflow-x-auto pb-3 mb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-2 items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               <button
                 onClick={() => setSelectedCategory('all')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
@@ -941,6 +941,14 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   {category}
                 </button>
               ))}
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all"
+                style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
+              >
+                <X className="w-3 h-3" />
+                Cancel Filter
+              </button>
             </div>
             <ManufacturerAircraftCarousel
               manufacturerId={selectedManufacturer.id}
