@@ -1,7 +1,7 @@
 {
   "country": "philippines",
   "region": "APAC",
-  "totalOperators": 3,
+  "totalOperators": 11,
   "internationalOperators": [
     {
       "name": "Philippine Airlines",
@@ -31,6 +31,78 @@
       "width": 300,
       "height": 100,
       "mime": "image/svg+xml"
+    },
+    {
+      "name": "Philippines AirAsia",
+      "file": "philippines-airasia.svg",
+      "title": "File:AirAsia Logo.svg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/AirAsia_New_Logo.svg",
+      "width": 555,
+      "height": 320,
+      "mime": "image/svg+xml"
+    },
+    {
+      "name": "Cebgo",
+      "file": "cebgo.png",
+      "title": "File:Logo of Cebgo.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/Logo_of_Cebgo.png",
+      "width": 300,
+      "height": 100,
+      "mime": "image/png"
+    },
+    {
+      "name": "Sunlight Air",
+      "file": "sunlight-air.png",
+      "title": "File:Sunlight-Air-PH-Logo.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Sunlight-Air-PH-Logo.png",
+      "width": 300,
+      "height": 100,
+      "mime": "image/png"
+    },
+    {
+      "name": "SkyJet Airlines",
+      "file": "skyjet-airlines.png",
+      "title": "SkyJet Airlines",
+      "url": null,
+      "width": null,
+      "height": null,
+      "mime": null
+    },
+    {
+      "name": "Royal Air Philippines",
+      "file": "royal-air-philippines.png",
+      "title": "Royal Air Philippines",
+      "url": null,
+      "width": null,
+      "height": null,
+      "mime": null
+    },
+    {
+      "name": "Air Juan",
+      "file": "air-juan.png",
+      "title": "Air Juan",
+      "url": null,
+      "width": null,
+      "height": null,
+      "mime": null
+    },
+    {
+      "name": "Sky Pasada",
+      "file": "sky-pasada.png",
+      "title": "Sky Pasada",
+      "url": null,
+      "width": null,
+      "height": null,
+      "mime": null
+    },
+    {
+      "name": "Bangsamoro Airways",
+      "file": "bangsamoro-airways.png",
+      "title": "Bangsamoro Airways",
+      "url": null,
+      "width": null,
+      "height": null,
+      "mime": null
     }
   ]
 }

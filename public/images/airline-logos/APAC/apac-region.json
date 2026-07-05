@@ -1,7 +1,7 @@
 {
   "region": "APAC",
   "totalCountries": 23,
-  "totalOperators": 71,
+  "totalOperators": 77,
   "countries": [
     {
       "country": "singapore",
@@ -48,8 +48,8 @@
     {
       "country": "philippines",
       "internationalCount": 1,
-      "regionalCount": 2,
-      "totalCount": 3
+      "regionalCount": 10,
+      "totalCount": 11
     },
     {
       "country": "vietnam",
