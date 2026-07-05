@@ -500,6 +500,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [activeCargoSubcategory, setActiveCargoSubcategory] = useState<string | null>(null);
   const [activeFlagshipSubcategory, setActiveFlagshipSubcategory] = useState<string | null>(null);
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
   const [showExtendedInfo, setShowExtendedInfo] = useState(false);
@@ -692,6 +693,11 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     }
   }, [searchParams, manufacturers, aircraftTypeRatings]);
 
+  // Reset category filter when manufacturer changes
+  useEffect(() => {
+    setSelectedCategory('all');
+  }, [selectedManufacturer?.id]);
+
   const filteredAircraft = React.useMemo(() => {
     let aircraft = aircraftTypeRatings;
     
@@ -746,6 +752,16 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     });
     return Array.from(categories);
   }, [aircraftTypeRatings]);
+
+  // Get categories specifically available for the selected manufacturer
+  const manufacturerCategories = React.useMemo(() => {
+    if (!selectedManufacturer) return [];
+    const categories = new Set<string>();
+    aircraftTypeRatings
+      .filter(a => a.manufacturer_id === selectedManufacturer.id)
+      .forEach(a => categories.add(a.category));
+    return Array.from(categories).sort();
+  }, [selectedManufacturer, aircraftTypeRatings]);
 
   // Auto-scroll aircraft carousel
   useEffect(() => {
@@ -900,12 +916,39 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
         {selectedManufacturer ? (
           <div className="pt-1 pb-3 px-5">
+            {/* Stage 2 category filter tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                  selectedCategory === 'all'
+                    ? 'bg-red-500 text-white shadow-lg'
+                    : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                }`}
+              >
+                All
+              </button>
+              {manufacturerCategories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all capitalize ${
+                    selectedCategory === category
+                      ? 'bg-red-500 text-white shadow-lg'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
             <ManufacturerAircraftCarousel
               manufacturerId={selectedManufacturer.id}
               manufacturerName={selectedManufacturer.name}
               onSelect={(aircraft) => setSelectedAircraft(aircraft)}
               selectedId={selectedAircraft?.id}
               title="Aircraft"
+              categoryFilter={selectedCategory}
             />
           </div>
         ) : (
