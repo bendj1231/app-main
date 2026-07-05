@@ -1071,7 +1071,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           </div>
         )}
 
-          {/* Universal Search Entity Tabs — frosty glassy UI */}
+          {/* Universal Search Entity Tabs — frosty glassy UI, hidden in aircraft selection stage */}
+          {!selectedManufacturer && (
           <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg mx-auto px-2 sm:px-0">
             {/* Left: Entity selector card */}
             <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
@@ -1114,6 +1115,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               </div>
             </div>
           </div>
+        )}
         </div>
 
       {/* Read more about manufacturer expectations - positioned at bottom center of hero */}
