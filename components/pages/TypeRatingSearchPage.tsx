@@ -1501,7 +1501,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       </div>
 
       {/* Manufacturer Carousel - overlaps hero like a popup */}
-      <div className="relative z-20 -mt-6 mx-4 md:mx-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: 'calc(280px + 1rem)', marginRight: '1rem' }}>
+      <div className="relative z-20 -mt-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div className="px-5 pt-4 pb-1 flex items-center justify-between">
           <h2 className="text-base font-serif font-normal text-white drop-shadow-md">
             Browse Manufacturers <span className="text-sm text-white/60">({manufacturers.length})</span>
