@@ -71,7 +71,7 @@ export const FoundationalChapter1Page: React.FC<FoundationalChapter1PageProps> =
 
           {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ display: 'block', maxWidth: '180px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ display: 'block', maxWidth: '180px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               WINGMENTOR PROGRAMS
             </div>

@@ -25,7 +25,7 @@ const navItems = [
 const slides = [
   {
     id: 1,
-    bgImage: '/event2.png',
+    bgImage: '/images/set-07-ui-graphics/event2.png',
     tagline: 'The End to the Shortage',
     headline: 'Connecting Pilots',
     headlineAccent: 'to the Industry',
@@ -40,7 +40,7 @@ const slides = [
   },
   {
     id: 2,
-    bgImage: '/hourglasss.png',
+    bgImage: '/images/set-02-pilot-gap/hourglasss.png',
     tagline: 'Official Statement',
     headline: 'The Shortage Is Real.',
     headlineAccent: 'But Not What They Tell You.',
@@ -55,7 +55,7 @@ const slides = [
   },
   {
     id: 3,
-    bgImage: '/box3.png',
+    bgImage: '/images/set-07-ui-graphics/box3.png',
     tagline: 'Building Better Aviation',
     headline: 'Your Experience Shapes',
     headlineAccent: 'What We Build Next.',
@@ -70,7 +70,7 @@ const slides = [
   },
   {
     id: 4,
-    bgImage: '/construct.png',
+    bgImage: '/images/set-07-ui-graphics/construct.png',
     tagline: 'Beyond the Flight Deck',
     headline: 'Aviation Skills Travel',
     headlineAccent: 'Farther Than You Think.',
@@ -85,7 +85,7 @@ const slides = [
   },
   {
     id: 5,
-    bgImage: '/crew2.png',
+    bgImage: '/images/set-07-ui-graphics/crew2.png',
     tagline: 'Career Mobility',
     headline: 'Pilots Are Exploring',
     headlineAccent: 'Every Pathway Available.',
@@ -100,7 +100,7 @@ const slides = [
   },
   {
     id: 6,
-    bgImage: '/fallen.png',
+    bgImage: '/images/set-02-pilot-gap/fallen.png',
     tagline: 'From Graduate to Professional',
     headline: 'Qualified Pilots Need',
     headlineAccent: 'Direction, Not Just Hours.',
@@ -115,7 +115,7 @@ const slides = [
   },
   {
     id: 7,
-    bgImage: '/building.png',
+    bgImage: '/images/set-07-ui-graphics/building.png',
     tagline: 'Industry Coalition',
     headline: 'ATOs, Airlines & Pilots',
     headlineAccent: 'Solving It Together.',

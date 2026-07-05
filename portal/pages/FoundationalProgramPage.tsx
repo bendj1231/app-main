@@ -437,7 +437,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                     justifyContent: 'center',
                     zIndex: 50
                 }}>
-                    <img src="/logo.png" alt="PilotRecognition" style={{ maxWidth: '200px', marginBottom: '2rem' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition" style={{ maxWidth: '200px', marginBottom: '2rem' }} />
                     <div style={{
                         width: '48px',
                         height: '48px',
@@ -491,7 +491,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 </div>
 
                 <section id="foundational-details" style={{ textAlign: 'center', marginBottom: '2.5rem', filter: userHasFoundationalEnrollment ? 'blur(2px)' : 'none', transition: 'filter 0.3s ease' }}>
-                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         WINGMENTOR PROGRAMS
                     </div>
@@ -579,7 +579,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
                 {/* New Header Section */}
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
                         Earn Experience
                     </h2>

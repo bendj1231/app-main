@@ -628,8 +628,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
     const [platformImageIndex, setPlatformImageIndex] = useState(0);
     const [pilotShortageImageIndex, setPilotShortageImageIndex] = useState(0);
-    const platformImages = ['/typeratingsearch.png', '/AE.png', '/DP.png'];
-    const pilotShortageImages = ['/worker.png', '/event2.png'];
+    const platformImages = ['/images/set-06-pathways/typeratingsearch.png', '/images/set-07-ui-graphics/AE.png', '/images/set-07-ui-graphics/DP.png'];
+    const pilotShortageImages = ['/images/set-07-ui-graphics/worker.png', '/images/set-07-ui-graphics/event2.png'];
 
     // Auto-advance platform news cards every 5 seconds
     useEffect(() => {
@@ -1429,7 +1429,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {/* Right Half - Image with gradient fade from left */}
                 <div className="relative w-1/2">
                     <img
-                        src="/recognition-unlock.png"
+                        src="/images/set-03-recognition/recognition-unlock.png"
                         alt="Recognition+ Unlocks"
                         className="w-full h-full object-cover"
                         style={{ objectPosition: '20% center' }}
@@ -1445,7 +1445,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="absolute inset-y-0 right-0 hidden md:block w-[48vw] lg:w-[50vw] xl:w-[52vw]">
                     <div
                         className="absolute inset-0 bg-contain bg-right bg-no-repeat bg-white"
-                        style={{ backgroundImage: "url('/recog6.png')" }}
+                        style={{ backgroundImage: "url('/images/set-03-recognition/recog6.png')" }}
                     />
                 </div>
 
@@ -1464,7 +1464,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             <div className="md:hidden mb-6">
                                 <div className="relative w-full h-[200px] overflow-hidden rounded-[28px] bg-slate-100">
                                     <img
-                                        src="/recog6.png"
+                                        src="/images/set-03-recognition/recog6.png"
                                         alt="Recognition dashboard"
                                         className="w-full h-full object-cover"
                                     />
@@ -1543,7 +1543,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             {/* Full Background Image */}
                             <img
-                                src="/terminal.png"
+                                src="/images/set-04-screenshots/terminal.png"
                                 alt="Pilot Terminal Background"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
@@ -1784,7 +1784,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 }}
                             >
                                 <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
-                                    <img src="/program1.png" alt="Foundation Program" className="w-full h-full object-cover" loading="lazy" />
+                                    <img src="/images/set-08-website/program1.png" alt="Foundation Program" className="w-full h-full object-cover" loading="lazy" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                                     <div className="absolute top-3 right-3 flex gap-2">
                                         <span className="px-3 py-1 rounded-full bg-blue-500/90 text-white text-xs font-semibold">Featured</span>
@@ -1924,7 +1924,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             {/* Left - Image */}
                             <div className="relative bg-slate-900 flex items-center justify-center">
                                 <img
-                                    src="/pr2.png"
+                                    src="/images/set-03-recognition/pr2.png"
                                     alt="Foundation Program Certificate of Completion"
                                     className="w-full h-auto object-contain block"
                                 />
@@ -2188,7 +2188,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             >
                                 <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
                                     <img
-                                        src="/program1.png"
+                                        src="/images/set-08-website/program1.png"
                                         alt="Foundation Program"
                                         className="w-full h-full object-cover"
                                         loading="lazy"

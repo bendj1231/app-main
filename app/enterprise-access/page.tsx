@@ -816,7 +816,7 @@ const EnterpriseAccessPage = () => {
                     {/* RIGHT — image flush right, fades into white on left */}
                     <div className="hidden lg:flex relative w-1/2 flex-shrink-0 overflow-hidden">
                         <img
-                            src="/recognition-unlock.png"
+                            src="/images/set-03-recognition/recognition-unlock.png"
                             alt="Pilot Recognition Platform"
                             className="w-full h-full object-cover object-left"
                         />
@@ -1368,7 +1368,7 @@ const EnterpriseAccessPage = () => {
                                 {s.id === 'airlines' && (
                                     <div className="mb-5">
                                         <img 
-                                            src="/recogntion.png" 
+                                            src="/images/set-03-recognition/recogntion.png" 
                                             alt="The Recognition Gap: Qualified pilots stand unrecognized while operators search for talent" 
                                             className="w-full rounded-xl shadow-md"
                                         />

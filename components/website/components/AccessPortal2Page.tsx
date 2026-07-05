@@ -196,19 +196,19 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         {
             id: 'type-rating-search',
             title: 'TYPE RATING SEARCH',
-            image: '/typeratingsrch.png',
+            image: '/images/set-06-pathways/typeratingsrch.png',
             onClick: () => onNavigate('type-rating-search'),
         },
         {
             id: 'airline-expectations',
             title: 'AIRLINE EXPECTATIONS SEARCH',
-            image: '/AE.png',
+            image: '/images/set-07-ui-graphics/AE.png',
             onClick: () => onNavigate('airline-expectations'),
         },
         {
             id: 'pilot-career-pathways',
             title: 'PILOT CAREER PATHWAYS',
-            image: '/DP.png',
+            image: '/images/set-07-ui-graphics/DP.png',
             onClick: () => onNavigate('pathways-modern'),
         },
     ];
@@ -1208,7 +1208,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         ${'hover:scale-[1.02] shadow-black/70 border-white/30'}
                                                     `}>
                                                         <img
-                                                            src="/ep.png"
+                                                            src="/images/set-07-ui-graphics/ep.png"
                                                             alt="Examination Portal"
                                                             className="absolute inset-0 w-full h-full object-cover"
                                                             onError={(e) => {

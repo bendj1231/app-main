@@ -342,7 +342,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
         {/* Centered Header with Logo */}
         <div className="dashboard-header" style={{ marginBottom: '2rem', textAlign: 'center', paddingTop: '1rem' }}>
           <div style={{ marginBottom: '1rem' }}>
-            <img src="/logo.png" alt="PilotRecognition" style={{ height: '48px', margin: '0 auto' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition" style={{ height: '48px', margin: '0 auto' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700, fontSize: '0.75rem', marginBottom: '0.75rem', textTransform: 'uppercase' }}>
             Your Pilot Digital Footprint to Pathways

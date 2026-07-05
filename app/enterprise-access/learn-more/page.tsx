@@ -36,7 +36,7 @@ const LearnMorePage = () => {
                         aligning pilot readiness with operator demand through Pull-Based Recruitment.
                     </p>
                     <img 
-                        src="/recogntion.png" 
+                        src="/images/set-03-recognition/recogntion.png" 
                         alt="Pilot Recognition Framework" 
                         className="mx-auto max-w-3xl w-full rounded-2xl shadow-lg"
                     />

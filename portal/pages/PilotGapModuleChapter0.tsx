@@ -11,7 +11,7 @@ export const PilotGapModuleChapter0: React.FC<PilotGapModuleChapter0Props> = ({ 
             {/* Hub-Style Header */}
             <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
                 <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                 </div>
                 <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                     MODULE 01

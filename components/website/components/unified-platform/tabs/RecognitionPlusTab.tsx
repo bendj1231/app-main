@@ -178,7 +178,7 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ setTab, 
             <AnimateIn>
               <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                 <img
-                  src="/pilotcenter.png"
+                  src="/images/set-04-screenshots/pilotcenter.png"
                   alt="Pilot at terminal"
                   className="w-full h-full object-cover"
                 />
@@ -270,7 +270,7 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ setTab, 
             <AnimateIn className="order-1 lg:order-2">
               <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                 <img
-                  src="/wingmentor terminal.png"
+                  src="/images/set-04-screenshots/wingmentor terminal.png"
                   alt="Terminal interface"
                   className="w-full h-full object-cover"
                 />
@@ -349,7 +349,7 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ setTab, 
         {/* Subtle background image */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: 'url(/bridging-the-gap.png)' }}
+          style={{ backgroundImage: 'url(/images/set-02-pilot-gap/bridging-the-gap.png)' }}
         />
         <div
           className="absolute inset-0"

@@ -30,7 +30,7 @@ export const LoadingCard: React.FC = () => {
                     <div className={styles.infoPanelGradient1} />
                     <div className={styles.infoPanelGradient2} />
                     <div className={styles.logo}>
-                        <img src="/logo.png" alt="PilotRecognition Logo" />
+                        <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className={styles.pageLabel}>SYSTEM LOADING</div>
                     <h2 className={styles.panelTitle}>Loading Portal</h2>

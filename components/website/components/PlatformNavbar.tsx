@@ -3,7 +3,7 @@ import { safeRedirect } from '@/lib/url-validator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight } from 'lucide-react';
+import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight, Lock } from 'lucide-react';
 import ProfileImage from '@/components/ProfileImage';
 
 interface PlatformNavbarProps {
@@ -13,8 +13,9 @@ interface PlatformNavbarProps {
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
+  { id: 'dashboard', label: 'Flight Deck' },
   { id: 'profile', label: 'Profile' },
-  { id: 'logbook', label: 'Logbook' },
+  { id: 'logbook', label: 'Flight Bag' },
   { id: 'bookmarks', label: 'Bookmarks' },
   { id: 'recognition-plus', label: 'Recognition+' },
   { id: 'settings', label: 'Settings' },
@@ -26,16 +27,15 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
   const { callApi } = useWorkerAuth();
   const [notifCount, setNotifCount] = useState(0);
   const [bellOpen, setBellOpen] = useState(false);
-  const [profileDropOpen, setProfileDropOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const bellRef = useRef<HTMLDivElement>(null);
-  const profileRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLDivElement>(null);
 
   const displayName = userProfile?.display_name || userProfile?.full_name || currentUser?.email?.split('@')[0] || 'Pilot';
+  const isProfileComplete = !!(userProfile?.full_name && userProfile?.current_occupation && userProfile?.license_type);
 
   // Check email verification status
   useEffect(() => {
@@ -81,7 +81,6 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (bellRef.current && !bellRef.current.contains(e.target as Node)) setBellOpen(false);
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileDropOpen(false);
       if (hamburgerRef.current && !hamburgerRef.current.contains(e.target as Node)) setHamburgerOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -127,13 +126,16 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
         </a>
       </div>
 
-      {/* Center — primary nav links (full size on lg+ only to avoid overlap) */}
+      {currentPage !== 'home' && (
+        <React.Fragment>
+          {/* Center — primary nav links (full size on lg+ only to avoid overlap) */}
       <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2 md:mx-4">
         <div className="flex items-center gap-1 overflow-hidden">
           {[
             { id: 'home', label: 'Home' },
+            { id: 'dashboard', label: 'Flight Deck' },
             { id: 'profile', label: 'Profile' },
-            { id: 'logbook', label: 'Logbook' },
+            { id: 'logbook', label: 'Flight Bag' },
             { id: 'bookmarks', label: 'Bookmarks' },
             { id: 'recognition-plus', label: 'Recognition+' },
           ].map(({ id, label }) => (
@@ -157,7 +159,8 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
         <div className="flex items-center gap-1 overflow-hidden">
           {[
             { id: 'home', label: 'Home' },
-            { id: 'logbook', label: 'Logbook' },
+            { id: 'dashboard', label: 'Flight Deck' },
+            { id: 'logbook', label: 'Flight Bag' },
             { id: 'recognition-plus', label: 'Recognition+' },
           ].map(({ id, label }) => (
             <button
@@ -174,6 +177,8 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
           ))}
         </div>
       </div>
+    </React.Fragment>
+  )}
 
       {/* Right — MSFS-style square tile icon toolbar */}
       <div className="flex items-center gap-2 flex-shrink-0" style={{ transform: 'translateY(-2px)' }}>
@@ -202,7 +207,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
               <div className="relative" ref={bellRef}>
                 <button
                   title="Notifications"
-                  onClick={() => { setBellOpen(v => !v); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                  onClick={() => { setBellOpen(v => !v); setHamburgerOpen(false); }}
                   className="relative transition-all duration-150"
                   style={{
                     width: 44, height: 44,
@@ -215,7 +220,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
                   onMouseLeave={e => { if (!bellOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
                 >
                   <Bell size={20} className="text-white" strokeWidth={2} />
-                  {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
+                  {isProfileComplete && (notifCount > 0 || tcUpdatePending || !emailVerified) && (
                     <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white" style={{ background: '#f59e0b', border: '1.5px solid rgba(15,22,35,0.9)' }}>
                       {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
                     </span>
@@ -227,23 +232,58 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
                       <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
                       <p className="text-sm font-black text-white">Notifications</p>
                     </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      {notifications.length === 0 ? (
-                        <div className="px-4 py-6 text-center">
-                          <p className="text-white/40 text-sm">No new notifications</p>
+                    {!isProfileComplete ? (
+                      <div className="px-5 py-6 text-center">
+                        <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                          <Lock size={24} className="text-red-400" />
                         </div>
-                      ) : (
-                        notifications.map((n) => (
-                          <div key={n.id} className="px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <p className="text-white text-sm font-medium">{n.title}</p>
-                            <p className="text-white/50 text-xs">{n.message}</p>
+                        <p className="text-sm font-black text-white mb-1">Complete Your Profile</p>
+                        <p className="text-[11px] text-white/50 leading-relaxed mb-3">
+                          Add your name, license type, and occupation to unlock notifications and pathway alerts.
+                        </p>
+                        <div className="space-y-1.5 text-left max-w-xs mx-auto">
+                          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                            <span className={`text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center ${userProfile?.full_name ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white/40'}`}>{userProfile?.full_name ? '✓' : '1'}</span>
+                            <span className="text-[10px] text-white/70">Full Name</span>
                           </div>
-                        ))
-                      )}
-                    </div>
-                    <button onClick={() => { setBellOpen(false); handleNavClick('notifications'); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
-                      VIEW ALL NOTIFICATIONS →
-                    </button>
+                          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                            <span className={`text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center ${userProfile?.current_occupation ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white/40'}`}>{userProfile?.current_occupation ? '✓' : '2'}</span>
+                            <span className="text-[10px] text-white/70">Current Occupation</span>
+                          </div>
+                          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                            <span className={`text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center ${userProfile?.license_type ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white/40'}`}>{userProfile?.license_type ? '✓' : '3'}</span>
+                            <span className="text-[10px] text-white/70">License Type</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => { setBellOpen(false); onNavigate('profile'); }}
+                          className="mt-4 w-full py-2 rounded-xl text-[10px] font-black text-white transition-all hover:brightness-110"
+                          style={{ background: '#dc2626' }}
+                        >
+                          COMPLETE ADVANCED PROFILE →
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="max-h-64 overflow-y-auto">
+                          {notifications.length === 0 ? (
+                            <div className="px-4 py-6 text-center">
+                              <p className="text-white/40 text-sm">No new notifications</p>
+                            </div>
+                          ) : (
+                            notifications.map((n) => (
+                              <div key={n.id} className="px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <p className="text-white text-sm font-medium">{n.title}</p>
+                                <p className="text-white/50 text-xs">{n.message}</p>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                        <button onClick={() => { setBellOpen(false); handleNavClick('notifications'); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
+                          VIEW ALL NOTIFICATIONS →
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -266,65 +306,31 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
                 <Settings size={20} className="text-white" strokeWidth={2} />
               </button>
 
-              {/* Avatar tile + dropdown */}
-              <div className="relative" ref={profileRef}>
-                <button
-                  onClick={() => { setProfileDropOpen(v => !v); setBellOpen(false); setHamburgerOpen(false); }}
-                  className="transition-all duration-150 flex items-center gap-2 px-2"
-                  style={{
-                    height: 44,
-                    background: profileDropOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
-                    border: profileDropOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
-                    borderRadius: 10,
-                  }}
-                  onMouseEnter={e => { if (!profileDropOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
-                  onMouseLeave={e => { if (!profileDropOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
-                >
-                  <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}>
-                    <ProfileImage
-                      url={userProfile?.profile_image_url}
-                      publicId={userProfile?.profile_image_public_id}
-                      name={displayName}
-                      size={28}
-                      className="w-full h-full"
-                      fallbackClassName="rounded-full text-[10px]"
-                    />
-                  </div>
-                  <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
-                </button>
-                {profileDropOpen && (
-                  <div className="absolute right-0 top-10 w-72 z-50 shadow-2xl overflow-hidden rounded-xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
-                    <div className="px-4 pt-3 pb-2.5 border-b border-white/5">
-                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
-                      <p className="text-sm font-black text-white truncate">{displayName}</p>
-                      <p className="text-[10px] text-white/40 truncate leading-relaxed">{userProfile?.email || currentUser?.email}</p>
-                    </div>
-                    <div className="py-1">
-                      {[
-                        { label: 'Edit Profile', tab: 'profile', icon: User },
-                        { label: 'Logbook', tab: 'logbook', icon: Shield },
-                        { label: 'Bookmarks', tab: 'bookmarks', icon: Map },
-                        { label: 'Recognition+', tab: 'recognition-plus', icon: Settings },
-                        { label: 'Settings', tab: 'settings', icon: Settings },
-                      ].map(({ label, tab, icon: Icon }) => (
-                        <button key={tab} onClick={() => { handleNavClick(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
-                            <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
-                          </div>
-                          <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
-                        </button>
-                      ))}
-                    </div>
-                    <div className="border-t border-white/5 py-1">
-                      <button onClick={() => { setProfileDropOpen(false); logout(); onNavigate('home'); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
-                        <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
-                        <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* Avatar tile — navigates to settings */}
+              <button
+                onClick={() => { handleNavClick('settings'); setBellOpen(false); setHamburgerOpen(false); }}
+                className="transition-all duration-150 flex items-center gap-2 px-2"
+                style={{
+                  height: 44,
+                  background: 'rgba(55,65,81,0.85)',
+                  border: '2px solid rgba(255,255,255,0.12)',
+                  borderRadius: 10,
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}
+              >
+                <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}>
+                  <ProfileImage
+                    url={userProfile?.profile_image_url}
+                    publicId={userProfile?.profile_image_public_id}
+                    name={displayName}
+                    size={28}
+                    className="w-full h-full"
+                    fallbackClassName="rounded-full text-[10px]"
+                  />
+                </div>
+                <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
+              </button>
             </div>
           </>
         ) : (
@@ -348,7 +354,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
         {/* Hamburger dropdown */}
         <div className="relative" ref={hamburgerRef}>
           <button
-            onClick={() => { setHamburgerOpen(v => !v); setBellOpen(false); setProfileDropOpen(false); }}
+            onClick={() => { setHamburgerOpen(v => !v); setBellOpen(false); }}
             className="transition-all duration-150"
             style={{
               width: 44, height: 44,
@@ -386,6 +392,6 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
           )}
         </div>
       </div>
-    </div>
-  );
+</div>
+);
 };

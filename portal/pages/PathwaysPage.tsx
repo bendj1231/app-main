@@ -2846,7 +2846,7 @@ const DiscoveryCards: React.FC<{
                     {/* PilotRecognition Logo */}
                     <div className="mb-5 flex items-center justify-center">
                       <img 
-                        src="/logo.png" 
+                        src="/images/set-01-logos/logo.png" 
                         alt="PilotRecognition Logo"
                         className="w-20 h-20 object-contain"
                       />
@@ -3048,7 +3048,7 @@ const DiscoveryCards: React.FC<{
                 {/* PilotRecognition Logo */}
                 <div className="mb-5 flex items-center justify-center">
                   <img 
-                    src="/logo.png" 
+                    src="/images/set-01-logos/logo.png" 
                     alt="PilotRecognition Logo"
                     className="w-20 h-20 object-contain"
                   />
@@ -4286,7 +4286,7 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
 
           {/* Center: Logo */}
           <img 
-            src="/logo.png" 
+            src="/images/set-01-logos/logo.png" 
             alt="PilotRecognition" 
             style={{ 
               height: '36px', 

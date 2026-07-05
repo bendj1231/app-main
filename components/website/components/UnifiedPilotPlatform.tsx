@@ -48,7 +48,6 @@ import ProfileImage from '@/components/ProfileImage';
 import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
-import { LogbookHub } from './pilot-recognition/LogbookHub';
 import { CockpitFlightHoursDashboard } from './unified-platform/CockpitFlightHoursDashboard';
 import { RecognitionAIChat } from './unified-platform/RecognitionAIChat';
 import { WalletPageWithSidebar } from './wallet/WalletPageWithSidebar';
@@ -144,8 +143,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState('');
   const [bellOpen, setBellOpen] = useState(false);
-  const [profileDropOpen, setProfileDropOpen] = useState(false);
-  const [profileModalView, setProfileModalView] = useState<'menu' | 'recognition-profile'>('menu');
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [upgradePrompt, setUpgradePrompt] = useState<string | null>(null);
@@ -758,7 +755,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           />
         );
       case 'dashboard':
-        return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
+        return <DashboardTab profile={profileData} onNavigate={onNavigate} setTab={setTab} />;
       case 'market-intel':
         return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance':
@@ -808,7 +805,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               logbookConnected={false}
               onCompleteProfile={() => setTab('advanced-profile' as TabId)}
             />
-            <LogbookHub profile={profileData} onNavigate={onNavigate} onCompleteProfile={() => setTab('advanced-profile' as TabId)} />
 
             {/* Recognition+ Compliance Grid — visible to all, verification gated */}
             {(() => {
@@ -1041,6 +1037,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             }}
             profileId={profileData?.id ?? null}
             profile={profileData}
+            walletChecks={walletChecks}
+            setTab={setTab}
             onAuth0Logout={() => {
               localStorage.clear();
               sessionStorage.clear();
@@ -1087,8 +1085,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   useEffect(() => {
     const close = () => {
       setBellOpen(false);
-      setProfileDropOpen(false);
-      setProfileModalView('menu');
       setHamburgerOpen(false);
     };
     document.addEventListener('mousedown', close);
@@ -1169,7 +1165,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           </AnimatePresence>
         </div>
 
-        {/* Centre — full island nav container (lg+ only) */}
+        {activeTab !== 'home' && (
+          <React.Fragment>
+            {/* Centre — full island nav container (lg+ only) */}
         <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2">
           <div
             className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
@@ -1181,8 +1179,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           >
             {[
               { id: 'home', label: 'Home' },
+              { id: 'dashboard', label: 'Flight Deck' },
               { id: 'profile', label: 'Profile' },
-              { id: 'logbook', label: 'Logbook' },
+              { id: 'logbook', label: 'Flight Bag' },
               { id: 'inbox', label: 'Inbox' },
               { id: 'recognition-plus', label: 'Recognition+' },
             ].map(({ id, label }) => {
@@ -1219,7 +1218,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           >
             {[
               { id: 'home', label: 'Home' },
-              { id: 'logbook', label: 'Logbook' },
+              { id: 'dashboard', label: 'Flight Deck' },
+              { id: 'logbook', label: 'Flight Bag' },
               { id: 'recognition-plus', label: 'Recognition+' },
             ].map(({ id, label }) => {
               const isActive = activeTab === id;
@@ -1242,6 +1242,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             })}
           </div>
         </div>
+      </React.Fragment>
+    )}
 
         {/* Right — MSFS-style square tile icon toolbar */}
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -1253,7 +1255,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   onClick={() => {
                     setChatOpen((v) => !v);
                     setBellOpen(false);
-                    setProfileDropOpen(false);
                     setHamburgerOpen(false);
                   }}
                   onMouseDown={(e) => e.stopPropagation()}
@@ -1287,7 +1288,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   <MessageSquare size={20} className="text-white" strokeWidth={2} />
                 </button>
 
-                <MessagesPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+                <MessagesPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} profile={profileData} />
 
                 {/* Notification bell tile */}
                 <div className="relative" onMouseDown={(e) => e.stopPropagation()}>
@@ -1295,7 +1296,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     title="Notifications"
                     onClick={() => {
                       setBellOpen((v) => !v);
-                      setProfileDropOpen(false);
                       setHamburgerOpen(false);
                       setChatOpen(false);
                     }}
@@ -1449,20 +1449,20 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     className="flex items-center transition-all duration-150 overflow-hidden"
                     style={{
                       height: 44,
-                      background: profileDropOpen || hamburgerOpen ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.25)',
-                      border: profileDropOpen || hamburgerOpen
+                      background: hamburgerOpen ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.25)',
+                      border: hamburgerOpen
                         ? '2px solid rgba(255,255,255,0.8)'
                         : '2px solid rgba(255,255,255,0.15)',
                       borderRadius: 10,
                     }}
                     onMouseEnter={(e) => {
-                      if (!profileDropOpen && !hamburgerOpen) {
+                      if (!hamburgerOpen) {
                         (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if (!profileDropOpen && !hamburgerOpen) {
+                      if (!hamburgerOpen) {
                         (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
                       }
@@ -1471,7 +1471,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     {/* Profile side */}
                     <button
                       onClick={() => {
-                        setProfileDropOpen((v) => !v);
+                        setTab('settings' as TabId);
                         setBellOpen(false);
                         setHamburgerOpen(false);
                         setChatOpen(false);
@@ -1504,7 +1504,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                       onClick={() => {
                         setHamburgerOpen((v) => !v);
                         setBellOpen(false);
-                        setProfileDropOpen(false);
                         setChatOpen(false);
                       }}
                       className="flex items-center justify-center w-10 h-full transition-colors hover:bg-white/5"
@@ -1584,7 +1583,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   )}
 
                   <AnimatePresence>
-                    {profileDropOpen && (
+                    {false && (
                       <>
                         {/* Backdrop */}
                         <motion.div
@@ -2364,7 +2363,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             </>
           )}
         </div>
-      </div>
+  </div>
 
       {/* ── MAIN CONTENT (no sidebar) ── */}
       <main

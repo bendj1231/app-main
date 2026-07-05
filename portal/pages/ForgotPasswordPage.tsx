@@ -113,7 +113,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onBack }
                     <div className={styles.infoPanelGradient1} />
                     <div className={styles.infoPanelGradient2} />
                     <div className={styles.logo}>
-                        <img src="/logo.png" alt="PilotRecognition Logo" />
+                        <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className={styles.pageLabel}>PASSWORD RESET</div>
                     <h2 className={styles.panelTitle}>Account Recovery</h2>

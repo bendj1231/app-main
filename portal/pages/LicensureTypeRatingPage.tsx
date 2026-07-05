@@ -134,7 +134,7 @@ const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBac
 
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img
-              src="/logo.png"
+              src="/images/set-01-logos/logo.png"
               alt="PilotRecognition Logo"
               style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
             />

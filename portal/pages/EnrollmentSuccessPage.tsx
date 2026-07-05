@@ -25,7 +25,7 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                 textAlign: 'center'
             }}>
                 <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto' }} />
                 </div>
 
                 <h1 style={{

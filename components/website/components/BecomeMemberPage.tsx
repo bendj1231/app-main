@@ -2140,7 +2140,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         {/* Subtle grid */}
                                         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }} />
                                         {/* Phone/hand image — fills container with cover crop, no black bars */}
-                                        <img src="/trailer1.png" alt="Passkey setup prompt" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', position: 'relative', zIndex: 2 }} />
+                                        <img src="/images/set-07-ui-graphics/trailer1.png" alt="Passkey setup prompt" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', position: 'relative', zIndex: 2 }} />
                                     </div>
                                     <p style={{ fontSize: '14px', color: '#9ca3af', lineHeight: 1.6, margin: 0, textAlign: 'center' }}>
                                         Confirm your details to activate your verified pilot profile. Operators and airlines can then discover your credentials instantly.

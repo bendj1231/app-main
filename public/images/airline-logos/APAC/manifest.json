@@ -1,0 +1,684 @@
+[
+  {
+    "name": "Singapore Airlines",
+    "status": "downloaded",
+    "file": "singapore-airlines.svg",
+    "title": "File:Singapore Airlines Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Singapore_Airlines_Logo.svg",
+    "width": 1658,
+    "height": 169,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Cathay Pacific",
+    "status": "downloaded",
+    "file": "cathay-pacific.svg",
+    "title": "File:Cathay Pacific Ltd. logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Cathay_Pacific_Ltd._logo.svg",
+    "width": 100,
+    "height": 14,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Japan Airlines",
+    "status": "downloaded",
+    "file": "japan-airlines.svg",
+    "title": "File:Japan Airlines Logo (1989 - 2002).svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Japan_Airlines_Logo_%281989_-_2002%29.svg",
+    "width": 187,
+    "height": 95,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "All Nippon Airways",
+    "status": "downloaded",
+    "file": "all-nippon-airways.svg",
+    "title": "File:All Nippon Airways Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/All_Nippon_Airways_Logo.svg",
+    "width": 300,
+    "height": 78,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Korean Air",
+    "status": "downloaded",
+    "file": "korean-air.svg",
+    "title": "File:Korean Air logo (Hangul).svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Korean_Air_logo_%28Hangul%29.svg",
+    "width": 512,
+    "height": 512,
+    "mime": "image/svg+xml",
+    "source": "manual_override"
+  },
+  {
+    "name": "Asiana Airlines",
+    "status": "downloaded",
+    "file": "asiana-airlines.svg",
+    "title": "File:Asiana Airlines-Logo New.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Asiana_Airlines-Logo_New.svg",
+    "width": 927,
+    "height": 334,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Thai Airways",
+    "status": "downloaded",
+    "file": "thai-airways.svg",
+    "title": "File:Thai Airways logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Thai_Airways_logo.svg",
+    "width": 512,
+    "height": 150,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Malaysia Airlines",
+    "status": "downloaded",
+    "file": "malaysia-airlines.png",
+    "title": "File:MalaysiaAirlinesLogo Enrich.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/MalaysiaAirlinesLogo_Enrich.png",
+    "width": 400,
+    "height": 200,
+    "mime": "image/png",
+    "source": "manual_override"
+  },
+  {
+    "name": "Garuda Indonesia",
+    "status": "downloaded",
+    "file": "garuda-indonesia.png",
+    "title": "File:Garuda Indonesia 1969.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Garuda_Indonesia_1969.png",
+    "width": 277,
+    "height": 117,
+    "mime": "image/png"
+  },
+  {
+    "name": "Philippine Airlines",
+    "status": "downloaded",
+    "file": "philippine-airlines.svg",
+    "title": "File:Philippine Airlines logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Philippine_Airlines_logo.svg",
+    "width": 512,
+    "height": 85,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Vietnam Airlines",
+    "status": "downloaded",
+    "file": "vietnam-airlines.svg",
+    "title": "File:Vietnam Airlines 2015 wordmark.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Vietnam_Airlines_2015_wordmark.svg",
+    "width": 500,
+    "height": 53,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Air India",
+    "status": "downloaded",
+    "file": "air-india.svg",
+    "title": "File:Air India 2023.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Air_India_2023.svg",
+    "width": 168,
+    "height": 39,
+    "mime": "image/svg+xml",
+    "source": "manual_override"
+  },
+  {
+    "name": "IndiGo",
+    "status": "downloaded",
+    "file": "indigo.svg",
+    "title": "File:IndiGo Airlines logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/69/IndiGo_Airlines_logo.svg",
+    "width": 84,
+    "height": 23,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "AirAsia",
+    "status": "downloaded",
+    "file": "airasia.svg",
+    "title": "File:AirAsia Logo Red.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/AirAsia_Logo_Red.svg",
+    "width": 193,
+    "height": 102,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "China Eastern Airlines",
+    "status": "rejected",
+    "title": "File:Female flight attendant uniform of China Eastern Airlines at CAMC (20240518150837).jpg"
+  },
+  {
+    "name": "China Southern Airlines",
+    "status": "rejected",
+    "title": "File:China Southern Airlines check-in terminals at ZGGG T2 (20190419150248).jpg"
+  },
+  {
+    "name": "Air China",
+    "status": "downloaded",
+    "file": "air-china.svg",
+    "title": "File:Air China wordmark.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Air_China_wordmark.svg",
+    "width": 344,
+    "height": 52,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Hainan Airlines",
+    "status": "rejected",
+    "title": "File:Suvarnabhumi Airport Entrance 4.JPG"
+  },
+  {
+    "name": "EVA Air",
+    "status": "downloaded",
+    "file": "eva-air.svg",
+    "title": "File:Logo EVA Air.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Logo_EVA_Air.svg",
+    "width": 600,
+    "height": 95,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Scoot",
+    "status": "downloaded",
+    "file": "scoot.svg",
+    "title": "File:Scoot logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Scoot_logo.svg",
+    "width": 476,
+    "height": 420,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "China Airlines",
+    "status": "downloaded",
+    "file": "china-airlines.png",
+    "title": "File:China eastern KLIA JPG.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/China_eastern_KLIA_JPG.png",
+    "width": 889,
+    "height": 492,
+    "mime": "image/png"
+  },
+  {
+    "name": "Hong Kong Airlines",
+    "status": "downloaded",
+    "file": "hong-kong-airlines.svg",
+    "title": "File:CAAC logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/86/CAAC_logo.svg",
+    "width": 512,
+    "height": 320,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Hong Kong Express",
+    "status": "downloaded",
+    "file": "hong-kong-express.jpg",
+    "title": "File:HK 葵青區 Kwai Tsing 青衣城 Maritime Square mall restaurant December 2020 SSG 07.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/HK_%E8%91%B5%E9%9D%92%E5%8D%80_Kwai_Tsing_%E9%9D%92%E8%A1%A3%E5%9F%8E_Maritime_Square_mall_restaurant_December_2020_SSG_07.jpg",
+    "width": 2448,
+    "height": 3264,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Starlux Airlines",
+    "status": "downloaded",
+    "file": "starlux-airlines.jpg",
+    "title": "File:2020-01-23 Starlux Airlines chief Chang Kuo-wei.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/56/2020-01-23_Starlux_Airlines_chief_Chang_Kuo-wei.jpg",
+    "width": 510,
+    "height": 340,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Tigerair Taiwan",
+    "status": "downloaded",
+    "file": "tigerair-taiwan.svg",
+    "title": "File:Tigerair Taiwan logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Tigerair_Taiwan_logo.svg",
+    "width": 409,
+    "height": 152,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Mandarin Airlines",
+    "status": "rejected",
+    "title": "File:B-306S@PEK (20210130130551).jpg"
+  },
+  {
+    "name": "UNI Air",
+    "status": "downloaded",
+    "file": "uni-air.png",
+    "title": "File:Uni Air International.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Uni_Air_International.png",
+    "width": 170,
+    "height": 47,
+    "mime": "image/png"
+  },
+  {
+    "name": "Peach Aviation",
+    "status": "downloaded",
+    "file": "peach-aviation.svg",
+    "title": "File:Peach Aviation Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Peach_Aviation_Logo.svg",
+    "width": 2494,
+    "height": 779,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Skymark Airlines",
+    "status": "downloaded",
+    "file": "skymark-airlines.svg",
+    "title": "File:Skymark Airlines company logos.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Skymark_Airlines_company_logos.svg",
+    "width": 640,
+    "height": 427,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Star Flyer",
+    "status": "downloaded",
+    "file": "star-flyer.svg",
+    "title": "File:StarFlyer logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/StarFlyer_logo.svg",
+    "width": 1024,
+    "height": 850,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Solaseed Air",
+    "status": "downloaded",
+    "file": "solaseed-air.svg",
+    "title": "File:Solaseed Air logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Solaseed_Air_logo.svg",
+    "width": 1024,
+    "height": 255,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Spring Japan",
+    "status": "downloaded",
+    "file": "spring-japan.svg",
+    "title": "File:Japanese LCC destinations map.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Japanese_LCC_destinations_map.svg",
+    "width": 590,
+    "height": 605,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Zipair",
+    "status": "downloaded",
+    "file": "zipair.svg",
+    "title": "File:ZIPAIR Tokyo logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/ZIPAIR_Tokyo_logo.svg",
+    "width": 500,
+    "height": 117,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Jeju Air",
+    "status": "downloaded",
+    "file": "jeju-air.svg",
+    "title": "File:Jeju Air Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Jeju_Air_Logo.svg",
+    "width": 610,
+    "height": 120,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Tway Air",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Jin Air",
+    "status": "downloaded",
+    "file": "jin-air.jpg",
+    "title": "File:KOCIS London Korea Jinjongoh Shooting 07 (7683325406).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/0d/KOCIS_London_Korea_Jinjongoh_Shooting_07_%287683325406%29.jpg",
+    "width": 2172,
+    "height": 3570,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Air Busan",
+    "status": "downloaded",
+    "file": "air-busan.svg",
+    "title": "File:Air Busan logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Air_Busan_logo.svg",
+    "width": 3427,
+    "height": 1063,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Air Seoul",
+    "status": "downloaded",
+    "file": "air-seoul.svg",
+    "title": "File:Logo of Air Seoul.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Logo_of_Air_Seoul.svg",
+    "width": 512,
+    "height": 71,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Eastar Jet",
+    "status": "downloaded",
+    "file": "eastar-jet.svg",
+    "title": "File:Eastar Jet Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Eastar_Jet_Logo.svg",
+    "width": 400,
+    "height": 150,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "SpiceJet",
+    "status": "downloaded",
+    "file": "spicejet.png",
+    "title": "File:New SpiceJet Logo.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/New_SpiceJet_Logo.png",
+    "width": 250,
+    "height": 90,
+    "mime": "image/png"
+  },
+  {
+    "name": "Akasa Air",
+    "status": "downloaded",
+    "file": "akasa-air.svg",
+    "title": "File:Akasa Air logo and motto.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Akasa_Air_logo_and_motto.svg",
+    "width": 1274,
+    "height": 120,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Thai AirAsia",
+    "status": "downloaded",
+    "file": "thai-airasia.png",
+    "title": "File:Logo Thai AirAsia.gif",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/28/Logo_Thai_AirAsia.gif",
+    "width": 200,
+    "height": 98,
+    "mime": "image/gif"
+  },
+  {
+    "name": "Thai Lion Air",
+    "status": "downloaded",
+    "file": "thai-lion-air.svg",
+    "title": "File:Muay Thai pictogram.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Muay_Thai_pictogram.svg",
+    "width": 1358,
+    "height": 1355,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Nok Air",
+    "status": "downloaded",
+    "file": "nok-air.jpg",
+    "title": "File:Nokair logo.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Nokair_logo.jpg",
+    "width": 300,
+    "height": 300,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Bangkok Airways",
+    "status": "downloaded",
+    "file": "bangkok-airways.svg",
+    "title": "File:Bangkok Airways Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Bangkok_Airways_Logo.svg",
+    "width": 431,
+    "height": 381,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Lion Air",
+    "status": "downloaded",
+    "file": "lion-air.svg",
+    "title": "File:Logo of the Argentine Joint Chiefs of Staff.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Logo_of_the_Argentine_Joint_Chiefs_of_Staff.svg",
+    "width": 1397,
+    "height": 850,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Batik Air",
+    "status": "downloaded",
+    "file": "batik-air.svg",
+    "title": "File:Malindo Air logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Malindo_Air_logo.svg",
+    "width": 200,
+    "height": 40,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Citilink",
+    "status": "downloaded",
+    "file": "citilink.svg",
+    "title": "File:2012 Citilink Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/2012_Citilink_Logo.svg",
+    "width": 512,
+    "height": 128,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Cebu Pacific",
+    "status": "downloaded",
+    "file": "cebu-pacific.svg",
+    "title": "File:Cebu Pacific wordmark.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Cebu_Pacific_wordmark.svg",
+    "width": 500,
+    "height": 98,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "PAL Express",
+    "status": "downloaded",
+    "file": "pal-express.svg",
+    "title": "File:Palsystem Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/da/Palsystem_Logo.svg",
+    "width": 140,
+    "height": 28,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "VietJet Air",
+    "status": "downloaded",
+    "file": "vietjet-air.svg",
+    "title": "File:VietJet Air logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/VietJet_Air_logo.svg",
+    "width": 221,
+    "height": 41,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Bamboo Airways",
+    "status": "downloaded",
+    "file": "bamboo-airways.svg",
+    "title": "File:Bamboo Airways Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Bamboo_Airways_Logo.svg",
+    "width": 349,
+    "height": 85,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Myanmar Airways International",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Royal Brunei Airlines",
+    "status": "downloaded",
+    "file": "royal-brunei-airlines.svg",
+    "title": "File:Royal Brunei Airlines logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Royal_Brunei_Airlines_logo.svg",
+    "width": 377,
+    "height": 153,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Cambodia Angkor Air",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Laos Airlines",
+    "status": "downloaded",
+    "file": "laos-airlines.png",
+    "title": "File:Langxang Airways International.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Langxang_Airways_International.png",
+    "width": 1500,
+    "height": 418,
+    "mime": "image/png"
+  },
+  {
+    "name": "SriLankan Airlines",
+    "status": "rejected",
+    "title": "File:4R-ALN - SriLankan Airlines - Airbus A330-343 - MSN 1604 - VGHS.jpg"
+  },
+  {
+    "name": "Nepal Airlines",
+    "status": "downloaded",
+    "file": "nepal-airlines.png",
+    "title": "File:Nepal Airlines logo.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Nepal_Airlines_logo.png",
+    "width": 416,
+    "height": 129,
+    "mime": "image/png"
+  },
+  {
+    "name": "Maldivian",
+    "status": "downloaded",
+    "file": "maldivian.svg",
+    "title": "File:Villa air logo 2024.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Villa_air_logo_2024.svg",
+    "width": 384,
+    "height": 169,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Biman Bangladesh Airlines",
+    "status": "rejected",
+    "title": "File:Biman Bangladesh Airlines 50th Anniversary Logo Unveiling Dhaka Airport 2021-11-20 (PID-0026325).jpg"
+  },
+  {
+    "name": "US-Bangla Airlines",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Qantas",
+    "status": "downloaded",
+    "file": "qantas.svg",
+    "title": "File:Qantas Empire Airways Kangaroo Service logo 1944–1947.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Qantas_Empire_Airways_Kangaroo_Service_logo_1944%E2%80%931947.svg",
+    "width": 140,
+    "height": 140,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Virgin Australia",
+    "status": "downloaded",
+    "file": "virgin-australia.jpg",
+    "title": "File:VH-ZPQ Embraer 190-100IGW Australian Football League Logo-jet Virgin Blue (Virgin Australia) (6213502029).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/VH-ZPQ_Embraer_190-100IGW_Australian_Football_League_Logo-jet_Virgin_Blue_%28Virgin_Australia%29_%286213502029%29.jpg",
+    "width": 1600,
+    "height": 1063,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Jetstar",
+    "status": "downloaded",
+    "file": "jetstar.svg",
+    "title": "File:Jetstar logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Jetstar_logo.svg",
+    "width": 183,
+    "height": 51,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Rex Airlines",
+    "status": "downloaded",
+    "file": "rex-airlines.svg",
+    "title": "File:Rex Airlines logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/Rex_Airlines_logo.svg",
+    "width": 158,
+    "height": 50,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Air New Zealand",
+    "status": "downloaded",
+    "file": "air-new-zealand.svg",
+    "title": "File:Air New Zealand logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Air_New_Zealand_logo.svg",
+    "width": 217,
+    "height": 37,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Fiji Airways",
+    "status": "rejected",
+    "title": "File:Fiji Airways Boeing 737-800 DQ-FJM FJ410 AKL-NAN departing AKL (15174468205).jpg"
+  },
+  {
+    "name": "Air Niugini",
+    "status": "rejected",
+    "title": "File:TF-FIC Boeing 757-23N Air Niugini (Icelandair) (8103933456).jpg"
+  },
+  {
+    "name": "Solomon Airlines",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Air Calin",
+    "status": "downloaded",
+    "file": "air-calin.png",
+    "title": "File:Revue bleue Série 4 Tome 11 - 1899. djvu.djvu",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Revue_bleue_S%C3%A9rie_4_Tome_11_-_1899._djvu.djvu",
+    "width": 2242,
+    "height": 3136,
+    "mime": "image/vnd.djvu"
+  },
+  {
+    "name": "Shanghai Airlines",
+    "status": "downloaded",
+    "file": "shanghai-airlines.jpg",
+    "title": "File:United 777-200 tail 2018 at ORD (30244674933).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/63/United_777-200_tail_2018_at_ORD_%2830244674933%29.jpg",
+    "width": 2448,
+    "height": 3264,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Xiamen Airlines",
+    "status": "downloaded",
+    "file": "xiamen-airlines.jpg",
+    "title": "File:Xiamen airlines logo.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/69/Xiamen_airlines_logo.jpg",
+    "width": 518,
+    "height": 129,
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "Shenzhen Airlines",
+    "status": "downloaded",
+    "file": "shenzhen-airlines.svg",
+    "title": "File:SF Airlines logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/SF_Airlines_logo.svg",
+    "width": 523,
+    "height": 190,
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "Sichuan Airlines",
+    "status": "rejected",
+    "title": "File:B-6517 A330-243 Sichuan Al YVR 21JUL13 (9336556487).jpg"
+  },
+  {
+    "name": "Juneyao Airlines",
+    "status": "no_suitable"
+  },
+  {
+    "name": "Spring Airlines",
+    "status": "downloaded",
+    "file": "spring-airlines.png",
+    "title": "File:Spring Airlines Japan Logo.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Spring_Airlines_Japan_Logo.png",
+    "width": 328,
+    "height": 188,
+    "mime": "image/png"
+  }
+]

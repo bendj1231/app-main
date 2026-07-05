@@ -192,7 +192,7 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
                 
                 <div style={{ textAlign: 'center' }}>
                     <img
-                        src="/logo.png"
+                        src="/images/set-01-logos/logo.png"
                         alt="PilotRecognition Logo"
                         style={{ maxWidth: '120px', height: 'auto', marginBottom: '1rem' }}
                     />

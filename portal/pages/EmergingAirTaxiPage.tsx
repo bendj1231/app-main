@@ -11,7 +11,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
     const airTaxiImages = [
-        "/Archer-Midnight-eVTOL.png",
+        "/images/set-08-website/Archer-Midnight-eVTOL.png",
         "/WhatsApp Image 2026-02-01 at 20.17.39.jpeg"
     ];
 

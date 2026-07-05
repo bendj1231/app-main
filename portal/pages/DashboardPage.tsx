@@ -1245,7 +1245,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             >
               {/* Logo */}
               <img
-                src="/logo.png"
+                src="/images/set-01-logos/logo.png"
                 alt="PilotRecognition"
                 style={{
                   width: '150px',
@@ -1413,7 +1413,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
 
           <div style={{ marginBottom: '0.25rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           </div>
 
           <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
@@ -2158,7 +2158,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Section Header - Centered with Logo */}
               <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                 </div>
                 
                 <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
@@ -2636,7 +2636,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Section Header with Logo - Styled like Dashboard */}
               <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ marginBottom: '2rem', marginTop: '0.5rem' }}>
-                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                 </div>
                 
                 <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
@@ -2754,7 +2754,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         gap: '1rem'
                       }}>
                         <img 
-                          src="/logo.png" 
+                          src="/images/set-01-logos/logo.png" 
                           alt="PilotRecognition Logo" 
                           style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain' }}
                         />
@@ -3031,7 +3031,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }}>
               {/* PilotRecognition Logo */}
               <div style={{ marginBottom: '1.5rem' }}>
-                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
               </div>
 
               {/* Contact Support Button */}

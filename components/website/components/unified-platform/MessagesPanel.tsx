@@ -36,9 +36,15 @@ const CHAT_CONTACTS: ChatContact[] = [
 interface MessagesPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  profile?: any;
 }
 
-export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose }) => {
+export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose, profile }) => {
+  const isProfileComplete = !!(
+    profile?.full_name &&
+    profile?.current_occupation &&
+    profile?.license_type
+  );
   const [selectedChatContact, setSelectedChatContact] = useState<number | null>(0);
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState<Record<number, { role: 'user' | 'contact'; text: string; time: string }[]>>({});
@@ -99,6 +105,51 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
             </button>
           </div>
 
+          {!isProfileComplete ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-8" style={{ background: 'rgba(255,255,255,0.5)' }}>
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-4 max-w-sm">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.15)' }}>
+                  <Lock size={28} className="text-red-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-black text-slate-800">Complete Your Profile</p>
+                  <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                    Add your name, license type, and occupation to unlock messaging with pilots, airlines, and training organizations.
+                  </p>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.full_name ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                      {profile?.full_name ? '✓' : '1'}
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-600">Full Name</span>
+                    <span className="ml-auto text-[9px] text-slate-400">{profile?.full_name ? 'Done' : 'Required'}</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.current_occupation ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                      {profile?.current_occupation ? '✓' : '2'}
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-600">Current Occupation</span>
+                    <span className="ml-auto text-[9px] text-slate-400">{profile?.current_occupation ? 'Done' : 'Required'}</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.license_type ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                      {profile?.license_type ? '✓' : '3'}
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-600">License Type</span>
+                    <span className="ml-auto text-[9px] text-slate-400">{profile?.license_type ? 'Done' : 'Required'}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="w-full py-2.5 rounded-xl text-[11px] font-black text-white transition-all hover:brightness-110"
+                  style={{ background: '#dc2626' }}
+                >
+                  COMPLETE ADVANCED PROFILE →
+                </button>
+              </motion.div>
+            </div>
+          ) : (
           <div className="flex flex-1 overflow-hidden">
             {/* Contacts Sidebar */}
             <div className="w-56 flex-shrink-0 overflow-y-auto" style={{ borderRight: '1px solid rgba(218,165,32,0.15)', background: 'rgba(255,255,255,0.4)' }}>
@@ -343,6 +394,7 @@ export const MessagesPanel: React.FC<MessagesPanelProps> = ({ isOpen, onClose })
               )}
             </div>
           </div>
+        )}
         </motion.div>
       </>
     )}

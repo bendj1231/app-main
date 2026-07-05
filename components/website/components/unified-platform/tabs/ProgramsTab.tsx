@@ -91,7 +91,7 @@ export const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onN
               className="relative group cursor-pointer overflow-hidden flex-1 min-h-0 border border-white/20 hover:scale-[1.02] transition-transform"
               onClick={() => { safeRedirect('/examination-portal'); }}
             >
-              <img src="/ep.png" alt="Examination Portal" className="absolute inset-0 w-full h-full object-cover"
+              <img src="/images/set-07-ui-graphics/ep.png" alt="Examination Portal" className="absolute inset-0 w-full h-full object-cover"
                 onError={e => { e.currentTarget.style.display = 'none'; }} />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/60 to-transparent" />
               <div className="relative h-full flex items-center px-6">

@@ -196,7 +196,7 @@ const FAQ_ANSWERS: Record<string, string> = {
 
 export const RecognitionATC: React.FC = () => {
   const { isDarkMode } = useSafeTheme();
-  const iconSrc = isDarkMode ? '/ATC3.png' : '/ATC2.png';
+  const iconSrc = isDarkMode ? '/images/set-08-website/ATC3.png' : '/images/set-08-website/ATC2.png';
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([

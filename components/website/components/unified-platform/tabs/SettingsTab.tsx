@@ -9,16 +9,19 @@ import {
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
-  CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
+  CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
+  ShieldCheck, CheckCircle2, Linkedin, Instagram, Youtube, Facebook, Twitter
 } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { SectionCard } from '../shared';
 import type { TabId } from '../types';
+import ProfileImage from '@/components/ProfileImage';
+import { safeRedirect } from '@/lib/url-validator';
 
 const PILOT_API_URL = (import.meta.env as any).VITE_PILOT_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
-export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile }) => {
+export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void; profile?: Record<string, unknown> | null; walletChecks?: { status: string }[]; setTab?: (tab: TabId) => void }> = ({ onLogout, getToken, profileId, onAuth0Logout, profile, walletChecks = [], setTab }) => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const { callApi } = useWorkerAuth();
@@ -341,8 +344,195 @@ export const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promi
     );
   }
 
+  const displayName = (profile?.display_name as string) || (profile?.full_name as string) || user?.name || user?.email?.split('@')[0] || 'Pilot';
+
   return (
     <div className="space-y-5 max-w-2xl mx-auto w-full">
+      {/* Profile Header */}
+      <div className="flex flex-col items-center py-6">
+        <div
+          className="w-20 h-20 rounded-full overflow-hidden mb-3"
+          style={{
+            border: '2px solid rgba(255,255,255,0.25)',
+            boxShadow: '0 0 24px rgba(56,189,248,0.25)',
+          }}
+        >
+          <ProfileImage
+            url={profile?.profile_image_url as string}
+            publicId={profile?.profile_image_public_id as string}
+            name={displayName}
+            size={80}
+            className="w-full h-full"
+            fallbackClassName="rounded-full text-xl bg-blue-500 text-white"
+          />
+        </div>
+        <p className="text-lg font-black text-white tracking-tight text-center">{displayName}</p>
+        <p className="text-[10px] text-white/40 text-center mt-0.5">{(profile?.email as string) ?? user?.email}</p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="space-y-2">
+        {/* Recognition+ subscription row */}
+        {(() => {
+          const isSubscribed =
+            profile?.subscription_tier === 'plus' ||
+            profile?.subscription_tier === 'enterprise';
+          return (
+            <button
+              onClick={() => safeRedirect('/recognition-plus')}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+              style={{
+                background: isSubscribed ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.08)',
+                border: `1.5px solid ${isSubscribed ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)'}`,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = isSubscribed ? 'rgba(239,68,68,0.85)' : 'rgba(37,99,235,0.85)';
+                (e.currentTarget as HTMLElement).style.borderColor = isSubscribed ? 'rgba(248,113,113,0.5)' : 'rgba(96,165,250,0.5)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = isSubscribed ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.08)';
+                (e.currentTarget as HTMLElement).style.borderColor = isSubscribed ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)';
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <CreditCard size={16} className={isSubscribed ? 'text-red-400 group-hover:text-white' : 'text-white/70 group-hover:text-white'} />
+                <div className="text-left">
+                  <p className="text-[11px] font-black text-white tracking-wide">{isSubscribed ? 'MANAGE RECOGNITION+' : 'GET RECOGNITION+'}</p>
+                  <p className="text-[9px] text-white/40 group-hover:text-white/60">{isSubscribed ? 'Subscription & billing' : 'Upgrade for verification & tools'}</p>
+                </div>
+              </div>
+              <ChevronRight size={14} className="text-white/30 group-hover:text-white" />
+            </button>
+          );
+        })()}
+
+        {/* Standard rows */}
+        {[
+          { label: 'My Pathway Bookmarks', sub: 'Saved opportunities', icon: BookMarked, onClick: () => setTab?.('pathways') },
+          { label: 'Who Saw My Profile?', sub: 'Profile visibility log', icon: Eye, onClick: () => safeRedirect('/profile-views') },
+          { label: 'Edit Profile', sub: 'Update pilot details', icon: User, onClick: () => setTab?.('profile') },
+          { label: 'My Recognition Profile', sub: 'Advanced licensure & experience', icon: ShieldCheck, onClick: () => setTab?.('advanced-profile') },
+          { label: 'My Vault', sub: 'Credentials & wallet', icon: Shield, onClick: () => setTab?.('wallet') },
+        ].map(({ label, sub, icon: Icon, onClick }) => (
+          <button
+            key={label}
+            onClick={onClick}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(37,99,235,0.85)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <Icon size={16} className="text-white/60 group-hover:text-white" />
+              <div className="text-left">
+                <p className="text-[11px] font-black text-white/80 group-hover:text-white tracking-wide">{label.toUpperCase()}</p>
+                <p className="text-[9px] text-white/35 group-hover:text-white/60">{sub}</p>
+              </div>
+            </div>
+            <ChevronRight size={14} className="text-white/25 group-hover:text-white" />
+          </button>
+        ))}
+
+        {/* Sync Digital Logbook */}
+        <button
+          onClick={() => setTab?.('logbook')}
+          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+          style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.12)' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.75)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)'; }}
+        >
+          <div className="flex items-center gap-3">
+            <RefreshCw size={16} className="text-white" />
+            <div className="text-left">
+              <p className="text-[11px] font-black text-white tracking-wide">SYNC DIGITAL LOGBOOK</p>
+              <p className="text-[9px] text-white/40">Import flight hours</p>
+            </div>
+          </div>
+          <ChevronRight size={14} className="text-white/30" />
+        </button>
+      </div>
+
+      {/* Advance Account Setup */}
+      {(() => {
+        const setupSteps = [
+          { label: 'Complete Profile', done: !!(profile?.full_name as string) && !!(profile?.current_occupation as string) },
+          { label: 'Upload Flight Logbook', done: !!(profile?.logbook_sync_valid as string) },
+          { label: 'Verify Credentials', done: walletChecks.some((c) => c.status === 'verified') },
+          { label: 'Connect Social Accounts', done: !!(profile?.linkedin_url as string) || !!(profile?.instagram_url as string) || !!(profile?.youtube_url as string) },
+          { label: 'Upgrade to Recognition+', done: profile?.subscription_tier === 'plus' || profile?.subscription_tier === 'enterprise' },
+        ];
+        const completedSteps = setupSteps.filter((s) => s.done).length;
+        return (
+          <SectionCard title="Advance Account Setup">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-black text-white/40">{completedSteps}/{setupSteps.length} completed</span>
+            </div>
+            <div className="space-y-2">
+              {setupSteps.map(({ label, done }) => (
+                <button
+                  key={label}
+                  onClick={() => {
+                    if (label === 'Upgrade to Recognition+') safeRedirect('/recognition-plus');
+                    else if (label === 'Complete Profile') setTab?.('advanced-profile');
+                    else if (label === 'Upload Flight Logbook') setTab?.('logbook');
+                    else if (label === 'Verify Credentials') setTab?.('wallet');
+                    else if (label === 'Connect Social Accounts') setTab?.('profile');
+                  }}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
+                  style={{ background: done ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}` }}
+                  onMouseEnter={(e) => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(37,99,235,0.85)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)'; }}}
+                  onMouseLeave={(e) => { if (!done) { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}}
+                >
+                  <div className="flex items-center gap-3">
+                    {done ? <CheckCircle2 size={14} className="text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full" style={{ border: '1.5px solid rgba(255,255,255,0.25)' }} />}
+                    <span className={`text-[11px] font-bold tracking-wide ${done ? 'text-white/60' : 'text-white group-hover:text-white'}`}>{label.toUpperCase()}</span>
+                  </div>
+                  {!done && <ArrowRight size={14} className="text-white/30 group-hover:text-white" />}
+                </button>
+              ))}
+            </div>
+          </SectionCard>
+        );
+      })()}
+
+      {/* Connected Accounts */}
+      <SectionCard title="Connected Accounts">
+        <div className="grid grid-cols-5 gap-2">
+          {[
+            { icon: Linkedin, label: 'LinkedIn', field: 'linkedin_url' },
+            { icon: Instagram, label: 'Instagram', field: 'instagram_url' },
+            { icon: Youtube, label: 'YouTube', field: 'youtube_url' },
+            { icon: Facebook, label: 'Facebook', field: 'facebook_url' },
+            { icon: Twitter, label: 'X', field: 'twitter_url' },
+          ].map(({ icon: Icon, label, field }) => {
+            const connected = !!((profile as Record<string, unknown>)?.[field] as string | undefined);
+            const url = (profile as Record<string, unknown>)?.[field] as string | undefined;
+            return (
+              <button
+                key={label}
+                onClick={() => {
+                  if (connected && url) window.open(url, '_blank', 'noopener,noreferrer');
+                  else setTab?.('profile');
+                }}
+                className="flex flex-col items-center gap-1.5 py-2 rounded-lg transition-all"
+                style={{ background: connected ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${connected ? 'rgba(56,189,248,0.2)' : 'rgba(255,255,255,0.08)'}` }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = connected ? 'rgba(56,189,248,0.2)' : 'rgba(37,99,235,0.6)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = connected ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.04)'; }}
+              >
+                <Icon size={16} className={connected ? 'text-sky-400' : 'text-white/25'} />
+                <span className={`text-[8px] font-bold ${connected ? 'text-sky-400' : 'text-white/30'}`}>{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </SectionCard>
+
       {/* Account */}
       <SectionCard title="Account">
         <div className="space-y-0.5">

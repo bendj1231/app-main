@@ -78,7 +78,7 @@ const PilotPortfolioCard: React.FC<{ onClick: () => void; userProfile?: UserProf
             VERIFIED IDENTITY
         </div>
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '36px', width: 'auto', marginBottom: '0.5rem' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ height: '36px', width: 'auto', marginBottom: '0.5rem' }} />
             <p style={{ margin: 0, letterSpacing: '0.3em', fontSize: '0.7rem', fontWeight: 600, color: '#2563eb' }}>PILOT RECOGNITION PROFILE</p>
             <h3 style={{ margin: '0.4rem 0 0', fontSize: '1.75rem', color: '#0f172a' }}>Pilot Portfolio</h3>
             <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>Unified tracking, credentials, and assessments</p>
@@ -147,7 +147,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                 </button>
                 <div className="dashboard-header">
                     <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="PilotRecognition Logo" />
+                        <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className="dashboard-subtitle">CONNECTING PILOTS TO THE INDUSTRY</div>
                     <h1 className="dashboard-title">Wingmentor Network</h1>
@@ -173,7 +173,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                                     <Icons.ArrowRight style={{ width: 24, height: 24 }} />
                                 </div>
                             </div>
-                            <img src="/wingmentor-approach-gap.png" alt="Programs" className="hub-card-bg-image" />
+                            <img src="/images/set-04-screenshots/wingmentor-approach-gap.png" alt="Programs" className="hub-card-bg-image" />
                         </div>
 
                         <div className="horizontal-card" style={{ cursor: 'pointer', padding: '1rem 2rem' }} onClick={() => onSelectCategory('pathways')}>
@@ -191,7 +191,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                                     <Icons.ArrowRight style={{ width: 24, height: 24 }} />
                                 </div>
                             </div>
-                            <img src="/pilot-gap-pathways.png" alt="Pathways" className="hub-card-bg-image" />
+                            <img src="/images/set-02-pilot-gap/pilot-gap-pathways.png" alt="Pathways" className="hub-card-bg-image" />
                         </div>
 
                         {/* Recognition Card */}
@@ -210,7 +210,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                                     <Icons.ArrowRight style={{ width: 24, height: 24 }} />
                                 </div>
                             </div>
-                            <img src="/recogntion.png" alt="Recognition" className="hub-card-bg-image" />
+                            <img src="/images/set-03-recognition/recogntion.png" alt="Recognition" className="hub-card-bg-image" />
                         </div>
 
                         <PilotPortfolioCard onClick={() => onSelectCategory('applications')} userProfile={userProfile} />

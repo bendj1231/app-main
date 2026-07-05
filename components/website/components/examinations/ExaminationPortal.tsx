@@ -289,7 +289,7 @@ const ExaminationPortal: React.FC = () => {
                         
                         {/* WingMentor Logo */}
                         <div className="w-32 h-32 relative">
-                            <img src="/logo.png" alt="WingMentor Logo" className="w-full h-full object-contain" />
+                            <img src="/images/set-01-logos/logo.png" alt="WingMentor Logo" className="w-full h-full object-contain" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-slate-900">WINGMENTOR PROGRAMS</h1>

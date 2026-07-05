@@ -225,7 +225,7 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 <div className="absolute inset-y-0 right-0 hidden md:block w-[48vw] lg:w-[50vw] xl:w-[52vw]">
                     <div
                         className="absolute inset-0 bg-contain bg-right bg-no-repeat"
-                        style={{ backgroundImage: "url('/recog6.png')", backgroundColor: '#ffffff' }}
+                        style={{ backgroundImage: "url('/images/set-03-recognition/recog6.png')", backgroundColor: '#ffffff' }}
                     />
                 </div>
 
@@ -243,7 +243,7 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
 
                             {/* Mobile mock */}
                             <div className="md:hidden mb-6 w-full h-[200px] overflow-hidden rounded-[28px] bg-slate-100">
-                                <img src="/recog6.png" alt="Recognition dashboard" className="w-full h-full object-cover" />
+                                <img src="/images/set-03-recognition/recog6.png" alt="Recognition dashboard" className="w-full h-full object-cover" />
                             </div>
 
                             <div className="space-y-4 mb-8">

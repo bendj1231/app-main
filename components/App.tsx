@@ -16,7 +16,7 @@ import { VeremarkPricing } from '@/components/admin/VeremarkPricing';
 
 const LOGO_URL =
   'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
-const LOGO_FALLBACK_URL = '/logo.png';
+const LOGO_FALLBACK_URL = '/images/set-01-logos/logo.png';
 
 // Initialize analytics services on app load
 initializeAnalyticsServices();

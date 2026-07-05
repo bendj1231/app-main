@@ -45,7 +45,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
             moduleExcerpt: 'Ground yourself in the realities of our industry, the paradox of the pilot shortage, and the precise framework PilotRecognition uses to turn your training hours into verifiable industry recognition.'
         },
         {
-            src: '/unclogging-pipes-pilot-gap.png',
+            src: '/images/set-02-pilot-gap/unclogging-pipes-pilot-gap.png',
             alt: 'Unclogging the Pipeline',
             caption: 'Unclogging the pipeline — why pilots get stuck and how recognition helps',
             header: 'Why Pilots Get Stuck',
@@ -54,7 +54,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
             moduleExcerpt: 'Our solution combines verified training milestones, industry recognition protocols, and mentorship frameworks to create a clear pathway from low-time pilot to aviation professional.'
         },
         {
-            src: '/candidates-pilot-gap.png',
+            src: '/images/set-02-pilot-gap/candidates-pilot-gap.png',
             alt: 'Candidate Pool',
             caption: 'Why flight hours alone are no longer enough',
             header: 'Flight Hours Are No Longer Enough',
@@ -63,7 +63,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
             moduleExcerpt: 'We explore the low-timer paradox, the myth of the pilot shortage, and what "Pilot Recognition" actually means in an industry that still operates on outdated signals.'
         },
         {
-            src: '/financial-drain-pilot-gap.jpg',
+            src: '/images/set-02-pilot-gap/financial-drain-pilot-gap.jpg',
             alt: 'Financial Investment',
             caption: 'The $50,000 training investment and its real return',
             header: 'The $50,000 Training Trap',

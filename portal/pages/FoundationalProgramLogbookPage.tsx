@@ -294,7 +294,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <img 
-              src="/logo.png" 
+              src="/images/set-01-logos/logo.png" 
               alt="PilotRecognition Logo" 
               style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} 
             />
@@ -609,7 +609,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
                   ×
                 </button>
                 <img 
-                  src="/logo.png" 
+                  src="/images/set-01-logos/logo.png" 
                   alt="PilotRecognition Logo" 
                   style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} 
                 />

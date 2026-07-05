@@ -658,7 +658,7 @@ const DiscoverPathwayPage: React.FC<DiscoverPathwayPageProps> = ({ categoryId, o
         </button>
 
         <img 
-          src="/logo.png" 
+          src="/images/set-01-logos/logo.png" 
           alt="PilotRecognition" 
           style={{ height: '36px', width: 'auto', opacity: 0.9 }} 
         />

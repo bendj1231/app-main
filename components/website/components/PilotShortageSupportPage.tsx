@@ -59,7 +59,7 @@ export const PilotShortageSupportPage: React.FC<PilotShortageSupportPageProps> =
       >
         {/* Background image with dark overlay */}
         <img
-          src="/universal-pilot-gap.jpg"
+          src="/images/set-02-pilot-gap/universal-pilot-gap.jpg"
           alt="Universal pilot gap"
           className="absolute w-full h-full object-cover"
           style={{ top: '-120px', left: 0, right: 0, bottom: 0 }}

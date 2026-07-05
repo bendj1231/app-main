@@ -81,7 +81,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                         <div className={styles.infoPanelGradient1} />
                         <div className={styles.infoPanelGradient2} />
                         <div className={styles.loginLogo}>
-                            <img src="/logo.png" alt="PilotRecognition Logo" />
+                            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
                         </div>
 
                         <div className={styles.mentorNetworkLabel}>MENTOR NETWORK</div>
@@ -247,7 +247,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                                 ×
                             </button>
                             <div className={styles.modalLogo}>
-                                <img src="/logo.png" alt="PilotRecognition Logo" />
+                                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
                             </div>
                             <div className={styles.modalLabel}>
                                 PROGRAM PORTAL

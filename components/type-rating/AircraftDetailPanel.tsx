@@ -64,7 +64,7 @@ export function AircraftDetailPanel({
             <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{selectedAircraft.model}</h2>
             <div className="flex items-center gap-4 flex-wrap mb-3">
               <span className="flex items-center gap-1.5 text-sky-300 text-sm">
-                <img src={getManufacturer(selectedAircraft)?.logo || '/logo.png'} alt="Manufacturer" className="h-4 w-auto object-contain opacity-80" />
+                <img src={getManufacturer(selectedAircraft)?.logo || '/images/set-01-logos/logo.png'} alt="Manufacturer" className="h-4 w-auto object-contain opacity-80" />
                 {getManufacturer(selectedAircraft)?.name}
               </span>
             </div>
@@ -136,7 +136,7 @@ export function AircraftDetailPanel({
         {/* Info bar — manufacturer + cost + age */}
         <div className="px-6 md:px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <img src={getManufacturer(selectedAircraft)?.logo || '/logo.png'} alt={getManufacturer(selectedAircraft)?.name} className="h-8 object-contain" />
+            <img src={getManufacturer(selectedAircraft)?.logo || '/images/set-01-logos/logo.png'} alt={getManufacturer(selectedAircraft)?.name} className="h-8 object-contain" />
             <div>
               <p className="text-[10px] uppercase tracking-widest text-slate-400">Manufacturer</p>
               <p className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.name}</p>

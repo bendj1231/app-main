@@ -1,0 +1,759 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  User, Route, Bookmark, BarChart3, ChevronRight, ChevronsRight, Plane, Award,
+  Clock, TrendingUp, Shield, Star, BookOpen, Target, Zap, FolderOpen,
+  GraduationCap, MapPin, Briefcase, Mail, Bell, FileText, CheckCircle2,
+  AlertCircle, ArrowUpRight, Layers, Compass
+} from 'lucide-react';
+import type { TabId } from './types';
+
+type PreviewTab = 'overview' | 'pathways' | 'bookmarks' | 'comparisons';
+
+interface ProfileData {
+  id?: string;
+  display_name?: string;
+  full_name?: string;
+  email?: string;
+  avatar_url?: string;
+  current_occupation?: string;
+  license_type?: string;
+  total_flight_hours?: number;
+  last_flown?: string;
+  last_flight_date?: string;
+  subscription_tier?: string;
+  recognition_tier?: string;
+  verification_status?: string | Record<string, unknown>;
+  role?: string;
+  ratings?: string[];
+  type_ratings?: string[];
+  medical_class?: string;
+  medical_expiry?: string;
+  icao_english_level?: string;
+  country?: string;
+  city?: string;
+  bio?: string;
+}
+
+interface InteractiveProfilePreviewProps {
+  profile: ProfileData | null;
+  setTab?: (tab: TabId) => void;
+  onNavigate?: (path: string) => void;
+}
+
+const TABS: { id: PreviewTab; label: string; icon: React.ComponentType<any> }[] = [
+  { id: 'overview', label: 'Overview', icon: User },
+  { id: 'pathways', label: 'Pathways', icon: Route },
+  { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
+  { id: 'comparisons', label: 'Compare', icon: BarChart3 },
+];
+
+export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps> = ({
+  profile,
+  setTab,
+  onNavigate,
+}) => {
+  const [activeTab, setActiveTab] = useState<PreviewTab>('overview');
+  const [pathwayMatches, setPathwayMatches] = useState<any[]>([]);
+  const [bookmarks, setBookmarks] = useState<any[]>([]);
+  const [comparisons, setComparisons] = useState<any[]>([]);
+  const [animatedHours, setAnimatedHours] = useState(0);
+  const [isBooting, setIsBooting] = useState(true);
+  const [bootProgress, setBootProgress] = useState(0);
+
+  const displayName = profile?.display_name || profile?.full_name || 'Captain';
+  const totalHours = profile?.total_flight_hours || 0;
+  const license = profile?.license_type || 'Not set';
+  const occupation = profile?.current_occupation || 'Not set';
+  const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
+  const isPlus = tier !== 'free' && tier !== 'bronze';
+  const verifStatus = (profile?.verification_status as Record<string, unknown>)?.status || (profile?.verification_status as string) || 'unverified';
+  const isVerified = verifStatus === 'verified' || verifStatus === 'approved';
+
+  // Simple smooth boot progress
+  useEffect(() => {
+    const duration = 5000;
+    const start = performance.now();
+    let raf: number;
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / duration, 1);
+      setBootProgress(Math.round(p * 100));
+      if (p < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        setTimeout(() => setIsBooting(false), 500);
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // Load cached data from localStorage
+  useEffect(() => {
+    try {
+      const matches = localStorage.getItem('pathway_matches_cache');
+      if (matches) setPathwayMatches(JSON.parse(matches).data?.slice(0, 4) || []);
+    } catch { /* ignore */ }
+
+    try {
+      const behavior = localStorage.getItem('pathwayBehaviorTracking');
+      if (behavior) {
+        const parsed = JSON.parse(behavior);
+        const viewed = Object.entries(parsed)
+          .filter(([_, v]: [string, any]) => v?.viewed || v?.clicked)
+          .slice(0, 4)
+          .map(([k, v]: [string, any]) => ({ id: k, name: v.name || k, type: 'pathway', date: v.lastViewed }));
+        setPathwayMatches(viewed);
+      }
+    } catch { /* ignore */ }
+
+    try {
+      const aircraftBookmarks = localStorage.getItem('bookmarkedAircraft');
+      const bmList: any[] = [];
+      if (aircraftBookmarks) {
+        const ids = JSON.parse(aircraftBookmarks);
+        ids.slice(0, 4).forEach((id: string, i: number) => {
+          bmList.push({ id, name: `Aircraft ${id.slice(0, 8)}`, type: 'aircraft', date: new Date().toISOString() });
+        });
+      }
+      setBookmarks(bmList.length ? bmList : []);
+    } catch { /* ignore */ }
+
+    try {
+      const comp = localStorage.getItem('comparedPathways');
+      if (comp) setComparisons(JSON.parse(comp).slice(0, 3));
+    } catch { /* ignore */ }
+  }, []);
+
+  // Animate flight hours
+  useEffect(() => {
+    if (!totalHours) return;
+    const target = totalHours;
+    const duration = 1200;
+    const start = performance.now();
+    let raf: number;
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / duration, 1);
+      setAnimatedHours(Math.round(target * p));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [totalHours]);
+
+  const completionPct = Math.round(([
+    !!profile?.full_name,
+    !!profile?.current_occupation,
+    !!profile?.license_type,
+    !!profile?.total_flight_hours,
+    !!profile?.last_flown,
+  ].filter(Boolean).length / 5) * 100);
+
+  const statCards = [
+    { label: 'Total Hours', value: animatedHours, suffix: 'h', icon: Clock, color: '#38bdf8' },
+    { label: 'License', value: license, suffix: '', icon: Shield, color: '#34d399' },
+    { label: 'Career', value: occupation, suffix: '', icon: Briefcase, color: '#f59e0b' },
+    { label: 'Tier', value: isPlus ? 'Recognition+' : 'Free', suffix: '', icon: Star, color: isPlus ? '#f472b6' : '#94a3b8' },
+  ];
+
+  const recentActivity = [
+    { icon: CheckCircle2, text: 'Profile completion updated', time: '2h ago', color: '#34d399' },
+    { icon: Route, text: 'Pathway match: Delta Airlines A320 FO', time: '1d ago', color: '#818cf8' },
+    { icon: Bookmark, text: 'Bookmarked Boeing 737 type rating', time: '2d ago', color: '#f59e0b' },
+    { icon: Award, text: 'Medical certificate expiring soon', time: '3d ago', color: '#ef4444' },
+  ];
+
+  const BootScreen = () => {
+    return (
+      <motion.div
+        className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-2xl overflow-hidden"
+        style={{
+          minHeight: '420px',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08))',
+          backdropFilter: 'blur(40px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(40px) saturate(1.2)',
+          border: '1px solid rgba(255,255,255,0.25)',
+          boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.1)',
+        }}
+        exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Frost radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.04), transparent 60%)',
+          }}
+        />
+
+        {/* RecognitionOS Logo */}
+        <div className="relative mb-10 w-full flex flex-col items-center text-center">
+          <div
+            className="absolute inset-0 -m-6 rounded-3xl"
+            style={{
+              border: '1px solid rgba(255,255,255,0.08)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.06), transparent)',
+            }}
+          />
+          <div className="relative px-8 py-6">
+            <p
+              className="text-3xl md:text-4xl font-black tracking-tight"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.35), 0 0 12px rgba(0,0,0,0.15)' }}
+            >
+              <span style={{ color: '#dc2626' }}>Recognition</span>
+              <span style={{ color: '#ffffff' }}>OS</span>
+            </p>
+            <p
+              className="text-[10px] font-bold tracking-[0.3em] mt-2"
+              style={{ color: 'rgba(15,23,42,0.5)' }}
+            >
+              PILOT COMMAND CENTRE
+            </p>
+          </div>
+        </div>
+
+        {/* Glass progress bar */}
+        <div
+          className="w-64 h-1.5 rounded-full overflow-hidden relative"
+          style={{ background: 'rgba(15,23,42,0.08)', border: '1px solid rgba(15,23,42,0.12)' }}
+        >
+          <div
+            className="absolute inset-y-0 left-0 rounded-full transition-all"
+            style={{
+              width: `${bootProgress}%`,
+              background: 'linear-gradient(90deg, #dc2626, #ef4444, #f87171)',
+              boxShadow: '0 0 12px rgba(239,68,68,0.35), 0 0 4px rgba(239,68,68,0.5)',
+            }}
+          />
+        </div>
+
+        {/* Percentage */}
+        <p
+          className="text-[10px] font-black mt-2 tabular-nums"
+          style={{ color: 'rgba(15,23,42,0.35)' }}
+        >
+          {bootProgress}%
+        </p>
+
+        {/* Bottom dots */}
+        <div className="flex items-center gap-1.5 mt-6">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full transition-all"
+              style={{
+                background: bootProgress >= 30 + i * 30 ? '#ef4444' : 'rgba(15,23,42,0.15)',
+                opacity: bootProgress >= 30 + i * 30 ? 1 : 0.5,
+              }}
+            />
+          ))}
+        </div>
+      </motion.div>
+    );
+  };
+
+  return (
+    <div
+      className="rounded-2xl border border-white/25 overflow-hidden relative"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+        backdropFilter: 'blur(40px) saturate(1.2)',
+        WebkitBackdropFilter: 'blur(40px) saturate(1.2)',
+        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
+        minHeight: '420px',
+      }}
+    >
+      <AnimatePresence>
+        {isBooting && <BootScreen />}
+      </AnimatePresence>
+
+      {!isBooting && <div>
+      {/* Header */}
+      <div
+        className="px-5 py-4 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+      >
+        <div className="flex items-center gap-2">
+          <Zap size={18} style={{ color: '#ffffff' }} />
+          <ChevronsRight size={16} style={{ color: 'rgba(255,255,255,0.7)' }} />
+          <p className="text-base font-black text-white tracking-wider uppercase">
+            Quick Access
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span
+            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
+            style={{
+              background: isVerified ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
+              color: '#ffffff',
+              borderColor: 'rgba(255,255,255,0.3)',
+            }}
+          >
+            {isVerified ? '✓ VERIFIED' : '⚠ PENDING'}
+          </span>
+          <span
+            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
+            style={{
+              background: isPlus ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
+              color: '#ffffff',
+              borderColor: 'rgba(255,255,255,0.3)',
+            }}
+          >
+            {isPlus ? 'RECOGNITION+' : 'FREE'}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row">
+        {/* Sidebar */}
+        <aside
+          className="md:w-56 flex-shrink-0 border-b md:border-b-0 md:border-r border-white/10 p-4"
+          style={{
+            background: 'linear-gradient(180deg, rgba(59,130,246,0.08), rgba(99,102,241,0.04))',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+        >
+          {/* Mini profile */}
+          <div className="mb-5">
+            <div className="flex items-center gap-3 mb-2.5">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black"
+                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
+              >
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-white truncate" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{displayName}</p>
+                <p className="text-[10px] text-white/60 truncate">{profile?.email || 'No email'}</p>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <div
+                className="h-full rounded-full transition-all"
+                style={{ width: `${completionPct}%`, background: '#10b981' }}
+              />
+            </div>
+            <p className="text-[9px] text-white/50 mt-1.5">{completionPct}% profile complete</p>
+          </div>
+
+          {/* Nav tabs */}
+          <nav className="flex md:flex-col gap-1.5">
+            {TABS.map((t) => {
+              const Icon = t.icon;
+              const isActive = activeTab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setActiveTab(t.id)}
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all flex-1 md:flex-none text-left w-full"
+                  style={{
+                    background: isActive
+                      ? 'linear-gradient(135deg, #3b82f6, #2563eb)'
+                      : 'rgba(59,130,246,0.12)',
+                    color: '#ffffff',
+                    boxShadow: isActive
+                      ? '0 4px 12px rgba(59,130,246,0.35)'
+                      : '0 1px 2px rgba(0,0,0,0.04)',
+                    border: isActive ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <span style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
+                  <span className="hidden md:inline">{t.label}</span>
+                  {isActive && (
+                    <svg className="ml-auto w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Quick actions */}
+          <div className="mt-3 hidden md:block">
+            <div className="flex flex-col gap-1.5">
+              {[
+                { label: 'Edit Profile', tab: 'advanced-profile' as TabId, icon: User },
+                { label: 'Flight Bag', tab: 'logbook' as TabId, icon: Briefcase },
+                { label: 'Recognition+', tab: 'recognition' as TabId, icon: Star },
+              ].map((link) => {
+                const Icon = link.icon;
+                return (
+                  <button
+                    key={link.tab}
+                    onClick={() => setTab?.(link.tab)}
+                    className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all text-left w-full"
+                    style={{
+                      background: 'rgba(59,130,246,0.12)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+                    }}
+                  >
+                    <span style={{ color: 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
+                    <span>{link.label}</span>
+                    <ChevronRight size={14} className="ml-auto" style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
+
+        {/* Content */}
+        <div className="flex-1 p-4 md:p-5 min-h-[420px]">
+          <AnimatePresence mode="wait">
+            {activeTab === 'overview' && (
+              <motion.div
+                key="overview"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-4"
+              >
+                {/* Stats grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  {statCards.map((stat) => {
+                    const Icon = stat.icon;
+                    return (
+                      <div
+                        key={stat.label}
+                        className="rounded-xl p-3 border border-gray-100 shadow-sm"
+                        style={{ background: '#ffffff' }}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <div
+                            className="w-7 h-7 rounded-lg flex items-center justify-center"
+                            style={{ background: `${stat.color}15` }}
+                          >
+                            <Icon size={14} style={{ color: stat.color }} />
+                          </div>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase">{stat.label}</span>
+                        </div>
+                        <p className="text-lg font-black text-slate-800">
+                          {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
+                          <span className="text-xs text-slate-400 ml-0.5">{stat.suffix}</span>
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {/* Recent Activity */}
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Zap size={14} className="text-amber-500" />
+                      <p className="text-xs font-bold text-slate-800">Recent Activity</p>
+                    </div>
+                    <div className="space-y-2.5">
+                      {recentActivity.map((item, i) => {
+                        const Icon = item.icon;
+                        return (
+                          <div key={i} className="flex items-start gap-2.5">
+                            <div
+                              className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
+                              style={{ background: `${item.color}15` }}
+                            >
+                              <Icon size={12} style={{ color: item.color }} />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[11px] text-slate-700 truncate">{item.text}</p>
+                              <p className="text-[10px] text-slate-400">{item.time}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Certifications & Ratings */}
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Award size={14} className="text-emerald-500" />
+                      <p className="text-xs font-bold text-slate-800">Qualifications</p>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        { label: 'License', value: license, status: license !== 'Not set' ? 'active' : 'missing' as const },
+                        { label: 'Medical', value: profile?.medical_class || 'Class 1', status: 'active' as const },
+                        { label: 'English (ICAO)', value: profile?.icao_english_level || 'Level 4', status: 'active' as const },
+                        { label: 'Type Ratings', value: (profile?.type_ratings?.length || 0) + ' held', status: (profile?.type_ratings?.length || 0) > 0 ? 'active' : 'missing' as const },
+                      ].map((cert) => (
+                        <div key={cert.label} className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-1.5 h-1.5 rounded-full"
+                              style={{ background: cert.status === 'active' ? '#34d399' : '#ef4444' }}
+                            />
+                            <span className="text-[11px] text-slate-600">{cert.label}</span>
+                          </div>
+                          <span className="text-[11px] font-bold text-slate-700">{cert.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => setTab?.('advanced-profile' as TabId)}
+                      className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
+                      style={{ background: '#f8fafc' }}
+                    >
+                      Manage Certificates →
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'pathways' && (
+              <motion.div
+                key="pathways"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-4"
+              >
+                {/* Submitted Pathways */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <FolderOpen size={14} className="text-blue-500" />
+                      <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
+                    </div>
+                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
+                      {pathwayMatches.length || 0}
+                    </span>
+                  </div>
+                  {pathwayMatches.length === 0 ? (
+                    <div className="text-center py-4">
+                      <Route size={20} className="text-slate-300 mx-auto mb-2" />
+                      <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {pathwayMatches.slice(0, 3).map((pw, i) => (
+                        <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                          <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: 'rgba(129,140,248,0.1)' }}
+                          >
+                            <Route size={14} style={{ color: '#6366f1' }} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
+                            <p className="text-[10px] text-slate-400">
+                              {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
+                            </p>
+                          </div>
+                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Recent Replies */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mail size={14} className="text-emerald-500" />
+                    <p className="text-xs font-bold text-slate-800">Recent Replies</p>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
+                      { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
+                      { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
+                    ].map((reply, i) => (
+                      <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                        <img
+                          src={reply.logoUrl}
+                          alt={reply.airline}
+                          className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                          style={{ background: '#ffffff' }}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
+                            <span className="text-[9px] text-slate-400">{reply.time}</span>
+                          </div>
+                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Recommended by Recognition AI */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Star size={14} className="text-amber-500" />
+                    <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
+                  </div>
+                  <div className="space-y-2">
+                    {[
+                      { name: 'Delta Airlines A320 FO', match: 94, type: 'Airline', reason: 'License and hours align' },
+                      { name: 'Type Rating Fast-Track', match: 88, type: 'Training', reason: 'Top-tier match for your profile' },
+                      { name: 'Private Jet Charter', match: 82, type: 'Charter', reason: 'Hour count places you top tier' },
+                    ].map((rec, i) => (
+                      <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                        <div
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ background: 'rgba(245,158,11,0.1)' }}
+                        >
+                          <Target size={14} style={{ color: '#d97706' }} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="text-[11px] font-bold text-slate-700 truncate">{rec.name}</p>
+                            <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">{rec.match}%</span>
+                          </div>
+                          <p className="text-[10px] text-slate-400">{rec.type} · {rec.reason}</p>
+                        </div>
+                        <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setTab?.('pathways' as TabId)}
+                    className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
+                    style={{ background: '#f8fafc' }}
+                  >
+                    View All Recommendations →
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'bookmarks' && (
+              <motion.div
+                key="bookmarks"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-slate-800">Saved Items</p>
+                  <button
+                    onClick={() => onNavigate?.('/aircraft')}
+                    className="text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1"
+                  >
+                    Browse <ArrowUpRight size={10} />
+                  </button>
+                </div>
+                {bookmarks.length === 0 ? (
+                  <div
+                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <Bookmark size={24} className="text-slate-300 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-slate-600">No bookmarks yet</p>
+                    <p className="text-[11px] text-slate-400 mt-1">Bookmark aircraft, programs, or airlines while browsing.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {bookmarks.map((bm, i) => (
+                      <div
+                        key={i}
+                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex items-center gap-3"
+                        style={{ background: '#ffffff' }}
+                      >
+                        <div
+                          className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ background: 'rgba(245,158,11,0.1)' }}
+                        >
+                          <Bookmark size={16} style={{ color: '#d97706' }} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[11px] font-bold text-slate-800 truncate">{bm.name}</p>
+                          <p className="text-[10px] text-slate-400 capitalize">{bm.type}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'comparisons' && (
+              <motion.div
+                key="comparisons"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-slate-800">Compared Profiles</p>
+                  <button
+                    onClick={() => setTab?.('pathways' as TabId)}
+                    className="text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1"
+                  >
+                    New Comparison <ArrowUpRight size={10} />
+                  </button>
+                </div>
+                {comparisons.length === 0 ? (
+                  <div
+                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <BarChart3 size={24} className="text-slate-300 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-slate-600">No comparisons yet</p>
+                    <p className="text-[11px] text-slate-400 mt-1">Compare pathways side-by-side to see them here.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {comparisons.map((comp, i) => (
+                      <div
+                        key={i}
+                        className="rounded-xl p-3 border border-gray-100 shadow-sm"
+                        style={{ background: '#ffffff' }}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-[11px] font-bold text-slate-800">Comparison #{i + 1}</p>
+                          <span className="text-[10px] text-slate-400">{comp.date || 'Recently'}</span>
+                        </div>
+                        <div className="flex gap-2">
+                          {(comp.items || []).map((item: any, j: number) => (
+                            <span
+                              key={j}
+                              className="text-[10px] px-2 py-1 rounded-md border border-gray-100 text-slate-600"
+                              style={{ background: '#f8fafc' }}
+                            >
+                              {item.name || item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+      </div>}
+    </div>
+  );
+};

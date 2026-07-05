@@ -91,7 +91,7 @@ export const PilotRecognitionOpportunities: React.FC<PilotRecognitionOpportuniti
                         >
                             <div className="aspect-[4/3] overflow-hidden">
                                 <img
-                                    src="/pathway4.png"
+                                    src="/images/set-06-pathways/pathway4.png"
                                     alt="Career Pathways - Airline and aviation opportunities"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />

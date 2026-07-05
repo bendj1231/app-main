@@ -473,7 +473,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
         date: "March 18, 2026",
         category: "Product Release",
         excerpt: "PilotRecognition debuts the W1000 application with integrated examinations and progress-tracking systems tailored for Foundation Program pilots.",
-        image: "/w1000.png"
+        image: "/images/set-04-screenshots/w1000.png"
       },
       {
         id: 3,
@@ -584,7 +584,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
 
             {/* News Detail Header */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <span style={{
                   fontSize: '0.75rem',
@@ -635,7 +635,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                   flexWrap: 'wrap'
                 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                    <img src="/logo.png" alt="PilotRecognition" style={{ width: '180px', maxWidth: '40vw', height: 'auto', objectFit: 'contain' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition" style={{ width: '180px', maxWidth: '40vw', height: 'auto', objectFit: 'contain' }} />
                     <span style={{ fontSize: '0.85rem', color: '#475569', letterSpacing: '0.2em', textTransform: 'uppercase' }}>PilotRecognition</span>
                   </div>
                   <div style={{ width: '1px', height: '80px', background: 'rgba(148,163,184,0.5)' }} />
@@ -1229,7 +1229,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           <section style={{ marginBottom: '4rem' }}>
             {/* Section header — matches main page title style */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Industry Intelligence
               </div>
@@ -1373,7 +1373,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           <section style={{ marginBottom: '4rem', zoom: 0.9 }}>
             {/* Section header — matches main page title style */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Latest Announcements
               </div>
@@ -1726,7 +1726,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
         {/* Programs Header */}
         <div style={{ padding: '2rem 3rem 1.5rem 3rem', textAlign: 'center', maxWidth: '1200px', margin: '0 auto' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
             CONNECTING PILOTS TO THE INDUSTRY
@@ -1792,7 +1792,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
               pointerEvents: 'none'
             }}>
               <img
-                src="/Gemini_Generated_Image_7awns87awns87awn.png"
+                src="/images/set-05-generated/Gemini_Generated_Image_7awns87awns87awn.png"
                 alt="Foundational Program"
                 style={{
                   width: '100%',
@@ -2100,7 +2100,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
               WebkitBackdropFilter: 'blur(24px)'
             }}>
               <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
+                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
               </div>
               <div className="dashboard-subtitle" style={{ color: isDarkMode ? '#60a5fa' : '#2563eb' }}>CONNECTING PILOTS TO THE INDUSTRY</div>
               <h1 className="dashboard-title" style={{ marginBottom: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Pathways</h1>
@@ -2109,7 +2109,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
               </p>
               <div style={{ maxWidth: '720px', margin: '0 auto 2rem', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 45px rgba(15,23,42,0.12)', border: '1px solid rgba(226,232,240,0.8)' }}>
                 <img
-                  src="/wingmentor terminal.png"
+                  src="/images/set-04-screenshots/wingmentor terminal.png"
                   alt="PilotRecognition Terminal"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
@@ -2253,7 +2253,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                     </div>
                   </div>
                   <img 
-                    src="/Silhouette-of-pilot-walking-aw-1140x760.jpg" 
+                    src="/images/set-04-screenshots/Silhouette-of-pilot-walking-aw-1140x760.jpg" 
                     alt="Private Sector Pilot" 
                     className="hub-card-bg-image" 
                     style={{ 
@@ -2324,7 +2324,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                     </div>
                   </div>
                   <img 
-                    src="/Archer-Midnight-eVTOL.png" 
+                    src="/images/set-08-website/Archer-Midnight-eVTOL.png" 
                     alt="Archer Midnight eVTOL" 
                     className="hub-card-bg-image" 
                     style={{ 
@@ -2818,7 +2818,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                   border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.5)' : '1px solid rgba(255, 255, 255, 0.8)',
                   textAlign: 'center'
                 }}>
-                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '90px', width: 'auto', marginBottom: '1rem' }} />
+                  <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ height: '90px', width: 'auto', marginBottom: '1rem' }} />
                   <div style={{ color: isDarkMode ? '#60a5fa' : '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                     Personalized Pathway Inquiry
                   </div>
@@ -2898,7 +2898,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
       }}>
         <div className="dashboard-header" style={{ marginBottom: '3rem', padding: '2rem 2rem 0 2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" />
           </div>
           <div className="dashboard-subtitle">CONNECTING PILOTS TO THE INDUSTRY</div>
           <h1 className="dashboard-title">Wingmentor Network</h1>
@@ -3375,7 +3375,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           </div>
 
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
           </div>
 
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: isDarkMode ? '#60a5fa' : '#2563eb', fontWeight: 700 }}>
@@ -3503,7 +3503,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                 </div>
               </div>
               <div style={{ position: 'relative', width: '40%', minHeight: '220px', overflow: 'hidden', borderRadius: '0 24px 24px 0' }}>
-                <img src="/Gemini_Generated_Image_7awns87awns87awn.png" alt="Aviation Industry Expectations" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }} />
+                <img src="/images/set-05-generated/Gemini_Generated_Image_7awns87awns87awn.png" alt="Aviation Industry Expectations" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: isDarkMode ? 'linear-gradient(90deg, rgba(15,23,42,1) 0%, rgba(15,23,42,0) 30%)' : 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 30%)', pointerEvents: 'none' }} />
                 <div style={{ position: 'absolute', right: '1.5rem', top: '50%', transform: 'translateY(-50%)', width: '48px', height: '48px', borderRadius: '50%', background: isDarkMode ? 'rgba(2, 6, 23, 0.88)' : 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isDarkMode ? '0 8px 20px rgba(2,6,23,0.35)' : '0 4px 12px rgba(0,0,0,0.15)', transition: 'all 0.3s ease' }}>
                   <Icons.ArrowRight style={{ width: 20, height: 20, color: isDarkMode ? '#e2e8f0' : '#0f172a' }} />

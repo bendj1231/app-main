@@ -47,7 +47,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
           </div>
 
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
           </div>
 
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700 }}>
@@ -120,7 +120,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
                 </div>
               </div>
               <img 
-                src="/Silhouette-of-pilot-walking-aw-1140x760.jpg" 
+                src="/images/set-04-screenshots/Silhouette-of-pilot-walking-aw-1140x760.jpg" 
                 alt="Private Sector Pilot" 
                 className="hub-card-bg-image" 
                 style={{ 

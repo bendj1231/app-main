@@ -280,7 +280,7 @@ export const AviationIndustryExpectationsPage: React.FC<AviationIndustryExpectat
 
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img
-              src="/logo.png"
+              src="/images/set-01-logos/logo.png"
               alt="PilotRecognition Logo"
               style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
             />
@@ -558,7 +558,7 @@ export const AviationIndustryExpectationsPage: React.FC<AviationIndustryExpectat
                     borderRadius: '0 24px 24px 0'
                   }}>
                     <img
-                      src="/Gemini_Generated_Image_7awns87awns87awn.png"
+                      src="/images/set-05-generated/Gemini_Generated_Image_7awns87awns87awn.png"
                       alt={activeOperator.company}
                       style={{
                         width: '100%',

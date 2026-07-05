@@ -149,7 +149,7 @@ export const ProgramProgressPage: React.FC<ProgramProgressPageProps> = ({
         >
           {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               WINGMENTOR PROGRAMS
             </div>
@@ -301,7 +301,7 @@ export const ProgramProgressPage: React.FC<ProgramProgressPageProps> = ({
             {/* Header with Logo */}
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
               <img 
-                src="/logo.png" 
+                src="/images/set-01-logos/logo.png" 
                 alt="PilotRecognition Logo" 
                 style={{ maxWidth: '120px', height: 'auto', objectFit: 'contain', marginBottom: '0.75rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} 
               />

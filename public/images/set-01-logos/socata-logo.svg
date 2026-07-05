@@ -1,0 +1,3930 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+
+<link rel="stylesheet" href="/css/page-19900cf85eb1edfc1fda7bb1147f5d249d140f9bda258428b21a38a298be138b.css">
+<meta name="generator" content="Silex v3.0.0">
+<meta name="generator" content="Eleventy v3.0.0">
+<!-- Head  -->    
+
+
+
+
+<meta property="og:locale" content="fr">
+
+
+<link rel="canonical" href="https://www.daher.com/">
+<!--  font google -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<meta name="viewport" content="width=device-width">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap" rel="stylesheet" data-concat="">
+<!--script Code embed tag manager --> 
+ <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K2MCRQW');</script>
+<!-- End Google Tag Manager --> 
+<!-- Script librairie-->
+<script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer=""></script>
+<!-- resizeToFit-->
+<script src="https://www.daher.com/js/resizeToFit.js" data-concat="" defer=""></script>
+<script data-concat="" defer="">
+window.addEventListener("load", function () {
+  resizeToFit.init([
+    ".website-header .resize p",
+    ".resize h1",
+    ".m_hero__cont-title .resize h1",
+    ".m_hero-home__cont-title .resize h1",
+    ".m_hero__cta.resize p",
+    ".m__module-text__cta.resize p",
+    ".white-space-cta.resize p",
+    ".m_our_history__txt.resize p.m_our_history__date",
+  ]);
+}
+                      );
+window.addEventListener("resize", function () {
+  resizeToFit.resize();
+}
+                      );
+</script>
+<!-- END resizeToFit-->
+<script data-concat="">
+
+window.addEventListener("load", () => {
+  // toggle
+  navCheck = document.querySelector("#toggle");
+  navContainer.addEventListener("click", () => (navCheck.checked = false));
+  //updateHeaders();
+}
+);
+window.addEventListener("load", function () {
+  // NAVMOBILE access
+  // Récupérez la référence à l'élément input avec l'ID "toggle"
+  const toggleInput = document.getElementById("toggle");
+  // Écoutez l'événement clavier sur le div avec la classe "h1__b1__hamburger"
+  const hamburgerLabel = document.querySelector(
+    ".scroll-script__nav2 .hamburger"
+  );
+  const navContainerDiv = document.querySelector(".nav-wrapper");
+  // Récupérez tous les éléments à l'intérieur de .nav-wrapper
+  const navWrapperElements = document.querySelectorAll(".nav-wrapper *");
+  function updateAriaExpanded(isExpanded) {
+    hamburgerLabel.setAttribute("aria-expanded", isExpanded);
+  }
+  // Fonction pour décocher le toggle et mettre à jour aria-expanded à "false"
+  function uncheckToggleAndUpdateAria() {
+    toggleInput.checked = false;
+    updateAriaExpanded("false");
+  }
+  // Écoutez l'événement de changement (change) de la valeur de "toggle"
+  toggleInput.addEventListener("change", function () {
+    // Mettez à jour l'attribut aria-expanded en fonction de la valeur de "toggle"
+    const newAriaExpanded = toggleInput.checked ? "true" : "false";
+    updateAriaExpanded(newAriaExpanded);
+  }
+                              );
+  hamburgerLabel.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      // Si la touche Entrée est pressée, cochez l'input
+      toggleInput.checked = true;
+      updateAriaExpanded("true");
+      // Mettre à jour l'attribut aria-expanded
+      // Utilisez setTimeout pour déplacer le focus après que l'événement "keydown" ait été géré
+      setTimeout(function () {
+        hamburgerLabel.focus();
+      }
+                , 0);
+    }
+    else if (event.key === "Escape") {
+      // Si la touche Échap est pressée et ".hamburger" est actif, décochez l'input
+      if (toggleInput.checked) {
+        toggleInput.checked = false;
+        updateAriaExpanded("false");
+        // Mettre à jour l'attribut aria-expanded
+      }
+    }
+  }
+                                );
+  // Écouter le clic sur .navwrapper
+  navContainerDiv.addEventListener("click", function (event) {
+    if (event.target.classList.contains("nav-wrapper")) {
+      uncheckToggleAndUpdateAria();
+    }
+  }
+                                  );
+  // Écouter le clic sur .navwrapper
+  navContainerDiv.addEventListener("click", function (event) {
+    if (event.target.classList.contains("nav-wrapper")) {
+      uncheckToggleAndUpdateAria();
+    }
+  }
+                                  );
+  // Écoutez l'événement focusin sur chaque élément de .nav-wrapper
+  navWrapperElements.forEach((element) => {
+    element.addEventListener("focusin", function () {
+      toggleInput.checked = true;
+      updateAriaExpanded("true");
+    }
+                            );
+  }
+                            );
+  // Écoutez l'événement focusout de .nav-wrapper
+  navContainerDiv.addEventListener("focusout", function (event) {
+    if (!navContainerDiv.contains(event.relatedTarget)) {
+      uncheckToggleAndUpdateAria();
+    }
+  }
+                                  );
+  // Écoutez l'événement clavier sur le div avec la classe "nav-wrapper"
+  navContainerDiv.addEventListener("keydown", function (event) {
+    // Si la touche Échap est pressée, décochez l'input
+    if (event.key === "Escape") {
+      toggleInput.checked = false;
+      updateAriaExpanded("false");
+      // Mettre à jour l'attribut aria-expanded
+      hamburgerLabel.focus();
+      // Remettre le focus sur ".h1__b1__hamburger"
+    }
+  }
+                                  );
+}
+                      );
+</script>
+<!-- end Script librairie-->
+<!-- Fil d'Ariane-->
+<!-- END Fil d'Ariane-->
+<style data-concat="">
+/* ROOTS */
+:root {
+  --main-color: #00325F;
+  --secondary-color: #ffffff;
+  --third-color: #E60032;
+  --fourth-color: #002F5D;
+  --fifth-color: #024A90;
+  /*--fifth-color: #dbdbdb;*/
+  --sixth-color: #ce0033;
+  --seventh-color: #e40033;
+
+  /*cta*/
+  --cta-hover-main-bg-color: #024A90;
+  --cta-hover-secondary-bg-color: #e40033;
+  --main-font-family: "Raleway", Arial, sans-serif;
+  --sec-font-family: Arial, sans-serif;
+  /*hover*/
+  --hover-bg-color-mosaic: rgba(71, 194, 141, 0.84);
+  /* border radius img*/
+  --border-radius-30px: 30px;
+}
+button {
+  font-family: inherit;
+}
+/* END ROOTS */
+/* classe var() */
+.main-color {
+  color: var(--main-color);
+}
+.secondary-color {
+  color: var(--secondary-color);
+}
+.third-color {
+  color: var(--third-color);
+}
+.seventh-color{
+  color: var(--seventh-color);
+}      
+.cta-main-bg-color {
+  background-color: var(--main-color);
+}
+.cta-main-bg-color:hover,
+.cta-main-bg-color:focus {
+  background-color: var(--cta-hover-main-bg-color);
+}
+.cta-secondary-bg-color {
+  background-color: var(--third-color);
+}
+.cta-secondary-bg-color:hover,
+.cta-secondary-bg-color:focus {
+  background-color: var(--cta-hover-secondary-bg-color);
+}
+.cta-third-bg-color {
+  background-color: var(--secondary-color);
+}
+.cta-third-bg-color:hover,
+.cta-third-bg-color:focus {
+  background-color: var(--main-color);
+}
+.fifth-bg-color {
+  background-color: var(--fifth-color);
+}
+.current-main-bg-color,
+.main-bg-color {
+  background-color: var(--main-color);
+}
+.current-secondary-bg-color,
+.secondary-bg-color {
+  background-color: var(--secondary-color);
+}
+
+.current-third-bg-color,
+.third-bg-color {
+  background-color: var(--third-color);
+}
+.current-fourth-bg-color,
+.fourth-bg-color {
+  background-color: var(--fourth-color);
+}
+.main-deg {
+  background: linear-gradient(to top, rgba(0, 50, 95, 1), rgba(0, 47, 93, 0));
+}
+.deg-95-50 {
+background: linear-gradient(to top, rgba(0, 47, 93, 0.95) 45.3%, rgba(0, 47, 93, 0.5));
+}
+.deg-80-0 {
+background: linear-gradient(to top, rgba(0, 47, 93, 0.8), rgba(0, 47, 93, 0));
+}
+.third-deg {
+  background: linear-gradient(to top, #002F5D, #024A90);
+}
+.fourth-deg {
+  background: linear-gradient(to bottom, #002F5D, #07437D);
+}
+.third-deg-248 {
+  background: linear-gradient(to bottom, #024A90 0%, #002F5D 248px);
+}
+.third-deg-305 {
+  background: linear-gradient(to bottom, #024A90 0%, #002F5D 305px);
+}
+.m_our_history-deg {
+  background: linear-gradient(to bottom, #024A90 0%, #002F5D 305px, #001C38 100%);
+}
+
+/*m_last_actu*/
+.post-deg {
+background: linear-gradient(to top, rgba(0, 50, 95, 1) 150px, rgba(0, 47, 93, 0) 300px);
+transition: transform 0.3s ease-in-out;
+transform: scaleY(1);
+transform-origin: bottom;
+}
+.m__lastA__col1:hover .post-deg {
+transform: scaleY(1.2);
+}
+.m__lastA__col2__post:hover h2{
+	color: var(--third-color);
+}
+/*m_last_actu*/
+/*Module Expertise */
+.m_exp__col-deg {
+  background: linear-gradient(to top, rgba(0, 50, 95, .8) 130px, rgba(0, 47, 93, 0) 316px );
+  transition: transform 0.3s ease-in-out;
+  transform: scaleY(1);
+  transform-origin: bottom;
+}
+@media (max-width:768px) {
+  .m_exp__col-deg {
+      background: linear-gradient(to top, rgba(0, 50, 95, .8) 50px, rgba(0, 47, 93, 0) 180px);
+  }
+}
+.m_exp__col-arrow_sq-54 {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-duration: 0.4s, 0.2s;
+  transition-timing-function: ease-in-out, cubic-bezier(.23, 1, .32, 1);
+}
+
+@media (min-width: 769px) {
+.m_exp__col:hover .m_exp__col-deg  {
+transform: scaleY(1.2);
+}
+.m_exp__col:hover .m_exp__col-arrow_sq-54 {
+transform: scaleY(1);
+opacity: 1;
+}
+/*paragraph animation*/
+.m_exp__col__cont-p_before {
+  opacity: 0;
+  max-height: 0%;
+}
+.m_exp__col:hover .m_exp__col__cont-p_before {
+  transition-property: opacity, max-height;
+  transition-duration: 0.6s, 0.6s;
+  transition-timing-function: cubic-bezier(.65,.05,.36,1), cubic-bezier(.17,.84,.44,1);
+  opacity: 1;
+  max-height: 100%; 
+  margin-bottom:10px;
+}}
+/* END Module Expertise */
+.sec-deg {
+  background: radial-gradient(circle at 50% 25%, #819cb97d, #5873911f );
+transition: background-size 0.3s ease-out;
+background-size: 100%;
+}
+.sec-deg:hover {
+  background: radial-gradient(circle at 25% 50%, #819cb9eb, #5d8ab49e 30%);
+  background-size: 200%;
+}
+
+/* END class var() */
+/* general */
+html {
+  scroll-behavior: smooth;
+}
+.main-font {
+  font-family: var(--main-font-family);
+}
+.sec-font {
+  font-family: var(--sec-font-family);
+}
+body,
+div,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+input,
+textarea,
+p {
+  margin: 0;
+  padding: 0;
+}
+/* END reset style css*/
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+.rich-text p,
+.rich-text em,
+.rich-text h1,
+.rich-text h2,
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-style: inherit;
+}
+.rich-h2-font-basic h2 {
+  font-size: 2.8125rem;
+  font-weight: 700;
+  line-height: 3.797rem;
+  margin-bottom:13px;
+
+}
+.rich-h2-font-37 h2 {
+  font-size: 2.3125rem;
+  font-weight: 700;
+  line-height: 3.311rem;
+}
+.rich-text a {
+  text-decoration: underline;
+}
+.rich-text ol,
+.rich-text ul {
+      margin-left: 15px;
+}
+/*fix menu safari*/
+.website-header select {
+    background-color: var(--secondary-color);
+    border: 1px solid #002f5d70;
+    color: var(--main-color);
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%2300325F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 4px center / 14px 14px;
+    padding: 0 20px 0 8px;
+    line-height: 1;
+}
+#toggle:checked ~ header.header-color .website-header select {
+  background: transparent url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 4px center / 14px 14px;
+}
+details summary::-webkit-details-marker {
+    display: none;
+}
+details summary::-moz-list-bullet {
+    list-style-type: none;
+}
+details summary::marker {
+    display: none;
+}
+details summary {
+    list-style: none;
+}
+/*fix menu safari*/ 
+.hyphens {
+  -webkit-hyphens: auto;
+  /* for Safari */
+  hyphens: auto;
+  word-wrap: break-word;
+}
+.underline {
+  text-decoration: underline 1px;
+  text-underline-offset: 2px;
+}
+address {
+  font-style: normal;
+}
+.no-cursor {
+  cursor:  default;
+}
+.hover-bg-color {
+  transition: background-color 0.2s ease-in-out;
+}
+.hover-nav-fx {
+  transition: color 0.2s ease-in-out;
+}
+a .chev-right-bg-red-img {
+  transition: transform 0.15s cubic-bezier(.23,1,.32,1); }
+
+a:hover .chev-right-bg-red-img {
+    transform: translateX(3px);
+}
+/* for display img in firefox */
+picture {
+  display: contents;
+}
+.excerpts-all {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+  .excerpts-2lines {
+    -webkit-line-clamp: 2;
+}  
+.excerpts-3lines {
+    -webkit-line-clamp: 3;
+}
+.excerpts-4lines {
+    -webkit-line-clamp: 4;
+}
+.excerpts-9lines {
+    -webkit-line-clamp: 9;
+}
+
+  /* END GENERAL style css*/
+  /* GLOBAL PADDING MANAGEMENT / SPACES / bloc bleus */
+section.current-main-bg-color:has( + section.current-main-bg-color),
+section.current-main-bg-color:has( + div + section.current-main-bg-color ), 
+section.current-secondary-bg-color:has( + section.current-secondary-bg-color ),
+section.current-secondary-bg-color:has( + div + section.current-secondary-bg-color),
+section.third-deg-305:has( + section.third-deg-305),
+section.third-deg-305:has( + div + section.third-deg-305) {
+  padding-bottom: 0;
+}
+section.current-main-bg-color + section.current-main-bg-color,
+section.current-main-bg-color:has( + div + section.current-main-bg-color ){    
+    background:#002F5D;
+}
+  /* ANCHOR */
+  /* correspond à la taille de la nav*/
+  :target {
+    scroll-margin-top: 96px;
+  }
+  @media (max-width: 768px) {
+    :target {
+      scroll-margin-top: 80px;
+    }
+  }
+  /* END ANCHOR */
+  /* Module HERO HOME */
+.m_hero-home__cont-title .rich-text h1 {
+  font-size: 3.625rem;
+  line-height: 1.14em;
+}
+.m_hero-home__cont-title .rich-text p {
+  font-family: var(--sec-font-family);
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .m_hero-home__cont-title .rich-text h1 {
+    font-size: 2.5rem;
+    line-height: 1.25em;
+  }
+  .m_hero-home__cont-title .rich-text p {
+  margin-bottom: 0px;
+}
+}
+  /* Module HERO HOME */
+  /* Module HERO */
+    .m_hero-deg {
+  background: linear-gradient(to right, #024A90 0px, #002F5D 40.6%);
+}
+.m_hero__cont-title .rich-text p {
+padding-top: 25px;
+}
+@media (max-width: 992px) {
+  .m_hero-deg {
+    background: linear-gradient(to bottom, #024A90 221px, #002F5D 505px);
+      }}
+@media (max-width: 768px) {
+  .m_hero__cont-title .rich-text h1 {
+    font-size: 1.75rem;
+    line-height: 1.36em;
+  }
+  .m_hero__cont-title .rich-text + .m_hero__cta {
+  padding-top: 20px;
+}
+}
+@media (min-width: 769px) {
+.m_hero__cont-title .rich-text h1 {
+  font-size: 3rem;
+  line-height: 1.16em;
+}
+.m_hero__cont-title .rich-text + .m_hero__cta {
+  padding-top: 27px;
+}}
+.m_hero__cont-title .rich-text p{
+  font-family: var(--sec-font-family);
+}
+  /* Module HERO */
+  /* module image_text_alternate / Module Texte & Média / Module CTA téléchargement */
+/*space when no squarex3.svg*/
+@media (min-width: 769px) {
+.m__alt__cont:has(.m__alt__cont-img .m__alt__cont-svg) {
+  padding-top: 185px;
+}
+.m__alt__cont .m__alt__cont-img .m__alt__cont-svg {
+right: -109px;
+}
+/*reverse position*/
+.m__alt__cont.left {
+flex-direction: row-reverse;
+}
+.m__alt__cont.left .m__alt__cont-img .m__alt__cont-svg {
+  transform-origin: center;
+  transform: scaleX(-1);	
+  left: -109px;
+}
+}
+.m__alt__cont__part1 h2,
+.m_cta_tel__txt h2 {
+font-size: 1.75rem;
+line-height: 1.36em;
+font-weight: 700;
+}
+.m__alt__cont__part1 .rich-text p {
+padding-top: 25px;
+}
+.m_cta_tel__txt .rich-text p {
+padding-top: 33px;
+}
+@media (max-width: 768px) {
+.m__alt__cont__part1 h2,
+.m_cta_tel__txt h2 {
+font-size: 1.25rem;
+line-height: 1.5em;
+font-weight: 700;
+}
+.m__alt__cont__part1 .rich-text p,
+.m_cta_tel__txt .rich-text p {
+padding-top: 15px;
+}}
+  /* END module image_text_alternate / Module Texte & Média */
+  /*Module intro */
+.m__module-intro__cont h2 {
+font-family: var(--main-font-family);
+font-size: 1.75rem;
+line-height: 1.36em;
+padding-bottom: 30px;
+}
+@media (max-width: 768px) {
+.m__module-intro__cont h2 {
+  padding-bottom: 15px;
+}}
+  /* END Module intro */
+  /*Module TEXT HTML, Module success */
+.m__module-text__cont h2 {
+font-family: var(--main-font-family);
+font-size: 3rem;
+line-height: 1.16em;
+padding-bottom: 50px;
+text-align: center;
+}
+.m__module-text__cont h3 {
+font-size: 1.25rem;
+line-height: 1.5em;
+font-weight: 700;
+padding-bottom: 18px;
+}
+.m__module-text__cont h4 {
+ font-weight: 700;
+}
+@media (min-width: 769px) {
+.m__module-text__cont h4 {
+padding-bottom: 5px;
+}}
+.m__module-text__cont p {
+padding-bottom: 15px;
+}
+.m__module-text__cont ul {
+list-style-type: square;
+margin-left: 22px;
+padding-bottom: 10px;
+}
+.m__module-text__cont > ul > li {
+	line-height: 24px;
+	padding-bottom: 2px;
+}
+.m__module-text__cont > ul > li > ul{
+	padding-top: 4px;
+}
+.m__module-text__cont > ul > li > ul > li {
+	padding-top: 10px;
+}
+.m__module-text__cont a,
+.m__module-text__cont li::marker,
+.m_success__col .rich-text a,
+.m_accordion__detail-txt a {
+color: var(--third-color);
+}
+.m__module-text__cont > ul > li::marker {
+font-size: 1.5rem;
+}
+
+.m__module-text__cont ol {
+line-height: 24px;
+margin-left: 22px;
+padding-bottom: 10px;
+}
+.m__module-text__cont > :last-child {
+padding-bottom: 50px;
+}
+.m__module-text__cont.rich-text img.alignleft{
+float:left;
+margin-right: 15px ;
+}
+.m__module-text__cont.rich-text img.alignright{
+float:right;
+margin-left: 15px ;
+}
+.m__module-text__cont.rich-text a:hover,
+.m_success__col .rich-text a:hover,
+.m_accordion__detail-txt a:hover {
+text-decoration :none;
+}
+.m__module-text__cont.rich-text img {
+  object-fit: cover;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+.m__module-text__cont h2 {
+  font-size: 1.75rem;
+  line-height: 1.29em;
+  padding-bottom: 15px;
+}
+.m__module-text__cont h4 {
+padding-bottom: 15px;
+}
+.m__module-text__cont > :last-child {
+padding-bottom: 20px;
+}
+}
+@media (max-width: 480px) {
+.m__module-text__cont.rich-text img {
+width: 100%;
+}}
+  /* END TEXT HTML, Module success*/
+  /*module CTA*/
+  @media (min-width: 769px) {
+.m__cta-img__cont__title.rich-text h2 {
+font-size: 3rem;
+line-height: 1.17em;
+font-weight:700;
+}
+.m__cta-img__cont__title.rich-text p{
+padding-top:25px;
+}}
+@media (max-width: 768px) {
+.m__cta-img__cont__title h2{
+  font-size: 1.75rem;
+  line-height: 1.29em;
+  font-weight:700;
+}
+.m__cta-img__cont__title.rich-text p{
+padding-top:15px;
+}
+}
+/* END module CTA*/
+/*module card image text */
+  .m__card-image-text__title h2{
+    margin: 0px auto 13px auto;
+  }
+  .m__card-image-text__contain__link-nolink:nth-child(n + 4) {
+    margin-top: 100px;
+  }
+  @media (max-width: 768px) {
+    .m__card-image-text__contain__link-nolink:not(:first-child) {
+      margin-top: 110px;
+    }
+  }
+/*END card image text */
+/*MODULE Finance Durable + module Engagements */
+  @media (min-width: 769px) {
+.m_fina-dur__cont-title h2 {
+font-size: 3rem;
+line-height: 1.17em;
+}
+.m_engagmts__cont-title h2{
+font-size: 2rem;
+line-height: 1.3em;
+padding-bottom:18px;
+}
+}
+@media (max-width: 768px) {
+.m_fina-dur__cont-title h2 {
+font-size: 1.75rem;
+line-height: 1.29em;
+}
+.m_engagmts__cont-title h2 {
+font-size: 1.75rem;
+line-height: 1.3em;
+padding-bottom:15px;
+}
+}
+@media (min-width: 993px) {
+.m_fina-dur__card + .m_fina-dur__card {
+border-left: 1px solid rgba(255, 255, 255, .5)
+}}
+.m_engagmts-deg {
+    background: linear-gradient(to top, rgba(0, 47, 93, 1) 43.8%, rgb(0, 47, 93,0) 81.8%);
+}
+/*extra space if bloc after "m_engagements"*/
+.m_fina-dur__xtra-bot--pad:has(+.m_engagements) {
+padding-bottom:284px;
+}
+/*avoid 2x br*/
+.m_fina-dur__card-txts br+br,
+.m_nosA_cards br+br {
+display:block;
+}
+/*END MODULE Finance Durable + module Engagements */
+/* MODULE carriere / raison d'être*/
+@media (min-width: 993px) {
+.m_carriere__img-cont {
+margin-left: 2.38%;
+}
+.m_carriere__img-cont.-img2 {
+margin-top: 100px;
+}
+.m_carriere__img-cont.-img3 {
+margin-top: -132px;
+}
+}
+@media (min-width: 769px) and (max-width: 992px) {
+.m_carriere__cont-col:nth-child(odd) {margin-right:  2.38%;
+}}
+@media (max-width: 992px) {
+.m_carriere__img-cont:not(:nth-child(2)) {
+margin-top: 15px;
+}
+.m_carriere__img-cont.-img2, .m_carriere__img-cont.-img3 {
+margin-top: 15px;
+}}
+
+/*VIDEO POPIN*/
+.m_carriere__img-cont:hover img.m_carriere__player, .m_raison__cont-video:hover img.m_carriere__player {
+transition: background-color .4s ease-out;
+background-color: var(--third-color);
+}
+
+.m_carriere__img-cont div:first-child, .m_raison__cont-video div:first-child {
+width: 100%;
+height: 100%;
+z-index: 1;
+}
+.m_carriere-video iframe {
+max-width: 100%;
+width: 100%;
+height: 100%
+}
+/* END MODULE carriere / raison d'être*/
+/* MODULE RAISON d etre*/
+.m_raison {
+background: linear-gradient(to bottom, rgba(2, 74, 144, 1) 0px, rgba(0, 47, 93, 1) 15.5%, rgba(0, 47, 93, 1) 40%, rgba(255, 255, 255, 1)85.6%	);
+}
+
+
+@media (min-width: 769px) {
+.m_raison__cont-txt__after {
+border-right: 1px solid transparent;
+border-image: linear-gradient(to bottom, rgba(255, 255, 255, .5), rgba(0, 47, 93, .5));
+border-image-slice: 1;
+}}
+/* ENDMODULE RAISON d etre*/
+/* MODULE CHIFFRE CLES*/
+@media (min-width: 993px) {
+.m_chiffres-cles__cont:has(> :last-child:nth-child(-n + 3)) .m_fina-dur__card {
+	max-width:33%;
+}
+.m_chiffres-cles__cont:has(> :nth-child(4)) .m_fina-dur__card {
+	max-width:25%;
+}}
+@media (max-width: 769px) {
+.m_chiffres-cles__cont + .m_chiffres-cles__cont {
+padding-top: 0;
+}}
+/* END MODULE CHIFFRE CLES*/
+/* MODULE CITATIONS*/
+/*padding when img*/
+.m_citation__cont:has(.m_citation__cont-img) .m_citation__cont-txt .m_citation__cont-txt__txt {
+padding-top:40px;
+}
+@media (min-width: 768px) {
+.m_citation__cont:has(.m_citation__cont-img) .m_citation__cont-txt {
+text-align:left;
+}}
+/* END MODULE CITATIONS*/
+/* MODULE OUR HISTORY*/
+/*EVEN*/
+@media (min-width: 769px) {
+.m_our_history__txt__cont:nth-of-type(2n) .m_our_history__txt {
+padding-right: 10%;
+padding-left: 0;
+}
+.m_our_history__txt__cont:nth-of-type(2n) .m_our_history__txt .m__alt__cont-cta {
+justify-content:flex-end;
+}
+.m_our_history__txt__cont:nth-of-type(2n) .m_our_history__img {
+margin-right: 0%;
+margin-left: 7%;
+}
+.m_our_history__txt__cont:nth-of-type(2n) .m_our_history__txt:before {
+left: 100%;
+}
+.m_our_history__txt__cont:nth-of-type(2n) .m_our_history__txt:after {
+left: calc(100% - 12px);}
+
+/*space from 2nd line*/
+.m_our_history__txt__cont:nth-of-type(n+2) .m_our_history__txt {
+padding-top: 75px;
+}
+.m_our_history__txt__cont:nth-of-type(n+2) .m_our_history__img {
+margin-top: 75px;
+}
+.m_our_history__txt__cont:nth-of-type(n+2) .m_our_history__txt:after {
+top: 126px;
+}
+}
+/*when no img on mobile*/
+@media (max-width: 768px) {
+.m_our_history__img:not(:has(img)) {
+margin: 12px 0% 0% 0%;
+height: 0px;
+}}
+/* END MODULE OUR HISTORY*/
+  /* module CONTACT - NEWSLETTER*/
+  .m__contact {
+  	row-gap: 30px;
+  }
+  .m__contact .rich-text h2 {
+  	font-size: 3rem;
+  	line-height: 1.17em;
+  	padding-bottom: 15px
+  }
+  @media (max-width: 768px) {
+  	.m__contact .rich-text h2 {
+  		font-size: 1.75rem;
+  		line-height: 1.29em;
+  		padding-bottom: 30px
+  	}
+  }
+  /* END  CONTACT - NEWSLETTER*/
+  /*module FORMULLAIRE*/
+  .m__contact-form form {
+    font-size: 1rem;
+    line-height: 24px;
+    font-weight: 700;
+}
+.m__contact-form form input[type=text],
+.m__contact-form form input[type=email],
+.m__contact-form form textarea,
+.m__contact-form form select {
+    background: transparent;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #ffffff50;
+    height: 55px;
+    margin: 3px 0;
+    color: #ffffff;
+    padding: 10px;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-transform: inherit;
+}
+
+.m__contact-form form option {
+    color: #00325F;
+}
+.m__contact-form form input:focus {
+    color: #ffffff;
+    padding: 10px;
+}
+.m__contact-form form input:focus,
+.m__contact-form form textarea:focus,
+.m__contact-form form select:focus {
+    border: 1px solid #fff!important;
+    outline: none!important;
+}
+.m__contact-form form button#submitInput {
+    display: block;
+    text-align: center;
+    border: 1px solid #ffffff;
+    padding: 8px 12px;
+    margin: 20px auto;
+    color: var(--main-color);
+}
+
+.m__contact-form form input[type=submit] {
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+     color: #fff;
+    border: 1px solid  #ffffff50;
+    text-transform:uppercase;
+    padding: 12px 15px;
+    margin-top:20px;
+  max-width: 100%;
+ 
+}
+.m__contact-form form input[type=submit]:hover {
+    background: #fff;
+    color: #E40033;
+}
+/* END module FORMULLAIRE*/
+  /*FOOTER */
+  .footer-deg {
+    background: linear-gradient(to bottom, rgba(0, 47, 93, 0.2) 0px, rgba(255, 255, 255, 0) 83px);
+  }
+  .footer__part1__social__img:hover{
+    filter: brightness(0) saturate(100%) invert(14%) sepia(72%) saturate(5437%) hue-rotate(339deg) brightness(91%) contrast(112%);}
+  .footer-go-top  .footer-go-top__img{
+transition: all .2s ease-in-out;
+}
+.footer-go-top:hover .footer-go-top__img{
+  transform: translateY(-6px)
+}
+@media (min-width: 993px) {
+.footer__subfooter-card + .footer__subfooter-card a {
+border-left: 1px solid var(--main-color);
+}
+.footer__subfooter-card a {
+padding: 0 10px;
+}
+}
+  #wcb #wcb_a {
+    display: none !important;
+  }
+  #wcb #wcb_g {
+    border-radius: 0 !important;
+    background: inherit !important;
+    border-right: inherit !important;
+    min-width: inherit !important;
+    background-color: inherit !important;
+  }
+  #wcb #wcb_g {
+    padding: 0 !important;
+    border: none !important;
+  }
+  #wcb_2 {
+    white-space: normal;
+  }
+  #wcb #wcb_2,
+  #wcb #wcb_g {
+    display: block !important;
+    text-align: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    font-family: inherit !important;
+    text-decoration: none !important;
+    margin: 0 !important;
+  }
+  /* END Footer */
+  /* NAVBAR */
+  #toggle {
+    display: none;
+  }
+  .header-color.header-blog,
+  .header-blog .menu__lang__select select,
+  .header-color:hover select,
+  .header-color:focus select,
+  .menu__lang__select select,
+  .header-fixed .menu__lang__select select {
+    color: var(--main-color);
+  }
+  .header-color,
+  .header-fixed {
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+  }
+/*show main-menu inactiv when top-menu is*/
+.website-header:has(.top-menu .h1__b1__nav__contain:hover) {
+.main-menu {
+  opacity: 0.5;
+}}
+.h1__b1__nav__item {
+  transition: color 0.2s ease-in-out, border-color 0.4s ease-in-out;
+}
+.h1__b1__nav__subitem {
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition-property: opacity, transform;
+  transition-duration: 0.6s, 0.2s;
+  transition-timing-function: ease-in-out, cubic-bezier(.23,1,.32,1);
+}
+.nav__item__chev-img {
+  transition: rotate 0.3s cubic-bezier(1,0,0,1);
+}
+/*subitems margins*/
+.nav__subitem__cont__col-max + .nav__subitem__cont__col-max,
+.nav__subitem__cont__col:has(a) + .nav__subitem__cont__col-max,
+.nav__subitem__cont__col-max + .nav__subitem__cont__col:has(a) {
+	margin-left: 70px;
+}
+.h1__b1__nav__contain:hover, .h1__b1__nav__contain:focus-within {
+/*hover/active menus-colors*/
+.h1__b1__nav__item .nav__item__chev-img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(72%) saturate(5437%) hue-rotate(339deg) brightness(91%) contrast(112%);
+  rotate:180deg;
+}
+.h1__b1__nav__item {
+  border-bottom: solid 2px var(--third-color);
+  color: var(--third-color);
+}
+/*transition*/
+.h1__b1__nav__subitem {
+  transform: scaleY(1);
+  opacity: 1;
+  visibility: visible;
+}
+}
+.nav__subitem__cont__col-max__subitems {
+  font-size:0;
+  opacity: 0;
+  transition-property: opacity, font-size;
+  transition-duration: 0.3s, 0.3s;
+  transition-timing-function: ease-in-out, cubic-bezier(1,0,0,1);
+}
+/*hover/active subitems*/
+.nav__subitem__cont__col-max__dropdown:hover,
+.nav__subitem__cont__col-max__dropdown:focus-within {
+.nav__subitem__cont__col-max__subitems {
+  font-size: inherit;
+  opacity: 1;
+}
+.nav__subitem__cont__col-max__titles .nav__item__chev-img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(72%) saturate(5437%) hue-rotate(339deg) brightness(91%) contrast(112%);
+  rotate: 180deg;
+}
+}
+  .hover-color:hover,
+  .hover-color:focus,
+  .hover-nav-item:focus,
+  .hover-color.active,
+  .b__text__contain-date-cat-author__cat:hover,
+  .b__text__contain-date-cat-author__cat:focus,
+  .t__contain__list__tag.tag-list-active,
+  .t__contain__list__tag:hover,
+  .t__contain__list__tag:focus {
+    color: var(--third-color);
+  }
+  .hover-color-fx{      
+transition: color 0.2s ease-in-out;
+}
+  /*select lang */
+  .website-header select {
+    background-color: var(--secondary-color);
+    border: 1px solid #002f5d70;
+    color: var(--main-color);
+  }
+  .n__contain__lang-contact__lang option,
+  .website-header option {
+    text-transform: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+  #toggle:checked ~ .scroll-script__nav2 {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  #toggle:checked ~ .scroll-script__nav1 {
+    transform: translateY(-200px);
+    visibility: hidden;
+  }
+  /*MOBILE*/
+  /*Hamburger*/
+  .hamburger div {
+    position: relative;
+    width: 18px;
+    height: 2px;
+    margin: 3px 0;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--main-color);
+  }
+  /* animation */
+  #toggle:checked ~ header .top-bun {
+    transform: rotate(-45deg);
+    margin-top: 10px;
+  }
+  #toggle:checked ~ header .bottom-bun {
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+  #toggle:checked ~ header .meat {
+    transform: rotate(45deg);
+    margin-top: -4px;
+  }
+  #toggle:checked ~ .nav-wrapper {
+    transform: translateY(0);
+    visibility: visible;
+  }
+/*on checked change white (logo, borders...), bg gradient*/
+@keyframes open-color {
+0%     {background:#ffffff;}
+100.0%  {background:#002F5D;}
+}
+#toggle:checked ~ header.header-color {
+background: linear-gradient(to bottom, #002F5D, #024A90);
+animation: open-color 0.4s cubic-bezier(.65,.05,.36,1);
+}
+#toggle:checked ~ header.header1__blob1__logo__img-hover {
+display:block;	
+}
+#toggle:checked ~ header .header1__blob1__logo__img{
+display:none;	
+}
+#toggle:checked ~ header .hamburger {
+border: 1px solid rgba(255, 255, 255, .5);
+}
+#toggle:checked ~ header .hamburger div {
+width: 24px;
+background-color: var(--secondary-color);
+}
+#toggle:checked ~ header .top-menu__btn{
+background-color:transparent;
+border: 1px solid rgba(255, 255, 255, .5);}
+
+#toggle:checked ~ header .website-header select{
+background-color: transparent;
+border: 1px solid rgba(255, 255, 255, .5);
+color: var(--secondary-color);
+}
+#toggle:checked ~ header .website-header option {
+    color: var(--main-color);
+}
+/*show white logo*/
+#toggle:checked ~ header .header1__blob1__logo__img-hover{
+display:block;	
+}
+#toggle:checked ~ header .header1__blob1__logo__img{
+display:none;	
+}
+/*NAV-WRAPPER*/
+details > summary {
+list-style: none;
+}
+/*fix menu font sizes*/
+    @media (max-width: 992px) {
+        .typo-26-24 .nav-wrapper__nav__item-Lv1 {
+            font-size: 1.375rem;
+        }
+        .typo-26-24 .nav-wrapper__nav__item-Lv2 {
+            font-size: 1.25rem;
+        }
+        .typo-26-24 .nav-wrapper__nav__item-Lv3 {
+            font-size: 1.125rem;
+        }
+    }
+/*redsquare / + */
+details[open] .nav-wrap__sum-lv1 {
+ background-color: var(--main-color);
+color: var(--secondary-color);
+  }
+/*fix menu link*/
+details[open] > summary .nav-wrap__sum__square-after::after,
+details[open].details-lv2 .nav-wrapper__plus-after:after,
+details[open] .m_accordion__square-after:after{
+content:"-";
+}
+/* fix menu space when details [open] + Lv2 / */
+details[open].details-lv2.nav-wrapper__sepa-before + div.details-lv2 {
+    margin-top: 15px;
+}
+/*redsquare*/
+/*sepa*/
+/* hide first sepas when open*/
+details.details-lv2[open] .nav-wrapper__sepa-before:first-of-type:before {
+background-color: transparent;
+}
+/*hide sepa on first element details-lv2, element details-lv3*/
+details.details-lv2:first-of-type.nav-wrapper__sepa-before:before,
+.nav-wrapper__nav__item-Lv3:first-of-type.nav-wrapper__sepa-before:before {
+background-color: transparent;
+}
+/* hide sepa of next lv2 when open*/
+details.details-lv2[open] + details.nav-wrapper__sepa-before:before {
+background-color: transparent;
+}
+p.nav-wrapper__nav__item-Lv3:nth-last-of-type(-n+1) {
+padding-bottom: 19px;
+}
+/* END NAVBAR */
+/*Blog */
+.b__hero__contain__title em {
+color: var(--third-color);
+font-style: normal;
+}
+.blog__infos-cont._row-gap {
+	row-gap:10px;}
+/* end blog */
+/*Module EVENT*/
+.ico-gmap_before:before {
+content: url(https://www.daher.com/assets/ico-gmap.svg);
+}
+.m__m-ev__box-cont:hover .m__m-ev__infos-cont__links{
+color: var(--third-color);	
+}
+/*center gmap on mobile*/
+@media (max-width: 480px) {
+.m__m-ev__infos-cont .ico-gmap_before {
+flex-direction:column;
+}
+.m__m-ev__infos-cont .ico-gmap_before::before {
+padding: 0px;
+}}
+/*check if 2 columns */
+@media (min-width: 993px) {
+.m__m-ev__box-cont:has(> :nth-child(2)) {
+width:50%;
+}
+.m__m-ev__box-cont {
+width:33.3%
+}}
+  /* END Module EVENT*/
+  /*module actu */
+  .t__actu__contain__cards .m__alt__cont-img__deg {
+transition: transform 0.3s cubic-bezier(.65,.05,.36,1);
+transform: scaleY(1);
+transform-origin: bottom;
+  }
+.t__actu__contain__cards:hover .m__alt__cont-img__deg {
+    transform: scaleY(1.3);
+}
+
+  .t__actu__contain__cards:hover .m__actu__contain__cards__cta {
+    color: var(--third-color);
+  }
+  /*TAG */
+      /*to correct absolute width on mobile*/
+      .t__contain__list__summary,
+    .t__contain__list__flex {
+        max-width: calc(100vw - 40px);
+    }
+  .tag__chev-img, .tag__cross-img {
+    transition: rotate 0.3s cubic-bezier(1,0,0,1);
+  }
+  details[open] .tag__chev-img {
+    rotate:180deg;
+  }
+  details[open] .tag__cross-img {
+    rotate:45deg;
+  }
+  @keyframes open {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  details[open] .opacity-fx{
+    animation: open 0.4s cubic-bezier(.65,.05,.36,1);
+  }
+  details[open] .t__contain__list__summary{
+    border-bottom:0;}
+  /*3col*/
+  @media (min-width: 993px) {
+    .t__actu__contain__cards {
+      width: 31.75%;
+    }
+    .t__actu__contain__cards:not(:nth-child(3n)) {
+      margin-right: 2.375%;
+    }
+  }
+  /*2col*/
+  @media (min-width: 768px)and (max-width: 992px) {
+    .t__actu__contain__cards {
+      width: 48.75%;
+    }
+    .t__actu__contain__cards:not(:nth-child(2n)) {
+      margin-right: 2.5%;
+    }
+  }
+  .pagination__after-arrow::after{
+background-image: url(https://www.daher.com/assets/arrow-right-only.svg)!important;
+}
+.-arrow-bg-filter-fx:hover:after{
+filter: brightness(0) saturate(100%) invert(14%) sepia(72%) saturate(5437%) hue-rotate(339deg) brightness(91%) contrast(112%);
+}
+.-arrow-r-inactiv:after{
+filter: opacity(0.5);
+}
+  /* END tag */
+  /*Module Key number*/
+  .m__number__contain__cards:not(:last-child) {
+    margin-bottom: 80px;
+  }
+  /*END Module Key number*/
+  /*Module TEAMS / Module logo*/
+  .ratio1 {
+aspect-ratio: 1 / 1;
+}
+.hyphens{hyphens: auto;}
+.m__teams__cont__cards-checked:checked + .m__teams__cont__cards-infos {
+z-index:1;
+}
+/*4col*/
+@media (min-width: 993px) {
+.m__teams__cont__cards:not(:nth-child(4n)) {
+  margin-right: 2.33%;
+}
+}
+/*2col*/
+@media (max-width: 992px) {
+.m__teams__cont__cards:not(:nth-child(2n)) {
+  margin-right: 2.5%;
+}
+}
+.m__teams__cont__cards-checked:checked + .opacity-blur-fx{
+opacity:1;
+filter: blur(0);
+}
+.opacity-blur-fx{
+transition-property: opacity, filter;
+transition-duration: 0.2s, 0.2s;
+transition-timing-function: ease-in-out, cubic-bezier(.23, 1, .32, 1);
+}
+.hidden-cards .m__teams__cont__cards:nth-child(n + 13),
+.hidden-cards .m__logo__cards:nth-child(n + 7) {
+display: none;
+}
+  /* END TEAMS*/
+  .m__title-text-cta-img__img picture {
+    display: initial;
+  }
+  /* Module TITLE TEXT CTA IMG */
+  .m__title-text-cta-img__contain__title p{
+    margin-top: 13px;
+  }
+  .m__title-text-cta-img__img picture {
+    display: initial;
+  }
+  .m__title-text-cta-img__contain__cta {
+    color: var(--main-color);
+  }
+  .m__title-text-cta-img__contain__cta:hover,
+  .m__title-text-cta-img__contain__cta:focus {
+    color: var(--secondary-color);
+  }
+  /* END TITLE TEXT CTA IMG*/
+  /* MODULE  VIDEO*/
+  .ratio1609 {
+    aspect-ratio: 16/9;
+  }
+  @media (max-width: 992px) {
+  .ratio1609-mob {
+    aspect-ratio: 16/9;
+  }
+}
+  @media (max-width: 992px) {
+  .ratio97-mob {
+    aspect-ratio: 9/7;
+  }
+}
+  .m__video__contain__video iframe {
+    height: min-content;
+    aspect-ratio: 16/9;
+    max-width: 100%;
+  }
+  /* END VIDEO*/
+  /* Module events*/
+  .m--events__cards--contain__text.rich-text h3 {
+    font-size: 1.625rem;
+    font-weight: 800;
+    line-height: 1.26em;
+  }
+  .m--events__cards--contain__text.rich-text p {
+    margin-top: 12px;
+  }
+  .m--events__cards--contain__text.rich-text em {
+    font-style: italic;
+  }
+  .m__events__contain--contain--cards:hover h3 {
+    text-decoration: underline;
+    color: var(--sixth-color);
+  }
+  .m__events__contain--contain--cards:hover .m--events__cards--contain__ctas {
+    color: var(--sixth-color);
+  }
+  @media (max-width: 768px) {
+    .m--events__cards--contain__text.rich-text h3 {
+      font-size: 1.1875rem;
+      line-height: 1.21em;
+    }
+  }
+  /* Module Pays Liste */
+  .m__country-list_deg{
+background: linear-gradient(180deg, rgba(0, 47, 93, 0.2) 0%, rgba(0, 47, 93, 0.9) 100%);
+  }
+  .m__country-list_contain {
+   row-gap:30px;
+   column-gap:2.875%;
+  }
+  .m__country-list_card:hover .hover-color,
+  .m__country-list_card:focus .hover-color{
+  color: var(--third-color);
+  }
+  @media (max-width: 768px) {
+    .m__country-list_contain {
+      row-gap:20px;
+      column-gap:0px;
+    } 
+  }
+  /* END pays liste*/
+  /* Module 3 Colonnes */
+  .m__3colonne_cont {
+  row-gap:30px;
+  column-gap:10px
+  }
+  .m__3colonnes_contain_cards:hover .hover-color{
+      color: var(--third-color);
+  }
+  /* END 3 colonnes*/
+/*MODULE ONGLETS*/
+/*activ*/
+.m_onglets__tabs-checkbox:checked+p {
+	font-weight:700;
+	color : var(--third-color);
+  letter-spacing: -0.038em;
+}
+.m_onglets__tabs-checkbox:checked+:after  {
+	content:"";
+	position:absolute;
+	bottom: -15px;
+	left:0;
+	height:7px;
+	width: 100%;
+	background-color: var(--third-color);
+}
+.m_onglets-tab_card__title:has(.m_onglets__tabs-checkbox:checked) + .m_onglets-tab_cont  {
+display:flex;
+}
+.m_onglets-tab_card .m_onglets__img,
+.m_onglets__details__cont-txt {
+	animation: open 0.4s cubic-bezier(.65, .05, .36, 1);
+}
+@media (min-width: 993px) {
+	.m_onglets-tab_cont-txt h3 {
+		font-size: 1.75rem;
+		line-height: 1.5em;
+		font-weight: 700;
+		padding-bottom: 33px;
+	}}
+
+@media (max-width: 992px) {
+  .m_onglets-tab_cont-txt h3 {
+    font-size: 1.25rem;
+    line-height: 1.36em;
+    font-weight: 700;
+    padding-bottom: 15px;
+  }
+	.m_onglets__tabs-checkbox + :after {
+	content: "";
+	position: absolute;
+	bottom: -15px;
+	left: 0;
+	height: 1px;
+	width: 100%;
+	background-color: rgba(0,47,93,0.5);
+}}
+/*END ONGLETS*/
+/* Module Ressources Photos*/
+.m_res_photo__cards-cont {
+	column-gap: 2.37%;
+	row-gap: 30px;
+}
+.m_res_photo__cards:hover .hover-color,
+  .m_res_photo__cards:focus .hover-color{
+  color: var(--third-color);
+  }
+/* END Module Ressources Photos*/
+/* Module Nos Adresses*/
+.m_nosA_title:has(.m_onglets__tabs-checkbox:checked) + .m_nosA_detail-cont{
+	display:flex;
+}
+.m_nosA_cards-cont {
+	column-gap: 2.3%;
+	row-gap: 30px;
+}
+@media (max-width: 768px) {
+.m_nosA_cards-cont {
+  row-gap: 15px;
+}}
+.m_nosA_cards-title:before {
+	content:"";
+	display:block;
+	width:10px;
+	height:10px;
+	background-color:var(--third-color);
+	margin-right:10px;
+}
+.m_nosA_detail-cont summary,
+.m_nosA_detail-cont .m_nosA_cards-cont,
+details[open] .m_nosA_cards{
+	animation: open 0.4s cubic-bezier(.65, .05, .36, 1);
+}
+/* END Module Nos Adresses*/
+/* MODULE ARCHIVES HTML */
+.b__module-html ul:has(li:empty),
+.b__module-html ul li:empty,
+.b__module-html  p:empty{
+  display: none;
+}
+.b__module-html .m__module-text__cont> :last-child {
+  padding-bottom: 0px;
+}
+hr.wp-block-separator {
+width: 25%;
+  border-top: none;
+  overflow: hidden;
+}
+hr.wp-block-separator {
+  margin: 30px auto;
+  border-bottom: 2px solid #dd0031;
+}
+.wp-block-button{
+	text-align:center;
+}
+.m__module-text__cont h3, .m__module-text__cont h6 {
+  font-size: 1.25rem;
+  line-height: 1.5em;
+  font-weight: 700;
+  padding-bottom: 18px;
+}
+.b__module-html img {
+	height: auto;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+/* MODULE ARCHIVES HTML */
+</style>
+
+
+
+<!--  Fil d'Ariane -->
+<script type="application/ld+json" data-concat="">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Homepage",
+        "item": "https://www.daher.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Accueil",
+        "item": "https://www.daher.com/"
+      }
+    ]
+  }
+</script>
+<!-- END Fil d'Ariane-->
+<title>Accueil - Daher</title>
+<link rel="icon" href="https://www.daher.com/assets/favicon.png">
+<meta name="description" property="description" content="Avionneur, industriel, prestataire de services industriels et logisticien, Daher est tourné vers l'innovation depuis sa création, il y a 160 ans.">
+<meta name="og:title" property="og:title" content="Accueil - Daher">
+<meta name="og:description" property="og:description" content="Avionneur, industriel, prestataire de services industriels et logisticien, Daher est tourné vers l'innovation depuis sa création, il y a 160 ans.">
+<meta name="og:image" property="og:image" content="https://www.daher.com/img/cXi2HpONRK-2400.jpeg">
+</head>
+
+
+
+
+
+
+
+
+
+
+
+<body id="i2ek" class="main-color main-font">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K2MCRQW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) --><input type="checkbox" id="toggle">
+    
+    
+  <header id="iqr2qg" class="header scroll-script__nav1 header-color"><div id="ird08gg" class="website-width nav relative global-pad-0-20"><a href="/" id="i5mjv" class="header1__blob1__logo"><img id="iw9c" src="/img/-pOrALH3mB-185.svg" class="header1__blob1__logo__img" loading="eager" alt="logo de Daher " decoding="async" width="185" height="48"></a><div id="ijrc0lg" class="website-header">
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <nav id="iy3cf" class="header1__blob1__nav top-menu" aria-label="Top">
+    
+  
+    
+  <div id="i6peh" class="h1__b1__nav__contain resize">
+
+
+
+
+    
+    
+  <a href="/daher/" id="i7dmng" class="h1__b1__nav__item top-menu__pad"><p id="irz792" class="typo-14-24_22-24 uppercase">Le groupe</p>
+    
+  <img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="izg3b" class="h1__b1__nav__subitem absolute _top-menu z-index-1"><div id="ihq0a" class="h1__b1__nav__subitem__cont secondary-bg-color relative _top-menu"><div id="inl37yu" class="nav__subitem__cont__col">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/daher-histoire/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Notre Histoire</a>
+  
+    
+  
+
+
+
+    
+  <a href="/daher-gouvernance/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Gouvernance</a>
+  
+    
+  
+
+
+
+    
+  <a href="/le-groupe-excellence-operationnelle/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Excellence Opérationnelle</a>
+  
+    
+  
+
+
+
+    
+  <a href="/certifications-et-accreditations/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Certifications et Accréditations</a>
+  
+    </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i2v0x" class="nav__subitem__cont__col-max">
+
+
+
+    
+  <p id="ij54lah" class="no-cursor uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24" href="">Daher dans le monde</p>
+    
+  
+
+
+
+    
+  <a href="/daher-en-allemagne/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Allemagne</a>
+    
+  
+
+
+
+    
+  <a href="/le-group-daher-amerique-du-nord/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Amérique du Nord</a>
+    
+  
+
+
+
+    
+  <a href="/daher-en-espagne/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Espagne</a>
+    
+  
+
+
+
+    
+  <a href="/daher-au-uk/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Royaume-Uni</a>
+    </div>
+    
+  <div id="i25kvj" class="nav__subitem__cont-img"><picture><source type="image/webp" srcset="/img/WQUV4u0Zgf-720.webp 720w, /img/WQUV4u0Zgf-1130.webp 1130w"><img loading="lazy" decoding="async" alt="carte-implementation" src="/img/WQUV4u0Zgf-720.jpeg" class="img--hw-cover-center" width="1130" height="782" srcset="/img/WQUV4u0Zgf-720.jpeg 720w, /img/WQUV4u0Zgf-1130.jpeg 1130w"></picture></div></div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i6peh" class="h1__b1__nav__contain resize">
+
+
+
+
+    
+    
+  <a href="/jobs/" id="i7dmng" class="h1__b1__nav__item top-menu__pad"><p id="irz792" class="typo-14-24_22-24 uppercase">Carrières</p>
+    
+  <img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="izg3b" class="h1__b1__nav__subitem absolute _top-menu z-index-1"><div id="ihq0a" class="h1__b1__nav__subitem__cont secondary-bg-color relative _top-menu"><div id="inl37yu" class="nav__subitem__cont__col">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-nos-offres/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Nos offres</a>
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-espace-etudiant/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Espace étudiant</a>
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-votre-carriere-chez-daher/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Votre carrière chez Daher</a></div>
+    
+  
+    
+  
+    
+  
+    
+    
+  <div id="i25kvj" class="nav__subitem__cont-img"><picture><source type="image/webp" srcset="/img/uqeXsGzpU0-720.webp 720w, /img/uqeXsGzpU0-1350.webp 1350w, /img/uqeXsGzpU0-2400.webp 2400w"><img loading="lazy" decoding="async" alt="" src="/img/uqeXsGzpU0-720.jpeg" class="img--hw-cover-center" width="2400" height="1600" srcset="/img/uqeXsGzpU0-720.jpeg 720w, /img/uqeXsGzpU0-1350.jpeg 1350w, /img/uqeXsGzpU0-2400.jpeg 2400w"></picture></div></div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i6peh" class="h1__b1__nav__contain resize">
+
+
+
+
+    
+  <div id="iefysm" class="no-cursor h1__b1__nav__item top-menu__pad" tabindex="0"><p id="i26qww" class="typo-14-24_22-24 uppercase">Media center</p>
+    
+  <img id="iowbj" src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></div>
+    
+    
+  <div id="izg3b" class="h1__b1__nav__subitem absolute _top-menu z-index-1"><div id="ihq0a" class="h1__b1__nav__subitem__cont secondary-bg-color relative _top-menu"><div id="inl37yu" class="nav__subitem__cont__col">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/actualites/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Actualités</a>
+  
+    
+  
+
+
+
+    
+  <a href="/evenements/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Évènements</a>
+  
+    
+  
+
+
+
+    
+  <a href="/galerie-media/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Galerie Media</a></div>
+    
+  
+    
+  
+    
+  
+    
+    
+  <div id="i25kvj" class="nav__subitem__cont-img"><picture><source type="image/webp" srcset="/img/R72QitEflO-720.webp 720w, /img/R72QitEflO-1350.webp 1350w, /img/R72QitEflO-2400.webp 2400w"><img loading="lazy" decoding="async" alt="" src="/img/R72QitEflO-720.jpeg" class="img--hw-cover-center" width="2400" height="1800" srcset="/img/R72QitEflO-720.jpeg 720w, /img/R72QitEflO-1350.jpeg 1350w, /img/R72QitEflO-2400.jpeg 2400w"></picture></div></div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i6peh" class="h1__b1__nav__contain resize">
+
+
+
+
+    
+    
+  <a href="/learningcenter/" id="i7dmng" class="h1__b1__nav__item top-menu__pad"><p id="irz792" class="typo-14-24_22-24 uppercase">Learning Center</p>
+    
+  <img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="izg3b" class="h1__b1__nav__subitem absolute _top-menu z-index-1"><div id="ihq0a" class="h1__b1__nav__subitem__cont secondary-bg-color relative _top-menu"><div id="inl37yu" class="nav__subitem__cont__col">
+    
+  
+    
+  
+    </div>
+    
+  
+    
+  <div id="i2v0x" class="nav__subitem__cont__col-max">
+
+
+
+    
+  <p id="ij54lah" class="no-cursor uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24" href="/daher-learning-center-services-industriels/">Daher Learning Center – Services Industriels</p>
+    
+  
+
+
+
+    
+  <a href="/nos-prestations/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Nos prestations</a>
+    
+  
+
+
+
+    
+  <a href="/pourquoi-vous-former/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Pourquoi vous former ?</a>
+    
+  
+
+
+
+    
+  <a href="/daher-learning-center-qui-sommes-nous/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Qui sommes nous ?</a>
+    </div>
+  
+    
+  <div id="i2v0x" class="nav__subitem__cont__col-max">
+
+
+
+    
+  <p id="ij54lah" class="no-cursor uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24" href="/daher-learning-center-logistique/">Daher Learning Center – Logistique</p>
+    
+  
+
+
+
+    
+  <a href="/learning-center-logistique-nos-prestations/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Nos prestations</a>
+    
+  
+
+
+
+    
+  <a href="/learning-center-logistique-qui-sommes-nous/" id="ik45lp" class="typo-14-22_22-32 hover-color hover-color-fx">Qui sommes nous ?</a>
+    </div>
+    
+  <div id="i25kvj" class="nav__subitem__cont-img"><picture><source type="image/webp" srcset="/img/k_6p2XntBl-720.webp 720w"><img loading="lazy" decoding="async" alt="" src="/img/k_6p2XntBl-720.jpeg" class="img--hw-cover-center" width="720" height="424"></picture></div></div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i6peh" class="h1__b1__nav__contain resize">
+
+
+
+
+    
+    
+  <a href="/contact/" id="i7dmng" class="h1__b1__nav__item top-menu__pad"><p id="irz792" class="typo-14-24_22-24 uppercase">Contact</p>
+    
+  <img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="izg3b" class="h1__b1__nav__subitem absolute _top-menu z-index-1"><div id="ihq0a" class="h1__b1__nav__subitem__cont secondary-bg-color relative _top-menu"><div id="inl37yu" class="nav__subitem__cont__col">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/dispositif-dalerte-2/" id="i2vxjp1" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Dispositif d’alerte</a></div>
+    
+  
+    
+    </div></div></div>
+  
+    <div id="i7kgsni" class="menu__lang"><select id="io1r6d" title="" class="menu__lang__select uppercase typo-14-24_22-24" aria-label="languages" onchange="location.href=this.options[this.selectedIndex].value.startsWith('http') ? this.options[this.selectedIndex].value :  'https://www.daher.com' + this.options[this.selectedIndex].value">
+    
+  
+    
+  
+    
+  <option id="ipxlpm8" label="fr" value="" class="">fr</option>
+  
+    
+  
+    
+    
+  
+    
+    
+    
+  <option id="iltbql-2-2-3" label="es" value="/es/" class="">es</option>
+    
+  
+    
+    
+  <option id="iltbql-2-2" label="en" value="/en/" class="">en</option>
+    
+    
+  
+    
+    
+    
+    
+  <option id="iltbql-2-2-2" label="de" value="/de/" class="">de</option></select>
+
+    
+
+    
+    
+  <a href="https://www.daher.com/mydaher/" id="i7gpb" class="top-menu__btn hover-bg-color"><img src="/img/GEgQF17Wea-15.svg" class="top-menu__btn-img" loading="lazy" decoding="async" alt="" width="15" height="15"></a></div></nav>
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <nav id="incbo7" class="header1__blob1__nav main-menu" aria-label="Main">
+    
+  
+    
+  <div id="i0n58g" class="h1__b1__nav__contain">
+
+
+
+
+    
+  <div id="icybrnm" class="h1__b1__nav__item no-cursor main-menu__pad" tabindex="0"><div id="id1sogd" class="typo-700-18-24">Nos métiers</div>
+    
+  <img id="iy582" src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></div>
+    
+    
+  <div id="igyqs4" class="h1__b1__nav__subitem absolute"><div id="iv6za" class="h1__b1__nav__subitem__cont secondary-bg-color relative">
+    
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/constructeur-davions/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Construction d’avion</a>
+    
+    
+  
+
+
+
+    
+    
+  <div id="i9max5" class="nav__subitem__cont__col-max__dropdown typo-14-22_22-32">
+    
+  <a href="/constructeur-davions-turboprop-business-aircraft/" id="i142sl" class="nav__subitem__cont__col-max__titles"><div id="iou5sjk" class="typo-14-22_22-32">Avions à turbopropulseurs</div><img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+    
+  
+    
+  
+<a href="/construction-avion-turboprop-business-aircraft-tbm/" id="iw3a7r" class="typo-14-22_22-32 hover-color hover-color-fx nav__subitem__cont__col-max__subitems">TBM</a>
+  
+    
+  
+<a href="/construction-avion-turboprop-business-aircraft-kodiak/" id="iw3a7r" class="typo-14-22_22-32 hover-color hover-color-fx nav__subitem__cont__col-max__subitems">Kodiak</a></div>
+  
+
+
+
+    
+  <a href="/constructeur-davions-service-clients/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Service clients</a>
+    
+  
+
+
+
+    
+  <a href="/construction-avion-legacy-aircraft-tb-et-rallye/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Avions historiques : TB et Rallye</a>
+    </div>
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/industrie/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Industrie</a>
+    
+    
+  
+
+
+
+    
+  <a href="/industrie-aerostructures/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Aérostructures</a>
+    
+  
+
+
+
+    
+  <a href="/industrie-conteneurs-et-shelters-tactiques/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Conteneurs et shelters tactiques</a>
+    </div>
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/services-industriels/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Services industriels</a>
+    
+    
+  
+
+
+
+    
+  <a href="/services-industriels-nos-offres-et-expertises/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Nos offres et expertises</a>
+    </div>
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/logistique/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Logistique</a>
+    
+    
+  
+
+
+
+    
+  <a href="/logistique-industrielle/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Logistique industrielle</a>
+    
+  
+
+
+
+    
+  <a href="/logistique-services-transport-projets/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Services transport et projets</a>
+    </div><div id="imcje" class="nav__subitem__cont__col" data-old-style="order: 1;">
+    
+  
+    
+  
+    
+  
+    
+  
+    </div>
+    </div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i0n58g" class="h1__b1__nav__contain">
+
+
+
+
+    
+    
+  <a href="/innovation/" id="i3jkdwi" class="h1__b1__nav__item main-menu__pad"><div id="izwslgb" class="typo-700-18-24">Innovation</div>
+    
+  <img id="islwr" src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="igyqs4" class="h1__b1__nav__subitem absolute"><div id="iv6za" class="h1__b1__nav__subitem__cont secondary-bg-color relative">
+    
+  
+    
+  
+    
+  
+    <div id="imcje" class="nav__subitem__cont__col" data-old-style="order: 16;">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-notre-demarche/" id="ivjzcok" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Open Innovation</a>
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-tech-centers/" id="ivjzcok" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Techcenters</a>
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-decarbonation/" id="ivjzcok" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Décarbonation</a></div>
+    
+  <div id="i7ir4k" class="nav__subitem__cont-img"><picture><source type="image/webp" srcset="/img/Wh1GQterGi-720.webp 720w, /img/Wh1GQterGi-1350.webp 1350w, /img/Wh1GQterGi-2400.webp 2400w"><img loading="lazy" decoding="async" alt="" src="/img/Wh1GQterGi-720.jpeg" class="img--hw-cover-center" width="2400" height="1600" srcset="/img/Wh1GQterGi-720.jpeg 720w, /img/Wh1GQterGi-1350.jpeg 1350w, /img/Wh1GQterGi-2400.jpeg 2400w"></picture></div></div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  <div id="i0n58g" class="h1__b1__nav__contain">
+
+
+
+
+    
+    
+  <a href="/sustainability/" id="i3jkdwi" class="h1__b1__nav__item main-menu__pad"><div id="izwslgb" class="typo-700-18-24">Développement durable</div>
+    
+  <img id="islwr" src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+  <div id="igyqs4" class="h1__b1__nav__subitem absolute"><div id="iv6za" class="h1__b1__nav__subitem__cont secondary-bg-color relative">
+    
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Pionnier de la décarbonation</a>
+    
+    
+  
+
+
+
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation-reduire-emissions-carbone/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Réduire les émissions carbone de nos activités</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation-engager-nos-fournisseurs/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Engager nos fournisseurs dans la transition</a>
+    
+  
+
+
+
+    
+    
+  <div id="i9max5" class="nav__subitem__cont__col-max__dropdown typo-14-22_22-32">
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation-impact-carbone/" id="i142sl" class="nav__subitem__cont__col-max__titles"><div id="iou5sjk" class="typo-14-22_22-32">Réduire l'impact carbone de nos produits et services</div><img src="/img/pfr1qh3qKc-14.svg" class="nav__item__chev-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="14"></a>
+    
+    
+  
+    
+  
+<a href="/sustainability-pionnier-de-la-decarbonation-eco-avion/" id="iw3a7r" class="typo-14-22_22-32 hover-color hover-color-fx nav__subitem__cont__col-max__subitems">Éco-avion</a>
+  
+    
+  
+<a href="/sustainability-pionnier-de-la-decarbonation-structures-aeronautiques/" id="iw3a7r" class="typo-14-22_22-32 hover-color hover-color-fx nav__subitem__cont__col-max__subitems">Structures aéronautiques</a></div>
+  
+
+
+
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation-changement-climatique/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Adapter les activités aux risques climatiques</a>
+    </div>
+  
+    
+  <div id="iyj6tl" class="nav__subitem__cont__col-max">
+
+
+
+    
+  
+    
+  <a href="/sustainability-partenaire-de-confiance/" id="ikb5ymn" class="uppercase nav__subitem__cont__col-title typo-700-14-24_400-26-24">Partenaire de confiance</a>
+    
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-securite-et-qualite-des-produits/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Sécurité et qualité des produits</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-securite-au-travail/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Sécurité au travail</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-ethique-des-affaires/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Ethique des affaires</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-un-employeur-responsable/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Un employeur responsable</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-achats-responsables/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Achats responsables</a>
+    
+  
+
+
+
+    
+  <a href="/sustainability-partenaire-de-confiance-cybersecurite-et-protection-des-donnees/" id="isz71ew" class="typo-14-22_22-32 hover-color hover-color-fx">Cybersécurité et protection des données</a>
+    </div>
+  
+    
+  
+    <div id="imcje" class="nav__subitem__cont__col" data-old-style="order: 20;">
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+    
+  <a href="/sustainability-mecenat/" id="ivjzcok" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Mécénat</a>
+  
+    
+  
+
+
+
+    
+  <a href="/sustainability-documents/" id="ivjzcok" class="typo-700-14-24_400-26-24 uppercase nav__subitem__cont__col-txt hover-color hover-color-fx">Documents</a></div>
+    </div></div></div>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    </nav>
+  
+    
+  
+    
+  
+    
+  
+    </div></div></header><HEADER id="iwz1gxa" class="header-color nav header-fixed scroll-script__nav2 nav-hidden">
+
+<div id="i47i5l" class="website-header global-pad-0-20">
+    
+  <a href="/" id="igi6u3" class="header1__blob1__logo"><img id="iw6xnw6" src="/img/-pOrALH3mB-185.svg" class="header1__blob1__logo__img" loading="eager" alt="logo" decoding="async" width="185" height="48"><img id="iqslni" src="/img/MjJoczmjuJ-128.svg" class="header1__blob1__logo__img-hover" loading="eager" alt="logo" decoding="async" width="128" height="32"></a>
+    <div id="ick39i" class="menu__lang"><select id="i01yqi" title="" class="menu__lang__select uppercase typo-14-24_22-24" aria-label="languages" onchange="location.href=this.options[this.selectedIndex].value.startsWith('http') ? this.options[this.selectedIndex].value :  'https://www.daher.com' + this.options[this.selectedIndex].value">
+    
+  
+    
+  
+    
+  <option id="i8t2hk" label="fr" value="" class="">fr</option>
+  
+    
+  
+    
+    
+  
+    
+    
+    
+  <option id="iltbql-2-3-2" label="es" value="/es/" class="">es</option>
+    
+  
+    
+    
+  <option id="iltbql-2-3" label="en" value="/en/" class="">en</option>
+    
+    
+  
+    
+    
+    
+    
+  <option id="iltbql-2-3-2-2" label="de" value="/de/" class="">de</option></select>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+    
+
+    
+    
+  <a href="https://www.daher.com/mydaher/" id="icnbre" class="top-menu__btn hover-bg-color"><img src="/img/GEgQF17Wea-15.svg" class="top-menu__btn-img" loading="lazy" decoding="async" alt="" width="15" height="15"></a><label for="toggle" class="hamburger border-05" aria-label="open nav" aria-expanded="false" tabindex="0">
+  <div class="top-bun">
+  </div>
+  <div class="meat"></div>
+<div class="bottom-bun">
+</div>
+</label>
+</div></div></HEADER><div id="iie6ajp" class="empty-space-for-nav"></div><div id="i35ov" class="scroll-script__container nav-wrapper">
+    
+  <nav id="iao3bo" class="nav-wrapper__nav typo-26-24">
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+<details id="i9riw2h" class="nav-wrapper__nav__contain"><summary id="iqohl9n" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+  <div id="i77gd63" class="nav-wrapper__nav__item-Lv1 weight700">Nos métiers</div>
+    <div id="ioanv7" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/constructeur-davions/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Construction d’avion</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/constructeur-davions-turboprop-business-aircraft/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Avions à turbopropulseurs</a>
+  
+
+
+<a href="/constructeur-davions-service-clients/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Service clients</a>
+  
+
+
+<a href="/construction-avion-legacy-aircraft-tb-et-rallye/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Avions historiques : TB et Rallye</a></details>
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/industrie/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Industrie</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/industrie-aerostructures/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Aérostructures</a>
+  
+
+
+<a href="/industrie-conteneurs-et-shelters-tactiques/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Conteneurs et shelters tactiques</a></details>
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/services-industriels/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Services industriels</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/services-industriels-nos-offres-et-expertises/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Nos offres et expertises</a></details>
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/logistique/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Logistique</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/logistique-industrielle/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Logistique industrielle</a>
+  
+
+
+<a href="/logistique-services-transport-projets/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Services transport et projets</a></details>
+    
+  <div id="i9kgjni" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+    
+  
+    
+  
+    </div></details>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+<details id="i9riw2h" class="nav-wrapper__nav__contain"><summary id="iqohl9n" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/innovation/" id="i77gd63-2" class="nav-wrapper__nav__item-Lv1 weight700">Innovation</a><div id="ioanv7" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  <div id="i9kgjni" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-notre-demarche/" id="ivkwwo" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Open Innovation</a>
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-tech-centers/" id="ivkwwo" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Techcenters</a>
+  
+    
+  
+
+
+
+    
+  <a href="/innovation-decarbonation/" id="ivkwwo" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Décarbonation</a></div></details>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+<details id="i9riw2h" class="nav-wrapper__nav__contain"><summary id="iqohl9n" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/sustainability/" id="i77gd63-2" class="nav-wrapper__nav__item-Lv1 weight700">Développement durable</a><div id="ioanv7" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/sustainability-pionnier-de-la-decarbonation/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Pionnier de la décarbonation</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/sustainability-pionnier-de-la-decarbonation-reduire-emissions-carbone/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Réduire les émissions carbone de nos activités</a>
+  
+
+
+<a href="/sustainability-pionnier-de-la-decarbonation-engager-nos-fournisseurs/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Engager nos fournisseurs dans la transition</a>
+  
+
+
+<a href="/sustainability-pionnier-de-la-decarbonation-impact-carbone/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Réduire l'impact carbone de nos produits et services</a>
+  
+
+
+<a href="/sustainability-pionnier-de-la-decarbonation-changement-climatique/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Adapter les activités aux risques climatiques</a></details>
+  
+    
+  
+
+
+<details id="iszdmt" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iym8fx" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/sustainability-partenaire-de-confiance/" id="i1htvk-2" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Partenaire de confiance</a><div id="ioanv7-2" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-securite-et-qualite-des-produits/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Sécurité et qualité des produits</a>
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-securite-au-travail/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Sécurité au travail</a>
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-ethique-des-affaires/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Ethique des affaires</a>
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-un-employeur-responsable/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Un employeur responsable</a>
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-achats-responsables/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Achats responsables</a>
+  
+
+
+<a href="/sustainability-partenaire-de-confiance-cybersecurite-et-protection-des-donnees/" id="i1dgng" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Cybersécurité et protection des données</a></details>
+  
+    
+  
+    
+    
+  <div id="i9kgjni" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+    
+  <a href="/sustainability-mecenat/" id="ivkwwo" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Mécénat</a>
+  
+    
+  
+
+
+
+    
+  <a href="/sustainability-documents/" id="ivkwwo" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Documents</a></div></details>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+
+    
+  <details id="iilghk" class="nav-wrapper__nav__contain">
+    
+  <summary id="isk5gj" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/daher/" id="ixksrhr-2" class="nav-wrapper__nav__item-Lv1 weight700">Le groupe</a><div id="igt2kn" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<details id="iaaop8" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iyddt" class="details-lv2 and__flex-between">
+    
+  <div href="" id="i1httg" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Daher dans le monde</div>
+    <div id="ioanv7-2-3" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/daher-en-allemagne/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Allemagne</a>
+  
+
+
+<a href="/le-group-daher-amerique-du-nord/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Amérique du Nord</a>
+  
+
+
+<a href="/daher-en-espagne/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Espagne</a>
+  
+
+
+<a href="/daher-au-uk/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Royaume-Uni</a></details>
+    
+  <div id="i3cpdqk" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/daher-histoire/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Notre Histoire</a>
+  
+    
+  
+
+
+
+    
+  <a href="/daher-gouvernance/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Gouvernance</a>
+  
+    
+  
+
+
+
+    
+  <a href="/le-groupe-excellence-operationnelle/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Excellence Opérationnelle</a>
+  
+    
+  
+
+
+
+    
+  <a href="/certifications-et-accreditations/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Certifications et Accréditations</a>
+  
+    </div></details>
+
+
+
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+
+    
+  <details id="iilghk" class="nav-wrapper__nav__contain">
+    
+  <summary id="isk5gj" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/jobs/" id="ixksrhr-2" class="nav-wrapper__nav__item-Lv1 weight700">Carrières</a><div id="igt2kn" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  <div id="i3cpdqk" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-nos-offres/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Nos offres</a>
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-espace-etudiant/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Espace étudiant</a>
+  
+    
+  
+
+
+
+    
+  <a href="/carriere-votre-carriere-chez-daher/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Votre carrière chez Daher</a></div></details>
+
+
+
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+
+    
+  <details id="iilghk" class="nav-wrapper__nav__contain">
+    
+  <summary id="isk5gj" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+  <div id="ixksrhr" class="nav-wrapper__nav__item-Lv1 weight700">Media center</div>
+    <div id="igt2kn" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  <div id="i3cpdqk" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/actualites/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Actualités</a>
+  
+    
+  
+
+
+
+    
+  <a href="/evenements/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Évènements</a>
+  
+    
+  
+
+
+
+    
+  <a href="/galerie-media/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Galerie Media</a></div></details>
+
+
+
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+
+    
+  <details id="iilghk" class="nav-wrapper__nav__contain">
+    
+  <summary id="isk5gj" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/learningcenter/" id="ixksrhr-2" class="nav-wrapper__nav__item-Lv1 weight700">Learning Center</a><div id="igt2kn" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+  
+
+
+<details id="iaaop8" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iyddt" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/daher-learning-center-services-industriels/" id="i1httt" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Daher Learning Center – Services Industriels</a><div id="ioanv7-2-3" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/nos-prestations/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Nos prestations</a>
+  
+
+
+<a href="/pourquoi-vous-former/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Pourquoi vous former ?</a>
+  
+
+
+<a href="/daher-learning-center-qui-sommes-nous/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Qui sommes nous ?</a></details>
+  
+    
+  
+
+
+<details id="iaaop8" class="details-lv2 opacity-fx nav-wrapper__sepa-before">
+    
+  <summary id="iyddt" class="details-lv2 and__flex-between">
+    
+    
+  <a href="/daher-learning-center-logistique/" id="i1httt" class="nav-wrapper__nav__contain__sub nav-wrapper__nav__item-Lv2">Daher Learning Center – Logistique</a><div id="ioanv7-2-3" class="nav-wrap__sum__square-after typo-30"></div></summary>
+    
+  
+
+
+<a href="/learning-center-logistique-nos-prestations/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Nos prestations</a>
+  
+
+
+<a href="/learning-center-logistique-qui-sommes-nous/" id="i5mx2g" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Qui sommes nous ?</a></details>
+    
+  <div id="i3cpdqk" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+    </div></details>
+
+
+
+
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+
+
+    
+  <details id="iilghk" class="nav-wrapper__nav__contain">
+    
+  <summary id="isk5gj" class="nav-wrap__sum-lv1 secondary-bg-color" tabindex="0">
+    
+    
+  <a href="/contact/" id="ixksrhr-2" class="nav-wrapper__nav__item-Lv1 weight700">Contact</a><div id="igt2kn" class="third-bg-color nav-wrap__sum__square-after typo-30 weight700 secondary-color"></div></summary>
+    
+  
+    
+  
+    
+    
+  <div id="i3cpdqk" class="details-lv2 opacity-fx">
+    
+  
+    
+  
+
+
+
+    
+  <a href="/dispositif-dalerte-2/" id="iw1efg" class="nav-wrapper__sepa-before nav-wrapper__nav__item-Lv3 secondary-bg-color">Dispositif d’alerte</a></div></details>
+
+
+
+
+    
+  
+    </nav>
+    </div><MAIN id="iruogbg">
+    
+  <section id="in0ssn" class="flex-relative"><div id="iwptzh" class="website-width z-index-1 global-pad-0-20"><div id="i3aduqb" class="m_heros__cont-left_b-after m_hero-home__cont-title">
+    
+  <div id="im78f9h" class="rich-text typo-18-28_16-26 secondary-color resize"><h1>Pionniers par nature, Innovateurs par culture</h1>
+<p>Avionneur, industriel, prestataire de services industriels et logisticien, Daher est tourné vers l&rsquo;innovation depuis sa création, il y a 160 ans.</p>
+</div></div>
+<a href="/daher-partenaire-industriel-de-dassault-aviation-sur-le-programme-rafale/" id="itzn0sj" class="m_hero-home__cont__card sec-deg">
+    
+  <picture><source type="image/webp" srcset="/img/VigPNAv834-164.webp 164w, /img/VigPNAv834-316.webp 316w" sizes="(max-width: 768px) 20vw, (max-width: 1300px) 25vw, 316px"><img loading="lazy" decoding="async" alt="" id="idjoeht" src="/img/VigPNAv834-164.jpeg" class="m_hero-home__cont_card-img object-fit--cover-position--center" width="316" height="178" srcset="/img/VigPNAv834-164.jpeg 164w, /img/VigPNAv834-316.jpeg 316w" sizes="(max-width: 768px) 20vw, (max-width: 1300px) 25vw, 316px"></picture><img id="imzz9nv" src="/img/DQREJGk7dh-16.svg" class="m_hero-home__cont_card-svg" loading="lazy" decoding="async" alt="" width="16" height="16">
+    
+  <p id="ibyuz5p" class="secondary-color m_hero-home__cont__card-txt typo-24-32_16-24 bold">Daher partenaire logistique d’Airbus Defence and Space en Europe</p></a></div><div id="iaaftj" class="m__hero__img"><div id="i2szcpa" class="abs-bot-0_hw main-deg"></div>
+    
+  <picture><source type="image/webp" srcset="/img/cXi2HpONRK-930.webp 930w, /img/cXi2HpONRK-1350.webp 1350w, /img/cXi2HpONRK-2400.webp 2400w" sizes="100w"><img loading="eager" decoding="async" alt="" id="int9nir" src="/img/cXi2HpONRK-930.jpeg" webc:is="eleventy-image" width="2400" class="img--hw-cover-center z-index-1" aria-hidden="true" height="1350" srcset="/img/cXi2HpONRK-930.jpeg 930w, /img/cXi2HpONRK-1350.jpeg 1350w, /img/cXi2HpONRK-2400.jpeg 2400w" sizes="100w"></picture></div></section>
+    
+    
+  
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+  <section id="i0b0h8l" class="website-width m__lastA global-pad-100-20_50-20 current-secondary-bg-color">
+    <a href="/daher-partenaire-logistique-dairbus-defence-and-space-en-europe/" id="i3r9c41" class="m__lastA__col1 relative overflow-hid">
+    
+  <picture><source type="image/webp" srcset="/img/hDT9ioMSYA-375.webp 375w, /img/hDT9ioMSYA-605.webp 605w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 47vw, 615px"><img loading="lazy" decoding="async" alt="" id="im9oa4r" src="/img/hDT9ioMSYA-375.jpeg" webc:is="eleventy-image" width="605" class="img--hw-cover absolute" aria-hidden="true" height="308" srcset="/img/hDT9ioMSYA-375.jpeg 375w, /img/hDT9ioMSYA-605.jpeg 605w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 47vw, 615px"></picture><div id="imykpy" class="abs-bot-0_hw post-deg"></div><div id="iy8vb15" class="absolute m__lastA__col1__cont secondary-color"><div id="ivbcyd1" class="typo-12-24 uppercase flex-center sec-font">
+    
+  
+    
+  <p id="igphb67" class="m__lastA__col1__cont-cat cat-bord-white_0.5">Défense</p>
+    
+  <p id="i51vnu4" class="">15 juin 2026</p></div>
+    
+  <h2 id="ipxbpn4" class="typo-20-30_16-24 weight700 m__lastA__col1__cont-title excerpts-3lines">Daher partenaire logistique d’Airbus Defence and Space en Europe
+</h2><div id="idwwdgi" class="uppercase flex-center"><div id="i7xf4xx" class="typo-14-24 weight700 m__lastA__col1__cont-moretxt">Lire la suite</div><img id="isgvrbs" src="/img/T5YK0M3hOf-8.svg" class="chev-red-right-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="8" height="12"></div></div></a><div id="ir77bl5" class="m__lastA__col2__left-b-before"><div id="izcb7dl" class="m__lastA__col2a">
+    
+  <div id="i0rapwd" class="rich-text typo-48-56_28-36 weight400 hidden-mobile m__lastA__col2a_title"><h2>Dernières<br>
+<strong>Actualités</strong></h2>
+</div><a href="/actualites/" id="iyvyot7" class="m__lastA__col2a_all-cta hover-color-fx hover-color">
+    
+  <p id="iqx2v1h" class="typo-16-24 uppercase weight700 cta-pad-right underline text-align-right resize">Toutes les actualités</p><img id="ijzed3d" src="/img/G0XdMe-rY6-24.svg" class="chev-right-bg-red-img m__lastA__col2a_all-cta__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="24" height="23"></a></div>
+<a href="/daher-a-eurosatory-2026-un-acteur-integre-au-service-de-la-souverainete-aerienne-europeenne/" id="i7moq2g" class="m__lastA__col2__post"><div id="irygav3" class="m__lastA__col2c__post__img-cont">
+    
+  <picture><source type="image/webp" srcset="/img/t9RUcHkA6K-185.webp 185w, /img/t9RUcHkA6K-375.webp 375w, /img/t9RUcHkA6K-721.webp 721w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 14vw, 185px"><img loading="lazy" decoding="async" alt="" id="i5x2ki" src="/img/t9RUcHkA6K-185.jpeg" webc:is="eleventy-image" width="721" class="img--hw-cover-center" height="542" srcset="/img/t9RUcHkA6K-185.jpeg 185w, /img/t9RUcHkA6K-375.jpeg 375w, /img/t9RUcHkA6K-721.jpeg 721w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 14vw, 185px"></picture></div><div id="ipygayi" class="m__lastA__col2c__post__cont"><div id="iasjduw" class="m__lastA__col2__post__cont-infos uppercase sec-font typo-12-18_12-24">
+    
+  
+    
+  <p id="ii7euod" class="">Défense</p>
+    
+  <p id="ikd3yuh" class="m__lastA__col2__post__cont-infos__date">15 juin 2026</p></div>
+    
+  <h2 id="ih70n5s" class="weight700 typo-16-24 excerpts-all excerpts-3lines hover-color-fx">Daher à Eurosatory 2026 : un acteur intégré au service de la souveraineté aérienne européenne
+&nbsp;
+</h2></div></a>
+<a href="/nomination-michel-denis-est-nomme-directeur-general-de-daher/" id="is425d" class="m__lastA__col2__post _border-top-bot"><div id="i4r55ay" class="m__lastA__col2c__post__img-cont">
+    
+  <picture><source type="image/webp" srcset="/img/hSkDgSCEPD-185.webp 185w, /img/hSkDgSCEPD-375.webp 375w, /img/hSkDgSCEPD-728.webp 728w" sizes="(max-width:1260px) 15vw, 370px"><img loading="lazy" decoding="async" alt="" id="ircx6a" src="/img/hSkDgSCEPD-185.jpeg" webc:is="eleventy-image" width="728" class="img--hw-cover-center" height="724" srcset="/img/hSkDgSCEPD-185.jpeg 185w, /img/hSkDgSCEPD-375.jpeg 375w, /img/hSkDgSCEPD-728.jpeg 728w" sizes="(max-width:1260px) 15vw, 370px"></picture></div><div id="iri5ev" class="m__lastA__col2c__post__cont"><div id="ixf68f" class="m__lastA__col2__post__cont-infos uppercase sec-font typo-12-18_12-24">
+    
+  
+    
+  <p id="imwx6ck" class="">Groupe</p>
+    
+  <p id="ifknbx" class="m__lastA__col2__post__cont-infos__date">8 juin 2026</p></div>
+    
+  <h2 id="itxy1l" class="weight700 typo-16-24 excerpts-all excerpts-3lines hover-color-fx">Michel Denis est nommé Directeur Général de Daher
+&nbsp;
+</h2></div></a>
+<a href="/daher-presente-son-kodiak-900-tout-terrain-aux-cotes-du-tbm-960-a-france-air-expo/" id="iypsbrw" class="m__lastA__col2__post _border-bot__mob"><div id="iqfy4dl" class="m__lastA__col2c__post__img-cont">
+    
+  <picture><source type="image/webp" srcset="/img/2qrhpb5mAj-185.webp 185w, /img/2qrhpb5mAj-375.webp 375w, /img/2qrhpb5mAj-605.webp 605w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 14vw, 185px"><img loading="lazy" decoding="async" alt="Le Kodiak 900 multi mission est présenté avec une charge utile représentative sur le site Daher de Tarbes, où il est basé pour sa tournée européenne." id="ish33f" src="/img/2qrhpb5mAj-185.jpeg" webc:is="eleventy-image" width="605" class="img--hw-cover-center" height="403" srcset="/img/2qrhpb5mAj-185.jpeg 185w, /img/2qrhpb5mAj-375.jpeg 375w, /img/2qrhpb5mAj-605.jpeg 605w" sizes="(max-width: 768px) 84vw, (max-width: 1300px) 14vw, 185px"></picture></div><div id="ikax0dd" class="m__lastA__col2c__post__cont"><div id="ia74yo" class="m__lastA__col2__post__cont-infos uppercase sec-font typo-12-18_12-24">
+    
+  
+    
+  <p id="iiyrgzu" class="">Constructeur d'avions</p>
+    
+  <p id="iufrey4" class="m__lastA__col2__post__cont-infos__date">3 juin 2026</p></div>
+    
+  <h2 id="iyjysf" class="weight700 typo-16-24 excerpts-all excerpts-3lines hover-color-fx">Daher présente son Kodiak 900 tout‑terrain aux côtés du TBM 960 à France Air Expo
+</h2></div></a></div></section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+  <section id="inw0qn1" class="website-width global-pad-100-20_50-20 current-secondary-bg-color">
+    
+  <div id="ia6b0jk" class="rich-text typo-48-56_28-36 weight400 text-align-center m_exp__title-h2"><h2>La convergence de<br>
+<strong>l’industrie et des services</strong></h2>
+</div><div id="igsk329" class="m_exp">
+
+
+
+    
+  
+    
+    
+  <a href="/constructeur-davions/" id="idvh3r" class="relative m_exp__col">
+    
+  <picture><source type="image/webp" srcset="/img/ESLaBFDWC3-720.webp 720w, /img/ESLaBFDWC3-825.webp 825w, /img/ESLaBFDWC3-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 825px"><img loading="lazy" decoding="async" alt="" id="i09puzj" src="/img/ESLaBFDWC3-720.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover absolute" aria-hidden="true" height="675" srcset="/img/ESLaBFDWC3-720.jpeg 720w, /img/ESLaBFDWC3-825.jpeg 825w, /img/ESLaBFDWC3-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 825px"></picture><div id="iqjrvii" class="abs-bot-0_hw m_exp__col-deg"></div>
+
+    
+  <div id="i6tj147" class="m_exp__col-arrow"><div id="iihx78z" class="m_exp__col-arrow_sq-54 scaleY_0 transition-transf_02"><img id="i6h40ym" src="/img/UGodBQg48j-14.svg" class="chev-right-bg-red-img-big" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="11"></div></div><div id="id1gw0i" class="absolute secondary-color m_exp__col__cont text-align-center">
+    
+  <h3 id="isjlcw3" class="weight700 typo-24-32">Avions</h3>
+    </div></a>
+    
+    
+
+
+
+    
+  <a href="/industrie/" id="izlp3er" class="relative m_exp__col">
+    
+  <picture><source type="image/webp" srcset="/img/mOz6y1UM-z-720.webp 720w, /img/mOz6y1UM-z-825.webp 825w, /img/mOz6y1UM-z-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 825px"><img loading="lazy" decoding="async" alt="" id="irujz56" src="/img/mOz6y1UM-z-720.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover absolute" aria-hidden="true" height="799" srcset="/img/mOz6y1UM-z-720.jpeg 720w, /img/mOz6y1UM-z-825.jpeg 825w, /img/mOz6y1UM-z-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 825px"></picture><div id="ijvpq2x" class="abs-bot-0_hw m_exp__col-deg"></div><div id="iyywemk" class="m_exp__col-arrow"><div id="inqz42k" class="m_exp__col-arrow_sq-54 scaleY_0 transition-transf_02"><img src="/img/UGodBQg48j-14.svg" class="chev-right-bg-red-img-big" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="11"></div></div><div id="igdcwpm" class="absolute secondary-color m_exp__col__cont text-align-center">
+    
+  <h3 id="ixq4pol" class="weight700 typo-24-32">Industrie</h3>
+    </div></a>
+    
+  
+    
+    
+    
+
+
+
+    
+  <a href="/services-industriels/" id="iu1pqg" class="relative m_exp__col">
+    
+  <picture><source type="image/webp" srcset="/img/pvJj47-Zpx-720.webp 720w, /img/pvJj47-Zpx-825.webp 825w, /img/pvJj47-Zpx-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 825px"><img loading="lazy" decoding="async" alt="" id="ic4al0k" src="/img/pvJj47-Zpx-720.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover absolute" aria-hidden="true" height="1799" srcset="/img/pvJj47-Zpx-720.jpeg 720w, /img/pvJj47-Zpx-825.jpeg 825w, /img/pvJj47-Zpx-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 825px"></picture><div id="ibcjjbx" class="abs-bot-0_hw m_exp__col-deg"></div><div id="i1klavc" class="m_exp__col-arrow"><div id="i0gva4s" class="m_exp__col-arrow_sq-54 scaleY_0 transition-transf_02"><img src="/img/UGodBQg48j-14.svg" class="chev-right-bg-red-img-big" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="11"></div></div><div id="ibc69op" class="absolute secondary-color m_exp__col__cont text-align-center">
+    
+  <h3 id="iddik6s" class="weight700 typo-24-32">Services Industriels</h3>
+    </div></a>
+    
+  
+    
+    
+    
+
+
+
+    
+  <a href="/logistique/" id="ibieimi" class="relative m_exp__col">
+    
+  <picture><source type="image/webp" srcset="/img/j0yE3yMtJq-720.webp 720w, /img/j0yE3yMtJq-825.webp 825w, /img/j0yE3yMtJq-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 825px"><img loading="lazy" decoding="async" alt="" id="ickd7nz" src="/img/j0yE3yMtJq-720.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover absolute" aria-hidden="true" height="1799" srcset="/img/j0yE3yMtJq-720.jpeg 720w, /img/j0yE3yMtJq-825.jpeg 825w, /img/j0yE3yMtJq-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 825px"></picture><div id="ik26ve2" class="abs-bot-0_hw m_exp__col-deg"></div><div id="is1q4qp" class="m_exp__col-arrow"><div id="indc1u6" class="m_exp__col-arrow_sq-54 scaleY_0 transition-transf_02"><img src="/img/UGodBQg48j-14.svg" class="chev-right-bg-red-img-big" aria-hidden="true" loading="lazy" decoding="async" alt="" width="14" height="11"></div></div><div id="icq298k" class="absolute secondary-color m_exp__col__cont text-align-center">
+    
+  <h3 id="ideg8hs" class="weight700 typo-24-32">Logistique</h3>
+    </div></a>
+    
+  
+    
+    
+    </div></section>
+    
+    
+    
+    
+    
+    
+
+    
+  
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  <section id="i7fhy4" class="flex-relative fourth-bg-color m_fina-dur__xtra-bot--pad"><div id="i648uc" class="secondary-color z-index-1 website-width m_fina-dur"><div id="il7dvl" class="m__m-ev__title__hr-after -white"></div>
+    
+  <div id="i9e1wp" class="text-align-center rich-text typo-48-56_28-36 m_fina-dur__cont-title"><h2>Une présence<br>
+<strong>internationale</strong></h2>
+</div><div id="icqhhi" class="m_fina-dur__cont">
+    
+  <div id="iem1ib" class="m_fina-dur__card text-align-center">
+    
+  <p id="imv2uy" class="typo-50-34 white-space-cta resize weight700 m_fina-dur__card-numbers sec-font">17</p>
+    
+  <div id="ik1xtm" class="uppercase m_fina-dur__card-txts typo-20-34 weight600">Pays dans le monde</div></div>
+  <div id="iem1ib" class="m_fina-dur__card text-align-center">
+    
+  <p id="imv2uy" class="typo-50-34 white-space-cta resize weight700 m_fina-dur__card-numbers sec-font">€1,9 Md</p>
+    
+  <div id="ik1xtm" class="uppercase m_fina-dur__card-txts typo-20-34 weight600">De chiffre d'affaires</div></div>
+  <div id="iem1ib" class="m_fina-dur__card text-align-center">
+    
+  <p id="imv2uy" class="typo-50-34 white-space-cta resize weight700 m_fina-dur__card-numbers sec-font">14 500</p>
+    
+  <div id="ik1xtm" class="uppercase m_fina-dur__card-txts typo-20-34 weight600">Collaborateurs</div></div>
+  <div id="iem1ib" class="m_fina-dur__card text-align-center">
+    
+  <p id="imv2uy" class="typo-50-34 white-space-cta resize weight700 m_fina-dur__card-numbers sec-font">3</p>
+    
+  <div id="ik1xtm" class="uppercase m_fina-dur__card-txts typo-20-34 weight600">TECHCENTERS</div></div></div>
+
+
+
+    
+
+    
+
+    
+
+    </div><div id="iot6e5" class="absolute hw-100 overflow-hid m_fina-dur__bg-cont"><div id="iwn0ur" class="third-deg m_fina-dur__deg"></div>
+    
+  <picture><source type="image/webp" srcset="/img/5j42HrK553-1035.webp 1035w" sizes="725,1300"><img loading="lazy" decoding="async" alt="" src="/img/5j42HrK553-1035.png" webc:is="eleventy-image" width="1035" class="m_fina-dur__img-cont" aria-hidden="true" height="507"></picture></div></section>
+
+    
+  <section id="ie1d5pr" class="m_engagements current-secondary-bg-color"><DIV id="ik4s21" class="flex-relative m_engagements__cont m_engagements__translateY"><div id="id24v5" class="secondary-color m_engagmts__cont-title z-index-2">
+    
+  <div id="i48xs5" class="text-align-center rich-text typo-16-26_16-24"><h2>Pour un leadership durable<br>
+<strong>de l’industrie du futur</strong></h2>
+<p>La pérennité et la durabilité ne sont pas de vains mots pour une entreprise créée il y a plus de 160 ans. Ces qualités intrinsèques de Daher découlent d’une forte capacité d’innovation et d’ouverture sur l’avenir.</p>
+</div>
+
+
+
+    
+  <a href="/sustainability/" id="iv1buf" class="hover-color-fx hover-color resize white-space-cta flex-center m__cta-cta"><p id="i1kw93" class="typo-16-24 uppercase weight700 cta-pad-right underline">DÉCOUVRIR NOS engagements</p><img src="/img/G0XdMe-rY6-24.svg" class="chev-right-bg-red-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="24" height="23"></a>
+
+    
+
+    
+
+    </div>
+    
+  <picture><source type="image/webp" srcset="/img/sBlO7gPND3-725.webp 725w, /img/sBlO7gPND3-1085.webp 1085w" sizes="(max-width: 1085px) 84vw, 1085px"><img loading="lazy" decoding="async" alt="" src="/img/sBlO7gPND3-725.jpeg" webc:is="eleventy-image" width="1085" class="absolute img--cover-center hw-100" aria-hidden="true" height="723" srcset="/img/sBlO7gPND3-725.jpeg 725w, /img/sBlO7gPND3-1085.jpeg 1085w" sizes="(max-width: 1085px) 84vw, 1085px"></picture><div id="iisqci" class="absolute hw-100 m_engagmts-deg"></div></DIV></section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+  <section id="irqbic8" class="website-width global-pad-100-20_50-20 m_carriere current-secondary-bg-color">
+    
+  <div id="ihvjhyj" class="typo-48-56_28-36 m_carriere__cont-title rich-text mobile-text-align-center"><h2>Rejoignez-nous pour créer<strong> l’industrie durable du futur</strong></h2>
+</div><DIV id="i64rmhl" class="m_carriere__cont mobile-text-align-center"><DIV id="i06aekb" class="m_carriere__cont-col">
+    
+
+
+
+    
+  <a href="/jobs/" id="ixxf3tj" class="hover-color-fx hover-color resize white-space-cta flex-center m_carriere-cta"><p id="i9b8f66" class="typo-16-24 uppercase weight700 cta-pad-right underline">En savoir plus</p><img src="/img/G0XdMe-rY6-24.svg" class="chev-right-bg-red-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="24" height="23"></a>
+
+    
+
+    
+
+    </DIV>
+
+
+    
+
+
+    
+  <a href="/jobs/" id="ih3dzg5" class="m_carriere__img-cont m_carriere__cont-col relative ratio97-mob">
+    
+  <picture><source type="image/webp" srcset="/img/8Mj8EDjxrm-620.webp 620w, /img/8Mj8EDjxrm-725.webp 725w, /img/8Mj8EDjxrm-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 620px"><img loading="lazy" decoding="async" alt="" id="iak0ul7" src="/img/8Mj8EDjxrm-620.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover-center and-center-top" height="1799" srcset="/img/8Mj8EDjxrm-620.jpeg 620w, /img/8Mj8EDjxrm-725.jpeg 725w, /img/8Mj8EDjxrm-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 620px"></picture></a>
+
+
+    
+
+
+    
+  <a href="/jobs/" id="iccugj7" class="m_carriere__img-cont m_carriere__cont-col relative -img2 ratio97-mob">
+    
+  <picture><source type="image/webp" srcset="/img/agkEtMMXkU-620.webp 620w, /img/agkEtMMXkU-725.webp 725w, /img/agkEtMMXkU-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 620px"><img loading="lazy" decoding="async" alt="" id="ifa6vnx" src="/img/agkEtMMXkU-620.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover-center and-center-top" height="1799" srcset="/img/agkEtMMXkU-620.jpeg 620w, /img/agkEtMMXkU-725.jpeg 725w, /img/agkEtMMXkU-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 620px"></picture></a>
+
+
+    
+
+
+    
+  <a href="/jobs/" id="i0nv64j" class="m_carriere__img-cont m_carriere__cont-col relative -img3 ratio97-mob">
+    
+  <picture><source type="image/webp" srcset="/img/IaqXKN8KXH-620.webp 620w, /img/IaqXKN8KXH-725.webp 725w, /img/IaqXKN8KXH-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 620px"><img loading="lazy" decoding="async" alt="" id="iwds565" src="/img/IaqXKN8KXH-620.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover-center and-center-top" height="800" srcset="/img/IaqXKN8KXH-620.jpeg 620w, /img/IaqXKN8KXH-725.jpeg 725w, /img/IaqXKN8KXH-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 620px"></picture></a></DIV></section>
+    
+    
+    
+    
+    
+
+    
+  
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  <section id="video-back" class="m_raison relative overflow-hid">
+    
+  <img id="ivkx3vd" src="/img/FTmKZA4gG1-1536.svg" webc:is="eleventy-image" width="1536" class="m_raison__img-bg" sizes="100w" aria-hidden="true" loading="lazy" decoding="async" alt="" height="195"><DIV id="i9maeuw" class="website-width secondary-color m_raison__cont"><DIV id="i473ult" class="m_raison__cont-txt__after">
+    
+  <div id="i79y0vi" class="rich-text typo-32-42_20-30"><h2><strong>Dans le cadre de nos activités, libérer le potentiel de celles et ceux qui font avancer le monde</strong></h2>
+</div>
+
+
+
+    
+
+    
+
+    
+
+    
+  <a href="https://youtu.be/6qqBFjqB-i8?si=zOImz9UgUQeXgxLy" id="i8hmdm" class="hover-color-fx hover-color resize white-space-cta flex-center m_raison-cta" target="_blank"><p id="iznpi7" class="typo-16-24 uppercase weight700 cta-pad-right underline"></p><img src="/img/G0XdMe-rY6-24.svg" class="chev-right-bg-red-img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="24" height="23"></a></DIV>
+
+    
+  <div href="" id="i963sk" class="relative pointer m_raison__cont-video ratio1609"><div id="i0pbzin" shortcode_attributes="&quot;&quot;" shortcode_name="onclick">
+  
+  <script>
+    document.currentScript.parentElement
+    .onclick = function(e) {
+      e.target.innerHTML = `
+
+        </div><div id="ixbosrw" class="m_carriere-video z-index-1"><iframe width="560" height="315" src="https://www.youtube.com/embed/6qqBFjqB-i8?si=zOImz9UgUQeXgxLy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="cookieconsent-optout-marketing">
+    <a href="javascript:Cookiebot.renew()">Acceptez les cookies “Marketing”</a> pour consulter cette vidéo.
+</div></div><div id="i5t5exf" shortcode_name="endonclick">
+      `
+    }
+  </script>
+  
+        </div><img id="ifbqmb4" src="/img/qa-NV7zY9J-145.svg" webc:is="eleventy-image" width="145" class="absolute hidden-mobile z-index-2 m_raison__cont-vsvg" aria-hidden="true" loading="lazy" decoding="async" alt="" height="143">
+    
+  <div href="" id="iw0txo4" class="flex-center-center absolute m_raison__cont-img"><img src="/img/-LHuMFVqG1-11.svg" webc:is="eleventy-image" width="11" class="m_carriere__player main-bg-color" aria-hidden="true" loading="lazy" decoding="async" alt="" height="16">
+    
+  <picture><source type="image/webp" srcset="/img/zauoMuo20G-729.webp 729w, /img/zauoMuo20G-1200.webp 1200w" sizes="(max-width: 768px) 84vw, 729px"><img loading="lazy" decoding="async" alt="" id="i7vp41m" src="/img/zauoMuo20G-729.jpeg" webc:is="eleventy-image" width="1200" class="img--hw-cover-center" height="675" srcset="/img/zauoMuo20G-729.jpeg 729w, /img/zauoMuo20G-1200.jpeg 1200w" sizes="(max-width: 768px) 84vw, 729px"></picture></div></div></DIV></section>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    </MAIN>
+
+    
+  <footer id="i840lo" class="footer footer-deg"><div id="isg8x6" class="website-width footer-pad relative"><div id="ilrpjhf" class="footer__part1"><a href="/" id="i7brsz1" class="footer__part1__img"><img id="iwqnrue" src="/img/-pOrALH3mB-185.svg" class="img--hw-contain" alt="logo" loading="lazy" decoding="async" width="185" height="48"></a>
+    
+  <div id="izczlsv" class="footer__part1__social">
+    
+  <a id="iis34iu" class="hover-scal1-5 footer__part1__social__contain" target="_blank" href="https://www.linkedin.com/company/daher" aria-label="click to open linkedin link"><img id="i5zkrzx" src="/img/GNePD_glFu-35.svg" style="color:black;" class="footer__part1__social__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="35" height="35"></a>
+    
+  <a id="iv3uody" class="hover-scal1-5 footer__part1__social__contain" target="_blank" href="https://www.youtube.com/@GroupeDAHER" aria-label="click to open youtube link"><img id="i13vate" src="/img/ucc3GH-9wv-35.svg" style="color:black;" class="footer__part1__social__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="35" height="35"></a>
+    
+  <a id="id5qz9u" class="hover-scal1-5 footer__part1__social__contain" target="_blank" href="https://www.instagram.com/daher_official/" aria-label="click to open instagram link"><img id="i57mug5" src="/img/H8vhoNj97n-36.svg" style="color:black;" class="footer__part1__social__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="36" height="36"></a>
+    
+  <a id="i5a2kuw" class="hover-scal1-5 footer__part1__social__contain" target="_blank" href="https://www.tiktok.com/@daher_official?_t=ZN-8x8kFTbZbD4&_r=1" aria-label="click to open facebook link"><img id="ie2hhp8" src="/img/4fWkX8xBi5-35.svg" style="color:black;" class="footer__part1__social__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="35" height="35"></a>
+    
+  <a id="i006d3r" class="hover-scal1-5 footer__part1__social__contain" target="_blank" href="https://x.com/home?lang=fr" aria-label="click to open x link"><img id="i5wta5j" src="/img/rLYs6VDTgR-36.svg" style="color:black;" class="footer__part1__social__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="36" height="36"></a></div></div><div id="iqrrse" class="footer__part2 typo-14-24"><div id="ieyibuo" class="footer__part2__col1__contain__link">
+    
+  <div id="i32zthg" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="i72s53k" class="hover-color hover-color-fx" href="/jobs/#">Carrières</a>
+
+    
+
+    
+    
+    </div>
+  <div id="i32zthg" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="i72s53k" class="hover-color hover-color-fx" href="/daher/#">Le groupe</a>
+
+    
+
+    
+    
+    </div>
+  <div id="i32zthg" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="i72s53k" class="hover-color hover-color-fx" href="/contact/#">Contact</a>
+
+    
+
+    
+    
+    </div></div><div id="ikgd8cg" class="footer__part2__col1__contain__link mobile-text-align-center hide-mobile">
+    
+  <div id="iejekii" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ig600ul" class="hover-color hover-color-fx" href="/construction-avion-turboprop-business-aircraft-kodiak/#">KODIAK</a>
+
+    
+
+    
+    
+    </div>
+  <div id="iejekii" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ig600ul" class="hover-color hover-color-fx" href="/construction-avion-turboprop-business-aircraft-tbm/#">TBM</a>
+
+    
+
+    
+    
+    </div>
+  <div id="iejekii" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ig600ul" class="hover-color hover-color-fx" href="/mydaher/#">MyDaher</a>
+
+    
+
+    
+    
+    </div></div><div id="ixwm9y1" class="footer__part2__col1__contain__link mobile-text-align-center hide-mobile">
+    
+  <div id="in8hoas" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ioudt77" class="hover-color hover-color-fx" href="/nos-4-metiers/#">Nos métiers</a>
+
+    
+
+    
+    
+    </div>
+  <div id="in8hoas" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ioudt77" class="hover-color hover-color-fx" href="/innovation/#">Innovation</a>
+
+    
+
+    
+    
+    </div>
+  <div id="in8hoas" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ioudt77" class="hover-color hover-color-fx" href="/sustainability/#">Développement durable</a>
+
+    
+
+    
+    
+    </div></div><div id="iign7rf" class="footer__part2__col1__contain__link mobile-text-align-center hide-mobile">
+    
+  <div id="it6ozxl" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+    
+  <a id="irx0aak" class="hover-color hover-color-fx" href="/actualites/">Media center</a></div>
+  <div id="it6ozxl" class="footer__part2__col1__contain__link__text typo-14-24">
+
+    
+  
+
+    
+  <a id="ir9utgb" class="hover-color hover-color-fx" href="/learningcenter/#">Learning Center</a>
+
+    
+
+    
+    
+    </div></div></div><a href="#" id="i5ejoch" class="footer-go-top" aria-label="back to top of page"><img id="i2yvmo" src="/img/enEEF5-_76-11.svg" class="footer-go-top__img" aria-hidden="true" loading="lazy" decoding="async" alt="" width="11" height="14"></a><div id="inu9g8" class="footer__part3"><div href="" id="iaofzn" class="footer__part3__contain fifth-bg-color secondary-color hover-scale"><a href="https://www.ecoindex.fr/" id="ikqpfm" class="footer__part3__contain__eco" target="_blank"><p id="ie9111" class="footer__part3__contain__eco__text typo-700-26-312--22-312">FR EcoIndex : moyenne des pages de ce site</p><p id="i3x3px" class="footer__part3__contain__eco__score typo-800-50-312"></p></a></div><div href="" id="il3kxk" class="footer__part3__contain fifth-bg-color secondary-color hover-scale"><a href="https://www.websitecarbon.com/" id="idykzh" class="footer__part3__contain__eco" taget="_blank"><p id="ifsvhb" class="footer__part3__contain__eco__text typo-700-26-312--22-312">Website Carbon</p><div id="wcb">
+</div></a></div></div><div id="ifcqtx" class="footer__subfooter typo-14-24">
+    
+  <p href="" id="iaro6t" class="footer__subfooter-copyright sec-font">©2025 DAHER</p><div id="i96gjh" class="footer__subfooter__cont">
+    
+  <div id="iyl7iol" class="footer__subfooter-card">
+
+    
+  
+
+    
+  <a id="isfrfr9" class="hover-color hover-color-fx" href="/mentions-legales/#">Mentions légales</a>
+
+    
+
+    
+    
+    </div>
+  <div id="iyl7iol" class="footer__subfooter-card">
+
+    
+  
+
+    
+  <a id="isfrfr9" class="hover-color hover-color-fx" href="/politique-de-confidentialite/#">Gestion des cookies</a>
+
+    
+
+    
+    
+    </div></div></div></div></footer></body>
+</html>

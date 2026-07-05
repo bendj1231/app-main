@@ -36,7 +36,7 @@ export const DiscoverCareerPathwaysCarousel: React.FC<DiscoverCareerPathwaysCaro
       description: 'Explore structured pathways from CPL to airline cockpit. Compare requirements, timelines, and eligibility across carriers worldwide.',
       cta: 'Browse Pathways',
       ctaAction: () => setTab('pathways'),
-      image: '/expect.png',
+      image: '/images/set-02-pilot-gap/expect.png',
       accent: '#6366f1',
     },
     {
@@ -58,7 +58,7 @@ export const DiscoverCareerPathwaysCarousel: React.FC<DiscoverCareerPathwaysCaro
       description: 'Charter, VIP transport, and business jet careers. Higher flexibility, premium compensation, and direct operator relationships.',
       cta: 'Explore Corporate',
       ctaAction: () => setTab('pathways'),
-      image: '/type.png',
+      image: '/images/set-06-pathways/type.png',
       accent: '#f59e0b',
     },
     {
@@ -69,7 +69,7 @@ export const DiscoverCareerPathwaysCarousel: React.FC<DiscoverCareerPathwaysCaro
       description: 'Build hours while teaching the next generation. ATO partnerships, instructor ratings, and pathway-to-airline programs.',
       cta: 'Find ATO Partners',
       ctaAction: () => setTab('pathways'),
-      image: '/cessna.png',
+      image: '/images/set-08-website/cessna.png',
       accent: '#10b981',
     },
   ];

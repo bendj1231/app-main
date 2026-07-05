@@ -105,7 +105,7 @@ const FEATURED_PATHWAYS = [
     id: 'airline-first-officer',
     title: 'Airline First Officer',
     subtitle: 'CPL → Type Rating → Line Training',
-    image: '/foundation.png',
+    image: '/images/set-07-ui-graphics/foundation.png',
     requirements: {
       min_hours: 1500,
       license_type: 'CPL',
@@ -120,7 +120,7 @@ const FEATURED_PATHWAYS = [
     id: 'cargo-captain',
     title: 'Cargo Captain',
     subtitle: 'Heavy freight and long-haul operations',
-    image: '/program1.png',
+    image: '/images/set-08-website/program1.png',
     requirements: {
       min_hours: 3000,
       license_type: 'ATPL',
@@ -135,7 +135,7 @@ const FEATURED_PATHWAYS = [
     id: 'corporate-pilot',
     title: 'Corporate Pilot',
     subtitle: 'Business aviation and VIP charter',
-    image: '/theintervew.png',
+    image: '/images/set-07-ui-graphics/theintervew.png',
     requirements: {
       min_hours: 500,
       license_type: 'CPL',

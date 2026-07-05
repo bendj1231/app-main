@@ -77,7 +77,7 @@ const SectionHeader: React.FC<{
 
 const slides = [
   {
-    image: '/foundation.png',
+    image: '/images/set-07-ui-graphics/foundation.png',
     label: 'WingMentor Program',
     title: 'Help 50.\nBecome One.',
     subtitle: 'Build leadership through action. 50 hours of mentorship. Recognition+ priority status. Not waiting for permission.',
@@ -85,7 +85,7 @@ const slides = [
     link: '/wingmentor-learn-more',
   },
   {
-    image: '/program1.png',
+    image: '/images/set-08-website/program1.png',
     label: 'Transition Program',
     title: 'Airline Ready\nIn 12 Weeks',
     subtitle: '9 core competencies. Airbus HINFACT. Atlas resume format. Internship placement.',
@@ -93,7 +93,7 @@ const slides = [
     link: 'transition-program',
   },
   {
-    image: '/theintervew.png',
+    image: '/images/set-07-ui-graphics/theintervew.png',
     label: 'EBT Video Scoring',
     title: 'Prove Your\nCompetency',
     subtitle: 'Recorded interview scored by cognitive alignment. Airlines view it directly.',
@@ -101,7 +101,7 @@ const slides = [
     link: 'ebt-scoring',
   },
   {
-    image: '/instructor vs wing mentor -2.png',
+    image: '/images/set-02-pilot-gap/instructor vs wing mentor -2.png',
     label: 'Mentorship Network',
     title: 'Help 50.\nBecome One.',
     subtitle: 'One-to-one CRM skills. Earn Recognition+ priority status through effort.',
@@ -178,7 +178,7 @@ const HeroCarousel: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             >
               {/* Logo — left */}
               <img
-                src="/logo.png"
+                src="/images/set-01-logos/logo.png"
                 alt="Pilot Recognition"
                 className="hidden md:block w-40 h-40 lg:w-52 lg:h-52 object-contain flex-shrink-0"
                 style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))' }}
@@ -281,7 +281,7 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
             style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh' }}
           >
             <motion.img
-              src="/logo.png"
+              src="/images/set-01-logos/logo.png"
               alt="Pilot Recognition"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={logoVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
@@ -322,7 +322,7 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
             >
               <div className="relative overflow-hidden aspect-[4/3] w-full">
                 <img
-                  src="/foundationprogram.png"
+                  src="/images/set-07-ui-graphics/foundationprogram.png"
                   alt="Foundation Program"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -333,28 +333,28 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
             <div className="flex flex-col gap-3">
               {[
                 {
-                  img: '/program1.png',
+                  img: '/images/set-08-website/program1.png',
                   label: 'Transition Program',
                   title: 'Airline Ready in 12 Weeks',
                   date: '$299',
                   link: 'transition-program',
                 },
                 {
-                  img: '/theintervew.png',
+                  img: '/images/set-07-ui-graphics/theintervew.png',
                   label: 'EBT Video Scoring',
                   title: 'Prove Your Competency',
                   date: 'Included',
                   link: 'ebt-scoring',
                 },
                 {
-                  img: '/instructor vs wing mentor -2.png',
+                  img: '/images/set-02-pilot-gap/instructor vs wing mentor -2.png',
                   label: 'Mentorship Network',
                   title: 'Help 50. Become One.',
                   date: 'Earned',
                   link: 'mentorship',
                 },
                 {
-                  img: '/pilotcenter.png',
+                  img: '/images/set-04-screenshots/pilotcenter.png',
                   label: 'Recognition+',
                   title: 'Get Verified. Get Seen.',
                   date: '$120',
@@ -494,7 +494,7 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <GameCard
-              image="/pathwaysplatform.png"
+              image="/images/set-04-screenshots/pathwaysplatform.png"
               title={
                 <>
                   pilotcareer<span className="text-red-500">pathways</span>.com
@@ -505,7 +505,7 @@ export const FoundationWelcomeTab: React.FC<FoundationWelcomeTabProps> = ({
               className="aspect-[16/9]"
             />
             <GameCard
-              image="/construct.png"
+              image="/images/set-07-ui-graphics/construct.png"
               title={
                 <>
                   pilot<span className="text-red-500">shortage</span>.org

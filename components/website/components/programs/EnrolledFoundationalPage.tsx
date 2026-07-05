@@ -122,7 +122,7 @@ export const EnrolledFoundationalPage: React.FC<EnrolledFoundationalPageProps> =
       {/* Program Header */}
       <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
         <img
-          src="/logo.png"
+          src="/images/set-01-logos/logo.png"
           alt="Wing Mentor Logo"
           style={{
             width: '120px',

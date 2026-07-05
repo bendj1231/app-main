@@ -259,7 +259,7 @@ const DiscoveryCarousel: React.FC<{ isDarkMode: boolean; profile: UserProfileDat
                   style={{ width: index === 0 ? '600px' : '1000px', height: '420px', scrollSnapAlign: 'center', backgroundColor: index === 0 ? '#ffffff' : (isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.9)') }}>
                   {index === 0 ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-white">
-                      <img src="/logo.png" alt="PilotRecognition Logo" className="w-20 h-20 object-contain mb-5" />
+                      <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" className="w-20 h-20 object-contain mb-5" />
                       <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '1.5rem', color: '#0f172a', textAlign: 'center' }}>Pathways to Partnered Cadet Programs</h2>
                       <p style={{ color: '#475569', textAlign: 'center' }}>Direct entry pathways for foundation program completion</p>
                     </div>
@@ -375,7 +375,7 @@ export const CommercialPathwayPage: React.FC<CommercialPathwayPageProps> = ({ on
 
       <header style={{ textAlign: 'center', padding: '60px 20px 30px' }}>
         <div style={{ marginBottom: '24px' }}>
-          <img src="/logo.png" alt="PilotRecognition" style={{ maxWidth: '280px' }} />
+          <img src="/images/set-01-logos/logo.png" alt="PilotRecognition" style={{ maxWidth: '280px' }} />
         </div>
         <div style={{ letterSpacing: '0.3em', color: isDarkMode ? '#60a5fa' : '#2563eb', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase', marginBottom: '16px' }}>WINGMENTOR PATHWAYS</div>
         <h1 style={{ fontSize: '48px', fontWeight: 400, color: isDarkMode ? '#f8fafc' : '#0f172a', fontFamily: '"Georgia", serif', marginBottom: '20px' }}>Discover Pathways</h1>

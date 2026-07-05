@@ -1181,7 +1181,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             {/* Hourglass Image */}
             <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-6 max-w-md mx-auto">
               <img 
-                src="/images/low-timer/hourglass-pilot-gap.png" 
+                src="/images/low-timer/images/set-02-pilot-gap/hourglass-pilot-gap.png" 
                 alt="Pilot Gap Hourglass" 
                 className="w-full h-auto rounded-lg"
               />
@@ -1200,7 +1200,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             {/* Candidates Image */}
             <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-6 max-w-md mx-auto">
               <img 
-                src="/images/low-timer/candidates-pilot-gap.png" 
+                src="/images/low-timer/images/set-02-pilot-gap/candidates-pilot-gap.png" 
                 alt="Pilot Candidates" 
                 className="w-full h-auto rounded-lg"
               />

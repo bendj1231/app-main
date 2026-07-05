@@ -276,6 +276,7 @@ export const HomeTab: React.FC<{
       (enrolledInFoundation ? 15 : 0)
     ), 100
   );
+  const isProfileComplete = !!(profile?.full_name && profile?.current_occupation && profile?.license_type);
 
   // Auto-redirect to pathways discovery when advanced profile completes
   React.useEffect(() => {
@@ -290,7 +291,7 @@ export const HomeTab: React.FC<{
 
   const bCards = [
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
-    { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: '/cessna.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
+    { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: '/images/set-08-website/cessna.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
   ];
 
   // MSFS 2024 Style Tiles Data
@@ -530,7 +531,7 @@ export const HomeTab: React.FC<{
               const isPremium = userTier === 'plus' || userTier === 'silver' || userTier === 'enterprise' || userTier === 'gold';
               return (
                 <>
-                  <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/trailer1.png')" }} />
+                  <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/set-07-ui-graphics/trailer1.png')" }} />
                   <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
                   <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
                     style={isDarkMode ? {
@@ -594,7 +595,7 @@ export const HomeTab: React.FC<{
             className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => onNavigate('pilotshortage')}
           >
-            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/photo1.png')" }} />
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/set-04-screenshots/photo1.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
             <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
               style={isDarkMode ? {
@@ -683,14 +684,14 @@ export const HomeTab: React.FC<{
               ) : null;
               if (isSplOrPpl) {
                 return (
-                  <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/images.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                  <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/images/set-07-ui-graphics/images.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-900/70" />
                     {premiumButton}
                   </div>
                 );
               }
               return (
-                <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/Captain-Paperwork-Medium.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div className="relative h-24 group/header" style={{ backgroundImage: 'url(/images/set-04-screenshots/Captain-Paperwork-Medium.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                   <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-900/70" />
                   {premiumButton}
                 </div>
@@ -823,10 +824,17 @@ export const HomeTab: React.FC<{
                 const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
                 const isFree = tier === 'free' || tier === 'bronze';
                 return isFree ? (
-                  <div className="flex items-center gap-2 mt-3">
+                  <div className="relative group flex items-center gap-2 mt-3">
+                    {!isProfileComplete && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="px-3 py-1.5 rounded-lg text-[9px] font-black text-white tracking-wide whitespace-nowrap" style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                          Complete your advance profile
+                        </div>
+                      </div>
+                    )}
                     <button
                       onClick={() => setTab('settings' as TabId)}
-                      className="px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:brightness-110"
+                      className={`px-2.5 py-1 rounded-md text-[9px] font-black tracking-wider uppercase transition-all hover:brightness-110 ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`}
                       style={{ background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)', border: '1px solid rgba(77,208,225,0.35)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)', color: '#ffffff' }}
                     >
                       <span style={{ fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Get Invite Code With </span><span style={{ color: '#ff0000', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Recognition</span><span style={{ color: '#ff0000', verticalAlign: 'middle', position: 'relative', top: '-1px' }}>+</span>
@@ -843,28 +851,42 @@ export const HomeTab: React.FC<{
             </div>
 
             {/* Compact stat row */}
-            <div className="grid grid-cols-3 gap-2 px-4 mb-2">
-              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+            <div className="relative group grid grid-cols-3 gap-2 px-4 mb-2">
+              {!isProfileComplete && (
+                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="px-3 py-1.5 rounded-lg text-[9px] font-black text-white tracking-wide" style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    Complete your advance profile
+                  </div>
+                </div>
+              )}
+              <div className={`text-center py-2.5 rounded-lg ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`} style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                 <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.pic_hours || '0'}</p>
                 <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>PIC Time</p>
               </div>
-              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+              <div className={`text-center py-2.5 rounded-lg ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`} style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                 <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.total_flight_hours || profile?.total_hours || '0'}</p>
                 <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Total Hours</p>
                 {!profile?.license_number && (
                   <p className="text-[8px] font-bold mt-0.5 uppercase" style={{ color: '#dc2626', textDecoration: 'underline', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>UNVERIFIED</p>
                 )}
               </div>
-              <div className="text-center py-2.5 rounded-lg" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+              <div className={`text-center py-2.5 rounded-lg ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`} style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                 <p className="text-base font-black" style={{ color: '#ffffff', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{profile?.dual_hours || '0'}</p>
                 <p className="text-[8px] font-black uppercase tracking-wider mt-0.5" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Dual Time</p>
               </div>
             </div>
 
             {/* Recent activity / last flown */}
-            <div className="px-4 mb-4">
+            <div className="relative group px-4 mb-4">
+              {!isProfileComplete && (
+                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="px-3 py-1.5 rounded-lg text-[9px] font-black text-white tracking-wide" style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    Complete your advance profile
+                  </div>
+                </div>
+              )}
               {hasLogbookSync ? (
-                <div className="rounded-xl px-3 py-2.5 flex items-center justify-between" style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <div className={`rounded-xl px-3 py-2.5 flex items-center justify-between ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`} style={isDarkMode ? { background: '#000000', border: '1px solid rgba(255,255,255,0.2)' } : { background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                   <div className="flex items-center gap-2">
                     <Clock size={12} style={{ color: isDarkMode ? '#4dd0e1' : '#9ab0c8' }} />
                     <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: isDarkMode ? '#4dd0e1' : '#9ab0c8', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Last Flown</span>
@@ -874,7 +896,7 @@ export const HomeTab: React.FC<{
               ) : (
                 <button
                   onClick={() => setTab('wallet' as TabId)}
-                  className="w-full rounded-full px-4 py-2.5 flex items-center justify-between transition-all hover:brightness-110"
+                  className={`w-full rounded-full px-4 py-2.5 flex items-center justify-between transition-all hover:brightness-110 ${!isProfileComplete ? 'opacity-40 grayscale' : ''}`}
                   style={isDarkMode
                     ? { background: 'linear-gradient(180deg, #3a3a4a 0%, #2a2a38 100%)', border: '1px solid rgba(77,208,225,0.3)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3)' }
                     : { background: '#f0f5fa', border: '1px solid rgba(30,58,95,0.15)' }
@@ -910,7 +932,14 @@ export const HomeTab: React.FC<{
             )}
 
             {/* Profile Strength */}
-            <div className="px-4 mb-4">
+            <div className="relative group px-4 mb-4">
+              {!isProfileComplete && (
+                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="px-3 py-1.5 rounded-lg text-[9px] font-black text-white tracking-wide" style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    Complete your advance profile
+                  </div>
+                </div>
+              )}
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[9px] font-black uppercase tracking-wider" style={{ color: isDarkMode ? '#4dd0e1' : '#1e3a5f', fontFamily: isDarkMode ? "'G1000', 'VT323', monospace" : undefined, textTransform: isDarkMode ? 'uppercase' : undefined }}>Profile Strength</span>
                 <span className="text-[9px] font-black" style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>{matchPct}%</span>

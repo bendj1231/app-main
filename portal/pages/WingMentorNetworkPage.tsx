@@ -285,7 +285,7 @@ export const PilotRecognitionNetworkPage: React.FC<PilotRecognitionNetworkPagePr
                             Coordinate simulator sessions, request debriefs, and message your peers. Reach 20 logged hours to unlock Official Mentor status.
                         </p>
                         <img
-                            src="/Networking.jpg"
+                            src="/images/set-07-ui-graphics/Networking.jpg"
                             alt="PilotRecognition Network"
                             style={{
                                 width: '100%',

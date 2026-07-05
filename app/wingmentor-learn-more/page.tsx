@@ -77,7 +77,7 @@ export default function WingMentorLearnMorePage() {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/instructor vs wing mentor -2.png"
+            src="/images/set-02-pilot-gap/instructor vs wing mentor -2.png"
             alt="WingMentor Program"
             className="w-full h-full object-cover"
           />

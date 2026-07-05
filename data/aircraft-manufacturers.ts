@@ -11314,7 +11314,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Bombardier Challenger 350',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-bombardier_challenger_350.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_350.jpg',
     sketchfab_id: '5f7af63167374f98a3a457f38818b996',
     description: 'The Bombardier Challenger 350 is a super mid-size business jet. It offers a spacious cabin and long-range capabilities.',
     first_flight: 2013,
@@ -24564,7 +24564,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-100',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj100.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-100.jpg',
     description: 'Original Canadair Regional Jet seating 50.',
     first_flight: 1991,
     specifications: {
@@ -24611,7 +24611,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-200',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj200.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-200.jpg',
     description: 'Improved CRJ-100 with better engines.',
     first_flight: 1995,
     specifications: {
@@ -24658,7 +24658,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-440',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj440.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-440.jpg',
     description: 'Lower-capacity CRJ-200 for regional.',
     first_flight: 2001,
     specifications: {
@@ -24752,7 +24752,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-701',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj701.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-701.jpg',
     description: 'Extended range CRJ-700.',
     first_flight: 2001,
     specifications: {
@@ -24799,7 +24799,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-702',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj702.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-702.jpg',
     description: 'Higher capacity CRJ-700 variant.',
     first_flight: 2003,
     specifications: {
@@ -24846,7 +24846,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-705',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj705.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-705.jpg',
     description: 'CRJ-900 variant for Air Canada.',
     first_flight: 2005,
     specifications: {
@@ -24893,7 +24893,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-900',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj900.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-900.jpg',
     description: 'Further stretched CRJ seating 90.',
     first_flight: 2000,
     specifications: {
@@ -24940,7 +24940,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-1000',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-crj1000.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-crj-1000.jpg',
     description: 'Largest CRJ seating 100.',
     first_flight: 2007,
     specifications: {
@@ -24987,7 +24987,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 300',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-300.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_300.jpg',
     description: 'Super-midsize business jet.',
     first_flight: 1998,
     specifications: {
@@ -25081,7 +25081,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 3500',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-3500.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_3500.jpg',
     description: 'Latest Challenger with advanced avionics.',
     first_flight: 2021,
     specifications: {
@@ -25128,7 +25128,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 600',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-600.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_600.jpg',
     description: 'Original Challenger large cabin jet.',
     first_flight: 1977,
     specifications: {
@@ -25175,7 +25175,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 601',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-601.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_601.jpg',
     description: 'Improved Challenger with winglets.',
     first_flight: 1983,
     specifications: {
@@ -25222,7 +25222,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 604',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-604.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_604.jpg',
     description: 'Major upgrade with EFIS and FMS.',
     first_flight: 1995,
     specifications: {
@@ -25269,7 +25269,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 605',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-605.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_605.jpg',
     description: 'Enhanced Challenger 604.',
     first_flight: 2005,
     specifications: {
@@ -25316,7 +25316,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 650',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-650.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_650.jpg',
     description: 'Latest Challenger 600 series.',
     first_flight: 2014,
     specifications: {
@@ -25363,7 +25363,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 850',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-challenger-850.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-challenger_850.jpg',
     description: 'Business jet based on CRJ-200.',
     first_flight: 2006,
     specifications: {
@@ -25410,7 +25410,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 5000',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-5000.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_5000.jpg',
     description: 'Ultra-long range business jet.',
     first_flight: 2003,
     specifications: {
@@ -25457,7 +25457,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 5500',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-5500.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_5500.jpg',
     description: 'Enhanced Global 5000.',
     first_flight: 2019,
     specifications: {
@@ -25504,7 +25504,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 6000',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-6000.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_6000.jpg',
     description: 'Extended range Global 5000.',
     first_flight: 2011,
     specifications: {
@@ -25551,7 +25551,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 6500',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-6500.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_6500.jpg',
     description: 'Enhanced Global 6000.',
     first_flight: 2019,
     specifications: {
@@ -25598,7 +25598,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 7500',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-7500.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_7500.jpg',
     description: 'Flagship ultra-long range jet.',
     first_flight: 2016,
     specifications: {
@@ -25645,7 +25645,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global 8000',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-8000.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_8000.jpg',
     description: 'Extended range Global 7500.',
     first_flight: 2022,
     specifications: {
@@ -25692,7 +25692,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global Express',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-express.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_express.jpg',
     description: 'Original ultra-long range business jet.',
     first_flight: 1996,
     specifications: {
@@ -25739,7 +25739,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Global Express XRS',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-global-express-xrs.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-global_express_xrs.jpg',
     description: 'Enhanced Global Express.',
     first_flight: 2003,
     specifications: {
@@ -25786,7 +25786,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 35',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-35.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_35.jpg',
     description: 'Light business jet.',
     first_flight: 1973,
     specifications: {
@@ -25833,7 +25833,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 36',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-36.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_36.jpg',
     description: 'Longer range Learjet 35.',
     first_flight: 1973,
     specifications: {
@@ -25880,7 +25880,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 55',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-55.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_55.jpg',
     description: 'Midsize business jet.',
     first_flight: 1979,
     specifications: {
@@ -25927,7 +25927,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 60',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-60.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_60.jpg',
     description: 'Improved midsize jet.',
     first_flight: 1990,
     specifications: {
@@ -25974,7 +25974,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 70',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-70.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_70.jpg',
     description: 'Light jet with modern avionics.',
     first_flight: 2012,
     specifications: {
@@ -26021,7 +26021,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 75',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-75.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_75.jpg',
     description: 'Enhanced Learjet 70.',
     first_flight: 2012,
     specifications: {
@@ -26068,7 +26068,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Learjet 85',
     category: 'private',
-    image: '/images/manufacturers/bombardier/bombardier-learjet-85.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-learjet_85.jpg',
     description: 'Composite light business jet.',
     first_flight: 2007,
     specifications: {
@@ -26115,7 +26115,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Dash 8-100',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-dash8-q100.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-dash_8-100.jpg',
     description: 'Original Dash 8 regional turboprop.',
     first_flight: 1983,
     specifications: {
@@ -26162,7 +26162,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Dash 8-200',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-dash8-q200.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-dash_8-200.jpg',
     description: 'Improved Dash 8-100.',
     first_flight: 1992,
     specifications: {
@@ -26209,7 +26209,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Dash 8-300',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-dash8-q300.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-dash_8-300.jpg',
     description: 'Stretched Dash 8 seating 50.',
     first_flight: 1989,
     specifications: {
@@ -26256,7 +26256,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Dash 8-Q400',
     category: 'commercial',
-    image: '/images/manufacturers/bombardier/bombardier-dash8-q400.jpg',
+    image: '/images/manufacturers/bombardier/bombardier-dash_8-q400.jpg',
     description: 'Latest Dash 8 with active noise cancellation.',
     first_flight: 1998,
     specifications: {
@@ -26297,9 +26297,1498 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       validity: '1 year',
       renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
     }
+  },
+{
+  id: 'learjet-23',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 23',
+  category: 'private',
+  image: '/images/manufacturers/bombardier/bombardier-learjet_23.jpg',
+  description: 'The original Learjet. First light business jet, seating 6-8 passengers.',
+  first_flight: 1963,
+  specifications: {
+    max_takeoff_weight: '5,670 kg',
+    cruising_speed: 'Mach 0.82',
+    range: '2,800 km',
+    capacity: 6,
+    engines: 2,
+    engine_type: 'GE CJ610-1',
+    length: '12.98 m',
+    wingspan: '10.85 m',
+    height: '3.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
   }
-
+},
+{
+  id: 'learjet-24',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 24',
+  category: 'private',
+  image: '/images/manufacturers/bombardier/bombardier-learjet_24.jpg',
+  description: 'Improved Learjet 23 with uprated engines and better performance.',
+  first_flight: 1966,
+  specifications: {
+    max_takeoff_weight: '5,670 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '2,800 km',
+    capacity: 6,
+    engines: 2,
+    engine_type: 'GE CJ610-6',
+    length: '12.98 m',
+    wingspan: '10.85 m',
+    height: '3.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-25',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 25',
+  category: 'private',
+  image: '/images/manufacturers/bombardier/bombardier-learjet_25.jpg',
+  description: 'Stretched Learjet 24 with 8-seat cabin and longer range.',
+  first_flight: 1966,
+  specifications: {
+    max_takeoff_weight: '6,033 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '3,200 km',
+    capacity: 8,
+    engines: 2,
+    engine_type: 'GE CJ610-6',
+    length: '14.50 m',
+    wingspan: '10.85 m',
+    height: '3.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-28',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 28',
+  category: 'private',
+  image: '/images/manufacturers/bombardier/bombardier-learjet_28.jpg',
+  description: 'Longhorn variant with distinctive winglets for improved efficiency.',
+  first_flight: 1977,
+  specifications: {
+    max_takeoff_weight: '5,670 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '3,400 km',
+    capacity: 8,
+    engines: 2,
+    engine_type: 'GE CJ610-8',
+    length: '14.02 m',
+    wingspan: '11.97 m',
+    height: '3.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-29',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 29',
+  category: 'private',
+  image: '/images/manufacturers/bombardier/bombardier-learjet_29.jpg',
+  description: 'Two-seat variant of the Learjet 28 Longhorn for training and utility.',
+  first_flight: 1977,
+  specifications: {
+    max_takeoff_weight: '5,670 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '3,400 km',
+    capacity: 2,
+    engines: 2,
+    engine_type: 'GE CJ610-8',
+    length: '14.02 m',
+    wingspan: '11.97 m',
+    height: '3.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-31',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 31',
+  category: 'private',
+  image: '',
+  description: 'Light business jet combining Learjet 35 wings with Learjet 55 fuselage.',
+  first_flight: 1987,
+  specifications: {
+    max_takeoff_weight: '7,530 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '2,900 km',
+    capacity: 8,
+    engines: 2,
+    engine_type: 'Honeywell TFE731-2',
+    length: '14.83 m',
+    wingspan: '13.34 m',
+    height: '3.73 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-40',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 40',
+  category: 'private',
+  image: '',
+  description: 'Light business jet developed from the Learjet 45 with reduced cabin length.',
+  first_flight: 2002,
+  specifications: {
+    max_takeoff_weight: '9,299 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '3,400 km',
+    capacity: 7,
+    engines: 2,
+    engine_type: 'Honeywell TFE731-20',
+    length: '16.93 m',
+    wingspan: '14.56 m',
+    height: '4.38 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-45',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 45',
+  category: 'private',
+  image: '',
+  description: 'Super light business jet with stand-up cabin and advanced avionics.',
+  first_flight: 1995,
+  specifications: {
+    max_takeoff_weight: '9,752 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '3,400 km',
+    capacity: 9,
+    engines: 2,
+    engine_type: 'Honeywell TFE731-20',
+    length: '17.68 m',
+    wingspan: '14.56 m',
+    height: '4.30 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-55c',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 55C',
+  category: 'private',
+  image: '',
+  description: 'Midsize business jet with winglets and improved fuel efficiency over the original 55.',
+  first_flight: 1981,
+  specifications: {
+    max_takeoff_weight: '9,299 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '4,400 km',
+    capacity: 10,
+    engines: 2,
+    engine_type: 'Honeywell TFE731-3A',
+    length: '16.80 m',
+    wingspan: '13.34 m',
+    height: '4.19 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'learjet-60xr',
+  manufacturer_id: 'bombardier',
+  model: 'Learjet 60XR',
+  category: 'private',
+  image: '',
+  description: 'Enhanced version of the Learjet 60 with upgraded avionics and interior.',
+  first_flight: 2005,
+  specifications: {
+    max_takeoff_weight: '10,659 kg',
+    cruising_speed: 'Mach 0.81',
+    range: '4,500 km',
+    capacity: 8,
+    engines: 2,
+    engine_type: 'Honeywell TFE731-307',
+    length: '17.88 m',
+    wingspan: '13.34 m',
+    height: '4.47 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'cl-215',
+  manufacturer_id: 'bombardier',
+  model: 'CL-215',
+  category: 'special',
+  image: '',
+  description: 'Piston-powered amphibious water bomber, first aircraft designed specifically for aerial firefighting.',
+  first_flight: 1967,
+  specifications: {
+    max_takeoff_weight: '19,731 kg',
+    cruising_speed: '290 km/h',
+    range: '2,400 km',
+    capacity: 0,
+    engines: 2,
+    engine_type: 'Pratt & Whitney R-2800',
+    length: '19.82 m',
+    wingspan: '28.60 m',
+    height: '7.57 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME', 'Seaplane'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'cl-415',
+  manufacturer_id: 'bombardier',
+  model: 'CL-415',
+  category: 'special',
+  image: '',
+  description: 'Turboprop-powered amphibious water bomber, upgraded from the CL-215 with modern systems.',
+  first_flight: 1993,
+  specifications: {
+    max_takeoff_weight: '19,890 kg',
+    cruising_speed: '333 km/h',
+    range: '2,400 km',
+    capacity: 0,
+    engines: 2,
+    engine_type: 'Pratt & Whitney PW123',
+    length: '19.82 m',
+    wingspan: '28.60 m',
+    height: '8.98 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME', 'Seaplane'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'cl-415eaf',
+  manufacturer_id: 'bombardier',
+  model: 'CL-415EAF',
+  category: 'special',
+  image: '',
+  description: 'Enhanced Aerial Firefighter, modernized CL-415 with avionics upgrades and structural improvements.',
+  first_flight: 2019,
+  specifications: {
+    max_takeoff_weight: '19,890 kg',
+    cruising_speed: '333 km/h',
+    range: '2,400 km',
+    capacity: 0,
+    engines: 2,
+    engine_type: 'Pratt & Whitney PW123',
+    length: '19.82 m',
+    wingspan: '28.60 m',
+    height: '8.98 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME', 'Seaplane'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'cl-44',
+  manufacturer_id: 'bombardier',
+  model: 'CL-44',
+  category: 'cargo',
+  image: '',
+  description: 'Four-engine turboprop cargo aircraft with swing-tail for oversized loads.',
+  first_flight: 1960,
+  specifications: {
+    max_takeoff_weight: '43,091 kg',
+    cruising_speed: '480 km/h',
+    range: '8,800 km',
+    capacity: 0,
+    engines: 4,
+    engine_type: 'Rolls-Royce Tyne',
+    length: '41.50 m',
+    wingspan: '43.37 m',
+    height: '11.76 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'cl-84-dynavert',
+  manufacturer_id: 'bombardier',
+  model: 'CL-84 Dynavert',
+  category: 'experimental',
+  image: '',
+  description: 'Experimental tilt-wing VTOL aircraft developed by Canadair. Only 4 prototypes built.',
+  first_flight: 1965,
+  specifications: {
+    max_takeoff_weight: '8,165 kg',
+    cruising_speed: '500 km/h',
+    range: '1,200 km',
+    capacity: 1,
+    engines: 2,
+    engine_type: 'Lycoming T53',
+    length: '12.20 m',
+    wingspan: '10.10 m',
+    height: '4.27 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-1-chipmunk',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-1 Chipmunk',
+  category: 'trainer',
+  image: '',
+  description: 'Two-seat primary trainer aircraft widely used by military air forces worldwide.',
+  first_flight: 1946,
+  specifications: {
+    max_takeoff_weight: '1,111 kg',
+    cruising_speed: '185 km/h',
+    range: '720 km',
+    capacity: 2,
+    engines: 1,
+    engine_type: 'de Havilland Gipsy Major',
+    length: '7.64 m',
+    wingspan: '10.47 m',
+    height: '2.10 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-2-beaver',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-2 Beaver',
+  category: 'private',
+  image: '',
+  description: 'Iconic bush plane and STOL utility aircraft, most widely used in remote areas.',
+  first_flight: 1947,
+  specifications: {
+    max_takeoff_weight: '2,310 kg',
+    cruising_speed: '210 km/h',
+    range: '740 km',
+    capacity: 6,
+    engines: 1,
+    engine_type: 'Pratt & Whitney R-985',
+    length: '9.24 m',
+    wingspan: '14.63 m',
+    height: '2.74 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-3-otter',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-3 Otter',
+  category: 'private',
+  image: '',
+  description: 'Larger development of the DHC-2 Beaver with greater capacity and range.',
+  first_flight: 1951,
+  specifications: {
+    max_takeoff_weight: '3,814 kg',
+    cruising_speed: '240 km/h',
+    range: '1,530 km',
+    capacity: 9,
+    engines: 1,
+    engine_type: 'Pratt & Whitney R-1340',
+    length: '12.80 m',
+    wingspan: '17.69 m',
+    height: '3.56 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-4-caribou',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-4 Caribou',
+  category: 'cargo',
+  image: '',
+  description: 'Twin-engine STOL cargo aircraft used by military and civilian operators.',
+  first_flight: 1958,
+  specifications: {
+    max_takeoff_weight: '14,289 kg',
+    cruising_speed: '348 km/h',
+    range: '1,300 km',
+    capacity: 32,
+    engines: 2,
+    engine_type: 'Pratt & Whitney R-2000',
+    length: '22.12 m',
+    wingspan: '29.46 m',
+    height: '9.68 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-5-buffalo',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-5 Buffalo',
+  category: 'cargo',
+  image: '',
+  description: 'Improved STOL turboprop derivative of the DHC-4 Caribou with turbine engines.',
+  first_flight: 1964,
+  specifications: {
+    max_takeoff_weight: '19,051 kg',
+    cruising_speed: '380 km/h',
+    range: '1,100 km',
+    capacity: 41,
+    engines: 2,
+    engine_type: 'General Electric T64',
+    length: '22.12 m',
+    wingspan: '29.26 m',
+    height: '9.65 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'dhc-7-dash-7',
+  manufacturer_id: 'bombardier',
+  model: 'DHC-7 Dash 7',
+  category: 'commercial',
+  image: '',
+  description: 'Four-engine regional turboprop with exceptional STOL performance, predecessor to Dash 8.',
+  first_flight: 1975,
+  specifications: {
+    max_takeoff_weight: '20,000 kg',
+    cruising_speed: '428 km/h',
+    range: '1,800 km',
+    capacity: 54,
+    engines: 4,
+    engine_type: 'Pratt & Whitney PT6A',
+    length: '24.54 m',
+    wingspan: '28.40 m',
+    height: '7.98 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'short-330',
+  manufacturer_id: 'bombardier',
+  model: 'Short 330',
+  category: 'commercial',
+  image: '',
+  description: 'Regional turboprop airliner developed by Short Brothers, seating up to 30 passengers.',
+  first_flight: 1974,
+  specifications: {
+    max_takeoff_weight: '10,387 kg',
+    cruising_speed: '370 km/h',
+    range: '870 km',
+    capacity: 30,
+    engines: 2,
+    engine_type: 'Pratt & Whitney PT6A',
+    length: '17.69 m',
+    wingspan: '22.76 m',
+    height: '4.95 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'short-360',
+  manufacturer_id: 'bombardier',
+  model: 'Short 360',
+  category: 'commercial',
+  image: '',
+  description: 'Stretched and improved version of the Short 330 with up to 36 seats.',
+  first_flight: 1981,
+  specifications: {
+    max_takeoff_weight: '12,292 kg',
+    cruising_speed: '370 km/h',
+    range: '780 km',
+    capacity: 36,
+    engines: 2,
+    engine_type: 'Pratt & Whitney PT6A',
+    length: '21.59 m',
+    wingspan: '22.76 m',
+    height: '5.97 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+},
+{
+  id: 'short-belfast',
+  manufacturer_id: 'bombardier',
+  model: 'Short Belfast',
+  category: 'cargo',
+  image: '',
+  description: 'Heavy military cargo turboprop, one of the largest aircraft built in the UK.',
+  first_flight: 1964,
+  specifications: {
+    max_takeoff_weight: '104,326 kg',
+    cruising_speed: '480 km/h',
+    range: '8,500 km',
+    capacity: 0,
+    engines: 4,
+    engine_type: 'Rolls-Royce Tyne',
+    length: '49.10 m',
+    wingspan: '48.40 m',
+    height: '14.33 m'
+  },
+  training_requirements: {
+    minimum_hours: 1500,
+    required_licenses: ['CPL', 'IR', 'ME'],
+    medical_certificate: 'Class 1',
+    english_proficiency: 'ICAO Level 4',
+    ground_school_hours: 80,
+    simulator_hours: 20,
+    flight_hours: 10
+  },
+  training_curriculum:[
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+  ],
+  simulator_details: {
+    type: 'Full Flight Simulator',
+    locations: ['Manufacturer training center'],
+    features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+  },
+  instructor_qualifications:[
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+  ],
+  certification: {
+    authority: 'EASA / FAA',
+    validity: '1 year',
+    renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+  }
+}
 ];
+
+
 
 // Helper functions
 export const getManufacturerById = (id: string): Manufacturer | undefined => {

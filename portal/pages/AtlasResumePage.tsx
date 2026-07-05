@@ -137,7 +137,7 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
 
         <div className="dashboard-header" style={{ marginBottom: '2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em' }}>ATLAS RESUME DIRECTORY</div>
           <h1 className="dashboard-title">Atlas-formatted Resume</h1>

@@ -128,7 +128,7 @@ export const FoundationalProgramAnimation: React.FC = () => {
                         animation: 'fadeInDown 1s ease-out'
                     }}>
                         <img 
-                            src="/logo.png" 
+                            src="/images/set-01-logos/logo.png" 
                             alt="PilotRecognition Logo" 
                             style={{ 
                                 maxWidth: '320px', 

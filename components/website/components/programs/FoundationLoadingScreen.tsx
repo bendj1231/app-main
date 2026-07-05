@@ -55,7 +55,7 @@ export const FoundationLoadingScreen: React.FC<FoundationLoadingScreenProps> = (
           style={{ marginBottom: '2rem' }}
         >
           <img
-            src="/logo.png"
+            src="/images/set-01-logos/logo.png"
             alt="Wing Mentor"
             style={{
               width: '120px',

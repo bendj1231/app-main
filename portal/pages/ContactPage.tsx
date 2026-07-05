@@ -86,7 +86,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                     </div>
 
                     <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
+                        <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
                     </div>
 
                     <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700 }}>

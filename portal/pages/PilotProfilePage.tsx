@@ -977,7 +977,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
           </button>
 
           <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '72px', width: 'auto' }} />
+            <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ height: '72px', width: 'auto' }} />
           </div>
           <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.3em', color: '#94a3b8', textTransform: 'uppercase' }}>
             Live Real-Time Profile — Not Static CV

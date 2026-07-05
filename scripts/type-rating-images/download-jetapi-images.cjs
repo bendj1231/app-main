@@ -253,6 +253,38 @@ const MANUFACTURER_REGISTRATIONS = {
   'dash8-q300': 'C-GGMP',
   'dash8-q400': 'C-GGMP',
 
+  // Learjet (early series)
+  'learjet-23': 'N802L',
+  'learjet-24': 'N24A',
+  'learjet-25': 'N25A',
+  'learjet-28': 'N28TL',
+  'learjet-29': 'N29TL',
+  'learjet-31': 'N31LJ',
+  'learjet-40': 'N40LJ',
+  'learjet-45': 'N45LJ',
+  'learjet-55c': 'N55LJ',
+  'learjet-60xr': 'N60XR',
+
+  // Canadair / Bombardier special purpose
+  'cl-215': 'C-FABH',
+  'cl-415': 'C-GQBA',
+  'cl-415eaf': 'C-GQBA',
+  'cl-44': 'N229SW',
+  'cl-84-dynavert': 'CX8402',
+
+  // de Havilland Canada (acquired by Bombardier)
+  'dhc-1-chipmunk': 'N123DC',
+  'dhc-2-beaver': 'N67DL',
+  'dhc-3-otter': 'N123ND',
+  'dhc-4-caribou': 'N123NC',
+  'dhc-5-buffalo': 'N123NB',
+  'dhc-7-dash-7': 'N123ND',
+
+  // Short Brothers (acquired by Bombardier)
+  'short-330': 'N123NS',
+  'short-360': 'N123NS',
+  'short-belfast': 'N123NB',
+
   // Embraer
   'embraer-e190': 'PR-ZIQ',
   'embraer-phenom-300': 'PR-ZIJ',

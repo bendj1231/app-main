@@ -1934,7 +1934,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   const inputRef = (ref as React.RefObject<HTMLInputElement>) || localInputRef;
 
   const trendingSearches = [
-    { label: 'Cadet Programs', img: '/image_4c913bfc.png', category: 'Entry Level' },
+    { label: 'Cadet Programs', img: '/images/set-04-screenshots/image_4c913bfc.png', category: 'Entry Level' },
     { label: 'A320 Type Rating', img: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80', category: 'Training' },
     { label: 'Low Time Pilot', img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80', category: '0-500 hrs' },
     { label: 'Dubai Airlines', img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80', category: 'Location' },
@@ -3100,7 +3100,7 @@ const ThreeStagePathwayFilter: React.FC<{
                     const cardAirlineLogo = getAirlineLogo(card.airline);
                     const isPilotRecognitionCard = card.aircraftType === '__wingmentor__';
                     const cardAircraftImage = isPilotRecognitionCard
-                      ? '/logo.png'
+                      ? '/images/set-01-logos/logo.png'
                       : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
                     const isSelected = selectedCard?.id === card.id;
                     
@@ -3154,7 +3154,7 @@ const ThreeStagePathwayFilter: React.FC<{
                         {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
                             {card.image ? (
-                              <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
+                              <img src="/images/set-01-logos/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
                             ) : (
                               <div className="mb-4 text-center">
                                 <span className="text-white text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
@@ -3293,7 +3293,7 @@ const ThreeStagePathwayFilter: React.FC<{
                           if (!card) return null;
                           const isPilotRecognitionCard = card.aircraftType === '__wingmentor__';
                           const cardAircraftImage = isPilotRecognitionCard
-                            ? '/logo.png'
+                            ? '/images/set-01-logos/logo.png'
                             : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
                           return (
                             <div
@@ -4252,7 +4252,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       airline: item.company,
       description: item.salary || '',
       // Use image directly as aircraftType so the card renderer picks it up
-      image: item.image === 'wingmentor-white' ? '/logo.png' : (item.image || ''),
+      image: item.image === 'wingmentor-white' ? '/images/set-01-logos/logo.png' : (item.image || ''),
       matchProbability: item.matchPercentage,
       aircraftType: item.image === 'wingmentor-white' ? '__wingmentor__' : (item.image || ''),
       requirements: { totalHours: 0, typeRatings: item.requirements || [] },

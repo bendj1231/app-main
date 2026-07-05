@@ -414,7 +414,7 @@ export const VerificationRecurrencyTab: React.FC<Props> = ({
       >
         {/* Background image with dark overlay */}
         <img
-          src="/universal-pilot-gap.jpg"
+          src="/images/set-02-pilot-gap/universal-pilot-gap.jpg"
           alt="Universal pilot gap"
           className="absolute w-full h-full object-cover"
           style={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -720,7 +720,7 @@ export const VerificationRecurrencyTab: React.FC<Props> = ({
                 <div className="relative hidden md:block w-64 lg:w-80 flex-shrink-0">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: 'url(/verified.png)' }}
+                    style={{ backgroundImage: 'url(/images/set-04-screenshots/verified.png)' }}
                   />
                   {/* Left gradient fade into white */}
                   <div
@@ -2043,7 +2043,7 @@ export const VerificationRecurrencyTab: React.FC<Props> = ({
                       className="w-16 h-16 rounded-xl flex items-center justify-center p-2"
                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
                     >
-                      <img src="/logo.png" alt="WingMentor" className="w-full h-full object-contain" />
+                      <img src="/images/set-01-logos/logo.png" alt="WingMentor" className="w-full h-full object-contain" />
                     </div>
                     <span className="text-[8px] font-black tracking-[0.2em] text-white/40 uppercase">WING MENTOR</span>
                   </div>

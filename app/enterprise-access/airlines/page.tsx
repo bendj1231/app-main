@@ -408,7 +408,7 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="mb-10">
                         <img 
-                            src="/recogntion.png" 
+                            src="/images/set-03-recognition/recogntion.png" 
                             alt="The Recognition Gap illustration" 
                             className="w-full max-w-xl mx-auto rounded-xl shadow-lg"
                         />

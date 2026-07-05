@@ -114,7 +114,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 justifyContent: 'center',
                 zIndex: 9999
             }}>
-                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', marginBottom: '3rem' }} />
+                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', marginBottom: '3rem' }} />
                 <div style={{
                     width: '60px',
                     height: '60px',
@@ -216,7 +216,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                         {/* Centered Page Header (Editorial Style) */}
                         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                             <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
+                                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
                             </div>
                             <div style={{
                                 color: '#2563eb',

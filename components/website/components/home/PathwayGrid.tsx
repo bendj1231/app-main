@@ -133,12 +133,12 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'card-2',
-            images: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
-            image: '/typeratingsearch.png',
-            loggedInImages: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
-            loggedInImage: '/typeratingsearch.png',
-            enrolledImage: '/typeratingsearch.png',
-            enrolledImages: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
+            images: ['/images/set-06-pathways/pathway2.png', '/images/airline-operations.png', '/images/set-06-pathways/typeratingsearch.png'],
+            image: '/images/set-06-pathways/typeratingsearch.png',
+            loggedInImages: ['/images/set-06-pathways/pathway2.png', '/images/airline-operations.png', '/images/set-06-pathways/typeratingsearch.png'],
+            loggedInImage: '/images/set-06-pathways/typeratingsearch.png',
+            enrolledImage: '/images/set-06-pathways/typeratingsearch.png',
+            enrolledImages: ['/images/set-06-pathways/pathway2.png', '/images/airline-operations.png', '/images/set-06-pathways/typeratingsearch.png'],
             title: 'Are You Eligible for Singapore Airlines?',
             loggedInTitle: 'Your Gap Analysis',
             enrolledTitle: 'Your Gap Analysis',
@@ -159,7 +159,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'programs',
-            image: '/program1.png',
+            image: '/images/set-08-website/program1.png',
             title: 'Our Mission Pilotshortage.org',
             subtitle: 'Find structured flight training tracks that launch you from school to airline-ready status with verified progress and career-focused pathways.',
             icon: GraduationCap,
@@ -180,7 +180,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'pathways',
-            image: '/pathway4.png',
+            image: '/images/set-06-pathways/pathway4.png',
             title: 'Discover Career Pathways',
             subtitle: 'Hiring and career opportunities posted by operators — flight schools, manufacturers, and mainline airlines — searched daily by verified pilots.',
             icon: ShoppingBag,
@@ -205,7 +205,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'benefits',
-            image: '/New Note.jpeg',
+            image: '/images/set-04-screenshots/New Note.jpeg',
             title: 'Program Benefits',
             subtitle: 'Discover certification advantages, career pathways, and exclusive member perks',
             icon: Award,
@@ -234,7 +234,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     pathways: [
         {
             id: 'pilot-pathways',
-            image: '/Adobe Express - file.jpg',
+            image: '/images/set-04-screenshots/Adobe Express - file.jpg',
             title: 'Discover Pathways Platform',
             subtitle: 'Discover comprehensive career pathways from student to captain',
             icon: Compass,
@@ -243,7 +243,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'type-rating-search',
-            image: '/typeratingsrch.png',
+            image: '/images/set-06-pathways/typeratingsrch.png',
             title: 'Type-Rating Search',
             subtitle: 'Find aircraft type ratings and training centers worldwide',
             icon: Plane,
@@ -319,7 +319,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     applications: [
         {
             id: 'w1000-suite',
-            image: '/images/w1000.png',
+            image: '/images/set-04-screenshots/w1000.png',
             title: 'W1000 Suite',
             subtitle: 'Complete pilot workspace with weather, NOTAMs, and flight planning',
             icon: Zap,
@@ -415,12 +415,12 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        images: ['/pr2.png', '/images/airline-operations.png'],
-        image: '/pr2.png',
-        loggedInImages: ['/pr2.png'],
-        loggedInImage: '/pr2.png',
-        enrolledImages: ['/pr2.png'],
-        enrolledImage: '/pr2.png',
+        images: ['/images/set-03-recognition/pr2.png', '/images/airline-operations.png'],
+        image: '/images/set-03-recognition/pr2.png',
+        loggedInImages: ['/images/set-03-recognition/pr2.png'],
+        loggedInImage: '/images/set-03-recognition/pr2.png',
+        enrolledImages: ['/images/set-03-recognition/pr2.png'],
+        enrolledImage: '/images/set-03-recognition/pr2.png',
         title: 'Foundation Program Enroll',
         loggedInTitle: 'Foundation Program Enroll',
         enrolledTitle: 'Foundation Program Access',
@@ -502,7 +502,7 @@ const heroSlides: HeroSlide[] = [
         rightTitleHighlight: "to the industry",
         rightDescription: "Align your profile with specific career paths. Discover posted expectations & requirements from manufacturers, airlines, and the wider aviation industry before submitting your interest in a pathway.",
         rightHighlightText: "Gain exclusive access to private and eVTOL pathways for serious pilots with Recognition+.",
-        bgImage: "/123.png"
+        bgImage: "/images/set-07-ui-graphics/123.png"
     }
 ];
 

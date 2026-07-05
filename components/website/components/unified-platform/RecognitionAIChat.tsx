@@ -176,7 +176,20 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div
+      className="rounded-2xl border border-white/40 p-6"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.4))',
+        backdropFilter: 'blur(16px) saturate(1.2)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
+      }}
+    >
+      <div className="mb-4">
+        <p className="text-[11px] font-bold text-slate-500 tracking-wide">Ask Recognition AI</p>
+        <p className="text-[10px] text-slate-400">Get advice on your pathways, career goals, and network.</p>
+      </div>
+
       {/* Header — floating text, no wrapper */}
       <motion.div
         className="relative text-center"
@@ -185,8 +198,8 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
       >
         <p className="text-2xl font-black tracking-wide">
-          <span style={{ color: '#ffffff' }}>Recognition</span>
-          <span style={{ color: '#ef4444' }}> AI</span>
+          <span style={{ color: '#1e293b' }}>Recognition</span>
+          <span style={{ color: '#dc2626' }}> AI</span>
         </p>
         {!isPlus && (
           <div className="flex justify-center mt-1.5">
@@ -210,8 +223,66 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         )}
       </motion.div>
 
+      {/* Messages — always visible even when limit reached */}
+      <motion.div
+        className="space-y-3 pr-1"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {messages.map((msg, idx) => (
+          <motion.div
+            key={`${msg.timestamp}-${idx}`}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
+          >
+            <div
+              className={`max-w-[85%] rounded-xl px-4 py-3 ${
+                msg.role === 'user'
+                  ? 'bg-red-600 text-white'
+                  : ''
+              }`}
+              style={msg.role === 'user' ? {} : {
+                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                color: '#ffffff',
+                boxShadow: '0 4px 12px rgba(59,130,246,0.35)',
+              }}
+            >
+              <p className="text-[13px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+              <p className="text-[9px] text-white/50 mt-1.5">
+                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+        {isLoading && (
+          <motion.div
+            className="flex justify-start"
+            initial={{ opacity: 0, y: 12, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+          >
+            <div
+              className="rounded-xl px-4 py-3 flex items-center gap-2"
+              style={{
+                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                color: '#ffffff',
+                boxShadow: '0 4px 12px rgba(59,130,246,0.35)',
+              }}
+            >
+              <Loader2 size={14} className="text-amber-400 animate-spin" />
+              <p className="text-[13px] text-white/70">Recognition AI is thinking…</p>
+            </div>
+          </motion.div>
+        )}
+        <div ref={messagesEndRef} />
+      </motion.div>
+
       {/* Input area — always white search bar, floating */}
       <motion.div
+        className="mt-4"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
@@ -246,51 +317,6 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
               </button>
             )}
           </div>
-      </motion.div>
-
-      {/* Messages — always visible even when limit reached */}
-      <motion.div
-        className="space-y-3 pr-1"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {messages.map((msg, idx) => (
-          <motion.div
-            key={`${msg.timestamp}-${idx}`}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
-          >
-            <div
-              className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                msg.role === 'user'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-white/[0.06] border border-white/[0.10] text-white/90'
-              }`}
-            >
-              <p className="text-[13px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-              <p className="text-[9px] text-white/30 mt-1.5">
-                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-        {isLoading && (
-          <motion.div
-            className="flex justify-start"
-            initial={{ opacity: 0, y: 12, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          >
-            <div className="rounded-2xl px-4 py-3 flex items-center gap-2 bg-white/[0.06] border border-white/[0.10]">
-              <Loader2 size={14} className="text-amber-400 animate-spin" />
-              <p className="text-[13px] text-white/60">Recognition AI is thinking…</p>
-            </div>
-          </motion.div>
-        )}
-        <div ref={messagesEndRef} />
       </motion.div>
     </div>
   );

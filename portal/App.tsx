@@ -103,7 +103,7 @@ const applications: CardItem[] = [
     description: 'Access your learning dashboard, track progress, and manage your pilot training journey.',
     icon: 'Monitor',
     linkText: 'Download Module',
-    image: '/images/Captain-Paperwork-Medium.jpg',
+    image: '/images/set-04-screenshots/Captain-Paperwork-Medium.jpg',
     badge: 'Dynamic'
   }
 ];
@@ -960,7 +960,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
                 </button>
               </div>
               <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
+                <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
               </div>
               <div className="dashboard-subtitle">DYNAMIC ASSET LOADING</div>
               <h1 className="dashboard-title">Remote Applications</h1>

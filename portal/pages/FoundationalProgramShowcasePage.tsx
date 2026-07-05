@@ -240,7 +240,7 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
                 </div>
 
                 <section style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px', height: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                    <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px', height: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.85rem' }}>
                         Foundational Program
                     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Home,
   User,
@@ -25,6 +26,7 @@ import {
   BadgeCheck,
   Target,
   X,
+  Lock,
 } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { NavItem } from './types';
@@ -522,7 +524,53 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
         </div>
       </div>
 
-      {/* Notification list */}
+      {!profile?.full_name || !profile?.current_occupation || !profile?.license_type ? (
+        <div className="px-5 py-8 max-h-[380px] overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-4 max-w-sm mx-auto text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.15)' }}>
+              <Lock size={28} className="text-red-500" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-slate-800">Complete Your Advanced Profile</p>
+              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Finish your profile to unlock activity notifications, pathway reminders, and credential alerts.
+              </p>
+            </div>
+            <div className="space-y-2 pt-2 text-left">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.full_name ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                  {profile?.full_name ? '✓' : '1'}
+                </div>
+                <span className="text-[10px] font-bold text-slate-600">Full Name</span>
+                <span className="ml-auto text-[9px] text-slate-400">{profile?.full_name ? 'Done' : 'Required'}</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.current_occupation ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                  {profile?.current_occupation ? '✓' : '2'}
+                </div>
+                <span className="text-[10px] font-bold text-slate-600">Current Occupation</span>
+                <span className="ml-auto text-[9px] text-slate-400">{profile?.current_occupation ? 'Done' : 'Required'}</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.license_type ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                  {profile?.license_type ? '✓' : '3'}
+                </div>
+                <span className="text-[10px] font-bold text-slate-600">License Type</span>
+                <span className="ml-auto text-[9px] text-slate-400">{profile?.license_type ? 'Done' : 'Required'}</span>
+              </div>
+            </div>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="w-full py-2.5 rounded-xl text-[11px] font-black text-white transition-all hover:brightness-110"
+                style={{ background: '#dc2626' }}
+              >
+                COMPLETE ADVANCED PROFILE →
+              </button>
+            )}
+          </motion.div>
+        </div>
+      ) : (
       <div className="px-3 py-3 max-h-[380px] overflow-y-auto">
         {allNotifs.length === 0 ? (
           <div className="flex items-center justify-center py-8">
@@ -629,8 +677,9 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
           </div>
         )}
       </div>
+      )}
 
-      {/* Footer */}
+      {!!(profile?.full_name && profile?.current_occupation && profile?.license_type) && (
       <div className="px-5 py-3 border-t border-slate-200/60 bg-slate-50/50">
         <button
           className="w-full text-center text-[11px] font-black text-slate-500 hover:text-slate-700 transition-colors"
@@ -638,6 +687,7 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
           View all in Inbox →
         </button>
       </div>
+      )}
     </div>
   );
 };

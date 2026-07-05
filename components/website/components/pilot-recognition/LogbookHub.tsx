@@ -268,35 +268,35 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
   const [csvModalProvider, setCsvModalProvider] = useState<string | null>(null);
 
   const AIRCRAFT_CAROUSEL_DATA = [
-    { name: 'Cessna 172S', type: 'C172', hours: 3.2, date: '28 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 4, grade: 'A-', instructor: 'Capt. Reyes', remarks: 'Smooth short-field landing. Wind correction on final was precise.', route: 'RPLL - RPLC', conditions: 'VFR, 12kt wind 090°', engine: 'Lycoming IO-360-L2A', totalTime: 342.5, crew: [
+    { name: 'Cessna 172S', type: 'C172', hours: 3.2, date: '28 Jun 2026', color: '#38bdf8', img: '/images/manufacturers/cessna/cessna-cessna_172.jpg', tail: 'RP-C1234', landings: 4, grade: 'A-', instructor: 'Capt. Reyes', remarks: 'Smooth short-field landing. Wind correction on final was precise.', route: 'RPLL - RPLC', conditions: 'VFR, 12kt wind 090°', engine: 'Lycoming IO-360-L2A', totalTime: 342.5, crew: [
       { name: 'Capt. Reyes', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=reyes' },
       { name: 'Juan Dela Cruz', role: 'CPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=juan' },
     ]},
-    { name: 'Piper PA-44', type: 'PA44', hours: 2.5, date: '25 Jun 2026', color: '#818cf8', img: 'https://resources.globalair.com/specs/images/Twin%20Pistons/Piper/Seminole/PA-44-180/Exterior/Seminole%20PA-44-180%204.jpg?w=650&h=430&mode=max', tail: 'RP-S8820', landings: 3, grade: 'B+', instructor: 'Capt. Dela Cruz', remarks: 'Good engine-out procedures. Maintain heading during single-engine ops.', route: 'RPLL - RPLI', conditions: 'VFR, scattered clouds 3,000ft', engine: 'Lycoming O-360-A1H6 x2', totalTime: 892.0, crew: [
+    { name: 'Piper PA-44', type: 'PA44', hours: 2.5, date: '25 Jun 2026', color: '#818cf8', img: '/images/manufacturers/piper/piper-pa28.jpg', tail: 'RP-S8820', landings: 3, grade: 'B+', instructor: 'Capt. Dela Cruz', remarks: 'Good engine-out procedures. Maintain heading during single-engine ops.', route: 'RPLL - RPLI', conditions: 'VFR, scattered clouds 3,000ft', engine: 'Lycoming O-360-A1H6 x2', totalTime: 892.0, crew: [
       { name: 'Capt. Dela Cruz', role: 'Captain', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=delacruz' },
       { name: 'Maria Santos', role: 'First Officer', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=maria' },
     ]},
-    { name: 'Cessna 152', type: 'C152', hours: 1.8, date: '22 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 6, grade: 'A', instructor: 'Capt. Santos', remarks: 'Excellent stall recovery. Student solo-ready for pattern work.', route: 'RPLL - RPLB', conditions: 'VFR, calm wind', engine: 'Lycoming O-235-L2C', totalTime: 128.3, crew: [
+    { name: 'Cessna 152', type: 'C152', hours: 1.8, date: '22 Jun 2026', color: '#34d399', img: '/images/manufacturers/cessna/cessna-152.jpg', tail: 'RP-C9941', landings: 6, grade: 'A', instructor: 'Capt. Santos', remarks: 'Excellent stall recovery. Student solo-ready for pattern work.', route: 'RPLL - RPLB', conditions: 'VFR, calm wind', engine: 'Lycoming O-235-L2C', totalTime: 128.3, crew: [
       { name: 'Capt. Santos', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=santos' },
       { name: 'Pedro Reyes', role: 'SPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=pedro' },
     ]},
-    { name: 'Tecnam P2008', type: 'P2008', hours: 4.0, date: '20 Jun 2026', color: '#f59e0b', img: 'https://tecnam.com/wp-content/uploads/2026/02/P2008-JC-NG-blue-Large.jpeg', tail: 'RP-T7721', landings: 2, grade: 'B', instructor: 'Capt. Lim', remarks: 'Cross-country navigation solid. Fuel planning needs attention.', route: 'RPLL - RPUY', conditions: 'VFR, haze, 8sm vis', engine: 'Rotax 912iS', totalTime: 56.7, crew: [
+    { name: 'Tecnam P2008', type: 'P2008', hours: 4.0, date: '20 Jun 2026', color: '#f59e0b', img: '/images/manufacturers/tecnam/tecnam-p2008.jpg', tail: 'RP-T7721', landings: 2, grade: 'B', instructor: 'Capt. Lim', remarks: 'Cross-country navigation solid. Fuel planning needs attention.', route: 'RPLL - RPUY', conditions: 'VFR, haze, 8sm vis', engine: 'Rotax 912iS', totalTime: 56.7, crew: [
       { name: 'Capt. Lim', role: 'Check Pilot', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=lim' },
       { name: 'Angelo Cruz', role: 'CPL Student', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=angelo' },
     ]},
-    { name: 'Diamond DA40', type: 'DA40', hours: 3.5, date: '18 Jun 2026', color: '#f472b6', img: 'https://upload.wikimedia.org/wikipedia/commons/8/87/OH-DAC_Tour_de_Sky_Oulu_20140810_02.JPG', tail: 'RP-D4405', landings: 3, grade: 'A-', instructor: 'Capt. Tan', remarks: 'Glass cockpit proficiency improving. Autopilot coupling smooth.', route: 'RPLL - RPVP', conditions: 'IFR, overcast 1,500ft', engine: 'Lycoming IO-360-M1A', totalTime: 445.2, crew: [
+    { name: 'Diamond DA40', type: 'DA40', hours: 3.5, date: '18 Jun 2026', color: '#f472b6', img: '/images/manufacturers/diamond/diamond-da40.jpg', tail: 'RP-D4405', landings: 3, grade: 'A-', instructor: 'Capt. Tan', remarks: 'Glass cockpit proficiency improving. Autopilot coupling smooth.', route: 'RPLL - RPVP', conditions: 'IFR, overcast 1,500ft', engine: 'Lycoming IO-360-M1A', totalTime: 445.2, crew: [
       { name: 'Capt. Tan', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=tan' },
       { name: 'David Park', role: 'CPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=david' },
     ]},
-    { name: 'Cessna 172S', type: 'C172', hours: 2.1, date: '15 Jun 2026', color: '#38bdf8', img: 'https://s206.q4cdn.com/111183019/files/images/2021/403195-Cessna-Skyhawk-cfc927-original-1633017054.jpg', tail: 'RP-C1234', landings: 5, grade: 'B+', instructor: 'Capt. Reyes', remarks: 'Night flying session. Instrument scan disciplined.', route: 'RPLL - RPLC', conditions: 'Night VFR, clear, 10sm', engine: 'Lycoming IO-360-L2A', totalTime: 339.3, crew: [
+    { name: 'Cessna 172S', type: 'C172', hours: 2.1, date: '15 Jun 2026', color: '#38bdf8', img: '/images/manufacturers/cessna/cessna-cessna_172.jpg', tail: 'RP-C1234', landings: 5, grade: 'B+', instructor: 'Capt. Reyes', remarks: 'Night flying session. Instrument scan disciplined.', route: 'RPLL - RPLC', conditions: 'Night VFR, clear, 10sm', engine: 'Lycoming IO-360-L2A', totalTime: 339.3, crew: [
       { name: 'Capt. Reyes', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=reyes2' },
       { name: 'Lisa Chen', role: 'CPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=lisa' },
     ]},
-    { name: 'Piper PA-28', type: 'PA28', hours: 1.5, date: '12 Jun 2026', color: '#a78bfa', img: 'https://placehold.co/200x200/2a1e3a/a78bfa?text=PA28', tail: 'RP-P2810', landings: 4, grade: 'A', instructor: 'Capt. Dela Cruz', remarks: 'Soft-field takeoff and landing mastery. Ready for checkride.', route: 'RPLL - RPLB', conditions: 'VFR, wet runway, 6kt wind', engine: 'Lycoming O-320-E2D', totalTime: 210.8, crew: [
+    { name: 'Piper PA-28', type: 'PA28', hours: 1.5, date: '12 Jun 2026', color: '#a78bfa', img: '/images/manufacturers/piper/piper-pa28.jpg', tail: 'RP-P2810', landings: 4, grade: 'A', instructor: 'Capt. Dela Cruz', remarks: 'Soft-field takeoff and landing mastery. Ready for checkride.', route: 'RPLL - RPLB', conditions: 'VFR, wet runway, 6kt wind', engine: 'Lycoming O-320-E2D', totalTime: 210.8, crew: [
       { name: 'Capt. Dela Cruz', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=delacruz2' },
       { name: 'Mark Johnson', role: 'SPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=mark' },
     ]},
-    { name: 'Cessna 152', type: 'C152', hours: 2.8, date: '10 Jun 2026', color: '#34d399', img: 'https://i1.wp.com/www.avgeekery.com/wp-content/uploads/2020/02/Fleet-Cessna-152-Aerobat_Western-Australian-Aviation-Collegea.jpg?fit=1160%2C677&ssl=1', tail: 'RP-C9941', landings: 8, grade: 'A-', instructor: 'Capt. Santos', remarks: 'Circuit practice. Consistent approach speeds maintained.', route: 'RPLL - RPLB', conditions: 'VFR, light turbulence', engine: 'Lycoming O-235-L2C', totalTime: 126.5, crew: [
+    { name: 'Cessna 152', type: 'C152', hours: 2.8, date: '10 Jun 2026', color: '#34d399', img: '/images/manufacturers/cessna/cessna-152.jpg', tail: 'RP-C9941', landings: 8, grade: 'A-', instructor: 'Capt. Santos', remarks: 'Circuit practice. Consistent approach speeds maintained.', route: 'RPLL - RPLB', conditions: 'VFR, light turbulence', engine: 'Lycoming O-235-L2C', totalTime: 126.5, crew: [
       { name: 'Capt. Santos', role: 'CFI', position: 'Right Seat', pic: 'https://i.pravatar.cc/150?u=santos2' },
       { name: 'Rachel Kim', role: 'CPL Student', position: 'Left Seat', pic: 'https://i.pravatar.cc/150?u=rachel' },
     ]},
@@ -671,104 +671,6 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
           </button>
         </div>
       </div>
-      )}
-
-      {/* Action buttons */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <button
-          onClick={() => setSubPage('logbook')}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-black tracking-wider text-white transition-all hover:brightness-110"
-          style={{ background: 'rgba(56,189,248,0.15)', border: '1px solid rgba(56,189,248,0.3)' }}
-        >
-          <BookMarked size={13} /> OPEN LOGBOOK
-        </button>
-        <div className="flex flex-col items-center">
-          <button
-            onClick={loadData}
-            disabled={refreshing}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-black tracking-wider transition-all"
-            style={{
-              background: refreshing ? 'rgba(220,38,38,0.1)' : 'rgba(255,255,255,0.05)',
-              border: refreshing ? '1px solid rgba(220,38,38,0.3)' : '1px solid rgba(255,255,255,0.08)',
-              color: refreshing ? '#ef4444' : 'rgba(255,255,255,0.6)',
-              cursor: refreshing ? 'not-allowed' : 'pointer',
-            }}
-          >
-            <RefreshCw size={13} className={refreshing ? 'animate-spin' : ''} /> {refreshing ? 'SYNCING…' : 'REFRESH'}
-          </button>
-          {refreshing && (
-            <p className="text-[9px] text-white/40 mt-1.5 text-center">Connecting your logbook — syncing to refresh the connection</p>
-          )}
-        </div>
-      </div>
-
-      {/* Synced providers */}
-      <div ref={providersRef} id="logbook-providers">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Connected Sources</p>
-            <p className="text-sm font-black text-white">Synced Logbook Providers</p>
-          </div>
-          {providers.length > 0 && (
-            <span className="text-[9px] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.1)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }}>
-              {providers.length} CONNECTED
-            </span>
-          )}
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-10">
-            <div className="w-6 h-6 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin" />
-          </div>
-        ) : providers.length === 0 ? (
-          <div className="space-y-4">
-            <div className="flex flex-col gap-2">
-              {Object.keys(PROVIDER_META).map(key => (
-                <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} onConnect={(k) => handleConnect(k)} />
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 justify-center">
-              <span className="text-[9px]" style={{ color: '#00b4d8' }}>● OAuth 2.0</span>
-              <span className="text-[9px] text-purple-400">● API Passkey</span>
-              <span className="text-[9px] text-green-400">● Direct API</span>
-              <span className="text-[9px] text-orange-400">● CSV Import</span>
-            </div>
-            <p className="text-center text-[10px] text-white/20">Read-only access only. We never modify your logbook data.</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {providers.map(p => (
-              <ProviderCard key={p.id} provider={p} onOpenLogbook={() => setSubPage('logbook')} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Available providers to connect — only shown when some are already connected */}
-      {providers.length > 0 && availableToConnect.length > 0 && (
-        <div>
-          <div className="mb-3">
-            <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Available Integrations</p>
-            <p className="text-sm font-black text-white">Add Another Provider</p>
-          </div>
-          <div className="space-y-3">
-            <div className="flex flex-col gap-3">
-              {availableToConnect.map(key => (
-                <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} />
-              ))}
-            </div>
-            {selectedProvider && availableToConnect.includes(selectedProvider) && (
-              <button
-                onClick={() => handleConnect(selectedProvider)}
-                disabled={connecting}
-                className="w-full py-3 rounded-xl text-sm font-black tracking-wider transition-all"
-                style={{ background: '#dc2626', color: '#fff', border: '1px solid rgba(220,38,38,0.4)', cursor: connecting ? 'not-allowed' : 'pointer' }}
-              >
-                {connecting ? 'Connecting…' : `Sync with ${PROVIDER_META[selectedProvider]?.name} →`}
-              </button>
-            )}
-          </div>
-        </div>
       )}
 
       {/* ─── AIRCRAFT DETAIL MODAL ─── */}

@@ -9,7 +9,7 @@ export const MentorModulesPage7: React.FC<MentorModulesPage7Props> = ({ onBack }
     <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
       <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+          <img src="/images/set-01-logos/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
         </div>
         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
           MODULE 2 • CHAPTER 7

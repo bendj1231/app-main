@@ -7,6 +7,33 @@
     "git": {
       "command": "npx",
       "args": ["-y", "@cyanheads/git-mcp-server"]
+    },
+    "wikipedia-mcp": {
+      "command": "npx",
+      "args": ["-y", "wikipedia-mcp"]
+    },
+    "wiki-mcp": {
+      "command": "npx",
+      "args": ["-y", "wiki-mcp"]
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    },
+    "google-ai-mode": {
+      "command": "npx",
+      "args": ["-y", "google-ai-mode-mcp@latest"],
+      "env": {
+        "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      }
+    },
+    "regulatory-monitor": {
+      "command": "npx",
+      "args": ["-y", "tsx", "/Users/bowler/Documents/apps/app-main/mcp/regulatory-monitor/src/index.ts"]
+    },
+    "wikimedia-image-search": {
+      "command": "npx",
+      "args": ["-y", "wikimedia-image-search-mcp"]
     }
   }
 }

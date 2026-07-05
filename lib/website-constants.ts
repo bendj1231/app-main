@@ -1,9 +1,9 @@
 
 export const IMAGES = {
-    LOGO: "/images/logo.png",
+    LOGO: "/images/set-01-logos/logo.png",
     SECURE_PORTAL: "/images/secure-portal.png",
     PILOT_GAP_LOGO: "/images/pilot-gap-logo.png",
-    HERO_ALT: "/images/logo.png",
+    HERO_ALT: "/images/set-01-logos/logo.png",
     HERO_VIDEO: "https://www.dropbox.com/scl/fi/1gd40zo6t5uityywl005v/videoSharingFinalOutput.mov?rlkey=obo681srrrhsisi34bfvbgnsh&st=2oewaq7n&raw=1",
     HUB_VIDEO: "https://www.dropbox.com/scl/fi/4gk5uoxr0vxxwstazfh6y/videoSharingFinalOutput.mov?rlkey=qy8y8bj2y88egy9njrremglom&st=oj65v4py&raw=1",
     HUB_INTERFACE: "/images/hub-interface.png",
@@ -12,8 +12,8 @@ export const IMAGES = {
     HERO_POSTER: "https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=3000&auto-format&fit=crop",
     PROGRAM_BG: "/images/program-bg.png",
     ABOUT_BG: "/images/about-bg.png",
-    PROGRAM_HEADER_IMAGE: "/images/logo.png",
-    ABOUT_US_HEADER_IMAGE: "/images/logo.png",
+    PROGRAM_HEADER_IMAGE: "/images/set-01-logos/logo.png",
+    ABOUT_US_HEADER_IMAGE: "/images/set-01-logos/logo.png",
     RUNWAY_HOLDING_POINT: "/images/runway-holding-point.png",
     BLACK_STRIP_BG: "https://images.unsplash.com/photo-1635245642637-293d0554581f?q=80&w=2832&auto-format&fit=crop",
     PROGRAM_DETAIL_BG: "/images/program-detail-bg.png",

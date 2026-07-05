@@ -18,7 +18,7 @@ type SidebarSection =
   | 'vault';
 
 const SECTIONS: { id: SidebarSection; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-  { id: 'profile-information',  label: 'Profile Information',      icon: LayoutDashboard },
+  { id: 'profile-information',  label: 'Introduction',      icon: LayoutDashboard },
   { id: 'personal-details',     label: 'Personal Details',         icon: User },
   { id: 'license-medical',      label: 'License & Medical',        icon: Shield },
   { id: 'aircraft-ratings',     label: 'Aircraft Ratings',         icon: Star },
@@ -199,6 +199,7 @@ export const AdvancedProfileTab: React.FC<AdvancedProfileTabProps> = ({ setTab, 
             onBack={() => setTab('verification')}
             userProfile={userProfile}
             embedded={true}
+            onGetStarted={() => setActiveSection('personal-details')}
             visibleSection={
               activeSection === 'personal-details' ? 'personal' :
               activeSection === 'license-medical' ? 'license-medical' :

@@ -4,9 +4,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { safeRedirect } from '@/lib/url-validator';
 import FlightInstrumentDashboard from '../../dashboard/FlightInstrumentDashboard';
 import { InfrastructureDashboard } from '../../InfrastructureDashboard';
+import { RecognitionAIChat } from '../RecognitionAIChat';
+import { LogbookHub } from '@/components/website/components/pilot-recognition/LogbookHub';
+import { InteractiveProfilePreview } from '../InteractiveProfilePreview';
+import type { TabId } from '../types';
 import {
   BookOpen, Globe, User, Shield, Target, Zap, GraduationCap, Plane, Award,
-  Brain, Clock, PlayCircle, FolderOpen, ChevronRight
+  Brain, Clock, PlayCircle, FolderOpen, ChevronRight, Briefcase, Mail, Star, ArrowRight
 } from 'lucide-react';
 
 const PATHWAY_CARDS = [
@@ -18,7 +22,7 @@ const PATHWAY_CARDS = [
 
 const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 
-export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void; setTab?: (tab: TabId) => void }> = ({ profile, onNavigate, setTab }) => {
   const { currentUser } = useAuth();
   const [carouselIdx, setCarouselIdx] = useState(0);
   const paused = React.useRef(false);
@@ -133,14 +137,190 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 lg:px-8">
       <div className="relative">
         <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
         <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
       </div>
 
-      {/* Flight Instrument Dashboard */}
-      <FlightInstrumentDashboard userId={currentUser.id} />
+      {/* Recognition AI Chat */}
+      <RecognitionAIChat profile={profile} />
+
+      {/* Quick Access Dashboard */}
+      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+        <div className="flex items-center gap-3 mb-6">
+          <Zap size={22} className="text-amber-400" />
+          <h3 className="text-xl font-bold text-white">» QUICK ACCESS</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Flight Bag */}
+          <button
+            onClick={() => setTab?.('logbook' as TabId)}
+            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{ background: '#ffffff' }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <Briefcase size={24} style={{ color: '#ffffff' }} />
+            </div>
+            <div className="w-full">
+              <h4 className="text-slate-900 font-bold text-base mb-2">Flight Bag</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">Last Flown</span>
+                  <span className="text-slate-900 text-sm font-bold">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">Total Hours</span>
+                  <span className="text-blue-600 text-sm font-black">{profile?.total_flight_hours || 0}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">Career</span>
+                  <span className="text-slate-900 text-xs font-bold">{profile?.current_occupation || profile?.license_type || 'Not set'}</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-auto flex items-center gap-1 text-xs font-bold" style={{ color: '#dc2626' }}>
+              <span>Open Logbook</span>
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </button>
+
+          {/* Profile */}
+          <button
+            onClick={() => setTab?.('profile' as TabId)}
+            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{ background: '#ffffff' }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <User size={24} style={{ color: '#ffffff' }} />
+            </div>
+            <div className="w-full">
+              <h4 className="text-slate-900 font-bold text-base mb-2">Profile</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">Name</span>
+                  <span className="text-slate-900 text-sm font-bold truncate max-w-[120px]">{profile?.display_name || profile?.full_name || 'Guest'}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">License</span>
+                  <span className="text-slate-900 text-xs font-bold">{profile?.license_type || 'Not set'}</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 text-xs">Completion</span>
+                    <span className="text-emerald-600 text-sm font-black">{Math.round(([
+                      !!profile?.full_name,
+                      !!profile?.current_occupation,
+                      !!profile?.license_type,
+                      !!profile?.total_flight_hours,
+                      !!profile?.last_flown,
+                    ].filter(Boolean).length / 5) * 100)}%</span>
+                  </div>
+                  <div className="h-2 rounded-full overflow-hidden" style={{ background: '#e2e8f0' }}>
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.round(([
+                          !!profile?.full_name,
+                          !!profile?.current_occupation,
+                          !!profile?.license_type,
+                          !!profile?.total_flight_hours,
+                          !!profile?.last_flown,
+                        ].filter(Boolean).length / 5) * 100)}%`,
+                        background: '#10b981',
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-auto flex items-center gap-1 text-xs font-bold" style={{ color: '#dc2626' }}>
+              <span>View Profile</span>
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </button>
+
+          {/* Inbox */}
+          <button
+            onClick={() => setTab?.('inbox' as TabId)}
+            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{ background: '#ffffff' }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <Mail size={24} style={{ color: '#ffffff' }} />
+            </div>
+            <div className="w-full">
+              <h4 className="text-slate-900 font-bold text-base mb-2">Inbox</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-xs">Unread</span>
+                  <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full">3</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0 mt-1" />
+                  <span className="text-slate-700 text-xs leading-snug">New pathway match: Emirates</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1" />
+                  <span className="text-slate-700 text-xs leading-snug">Medical cert expiring soon</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-auto flex items-center gap-1 text-xs font-bold" style={{ color: '#dc2626' }}>
+              <span>Open Inbox</span>
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </button>
+
+          {/* Recognition+ */}
+          <button
+            onClick={() => setTab?.('recognition-plus' as TabId)}
+            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{ background: '#ffffff' }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <Star size={24} style={{ color: '#ffffff' }} />
+            </div>
+            <div className="w-full">
+              <h4 className="text-slate-900 font-bold text-base mb-2">Recognition+</h4>
+              {(() => {
+                const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
+                const isMember = tier !== 'free' && tier !== 'bronze';
+                const verifStatus = (profile?.verification_status as Record<string, unknown>)?.status || (profile?.verification_status as string) || 'unverified';
+                return (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 text-xs">Status</span>
+                      <span className={`text-sm font-bold ${isMember ? 'text-amber-600' : 'text-slate-500'}`}>{isMember ? 'Active Member' : 'Free Account'}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 text-xs">Verification</span>
+                      <span className={`text-sm font-black ${verifStatus === 'verified' ? 'text-emerald-600' : 'text-yellow-600'}`}>{verifStatus === 'verified' ? 'Verified' : 'Pending'}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 text-xs">Tier</span>
+                      <span className="text-slate-900 text-xs font-bold capitalize">{tier}</span>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="mt-auto flex items-center gap-1 text-xs font-bold" style={{ color: '#dc2626' }}>
+              <span>{(() => {
+                const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
+                return tier === 'free' || tier === 'bronze' ? 'Upgrade Now' : 'Manage Plan';
+              })()}</span>
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Interactive Profile Preview — glassy SaaS command centre */}
+      <InteractiveProfilePreview profile={profile} setTab={setTab} onNavigate={onNavigate} />
+
+      {/* Digital Logbook Hub */}
+      <LogbookHub profile={profile} onNavigate={onNavigate} onCompleteProfile={() => setTab?.('advanced-profile' as TabId)} />
 
       {/* Admin Infrastructure Command Centre — only visible to super admin */}
       {(currentUser.email === SUPER_ADMIN_EMAIL || profile?.role === 'super_admin') && (
