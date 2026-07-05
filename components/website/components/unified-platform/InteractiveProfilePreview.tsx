@@ -568,7 +568,9 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </span>
                   </div>
                   {pathwayMatches.length === 0 ? (
-                    <div className="text-center py-4">
+                    <div
+                      className="border border-dashed border-gray-200 rounded-lg bg-gray-50/50 p-6 text-center"
+                    >
                       <Route size={20} className="text-slate-300 mx-auto mb-2" />
                       <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
                     </div>
@@ -600,31 +602,36 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
                 >
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
                     <Mail size={14} className="text-emerald-500" />
                     <p className="text-xs font-bold text-slate-800">Recent Replies</p>
                   </div>
-                  <div className="space-y-3">
+                  <div>
                     {[
                       { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
                       { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
                       { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
-                    ].map((reply, i) => (
-                      <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                        <img
-                          src={reply.logoUrl}
-                          alt={reply.airline}
-                          className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                          style={{ background: '#ffffff' }}
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
-                            <span className="text-[9px] text-slate-400">{reply.time}</span>
+                    ].map((reply, i, arr) => (
+                      <div key={i}>
+                        <div className="flex items-start gap-3 py-3">
+                          <img
+                            src={reply.logoUrl}
+                            alt={reply.airline}
+                            className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                            style={{ background: '#ffffff' }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between mb-0.5">
+                              <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
+                              <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
                           </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
                         </div>
+                        {i < arr.length - 1 && (
+                          <div className="border-t border-gray-100" />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -639,18 +646,21 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     <Star size={14} className="text-amber-500" />
                     <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div
+                    className="rounded-lg p-3 mb-3"
+                    style={{ background: 'rgba(245,158,11,0.06)' }}
+                  >
+                    <div className="flex items-center gap-3">
                       <div
                         className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ background: 'rgba(245,158,11,0.1)' }}
+                        style={{ background: 'rgba(245,158,11,0.12)' }}
                       >
                         <Target size={14} style={{ color: '#d97706' }} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
-                          <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">94%</span>
+                          <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">94%</span>
                         </div>
                         <p className="text-[10px] text-slate-400">Airline · License and hours align</p>
                       </div>
@@ -659,8 +669,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                   <button
                     onClick={() => setTab?.('pathways' as TabId)}
-                    className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
-                    style={{ background: '#f8fafc' }}
+                    className="w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-slate-600 hover:text-slate-800 transition-all border border-gray-300 hover:border-gray-400 bg-gray-100 hover:bg-gray-200"
                   >
                     View Match Details →
                   </button>
