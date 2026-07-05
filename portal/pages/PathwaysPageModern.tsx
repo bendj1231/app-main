@@ -4978,9 +4978,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Left: Entity selector card */}
                   <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(15,23,42,0.35)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
-                    <div className="p-3">
+                    <div className="p-3 text-center">
                       <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color: '#06b6d4' }}>Discover Pathways</p>
-                      <div className="relative">
+                      <div className="relative flex items-center justify-center">
                         <select
                           value={activeEntity}
                           onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
@@ -4998,9 +4998,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   </div>
                   {/* Right: Category selector card */}
                   <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(15,23,42,0.35)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
-                    <div className="p-3">
+                    <div className="p-3 text-center">
                       <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-white/30">Category</p>
-                      <div className="relative">
+                      <div className="relative flex items-center justify-center">
                         <select
                           value={activeEntityCategory}
                           onChange={(e) => setActiveEntityCategory(e.target.value)}
