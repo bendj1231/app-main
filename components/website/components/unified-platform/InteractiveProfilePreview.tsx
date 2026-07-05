@@ -608,35 +608,29 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
                   </div>
                   <div className="space-y-2">
-                    {[
-                      { name: 'Delta Airlines A320 FO', match: 94, type: 'Airline', reason: 'License and hours align' },
-                      { name: 'Type Rating Fast-Track', match: 88, type: 'Training', reason: 'Top-tier match for your profile' },
-                      { name: 'Private Jet Charter', match: 82, type: 'Charter', reason: 'Hour count places you top tier' },
-                    ].map((rec, i) => (
-                      <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: 'rgba(245,158,11,0.1)' }}
-                        >
-                          <Target size={14} style={{ color: '#d97706' }} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className="text-[11px] font-bold text-slate-700 truncate">{rec.name}</p>
-                            <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">{rec.match}%</span>
-                          </div>
-                          <p className="text-[10px] text-slate-400">{rec.type} · {rec.reason}</p>
-                        </div>
-                        <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
+                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: 'rgba(245,158,11,0.1)' }}
+                      >
+                        <Target size={14} style={{ color: '#d97706' }} />
                       </div>
-                    ))}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
+                          <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">94%</span>
+                        </div>
+                        <p className="text-[10px] text-slate-400">Airline · License and hours align</p>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
+                    </div>
                   </div>
                   <button
                     onClick={() => setTab?.('pathways' as TabId)}
                     className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
                     style={{ background: '#f8fafc' }}
                   >
-                    View All Recommendations →
+                    View Match Details →
                   </button>
                 </div>
               </motion.div>
