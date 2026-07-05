@@ -1514,7 +1514,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
       {searchQuery.trim() && (
       <>
-        <div className="relative z-20 px-5 -mt-2 mb-1 text-center" style={{ marginLeft: '280px' }}>
+        <div className="relative z-30 px-5 -mt-2 mb-1 text-center" style={{ marginLeft: '280px' }}>
           <h2 className="text-base font-serif font-normal text-white drop-shadow-md inline-block">
             Browse Manufacturers <span className="text-sm text-white/60">({manufacturers.length})</span>
           </h2>
