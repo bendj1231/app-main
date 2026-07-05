@@ -827,56 +827,58 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '2rem', paddingRight: '1rem' }}>
 
+      {/* Manufacturer Preview - full width edge-to-edge above everything */}
+      {selectedManufacturer && (
+        <div className="text-white py-12 -mt-8 -mr-4" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
+          <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 flex flex-col lg:flex-row gap-12">
+            {/* Left side - Header, metadata, and stats */}
+            <div className="lg:w-5/12">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal mb-4 leading-tight">{selectedManufacturer.name}</h2>
+              <div className="space-y-1.5 text-white/70 text-sm mb-8">
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-4 h-4" />
+                  <span>{selectedManufacturer.headquarters}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Founded {selectedManufacturer.founded}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-400" />
+                  <span>{selectedManufacturer.reputation_score || 0}/10</span>
+                </div>
+              </div>
+
+              {/* Stats cards */}
+              <div className="space-y-3">
+                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Aircrafts Listed</div>
+                  <div className="text-2xl font-bold">{selectedManufacturer.total_aircraft_count || aircraftTypeRatings.filter(a => a.manufacturer_id === selectedManufacturer.id).length || 87}</div>
+                </div>
+                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Preferred Type of Pilots</div>
+                  <div className="text-lg font-bold">600-1500 hours</div>
+                </div>
+                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Pilots Rated</div>
+                  <div className="text-2xl font-bold">200,000-250,000+</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side - Description */}
+            <div className="lg:w-7/12 flex items-center">
+              <p className="text-white/80 text-base leading-relaxed">{selectedManufacturer.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero - Responsive sizing */}
       <div className="relative overflow-hidden pt-8 md:pt-12 lg:pt-16 pb-8 md:pb-10 lg:pb-12 px-4 md:px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
 
-        {selectedManufacturer ? (
-          /* Manufacturer Preview - above search bar */
-          <div className="text-white px-8 md:px-12 lg:px-16 py-12 mb-6 -mt-8 -mx-4 md:-mx-6" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
-              {/* Left side - Header, metadata, and stats */}
-              <div className="lg:w-5/12">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal mb-4 leading-tight">{selectedManufacturer.name}</h2>
-                <div className="space-y-1.5 text-white/70 text-sm mb-8">
-                  <div className="flex items-center gap-2">
-                    <Building2 className="w-4 h-4" />
-                    <span>{selectedManufacturer.headquarters}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>Founded {selectedManufacturer.founded}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 text-yellow-400" />
-                    <span>{selectedManufacturer.reputation_score || 0}/10</span>
-                  </div>
-                </div>
-
-                {/* Stats cards */}
-                <div className="space-y-3">
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Aircrafts Listed</div>
-                    <div className="text-2xl font-bold">{selectedManufacturer.total_aircraft_count || aircraftTypeRatings.filter(a => a.manufacturer_id === selectedManufacturer.id).length || 87}</div>
-                  </div>
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Preferred Type of Pilots</div>
-                    <div className="text-lg font-bold">600-1500 hours</div>
-                  </div>
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Pilots Rated</div>
-                    <div className="text-2xl font-bold">200,000-250,000+</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right side - Description */}
-              <div className="lg:w-7/12 flex items-center">
-                <p className="text-white/80 text-base leading-relaxed">{selectedManufacturer.description}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
+        {!selectedManufacturer && (
           /* Default title section */
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-500 mb-2 md:mb-3">Discover Type-Ratings</p>
