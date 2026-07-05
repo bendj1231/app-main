@@ -139,7 +139,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
   return (
     <div className="space-y-8 px-4 lg:px-8">
       <div className="relative">
-        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
+        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">Recognition Dashboard</h2>
         <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
       </div>
 
