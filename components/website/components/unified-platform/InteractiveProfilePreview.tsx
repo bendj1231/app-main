@@ -578,16 +578,16 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                   <div className="space-y-2">
                     {[
-                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, match: 94, status: 'Interest Submitted', statusColor: '#3b82f6', statusDot: '#3b82f6', reqs: [{ label: 'ATPL', met: true }, { label: '1,500h', met: true }, { label: 'Class 1', met: true }] },
-                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, match: 78, status: 'Under Review', statusColor: '#f59e0b', statusDot: '#f59e0b', reqs: [{ label: 'PPL', met: true }, { label: 'Medical', met: false }, { label: 'English', met: true }] },
-                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, match: 88, status: 'Pooled', statusColor: '#10b981', statusDot: '#10b981', reqs: [{ label: 'CPL', met: true }, { label: 'IFR', met: true }, { label: '500h', met: true }] },
+                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=200&fit=crop&q=80', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, match: 94, status: 'Interest Submitted', statusColor: '#3b82f6', statusDot: '#3b82f6', reqs: [{ label: 'ATPL', met: true }, { label: '1,500h', met: true }, { label: 'Class 1', met: true }] },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1474302770737-173ee21babef?w=600&h=200&fit=crop&q=80', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, match: 78, status: 'Under Review', statusColor: '#f59e0b', statusDot: '#f59e0b', reqs: [{ label: 'PPL', met: true }, { label: 'Medical', met: false }, { label: 'English', met: true }] },
+                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=200&fit=crop&q=80', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, match: 88, status: 'Pooled', statusColor: '#10b981', statusDot: '#10b981', reqs: [{ label: 'CPL', met: true }, { label: 'IFR', met: true }, { label: '500h', met: true }] },
                     ].map((row, i) => {
                       const isExpanded = expandedPathway === i;
                       const actionLabel = row.status === 'Pooled' ? 'Manage Interest' : row.status === 'Under Review' ? 'Action Required' : 'View Pathway';
                       return (
                         <div
                           key={i}
-                          className="border border-gray-200 rounded-lg transition-all cursor-pointer"
+                          className="border border-gray-200 rounded-lg transition-all cursor-pointer overflow-hidden"
                           style={{
                             background: isExpanded ? '#f8fafc' : '#ffffff',
                             borderColor: isExpanded ? '#cbd5e1' : '#e2e8f0',
@@ -658,9 +658,26 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: 'auto', opacity: 1 }}
                               transition={{ duration: 0.2 }}
-                              className="border-t border-gray-100 px-3 pb-3"
+                              className="border-t border-gray-100"
                             >
-                              <div className="pt-3 space-y-3">
+                              {/* Hero pathway image */}
+                              <div className="relative w-full h-28 overflow-hidden">
+                                <img
+                                  src={row.image}
+                                  alt={row.pathway}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                                <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+                                  <div>
+                                    <p className="text-[11px] font-bold text-white">{row.pathway}</p>
+                                    <p className="text-[9px] text-white/70">Submitted {row.submitted}</p>
+                                  </div>
+                                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20">{row.match}% match</span>
+                                </div>
+                              </div>
+                              <div className="px-3 pb-3 pt-3 space-y-3">
                                 <div className="grid grid-cols-3 gap-2">
                                   {row.reqs.map((req, ri) => (
                                     <div key={ri} className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 p-2">
