@@ -714,44 +714,52 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                 </div>
 
-                {/* Fast-Track Match — prominent match card */}
-                <div
-                  className="rounded-xl p-4 border border-amber-200 shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(251,191,36,0.04))' }}
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <Star size={14} className="text-amber-500" />
-                    <p className="text-xs font-bold text-slate-800">Fast-Track Match</p>
-                    <span className="ml-auto text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">RECOMMENDED</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-14 h-14 flex-shrink-0">
-                      <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
-                        <circle cx="28" cy="28" r="24" fill="none" stroke="#f1f5f9" strokeWidth="4" />
-                        <circle cx="28" cy="28" r="24" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="141.3 150.8" strokeLinecap="round" />
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-base font-black text-amber-700">94</span>
-                        <span className="text-[8px] text-amber-500 font-bold">%</span>
+                {/* Fast-Track Match — dematerializes when any pathway is expanded */}
+                <AnimatePresence>
+                  {expandedPathway === null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.25 } }}
+                      transition={{ duration: 0.3, ease: 'easeOut' }}
+                      className="rounded-xl p-4 border border-amber-200 shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(251,191,36,0.04))' }}
+                    >
+                      <div className="flex items-center gap-2 mb-4">
+                        <Star size={14} className="text-amber-500" />
+                        <p className="text-xs font-bold text-slate-800">Fast-Track Match</p>
+                        <span className="ml-auto text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">RECOMMENDED</span>
                       </div>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-slate-800">Delta Air Lines — A320 FO Pathway</p>
-                      <p className="text-[10px] text-slate-500 mt-0.5">License and hours align · Priority pool access</p>
-                      <div className="flex items-center gap-1.5 mt-2">
-                        {['ATPL', '1,500h', 'Class 1'].map((tag) => (
-                          <span key={tag} className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-100">{tag}</span>
-                        ))}
+                      <div className="flex items-center gap-4">
+                        <div className="relative w-14 h-14 flex-shrink-0">
+                          <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+                            <circle cx="28" cy="28" r="24" fill="none" stroke="#f1f5f9" strokeWidth="4" />
+                            <circle cx="28" cy="28" r="24" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="141.3 150.8" strokeLinecap="round" />
+                          </svg>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-base font-black text-amber-700">94</span>
+                            <span className="text-[8px] text-amber-500 font-bold">%</span>
+                          </div>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[11px] font-bold text-slate-800">Delta Air Lines — A320 FO Pathway</p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">License and hours align · Priority pool access</p>
+                          <div className="flex items-center gap-1.5 mt-2">
+                            {['ATPL', '1,500h', 'Class 1'].map((tag) => (
+                              <span key={tag} className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-100">{tag}</span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setTab?.('pathways' as TabId)}
-                    className="mt-4 w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 bg-amber-600 hover:bg-amber-700"
-                  >
-                    Submit Interest →
-                  </button>
-                </div>
+                      <button
+                        onClick={() => setTab?.('pathways' as TabId)}
+                        className="mt-4 w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 bg-amber-600 hover:bg-amber-700"
+                      >
+                        Submit Interest →
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
 
