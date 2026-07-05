@@ -314,29 +314,6 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
             WebkitBackdropFilter: 'blur(20px)',
           }}
         >
-          {/* Mini profile */}
-          <div className="mb-5">
-            <div className="flex items-center gap-3 mb-2.5">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black"
-                style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
-              >
-                {displayName.charAt(0).toUpperCase()}
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-white truncate" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{displayName}</p>
-                <p className="text-[10px] text-white/60 truncate">{profile?.email || 'No email'}</p>
-              </div>
-            </div>
-            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
-              <div
-                className="h-full rounded-full transition-all"
-                style={{ width: `${completionPct}%`, background: '#10b981' }}
-              />
-            </div>
-            <p className="text-[9px] text-white/50 mt-1.5">{completionPct}% profile complete</p>
-          </div>
-
           {/* Nav tabs */}
           <nav className="flex md:flex-col gap-1.5">
             {TABS.map((t) => {
@@ -413,6 +390,29 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
+                {/* Mini profile */}
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-base font-black flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
+                  >
+                    {displayName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-slate-800 truncate">{displayName}</p>
+                    <p className="text-xs text-slate-400 truncate">{profile?.email || 'No email'}</p>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.06)' }}>
+                        <div
+                          className="h-full rounded-full transition-all"
+                          style={{ width: `${completionPct}%`, background: '#10b981' }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-slate-400">{completionPct}%</span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Stats grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                   {statCards.map((stat) => {
