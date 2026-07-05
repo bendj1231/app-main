@@ -961,17 +961,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <div className="relative overflow-hidden mb-8 z-10 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
         {/* Background - manufacturer hero image when selected, otherwise dark gradient */}
         <>
-          {selectedManufacturer?.hero_image ? (
-            <>
-              <img
-                src={selectedManufacturer.hero_image}
-                alt={selectedManufacturer.name}
-                className="absolute inset-0 w-full h-full object-cover z-0"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-              <div className="absolute inset-0 bg-black/70 z-0" />
-            </>
-          ) : (
+          {!selectedManufacturer && (
             <>
               <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
@@ -1141,12 +1131,12 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               </div>
             </div>
           ) : (
-            <div className="text-white px-6 md:px-8 max-w-7xl">
-              <div className="flex flex-col md:flex-row gap-8">
+            <div className="text-white px-8 md:px-12 lg:px-16 py-12" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
+              <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
                 {/* Left side - Header, metadata, and stats */}
-                <div className="md:w-1/3">
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-normal mb-4">{selectedManufacturer.name}</h2>
-                  <div className="space-y-2 text-slate-300 text-sm mb-6">
+                <div className="lg:w-5/12">
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal mb-4 leading-tight">{selectedManufacturer.name}</h2>
+                  <div className="space-y-1.5 text-white/70 text-sm mb-8">
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4" />
                       <span>{selectedManufacturer.headquarters}</span>
@@ -1161,27 +1151,27 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                     </div>
                   </div>
                   
-                  {/* Stats under header */}
+                  {/* Stats cards */}
                   <div className="space-y-3">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        {selectedManufacturer.id === 'boeing' ? 'Active Boeing Fleet' : selectedManufacturer.id === 'airbus' ? 'Active Type Ratings' : selectedManufacturer.id === 'embraer' ? 'Aircraft Delivered' : selectedManufacturer.id === 'bombardier' ? 'Active Fleet' : selectedManufacturer.id === 'gulfstream' ? 'Active Global Fleet' : selectedManufacturer.id === 'cessna' ? 'Cessna 172 Production' : selectedManufacturer.id === 'dassault-falcon' ? 'Active Global Fleet' : selectedManufacturer.id === 'pilatus' ? 'Active Fleet' : selectedManufacturer.id === 'beechcraft' ? 'Active Fleet' : selectedManufacturer.id === 'sikorsky' ? 'Global Fleet' : selectedManufacturer.id === 'leonardo' ? 'Active Fleet' : selectedManufacturer.id === 'atr' ? 'Active Global Fleet' : selectedManufacturer.id === 'de-havilland' ? 'Active Fleet' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Active Fleet' : selectedManufacturer.id === 'comac-c919' ? 'Active Fleet' : selectedManufacturer.id === 'tecnam' ? 'Active Fleet' : selectedManufacturer.id === 'piper' ? 'Active Fleet' : selectedManufacturer.id === 'cirrus' ? 'Active Fleet' : selectedManufacturer.id === 'let' ? 'Active Fleet' : selectedManufacturer.id === 'aeroprakt' ? 'Active Fleet' : 'Aircrafts Listed'}
+                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                        Aircrafts Listed
                       </div>
                       <div className="text-2xl font-bold">
                         {selectedManufacturer.id === 'boeing' ? '12,000-14,000' : selectedManufacturer.id === 'airbus' ? '6-8 (Commercial)' : selectedManufacturer.id === 'embraer' ? '9,000+ (since 1969)' : selectedManufacturer.id === 'bombardier' ? '5,200+ Business Jets' : selectedManufacturer.id === 'gulfstream' ? '3,500-4,000 Aircraft' : selectedManufacturer.id === 'cessna' ? '44,000+ Units' : selectedManufacturer.id === 'dassault-falcon' ? '2,150-2,200 Jets' : selectedManufacturer.id === 'pilatus' ? '2,650+ Units' : selectedManufacturer.id === 'beechcraft' ? '32,700+ Units' : selectedManufacturer.id === 'sikorsky' ? '7,000+ Aircraft' : selectedManufacturer.id === 'leonardo' ? '2,950+ Units' : selectedManufacturer.id === 'atr' ? '1,200-1,300 Aircraft' : selectedManufacturer.id === 'de-havilland' ? '2,150-2,350 Units' : selectedManufacturer.id === 'mitsubishi-mrj' ? '1,400-1,700 Units' : selectedManufacturer.id === 'comac-c919' ? '245-255 Units' : selectedManufacturer.id === 'tecnam' ? '6,250-7,050 Units' : selectedManufacturer.id === 'piper' ? '31,600-32,700 Units' : selectedManufacturer.id === 'cirrus' ? '10,500-11,000 Units' : selectedManufacturer.id === 'let' ? '350-500 Units' : selectedManufacturer.id === 'aeroprakt' ? '3,100-3,500 Units' : '87'}
                       </div>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        {selectedManufacturer.id === 'boeing' ? 'Crewing Ratio' : selectedManufacturer.id === 'airbus' ? 'Primary Rating' : selectedManufacturer.id === 'embraer' ? 'Major Ratings' : selectedManufacturer.id === 'bombardier' ? 'Key Rating' : selectedManufacturer.id === 'gulfstream' ? 'Pilot Ratio' : selectedManufacturer.id === 'cessna' ? 'Active Fleet' : selectedManufacturer.id === 'dassault-falcon' ? 'Pilot Ratio' : selectedManufacturer.id === 'pilatus' ? 'Primary Model' : selectedManufacturer.id === 'beechcraft' ? 'Primary Model' : selectedManufacturer.id === 'sikorsky' ? 'Primary Civil Model' : selectedManufacturer.id === 'leonardo' ? 'Primary Model' : selectedManufacturer.id === 'atr' ? 'Pilot Ratio' : selectedManufacturer.id === 'de-havilland' ? 'Primary Model' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Primary Rating' : selectedManufacturer.id === 'comac-c919' ? 'Primary Model' : selectedManufacturer.id === 'tecnam' ? 'Primary Model' : selectedManufacturer.id === 'piper' ? 'Primary Model' : selectedManufacturer.id === 'cirrus' ? 'Primary Model' : selectedManufacturer.id === 'let' ? 'Pilot Ratio' : selectedManufacturer.id === 'aeroprakt' ? 'Primary Model' : 'Preferred Type of Pilots'}
+                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                        Preferred Type of Pilots
                       </div>
-                      <div className="text-base font-bold leading-tight">
+                      <div className="text-lg font-bold">
                         {selectedManufacturer.id === 'boeing' ? '10-14 pilots/aircraft' : selectedManufacturer.id === 'airbus' ? 'A320 Family (4+ variants)' : selectedManufacturer.id === 'embraer' ? '~4-6 (Commercial & Business)' : selectedManufacturer.id === 'bombardier' ? 'CL30/CL60 (Gold Standard)' : selectedManufacturer.id === 'gulfstream' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'cessna' ? '24,000+ Skyhawks' : selectedManufacturer.id === 'dassault-falcon' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'pilatus' ? 'PC-12 Series' : selectedManufacturer.id === 'beechcraft' ? 'King Air Series' : selectedManufacturer.id === 'sikorsky' ? 'S-92 / S-76' : selectedManufacturer.id === 'leonardo' ? 'AW139' : selectedManufacturer.id === 'atr' ? '12-16 pilots/aircraft' : selectedManufacturer.id === 'de-havilland' ? 'Dash 8 Series' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'CL-65 (CRJ Series)' : selectedManufacturer.id === 'comac-c919' ? 'C919 Series' : selectedManufacturer.id === 'tecnam' ? 'Light Trainers' : selectedManufacturer.id === 'piper' ? 'Piston Singles' : selectedManufacturer.id === 'cirrus' ? 'SR Series' : selectedManufacturer.id === 'let' ? '10-12 pilots/aircraft' : selectedManufacturer.id === 'aeroprakt' ? 'A-22 Series' : '600-1500 hours'}
                       </div>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        {selectedManufacturer.id === 'boeing' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'airbus' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'embraer' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'bombardier' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'gulfstream' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'cessna' ? 'Qualified Pilots' : selectedManufacturer.id === 'dassault-falcon' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'pilatus' ? 'Qualified Pilots' : selectedManufacturer.id === 'beechcraft' ? 'Qualified Pilots' : selectedManufacturer.id === 'sikorsky' ? 'Qualified Pilots' : selectedManufacturer.id === 'leonardo' ? 'Qualified Pilots' : selectedManufacturer.id === 'atr' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'de-havilland' ? 'Qualified Pilots' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Qualified Pilots' : selectedManufacturer.id === 'comac-c919' ? 'Qualified Pilots' : selectedManufacturer.id === 'tecnam' ? 'Qualified Pilots' : selectedManufacturer.id === 'piper' ? 'Qualified Pilots' : selectedManufacturer.id === 'cirrus' ? 'Qualified Pilots' : selectedManufacturer.id === 'let' ? 'Qualified Pilots' : selectedManufacturer.id === 'aeroprakt' ? 'Qualified Pilots' : 'Pilots Rated'}
+                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                        Pilots Rated
                       </div>
                       <div className="text-2xl font-bold">
                         {selectedManufacturer.id === 'boeing' ? '135,000-155,000' : selectedManufacturer.id === 'airbus' ? '180,000-220,000+' : selectedManufacturer.id === 'embraer' ? '45,000-60,000' : selectedManufacturer.id === 'bombardier' ? '50,000-65,000' : selectedManufacturer.id === 'gulfstream' ? '12,000-18,000' : selectedManufacturer.id === 'cessna' ? '1.2M-1.5M' : selectedManufacturer.id === 'dassault-falcon' ? '8,000-11,000' : selectedManufacturer.id === 'pilatus' ? '11,000-15,000' : selectedManufacturer.id === 'beechcraft' ? '110,000-135,000' : selectedManufacturer.id === 'sikorsky' ? '45,000-55,000' : selectedManufacturer.id === 'leonardo' ? '18,000-22,000' : selectedManufacturer.id === 'atr' ? '18,000-22,000' : selectedManufacturer.id === 'de-havilland' ? '15,000-20,000' : selectedManufacturer.id === 'mitsubishi-mrj' ? '16,000-22,000' : selectedManufacturer.id === 'comac-c919' ? '3,500-5,000' : selectedManufacturer.id === 'tecnam' ? '115,000-145,000' : selectedManufacturer.id === 'piper' ? '250,000-350,000' : selectedManufacturer.id === 'cirrus' ? '60,000-80,000' : selectedManufacturer.id === 'let' ? '4,500-7,000' : selectedManufacturer.id === 'aeroprakt' ? '8,000-12,000' : '200,000-250,000+'}
@@ -1190,11 +1180,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   </div>
                 </div>
                 
-                {/* Center - Empty */}
-                <div className="md:w-1/3"></div>
-                
-                {/* Right center - Description */}
-                <div className="md:w-1/3 flex items-center">
+                {/* Right side - Description */}
+                <div className="lg:w-7/12 flex items-center">
                   {selectedManufacturer.id === 'boeing' ? (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                       <div className="text-white text-sm leading-relaxed space-y-3">
