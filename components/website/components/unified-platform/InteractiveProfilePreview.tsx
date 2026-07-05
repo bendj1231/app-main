@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Route, Bookmark, BarChart3, ChevronRight, ChevronsRight, Plane, Award,
   Clock, TrendingUp, Shield, Star, BookOpen, Target, Zap, FolderOpen,
-  GraduationCap, MapPin, Briefcase, Mail, Bell, FileText, CheckCircle2,
+  GraduationCap, MapPin, Briefcase, Bell, FileText, CheckCircle2,
   AlertCircle, ArrowUpRight, Layers, Compass, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import type { TabId } from './types';
@@ -711,52 +711,6 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                         </div>
                       );
                     })}
-                  </div>
-                </div>
-
-                {/* Pathway Status Updates — rich reply cards */}
-                <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <Mail size={14} className="text-emerald-500" />
-                    <p className="text-xs font-bold text-slate-800">Pathway Status Updates</p>
-                  </div>
-                  <div className="space-y-2">
-                    {[
-                      { provider: 'Delta Air Lines', type: 'Airline', reply: 'Application under review — expect update within 5 days', time: '2h ago', accent: '#3b82f6', logoUrl: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c' },
-                      { provider: 'CAE Oxford Aviation', type: 'Flight School', reply: 'Entry assessment scheduled for next week', time: '1d ago', accent: '#f59e0b', logoUrl: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c' },
-                      { provider: 'L3Harris Training', type: 'Type Rating', reply: 'Prerequisites verified — slot reserved', time: '2d ago', accent: '#10b981', logoUrl: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c' },
-                    ].map((reply, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setTab?.('pathways' as TabId)}
-                        className="w-full flex items-start gap-3 p-3 text-left rounded-lg border transition-all hover:shadow-sm"
-                        style={{ background: '#ffffff', borderColor: '#f1f5f9' }}
-                      >
-                        <div className="relative flex-shrink-0">
-                          <img
-                            src={reply.logoUrl}
-                            alt={reply.provider}
-                            className="w-9 h-9 rounded-lg object-contain border border-gray-100"
-                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                          />
-                          <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white" style={{ background: reply.accent }} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between mb-0.5">
-                            <div className="flex items-center gap-1.5">
-                              <p className="text-[11px] font-bold text-slate-800">{reply.provider}</p>
-                              <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-slate-100 text-slate-500">{reply.type}</span>
-                            </div>
-                            <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
-                          </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
-                        </div>
-                        <ChevronRight size={14} className="text-slate-300 flex-shrink-0 self-center" />
-                      </button>
-                    ))}
                   </div>
                 </div>
 
