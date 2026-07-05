@@ -508,6 +508,27 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const navigate = useNavigate();
   const [showRequirements, setShowRequirements] = useState(false);
 
+  // Universal search entity tabs
+  type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
+  const [activeEntity, setActiveEntity] = useState<EntityType>('all');
+  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
+
+  const ENTITY_TABS: { id: EntityType; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'manufacturers', label: 'Manufacturers' },
+    { id: 'airlines', label: 'Airlines' },
+    { id: 'operators', label: 'Operators' },
+    { id: 'private-jet', label: 'Private Jet' },
+  ];
+
+  const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
+    all: ['All'],
+    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
+    airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
+    operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
+    'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
+  };
+
   // Data — manufacturers load immediately from hardcoded data (old version behavior)
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>(HARDCODED_MANUFACTURERS);
   const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>(HARDCODED_AIRCRAFT);
@@ -829,6 +850,50 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
               />
+            </div>
+          </div>
+
+          {/* Universal Search Entity Tabs — frosty glassy UI */}
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto px-2 sm:px-0">
+            {/* Left: Entity selector card */}
+            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+              <div className="p-3 text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Discover Pathways</p>
+                <div className="relative flex items-center justify-center">
+                  <select
+                    value={activeEntity}
+                    onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
+                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                  >
+                    {ENTITY_TABS.map(tab => (
+                      <option key={tab.id} value={tab.id} className="bg-white text-slate-900">{tab.label}</option>
+                    ))}
+                  </select>
+                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            {/* Right: Category selector card */}
+            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+              <div className="p-3 text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Category</p>
+                <div className="relative flex items-center justify-center">
+                  <select
+                    value={activeEntityCategory}
+                    onChange={(e) => setActiveEntityCategory(e.target.value)}
+                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                  >
+                    {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                      <option key={cat} value={cat} className="bg-white text-slate-900">{cat}</option>
+                    ))}
+                  </select>
+                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
