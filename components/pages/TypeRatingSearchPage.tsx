@@ -857,6 +857,14 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           <>
             <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+            {/* Press/media style repeating manufacturer logo wall */}
+            <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none opacity-[0.12]" style={{ filter: 'grayscale(100%) brightness(200%)' }}>
+              <div className="flex flex-wrap gap-6 p-5 justify-center">
+                {[...Array(4)].flatMap((_, i) => manufacturers.map(m => (
+                  <img key={`${m.id}-${i}`} src={m.logo} alt={m.name} className="h-8 w-auto object-contain opacity-70" />
+                )))}
+              </div>
+            </div>
           </>
         )}
 
