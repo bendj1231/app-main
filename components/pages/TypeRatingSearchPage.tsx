@@ -8,6 +8,7 @@ import { BookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { ManufacturerPreviewCard } from '@/components/website/components/pilot-recognition/ManufacturerPreviewCard';
+import { AircraftPreviewCard } from '@/components/website/components/pilot-recognition/AircraftPreviewCard';
 import { ManufacturerAircraftCarousel } from '@/components/website/components/pilot-recognition/ManufacturerAircraftCarousel';
 import { safeRedirect } from '@/lib/url-validator';
 import {
@@ -851,16 +852,16 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Hero Section - outside main, edge-to-edge behind navbar */}
       <div className="relative overflow-hidden z-10" style={{ marginLeft: '280px' }}>
-        {/* Background - dark gradient, only when manufacturer selected */}
-        {selectedManufacturer && (
+        {/* Background - dark gradient, only when manufacturer or aircraft selected */}
+        {(selectedManufacturer || selectedAircraft) && (
           <>
             <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
           </>
         )}
 
-        <div className={`relative z-10 max-w-7xl mx-auto px-6 pt-[48px] ${selectedManufacturer ? 'pb-2' : 'pb-6'}`}>
-          {!selectedManufacturer ? (
+        <div className={`relative z-10 max-w-7xl mx-auto px-6 pt-[48px] ${(selectedManufacturer || selectedAircraft) ? 'pb-2' : 'pb-6'}`}>
+          {!selectedManufacturer && !selectedAircraft ? (
             <div className="w-full text-white px-4 md:px-8 lg:px-12 py-6 md:py-8 backdrop-blur-xl rounded-2xl border border-white/25" style={{ background: 'rgba(255,255,255,0.15)', boxShadow: '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
               <div className="max-w-2xl mx-auto text-center flex flex-col items-center">
                 <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-1 md:mb-2">Discover Type-Ratings</p>
@@ -898,6 +899,10 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   </div>
                 </div>
               </div>
+            </div>
+          ) : selectedAircraft ? (
+            <div className="px-4 md:px-8 lg:px-12">
+              <AircraftPreviewCard aircraft={selectedAircraft} manufacturer={getManufacturerById(selectedAircraft.manufacturer_id)} />
             </div>
           ) : (
             <div className="px-4 md:px-8 lg:px-12">
