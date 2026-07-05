@@ -108,9 +108,8 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 lg:px-10"
       style={{
         height: '68px',
-        background: 'linear-gradient(to bottom, rgba(15,23,42,1) 0%, rgba(0,0,0,0.98) 100%)',
+        background: 'linear-gradient(to bottom, #172554 0%, #0f172a 100%)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(8px)',
       }}
     >
       {/* Left — wordmark */}
