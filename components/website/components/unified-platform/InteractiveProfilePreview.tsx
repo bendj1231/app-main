@@ -564,28 +564,15 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
                     </div>
                     <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
-                      {pathwayMatches.length || 0}
+                      3
                     </span>
                   </div>
-                  {pathwayMatches.length === 0 ? (
-                    <div className="border border-dashed border-gray-200 rounded-lg bg-gray-50/50 p-6 text-center">
-                      <Route size={20} className="text-slate-300 mx-auto mb-2" />
-                      <p className="text-[11px] text-slate-500 font-semibold mb-1">No pathways submitted yet</p>
-                      <p className="text-[10px] text-slate-400 mb-3">Submit interest to open airline pathways to get pooled into active operator databases.</p>
-                      <button
-                        onClick={() => onNavigate?.('/pathways')}
-                        className="px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm"
-                      >
-                        Browse Open Airline Pathways
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      {[
-                        { airline: 'Delta Air Lines', position: 'A320 First Officer', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', stage: 1, statusLabel: 'Pooled (Top 10%)', actionLabel: 'View Application' },
-                        { airline: 'Emirates', position: 'B777 First Officer', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', stage: 2, statusLabel: 'Under Review', actionLabel: 'View Application' },
-                        { airline: 'Qatar Airways', position: 'A350 Captain', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', stage: 3, statusLabel: 'Shortlisted', actionLabel: 'View Interview' },
-                      ].map((row, i, arr) => {
+                  <div>
+                    {[
+                      { airline: 'Delta Air Lines', position: 'A320 First Officer', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', stage: 1, statusLabel: 'Pooled (Top 10%)', actionLabel: 'View Application' },
+                      { airline: 'Emirates', position: 'B777 First Officer', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', stage: 2, statusLabel: 'Under Review', actionLabel: 'View Application' },
+                      { airline: 'Qatar Airways', position: 'A350 Captain', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', stage: 3, statusLabel: 'Shortlisted', actionLabel: 'View Interview' },
+                    ].map((row, i, arr) => {
                         const stages = ['Submitted', 'Under Review', 'Shortlisted', 'Offered'];
                         const stageColors = ['#94a3b8', '#f59e0b', '#8b5cf6', '#10b981'];
                         return (
@@ -658,8 +645,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                         );
                       })}
                     </div>
-                  )}
-                </div>
+                  </div>
 
                 {/* Recent Replies — airline status updates from sourcing pools */}
                 <div
