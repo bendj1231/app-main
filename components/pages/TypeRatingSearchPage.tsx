@@ -824,16 +824,13 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Sidebar Navigation */}
       <PathwaysSidebar activeSection="type-ratings" onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))} />
 
-      {/* Main Content with sidebar margin */}
-      <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '2rem', paddingRight: '1rem' }}>
-
-      {/* Hero Section - Main upper section, always visible */}
-      <div className="relative overflow-hidden mb-4 z-10">
+      {/* Hero Section - outside main, edge-to-edge behind navbar */}
+      <div className="relative overflow-hidden z-10" style={{ marginLeft: '280px' }}>
         {/* Background - dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-6 md:py-8">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-6">
           {!selectedManufacturer ? (
             <div className="text-center text-white">
               {/* Title from img 5 */}
@@ -1502,6 +1499,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           )}
         </div>
       </div>
+
+      {/* Main Content with sidebar margin */}
+      <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
 
       {/* Manufacturer Carousel - Edge to Edge */}
       <div className="mb-4">
