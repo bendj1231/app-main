@@ -826,13 +826,17 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Hero Section - outside main, edge-to-edge behind navbar */}
       <div className="relative overflow-hidden z-10" style={{ marginLeft: '280px' }}>
-        {/* Background - dark gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+        {/* Background - dark gradient, only when manufacturer selected */}
+        {selectedManufacturer && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+          </>
+        )}
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-6">
           {!selectedManufacturer ? (
-            <div className="text-white px-4 md:px-8 lg:px-12 py-4 md:py-6" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
+            <div className="text-white px-4 md:px-8 lg:px-12 py-2 md:py-4">
               <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 md:gap-8">
                 {/* Left side - Header and stats */}
                 <div className="lg:w-5/12">
