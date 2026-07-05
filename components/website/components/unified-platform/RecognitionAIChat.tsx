@@ -194,7 +194,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
       >
         <div className="flex items-center gap-2">
           <p className="text-sm font-black tracking-wide">
-            <span style={{ color: '#1e293b' }}>Recognition</span>
+            <span style={{ color: '#ffffff' }}>Recognition</span>
             <span style={{ color: '#dc2626' }}> AI</span>
           </p>
           <p className="text-[10px] text-slate-400 hidden sm:block">Get advice on your pathways, career goals, and network.</p>
