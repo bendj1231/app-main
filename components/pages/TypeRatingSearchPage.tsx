@@ -8,6 +8,7 @@ import { BookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { ManufacturerPreviewCard } from '@/components/website/components/pilot-recognition/ManufacturerPreviewCard';
+import { ManufacturerAircraftCarousel } from '@/components/website/components/pilot-recognition/ManufacturerAircraftCarousel';
 import { safeRedirect } from '@/lib/url-validator';
 import {
   manufacturers as rawManufacturers,
@@ -40,7 +41,7 @@ interface AircraftTypeRating {
   sketchfab_id?: string;
   description?: string;
   conditionally_new?: 'green' | 'amber' | 'red';
-  first_flight?: string;
+  first_flight?: string | number;
   why_choose_rating?: string;
   specifications?: any;
   news?: any;
@@ -50,7 +51,7 @@ interface AircraftTypeRating {
   comparison_data?: any;
   show_career_outlook?: boolean;
   extended_info_content?: any;
-  demandLevel?: 'high' | 'medium' | 'low';
+  demandLevel?: 'none' | 'high' | 'medium' | 'low';
   lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring';
   orderBacklog?: { orders: number; delivered: number };
   operatorCount?: number;
@@ -884,15 +885,30 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       </div>
 
       {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
-      {searchQuery.trim() && (
+      {(searchQuery.trim() || selectedManufacturer) && (
       <div className="relative z-20 -mt-12 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div className="text-center -mt-3 mb-1">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-xl border border-white/20" style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
             <h2 className="text-sm font-serif font-normal text-white drop-shadow-md">
-              Browse Manufacturers <span className="text-xs text-white/60">({manufacturers.length})</span>
+              {selectedManufacturer ? (
+                <>{selectedManufacturer.name} Aircraft</>
+              ) : (
+                <>Browse Manufacturers <span className="text-xs text-white/60">({manufacturers.length})</span></>
+              )}
             </h2>
           </div>
         </div>
+        {selectedManufacturer ? (
+          <div className="pt-1 pb-3 px-5">
+            <ManufacturerAircraftCarousel
+              manufacturerId={selectedManufacturer.id}
+              manufacturerName={selectedManufacturer.name}
+              onSelect={(aircraft) => setSelectedAircraft(aircraft)}
+              selectedId={selectedAircraft?.id}
+              title="Aircraft"
+            />
+          </div>
+        ) : (
         <div
           ref={manufacturerCarouselRef}
           className="flex gap-3 overflow-x-auto pt-1 pb-3 px-5 scroll-smooth"
@@ -942,6 +958,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             </button>
           ))}
         </div>
+        )}
       </div>
       )}
 
