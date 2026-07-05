@@ -4,7 +4,7 @@ import {
   User, Route, Bookmark, BarChart3, ChevronRight, ChevronsRight, Plane, Award,
   Clock, TrendingUp, Shield, Star, BookOpen, Target, Zap, FolderOpen,
   GraduationCap, MapPin, Briefcase, Mail, Bell, FileText, CheckCircle2,
-  AlertCircle, ArrowUpRight, Layers, Compass
+  AlertCircle, ArrowUpRight, Layers, Compass, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import type { TabId } from './types';
 
@@ -148,13 +148,6 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
     !!profile?.total_flight_hours,
     !!profile?.last_flown,
   ].filter(Boolean).length / 5) * 100);
-
-  const statCards = [
-    { label: 'Total Hours', value: animatedHours, suffix: 'h', icon: Clock, color: '#38bdf8' },
-    { label: 'License', value: license, suffix: '', icon: Shield, color: '#34d399' },
-    { label: 'Career', value: occupation, suffix: '', icon: Briefcase, color: '#f59e0b' },
-    { label: 'Tier', value: isPlus ? 'Recognition+' : 'Free', suffix: '', icon: Star, color: isPlus ? '#f472b6' : '#94a3b8' },
-  ];
 
   const recentActivity = [
     { icon: CheckCircle2, text: 'Profile completion updated', time: '2h ago', color: '#34d399' },
@@ -390,8 +383,8 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Mini profile */}
-                <div className="flex items-center gap-3">
+                {/* Mini profile with verification status */}
+                <div className="flex items-start gap-3">
                   <div
                     className="w-12 h-12 rounded-full flex items-center justify-center text-base font-black flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
@@ -399,7 +392,20 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     {displayName.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-slate-800 truncate">{displayName}</p>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="text-sm font-bold text-slate-800 truncate">{displayName}</p>
+                      <span
+                        className="text-[9px] font-black px-1.5 py-0.5 rounded-full border flex items-center gap-1"
+                        style={{
+                          background: isVerified ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
+                          color: isVerified ? '#059669' : '#d97706',
+                          borderColor: isVerified ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)',
+                        }}
+                      >
+                        {isVerified ? <CheckCircle size={10} /> : <Clock size={10} />}
+                        {isVerified ? 'VERIFIED' : 'PENDING'}
+                      </span>
+                    </div>
                     <p className="text-xs text-slate-400 truncate">{profile?.email || 'No email'}</p>
                     <div className="flex items-center gap-2 mt-1.5">
                       <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.06)' }}>
@@ -408,19 +414,34 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                           style={{ width: `${completionPct}%`, background: '#10b981' }}
                         />
                       </div>
-                      <span className="text-[10px] text-slate-400">{completionPct}%</span>
+                      <span className="text-[10px] text-slate-400">{completionPct}% complete</span>
                     </div>
+                    {!isVerified && (
+                      <button
+                        onClick={() => setTab?.('advanced-profile' as TabId)}
+                        className="mt-2 px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white bg-red-600 hover:bg-red-700 transition-all shadow-sm"
+                      >
+                        Verify Identity →
+                      </button>
+                    )}
                   </div>
                 </div>
 
                 {/* Stats grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  {statCards.map((stat) => {
+                  {[
+                    { label: 'Total Hours', value: animatedHours, suffix: 'h', icon: Clock, color: '#38bdf8' },
+                    { label: 'License', value: license, suffix: '', icon: Shield, color: '#34d399' },
+                    { label: 'Career', value: occupation, suffix: '', icon: Briefcase, color: '#f59e0b' },
+                    { label: 'Tier', value: isPlus ? 'Recognition+' : 'Free', suffix: '', icon: Star, color: isPlus ? '#f472b6' : '#94a3b8' },
+                  ].map((stat) => {
                     const Icon = stat.icon;
+                    const isHoursCard = stat.label === 'Total Hours';
+                    const showLogbookCta = isHoursCard && totalHours === 0;
                     return (
                       <div
                         key={stat.label}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm"
+                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex flex-col"
                         style={{ background: '#ffffff' }}
                       >
                         <div className="flex items-center gap-2 mb-2">
@@ -436,6 +457,14 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                           {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
                           <span className="text-xs text-slate-400 ml-0.5">{stat.suffix}</span>
                         </p>
+                        {showLogbookCta && (
+                          <button
+                            onClick={() => setTab?.('logbook' as TabId)}
+                            className="mt-auto pt-2 text-[10px] font-black tracking-wider text-blue-600 hover:text-blue-700 transition-all text-left"
+                          >
+                            Sync Logbook →
+                          </button>
+                        )}
                       </div>
                     );
                   })}
@@ -472,7 +501,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </div>
                   </div>
 
-                  {/* Certifications & Ratings */}
+                  {/* Qualifications with granular status indicators */}
                   <div
                     className="rounded-xl p-4 border border-gray-100 shadow-sm"
                     style={{ background: '#ffffff' }}
@@ -483,22 +512,25 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </div>
                     <div className="space-y-2">
                       {[
-                        { label: 'License', value: license, status: license !== 'Not set' ? 'active' : 'missing' as const },
-                        { label: 'Medical', value: profile?.medical_class || 'Class 1', status: 'active' as const },
-                        { label: 'English (ICAO)', value: profile?.icao_english_level || 'Level 4', status: 'active' as const },
-                        { label: 'Type Ratings', value: (profile?.type_ratings?.length || 0) + ' held', status: (profile?.type_ratings?.length || 0) > 0 ? 'active' : 'missing' as const },
-                      ].map((cert) => (
-                        <div key={cert.label} className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-1.5 h-1.5 rounded-full"
-                              style={{ background: cert.status === 'active' ? '#34d399' : '#ef4444' }}
-                            />
-                            <span className="text-[11px] text-slate-600">{cert.label}</span>
+                        { label: 'License', value: license, status: license !== 'Not set' ? 'verified' : 'missing' as const },
+                        { label: 'Medical', value: profile?.medical_class || 'Class 1', status: profile?.medical_class ? 'verified' : 'pending' as const },
+                        { label: 'English (ICAO)', value: profile?.icao_english_level || 'Level 4', status: profile?.icao_english_level ? 'verified' : 'pending' as const },
+                        { label: 'Type Ratings', value: (profile?.type_ratings?.length || 0) + ' held', status: (profile?.type_ratings?.length || 0) > 0 ? 'verified' : 'missing' as const },
+                        { label: 'Identity (KYC)', value: isVerified ? 'Verified' : 'Pending', status: isVerified ? 'verified' : 'pending' as const },
+                        { label: 'Flight Recency', value: profile?.last_flown || 'No recent flights', status: profile?.last_flown ? 'verified' : 'missing' as const },
+                      ].map((cert) => {
+                        const StatusIcon = cert.status === 'verified' ? CheckCircle2 : cert.status === 'pending' ? Clock : AlertTriangle;
+                        const statusColor = cert.status === 'verified' ? '#10b981' : cert.status === 'pending' ? '#f59e0b' : '#ef4444';
+                        return (
+                          <div key={cert.label} className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <StatusIcon size={12} style={{ color: statusColor }} />
+                              <span className="text-[11px] text-slate-600">{cert.label}</span>
+                            </div>
+                            <span className="text-[11px] font-bold text-slate-700">{cert.value}</span>
                           </div>
-                          <span className="text-[11px] font-bold text-slate-700">{cert.value}</span>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                     <button
                       onClick={() => setTab?.('advanced-profile' as TabId)}
