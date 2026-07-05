@@ -927,40 +927,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
         {selectedManufacturer ? (
           <div className="pt-1 pb-3 px-5">
-            {/* Stage 2 category filter tabs */}
-            <div className="flex gap-2 overflow-x-auto pb-3 mb-2 items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                  selectedCategory === 'all'
-                    ? 'bg-red-500 text-white shadow-lg'
-                    : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                }`}
-              >
-                All
-              </button>
-              {manufacturerCategories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all capitalize ${
-                    selectedCategory === category
-                      ? 'bg-red-500 text-white shadow-lg'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-              <button
-                onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
-                className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all"
-                style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
-              >
-                <X className="w-3 h-3" />
-                Cancel Filter
-              </button>
-            </div>
             <ManufacturerAircraftCarousel
               manufacturerId={selectedManufacturer.id}
               manufacturerName={selectedManufacturer.name}
@@ -970,9 +936,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               categoryFilter={selectedCategory}
             />
 
-            {/* Search bar below aircraft carousel */}
-            <div className="mt-4 max-w-lg mx-auto relative px-2 sm:px-0">
-              <div className="relative">
+            {/* Search bar + category filter buttons below aircraft carousel */}
+            <div className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0">
+              <div className="relative flex-shrink-0 w-64 md:w-80">
                 <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
@@ -981,6 +947,40 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-4 pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
                 />
+              </div>
+
+              <div className="flex gap-2 overflow-x-auto items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <button
+                  onClick={() => setSelectedCategory('all')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                    selectedCategory === 'all'
+                      ? 'bg-blue-500 text-white shadow-lg'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                  }`}
+                >
+                  All
+                </button>
+                {manufacturerCategories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all capitalize ${
+                      selectedCategory === category
+                        ? 'bg-blue-500 text-white shadow-lg'
+                        : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+                <button
+                  onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all"
+                  style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
+                >
+                  <X className="w-3 h-3" />
+                  Cancel Filter
+                </button>
               </div>
             </div>
           </div>
