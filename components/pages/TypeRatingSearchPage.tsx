@@ -7,6 +7,7 @@ import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { BookmarkService } from '@/services/bookmarkService';
 import { PathwaysSidebar } from '@/components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
+import { ManufacturerPreviewCard } from '@/components/website/components/pilot-recognition/ManufacturerPreviewCard';
 import { safeRedirect } from '@/lib/url-validator';
 import {
   manufacturers as rawManufacturers,
@@ -875,63 +876,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 mx-4 md:mx-8 lg:mx-12" style={{ background: 'rgba(15, 23, 42, 0.5)', minHeight: '320px' }}>
-              <div className="flex flex-col lg:flex-row h-full">
-                {/* Left side - Manufacturer logo */}
-                <div className="lg:w-1/2 relative flex flex-col items-center justify-center p-8 md:p-12" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)', minHeight: '320px' }}>
-                  {selectedManufacturer.logo ? (
-                    <img
-                      src={selectedManufacturer.logo}
-                      alt={selectedManufacturer.name}
-                      className="max-w-[220px] max-h-[120px] object-contain mb-6"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                    />
-                  ) : (
-                    <Plane className="w-16 h-16 text-slate-400 mb-6" />
-                  )}
-                  <div className="text-center">
-                    <p className="text-xs font-bold text-red-500 tracking-[0.12em] uppercase mb-1">Manufacturer</p>
-                    <h2 className="text-3xl font-bold text-slate-900">{selectedManufacturer.name}</h2>
-                  </div>
-                </div>
-
-                {/* Right side - Details */}
-                <div className="lg:w-1/2 p-6 md:p-8 flex flex-col justify-center" style={{ background: 'rgba(15, 23, 42, 0.6)' }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-bold text-white/60 tracking-[0.08em] uppercase">Manufacturer</p>
-                    {selectedManufacturer.logo ? (
-                      <img
-                        src={selectedManufacturer.logo}
-                        alt={selectedManufacturer.name}
-                        className="w-8 h-8 object-contain rounded bg-white/90 p-1"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      />
-                    ) : null}
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{selectedManufacturer.name}</h3>
-                  {selectedManufacturer.description && (
-                    <p className="text-sm text-white/65 leading-relaxed mb-4" style={{ display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{selectedManufacturer.description}</p>
-                  )}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1">Founded</p>
-                      <p className="text-sm font-bold text-sky-400">{selectedManufacturer.founded || 'N/A'}</p>
-                    </div>
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1">Headquarters</p>
-                      <p className="text-sm font-bold text-sky-400">{selectedManufacturer.headquarters || 'N/A'}</p>
-                    </div>
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1">Aircraft Built</p>
-                      <p className="text-sm font-bold text-sky-400">{selectedManufacturer.total_aircraft_count?.toLocaleString() || 'N/A'}</p>
-                    </div>
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1">Reputation</p>
-                      <p className="text-sm font-bold text-sky-400">{selectedManufacturer.reputation_score || 0}/10</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="px-4 md:px-8 lg:px-12">
+              <ManufacturerPreviewCard manufacturer={selectedManufacturer} />
             </div>
           )}
         </div>
