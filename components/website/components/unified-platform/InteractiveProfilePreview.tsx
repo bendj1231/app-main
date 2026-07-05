@@ -578,16 +578,21 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                   <div className="space-y-2">
                     {[
-                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=200&fit=crop&q=80', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, match: 94, status: 'Interest Submitted', statusColor: '#3b82f6', statusDot: '#3b82f6', reqs: [{ label: 'ATPL', met: true }, { label: '1,500h', met: true }, { label: 'Class 1', met: true }] },
-                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1474302770737-173ee21babef?w=600&h=200&fit=crop&q=80', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, match: 78, status: 'Under Review', statusColor: '#f59e0b', statusDot: '#f59e0b', reqs: [{ label: 'PPL', met: true }, { label: 'Medical', met: false }, { label: 'English', met: true }] },
-                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=200&fit=crop&q=80', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, match: 88, status: 'Pooled', statusColor: '#10b981', statusDot: '#10b981', reqs: [{ label: 'CPL', met: true }, { label: 'IFR', met: true }, { label: '500h', met: true }] },
+                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=200&fit=crop&q=80', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, match: 94, status: 'Interest Submitted', statusColor: '#3b82f6', statusDot: '#3b82f6', stage: 1, reqs: [{ label: 'ATPL', met: true }, { label: '1,500h', met: true }, { label: 'Class 1', met: true }] },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1474302770737-173ee21babef?w=600&h=200&fit=crop&q=80', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, match: 78, status: 'Under Review', statusColor: '#f59e0b', statusDot: '#f59e0b', stage: 2, reqs: [{ label: 'PPL', met: true }, { label: 'Medical', met: false }, { label: 'English', met: true }] },
+                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=200&fit=crop&q=80', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, match: 88, status: 'Pooled', statusColor: '#10b981', statusDot: '#10b981', stage: 3, reqs: [{ label: 'CPL', met: true }, { label: 'IFR', met: true }, { label: '500h', met: true }] },
                     ].map((row, i) => {
                       const isExpanded = expandedPathway === i;
                       const actionLabel = row.status === 'Pooled' ? 'Manage Interest' : row.status === 'Under Review' ? 'Action Required' : 'View Pathway';
+                      const pipeline = ['Interest Submitted', 'Under Review', 'Pooled', 'Accepted'];
+                      const pipelineColors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6'];
                       return (
-                        <div
+                        <motion.div
                           key={i}
-                          className="border border-gray-200 rounded-lg transition-all cursor-pointer overflow-hidden"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: i * 0.08 }}
+                          className="border rounded-lg transition-all cursor-pointer overflow-hidden hover:shadow-md hover:border-gray-300"
                           style={{
                             background: isExpanded ? '#f8fafc' : '#ffffff',
                             borderColor: isExpanded ? '#cbd5e1' : '#e2e8f0',
@@ -616,8 +621,8 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                             </div>
                             {/* Match % mini ring */}
                             <div className="hidden sm:flex flex-col items-center flex-shrink-0 w-14">
-                              <div className="relative w-8 h-8">
-                                <svg className="w-8 h-8 -rotate-90" viewBox="0 0 32 32">
+                              <div className="relative w-8 h-8 group">
+                                <svg className="w-8 h-8 -rotate-90 transition-all" viewBox="0 0 32 32">
                                   <circle cx="16" cy="16" r="13" fill="none" stroke="#f1f5f9" strokeWidth="3" />
                                   <circle
                                     cx="16" cy="16" r="13" fill="none"
@@ -625,6 +630,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                                     strokeWidth="3"
                                     strokeDasharray={`${(row.match / 100) * 81.6} 81.6`}
                                     strokeLinecap="round"
+                                    className="transition-all duration-500"
                                   />
                                 </svg>
                                 <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black text-slate-600">{row.match}</span>
@@ -634,7 +640,12 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                             {/* Deadline */}
                             <div className="hidden md:flex flex-col items-end flex-shrink-0 w-20">
                               <p className="text-[10px] font-bold text-slate-500">Deadline</p>
-                              <p className="text-[10px] font-semibold" style={{ color: row.deadlineUrgent ? '#ef4444' : '#94a3b8' }}>{row.deadline}</p>
+                              <div className="flex items-center gap-1">
+                                {row.deadlineUrgent && (
+                                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                                )}
+                                <p className="text-[10px] font-semibold" style={{ color: row.deadlineUrgent ? '#ef4444' : '#94a3b8' }}>{row.deadline}</p>
+                              </div>
                             </div>
                             {/* Status badge with dot */}
                             <div className="hidden md:block flex-shrink-0">
@@ -657,7 +668,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                             <motion.div
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: 'auto', opacity: 1 }}
-                              transition={{ duration: 0.2 }}
+                              transition={{ duration: 0.25 }}
                               className="border-t border-gray-100"
                             >
                               {/* Hero pathway image */}
@@ -678,6 +689,41 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                                 </div>
                               </div>
                               <div className="px-3 pb-3 pt-3 space-y-3">
+                                {/* Pipeline stepper */}
+                                <div className="flex items-center gap-1">
+                                  {pipeline.map((stageLabel, si) => {
+                                    const isActive = si + 1 === row.stage;
+                                    const isCompleted = si + 1 < row.stage;
+                                    return (
+                                      <React.Fragment key={si}>
+                                        <div className="flex flex-col items-center flex-1">
+                                          <div
+                                            className="w-6 h-6 rounded-full flex items-center justify-center transition-all"
+                                            style={{
+                                              background: isCompleted || isActive ? pipelineColors[si] + '20' : '#f1f5f9',
+                                              border: `2px solid ${isCompleted || isActive ? pipelineColors[si] : '#e2e8f0'}`,
+                                            }}
+                                          >
+                                            {isCompleted ? (
+                                              <CheckCircle size={10} style={{ color: pipelineColors[si] }} />
+                                            ) : (
+                                              <span className="text-[8px] font-black" style={{ color: isActive ? pipelineColors[si] : '#cbd5e1' }}>{si + 1}</span>
+                                            )}
+                                          </div>
+                                          <span
+                                            className="text-[8px] font-bold mt-1 text-center leading-tight"
+                                            style={{ color: isActive ? pipelineColors[si] : isCompleted ? pipelineColors[si] : '#cbd5e1' }}
+                                          >
+                                            {stageLabel}
+                                          </span>
+                                        </div>
+                                        {si < pipeline.length - 1 && (
+                                          <div className="w-4 h-[2px] flex-shrink-0" style={{ background: si < row.stage ? pipelineColors[row.stage - 1] : '#e2e8f0' }} />
+                                        )}
+                                      </React.Fragment>
+                                    );
+                                  })}
+                                </div>
                                 <div className="grid grid-cols-3 gap-2">
                                   {row.reqs.map((req, ri) => (
                                     <div key={ri} className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 p-2">
@@ -693,7 +739,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
                                     <div className="h-1.5 w-24 rounded-full bg-gray-100 overflow-hidden">
-                                      <div className="h-full rounded-full transition-all" style={{ width: `${row.match}%`, background: row.match >= 90 ? '#10b981' : row.match >= 70 ? '#f59e0b' : '#ef4444' }} />
+                                      <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${row.match}%` }}
+                                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                                        className="h-full rounded-full"
+                                        style={{ background: row.match >= 90 ? '#10b981' : row.match >= 70 ? '#f59e0b' : '#ef4444' }}
+                                      />
                                     </div>
                                     <span className="text-[10px] text-slate-500">Profile match {row.match}%</span>
                                   </div>
@@ -708,7 +760,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                               </div>
                             </motion.div>
                           )}
-                        </div>
+                        </motion.div>
                       );
                     })}
                   </div>
