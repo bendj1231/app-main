@@ -489,6 +489,52 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const auth = useAuth();
   const [activeCategory, setActiveCategory] = useState<Category>('flagship');
 
+  // Universal search entity tabs
+  type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
+  const [activeEntity, setActiveEntity] = useState<EntityType>('all');
+  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
+
+  const ENTITY_TABS: { id: EntityType; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'manufacturers', label: 'Manufacturers' },
+    { id: 'airlines', label: 'Airlines' },
+    { id: 'operators', label: 'Operators' },
+    { id: 'private-jet', label: 'Private Jet' },
+  ];
+
+  const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
+    all: ['All'],
+    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
+    airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
+    operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
+    'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
+  };
+
+  // Map entity category to aircraft category for filtering
+  const entityCategoryToAircraftCategory: Record<string, string[]> = {
+    'Commercial Jets': ['commercial'],
+    'Regional Aircraft': ['regional'],
+    'Business & Private': ['private'],
+    'Helicopters': ['helicopter'],
+    'Military & Defense': ['military'],
+    'General Aviation': ['legacy'],
+    'eVTOL & UAM': ['flagship'],
+    'International': ['commercial', 'flagship'],
+    'Regional': ['regional'],
+    'Low-Cost': ['commercial'],
+    'Cargo': ['cargo'],
+    'Legacy': ['legacy'],
+    'Commercial': ['commercial', 'regional', 'cargo', 'flagship'],
+    'Corporate': ['private'],
+    'Charter': ['private', 'commercial'],
+    'Training': ['legacy'],
+    'Light': ['private'],
+    'Mid-Size': ['private'],
+    'Super Mid-Size': ['private'],
+    'Large': ['private', 'commercial'],
+    'Ultra-Long Range': ['private', 'flagship'],
+  };
+
   // Check subscription status
   const isRecognitionPlus = userProfile?.subscription_tier === 'recognition_plus' || userProfile?.subscription_tier === 'enterprise';
   const isLoggedIn = !!currentUser;
@@ -705,6 +751,14 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       aircraft = aircraft.filter(a => a.subcategory === activeFlagshipSubcategory);
     }
     
+    // Filter by universal search entity type and category
+    if (activeEntity !== 'all' && activeEntityCategory !== 'all') {
+      const mappedCategories = entityCategoryToAircraftCategory[activeEntityCategory];
+      if (mappedCategories) {
+        aircraft = aircraft.filter(a => mappedCategories.includes(a.category));
+      }
+    }
+
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -713,7 +767,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     }
     
     return aircraft;
-  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery]);
+  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery, activeEntity, activeEntityCategory]);
 
   // Get available categories for selected manufacturer
   const availableCategories = React.useMemo(() => {
@@ -829,6 +883,42 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
               />
+            </div>
+          </div>
+
+          {/* Universal Search Entity Tabs */}
+          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 max-w-4xl mx-auto px-2 sm:px-0">
+            {/* Left: Entity type pills */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {ENTITY_TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all ${
+                    activeEntity === tab.id
+                      ? 'bg-slate-900 text-white shadow-md'
+                      : 'bg-white/60 backdrop-blur-sm text-slate-600 hover:bg-white/90 border border-white/30'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            {/* Right: Category tabs for selected entity */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveEntityCategory(cat)}
+                  className={`text-[11px] font-semibold transition-all pb-1 border-b-2 ${
+                    activeEntityCategory === cat
+                      ? 'text-slate-900 border-slate-900'
+                      : 'text-slate-400 border-transparent hover:text-slate-600'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
         </div>
