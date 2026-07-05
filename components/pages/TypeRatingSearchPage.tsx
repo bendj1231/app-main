@@ -497,7 +497,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const { currentUser, userProfile } = useAuth();
   const [searchParams] = useSearchParams();
   const auth = useAuth();
-  const [activeCategory, setActiveCategory] = useState<Category>('flagship');
+  const [activeCategory, setActiveCategory] = useState<Category>('all');
 
   // Check subscription status
   const isRecognitionPlus = userProfile?.subscription_tier === 'recognition_plus' || userProfile?.subscription_tier === 'enterprise';
@@ -1318,125 +1318,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           </div>
         </div>
       ) : (
-        // Category filter chips and manufacturer details when selected
+        // Manufacturer details + aircraft carousel when selected
         <>
-      {/* Category Filter Chips */}
-      <div className="max-w-7xl mx-auto px-6 mb-10 relative z-10">
-        <div className="flex flex-wrap gap-2 justify-center">
-          {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => {
-                setActiveCategory(key as Category);
-                setActiveLegacySubcategory(null);
-                setActiveHelicopterSubcategory(null);
-                setActiveMilitarySubcategory(null);
-                setActiveCargoSubcategory(null);
-                setActiveFlagshipSubcategory(null);
-              }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === key
-                  ? `${CATEGORY_COLORS[key] || 'bg-slate-500'} text-white shadow-lg`
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/* Subcategory filters for specific categories */}
-        {activeCategory === 'legacy' && (
-          <div className="flex flex-wrap gap-2 mt-3 justify-center">
-            {Object.entries(LEGACY_SUBCATEGORY_LABELS).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveLegacySubcategory(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeLegacySubcategory === key
-                    ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-md`
-                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {activeCategory === 'helicopter' && (
-          <div className="flex flex-wrap gap-2 mt-3 justify-center">
-            {Object.entries(HELICOPTER_SUBCATEGORY_LABELS).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveHelicopterSubcategory(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeHelicopterSubcategory === key
-                    ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-md`
-                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {activeCategory === 'military' && (
-          <div className="flex flex-wrap gap-2 mt-3 justify-center">
-            {Object.entries(MILITARY_SUBCATEGORY_LABELS).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveMilitarySubcategory(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeMilitarySubcategory === key
-                    ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-md`
-                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {activeCategory === 'cargo' && (
-          <div className="flex flex-wrap gap-2 mt-3 justify-center">
-            {Object.entries(CARGO_SUBCATEGORY_LABELS).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveCargoSubcategory(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeCargoSubcategory === key
-                    ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-md`
-                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {activeCategory === 'flagship' && (
-          <div className="flex flex-wrap gap-2 mt-3 justify-center">
-            {Object.entries(FLAGSHIP_SUBCATEGORY_LABELS).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveFlagshipSubcategory(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeFlagshipSubcategory === key
-                    ? `${FLAGSHIP_SUBCATEGORY_COLORS[key]} text-white shadow-md`
-                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* Carousel Section */}
       <div className="px-0 mb-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
