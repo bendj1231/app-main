@@ -47,16 +47,23 @@ interface AircraftTypeRating {
   specifications?: any;
   news?: any;
   training_requirements?: any;
+  training_curriculum?: any;
+  simulator_details?: any;
+  career_info?: any;
   hiring_requirements?: any;
   compensation_data?: any;
   comparison_data?: any;
   show_career_outlook?: boolean;
   extended_info_content?: any;
   demandLevel?: 'none' | 'high' | 'medium' | 'low';
-  lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring';
+  lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring' | 'end-of-life';
+  lifecycle_stage?: 'early-career' | 'mid-career' | 'mature' | 'retiring' | 'end-of-life';
   orderBacklog?: { orders: number; delivered: number };
   operatorCount?: number;
+  operator_count?: number;
   pilotCount?: number;
+  pilot_count?: number;
+  careerScore?: number;
 }
 
 // Manufacturer logo mapping — categorized in /images/manufacturer-logos/<category>/
@@ -951,8 +958,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             <div className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0">
               <button
                 onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all flex-shrink-0"
-                style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-red-500/40 text-white hover:bg-red-500/20 transition-all flex-shrink-0"
+                style={{ background: 'rgba(239, 68, 68, 0.85)', boxShadow: '0 4px 16px rgba(239, 68, 68, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)' }}
               >
                 <X className="w-3 h-3" />
                 Cancel Filter
