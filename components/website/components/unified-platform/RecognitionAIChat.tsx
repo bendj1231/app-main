@@ -195,11 +195,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         {/* Left controls */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {!isPlus && (
-            <span className={`text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border ${
-              requestsRemaining > 0
-                ? 'text-amber-600 border-amber-400/30 bg-amber-400/10'
-                : 'text-red-600 border-red-400/30 bg-red-400/10'
-            }`}>
+            <span className="text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border text-red-600 border-red-400/30 bg-red-400/10">
               {requestsRemaining}/{FREE_DAILY_LIMIT} free requests today
             </span>
           )}
