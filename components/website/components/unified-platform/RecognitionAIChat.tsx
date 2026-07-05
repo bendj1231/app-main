@@ -177,7 +177,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
 
   return (
     <div
-      className="rounded-2xl border border-white/40 p-6"
+      className="rounded-2xl border border-white/40 p-8"
       style={{
         background: 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.4))',
         backdropFilter: 'blur(16px) saturate(1.2)',

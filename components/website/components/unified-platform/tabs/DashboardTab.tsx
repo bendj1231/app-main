@@ -137,7 +137,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
   );
 
   return (
-    <div className="space-y-8 px-4 lg:px-8">
+    <div className="space-y-8 px-6 lg:px-12 xl:px-16">
       <div className="relative">
         <h2 className="text-3xl font-serif text-white tracking-wide mb-2">Recognition Dashboard</h2>
         <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
@@ -147,7 +147,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
       <RecognitionAIChat profile={profile} />
 
       {/* Quick Access Dashboard */}
-      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+      <div className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
         <div className="flex items-center gap-3 mb-6">
           <Zap size={22} className="text-amber-400" />
           <h3 className="text-xl font-bold text-white">» QUICK ACCESS</h3>
@@ -328,7 +328,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
       )}
 
       {/* Programs */}
-      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+      <div className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
         <div className="flex items-center gap-3 mb-6">
           <BookOpen size={22} className="text-teal-400" />
           <h3 className="text-xl font-bold text-white">» PROGRAMS</h3>
@@ -354,7 +354,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
       </div>
 
       {/* Examination Portal */}
-      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+      <div className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
         <div className="flex items-center gap-3 mb-6">
           <Brain size={22} className="text-orange-400" />
           <h3 className="text-xl font-bold text-white">» EXAMINATION PORTAL</h3>
@@ -381,7 +381,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => v
       </div>
 
       {/* Pathway Recommendations carousel */}
-      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+      <div className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
         <div className="flex items-center gap-3 mb-6">
           <FolderOpen size={22} className="text-green-400" />
           <h3 className="text-xl font-bold text-white">» PATHWAY RECOMMENDATIONS</h3>
