@@ -521,47 +521,70 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Submitted Pathways */}
-                <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <FolderOpen size={14} className="text-blue-500" />
+                {/* Submitted Pathways — only visible when profile is sufficiently complete */}
+                {completionPct >= 60 ? (
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <FolderOpen size={14} className="text-blue-500" />
+                        <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
+                      </div>
+                      <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
+                        {pathwayMatches.length || 0}
+                      </span>
+                    </div>
+                    {pathwayMatches.length === 0 ? (
+                      <div className="text-center py-4">
+                        <Route size={20} className="text-slate-300 mx-auto mb-2" />
+                        <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {pathwayMatches.slice(0, 3).map((pw, i) => (
+                          <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                            <div
+                              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                              style={{ background: 'rgba(129,140,248,0.1)' }}
+                            >
+                              <Route size={14} style={{ color: '#6366f1' }} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
+                              <p className="text-[10px] text-slate-400">
+                                {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
+                              </p>
+                            </div>
+                            <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Prompt to complete profile first */
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <FolderOpen size={14} className="text-slate-400" />
                       <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
                     </div>
-                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
-                      {pathwayMatches.length || 0}
-                    </span>
-                  </div>
-                  {pathwayMatches.length === 0 ? (
                     <div className="text-center py-4">
                       <Route size={20} className="text-slate-300 mx-auto mb-2" />
-                      <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
+                      <p className="text-[11px] text-slate-500 mb-2">Complete your advanced profile to submit pathway interests</p>
+                      <button
+                        onClick={() => setTab?.('advanced-profile' as TabId)}
+                        className="text-[10px] font-black tracking-wider text-red-600 hover:text-red-700 transition-all"
+                      >
+                        Complete Profile →
+                      </button>
                     </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {pathwayMatches.slice(0, 3).map((pw, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                          <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(129,140,248,0.1)' }}
-                          >
-                            <Route size={14} style={{ color: '#6366f1' }} />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
-                            <p className="text-[10px] text-slate-400">
-                              {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
-                            </p>
-                          </div>
-                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {/* Recent Replies */}
                 <div
