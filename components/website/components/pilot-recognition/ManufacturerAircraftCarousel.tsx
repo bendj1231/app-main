@@ -16,6 +16,7 @@ interface ManufacturerAircraftCarouselProps {
   showCount?: boolean;
   title?: string;
   categoryFilter?: string;
+  searchFilter?: string;
 }
 
 export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarouselProps> = ({
@@ -27,10 +28,17 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
   showCount = true,
   title,
   categoryFilter,
+  searchFilter,
 }) => {
   const aircraft = useMemo(() => {
-    return rawAircraftTypeRatings.filter(a => a.manufacturer_id === manufacturerId && (!categoryFilter || categoryFilter === 'all' || a.category === categoryFilter));
-  }, [manufacturerId, categoryFilter]);
+    const query = searchFilter?.trim().toLowerCase();
+    return rawAircraftTypeRatings.filter(a => {
+      if (a.manufacturer_id !== manufacturerId) return false;
+      if (categoryFilter && categoryFilter !== 'all' && a.category !== categoryFilter) return false;
+      if (query && !a.model.toLowerCase().includes(query)) return false;
+      return true;
+    });
+  }, [manufacturerId, categoryFilter, searchFilter]);
 
   if (aircraft.length === 0) {
     return null;

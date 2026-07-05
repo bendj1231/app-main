@@ -934,18 +934,29 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               selectedId={selectedAircraft?.id}
               title="Aircraft"
               categoryFilter={selectedCategory}
+              searchFilter={searchQuery}
             />
 
             {/* Search bar + category filter buttons below aircraft carousel */}
             <div className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0">
               <div className="relative flex-shrink-0 w-64 md:w-80">
+                {selectedManufacturer && (
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-white rounded-md flex items-center justify-center p-1 z-10">
+                    <img
+                      src={selectedManufacturer.logo}
+                      alt={selectedManufacturer.name}
+                      className="w-full h-full object-contain"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  </div>
+                )}
                 <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search aircraft, manufacturers..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-4 pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
+                  className={`w-full pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg ${selectedManufacturer ? 'pl-12' : 'pl-4'}`}
                 />
               </div>
 
