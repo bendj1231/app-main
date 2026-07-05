@@ -874,7 +874,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 </div>
               </div>
             </div>
-          ') : (
+          ) : (
             <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 mx-4 md:mx-8 lg:mx-12" style={{ background: 'rgba(15, 23, 42, 0.5)', minHeight: '320px' }}>
               <div className="flex flex-col lg:flex-row h-full">
                 {/* Left side - Manufacturer logo */}
@@ -930,10 +930,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       <p className="text-sm font-bold text-sky-400">{selectedManufacturer.reputation_score || 0}/10</p>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          )}
                 </div>
               </div>
             </div>
