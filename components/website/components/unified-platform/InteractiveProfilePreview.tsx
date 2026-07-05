@@ -569,83 +569,65 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                   <div>
                     {[
-                      { airline: 'Delta Air Lines', position: 'A320 First Officer', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', stage: 1, statusLabel: 'Pooled (Top 10%)', actionLabel: 'View Application' },
-                      { airline: 'Emirates', position: 'B777 First Officer', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', stage: 2, statusLabel: 'Under Review', actionLabel: 'View Application' },
-                      { airline: 'Qatar Airways', position: 'A350 Captain', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', stage: 3, statusLabel: 'Shortlisted', actionLabel: 'View Interview' },
-                    ].map((row, i, arr) => {
-                        const stages = ['Submitted', 'Under Review', 'Shortlisted', 'Offered'];
-                        const stageColors = ['#94a3b8', '#f59e0b', '#8b5cf6', '#10b981'];
-                        return (
-                          <div key={i}>
-                            <div className="flex items-start gap-3 py-3">
-                              {/* Left: Logo + Airline info */}
-                              <div className="flex items-center gap-3 flex-1 min-w-0">
-                                <img
-                                  src={row.logo}
-                                  alt={row.airline}
-                                  className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                                  style={{ background: '#ffffff' }}
-                                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                                />
-                                <div className="min-w-0">
-                                  <p className="text-[11px] font-bold text-slate-700 truncate">{row.airline}</p>
-                                  <p className="text-[10px] text-slate-400">{row.position}</p>
-                                </div>
-                              </div>
-                              {/* Center-left: Submitted date */}
-                              <div className="flex-shrink-0 hidden sm:block w-20 text-right">
-                                <p className="text-[10px] font-bold text-slate-500">Submitted</p>
-                                <p className="text-[10px] text-slate-400">{row.submitted}</p>
-                              </div>
-                              {/* Center: Pipeline stepper */}
-                              <div className="flex-shrink-0 hidden md:flex flex-col items-center w-40">
-                                <div className="flex items-center gap-1">
-                                  {stages.map((_, stageIdx) => (
-                                    <React.Fragment key={stageIdx}>
-                                      <div
-                                        className="w-2 h-2 rotate-45"
-                                        style={{
-                                          background: stageIdx < row.stage ? stageColors[row.stage - 1] : '#e2e8f0',
-                                        }}
-                                      />
-                                      {stageIdx < stages.length - 1 && (
-                                        <div
-                                          className="w-3 h-[2px]"
-                                          style={{
-                                            background: stageIdx < row.stage - 1 ? stageColors[row.stage - 1] : '#e2e8f0',
-                                          }}
-                                        />
-                                      )}
-                                    </React.Fragment>
-                                  ))}
-                                </div>
-                                <p className="text-[9px] font-bold mt-1.5" style={{ color: stageColors[row.stage - 1] }}>
-                                  {row.statusLabel}
-                                </p>
-                              </div>
-                              {/* Right: Action */}
-                              <div className="flex-shrink-0 self-center">
-                                <button
-                                  onClick={() => setTab?.('pathways' as TabId)}
-                                  className="px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-all border"
-                                  style={{
-                                    background: row.stage === 3 ? '#10b981' : '#f8fafc',
-                                    color: row.stage === 3 ? '#ffffff' : '#475569',
-                                    borderColor: row.stage === 3 ? '#059669' : '#e2e8f0',
-                                  }}
-                                >
-                                  {row.actionLabel}
-                                </button>
-                              </div>
+                      { airline: 'Delta Air Lines', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, status: 'Interest Submitted', statusColor: '#3b82f6', statusBg: 'rgba(59,130,246,0.1)', actionLabel: 'View Pathway' },
+                      { airline: 'Emirates', pathway: 'B777 FO Upgrade Pathway', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, status: 'Under Review', statusColor: '#f59e0b', statusBg: 'rgba(245,158,11,0.1)', actionLabel: 'View Pathway' },
+                      { airline: 'Qatar Airways', pathway: 'A350 Captain Command', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, status: 'Pooled', statusColor: '#10b981', statusBg: 'rgba(16,185,129,0.1)', actionLabel: 'Manage Interest' },
+                    ].map((row, i, arr) => (
+                      <div key={i}>
+                        <div className="flex items-start gap-3 py-3">
+                          {/* Left: Logo + Airline + Pathway */}
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <img
+                              src={row.logo}
+                              alt={row.airline}
+                              className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                              style={{ background: '#ffffff' }}
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                            <div className="min-w-0">
+                              <p className="text-[11px] font-bold text-slate-700 truncate">{row.airline}</p>
+                              <p className="text-[10px] text-slate-400">{row.pathway}</p>
                             </div>
-                            {i < arr.length - 1 && (
-                              <div className="border-t border-gray-100" />
-                            )}
                           </div>
-                        );
-                      })}
-                    </div>
+                          {/* Center-left: Deadline urgency */}
+                          <div className="flex-shrink-0 hidden sm:flex flex-col items-end w-24">
+                            <p className="text-[10px] font-bold text-slate-500">Deadline</p>
+                            <p className="text-[10px] font-semibold" style={{ color: row.deadlineUrgent ? '#ef4444' : '#94a3b8' }}>
+                              {row.deadline}
+                            </p>
+                          </div>
+                          {/* Center: Status badge */}
+                          <div className="flex-shrink-0 hidden md:flex flex-col items-center w-28">
+                            <span
+                              className="text-[9px] font-black px-2 py-0.5 rounded-full"
+                              style={{ color: row.statusColor, background: row.statusBg }}
+                            >
+                              {row.status}
+                            </span>
+                            <p className="text-[9px] text-slate-400 mt-1">{row.submitted}</p>
+                          </div>
+                          {/* Right: Action */}
+                          <div className="flex-shrink-0 self-center">
+                            <button
+                              onClick={() => setTab?.('pathways' as TabId)}
+                              className="px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-all border"
+                              style={{
+                                background: row.status === 'Pooled' ? '#10b981' : '#f8fafc',
+                                color: row.status === 'Pooled' ? '#ffffff' : '#475569',
+                                borderColor: row.status === 'Pooled' ? '#059669' : '#e2e8f0',
+                              }}
+                            >
+                              {row.actionLabel}
+                            </button>
+                          </div>
+                        </div>
+                        {i < arr.length - 1 && (
+                          <div className="border-t border-gray-100" />
+                        )}
+                      </div>
+                    ))}
                   </div>
+                </div>
 
                 {/* Recent Replies — airline status updates from sourcing pools */}
                 <div
