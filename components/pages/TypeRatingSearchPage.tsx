@@ -1500,11 +1500,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
       </div>
 
-      {/* Main Content with sidebar margin */}
-      <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
-
       {/* Manufacturer Carousel - overlaps hero like a popup */}
-      <div className="relative z-20 -mt-6 mx-4 md:mx-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)' }}>
+      <div className="relative z-20 -mt-6 mx-4 md:mx-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: 'calc(280px + 1rem)', marginRight: '1rem' }}>
         <div className="px-5 pt-4 pb-1 flex items-center justify-between">
           <h2 className="text-base font-serif font-normal text-white drop-shadow-md">
             Browse Manufacturers <span className="text-sm text-white/60">({manufacturers.length})</span>
@@ -1560,6 +1557,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           ))}
         </div>
       </div>
+
+      {/* Main Content with sidebar margin */}
+      <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
 
       {/* Search + Entity Tabs area */}
       <div className="relative overflow-hidden pt-4 md:pt-6 lg:pt-8 pb-4 md:pb-6 lg:pb-8 px-4 md:px-6 z-10">
