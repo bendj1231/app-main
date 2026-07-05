@@ -187,19 +187,13 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
     >
       {/* Top Bar Header */}
       <motion.div
-        className="flex items-center justify-between mb-4"
+        className="relative flex items-center justify-center mb-4"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-black tracking-wide">
-            <span style={{ color: '#ffffff' }}>Recognition</span>
-            <span style={{ color: '#dc2626' }}> AI</span>
-          </p>
-          <p className="text-[10px] text-slate-400 hidden sm:block">Get advice on your pathways, career goals, and network.</p>
-        </div>
-        <div className="flex items-center gap-2">
+        {/* Left controls */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {!isPlus && (
             <span className={`text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border ${
               requestsRemaining > 0
@@ -209,6 +203,19 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
               {requestsRemaining}/{FREE_DAILY_LIMIT} free requests today
             </span>
           )}
+        </div>
+
+        {/* Centered title */}
+        <div className="text-center">
+          <p className="text-2xl font-black tracking-wide">
+            <span style={{ color: '#1e293b' }}>Recognition</span>
+            <span style={{ color: '#dc2626' }}> AI</span>
+          </p>
+          <p className="text-[10px] text-slate-400 mt-0.5">Get advice on your pathways, career goals, and network.</p>
+        </div>
+
+        {/* Right controls */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2">
           {hasStarted && (
             <button
               onClick={resetChat}
