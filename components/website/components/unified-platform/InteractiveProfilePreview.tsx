@@ -569,24 +569,27 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                   <div>
                     {[
-                      { airline: 'Delta Air Lines', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, status: 'Interest Submitted', statusColor: '#3b82f6', statusBg: 'rgba(59,130,246,0.1)', actionLabel: 'View Pathway' },
-                      { airline: 'Emirates', pathway: 'B777 FO Upgrade Pathway', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, status: 'Under Review', statusColor: '#f59e0b', statusBg: 'rgba(245,158,11,0.1)', actionLabel: 'View Pathway' },
-                      { airline: 'Qatar Airways', pathway: 'A350 Captain Command', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, status: 'Pooled', statusColor: '#10b981', statusBg: 'rgba(16,185,129,0.1)', actionLabel: 'Manage Interest' },
+                      { provider: 'Delta Air Lines', type: 'Airline', pathway: 'A320 FO Pathway', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', deadline: 'Closes Jul 15', deadlineUrgent: false, status: 'Interest Submitted', statusColor: '#3b82f6', statusBg: 'rgba(59,130,246,0.1)', actionLabel: 'View Pathway' },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', pathway: 'ATPL Integrated Course', logo: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', deadline: 'Closes in 3 days', deadlineUrgent: true, status: 'Under Review', statusColor: '#f59e0b', statusBg: 'rgba(245,158,11,0.1)', actionLabel: 'View Pathway' },
+                      { provider: 'L3Harris Training', type: 'Type Rating Center', pathway: 'A320 Type Rating Program', logo: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', deadline: 'Closes Jul 20', deadlineUrgent: false, status: 'Pooled', statusColor: '#10b981', statusBg: 'rgba(16,185,129,0.1)', actionLabel: 'Manage Interest' },
                     ].map((row, i, arr) => (
                       <div key={i}>
                         <div className="flex items-start gap-3 py-3">
-                          {/* Left: Logo + Airline + Pathway */}
+                          {/* Left: Logo + Provider + Pathway */}
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <img
                               src={row.logo}
-                              alt={row.airline}
+                              alt={row.provider}
                               className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
                               style={{ background: '#ffffff' }}
                               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                             />
                             <div className="min-w-0">
-                              <p className="text-[11px] font-bold text-slate-700 truncate">{row.airline}</p>
-                              <p className="text-[10px] text-slate-400">{row.pathway}</p>
+                              <p className="text-[11px] font-bold text-slate-700 truncate">{row.provider}</p>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">{row.type}</span>
+                                <span className="text-[10px] text-slate-400">{row.pathway}</span>
+                              </div>
                             </div>
                           </div>
                           {/* Center-left: Deadline urgency */}
@@ -629,20 +632,20 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                 </div>
 
-                {/* Recent Replies — airline status updates from sourcing pools */}
+                {/* Recent Replies — pathway status updates from all provider types */}
                 <div
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Mail size={14} className="text-emerald-500" />
-                    <p className="text-xs font-bold text-slate-800">Airline Status Updates</p>
+                    <p className="text-xs font-bold text-slate-800">Pathway Status Updates</p>
                   </div>
                   <div>
                     {[
-                      { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
-                      { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
-                      { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
+                      { provider: 'Delta Air Lines', type: 'Airline', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c' },
+                      { provider: 'CAE Oxford Aviation', type: 'Flight School', reply: 'Entry assessment scheduled for next week', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/cae.com?key=pk_fr0929c8e806652c55521c' },
+                      { provider: 'L3Harris Training', type: 'Type Rating', reply: 'Prerequisites verified — slot reserved', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/l3harris.com?key=pk_fr0929c8e806652c55521c' },
                     ].map((reply, i, arr) => (
                       <div key={i}>
                         <button
@@ -651,14 +654,17 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                         >
                           <img
                             src={reply.logoUrl}
-                            alt={reply.airline}
+                            alt={reply.provider}
                             className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
                             style={{ background: '#ffffff' }}
                             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between mb-0.5">
-                              <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-[11px] font-bold text-slate-700">{reply.provider}</p>
+                                <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-slate-100 text-slate-500">{reply.type}</span>
+                              </div>
                               <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
                             </div>
                             <p className="text-[10px] text-slate-500 leading-relaxed truncate">{reply.reply}</p>
