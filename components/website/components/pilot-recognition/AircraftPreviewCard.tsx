@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Plane } from 'lucide-react';
 
 interface Manufacturer {
@@ -29,15 +29,6 @@ interface AircraftPreviewCardProps {
   aircraft: AircraftTypeRating;
   manufacturer: Manufacturer | undefined;
 }
-
-const TYPE_RATING_CENTERS = [
-  { id: 'cae', name: 'CAE' },
-  { id: 'flightsafety', name: 'FlightSafety' },
-  { id: 'boeing-fts', name: 'Boeing Flight Training' },
-  { id: 'airbus-fts', name: 'Airbus Training' },
-  { id: 'l3harris', name: 'L3Harris' },
-  { id: 'trax', name: 'TRAX' },
-];
 
 const getPilotCount = (model: string) => {
   const knownCounts: Record<string, number> = {
@@ -71,8 +62,6 @@ const getAircraftStatus = (aircraft: AircraftTypeRating) => {
 };
 
 export function AircraftPreviewCard({ aircraft, manufacturer }: AircraftPreviewCardProps) {
-  const [selectedRatingCenter, setSelectedRatingCenter] = useState<string>('');
-
   return (
     <div
       style={{
@@ -185,31 +174,6 @@ export function AircraftPreviewCard({ aircraft, manufacturer }: AircraftPreviewC
             </div>
           </div>
 
-          {/* Type rating center select */}
-          <div>
-            <p style={{ margin: '0 0 0.4rem', fontSize: '0.6rem', fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Type rating center</p>
-            <select
-              value={selectedRatingCenter}
-              onChange={(e) => setSelectedRatingCenter(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.55rem 0.75rem',
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: '8px',
-                color: '#ffffff',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                outline: 'none',
-              }}
-            >
-              <option value="" style={{ background: '#0f172a', color: '#ffffff' }}>Select a training center...</option>
-              {TYPE_RATING_CENTERS.map((center) => (
-                <option key={center.id} value={center.id} style={{ background: '#0f172a', color: '#ffffff' }}>{center.name}</option>
-              ))}
-            </select>
-          </div>
         </div>
       </div>
     </div>
