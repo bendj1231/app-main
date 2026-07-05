@@ -1503,6 +1503,64 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
       </div>
 
+      {/* Manufacturer Carousel - Edge to Edge */}
+      <div className="mb-8">
+        <div className="px-6 mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
+            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
+          </h2>
+        </div>
+        <div
+          ref={manufacturerCarouselRef}
+          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          {manufacturers.map(manufacturer => (
+            <button
+              key={manufacturer.id}
+              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
+              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
+                selectedManufacturer?.id === manufacturer.id
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
+                  : 'hover:shadow-lg'
+              }`}
+              style={{
+                width: '160px',
+                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
+                background: 'rgba(255,255,255,0.08)',
+              }}
+              onMouseEnter={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }
+              }}
+            >
+              {/* Top: Logo on light background */}
+              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
+                <img
+                  src={manufacturer.logo}
+                  alt={manufacturer.name}
+                  className="w-full h-full object-contain"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+              {/* Bottom: Name on dark bg */}
+              <div className="p-3">
+                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Search + Entity Tabs area */}
       <div className="relative overflow-hidden pt-8 md:pt-12 lg:pt-16 pb-8 md:pb-10 lg:pb-12 px-4 md:px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
@@ -1565,64 +1623,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             </div>
           </div>
         </div>
-
-      {/* Manufacturer Carousel - Edge to Edge */}
-      <div className="mb-8">
-        <div className="px-6 mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
-            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
-          </h2>
-        </div>
-        <div
-          ref={manufacturerCarouselRef}
-          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-        >
-          {manufacturers.map(manufacturer => (
-            <button
-              key={manufacturer.id}
-              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
-                selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
-                  : 'hover:shadow-lg'
-              }`}
-              style={{
-                width: '160px',
-                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
-                background: 'rgba(255,255,255,0.08)',
-              }}
-              onMouseEnter={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                }
-              }}
-            >
-              {/* Top: Logo on light background */}
-              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
-                <img
-                  src={manufacturer.logo}
-                  alt={manufacturer.name}
-                  className="w-full h-full object-contain"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-              </div>
-              {/* Bottom: Name on dark bg */}
-              <div className="p-3">
-                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Read more about manufacturer expectations - positioned at bottom center of hero */}
       {selectedManufacturer && (
