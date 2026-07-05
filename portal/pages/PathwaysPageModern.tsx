@@ -4974,39 +4974,48 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <div className="max-w-4xl mx-auto">
                 <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
 
-                {/* Universal Search Entity Tabs */}
-                <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                  {/* Left: Entity type pills */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    {ENTITY_TABS.map(tab => (
-                      <button
-                        key={tab.id}
-                        onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
-                        className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all ${
-                          activeEntity === tab.id
-                            ? 'bg-slate-900 text-white shadow-md'
-                            : 'bg-white/60 backdrop-blur-sm text-slate-600 hover:bg-white/90 border border-white/30'
-                        }`}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
+                {/* Universal Search Entity Tabs — dark card style */}
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Left: Entity selector card */}
+                  <div className="relative rounded-xl overflow-hidden" style={{ background: 'rgba(20,30,50,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: '#06b6d4' }} />
+                    <div className="p-3 pl-4">
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color: '#06b6d4' }}>Manufacturer</p>
+                      <div className="relative">
+                        <select
+                          value={activeEntity}
+                          onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
+                          className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                        >
+                          {ENTITY_TABS.map(tab => (
+                            <option key={tab.id} value={tab.id} className="bg-slate-900 text-white">{tab.label}</option>
+                          ))}
+                        </select>
+                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
-                  {/* Right: Category tabs for selected entity */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveEntityCategory(cat)}
-                        className={`text-[11px] font-semibold transition-all pb-0.5 border-b-2 ${
-                          activeEntityCategory === cat
-                            ? 'text-slate-900 border-slate-900'
-                            : 'text-slate-400 border-transparent hover:text-slate-600'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
+                  {/* Right: Category selector card */}
+                  <div className="relative rounded-xl overflow-hidden" style={{ background: 'rgba(20,30,50,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="p-3">
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-white/30">Category</p>
+                      <div className="relative">
+                        <select
+                          value={activeEntityCategory}
+                          onChange={(e) => setActiveEntityCategory(e.target.value)}
+                          className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                        >
+                          {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                            <option key={cat} value={cat} className="bg-slate-900 text-white">{cat}</option>
+                          ))}
+                        </select>
+                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
