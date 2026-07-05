@@ -915,22 +915,29 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 w-56 p-8 rounded-xl border-2 transition-all relative overflow-hidden ${
+              className={`flex-shrink-0 w-40 rounded-xl overflow-hidden transition-all border ${
                 selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl shadow-2xl shadow-black/30'
-                  : 'border-white/20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl hover:border-white/30 hover:from-white/20 hover:shadow-lg shadow-black/20'
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl shadow-black/30 scale-[1.02]'
+                  : 'border-white/10 hover:border-white/25 hover:shadow-lg hover:shadow-black/20'
               }`}
+              style={{ background: 'rgba(30,41,59,0.85)' }}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
-              <img
-                src={manufacturer.logo}
-                alt={manufacturer.name}
-                className="w-24 h-24 object-contain mb-6 mx-auto relative z-10"
-                referrerPolicy="no-referrer"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-              <div className="text-center relative z-10">
-                <p className="font-medium text-slate-900 text-lg">{manufacturer.name}</p>
+              {/* White logo area */}
+              <div className="h-28 bg-white/95 flex items-center justify-center p-4">
+                <img
+                  src={manufacturer.logo}
+                  alt={manufacturer.name}
+                  className="w-20 h-20 object-contain"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+              {/* Dark text area */}
+              <div className="p-3 text-left">
+                <p className="font-semibold text-white text-sm leading-tight">{manufacturer.name}</p>
+                <p className="text-[10px] text-white/40 mt-1 leading-tight truncate">
+                  {manufacturer.description?.split(' ').slice(0, 3).join(' ') || 'Commercial Aviation'}
+                </p>
               </div>
             </button>
           ))}
