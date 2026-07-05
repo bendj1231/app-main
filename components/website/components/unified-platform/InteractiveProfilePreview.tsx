@@ -580,39 +580,80 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       </button>
                     </div>
                   ) : (
-                    <div className="space-y-2">
-                      {pathwayMatches.slice(0, 3).map((pw, i) => {
-                        const status = pw.match_score && pw.match_score >= 85 ? 'Shortlisted' : pw.match_score && pw.match_score >= 60 ? 'Under Review' : 'Pooled';
-                        const statusColor = status === 'Shortlisted' ? '#10b981' : status === 'Under Review' ? '#f59e0b' : '#64748b';
-                        const statusBg = status === 'Shortlisted' ? 'rgba(16,185,129,0.1)' : status === 'Under Review' ? 'rgba(245,158,11,0.1)' : 'rgba(100,116,139,0.1)';
+                    <div>
+                      {[
+                        { airline: 'Delta Air Lines', position: 'A320 First Officer', logo: 'https://img.logokit.com/delta.com?key=pk_fr0929c8e806652c55521c', submitted: '2h ago', stage: 1, statusLabel: 'Pooled (Top 10%)', actionLabel: 'View Application' },
+                        { airline: 'Emirates', position: 'B777 First Officer', logo: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c', submitted: '1d ago', stage: 2, statusLabel: 'Under Review', actionLabel: 'View Application' },
+                        { airline: 'Qatar Airways', position: 'A350 Captain', logo: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c', submitted: '3d ago', stage: 3, statusLabel: 'Shortlisted', actionLabel: 'View Interview' },
+                      ].map((row, i, arr) => {
+                        const stages = ['Submitted', 'Under Review', 'Shortlisted', 'Offered'];
+                        const stageColors = ['#94a3b8', '#f59e0b', '#8b5cf6', '#10b981'];
                         return (
-                          <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                              style={{ background: 'rgba(129,140,248,0.1)' }}
-                            >
-                              <Route size={14} style={{ color: '#6366f1' }} />
+                          <div key={i}>
+                            <div className="flex items-start gap-3 py-3">
+                              {/* Left: Logo + Airline info */}
+                              <div className="flex items-center gap-3 flex-1 min-w-0">
+                                <img
+                                  src={row.logo}
+                                  alt={row.airline}
+                                  className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                                  style={{ background: '#ffffff' }}
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                />
+                                <div className="min-w-0">
+                                  <p className="text-[11px] font-bold text-slate-700 truncate">{row.airline}</p>
+                                  <p className="text-[10px] text-slate-400">{row.position}</p>
+                                </div>
+                              </div>
+                              {/* Center-left: Submitted date */}
+                              <div className="flex-shrink-0 hidden sm:block w-20 text-right">
+                                <p className="text-[10px] font-bold text-slate-500">Submitted</p>
+                                <p className="text-[10px] text-slate-400">{row.submitted}</p>
+                              </div>
+                              {/* Center: Pipeline stepper */}
+                              <div className="flex-shrink-0 hidden md:flex flex-col items-center w-40">
+                                <div className="flex items-center gap-1">
+                                  {stages.map((_, stageIdx) => (
+                                    <React.Fragment key={stageIdx}>
+                                      <div
+                                        className="w-2 h-2 rotate-45"
+                                        style={{
+                                          background: stageIdx < row.stage ? stageColors[row.stage - 1] : '#e2e8f0',
+                                        }}
+                                      />
+                                      {stageIdx < stages.length - 1 && (
+                                        <div
+                                          className="w-3 h-[2px]"
+                                          style={{
+                                            background: stageIdx < row.stage - 1 ? stageColors[row.stage - 1] : '#e2e8f0',
+                                          }}
+                                        />
+                                      )}
+                                    </React.Fragment>
+                                  ))}
+                                </div>
+                                <p className="text-[9px] font-bold mt-1.5" style={{ color: stageColors[row.stage - 1] }}>
+                                  {row.statusLabel}
+                                </p>
+                              </div>
+                              {/* Right: Action */}
+                              <div className="flex-shrink-0 self-center">
+                                <button
+                                  onClick={() => setTab?.('pathways' as TabId)}
+                                  className="px-3 py-1.5 rounded-md text-[9px] font-black tracking-wider transition-all border"
+                                  style={{
+                                    background: row.stage === 3 ? '#10b981' : '#f8fafc',
+                                    color: row.stage === 3 ? '#ffffff' : '#475569',
+                                    borderColor: row.stage === 3 ? '#059669' : '#e2e8f0',
+                                  }}
+                                >
+                                  {row.actionLabel}
+                                </button>
+                              </div>
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
-                              <p className="text-[10px] text-slate-400">
-                                {pw.date ? new Date(pw.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently'}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span
-                                className="text-[9px] font-black px-2 py-0.5 rounded-full"
-                                style={{ color: statusColor, background: statusBg }}
-                              >
-                                {status}
-                              </span>
-                              <button
-                                onClick={() => setTab?.('pathways' as TabId)}
-                                className="text-[9px] font-bold text-slate-400 hover:text-blue-600 transition-colors"
-                              >
-                                View →
-                              </button>
-                            </div>
+                            {i < arr.length - 1 && (
+                              <div className="border-t border-gray-100" />
+                            )}
                           </div>
                         );
                       })}
