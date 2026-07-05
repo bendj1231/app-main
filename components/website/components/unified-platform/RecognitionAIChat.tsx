@@ -185,42 +185,40 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
       }}
     >
-      <div className="mb-4">
-        <p className="text-[11px] font-bold text-slate-500 tracking-wide">Ask Recognition AI</p>
-        <p className="text-[10px] text-slate-400">Get advice on your pathways, career goals, and network.</p>
-      </div>
-
-      {/* Header — floating text, no wrapper */}
+      {/* Top Bar Header */}
       <motion.div
-        className="relative text-center"
-        initial={{ opacity: 0, y: 20 }}
+        className="flex items-center justify-between mb-4"
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
       >
-        <p className="text-2xl font-black tracking-wide">
-          <span style={{ color: '#1e293b' }}>Recognition</span>
-          <span style={{ color: '#dc2626' }}> AI</span>
-        </p>
-        {!isPlus && (
-          <div className="flex justify-center mt-1.5">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-black tracking-wide">
+            <span style={{ color: '#1e293b' }}>Recognition</span>
+            <span style={{ color: '#dc2626' }}> AI</span>
+          </p>
+          <p className="text-[10px] text-slate-400 hidden sm:block">Get advice on your pathways, career goals, and network.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {!isPlus && (
             <span className={`text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border ${
               requestsRemaining > 0
-                ? 'text-amber-400 border-amber-400/20 bg-amber-400/10'
-                : 'text-red-400 border-red-400/20 bg-red-400/10'
+                ? 'text-amber-600 border-amber-400/30 bg-amber-400/10'
+                : 'text-red-600 border-red-400/30 bg-red-400/10'
             }`}>
               {requestsRemaining}/{FREE_DAILY_LIMIT} free requests today
             </span>
-          </div>
-        )}
-        {hasStarted && (
-          <button
-            onClick={resetChat}
-            className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-            title="Close chat"
-          >
-            <X size={14} className="text-white/40" />
-          </button>
-        )}
+          )}
+          {hasStarted && (
+            <button
+              onClick={resetChat}
+              className="p-1.5 rounded-lg hover:bg-white/40 transition-colors"
+              title="Close chat"
+            >
+              <X size={14} className="text-slate-400" />
+            </button>
+          )}
+        </div>
       </motion.div>
 
       {/* Messages — always visible even when limit reached */}
