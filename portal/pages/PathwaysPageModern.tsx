@@ -3531,6 +3531,27 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [isPanelHovered, setIsPanelHovered] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  // Universal search entity tabs
+  type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
+  const [activeEntity, setActiveEntity] = useState<EntityType>('all');
+  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
+
+  const ENTITY_TABS: { id: EntityType; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'manufacturers', label: 'Manufacturers' },
+    { id: 'airlines', label: 'Airlines' },
+    { id: 'operators', label: 'Operators' },
+    { id: 'private-jet', label: 'Private Jet' },
+  ];
+
+  const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
+    all: ['All'],
+    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
+    airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
+    operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
+    'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
+  };
+
   // Auto-scroll panel carousel
   useEffect(() => {
     if (isPanelHovered) return;
@@ -4952,6 +4973,43 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <div className="mb-8">
               <div className="max-w-4xl mx-auto">
                 <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
+
+                {/* Universal Search Entity Tabs */}
+                <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  {/* Left: Entity type pills */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {ENTITY_TABS.map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
+                        className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all ${
+                          activeEntity === tab.id
+                            ? 'bg-slate-900 text-white shadow-md'
+                            : 'bg-white/60 backdrop-blur-sm text-slate-600 hover:bg-white/90 border border-white/30'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Right: Category tabs for selected entity */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveEntityCategory(cat)}
+                        className={`text-[11px] font-semibold transition-all pb-0.5 border-b-2 ${
+                          activeEntityCategory === cat
+                            ? 'text-slate-900 border-slate-900'
+                            : 'text-slate-400 border-transparent hover:text-slate-600'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {searchQuery.trim().length > 0 && (
                   <div className="mt-3 flex items-center justify-start gap-2 overflow-x-auto px-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {[
