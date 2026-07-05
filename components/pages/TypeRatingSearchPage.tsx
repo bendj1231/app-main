@@ -908,36 +908,49 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
         <div
           ref={manufacturerCarouselRef}
-          className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
+          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {manufacturers.map(manufacturer => (
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 w-40 rounded-xl overflow-hidden transition-all border ${
+              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
                 selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl shadow-black/30 scale-[1.02]'
-                  : 'border-white/10 hover:border-white/25 hover:shadow-lg hover:shadow-black/20'
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
+                  : 'hover:shadow-lg'
               }`}
-              style={{ background: 'rgba(30,41,59,0.85)' }}
+              style={{
+                width: '160px',
+                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
+                background: 'rgba(255,255,255,0.08)',
+              }}
+              onMouseEnter={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }
+              }}
             >
-              {/* White logo area */}
-              <div className="h-28 bg-white/95 flex items-center justify-center p-4">
+              {/* Top: Logo on light background */}
+              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
                 <img
                   src={manufacturer.logo}
                   alt={manufacturer.name}
-                  className="w-20 h-20 object-contain"
+                  className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
               </div>
-              {/* Dark text area */}
-              <div className="p-3 text-left">
-                <p className="font-semibold text-white text-sm leading-tight">{manufacturer.name}</p>
-                <p className="text-[10px] text-white/40 mt-1 leading-tight truncate">
-                  {manufacturer.description?.split(' ').slice(0, 3).join(' ') || 'Commercial Aviation'}
-                </p>
+              {/* Bottom: Name on dark bg */}
+              <div className="p-3">
+                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
               </div>
             </button>
           ))}
