@@ -489,52 +489,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const auth = useAuth();
   const [activeCategory, setActiveCategory] = useState<Category>('flagship');
 
-  // Universal search entity tabs
-  type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
-  const [activeEntity, setActiveEntity] = useState<EntityType>('all');
-  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
-
-  const ENTITY_TABS: { id: EntityType; label: string }[] = [
-    { id: 'all', label: 'All' },
-    { id: 'manufacturers', label: 'Manufacturers' },
-    { id: 'airlines', label: 'Airlines' },
-    { id: 'operators', label: 'Operators' },
-    { id: 'private-jet', label: 'Private Jet' },
-  ];
-
-  const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
-    all: ['All'],
-    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
-    airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
-    operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
-    'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
-  };
-
-  // Map entity category to aircraft category for filtering
-  const entityCategoryToAircraftCategory: Record<string, string[]> = {
-    'Commercial Jets': ['commercial'],
-    'Regional Aircraft': ['regional'],
-    'Business & Private': ['private'],
-    'Helicopters': ['helicopter'],
-    'Military & Defense': ['military'],
-    'General Aviation': ['legacy'],
-    'eVTOL & UAM': ['flagship'],
-    'International': ['commercial', 'flagship'],
-    'Regional': ['regional'],
-    'Low-Cost': ['commercial'],
-    'Cargo': ['cargo'],
-    'Legacy': ['legacy'],
-    'Commercial': ['commercial', 'regional', 'cargo', 'flagship'],
-    'Corporate': ['private'],
-    'Charter': ['private', 'commercial'],
-    'Training': ['legacy'],
-    'Light': ['private'],
-    'Mid-Size': ['private'],
-    'Super Mid-Size': ['private'],
-    'Large': ['private', 'commercial'],
-    'Ultra-Long Range': ['private', 'flagship'],
-  };
-
   // Check subscription status
   const isRecognitionPlus = userProfile?.subscription_tier === 'recognition_plus' || userProfile?.subscription_tier === 'enterprise';
   const isLoggedIn = !!currentUser;
@@ -751,14 +705,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       aircraft = aircraft.filter(a => a.subcategory === activeFlagshipSubcategory);
     }
     
-    // Filter by universal search entity type and category
-    if (activeEntity !== 'all' && activeEntityCategory !== 'all') {
-      const mappedCategories = entityCategoryToAircraftCategory[activeEntityCategory];
-      if (mappedCategories) {
-        aircraft = aircraft.filter(a => mappedCategories.includes(a.category));
-      }
-    }
-
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -767,7 +713,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     }
     
     return aircraft;
-  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery, activeEntity, activeEntityCategory]);
+  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery]);
 
   // Get available categories for selected manufacturer
   const availableCategories = React.useMemo(() => {
@@ -883,46 +829,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
               />
-            </div>
-          </div>
-        </div>
-
-        {/* Universal Search Entity Tabs — outside centered text block */}
-        <div className="mt-6 w-full max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl border border-white/40 shadow-lg p-3 sm:p-4">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
-              {/* Left: Entity type pills */}
-              <div className="flex items-center gap-2 flex-wrap">
-                {ENTITY_TABS.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
-                    className={`px-3.5 py-2 rounded-full text-xs font-black tracking-wide transition-all ${
-                      activeEntity === tab.id
-                        ? 'bg-slate-900 text-white shadow-md'
-                        : 'bg-slate-100 text-slate-600 hover:bg-white hover:shadow-sm border border-slate-200'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-              {/* Right: Category tabs for selected entity */}
-              <div className="flex items-center gap-3 flex-wrap">
-                {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveEntityCategory(cat)}
-                    className={`text-xs font-bold transition-all pb-1 border-b-2 ${
-                      activeEntityCategory === cat
-                        ? 'text-slate-900 border-slate-900'
-                        : 'text-slate-400 border-transparent hover:text-slate-600'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
         </div>
