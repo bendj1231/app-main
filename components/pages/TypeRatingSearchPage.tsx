@@ -1503,16 +1503,16 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
 
-      {/* Manufacturer Carousel - Edge to Edge */}
-      <div className="mb-4">
-        <div className="px-6 mb-2 flex items-center justify-between">
-          <h2 className="text-lg font-serif font-normal text-white drop-shadow-md">
-            Browse Manufacturers <span className="text-sm text-white/70">({manufacturers.length})</span>
+      {/* Manufacturer Carousel - overlaps hero like a popup */}
+      <div className="relative z-20 -mt-6 mx-4 md:mx-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)' }}>
+        <div className="px-5 pt-4 pb-1 flex items-center justify-between">
+          <h2 className="text-base font-serif font-normal text-white drop-shadow-md">
+            Browse Manufacturers <span className="text-sm text-white/60">({manufacturers.length})</span>
           </h2>
         </div>
         <div
           ref={manufacturerCarouselRef}
-          className="flex gap-2 overflow-x-auto pb-2 px-6 scroll-smooth"
+          className="flex gap-2 overflow-x-auto pb-3 px-5 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {manufacturers.map(manufacturer => (
