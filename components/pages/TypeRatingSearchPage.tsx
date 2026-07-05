@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -537,6 +537,13 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>(HARDCODED_AIRCRAFT);
   const [dataLoading, setDataLoading] = useState(true);
 
+  // Filter manufacturers shown in the carousel by search query
+  const filteredManufacturers = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return manufacturers;
+    return manufacturers.filter(m => m.name.toLowerCase().includes(query));
+  }, [searchQuery, manufacturers]);
+
   // Bookmark state
   const [bookmarkedAircraft, setBookmarkedAircraft] = useState<Set<string>>(new Set());
 
@@ -908,7 +915,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               {selectedManufacturer ? (
                 <>{selectedManufacturer.name} Aircraft</>
               ) : (
-                <>Browse Manufacturers <span className="text-xs text-white/60">({manufacturers.length})</span></>
+                <>Browse Manufacturers <span className="text-xs text-white/60">({filteredManufacturers.length})</span></>
               )}
             </h2>
           </div>
@@ -964,7 +971,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           className="flex gap-3 overflow-x-auto pt-1 pb-3 px-5 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
-          {manufacturers.map(manufacturer => (
+          {filteredManufacturers.map(manufacturer => (
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
