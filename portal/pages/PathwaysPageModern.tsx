@@ -4974,10 +4974,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <div className="max-w-4xl mx-auto">
                 <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
 
-                {/* Universal Search Entity Tabs — dark card style */}
+                {/* Universal Search Entity Tabs — glassy UI */}
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Left: Entity selector card */}
-                  <div className="relative rounded-xl overflow-hidden" style={{ background: 'rgba(20,30,50,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(15,23,42,0.35)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
                     <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: '#06b6d4' }} />
                     <div className="p-3 pl-4">
                       <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color: '#06b6d4' }}>Manufacturer</p>
@@ -4985,33 +4985,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <select
                           value={activeEntity}
                           onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
-                          className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                          className="w-full bg-transparent text-white/90 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
                         >
                           {ENTITY_TABS.map(tab => (
-                            <option key={tab.id} value={tab.id} className="bg-slate-900 text-white">{tab.label}</option>
+                            <option key={tab.id} value={tab.id} className="bg-slate-900/95 text-white">{tab.label}</option>
                           ))}
                         </select>
-                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
                     </div>
                   </div>
                   {/* Right: Category selector card */}
-                  <div className="relative rounded-xl overflow-hidden" style={{ background: 'rgba(20,30,50,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(15,23,42,0.35)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
                     <div className="p-3">
                       <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-white/30">Category</p>
                       <div className="relative">
                         <select
                           value={activeEntityCategory}
                           onChange={(e) => setActiveEntityCategory(e.target.value)}
-                          className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                          className="w-full bg-transparent text-white/90 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
                         >
                           {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                            <option key={cat} value={cat} className="bg-slate-900 text-white">{cat}</option>
+                            <option key={cat} value={cat} className="bg-slate-900/95 text-white">{cat}</option>
                           ))}
                         </select>
-                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
