@@ -837,72 +837,39 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-6">
           {!selectedManufacturer ? (
             <div className="text-white px-4 md:px-8 lg:px-12 py-2 md:py-4">
-              <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 md:gap-8">
-                {/* Left side - Header and stats */}
-                <div className="lg:w-5/12">
-                  <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-1 md:mb-2">Discover Type-Ratings</p>
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-normal mb-2 leading-tight text-white">
-                    Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
-                  </h1>
-                  <div className="space-y-1 text-white/70 text-sm mb-4">
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-3.5 h-3.5" />
-                      <span>Worldwide Database</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="w-3.5 h-3.5" />
-                      <span>Global Pilot Community</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Star className="w-3.5 h-3.5 text-yellow-400" />
-                      <span>Industry Verified Data</span>
-                    </div>
+              <div className="max-w-7xl mx-auto">
+                <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-1 md:mb-2">Discover Type-Ratings</p>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-normal mb-2 leading-tight text-white">
+                  Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
+                </h1>
+                <div className="space-y-1 text-white/70 text-sm mb-4">
+                  <div className="flex items-center gap-2">
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>Worldwide Database</span>
                   </div>
-
-                  {/* Stats cards */}
-                  <div className="space-y-2">
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Total Aircraft in Service</div>
-                      <div className="text-xl font-bold">437,900+</div>
-                    </div>
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Type-Rated Pilots Worldwide</div>
-                      <div className="text-xl font-bold">875,000+</div>
-                    </div>
-                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Active Type Ratings</div>
-                      <div className="text-xl font-bold">87</div>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-3.5 h-3.5" />
+                    <span>Global Pilot Community</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Star className="w-3.5 h-3.5 text-yellow-400" />
+                    <span>Industry Verified Data</span>
                   </div>
                 </div>
 
-                {/* Right side - Description */}
-                <div className="lg:w-7/12 flex items-center">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                    <div className="text-white text-sm leading-relaxed space-y-3">
-                      <p>Explore comprehensive aircraft type ratings from manufacturers worldwide. From commercial jets to business aircraft, helicopters to regional turboprops — find detailed specifications, pilot requirements, and career pathways.</p>
-                      <div className="space-y-2">
-                        <p className="font-semibold text-white">What You Will Find:</p>
-                        <div className="space-y-1 text-xs">
-                          <div className="flex justify-between">
-                            <span>Aircraft Specifications:</span>
-                            <span className="font-semibold">Detailed tech data</span>
-                          </div>
-                          <p className="text-white/70">Performance, dimensions, avionics, and engine specs</p>
-                          <div className="flex justify-between">
-                            <span>Training Requirements:</span>
-                            <span className="font-semibold">Type rating paths</span>
-                          </div>
-                          <p className="text-white/70">Simulator hours, ground school, and checkride details</p>
-                          <div className="flex justify-between">
-                            <span>Career Outlook:</span>
-                            <span className="font-semibold">Demand &amp; salary data</span>
-                          </div>
-                          <p className="text-white/70">Operator demand, pilot counts, and compensation ranges</p>
-                        </div>
-                        <p className="text-white/80 mt-2 italic">Browse {manufacturers.length} manufacturers and 87 active type ratings to find your next career move.</p>
-                      </div>
-                    </div>
+                {/* Stats cards */}
+                <div className="grid grid-cols-3 gap-3 max-w-lg">
+                  <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Total Aircraft in Service</div>
+                    <div className="text-xl font-bold">437,900+</div>
+                  </div>
+                  <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Type-Rated Pilots Worldwide</div>
+                    <div className="text-xl font-bold">875,000+</div>
+                  </div>
+                  <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">Active Type Ratings</div>
+                    <div className="text-xl font-bold">87</div>
                   </div>
                 </div>
               </div>
