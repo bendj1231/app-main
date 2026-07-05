@@ -1500,7 +1500,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
       </div>
 
-      {/* Manufacturer Carousel - overlaps hero like a popup */}
+      {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
+      {searchQuery.trim() && (
       <div className="relative z-20 -mt-6 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div className="px-5 pt-4 pb-1 flex items-center justify-between">
           <h2 className="text-base font-serif font-normal text-white drop-shadow-md">
@@ -1557,6 +1558,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           ))}
         </div>
       </div>
+      )}
 
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
