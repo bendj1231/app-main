@@ -827,197 +827,24 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '2rem', paddingRight: '1rem' }}>
 
-      {/* Manufacturer Preview - full width edge-to-edge above everything */}
-      {selectedManufacturer && (
-        <div className="text-white py-12 -mt-8 -mr-4" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
-          <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 flex flex-col lg:flex-row gap-12">
-            {/* Left side - Header, metadata, and stats */}
-            <div className="lg:w-5/12">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal mb-4 leading-tight">{selectedManufacturer.name}</h2>
-              <div className="space-y-1.5 text-white/70 text-sm mb-8">
-                <div className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  <span>{selectedManufacturer.headquarters}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Founded {selectedManufacturer.founded}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 text-yellow-400" />
-                  <span>{selectedManufacturer.reputation_score || 0}/10</span>
-                </div>
-              </div>
-
-              {/* Stats cards */}
-              <div className="space-y-3">
-                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Aircrafts Listed</div>
-                  <div className="text-2xl font-bold">{selectedManufacturer.total_aircraft_count || aircraftTypeRatings.filter(a => a.manufacturer_id === selectedManufacturer.id).length || 87}</div>
-                </div>
-                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Preferred Type of Pilots</div>
-                  <div className="text-lg font-bold">600-1500 hours</div>
-                </div>
-                <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">Pilots Rated</div>
-                  <div className="text-2xl font-bold">200,000-250,000+</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right side - Description */}
-            <div className="lg:w-7/12 flex items-center">
-              <p className="text-white/80 text-base leading-relaxed">{selectedManufacturer.description}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Hero - Responsive sizing */}
-      <div className="relative overflow-hidden pt-8 md:pt-12 lg:pt-16 pb-8 md:pb-10 lg:pb-12 px-4 md:px-6 z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
-
-        {!selectedManufacturer && (
-          /* Default title section */
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-500 mb-2 md:mb-3">Discover Type-Ratings</p>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-normal leading-tight mb-3 md:mb-4 text-slate-900">
-              Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-2 text-black">
-              Explore · Manufacturers · Requirements · Specifications
-            </p>
-          </div>
-        )}
-
-        {/* Search */}
-        <div className="mt-4 md:mt-6 lg:mt-8 max-w-lg mx-auto relative px-2 sm:px-0">
-            <div className="relative">
-              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search aircraft, manufacturers..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
-              />
-            </div>
-          </div>
-
-          {/* Universal Search Entity Tabs — frosty glassy UI */}
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto px-2 sm:px-0">
-            {/* Left: Entity selector card */}
-            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
-              <div className="p-3 text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Discover Pathways</p>
-                <div className="relative flex items-center justify-center">
-                  <select
-                    value={activeEntity}
-                    onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
-                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
-                  >
-                    {ENTITY_TABS.map(tab => (
-                      <option key={tab.id} value={tab.id} className="bg-white text-slate-900">{tab.label}</option>
-                    ))}
-                  </select>
-                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            {/* Right: Category selector card */}
-            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
-              <div className="p-3 text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Category</p>
-                <div className="relative flex items-center justify-center">
-                  <select
-                    value={activeEntityCategory}
-                    onChange={(e) => setActiveEntityCategory(e.target.value)}
-                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
-                  >
-                    {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                      <option key={cat} value={cat} className="bg-white text-slate-900">{cat}</option>
-                    ))}
-                  </select>
-                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      {/* Manufacturer Carousel - Edge to Edge */}
-      <div className="mb-8">
-        <div className="px-6 mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
-            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
-          </h2>
-        </div>
-        <div
-          ref={manufacturerCarouselRef}
-          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-        >
-          {manufacturers.map(manufacturer => (
-            <button
-              key={manufacturer.id}
-              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
-                selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
-                  : 'hover:shadow-lg'
-              }`}
-              style={{
-                width: '160px',
-                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
-                background: 'rgba(255,255,255,0.08)',
-              }}
-              onMouseEnter={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                }
-              }}
-            >
-              {/* Top: Logo on light background */}
-              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
-                <img
-                  src={manufacturer.logo}
-                  alt={manufacturer.name}
-                  className="w-full h-full object-contain"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-              </div>
-              {/* Bottom: Name on dark bg */}
-              <div className="p-3">
-                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Hero Section - Default stats content (hidden when manufacturer selected) */}
-      {!selectedManufacturer && (
+      {/* Hero Section - Main upper section, always visible */}
       <div className="relative overflow-hidden mb-8 z-10 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
         {/* Background - dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
           {!selectedManufacturer ? (
             <div className="text-center text-white">
+              {/* Title from img 5 */}
+              <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-2 md:mb-3">Discover Type-Ratings</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-normal leading-tight mb-3 md:mb-4 text-white">
+                Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 text-slate-300">
+                Explore · Manufacturers · Requirements · Specifications
+              </p>
+
               {/* Worldwide Stats - Calculated from actual data */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
@@ -1812,7 +1639,127 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           )}
         </div>
       </div>
-      )}
+
+      {/* Search + Entity Tabs area */}
+      <div className="relative overflow-hidden pt-8 md:pt-12 lg:pt-16 pb-8 md:pb-10 lg:pb-12 px-4 md:px-6 z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
+
+        {/* Search */}
+        <div className="mt-4 md:mt-6 lg:mt-8 max-w-lg mx-auto relative px-2 sm:px-0">
+            <div className="relative">
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search aircraft, manufacturers..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
+              />
+            </div>
+          </div>
+
+          {/* Universal Search Entity Tabs — frosty glassy UI */}
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto px-2 sm:px-0">
+            {/* Left: Entity selector card */}
+            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+              <div className="p-3 text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Discover Pathways</p>
+                <div className="relative flex items-center justify-center">
+                  <select
+                    value={activeEntity}
+                    onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
+                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                  >
+                    {ENTITY_TABS.map(tab => (
+                      <option key={tab.id} value={tab.id} className="bg-white text-slate-900">{tab.label}</option>
+                    ))}
+                  </select>
+                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            {/* Right: Category selector card */}
+            <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+              <div className="p-3 text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Category</p>
+                <div className="relative flex items-center justify-center">
+                  <select
+                    value={activeEntityCategory}
+                    onChange={(e) => setActiveEntityCategory(e.target.value)}
+                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                  >
+                    {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                      <option key={cat} value={cat} className="bg-white text-slate-900">{cat}</option>
+                    ))}
+                  </select>
+                  <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {/* Manufacturer Carousel - Edge to Edge */}
+      <div className="mb-8">
+        <div className="px-6 mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
+            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
+          </h2>
+        </div>
+        <div
+          ref={manufacturerCarouselRef}
+          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          {manufacturers.map(manufacturer => (
+            <button
+              key={manufacturer.id}
+              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
+              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
+                selectedManufacturer?.id === manufacturer.id
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
+                  : 'hover:shadow-lg'
+              }`}
+              style={{
+                width: '160px',
+                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
+                background: 'rgba(255,255,255,0.08)',
+              }}
+              onMouseEnter={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedManufacturer?.id !== manufacturer.id) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }
+              }}
+            >
+              {/* Top: Logo on light background */}
+              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
+                <img
+                  src={manufacturer.logo}
+                  alt={manufacturer.name}
+                  className="w-full h-full object-contain"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+              {/* Bottom: Name on dark bg */}
+              <div className="p-3">
+                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Read more about manufacturer expectations - positioned at bottom center of hero */}
       {selectedManufacturer && (
