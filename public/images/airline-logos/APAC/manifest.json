@@ -897,5 +897,17 @@
     "mime": null,
     "path": "philippines/regional-operators/bangsamoro-airways.png",
     "note": "BARMM regional airline (est. 2024)"
+  },
+  {
+    "name": "AirTrav",
+    "status": "pending",
+    "file": "airtrav.png",
+    "title": "AirTrav Philippines",
+    "url": null,
+    "width": null,
+    "height": null,
+    "mime": null,
+    "path": "philippines/regional-operators/airtrav.png",
+    "note": "Seaplane and charter operator (Manila-based)"
   }
 ]
