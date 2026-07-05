@@ -969,6 +969,20 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               title="Aircraft"
               categoryFilter={selectedCategory}
             />
+
+            {/* Search bar below aircraft carousel */}
+            <div className="mt-4 max-w-lg mx-auto relative px-2 sm:px-0">
+              <div className="relative">
+                <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search aircraft, manufacturers..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full pl-4 pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
+                />
+              </div>
+            </div>
           </div>
         ) : (
         <div
@@ -1030,8 +1044,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <div className="relative overflow-hidden pt-4 md:pt-6 lg:pt-8 pb-4 md:pb-6 lg:pb-8 px-4 md:px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
 
-        {/* Search */}
-        <div className="max-w-lg mx-auto relative px-2 sm:px-0">
+        {/* Search — only in main content when no manufacturer selected (aircraft stage uses carousel search) */}
+        {!selectedManufacturer && (
+          <div className="max-w-lg mx-auto relative px-2 sm:px-0">
             <div className="relative">
               <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -1043,6 +1058,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               />
             </div>
           </div>
+        )}
 
           {/* Universal Search Entity Tabs — frosty glassy UI */}
           <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg mx-auto px-2 sm:px-0">
