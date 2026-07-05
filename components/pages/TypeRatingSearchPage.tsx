@@ -949,6 +949,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
             {/* Search bar + category filter buttons below aircraft carousel */}
             <div className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0">
+              <button
+                onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all flex-shrink-0"
+                style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
+              >
+                <X className="w-3 h-3" />
+                Cancel Filter
+              </button>
+
               <div className="relative flex-shrink-0 w-64 md:w-80">
                 {selectedManufacturer && (
                   <div className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-white rounded-md flex items-center justify-center p-1 z-10">
@@ -994,14 +1003,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                     {category}
                   </button>
                 ))}
-                <button
-                  onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all"
-                  style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
-                >
-                  <X className="w-3 h-3" />
-                  Cancel Filter
-                </button>
               </div>
             </div>
           </div>
