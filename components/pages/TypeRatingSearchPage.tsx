@@ -828,88 +828,88 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '2rem', paddingRight: '1rem' }}>
 
       {/* Hero Section - Main upper section, always visible */}
-      <div className="relative overflow-hidden mb-8 z-10 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
+      <div className="relative overflow-hidden mb-4 z-10">
         {/* Background - dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-6 md:py-8">
           {!selectedManufacturer ? (
             <div className="text-center text-white">
               {/* Title from img 5 */}
-              <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-2 md:mb-3">Discover Type-Ratings</p>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-normal leading-tight mb-3 md:mb-4 text-white">
+              <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-1 md:mb-2">Discover Type-Ratings</p>
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif font-normal leading-tight mb-2 md:mb-3 text-white">
                 Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
               </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 text-slate-300">
+              <p className="text-sm sm:text-base md:text-lg mb-4 md:mb-6 text-slate-300">
                 Explore · Manufacturers · Requirements · Specifications
               </p>
 
               {/* Worldwide Stats - Calculated from actual data */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-3xl font-bold">437,900+</div>
-                  <div className="text-sm text-slate-300">Total Aircraft in Service</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-xl md:text-2xl font-bold">437,900+</div>
+                  <div className="text-xs text-slate-300">Total Aircraft in Service</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-3xl font-bold">875,000+</div>
-                  <div className="text-sm text-slate-300">Type-Rated Pilots Worldwide</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-xl md:text-2xl font-bold">875,000+</div>
+                  <div className="text-xs text-slate-300">Type-Rated Pilots Worldwide</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-3xl font-bold">87</div>
-                  <div className="text-sm text-slate-300">Active Type Ratings</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-xl md:text-2xl font-bold">87</div>
+                  <div className="text-xs text-slate-300">Active Type Ratings</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-3xl font-bold">{manufacturers.length}</div>
-                  <div className="text-sm text-slate-300">Manufacturers</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-xl md:text-2xl font-bold">{manufacturers.length}</div>
+                  <div className="text-xs text-slate-300">Manufacturers</div>
                 </div>
               </div>
 
             </div>
           ) : (
-            <div className="text-white px-8 md:px-12 lg:px-16 py-12" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
-              <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+            <div className="text-white px-4 md:px-8 lg:px-12 py-4 md:py-6" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}>
+              <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 md:gap-8">
                 {/* Left side - Header, metadata, and stats */}
                 <div className="lg:w-5/12">
-                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal mb-4 leading-tight">{selectedManufacturer.name}</h2>
-                  <div className="space-y-1.5 text-white/70 text-sm mb-8">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-normal mb-2 leading-tight">{selectedManufacturer.name}</h2>
+                  <div className="space-y-1 text-white/70 text-sm mb-4">
                     <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4" />
+                      <Building2 className="w-3.5 h-3.5" />
                       <span>{selectedManufacturer.headquarters}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-3.5 h-3.5" />
                       <span>Founded {selectedManufacturer.founded}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Star className="w-4 h-4 text-yellow-400" />
+                      <Star className="w-3.5 h-3.5 text-yellow-400" />
                       <span>{selectedManufacturer.reputation_score || 0}/10</span>
                     </div>
                   </div>
-                  
+
                   {/* Stats cards */}
-                  <div className="space-y-3">
-                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                  <div className="space-y-2">
+                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">
                         Aircrafts Listed
                       </div>
-                      <div className="text-2xl font-bold">
+                      <div className="text-xl font-bold">
                         {selectedManufacturer.id === 'boeing' ? '12,000-14,000' : selectedManufacturer.id === 'airbus' ? '6-8 (Commercial)' : selectedManufacturer.id === 'embraer' ? '9,000+ (since 1969)' : selectedManufacturer.id === 'bombardier' ? '5,200+ Business Jets' : selectedManufacturer.id === 'gulfstream' ? '3,500-4,000 Aircraft' : selectedManufacturer.id === 'cessna' ? '44,000+ Units' : selectedManufacturer.id === 'dassault-falcon' ? '2,150-2,200 Jets' : selectedManufacturer.id === 'pilatus' ? '2,650+ Units' : selectedManufacturer.id === 'beechcraft' ? '32,700+ Units' : selectedManufacturer.id === 'sikorsky' ? '7,000+ Aircraft' : selectedManufacturer.id === 'leonardo' ? '2,950+ Units' : selectedManufacturer.id === 'atr' ? '1,200-1,300 Aircraft' : selectedManufacturer.id === 'de-havilland' ? '2,150-2,350 Units' : selectedManufacturer.id === 'mitsubishi-mrj' ? '1,400-1,700 Units' : selectedManufacturer.id === 'comac-c919' ? '245-255 Units' : selectedManufacturer.id === 'tecnam' ? '6,250-7,050 Units' : selectedManufacturer.id === 'piper' ? '31,600-32,700 Units' : selectedManufacturer.id === 'cirrus' ? '10,500-11,000 Units' : selectedManufacturer.id === 'let' ? '350-500 Units' : selectedManufacturer.id === 'aeroprakt' ? '3,100-3,500 Units' : '87'}
                       </div>
                     </div>
-                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">
                         Preferred Type of Pilots
                       </div>
-                      <div className="text-lg font-bold">
+                      <div className="text-base font-bold">
                         {selectedManufacturer.id === 'boeing' ? '10-14 pilots/aircraft' : selectedManufacturer.id === 'airbus' ? 'A320 Family (4+ variants)' : selectedManufacturer.id === 'embraer' ? '~4-6 (Commercial & Business)' : selectedManufacturer.id === 'bombardier' ? 'CL30/CL60 (Gold Standard)' : selectedManufacturer.id === 'gulfstream' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'cessna' ? '24,000+ Skyhawks' : selectedManufacturer.id === 'dassault-falcon' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'pilatus' ? 'PC-12 Series' : selectedManufacturer.id === 'beechcraft' ? 'King Air Series' : selectedManufacturer.id === 'sikorsky' ? 'S-92 / S-76' : selectedManufacturer.id === 'leonardo' ? 'AW139' : selectedManufacturer.id === 'atr' ? '12-16 pilots/aircraft' : selectedManufacturer.id === 'de-havilland' ? 'Dash 8 Series' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'CL-65 (CRJ Series)' : selectedManufacturer.id === 'comac-c919' ? 'C919 Series' : selectedManufacturer.id === 'tecnam' ? 'Light Trainers' : selectedManufacturer.id === 'piper' ? 'Piston Singles' : selectedManufacturer.id === 'cirrus' ? 'SR Series' : selectedManufacturer.id === 'let' ? '10-12 pilots/aircraft' : selectedManufacturer.id === 'aeroprakt' ? 'A-22 Series' : '600-1500 hours'}
                       </div>
                     </div>
-                    <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
+                    <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-0.5">
                         Pilots Rated
                       </div>
-                      <div className="text-2xl font-bold">
+                      <div className="text-xl font-bold">
                         {selectedManufacturer.id === 'boeing' ? '135,000-155,000' : selectedManufacturer.id === 'airbus' ? '180,000-220,000+' : selectedManufacturer.id === 'embraer' ? '45,000-60,000' : selectedManufacturer.id === 'bombardier' ? '50,000-65,000' : selectedManufacturer.id === 'gulfstream' ? '12,000-18,000' : selectedManufacturer.id === 'cessna' ? '1.2M-1.5M' : selectedManufacturer.id === 'dassault-falcon' ? '8,000-11,000' : selectedManufacturer.id === 'pilatus' ? '11,000-15,000' : selectedManufacturer.id === 'beechcraft' ? '110,000-135,000' : selectedManufacturer.id === 'sikorsky' ? '45,000-55,000' : selectedManufacturer.id === 'leonardo' ? '18,000-22,000' : selectedManufacturer.id === 'atr' ? '18,000-22,000' : selectedManufacturer.id === 'de-havilland' ? '15,000-20,000' : selectedManufacturer.id === 'mitsubishi-mrj' ? '16,000-22,000' : selectedManufacturer.id === 'comac-c919' ? '3,500-5,000' : selectedManufacturer.id === 'tecnam' ? '115,000-145,000' : selectedManufacturer.id === 'piper' ? '250,000-350,000' : selectedManufacturer.id === 'cirrus' ? '60,000-80,000' : selectedManufacturer.id === 'let' ? '4,500-7,000' : selectedManufacturer.id === 'aeroprakt' ? '8,000-12,000' : '200,000-250,000+'}
                       </div>
                     </div>
@@ -919,7 +919,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 {/* Right side - Description */}
                 <div className="lg:w-7/12 flex items-center">
                   {selectedManufacturer.id === 'boeing' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -945,7 +945,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'airbus' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -977,7 +977,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'embraer' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1004,7 +1004,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'bombardier' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1031,7 +1031,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'gulfstream' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1063,7 +1063,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'cessna' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1096,7 +1096,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'dassault-falcon' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1128,7 +1128,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'pilatus' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1155,7 +1155,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'beechcraft' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1187,7 +1187,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'sikorsky' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1219,7 +1219,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'leonardo' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1251,7 +1251,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'atr' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1278,7 +1278,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'de-havilland' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1305,7 +1305,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'mitsubishi-mrj' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1332,7 +1332,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'comac-c919' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1354,7 +1354,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'tecnam' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1381,7 +1381,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'piper' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1413,7 +1413,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'cirrus' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1440,7 +1440,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'let' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1467,7 +1467,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       </div>
                     </div>
                   ) : selectedManufacturer.id === 'aeroprakt' ? (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                       <div className="text-white text-sm leading-relaxed space-y-3">
                         <p>{selectedManufacturer.description}</p>
                         <div className="space-y-2">
@@ -1504,28 +1504,28 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       </div>
 
       {/* Manufacturer Carousel - Edge to Edge */}
-      <div className="mb-8">
-        <div className="px-6 mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-serif font-normal text-white drop-shadow-md">
-            Browse Manufacturers <span className="text-lg text-white/70">({manufacturers.length})</span>
+      <div className="mb-4">
+        <div className="px-6 mb-2 flex items-center justify-between">
+          <h2 className="text-lg font-serif font-normal text-white drop-shadow-md">
+            Browse Manufacturers <span className="text-sm text-white/70">({manufacturers.length})</span>
           </h2>
         </div>
         <div
           ref={manufacturerCarouselRef}
-          className="flex gap-3 overflow-x-auto pb-4 px-6 scroll-smooth"
+          className="flex gap-2 overflow-x-auto pb-2 px-6 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {manufacturers.map(manufacturer => (
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
+              className={`flex-shrink-0 rounded-lg transition-all relative overflow-hidden text-left ${
                 selectedManufacturer?.id === manufacturer.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
                   : 'hover:shadow-lg'
               }`}
               style={{
-                width: '160px',
+                width: '120px',
                 border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
                 background: 'rgba(255,255,255,0.08)',
               }}
@@ -1543,7 +1543,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               }}
             >
               {/* Top: Logo on light background */}
-              <div className="h-[90px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
+              <div className="h-[60px] relative overflow-hidden flex items-center justify-center p-2" style={{ background: '#f3f4f6' }}>
                 <img
                   src={manufacturer.logo}
                   alt={manufacturer.name}
@@ -1553,8 +1553,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 />
               </div>
               {/* Bottom: Name on dark bg */}
-              <div className="p-3">
-                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
+              <div className="p-2">
+                <p className="text-xs font-bold text-white truncate">{manufacturer.name}</p>
               </div>
             </button>
           ))}
@@ -1562,11 +1562,11 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       </div>
 
       {/* Search + Entity Tabs area */}
-      <div className="relative overflow-hidden pt-8 md:pt-12 lg:pt-16 pb-8 md:pb-10 lg:pb-12 px-4 md:px-6 z-10">
+      <div className="relative overflow-hidden pt-4 md:pt-6 lg:pt-8 pb-4 md:pb-6 lg:pb-8 px-4 md:px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
 
         {/* Search */}
-        <div className="mt-4 md:mt-6 lg:mt-8 max-w-lg mx-auto relative px-2 sm:px-0">
+        <div className="max-w-lg mx-auto relative px-2 sm:px-0">
             <div className="relative">
               <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -1574,16 +1574,16 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 placeholder="Search aircraft, manufacturers..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
+                className="w-full pl-4 pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
               />
             </div>
           </div>
 
           {/* Universal Search Entity Tabs — frosty glassy UI */}
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto px-2 sm:px-0">
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg mx-auto px-2 sm:px-0">
             {/* Left: Entity selector card */}
             <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
-              <div className="p-3 text-center">
+              <div className="p-2 text-center">
                 <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Discover Pathways</p>
                 <div className="relative flex items-center justify-center">
                   <select
