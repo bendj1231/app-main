@@ -726,7 +726,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
 
             <nav
-                className={`fixed top-10 left-0 right-0 z-[200] py-3 ${isDarkMode ? 'bg-slate-950/95 border-slate-800 shadow-black/40 shadow-lg' : 'bg-white border-b border-slate-200 shadow-sm'}`}>
+                className={`fixed top-10 left-0 right-0 z-[200] py-3 ${isDarkMode ? 'border-slate-800 shadow-black/40 shadow-lg' : 'bg-white border-b border-slate-200 shadow-sm'}`}
+                style={isDarkMode ? { background: 'linear-gradient(to bottom, #172554 0%, #0f172a 100%)' } : undefined}
+            >
                 <div className={`flex justify-between items-center ${domainBrand === 'careerpathways' ? 'w-full' : 'max-w-[1800px] mx-auto px-6'}`}>
                     {/* Logo Section - Far Left Edge for careerpathways, centered for others */}
                     <div className={`flex items-center gap-4 group cursor-pointer ${domainBrand === 'careerpathways' ? 'pl-0' : ''}`} onClick={() => onNavigate('home')}>
