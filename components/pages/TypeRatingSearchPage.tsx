@@ -885,40 +885,44 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               />
             </div>
           </div>
+        </div>
 
-          {/* Universal Search Entity Tabs */}
-          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 max-w-4xl mx-auto px-2 sm:px-0">
-            {/* Left: Entity type pills */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {ENTITY_TABS.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all ${
-                    activeEntity === tab.id
-                      ? 'bg-slate-900 text-white shadow-md'
-                      : 'bg-white/60 backdrop-blur-sm text-slate-600 hover:bg-white/90 border border-white/30'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-            {/* Right: Category tabs for selected entity */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveEntityCategory(cat)}
-                  className={`text-[11px] font-semibold transition-all pb-1 border-b-2 ${
-                    activeEntityCategory === cat
-                      ? 'text-slate-900 border-slate-900'
-                      : 'text-slate-400 border-transparent hover:text-slate-600'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+        {/* Universal Search Entity Tabs — outside centered text block */}
+        <div className="mt-6 w-full max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="bg-white/80 backdrop-blur-xl rounded-2xl border border-white/40 shadow-lg p-3 sm:p-4">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
+              {/* Left: Entity type pills */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {ENTITY_TABS.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
+                    className={`px-3.5 py-2 rounded-full text-xs font-black tracking-wide transition-all ${
+                      activeEntity === tab.id
+                        ? 'bg-slate-900 text-white shadow-md'
+                        : 'bg-slate-100 text-slate-600 hover:bg-white hover:shadow-sm border border-slate-200'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+              {/* Right: Category tabs for selected entity */}
+              <div className="flex items-center gap-3 flex-wrap">
+                {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveEntityCategory(cat)}
+                    className={`text-xs font-bold transition-all pb-1 border-b-2 ${
+                      activeEntityCategory === cat
+                        ? 'text-slate-900 border-slate-900'
+                        : 'text-slate-400 border-transparent hover:text-slate-600'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
