@@ -1318,114 +1318,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           </div>
         </div>
       ) : (
-        // Manufacturer details + aircraft carousel when selected
+        // Manufacturer details when selected
         <>
-      {/* Carousel Section */}
-      <div className="px-0 mb-12 relative z-10">
-        <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-serif font-normal text-white">Browse Aircraft</h2>
-            <p className="text-sm text-slate-300">{filteredAircraft.length} aircraft available</p>
-          </div>
-          {/* Scroll arrows */}
-          <div className="flex gap-2">
-            <button onClick={() => scroll('left')} className="p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-white transition-colors backdrop-blur-sm border border-slate-600/30">
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button onClick={() => scroll('right')} className="p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-white transition-colors backdrop-blur-sm border border-slate-600/30">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Edge-to-edge carousel */}
-        <div
-          ref={carouselRef}
-          className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-        >
-          {dataLoading ? (
-            <div className="flex gap-4 w-full">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="flex-shrink-0 w-80 h-72 rounded-2xl bg-slate-200 animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            filteredAircraft.map(aircraft => (
-            <div
-              key={aircraft.id}
-              onClick={() => handleSelect(aircraft)}
-              className={`flex-shrink-0 w-80 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
-                selectedAircraft?.id === aircraft.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50'
-                  : 'border-slate-200 hover:border-slate-400'
-              } bg-white group`}
-            >
-              {/* Thumbnail */}
-              <div className="relative h-56 overflow-hidden bg-slate-100">
-                {/* Bookmark Icon - Top Left */}
-                <button
-                  onClick={(e) => toggleAircraftBookmark(aircraft.id, e)}
-                  className={`absolute top-2 left-2 w-8 h-8 backdrop-blur-sm border rounded-lg flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 z-20 ${
-                    isAircraftBookmarked(aircraft.id)
-                      ? 'bg-teal-500/90 border-teal-400'
-                      : 'bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/90'
-                  }`}
-                  title={isAircraftBookmarked(aircraft.id) ? "Remove bookmark" : "Add bookmark"}
-                >
-                  <Bookmark 
-                    className={`w-4 h-4 transition-colors duration-300 ${
-                      isAircraftBookmarked(aircraft.id) 
-                        ? '!text-white !fill-white' 
-                        : '!text-slate-300 hover:!text-white'
-                    }`}
-                    style={{
-                      color: isAircraftBookmarked(aircraft.id) ? 'white' : '#cbd5e1',
-                      fill: isAircraftBookmarked(aircraft.id) ? 'white' : 'none'
-                    }}
-                  />
-                </button>
-                
-                {aircraft.sketchfab_id ? (
-                  <SketchfabThumbnail
-                    sketchfabId={aircraft.sketchfab_id}
-                    alt={aircraft.model}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <img
-                    src={
-                      (aircraft.image && !aircraft.image.includes('efqjszksldcdm6kbnzoq.png'))
-                        ? aircraft.image
-                        : 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80'
-                    }
-                    alt={aircraft.model}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      console.error('Image failed to load:', aircraft.model, aircraft.image);
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80';
-                    }}
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                {aircraft.sketchfab_id && (
-                  <div className="absolute top-3 right-3 bg-sky-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
-                    3D
-                  </div>
-                )}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="text-white font-serif text-lg leading-tight font-semibold">{aircraft.model}</span>
-                  <div className="flex items-center gap-2 text-white/80 text-sm mt-1">
-                    <Plane className="w-4 h-4" />
-                    {CATEGORY_LABELS[aircraft.category]}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )))}
-        </div>
-      </div>
-
       {/* Empty state — no aircraft selected */}
       {!selectedAircraft && (
         <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-16">
@@ -1437,7 +1331,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             </div>
             <h2 className="text-2xl font-serif font-normal text-slate-800 mb-3">Select an Aircraft to Explore</h2>
             <p className="text-slate-500 max-w-xl mx-auto mb-8 leading-relaxed">
-              Choose any aircraft from the carousel above to view its specifications, training requirements, manufacturer details, and career information.
+              Choose any aircraft from the manufacturer carousel above to view its specifications, training requirements, manufacturer details, and career information.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
               {[
