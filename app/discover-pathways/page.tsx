@@ -134,6 +134,27 @@ export default function DiscoverPathwaysPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
+  // Universal search entity tabs
+  type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
+  const [activeEntity, setActiveEntity] = useState<EntityType>('all');
+  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
+
+  const ENTITY_TABS: { id: EntityType; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'manufacturers', label: 'Manufacturers' },
+    { id: 'airlines', label: 'Airlines' },
+    { id: 'operators', label: 'Operators' },
+    { id: 'private-jet', label: 'Private Jet' },
+  ];
+
+  const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
+    all: ['All'],
+    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
+    airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
+    operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
+    'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-[#050a14] to-[#0d1f3c] relative">
       {/* MeshGradient Background */}
@@ -209,7 +230,7 @@ export default function DiscoverPathwaysPage() {
                 </p>
 
                 {/* Search Bar */}
-                <div className="relative mb-5 max-w-md">
+                <div className="relative mb-3 max-w-md">
                   <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
                   <input
                     type="text"
@@ -219,6 +240,44 @@ export default function DiscoverPathwaysPage() {
                     className="w-full pl-12 pr-4 py-3.5 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none"
                     style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}
                   />
+                </div>
+
+                {/* Universal Search Entity Tabs */}
+                <div className="mb-5 max-w-md">
+                  <div className="flex flex-col gap-2">
+                    {/* Entity type pills */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {ENTITY_TABS.map(tab => (
+                        <button
+                          key={tab.id}
+                          onClick={() => { setActiveEntity(tab.id); setActiveEntityCategory('all'); }}
+                          className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all ${
+                            activeEntity === tab.id
+                              ? 'bg-white text-slate-900 shadow-md'
+                              : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/10'
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Category tabs for selected entity */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {ENTITY_CATEGORIES[activeEntity].map(cat => (
+                        <button
+                          key={cat}
+                          onClick={() => setActiveEntityCategory(cat)}
+                          className={`text-[11px] font-semibold transition-all pb-0.5 border-b-2 ${
+                            activeEntityCategory === cat
+                              ? 'text-white border-white'
+                              : 'text-white/40 border-transparent hover:text-white/70'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Action Buttons */}
