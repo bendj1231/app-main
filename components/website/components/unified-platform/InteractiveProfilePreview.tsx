@@ -586,40 +586,62 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                 )}
 
-                {/* Recent Replies */}
-                <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <Mail size={14} className="text-emerald-500" />
-                    <p className="text-xs font-bold text-slate-800">Recent Replies</p>
-                  </div>
-                  <div className="space-y-3">
-                    {[
-                      { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
-                      { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
-                      { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
-                    ].map((reply, i) => (
-                      <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                        <img
-                          src={reply.logoUrl}
-                          alt={reply.airline}
-                          className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                          style={{ background: '#ffffff' }}
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
-                            <span className="text-[9px] text-slate-400">{reply.time}</span>
+                {/* Recent Replies — only visible when profile is sufficiently complete */}
+                {completionPct >= 60 ? (
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Mail size={14} className="text-emerald-500" />
+                      <p className="text-xs font-bold text-slate-800">Recent Replies</p>
+                    </div>
+                    <div className="space-y-3">
+                      {[
+                        { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
+                        { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
+                        { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
+                      ].map((reply, i) => (
+                        <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                          <img
+                            src={reply.logoUrl}
+                            alt={reply.airline}
+                            className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                            style={{ background: '#ffffff' }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                              <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
+                              <span className="text-[9px] text-slate-400">{reply.time}</span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
                           </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                    style={{ background: '#ffffff' }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Mail size={14} className="text-slate-400" />
+                      <p className="text-xs font-bold text-slate-800">Recent Replies</p>
+                    </div>
+                    <div className="text-center py-4">
+                      <Mail size={20} className="text-slate-300 mx-auto mb-2" />
+                      <p className="text-[11px] text-slate-500 mb-2">Complete your profile to unlock airline replies</p>
+                      <button
+                        onClick={() => setTab?.('advanced-profile' as TabId)}
+                        className="text-[10px] font-black tracking-wider text-red-600 hover:text-red-700 transition-all"
+                      >
+                        Complete Profile →
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Recommended by Recognition AI */}
                 <div
