@@ -942,7 +942,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 </button>
               ))}
               <button
-                onClick={() => setSelectedCategory('all')}
+                onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
                 className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-white/20 text-white/90 hover:text-white hover:bg-white/20 transition-all"
                 style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}
               >
