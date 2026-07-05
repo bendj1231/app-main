@@ -568,43 +568,66 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </span>
                   </div>
                   {pathwayMatches.length === 0 ? (
-                    <div
-                      className="border border-dashed border-gray-200 rounded-lg bg-gray-50/50 p-6 text-center"
-                    >
+                    <div className="border border-dashed border-gray-200 rounded-lg bg-gray-50/50 p-6 text-center">
                       <Route size={20} className="text-slate-300 mx-auto mb-2" />
-                      <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
+                      <p className="text-[11px] text-slate-500 font-semibold mb-1">No pathways submitted yet</p>
+                      <p className="text-[10px] text-slate-400 mb-3">Submit interest to open airline pathways to get pooled into active operator databases.</p>
+                      <button
+                        onClick={() => onNavigate?.('/pathways')}
+                        className="px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm"
+                      >
+                        Browse Open Airline Pathways
+                      </button>
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      {pathwayMatches.slice(0, 3).map((pw, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                          <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(129,140,248,0.1)' }}
-                          >
-                            <Route size={14} style={{ color: '#6366f1' }} />
+                      {pathwayMatches.slice(0, 3).map((pw, i) => {
+                        const status = pw.match_score && pw.match_score >= 85 ? 'Shortlisted' : pw.match_score && pw.match_score >= 60 ? 'Under Review' : 'Pooled';
+                        const statusColor = status === 'Shortlisted' ? '#10b981' : status === 'Under Review' ? '#f59e0b' : '#64748b';
+                        const statusBg = status === 'Shortlisted' ? 'rgba(16,185,129,0.1)' : status === 'Under Review' ? 'rgba(245,158,11,0.1)' : 'rgba(100,116,139,0.1)';
+                        return (
+                          <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                            <div
+                              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                              style={{ background: 'rgba(129,140,248,0.1)' }}
+                            >
+                              <Route size={14} style={{ color: '#6366f1' }} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
+                              <p className="text-[10px] text-slate-400">
+                                {pw.date ? new Date(pw.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently'}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span
+                                className="text-[9px] font-black px-2 py-0.5 rounded-full"
+                                style={{ color: statusColor, background: statusBg }}
+                              >
+                                {status}
+                              </span>
+                              <button
+                                onClick={() => setTab?.('pathways' as TabId)}
+                                className="text-[9px] font-bold text-slate-400 hover:text-blue-600 transition-colors"
+                              >
+                                View →
+                              </button>
+                            </div>
                           </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
-                            <p className="text-[10px] text-slate-400">
-                              {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
-                            </p>
-                          </div>
-                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
 
-                {/* Recent Replies */}
+                {/* Recent Replies — airline status updates from sourcing pools */}
                 <div
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Mail size={14} className="text-emerald-500" />
-                    <p className="text-xs font-bold text-slate-800">Recent Replies</p>
+                    <p className="text-xs font-bold text-slate-800">Airline Status Updates</p>
                   </div>
                   <div>
                     {[
@@ -613,7 +636,10 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
                     ].map((reply, i, arr) => (
                       <div key={i}>
-                        <div className="flex items-start gap-3 py-3">
+                        <button
+                          onClick={() => setTab?.('pathways' as TabId)}
+                          className="w-full flex items-start gap-3 py-3 text-left hover:bg-slate-50 rounded-lg transition-colors"
+                        >
                           <img
                             src={reply.logoUrl}
                             alt={reply.airline}
@@ -626,9 +652,10 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                               <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
                               <span className="text-[9px] text-slate-400 flex-shrink-0 ml-2">{reply.time}</span>
                             </div>
-                            <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
+                            <p className="text-[10px] text-slate-500 leading-relaxed truncate">{reply.reply}</p>
                           </div>
-                        </div>
+                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0 self-center" />
+                        </button>
                         {i < arr.length - 1 && (
                           <div className="border-t border-gray-100" />
                         )}
@@ -637,14 +664,14 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
                 </div>
 
-                {/* Recommended by Recognition AI */}
+                {/* Recommended by Recognition AI — predictive fast-track matchmaking */}
                 <div
                   className="rounded-xl p-4 border border-gray-100 shadow-sm"
                   style={{ background: '#ffffff' }}
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Star size={14} className="text-amber-500" />
-                    <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
+                    <p className="text-xs font-bold text-slate-800">Fast-Track Match</p>
                   </div>
                   <div
                     className="rounded-lg p-3 mb-3"
@@ -662,7 +689,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                           <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
                           <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">94%</span>
                         </div>
-                        <p className="text-[10px] text-slate-400">Airline · License and hours align</p>
+                        <p className="text-[10px] text-slate-400">License and hours align · Priority pool access</p>
                       </div>
                       <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
                     </div>
@@ -671,7 +698,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     onClick={() => setTab?.('pathways' as TabId)}
                     className="w-full py-2.5 rounded-lg text-[10px] font-black tracking-wider text-slate-600 hover:text-slate-800 transition-all border border-gray-300 hover:border-gray-400 bg-gray-100 hover:bg-gray-200"
                   >
-                    View Match Details →
+                    Submit Interest →
                   </button>
                 </div>
               </motion.div>
