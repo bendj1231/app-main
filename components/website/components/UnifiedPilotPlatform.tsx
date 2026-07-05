@@ -99,7 +99,6 @@ import { EventsTab } from './unified-platform/tabs/EventsTab';
 import { NewsroomTab } from './unified-platform/tabs/NewsroomTab';
 import { SettingsTab } from './unified-platform/tabs/SettingsTab';
 import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatusTab';
-import { VerificationRecurrencyTab } from './unified-platform/tabs/VerificationRecurrencyTab';
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
 import { CockpitTab } from './unified-platform/tabs/CockpitTab';
 import { AdvancedProfileTab } from './unified-platform/tabs/AdvancedProfileTab';
@@ -755,7 +754,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           />
         );
       case 'dashboard':
-        return <DashboardTab profile={profileData} onNavigate={onNavigate} setTab={setTab} />;
+        return <DashboardTab profile={profileData} walletChecks={walletChecks} credentials={credentials} onNavigate={onNavigate} setTab={setTab} />;
       case 'market-intel':
         return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance':
@@ -1057,16 +1056,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             onProfileImageUpdate={updateProfileImage}
           />
         );
-      case 'recognition-plus':
-        return (
-          <VerificationRecurrencyTab
-            profile={profileData}
-            walletChecks={walletChecks}
-            credentials={credentials}
-            setTab={setTab}
-            onNavigate={onNavigate}
-          />
-        );
       case 'inbox':
         return <InboxTab profile={profileData} onNavigate={onNavigate} />;
       case 'advanced-profile':
@@ -1183,7 +1172,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               { id: 'profile', label: 'Profile' },
               { id: 'logbook', label: 'Flight Bag' },
               { id: 'inbox', label: 'Inbox' },
-              { id: 'recognition-plus', label: 'Recognition+' },
             ].map(({ id, label }) => {
               const isActive = activeTab === id;
               return (
@@ -1220,7 +1208,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               { id: 'home', label: 'Home' },
               { id: 'dashboard', label: 'Flight Deck' },
               { id: 'logbook', label: 'Flight Bag' },
-              { id: 'recognition-plus', label: 'Recognition+' },
             ].map(({ id, label }) => {
               const isActive = activeTab === id;
               return (
