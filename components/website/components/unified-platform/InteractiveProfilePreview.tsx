@@ -553,194 +553,118 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Submitted Pathways — only visible when profile is sufficiently complete */}
-                {completionPct >= 60 ? (
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <FolderOpen size={14} className="text-blue-500" />
-                        <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
-                      </div>
-                      <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
-                        {pathwayMatches.length || 0}
-                      </span>
-                    </div>
-                    {pathwayMatches.length === 0 ? (
-                      <div className="text-center py-4">
-                        <Route size={20} className="text-slate-300 mx-auto mb-2" />
-                        <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {pathwayMatches.slice(0, 3).map((pw, i) => (
-                          <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                            <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                              style={{ background: 'rgba(129,140,248,0.1)' }}
-                            >
-                              <Route size={14} style={{ color: '#6366f1' }} />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
-                              <p className="text-[10px] text-slate-400">
-                                {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
-                              </p>
-                            </div>
-                            <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  /* Prompt to complete profile first */
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <FolderOpen size={14} className="text-slate-400" />
+                {/* Submitted Pathways */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <FolderOpen size={14} className="text-blue-500" />
                       <p className="text-xs font-bold text-slate-800">Submitted Pathways</p>
                     </div>
+                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
+                      {pathwayMatches.length || 0}
+                    </span>
+                  </div>
+                  {pathwayMatches.length === 0 ? (
                     <div className="text-center py-4">
                       <Route size={20} className="text-slate-300 mx-auto mb-2" />
-                      <p className="text-[11px] text-slate-500 mb-2">Complete your advanced profile to submit pathway interests</p>
-                      <button
-                        onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="text-[10px] font-black tracking-wider text-red-600 hover:text-red-700 transition-all"
-                      >
-                        Complete Profile →
-                      </button>
+                      <p className="text-[11px] text-slate-400">No pathways submitted yet</p>
                     </div>
-                  </div>
-                )}
-
-                {/* Recent Replies — only visible when profile is sufficiently complete */}
-                {completionPct >= 60 ? (
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Mail size={14} className="text-emerald-500" />
-                      <p className="text-xs font-bold text-slate-800">Recent Replies</p>
-                    </div>
-                    <div className="space-y-3">
-                      {[
-                        { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
-                        { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
-                        { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
-                      ].map((reply, i) => (
-                        <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                          <img
-                            src={reply.logoUrl}
-                            alt={reply.airline}
-                            className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
-                            style={{ background: '#ffffff' }}
-                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                          />
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5 mb-0.5">
-                              <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
-                              <span className="text-[9px] text-slate-400">{reply.time}</span>
-                            </div>
-                            <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {pathwayMatches.slice(0, 3).map((pw, i) => (
+                        <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                          <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: 'rgba(129,140,248,0.1)' }}
+                          >
+                            <Route size={14} style={{ color: '#6366f1' }} />
                           </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[11px] font-bold text-slate-700 truncate">{pw.name || pw.airline || pw.pathway_name || 'Pathway'}</p>
+                            <p className="text-[10px] text-slate-400">
+                              {pw.match_score ? `${pw.match_score}% match` : 'Submitted'} · {pw.date ? new Date(pw.date).toLocaleDateString() : 'Recently'}
+                            </p>
+                          </div>
+                          <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
                         </div>
                       ))}
                     </div>
-                  </div>
-                ) : (
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Mail size={14} className="text-slate-400" />
-                      <p className="text-xs font-bold text-slate-800">Recent Replies</p>
-                    </div>
-                    <div className="text-center py-4">
-                      <Mail size={20} className="text-slate-300 mx-auto mb-2" />
-                      <p className="text-[11px] text-slate-500 mb-2">Complete your profile to unlock airline replies</p>
-                      <button
-                        onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="text-[10px] font-black tracking-wider text-red-600 hover:text-red-700 transition-all"
-                      >
-                        Complete Profile →
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
-                {/* Recommended by Recognition AI — only visible when profile is sufficiently complete */}
-                {completionPct >= 60 ? (
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Star size={14} className="text-amber-500" />
-                      <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: 'rgba(245,158,11,0.1)' }}
-                        >
-                          <Target size={14} style={{ color: '#d97706' }} />
-                        </div>
+                {/* Recent Replies */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mail size={14} className="text-emerald-500" />
+                    <p className="text-xs font-bold text-slate-800">Recent Replies</p>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { airline: 'AirAsia', reply: 'Application under review — expect update within 5 days', time: '2h ago', status: 'review', logoUrl: 'https://img.logokit.com/airasia.com?key=pk_fr0929c8e806652c55521c' },
+                      { airline: 'Emirates', reply: 'Additional documents required for assessment', time: '1d ago', status: 'action', logoUrl: 'https://img.logokit.com/emirates.com?key=pk_fr0929c8e806652c55521c' },
+                      { airline: 'Qatar Airways', reply: 'Screening scheduled for next Tuesday', time: '2d ago', status: 'scheduled', logoUrl: 'https://img.logokit.com/qatarairways.com?key=pk_fr0929c8e806652c55521c' },
+                    ].map((reply, i) => (
+                      <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                        <img
+                          src={reply.logoUrl}
+                          alt={reply.airline}
+                          className="w-8 h-8 rounded-lg object-contain flex-shrink-0"
+                          style={{ background: '#ffffff' }}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
-                            <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">94%</span>
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <p className="text-[11px] font-bold text-slate-700">{reply.airline}</p>
+                            <span className="text-[9px] text-slate-400">{reply.time}</span>
                           </div>
-                          <p className="text-[10px] text-slate-400">Airline · License and hours align</p>
+                          <p className="text-[10px] text-slate-500 leading-relaxed">{reply.reply}</p>
                         </div>
-                        <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
                       </div>
-                    </div>
-                    <button
-                      onClick={() => setTab?.('pathways' as TabId)}
-                      className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
-                      style={{ background: '#f8fafc' }}
-                    >
-                      View Match Details →
-                    </button>
+                    ))}
                   </div>
-                ) : (
-                  <div
-                    className="rounded-xl p-4 border border-white/30 shadow-sm backdrop-blur-2xl"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35))',
-                      boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.25), 0 4px 16px rgba(0,0,0,0.06)',
-                    }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Star size={14} className="text-slate-400" />
-                      <p className="text-xs font-bold text-slate-700">Recommended by Recognition AI</p>
-                    </div>
-                    <div className="text-center py-4">
+                </div>
+
+                {/* Recommended by Recognition AI */}
+                <div
+                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Star size={14} className="text-amber-500" />
+                    <p className="text-xs font-bold text-slate-800">Recommended by Recognition AI</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
                       <div
-                        className="rounded-lg p-3 mb-3 border border-red-200/50"
-                        style={{ background: 'rgba(254,226,226,0.6)' }}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: 'rgba(245,158,11,0.1)' }}
                       >
-                        <Target size={18} className="text-red-400 mx-auto mb-1.5" />
-                        <p className="text-[11px] text-red-700 font-semibold">Unable to retrieve data from profile</p>
-                        <p className="text-[10px] text-red-500 mt-0.5">Unable to recommend pathways</p>
+                        <Target size={14} style={{ color: '#d97706' }} />
                       </div>
-                      <button
-                        onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider text-white bg-red-600 hover:bg-red-700 transition-all shadow-sm"
-                      >
-                        Complete Profile →
-                      </button>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-[11px] font-bold text-slate-700 truncate">Delta Airlines A320 FO</p>
+                          <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-full">94%</span>
+                        </div>
+                        <p className="text-[10px] text-slate-400">Airline · License and hours align</p>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
                     </div>
                   </div>
-                )}
+                  <button
+                    onClick={() => setTab?.('pathways' as TabId)}
+                    className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
+                    style={{ background: '#f8fafc' }}
+                  >
+                    View Match Details →
+                  </button>
+                </div>
               </motion.div>
             )}
 
