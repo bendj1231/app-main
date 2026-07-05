@@ -1358,7 +1358,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Selected Aircraft Detail Panel */}
       {selectedAircraft && (
-        <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
+        <div id="aircraft-detail-section" ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
           <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-lg">
 
             {/* Hero image with overlay */}
