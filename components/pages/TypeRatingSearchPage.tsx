@@ -900,8 +900,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
       </div>
 
-      {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
-      {(searchQuery.trim() || selectedManufacturer) && (
+      {/* Manufacturer Carousel - overlaps hero like a popup, always visible */}
       <div className="relative z-20 -mt-12 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div className="text-center -mt-3 mb-1">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-xl border border-white/20" style={{ background: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
@@ -1011,7 +1010,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         </div>
         )}
       </div>
-      )}
 
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
