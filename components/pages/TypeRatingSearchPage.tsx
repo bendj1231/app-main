@@ -1514,15 +1514,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Manufacturer Carousel - overlaps hero like a popup, only when typing */}
       {searchQuery.trim() && (
       <>
-        <div className="relative z-20 px-5 -mt-4 mb-1" style={{ marginLeft: '280px' }}>
+        <div className="relative z-20 px-5 -mt-6 mb-1" style={{ marginLeft: '280px' }}>
           <h2 className="text-base font-serif font-normal text-white drop-shadow-md">
             Browse Manufacturers <span className="text-sm text-white/60">({manufacturers.length})</span>
           </h2>
         </div>
-        <div className="relative z-20 -mt-2 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
+        <div className="relative z-20 -mt-4 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl" style={{ background: 'rgba(255,255,255,0.08)', marginLeft: '280px' }}>
         <div
           ref={manufacturerCarouselRef}
-          className="flex gap-2 overflow-x-auto pt-3 pb-3 px-5 scroll-smooth"
+          className="flex gap-3 overflow-x-auto pt-3 pb-3 px-5 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {manufacturers.map(manufacturer => (
@@ -1535,7 +1535,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   : 'hover:shadow-lg'
               }`}
               style={{
-                width: '120px',
+                width: '160px',
                 border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
                 background: 'rgba(255,255,255,0.08)',
               }}
@@ -1553,7 +1553,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               }}
             >
               {/* Top: Logo on light background */}
-              <div className="h-[60px] relative overflow-hidden flex items-center justify-center p-2" style={{ background: '#f3f4f6' }}>
+              <div className="h-[85px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
                 <img
                   src={manufacturer.logo}
                   alt={manufacturer.name}
@@ -1563,8 +1563,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                 />
               </div>
               {/* Bottom: Name on dark bg */}
-              <div className="p-2">
-                <p className="text-xs font-bold text-white truncate">{manufacturer.name}</p>
+              <div className="p-3">
+                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
               </div>
             </button>
           ))}
