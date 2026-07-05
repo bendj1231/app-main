@@ -570,7 +570,7 @@ export const HomeTab: React.FC<{
               window.location.href = `${window.location.origin}/?product=careerpathways`;
             }}
           >
-            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/airline-operations.png')" }} />
+            <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/set-06-pathways/pathway4.png')" }} />
             <div className="absolute inset-y-0 left-[52%] w-[12%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 100%)' }} />
             <div className="absolute inset-y-0 left-0 w-[52%] z-20 flex flex-col justify-end p-3"
               style={isDarkMode ? {
