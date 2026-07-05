@@ -837,7 +837,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-6">
           {!selectedManufacturer ? (
             <div className="text-white px-4 md:px-8 lg:px-12 py-4 md:py-6">
-              <div className="max-w-2xl mx-auto text-center flex flex-col items-center backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.06)' }}>
+              <div className="max-w-2xl mx-auto text-center flex flex-col items-center backdrop-blur-xl rounded-2xl border border-white/25 p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.15)', boxShadow: '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
                 <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-sky-400 mb-1 md:mb-2">Discover Type-Ratings</p>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-normal mb-2 leading-tight text-white">
                   Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
