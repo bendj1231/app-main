@@ -650,15 +650,29 @@ export const AppRoutes = () => {
   const [isBecomeMemberOpen, setIsBecomeMemberOpen] = useState(false);
   const [careerPathwaysMode, setCareerPathwaysMode] = useState(() => {
     // Check on initial render
+    const hostname = window.location.hostname;
+    const searchParams = new URLSearchParams(window.location.search);
     const isDomain =
-      window.location.hostname === 'careerpathways.pilotrecognition.com' ||
-      window.location.hostname === 'pilotcareerpathways.com' ||
-      window.location.hostname === 'www.pilotcareerpathways.com';
-    const isLocalDev =
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+      hostname === 'careerpathways.pilotrecognition.com' ||
+      hostname === 'pilotcareerpathways.com' ||
+      hostname === 'www.pilotcareerpathways.com';
+    const isProductMode = searchParams.get('product') === 'careerpathways';
+    const isLocalDev = (hostname === 'localhost' || hostname === '127.0.0.1') && isProductMode;
+
+    // Career-pathways domains or explicit ?product=careerpathways always activate the mode
+    if (isDomain || isLocalDev || isProductMode) {
+      return true;
+    }
+
+    // On the main domain's root path, always show the main home page and clear stale mode
+    if (window.location.pathname === '/') {
+      localStorage.removeItem('careerpathways_mode');
+      return false;
+    }
+
+    // On other paths, allow localStorage to preserve the mode during in-app navigation
     const fromStorage = localStorage.getItem('careerpathways_mode') === 'true';
-    return isDomain || isLocalDev || fromStorage;
+    return fromStorage;
   });
 
   // Intro splash screen state
@@ -667,17 +681,25 @@ export const AppRoutes = () => {
 
   // Re-check domain when location changes
   useEffect(() => {
+    const hostname = window.location.hostname;
+    const searchParams = new URLSearchParams(window.location.search);
     const isDomain =
-      window.location.hostname === 'careerpathways.pilotrecognition.com' ||
-      window.location.hostname === 'pilotcareerpathways.com' ||
-      window.location.hostname === 'www.pilotcareerpathways.com';
-    const isLocalDev =
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+      hostname === 'careerpathways.pilotrecognition.com' ||
+      hostname === 'pilotcareerpathways.com' ||
+      hostname === 'www.pilotcareerpathways.com';
+    const isProductMode = searchParams.get('product') === 'careerpathways';
+    const isLocalDev = (hostname === 'localhost' || hostname === '127.0.0.1') && isProductMode;
 
-    if (isDomain || isLocalDev) {
+    if (isDomain || isLocalDev || isProductMode) {
       localStorage.setItem('careerpathways_mode', 'true');
       const t = setTimeout(() => setCareerPathwaysMode(true), 0);
+      return () => clearTimeout(t);
+    }
+
+    // On the main domain's root path, always reset to main home page
+    if (!isDomain && window.location.pathname === '/') {
+      localStorage.removeItem('careerpathways_mode');
+      const t = setTimeout(() => setCareerPathwaysMode(false), 0);
       return () => clearTimeout(t);
     }
   }, [location]);
@@ -1049,10 +1071,7 @@ export const AppRoutes = () => {
             path="/why-recognition"
             element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
           />
-          <Route
-            path="/wingmentor-learn-more"
-            element={<WingMentorLearnMorePage />}
-          />
+          <Route path="/wingmentor-learn-more" element={<WingMentorLearnMorePage />} />
           <Route
             path="/mission-vision"
             element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
