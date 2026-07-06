@@ -2397,6 +2397,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           onDismiss={() => setPasskeyPromptDismissed(true)}
         />
       )}
+
     </div>
   );
 };

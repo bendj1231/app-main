@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
+import { Search, Plane, Star, DollarSign, Calendar, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -10,6 +10,7 @@ import { PlatformNavbar } from '@/components/website/components/PlatformNavbar';
 import { ManufacturerPreviewCard } from '@/components/website/components/pilot-recognition/ManufacturerPreviewCard';
 import { AircraftPreviewCard } from '@/components/website/components/pilot-recognition/AircraftPreviewCard';
 import { ManufacturerAircraftCarousel } from '@/components/website/components/pilot-recognition/ManufacturerAircraftCarousel';
+import { AircraftLogbookStylePanel } from '@/components/website/components/pilot-recognition/AircraftLogbookStylePanel';
 import { safeRedirect } from '@/lib/url-validator';
 import {
   manufacturers as rawManufacturers,
@@ -387,106 +388,6 @@ function SketchfabThumbnail({
   );
 }
 
-type Category = 'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship';
-
-const CATEGORY_LABELS: Record<string, string> = {
-  'all': 'All',
-  'commercial': 'Commercial',
-  'private': 'Private',
-  'cargo': 'Cargo',
-  'regional': 'Regional',
-  'helicopter': 'Helicopter',
-  'military': 'Military',
-  'legacy': 'Legacy (Retired)',
-  'flagship': 'Flagship',
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  'commercial': 'bg-blue-500',
-  'private': 'bg-emerald-500',
-  'cargo': 'bg-purple-500',
-  'regional': 'bg-sky-500',
-  'helicopter': 'bg-teal-500',
-  'military': 'bg-rose-500',
-  'legacy': 'bg-slate-500',
-  'flagship': 'bg-amber-500',
-};
-
-const LEGACY_SUBCATEGORY_LABELS: Record<string, string> = {
-  'retired': 'Retired',
-  'reaching-end-of-service': 'Reaching End of Service',
-  'historical': 'Historical',
-};
-
-const LEGACY_SUBCATEGORY_COLORS: Record<string, string> = {
-  'retired': 'bg-slate-600',
-  'reaching-end-of-service': 'bg-orange-500',
-  'historical': 'bg-amber-600',
-};
-
-const HELICOPTER_SUBCATEGORY_LABELS: Record<string, string> = {
-  'light-single-engine': 'Light Single-Engine',
-  'light-twin-engine': 'Light Twin-Engine',
-  'medium-twin-engine': 'Medium Twin-Engine',
-  'heavy-twin-engine': 'Heavy Twin-Engine',
-  'evtol': 'eVTOL',
-  'drone-helicopter': 'Drone',
-};
-
-const HELICOPTER_SUBCATEGORY_COLORS: Record<string, string> = {
-  'light-single-engine': 'bg-sky-500',
-  'light-twin-engine': 'bg-blue-500',
-  'medium-twin-engine': 'bg-indigo-500',
-  'heavy-twin-engine': 'bg-purple-500',
-  'evtol': 'bg-emerald-500',
-  'drone-helicopter': 'bg-teal-500',
-};
-
-const MILITARY_SUBCATEGORY_LABELS: Record<string, string> = {
-  'transport-tanker': 'Transport & Tanker',
-  'tactical-transport': 'Tactical Transport',
-  'combat-stealth': 'Combat & Stealth',
-  'attack-tactical-helicopter': 'Attack/Tactical Heli',
-  'utility-helicopter': 'Utility/Scout Heli',
-  'surveillance-uas': 'Surveillance & UAS',
-};
-
-const MILITARY_SUBCATEGORY_COLORS: Record<string, string> = {
-  'transport-tanker': 'bg-slate-700',
-  'tactical-transport': 'bg-stone-600',
-  'combat-stealth': 'bg-red-600',
-  'attack-tactical-helicopter': 'bg-orange-600',
-  'utility-helicopter': 'bg-amber-600',
-  'surveillance-uas': 'bg-cyan-600',
-};
-
-const CARGO_SUBCATEGORY_LABELS: Record<string, string> = {
-  'production-freighter': 'Production Freighter',
-  'p2f-freighter': 'P2F Conversion',
-  'outsize-transport': 'Outsize Transport',
-  'historical-cargo': 'Historical',
-};
-
-const CARGO_SUBCATEGORY_COLORS: Record<string, string> = {
-  'production-freighter': 'bg-indigo-700',
-  'p2f-freighter': 'bg-purple-700',
-  'outsize-transport': 'bg-pink-700',
-  'historical-cargo': 'bg-gray-600',
-};
-
-const FLAGSHIP_SUBCATEGORY_LABELS: Record<string, string> = {
-  'game-changer': 'Game Changers',
-  'legacy-fading': 'Legacy (Fading)',
-  'resurgent': 'Resurgent',
-  'historical-flagship': 'Historical',
-};
-
-const FLAGSHIP_SUBCATEGORY_COLORS: Record<string, string> = {
-  'game-changer': 'bg-blue-700',
-  'legacy-fading': 'bg-orange-700',
-  'resurgent': 'bg-emerald-700',
-  'historical-flagship': 'bg-gray-700',
-};
 
 interface TypeRatingSearchPageProps {
   onNavigate?: (page: string) => void;
@@ -497,27 +398,18 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const { currentUser, userProfile } = useAuth();
   const [searchParams] = useSearchParams();
   const auth = useAuth();
-  const [activeCategory, setActiveCategory] = useState<Category>('all');
 
   // Check subscription status
   const isRecognitionPlus = userProfile?.subscription_tier === 'recognition_plus' || userProfile?.subscription_tier === 'enterprise';
   const isLoggedIn = !!currentUser;
-  const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
-  const [activeHelicopterSubcategory, setActiveHelicopterSubcategory] = useState<string | null>(null);
-  const [activeMilitarySubcategory, setActiveMilitarySubcategory] = useState<string | null>(null);
-  const [activeCargoSubcategory, setActiveCargoSubcategory] = useState<string | null>(null);
-  const [activeFlagshipSubcategory, setActiveFlagshipSubcategory] = useState<string | null>(null);
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
   const [showExtendedInfo, setShowExtendedInfo] = useState(false);
-  const [activeTab, setActiveTab] = useState('Overview');
-  const carouselRef = useRef<HTMLDivElement>(null);
   const manufacturerCarouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [showRequirements, setShowRequirements] = useState(false);
 
   // Universal search entity tabs
   type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
@@ -713,60 +605,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     setSelectedCategory('all');
   }, [selectedManufacturer?.id]);
 
-  const filteredAircraft = React.useMemo(() => {
-    let aircraft = aircraftTypeRatings;
-    
-    if (selectedManufacturer) {
-      aircraft = aircraft.filter(a => a.manufacturer_id === selectedManufacturer.id);
-    }
-    
-    if (activeCategory !== 'all') {
-      aircraft = aircraft.filter(a => a.category === activeCategory);
-    }
-    
-    // Filter by legacy subcategory if legacy category is selected and a subcategory is active
-    if (activeCategory === 'legacy' && activeLegacySubcategory) {
-      aircraft = aircraft.filter(a => a.subcategory === activeLegacySubcategory);
-    }
-    
-    // Filter by helicopter subcategory if helicopter category is selected and a subcategory is active
-    if (activeCategory === 'helicopter' && activeHelicopterSubcategory) {
-      aircraft = aircraft.filter(a => a.subcategory === activeHelicopterSubcategory);
-    }
-    
-    // Filter by military subcategory if military category is selected and a subcategory is active
-    if (activeCategory === 'military' && activeMilitarySubcategory) {
-      aircraft = aircraft.filter(a => a.subcategory === activeMilitarySubcategory);
-    }
-    
-    // Filter by cargo subcategory if cargo category is selected and a subcategory is active
-    if (activeCategory === 'cargo' && activeCargoSubcategory) {
-      aircraft = aircraft.filter(a => a.subcategory === activeCargoSubcategory);
-    }
-    
-    // Filter by flagship subcategory if flagship category is selected and a subcategory is active
-    if (activeCategory === 'flagship' && activeFlagshipSubcategory) {
-      aircraft = aircraft.filter(a => a.subcategory === activeFlagshipSubcategory);
-    }
-    
-    if (searchQuery) {
-      aircraft = aircraft.filter(a => 
-        a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        a.manufacturer_id.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    
-    return aircraft;
-  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery]);
 
   // Get available categories for selected manufacturer
-  const availableCategories = React.useMemo(() => {
-    const categories = new Set<Category>();
-    aircraftTypeRatings.forEach(aircraft => {
-      categories.add(aircraft.category as Category);
-    });
-    return Array.from(categories);
-  }, [aircraftTypeRatings]);
 
   // Get categories specifically available for the selected manufacturer
   const manufacturerCategories = React.useMemo(() => {
@@ -778,20 +618,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     return Array.from(categories).sort();
   }, [selectedManufacturer, aircraftTypeRatings]);
 
-  // Auto-scroll aircraft carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!carouselRef.current) return;
-      const el = carouselRef.current;
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (el.scrollLeft >= maxScroll - 10) {
-        el.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        el.scrollBy({ left: 300, behavior: 'smooth' });
-      }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Auto-scroll manufacturer carousel (infinite loop)
   useEffect(() => {
@@ -808,8 +634,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     return () => clearInterval(interval);
   }, []);
 
-  const scroll = (dir: 'left' | 'right') =>
-    carouselRef.current?.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
 
   const handleSelect = (aircraft: AircraftTypeRating) => {
     setSelectedAircraft(aircraft);
@@ -825,15 +649,13 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     return manufacturers.find(m => m.id === id);
   };
 
+
   // Helper function to get aircraft by manufacturer
   const getAircraftByManufacturer = (manufacturerId: string) => {
     return aircraftTypeRatings.filter(a => a.manufacturer_id === manufacturerId);
   };
 
   // Helper function to get aircraft by category
-  const getAircraftByCategory = (category: string) => {
-    return aircraftTypeRatings.filter(a => a.category === category);
-  };
 
   return (
     <div className="min-h-screen relative text-slate-900 font-sans">
@@ -866,10 +688,17 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
             {/* Press/media style repeating selected manufacturer logo wall */}
             {selectedManufacturer && (
-              <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none opacity-[0.25]" style={{ filter: 'grayscale(100%) brightness(0) invert(1)' }}>
-                <div className="flex flex-wrap gap-x-10 gap-y-6 p-6 justify-around content-around">
-                  {[...Array(90)].map((_, i) => (
-                    <img key={`${selectedManufacturer.id}-${i}`} src={selectedManufacturer.logo} alt={selectedManufacturer.name} className="h-12 w-auto object-contain" />
+              <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none opacity-[0.22]" style={{ filter: 'grayscale(100%) brightness(0) invert(1)' }}>
+                <div className="space-y-16">
+                  {[...Array(12)].map((_, rowIndex) => (
+                    <div
+                      key={rowIndex}
+                      className={`flex gap-24 ${rowIndex % 2 === 1 ? 'pl-32' : ''}`}
+                    >
+                      {[...Array(14)].map((_, i) => (
+                        <img key={`${selectedManufacturer.id}-${rowIndex}-${i}`} src={selectedManufacturer.logo} alt={selectedManufacturer.name} className="h-10 w-auto object-contain flex-shrink-0" />
+                      ))}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -1066,6 +895,18 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
       </div>
 
+      {(selectedAircraft || selectedManufacturer) && (
+        <div className="text-center mt-2 mb-1">
+          <p className="text-sm text-red-500 font-medium tracking-wide drop-shadow-sm">
+            {selectedAircraft ? (
+              <>Scroll down to discover more about {selectedAircraft.model}</>
+            ) : (
+              <>Scroll down to discover more about {selectedManufacturer?.name}</>
+            )}
+          </p>
+        </div>
+      )}
+
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '0', paddingRight: '1rem' }}>
 
@@ -1160,7 +1001,26 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       </div>
 
       {/* Dark blue background for content below hero */}
-      <div className="relative z-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-12">
+      <div className="relative z-10 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-12">
+        {/* Press/media style repeating selected manufacturer logo wall */}
+        {selectedManufacturer && (
+          <div className="absolute -inset-8 overflow-hidden z-0 pointer-events-none opacity-[0.16]" style={{ filter: 'grayscale(100%) brightness(0) invert(1)' }}>
+            <div className="space-y-16">
+              {[...Array(18)].map((_, rowIndex) => (
+                <div
+                  key={rowIndex}
+                  className={`flex gap-24 ${rowIndex % 2 === 1 ? 'pl-32' : ''}`}
+                >
+                  {[...Array(14)].map((_, i) => (
+                    <img key={`${selectedManufacturer.id}-${rowIndex}-${i}`} src={selectedManufacturer.logo} alt={selectedManufacturer.name} className="h-9 w-auto object-contain flex-shrink-0" />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="relative z-10">
       {!selectedManufacturer ? (
         // Profile view when no manufacturer is selected
         <div className="max-w-7xl mx-auto px-6 pt-8">
@@ -1359,1177 +1219,14 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Selected Aircraft Detail Panel */}
       {selectedAircraft && (
         <div id="aircraft-detail-section" ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
-          <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-lg">
-
-            {/* Hero image with overlay */}
-            <div className="relative h-64 md:h-80">
-              {selectedAircraft.sketchfab_id ? (
-                <SketchfabThumbnail
-                  sketchfabId={selectedAircraft.sketchfab_id}
-                  alt={selectedAircraft.model}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <img
-                  src={selectedAircraft.image}
-                  alt={selectedAircraft.model}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    console.error('Detail image failed to load:', selectedAircraft.model, selectedAircraft.image);
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80';
-                  }}
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
-              {selectedAircraft.sketchfab_id && (
-                <div className="absolute top-4 right-4 bg-sky-500 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-lg z-10">
-                  3D Model Available
-                </div>
-              )}
-              <div className="absolute bottom-0 left-0 p-6 md:p-8">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`text-xs font-bold tracking-[0.2em] uppercase text-sky-400 bg-sky-500/20 px-3 py-1 rounded-full border border-sky-400/30`}>
-                    {CATEGORY_LABELS[selectedAircraft.category]}
-                  </span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-2">{selectedAircraft.model}</h2>
-                <div className="flex items-center gap-4 flex-wrap mb-3">
-                  <span className="flex items-center gap-1.5 text-sky-300 text-sm">
-                    <img src={getManufacturer(selectedAircraft)?.logo || '/images/set-01-logos/logo.png'} alt="Manufacturer" className="h-4 w-auto object-contain opacity-80" />
-                    {getManufacturer(selectedAircraft)?.name}
-                  </span>
-                </div>
-                {/* Indicators */}
-                <div className="flex flex-wrap gap-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
-                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                    Career Score: {calculateCareerScore(selectedAircraft)}/100
-                  </div>
-                  {selectedAircraft.demandLevel && (
-                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
-                      selectedAircraft.demandLevel === 'high' ? 'bg-emerald-500 text-white border-emerald-400' :
-                      selectedAircraft.demandLevel === 'low' ? 'bg-amber-500 text-white border-amber-400' :
-                      'bg-red-500 text-white border-red-400'
-                    }`}>
-                      <div className={`w-2 h-2 rounded-full ${
-                        selectedAircraft.demandLevel === 'high' ? 'bg-white' :
-                        selectedAircraft.demandLevel === 'low' ? 'bg-white' :
-                        'bg-white'
-                      }`} />
-                      Demand: {selectedAircraft.demandLevel === 'high' ? 'High' : selectedAircraft.demandLevel === 'low' ? 'Low' : 'None'}
-                    </div>
-                  )}
-                  {selectedAircraft.conditionally_new && (
-                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
-                      selectedAircraft.conditionally_new === 'green' ? 'bg-emerald-500 text-white border-emerald-400' :
-                      selectedAircraft.conditionally_new === 'amber' ? 'bg-amber-500 text-white border-amber-400' :
-                      'bg-red-500 text-white border-red-400'
-                    }`}>
-                      <div className={`w-2 h-2 rounded-full ${
-                        selectedAircraft.conditionally_new === 'green' ? 'bg-white' :
-                        selectedAircraft.conditionally_new === 'amber' ? 'bg-white' :
-                        'bg-white'
-                      }`} />
-                      Conditionally New
-                    </div>
-                  )}
-                  {selectedAircraft.lifecycleStage && (
-                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
-                      selectedAircraft.lifecycleStage === 'early-career' ? 'bg-emerald-500 text-white border-emerald-400' :
-                      selectedAircraft.lifecycleStage === 'mid-career' ? 'bg-amber-500 text-white border-amber-400' :
-                      'bg-red-500 text-white border-red-400'
-                    }`}>
-                      <div className={`w-2 h-2 rounded-full ${
-                        selectedAircraft.lifecycleStage === 'early-career' ? 'bg-white' :
-                        selectedAircraft.lifecycleStage === 'mid-career' ? 'bg-white' :
-                        'bg-white'
-                      }`} />
-                      Lifecycle: {selectedAircraft.lifecycleStage === 'early-career' ? 'Early Career' : selectedAircraft.lifecycleStage === 'mid-career' ? 'Mid Career' : 'End of Life'}
-                    </div>
-                  )}
-                  {selectedAircraft.operatorCount && (
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-500 text-white border-2 border-amber-400 backdrop-blur-xl">
-                      <div className="w-2 h-2 rounded-full bg-white" />
-                      Operators: {selectedAircraft.operatorCount}+
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Info bar — manufacturer + cost + age */}
-            <div className="px-6 md:px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <img src={getManufacturer(selectedAircraft)?.logo || '/images/set-01-logos/logo.png'} alt={getManufacturer(selectedAircraft)?.name} className="h-8 object-contain" />
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-slate-400">Manufacturer</p>
-                  <p className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.name}</p>
-                </div>
-              </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">First Flight</p>
-                <p className="text-sm font-semibold text-slate-800">{selectedAircraft.first_flight}</p>
-              </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Category</p>
-                <p className="text-sm font-semibold text-slate-800 capitalize">{selectedAircraft.category}</p>
-              </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Reputation</p>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                  <span className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.reputation_score || 0}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Airlines Operating This Type */}
-            {(() => {
-              const airlines = AIRCRAFT_AIRLINES[selectedAircraft.id];
-              if (!airlines || !airlines.length) return null;
-              return (
-                <div className="px-6 md:px-8 py-5 border-b border-slate-100">
-                  <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Airlines Operating This Type</p>
-                  <div className="flex flex-wrap gap-3">
-                    {airlines.map(a => (
-                      <div key={a.name} className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
-                        <img src={a.logo} alt={a.name} className="h-6 w-10 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
-                        <span className="text-xs font-medium text-slate-700">{a.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Tab Navigation */}
-            <div className="border-b border-slate-200 px-6 md:px-8 bg-white">
-              <div className="flex gap-1 overflow-x-auto">
-                {['Overview', 'Training', 'Hiring', 'Compensation', 'Comparison'].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                      activeTab === tab
-                        ? 'border-sky-500 text-sky-600'
-                        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Description Section — requirements + specs */}
-            <div className="p-6 md:p-8 border-b border-slate-100">
-              {activeTab === 'Overview' && (
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-slate-900">Description</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed mb-4">{selectedAircraft.description}</p>
-                    
-                    {selectedAircraft.why_choose_rating && (
-                      <>
-                        <h3 className="text-lg font-semibold mb-3 text-slate-900">Why Should a Pilot Choose This Rating?</h3>
-                        <p className="text-sm text-slate-500 leading-relaxed">{selectedAircraft.why_choose_rating}</p>
-                        {selectedAircraft.id === 'a220-300' && (
-                          <button
-                            onClick={() => setShowExtendedInfo(true)}
-                            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-sky-700 transition-colors"
-                          >
-                            View Full Career Outlook
-                            <ChevronRight className="w-4 h-4" />
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-slate-900">Technical Specifications</h3>
-                    <div className="space-y-2">
-                      {Object.entries(selectedAircraft.specifications as Record<string, any>).map(([key, value]) => (
-                        <div key={key} className="flex items-center justify-between py-2 border-b border-slate-50">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                          <span className="text-sm font-medium text-slate-800">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Overview' && selectedAircraft.news && selectedAircraft.news.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-lg font-semibold mb-4 text-slate-900">Latest News</h3>
-                  <div className="space-y-3">
-                    {selectedAircraft.news.map((news, i) => (
-                      <div key={news.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 hover:border-slate-300 transition-colors">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-slate-900 text-sm mb-1">{news.title}</h4>
-                            <p className="text-xs text-slate-500 mb-2">{news.summary}</p>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-slate-400">{new Date(news.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                              <a href={news.url} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-600 hover:text-sky-700 font-medium">
-                                Read more →
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Training' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Training Requirements</h3>
-                  {selectedAircraft.training_requirements ? (
-                    <ul className="space-y-2.5 mb-6">
-                      <li className="flex items-start gap-3 text-sm text-slate-500">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        Minimum Flight Hours: {selectedAircraft.training_requirements.minimumHours}
-                      </li>
-                      <li className="flex items-start gap-3 text-sm text-slate-500">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        Ground School: {selectedAircraft.training_requirements.groundSchoolHours} hours
-                      </li>
-                      <li className="flex items-start gap-3 text-sm text-slate-500">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        Simulator Training: {selectedAircraft.training_requirements.simulatorHours} hours
-                      </li>
-                      <li className="flex items-start gap-3 text-sm text-slate-500">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        Flight Training: {selectedAircraft.training_requirements.flightHours} hours
-                      </li>
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-slate-500">Training requirements data not available for this aircraft.</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === 'Hiring' && selectedAircraft.id === 'a220-300' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Hiring Requirements by Airline Type</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    Many operators now offer company-funded type ratings for the A220 to meet high demand, but minimum flight hour thresholds vary significantly between regional and major carriers.
-                  </p>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Airline</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Position</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Min. Total Hours</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Key Requirements</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200">airBaltic</td>
-                          <td className="p-2 border border-slate-200">First Officer</td>
-                          <td className="p-2 border border-slate-200">300–500 hrs</td>
-                          <td className="p-2 border border-slate-200">300+ hrs on aircraft &gt;5.7t; EASA license</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200">Breeze Airways</td>
-                          <td className="p-2 border border-slate-200">First Officer</td>
-                          <td className="p-2 border border-slate-200">1,500 hrs</td>
-                          <td className="p-2 border border-slate-200">FAA ATP/R-ATP; 500 hrs turbine; 50 hrs multi-engine</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200">QantasLink</td>
-                          <td className="p-2 border border-slate-200">First Officer</td>
-                          <td className="p-2 border border-slate-200">500–700 hrs</td>
-                          <td className="p-2 border border-slate-200">CASA license; 200 hrs multi-engine/turbine command; Level 6 English</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200">Air France</td>
-                          <td className="p-2 border border-slate-200">First Officer</td>
-                          <td className="p-2 border border-slate-200">~1,500 hrs</td>
-                          <td className="p-2 border border-slate-200">Varies by recruitment cycle; typically requires EASA ATPL</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200">Delta Air Lines</td>
-                          <td className="p-2 border border-slate-200">First Officer</td>
-                          <td className="p-2 border border-slate-200">1,500+ hrs</td>
-                          <td className="p-2 border border-slate-200">FAA ATP; prefers 1,000+ hours in Part 121 operations</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Hiring' && selectedAircraft.id === 'a220-100' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">First Officer (FO) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 1,500 hours (FAA) or 500 hours (EASA/ICAO with an airline cadet background)</li>
-                    <li><strong>Multi-Engine/Turbine Time:</strong> Minimum 500 hours preferred (though many A220 operators like airBaltic accept 300 hours on aircraft &gt;5.7t)</li>
-                    <li><strong>License:</strong> Valid ATPL or CPL with "Frozen" ATPL theory</li>
-                    <li><strong>Medical:</strong> Class 1 Medical Certificate</li>
-                    <li><strong>English Proficiency:</strong> ICAO Level 4 minimum (Level 6 preferred)</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Direct Entry Captain (DEC) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 3,000 – 5,000+ hours</li>
-                    <li><strong>PIC Command Time:</strong> 1,000 hours as Pilot-in-Command (PIC) on a multi-pilot turbojet aircraft (e.g., A320, B737, or E-Jet)</li>
-                    <li><strong>Type Specific:</strong> Non-type rated pilots are frequently accepted if they have experience on "Glass Cockpit" and Fly-By-Wire aircraft</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Career Opportunities & Bonuses</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    <strong>Current Demand:</strong> Very High. Because the A220 fleet is expanding faster than pilots can be trained, "Type Rating provided by company" is a common offer.
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">Sign-on Bonuses</h4>
-                      <p className="text-xs text-emerald-700">Currently ranging from $10,000 to $15,000 for type-rated pilots at regional and expansion carriers</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Fast-Track Command</h4>
-                      <p className="text-xs text-blue-700">Due to the massive order backlog, First Officers on the A220 often see a faster path to the left seat than those on established A320 fleets</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    <strong>Major Operators Hiring:</strong> Delta Air Lines, JetBlue, Air France, airBaltic, Breeze Airways, and QantasLink
-                  </p>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Recruiter's Note</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A220 is currently the best airframe for pilots looking to transition from Regional Jets (ERJ/CRJ) to Mainline flying, as its systems logic is the most modern in the narrow-body class."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Hiring' && selectedAircraft.id === 'a320' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">First Officer (FO) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 1,500 hours (FAA ATP) or 200 hours (EASA/ICAO via Integrated Cadet programs)</li>
-                    <li><strong>Multi-Engine/Turbine Time:</strong> 500 hours preferred for direct entry; often waived for graduates of partnered flight schools</li>
-                    <li><strong>License:</strong> Valid ATPL or CPL with "Frozen" ATPL theory</li>
-                    <li><strong>Type Rating Status:</strong> Many LCCs require a self-funded rating, while legacy carriers usually provide the rating via a training bond. Note: Many European and Asian LCCs now offer "Pay-via-Salary-Deduction" schemes, where the airline pays the $25k upfront and the pilot pays it back over 3 years from their paycheck, reducing the barrier to entry for new FOs.</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Direct Entry Captain (DEC) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 3,000 – 5,000+ hours</li>
-                    <li><strong>Command Experience:</strong> 1,000 hours Pilot-in-Command (PIC) on a multi-pilot turbojet aircraft (CS25/Part 25)</li>
-                    <li><strong>Glass Cockpit Experience:</strong> Mandatory. Previous Fly-By-Wire (Airbus) experience is a major advantage but not always required if transitioning from Boeing</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Career Opportunities & Job Security</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    <strong>Global Reach:</strong> With over 370 operators, an A320 rating allows a pilot to work in almost any country.
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">The "Neo" Growth</h4>
-                      <p className="text-xs text-emerald-700">Because of the massive A320neo backlog, airlines are hiring at record rates to replace aging CEO fleets</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Fast-Track Command</h4>
-                      <p className="text-xs text-blue-700">In high-growth regions (India, SE Asia, Middle East), FO-to-Captain upgrades can occur in as little as 3–5 years</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Career Path Note</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A320 is the ultimate 'Utility Rating.' It opens doors to hundreds of airlines and serves as the technical foundation for the A330 and A350 widebody fleets."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Hiring' && selectedAircraft.id === 'a330' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">First Officer (FO) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 3,000 hours (FAA) or 1,500 hours (EASA/ICAO with previous jet experience)</li>
-                    <li><strong>Multi-Engine/Turbine Time:</strong> 1,000 hours minimum on multi-pilot turbojet aircraft</li>
-                    <li><strong>License:</strong> Valid ATPL (CPL with "Frozen" ATPL not accepted for wide-body)</li>
-                    <li><strong>Type Rating Status:</strong> Most wide-body carriers provide the rating via training bond. A320-rated pilots can transition via CCQ in 8-10 days.</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Direct Entry Captain (DEC) Requirements</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Total Flight Time:</strong> 5,000 – 8,000+ hours</li>
-                    <li><strong>Command Experience:</strong> 2,000 hours Pilot-in-Command (PIC) on wide-body or narrow-body aircraft</li>
-                    <li><strong>Wide-body Experience:</strong> Preferred but not always mandatory. Previous heavy aircraft experience valued.</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Career Opportunities & Job Security</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    <strong>Global Reach:</strong> The A330 rating is a "passport" to global wide-body carriers including Delta, Cathay Pacific, Qatar Airways, and Turkish Airlines.
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">The "A320 Advantage"</h4>
-                      <p className="text-xs text-emerald-700">For A320-rated pilots, the transition is famously smooth via Cross-Crew Qualification (CCQ) - only 8-10 working days of training instead of a full month-long type rating.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Heavy Lifestyle</h4>
-                      <p className="text-xs text-blue-700">Wide-body flying offers premium layovers in international destinations and significantly higher compensation compared to narrow-body operations.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Career Path Note</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A330 is the best aircraft for achieving a 'Heavy' rating without the stress of a completely new flight deck logic. It offers a massive jump in pay and lifestyle (layovers) for a fraction of the training time of a Boeing 787."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Hiring' && selectedAircraft.id !== 'a220-300' && selectedAircraft.id !== 'a220-100' && selectedAircraft.id !== 'a320' && selectedAircraft.id !== 'a330' && (
-                <p className="text-sm text-slate-500 italic">Hiring requirements are not available for this aircraft.</p>
-              )}
-
-              {activeTab === 'Compensation' && selectedAircraft.id === 'a220-300' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Compensation Package (Year 1 First Officer)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    Based on typical 2026 contract rates from top-tier carriers like Air France and Delta.
-                  </p>
-                  <ul className="space-y-1.5 text-sm text-slate-600">
-                    <li><strong>Base Salary (MMG):</strong> ~$100,000 – $115,000 (Minimum Monthly Guarantee of 70–75 flight hours)</li>
-                    <li><strong>Flight Hourly Rate:</strong> $110 – $170/hr (First-year FO rates ~$112/hr at major US carriers; €70k – €90k in Europe)</li>
-                    <li><strong>Per Diems (Tax-Free):</strong> ~$7,000 – $12,000 (US: $2.25 – $3.50/hr away from base; higher for international layovers)</li>
-                    <li><strong>Total Annual Cash (Year 1):</strong> ~$110,000 – $135,000</li>
-                  </ul>
-                </div>
-              )}
-
-              {activeTab === 'Compensation' && selectedAircraft.id === 'a220-100' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">First Officer (FO) Earnings</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Starting Salary (Year 1):</strong> $110,000 – $135,000</li>
-                    <li><strong>Senior FO (Year 5+):</strong> $160,000 – $220,000</li>
-                    <li><strong>Hourly Rate (US Major Scale):</strong> $112 – $185/hr (Typically 75-hour monthly guarantee)</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Captain Earnings</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Starting Command (Year 1):</strong> $260,000 – $315,000</li>
-                    <li><strong>Senior Captain (Year 12+):</strong> $350,000 – $450,000+</li>
-                    <li><strong>Hourly Rate (US Major Scale):</strong> $295 – $415/hr</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Additional Financial Benefits</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Per Diems:</strong> Average $7,000 – $12,000 annually (tax-free)</li>
-                    <li><strong>Retirement:</strong> Major carriers contribute 14% – 17% direct 401k/Pension funding</li>
-                    <li><strong>Sign-on Bonuses:</strong> Currently $10k – $15k for type-rated candidates</li>
-                    <li><strong>Efficiency Bonus:</strong> Many operators offer "productivity pay" for flying above 75 hours a month</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Career Intel for Pilots</h3>
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">Pay Parity</h4>
-                      <p className="text-xs text-emerald-700">Most airlines place the A220 in the same "Narrow-body" pay bracket as the A320 and B737. This means pilots earn the same high rates while operating a significantly quieter, more modern aircraft with lower fatigue levels.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">The "Regional Plus" Advantage</h4>
-                      <p className="text-xs text-blue-700">For pilots at carriers like Breeze or QantasLink, the A220 offers mainline-level compensation while maintaining a mix of short-haul and trans-continental schedules.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Summary</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A220 is a financial winner. Pilots enjoy A320-level pay with 21st-century tech, lower cockpit noise, and a massive growth curve that ensures career longevity."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Compensation' && selectedAircraft.id === 'a320' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Annual Compensation Profiles (2026)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    The A320 often shares the same pay scale as larger wide-bodies at legacy airlines, meaning pilots earn premium rates while maintaining a short-haul lifestyle.
-                  </p>
-                  
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-slate-100">
-                          <th className="p-2 text-left font-semibold text-slate-800">Region</th>
-                          <th className="p-2 text-left font-semibold text-slate-800">First Officer (Entry - Senior)</th>
-                          <th className="p-2 text-left font-semibold text-slate-800">Captain (Junior - Senior)</th>
-                          <th className="p-2 text-left font-semibold text-slate-800">Key Benefits</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-slate-200">
-                          <td className="p-2 text-slate-700">United States</td>
-                          <td className="p-2 text-slate-700">$120,000 – $200,000+</td>
-                          <td className="p-2 text-slate-700">$250,000 – $450,000+</td>
-                          <td className="p-2 text-slate-700">14–17% 401k direct contribution</td>
-                        </tr>
-                        <tr className="border-b border-slate-200">
-                          <td className="p-2 text-slate-700">Middle East</td>
-                          <td className="p-2 text-slate-700">$100,000 – $180,000</td>
-                          <td className="p-2 text-slate-700">$200,000 – $380,000</td>
-                          <td className="p-2 text-slate-700">Tax-free, housing, and schooling</td>
-                        </tr>
-                        <tr className="border-b border-slate-200">
-                          <td className="p-2 text-slate-700">Europe</td>
-                          <td className="p-2 text-slate-700">€50,000 – €150,000</td>
-                          <td className="p-2 text-slate-700">€150,000 – €350,000</td>
-                          <td className="p-2 text-slate-700">High job security & sector protections</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 text-slate-700">India / Asia</td>
-                          <td className="p-2 text-slate-700">$30,000 – $80,000</td>
-                          <td className="p-2 text-slate-700">$100,000 – $250,000+</td>
-                          <td className="p-2 text-slate-700">Rapid command upgrade paths</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Carrier Spotlights (A320 Family)</h3>
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-1">Lufthansa Mainline</h4>
-                      <p className="text-xs text-purple-700">Features a "Golden Cage" pay scale where base salary is ~85% of total pay, offering unmatched security. Senior Captains can earn up to €280,000 gross plus high pension contributions.</p>
-                    </div>
-                    <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                      <h4 className="text-sm font-semibold text-orange-800 mb-1">Air France</h4>
-                      <p className="text-xs text-orange-700">Uses a dual-pillar system with high fixed pay and a productivity-based "Prime de Vol". Long-haul A320 Captains can reach €350,000 gross.</p>
-                    </div>
-                    <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
-                      <h4 className="text-sm font-semibold text-teal-800 mb-1">Etihad Airways</h4>
-                      <p className="text-xs text-teal-700">Offers tax-free packages up to $170,000 for A320 Captains, plus massive education and housing allowances.</p>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Additional Earnings Components</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Per Diems:</strong> Often add $7,000 – $12,000 in tax-free income for meal and hotel incidentals</li>
-                    <li><strong>Overtime:</strong> Most contracts pay 150% or more for any flight hours exceeding the monthly guarantee (typically 70–75 hours)</li>
-                    <li><strong>Training Supplements:</strong> Check Captains (TRI/TRE) typically earn a premium of $15,000 – $25,000 annually on top of their standard pay</li>
-                  </ul>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Summary</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A320 is the most portable rating in aviation. It offers high-level compensation that rivals wide-body pay in the U.S. and provides tax-free wealth-building opportunities in the Middle East."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Compensation' && selectedAircraft.id === 'a330' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Wide-Body Compensation Profile (2026)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    The A330 offers premium compensation for "Heavy" wide-body flying, with significantly higher earnings than narrow-body aircraft.
-                  </p>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">First Officer Earnings</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Starting Salary (Year 1):</strong> $140,000 – $180,000</li>
-                    <li><strong>Senior FO (Year 5+):</strong> $180,000 – $220,000</li>
-                    <li><strong>Hourly Rate:</strong> $180 – $250/hr (varies by carrier and region)</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Captain Earnings</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Starting Command (Year 1):</strong> $280,000 – $350,000</li>
-                    <li><strong>Senior Captain (Year 12+):</strong> $350,000 – $480,000+</li>
-                    <li><strong>Hourly Rate:</strong> $350 – $480/hr</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Additional Benefits</h3>
-                  <ul className="space-y-1.5 text-sm text-slate-600 mb-4">
-                    <li><strong>Per Diems:</strong> $15,000 – $25,000 annually (tax-free) for international layovers</li>
-                    <li><strong>Premium Layovers:</strong> Wide-body routes often include 24-48 hour stays in premium destinations</li>
-                    <li><strong>Retirement:</strong> Major carriers contribute 16% – 20% direct pension/401k funding</li>
-                  </ul>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Summary</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A330 rating is a 'passport' to global wide-body carriers. It offers a massive jump in pay and lifestyle (layovers) for a fraction of the training time of a Boeing 787."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Compensation' && selectedAircraft.id !== 'a220-300' && selectedAircraft.id !== 'a220-100' && selectedAircraft.id !== 'a320' && selectedAircraft.id !== 'a330' && (
-                <p className="text-sm text-slate-500 italic">Compensation data is not available for this aircraft.</p>
-              )}
-
-              {activeTab === 'Comparison' && selectedAircraft.id === 'a220-300' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">A220-100 vs. A220-300: The Common Type Rating</h3>
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200 mb-4">
-                    <p className="text-sm text-sky-700 leading-relaxed font-semibold mb-2">
-                      Important: Pilots do not choose between them.
-                    </p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-2">
-                      Because they share a Common Type Rating (BD-500), when you get rated on one, you are legally qualified to fly both. The FAA and EASA recognize them under the same "BD-500" endorsement.
-                    </p>
-                    <ul className="space-y-1 text-sm text-slate-700">
-                      <li><strong>One License, Two Planes:</strong> Training centers offer the rating for both simultaneously.</li>
-                      <li><strong>99% Commonality:</strong> Both variants share the same engines, flight deck, and internal systems.</li>
-                      <li><strong>Unified Training:</strong> Airlines typically train pilots on the -300 and provide a brief differences module for the -100.</li>
-                      <li><strong>Mixed-Fleet Flying:</strong> At airlines that operate both, pilots will often fly a -100 in the morning and a -300 in the afternoon on the same schedule.</li>
-                      <li><strong>Current Status:</strong> Both are in high production. Neither is retiring; the -300 is entering its "golden age" of deliveries.</li>
-                    </ul>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Which Variant is "Best" for You?</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    While you get both on your license, pilots often prefer one over the other based on the type of flying they want to do:
-                  </p>
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Feature</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A220-100 (The "Sports Car")</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A220-300 (The "Workhorse")</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Handling</td>
-                          <td className="p-2 border border-slate-200">More "twitchy" and responsive; feels lighter on controls</td>
-                          <td className="p-2 border border-slate-200">More stable and "heavy" feel; smoother in turbulence</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Routes</td>
-                          <td className="p-2 border border-slate-200">Short, high-frequency, or niche (Steep approaches)</td>
-                          <td className="p-2 border border-slate-200">Long-haul narrow-body (Trans-con/Trans-atlantic)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Prestige</td>
-                          <td className="p-2 border border-slate-200">Access to restricted airports like London City (LCY)</td>
-                          <td className="p-2 border border-slate-200">Access to high-capacity "flagship" routes for major airlines</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Landing</td>
-                          <td className="p-2 border border-slate-200">Harder to "grease" (shorter, more sensitive)</td>
-                          <td className="p-2 border border-slate-200">Easier to land smoothly (longer wheelbase)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Best For</td>
-                          <td className="p-2 border border-slate-200">Pilots who love stick-and-rudder handling</td>
-                          <td className="p-2 border border-slate-200">Pilots who want stability and long-range flying</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Airlines by Variant (As of April 2026)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    The A220-300 is the "volume seller" with many more operators, while the A220-100 is a niche specialist for restricted airports.
-                  </p>
-                  <div className="grid md:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-2">Airlines Flying BOTH</h4>
-                      <ul className="space-y-1 text-xs text-purple-700">
-                        <li>Delta Air Lines</li>
-                        <li>SWISS</li>
-                        <li>ITA Airways</li>
-                        <li>Bulgaria Air</li>
-                        <li>Air Canada</li>
-                        <li>Korean Air</li>
-                        <li>QantasLink</li>
-                        <li>Croatia Airlines</li>
-                      </ul>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-2">A220-300 ONLY</h4>
-                      <ul className="space-y-1 text-xs text-blue-700">
-                        <li>airBaltic (All-A220 fleet)</li>
-                        <li>JetBlue</li>
-                        <li>Air France</li>
-                        <li>Breeze Airways</li>
-                        <li>EgyptAir</li>
-                        <li>Iraqi Airways</li>
-                        <li>Air Austral</li>
-                        <li>Air Tanzania</li>
-                        <li>Cyprus Airways</li>
-                      </ul>
-                    </div>
-                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-2">A220-100 ONLY</h4>
-                      <ul className="space-y-1 text-xs text-emerald-700">
-                        <li>Executive/Private Jets</li>
-                        <li>(Niche operators)</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Advice: Choose an Airline, Not a Variant</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    Since the rating is the same, choose based on the Airline's Fleet Mix:
-                  </p>
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">Choose a -100 Operator (e.g., Delta, SWISS)</h4>
-                      <p className="text-xs text-emerald-700">If you want to fly into unique, challenging airports with short runways. The -100 has a better thrust-to-weight ratio and can get in and out of places the -300 cannot. It is the largest aircraft certified for London City Airport (LCY) due to its steep approach capabilities.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Choose a -300 Operator (e.g., Air France, JetBlue, Breeze)</h4>
-                      <p className="text-xs text-blue-700">If you want maximum job security and variety. With a backlog of over 700 units, this variant is the industry standard for "long and thin" routes, including some trans-Atlantic hops. It is easier to land smoothly due to its longer fuselage.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Pilot Recognition Verdict</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "Don't worry about choosing a variant—focus on getting the BD-500 rating. Once you have it, you are part of an elite group of ~5,000 pilots who can fly the most modern narrow-body fleet in the world. If you want the 'purest' flying experience, aim for the -100; if you want the most stable career path, the -300 is the king of the backlog."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Comparison' && selectedAircraft.id === 'a220-100' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">A220-100 vs. A220-300: The Common Type Rating</h3>
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200 mb-4">
-                    <p className="text-sm text-sky-700 leading-relaxed font-semibold mb-2">
-                      Important: Pilots do not choose between them.
-                    </p>
-                    <p className="text-sm text-slate-700 leading-relaxed mb-2">
-                      Because they share a Common Type Rating (BD-500), when you get rated on one, you are legally qualified to fly both. The FAA and EASA recognize them under the same "BD-500" endorsement.
-                    </p>
-                    <ul className="space-y-1 text-sm text-slate-700">
-                      <li><strong>One License, Two Planes:</strong> Training centers offer the rating for both simultaneously.</li>
-                      <li><strong>99% Commonality:</strong> Both variants share the same engines, flight deck, and internal systems.</li>
-                      <li><strong>Unified Training:</strong> Airlines typically train pilots on the -300 and provide a brief differences module for the -100.</li>
-                      <li><strong>Mixed-Fleet Flying:</strong> At airlines that operate both, pilots will often fly a -100 in the morning and a -300 in the afternoon on the same schedule.</li>
-                      <li><strong>Current Status:</strong> Both are in high production. Neither is retiring; the -300 is entering its "golden age" of deliveries.</li>
-                    </ul>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Which Variant is "Best" for You?</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    While you get both on your license, pilots often prefer one over the other based on the type of flying they want to do:
-                  </p>
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Feature</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A220-100 (The "Sports Car")</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A220-300 (The "Workhorse")</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Handling</td>
-                          <td className="p-2 border border-slate-200">More "twitchy" and responsive; feels lighter on controls</td>
-                          <td className="p-2 border border-slate-200">More stable and "heavy" feel; smoother in turbulence</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Routes</td>
-                          <td className="p-2 border border-slate-200">Short, high-frequency, or niche (Steep approaches)</td>
-                          <td className="p-2 border border-slate-200">Long-haul narrow-body (Trans-con/Trans-atlantic)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Prestige</td>
-                          <td className="p-2 border border-slate-200">Access to restricted airports like London City (LCY)</td>
-                          <td className="p-2 border border-slate-200">Access to high-capacity "flagship" routes for major airlines</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Landing</td>
-                          <td className="p-2 border border-slate-200">Harder to "grease" (shorter, more sensitive)</td>
-                          <td className="p-2 border border-slate-200">Easier to land smoothly (longer wheelbase)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Best For</td>
-                          <td className="p-2 border border-slate-200">Pilots who love stick-and-rudder handling</td>
-                          <td className="p-2 border border-slate-200">Pilots who want stability and long-range flying</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Airlines by Variant (As of April 2026)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    The A220-300 is the "volume seller" with many more operators, while the A220-100 is a niche specialist for restricted airports.
-                  </p>
-                  <div className="grid md:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-2">Airlines Flying BOTH</h4>
-                      <ul className="space-y-1 text-xs text-purple-700">
-                        <li>Delta Air Lines</li>
-                        <li>SWISS</li>
-                        <li>ITA Airways</li>
-                        <li>Bulgaria Air</li>
-                        <li>Air Canada</li>
-                        <li>Korean Air</li>
-                        <li>QantasLink</li>
-                        <li>Croatia Airlines</li>
-                      </ul>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-2">A220-300 ONLY</h4>
-                      <ul className="space-y-1 text-xs text-blue-700">
-                        <li>airBaltic (All-A220 fleet)</li>
-                        <li>JetBlue</li>
-                        <li>Air France</li>
-                        <li>Breeze Airways</li>
-                        <li>EgyptAir</li>
-                        <li>Iraqi Airways</li>
-                        <li>Air Austral</li>
-                        <li>Air Tanzania</li>
-                        <li>Cyprus Airways</li>
-                      </ul>
-                    </div>
-                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-2">A220-100 ONLY</h4>
-                      <ul className="space-y-1 text-xs text-emerald-700">
-                        <li>Executive/Private Jets</li>
-                        <li>(Niche operators)</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Advice: Choose an Airline, Not a Variant</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                    Since the rating is the same, choose based on the Airline's Fleet Mix:
-                  </p>
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">Choose a -100 Operator (e.g., Delta, SWISS)</h4>
-                      <p className="text-xs text-emerald-700">If you want to fly into unique, challenging airports with short runways. The -100 has a better thrust-to-weight ratio and can get in and out of places the -300 cannot. It is the largest aircraft certified for London City Airport (LCY) due to its steep approach capabilities.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Choose a -300 Operator (e.g., Air France, JetBlue, Breeze)</h4>
-                      <p className="text-xs text-blue-700">If you want maximum job security and variety. With a backlog of over 700 units, this variant is the industry standard for "long and thin" routes, including some trans-Atlantic hops. It is easier to land smoothly due to its longer fuselage.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Pilot Recognition Verdict</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "Don't worry about choosing a variant—focus on getting the BD-500 rating. Once you have it, you are part of an elite group of ~5,000 pilots who can fly the most modern narrow-body fleet in the world. If you want the 'purest' flying experience, aim for the -100; if you want the most stable career path, the -300 is the king of the backlog."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Comparison' && selectedAircraft.id === 'a320' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">A320 Comparison Profile</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    The A320 is most frequently compared to its arch-rival, the Boeing 737, and its smaller, more modern sibling, the Airbus A220.
-                  </p>
-
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Feature</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Airbus A320 (CEO/NEO)</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Boeing 737 (NG/MAX)</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Airbus A220-300</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Control System</td>
-                          <td className="p-2 border border-slate-200">Sidestick / Fly-By-Wire</td>
-                          <td className="p-2 border border-slate-200">Control Yoke / Cables (Manual)</td>
-                          <td className="p-2 border border-slate-200">Sidestick / Fly-By-Wire</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Cockpit Tech</td>
-                          <td className="p-2 border border-slate-200">Glass Cockpit / ECAM</td>
-                          <td className="p-2 border border-slate-200">Glass Cockpit / Overhead Panels</td>
-                          <td className="p-2 border border-slate-200">Advanced 5-Screen / Mouse-CCU</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Training Path</td>
-                          <td className="p-2 border border-slate-200">Foundation for A330/A350</td>
-                          <td className="p-2 border border-slate-200">Foundation for 777/787</td>
-                          <td className="p-2 border border-slate-200">Standalone (Niche)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Pilot Comfort</td>
-                          <td className="p-2 border border-slate-200">High (Tray table, wider cockpit)</td>
-                          <td className="p-2 border border-slate-200">Moderate (Cramped, no table)</td>
-                          <td className="p-2 border border-slate-200">High (Newest design)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Market Role</td>
-                          <td className="p-2 border border-slate-200">Global Backbone</td>
-                          <td className="p-2 border border-slate-200">Global Backbone</td>
-                          <td className="p-2 border border-slate-200">High-Efficiency Specialist</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Handling</td>
-                          <td className="p-2 border border-slate-200">"Law" Protected (Stable)</td>
-                          <td className="p-2 border border-slate-200">Traditional (Manual feel)</td>
-                          <td className="p-2 border border-slate-200">"Law" Protected (Responsive)</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">A320ceo vs. A320neo: Pilot's Quick Fact Sheet</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    While the "office" remains virtually identical, the performance jump is substantial.
-                  </p>
-
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Feature</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A320ceo (Current Engine Option)</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">A320neo (New Engine Option)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Engines</td>
-                          <td className="p-2 border border-slate-200">CFM56-5B or IAE V2500</td>
-                          <td className="p-2 border border-slate-200">CFM LEAP-1A or PW1100G-JM</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Fuel Burn</td>
-                          <td className="p-2 border border-slate-200">Standard Efficiency</td>
-                          <td className="p-2 border border-slate-200">15–20% Lower Fuel Burn</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Range</td>
-                          <td className="p-2 border border-slate-200">~6,200 km (3,350 nm)</td>
-                          <td className="p-2 border border-slate-200">~6,400 km (3,450 nm)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Max Capacity</td>
-                          <td className="p-2 border border-slate-200">180 Passengers</td>
-                          <td className="p-2 border border-slate-200">194 Passengers</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Noise Level</td>
-                          <td className="p-2 border border-slate-200">Standard</td>
-                          <td className="p-2 border border-slate-200">50% Quieter</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Sharklets</td>
-                          <td className="p-2 border border-slate-200">Optional (Retrofit or later models)</td>
-                          <td className="p-2 border border-slate-200">Standard</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Key Technical Intelligence</h3>
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">95% Airframe Commonality</h4>
-                      <p className="text-xs text-emerald-700">From a pilot's perspective, the cockpit and operational philosophy are largely unchanged. This means a pilot can fly an A320ceo one day and an A320neo the next with only minor differences training.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">Engine Innovation</h4>
-                      <p className="text-xs text-blue-700">The "neo" uses larger fan diameters and higher bypass ratios to achieve its efficiency. Specifically, the Pratt & Whitney PW1100G uses a unique Geared Turbofan system, allowing the fan and turbine to spin at their respective optimal speeds.</p>
-                    </div>
-                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-1">Weight & Performance</h4>
-                      <p className="text-xs text-purple-700">The "neo" is roughly 1.8 tonnes heavier than the "ceo," but pilots enjoy better climb performance, often reaching initial cruise altitudes (FL350) much faster.</p>
-                    </div>
-                    <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                      <h4 className="text-sm font-semibold text-orange-800 mb-1">Aero Enhancements</h4>
-                      <p className="text-xs text-orange-700">Standard Sharklets (2.4m tall wingtip devices) improve the lift-to-drag ratio, reducing fuel consumption by up to 4% on long-haul routes.</p>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Strategic Advice for Pilots</h3>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-1">A320 vs. Boeing 737</h4>
-                      <p className="text-xs text-purple-700"><strong>The Choice:</strong> Choose the A320 if you prefer a modern, ergonomic office with a tray table and a sidestick that does a lot of the "heavy lifting" for you via flight envelope protections.</p>
-                      <p className="text-xs text-purple-700 mt-2"><strong>The Career:</strong> The A320 rating is generally considered more "flexible" globally, as the systems logic prepares you perfectly for the larger A330 and A350 widebodies.</p>
-                    </div>
-                    <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-                      <h4 className="text-sm font-semibold text-orange-800 mb-1">A320 vs. A220</h4>
-                      <p className="text-xs text-orange-700"><strong>The Choice:</strong> Choose the A320 if you want the widest possible variety of airlines to work for. While the A220 is "newer" and "fancier," the A320 has 10x the number of jobs available worldwide.</p>
-                      <p className="text-xs text-orange-700 mt-2"><strong>The Career:</strong> The A320 is the safer "long-term" bet for job security, while the A220 is a "boutique" rating for pilots who want to fly the latest tech on specific regional/mainline routes.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">PILOT RECOGNITION VERDICT</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "The A320 is the industry standard. If you are looking for your first jet rating, this is the one. It offers the best balance of pay, global job mobility, and a clear path to widebody 'Heavy' aircraft later in your career."
-                    </p>
-                  </div>
-
-                  <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200 mt-4">
-                    <h3 className="text-sm font-bold text-emerald-800 mb-1 uppercase tracking-wide">CEO vs. NEO Summary</h3>
-                    <p className="text-sm text-emerald-700 leading-relaxed italic">
-                      "The 'neo' is the smarter, greener version of the world's most popular jet. While it feels the same in your hands, the fuel savings and range boost make it the clear choice for airlines looking toward 2030 and beyond."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Comparison' && selectedAircraft.id === 'a330' && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">A320 to A330: The Career Leap</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                    This transition chart shows A320 pilots exactly how to level up their careers. It highlights how Airbus's Common Cockpit Philosophy turns a narrow-body pilot into a wide-body "Heavy" pilot with minimal friction.
-                  </p>
-
-                  <div className="overflow-x-auto mb-4">
-                    <table className="w-full text-sm text-slate-600 border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50">
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Feature</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Airbus A320 (The Foundation)</th>
-                          <th className="text-left p-2 border border-slate-200 font-semibold">Airbus A330 (The Heavy Step)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Typical Mission</td>
-                          <td className="p-2 border border-slate-200">1–4 Hour Regional Sectors</td>
-                          <td className="p-2 border border-slate-200">6–12 Hour Long-Haul Layovers</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Flight Deck</td>
-                          <td className="p-2 border border-slate-200">Standard 6-screen Glass Cockpit</td>
-                          <td className="p-2 border border-slate-200">95% Identical (Familiar layout)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Sidestick Logic</td>
-                          <td className="p-2 border border-slate-200">Normal/Alternate/Direct Law</td>
-                          <td className="p-2 border border-slate-200">Same Laws (Scale adjusted for mass)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Training Path</td>
-                          <td className="p-2 border border-slate-200">Full Type Rating (4-6 weeks)</td>
-                          <td className="p-2 border border-slate-200">CCQ Short Course (8-10 Days)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Pilot Workload</td>
-                          <td className="p-2 border border-slate-200">High (Multiple takeoffs/landings per day)</td>
-                          <td className="p-2 border border-slate-200">Low (Cruise-heavy, 1 takeoff/landing)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Wake Category</td>
-                          <td className="p-2 border border-slate-200">Medium</td>
-                          <td className="p-2 border border-slate-200">Heavy (Enhanced prestige/pay)</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 border border-slate-200 font-semibold">Bunk/Rest</td>
-                          <td className="p-2 border border-slate-200">None (Flight deck only)</td>
-                          <td className="p-2 border border-slate-200">Dedicated Crew Rest Compartments</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-3 text-slate-900">Why the Transition is the "Smartest Move" in Aviation</h3>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <h4 className="text-sm font-semibold text-emerald-800 mb-1">1. The CCQ (Cross-Crew Qualification) Advantage</h4>
-                      <p className="text-xs text-emerald-700">Because the A330 was designed to be handled just like an A320, the training is essentially a "differences" course. You learn the Trim Tank (fuel in the tail for CG balance) and the larger landing gear geometry, but you don't have to re-learn how to fly the airplane.</p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                      <h4 className="text-sm font-semibold text-blue-800 mb-1">2. Physical Handling: "A320 on Slow Motion"</h4>
-                      <p className="text-xs text-blue-700">Pilots transitioning to the A330 often describe it as flying an A320 that has been slowed down. The aircraft is much heavier (242 tonnes vs 78 tonnes), so it has more inertia. It responds slightly slower to sidestick inputs, which many pilots find makes it easier and smoother to land.</p>
-                    </div>
-                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-1">3. Lifestyle & Pay Jump</h4>
-                      <p className="text-xs text-purple-700"><strong>The Pay:</strong> Moving to the A330 usually triggers "Widebody Pay Scales," which are typically 15-25% higher than narrow-body rates for the same seniority level.</p>
-                      <p className="text-xs text-purple-700 mt-2"><strong>The Lifestyle:</strong> Instead of flying 4 sectors and sleeping at home, you fly one long sector and spend 24–48 hours in cities like Tokyo, London, or Rio.</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-sky-50 rounded-xl p-4 border border-sky-200 mb-4">
-                    <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Strategic Advice: The "A330 Passport"</h3>
-                    <p className="text-sm text-sky-700 leading-relaxed italic">
-                      "If you are an A320 pilot, the A330 rating is your passport to the world. It is the most efficient way to get 'Heavy' time in your logbook. Once you have A330 time, you are a prime candidate for the A350, as the commonality continues upward through the entire Airbus family."
-                    </p>
-                  </div>
-
-                  <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
-                    <h3 className="text-sm font-bold text-emerald-800 mb-1 uppercase tracking-wide">The "Pilot Recognition" Verdict</h3>
-                    <p className="text-sm text-emerald-700 leading-relaxed italic">
-                      "Don't stay in the narrow-body lane forever. If your airline operates both, or if you're looking to move to a global carrier, the A330 is the most logical and highest-ROI upgrade for an A320-rated pilot."
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'Comparison' && selectedAircraft.id !== 'a220-300' && selectedAircraft.id !== 'a220-100' && selectedAircraft.id !== 'a320' && selectedAircraft.id !== 'a330' && (
-                <p className="text-sm text-slate-500 italic">Comparison data is not available for this aircraft.</p>
-              )}
-            </div>
-
-            {/* Training Curriculum */}
-            <div className="px-6 md:px-8 py-6 border-b border-slate-100">
-              <h3 className="text-lg font-semibold mb-4 text-slate-900">Training Curriculum</h3>
-              <div className="space-y-4">
-                {selectedAircraft.training_requirements?.curriculum?.map((item: any, i: number) => (
-                  <div key={i} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-slate-900">{item.phase}</h4>
-                      <span className="text-xs text-slate-500 bg-white px-2 py-1 rounded">{item.duration}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {item.topics.map((topic, j) => (
-                        <span key={j} className="text-xs text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">{topic}</span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Simulator Details */}
-            <div className="px-6 md:px-8 py-6 border-b border-slate-100">
-              <h3 className="text-lg font-semibold mb-4 text-slate-900">Simulator Training</h3>
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Simulator Type</p>
-                    <p className="font-semibold text-slate-900">{(selectedAircraft.training_requirements?.simulator as any)?.type || 'Full Flight Simulator'}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Available Locations</p>
-                    <p className="font-semibold text-slate-900">{((selectedAircraft.training_requirements?.simulator as any)?.locations || []).join(', ')}</p>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <p className="text-xs text-slate-500 mb-1">Features</p>
-                  <div className="flex flex-wrap gap-2">
-                    {((selectedAircraft.training_requirements?.simulator as any)?.features || []).map((feature: string, i: number) => (
-                      <span key={i} className="text-xs text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">{feature}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <AircraftLogbookStylePanel
+            aircraft={selectedAircraft}
+            manufacturer={getManufacturer(selectedAircraft)}
+            onShowExtendedInfo={() => setShowExtendedInfo(true)}
+          />
         </div>
       )}
+        </div>
       </div>
 
       {/* Extended Info Modal */}
@@ -2539,82 +1236,60 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl relative">
               <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between rounded-t-2xl sticky top-0 z-10">
                 <h2 className="text-xl font-bold text-slate-900">{selectedAircraft.model} — Pilot Career Outlook</h2>
-                <button
-                  onClick={() => setShowExtendedInfo(false)}
-                  className="p-2 rounded-full hover:bg-slate-100 transition-colors flex-shrink-0"
-                >
+                <button onClick={() => setShowExtendedInfo(false)} className="p-2 rounded-full hover:bg-slate-100 transition-colors flex-shrink-0">
                   <X className="w-5 h-5 text-slate-500" />
                 </button>
               </div>
-
               <div className="p-6 space-y-6">
                 <section>
                   <h3 className="text-lg font-semibold text-sky-700 mb-2">The "Why": Pilot Benefits vs. Other Airbus Ratings</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    Unlike the A320 or A350, the A220 was a "clean-sheet" design (originally the Bombardier CSeries). This offers specific advantages:
-                  </p>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-2">Unlike the A320 or A350, the A220 was a "clean-sheet" design (originally the Bombardier CSeries). This offers specific advantages:</p>
                   <ul className="space-y-1.5 text-sm text-slate-600">
                     <li><strong>Modernity:</strong> It features a newer flight deck than the A320. It uses Sidestick controllers and a Fly-By-Wire system, but with the latest tech—including five large LCD screens and an electronic flight bag (EFB) integrated from day one.</li>
-                    <li><strong>Steep Approach Capability:</strong> It is certified for steep approaches (like London City), giving pilots access to challenging, prestigious, and "fun" airports that many standard narrow-bodies can't touch.</li>
+                    <li><strong>Steep Approach Capability:</strong> It is certified for steep approaches (like London City), giving pilots access to challenging, prestigious, and "fun" airports.</li>
                     <li><strong>Comfort:</strong> Because the cabin altitude is lower and the windows are larger, crew fatigue is often reported as lower compared to older narrow-body fleets.</li>
-                    <li><strong>The "Cross-Crew Qualification" (CCQ):</strong> While it is a distinct type rating from the A320 family, Airbus has worked to harmonize training. For a pilot, having an A220 rating on a license is currently a "boutique" skill that sets them apart from the massive pool of A320-rated pilots.</li>
+                    <li><strong>The CCQ:</strong> While it is a distinct type rating from the A320 family, Airbus has worked to harmonize training. For a pilot, having an A220 rating is currently a "boutique" skill.</li>
                   </ul>
                 </section>
-
                 <section>
                   <h3 className="text-lg font-semibold text-sky-700 mb-2">Market Demand & Backlog (Job Security)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    The A220 is not just "in demand"—it has one of the healthiest backlogs in its segment, ensuring decades of flying for newly rated pilots.
-                  </p>
                   <ul className="space-y-1.5 text-sm text-slate-600">
                     <li><strong>Total Orders:</strong> 959 firm orders from 33–34 different customers.</li>
-                    <li><strong>Remaining Backlog:</strong> Approximately 458 aircraft are still waiting to be built and delivered as of April 2026.</li>
+                    <li><strong>Remaining Backlog:</strong> Approximately 458 aircraft still waiting to be delivered as of April 2026.</li>
                     <li><strong>Production Goal:</strong> Airbus is aiming to ramp up to 12 aircraft per month by the end of 2026.</li>
-                    <li><strong>Market Share:</strong> The A220 family holds over 55% market share in the small single-aisle commercial aircraft sector.</li>
+                    <li><strong>Market Share:</strong> The A220 family holds over 55% market share in its segment.</li>
                   </ul>
                 </section>
-
                 <section>
                   <h3 className="text-lg font-semibold text-sky-700 mb-2">A220 Pilot Community</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    The A220 pilot community is relatively small compared to legacy types, creating excellent opportunities for newly rated pilots.
-                  </p>
                   <ul className="space-y-1.5 text-sm text-slate-600">
                     <li><strong>Global Community Size:</strong> Approximately 5,000+ pilots (vs. 150,000+ for A320 family).</li>
-                    <li><strong>Pilots Per Aircraft:</strong> Major airlines typically employ 10-12 pilots per aircraft for duty limits and scheduling.</li>
-                    <li><strong>Major Employers:</strong> Delta Air Lines (85 aircraft), airBaltic (all-A220 fleet, 54 aircraft, 1,500+ pilots), JetBlue (61), Air France (55), Breeze Airways (54).</li>
-                    <li><strong>Growth Potential:</strong> The backlog will require approximately 4,500-5,500 additional A220-rated pilots in coming years to staff new deliveries.</li>
-                    <li><strong>Certification:</strong> Listed as BD-500 by aviation authorities (reflecting Bombardier CSeries origins), covers both A220-100 and A220-300 under a single rating.</li>
+                    <li><strong>Pilots Per Aircraft:</strong> Major airlines typically employ 10-12 pilots per aircraft.</li>
+                    <li><strong>Major Employers:</strong> Delta Air Lines (85 aircraft), airBaltic (54 aircraft, 1,500+ pilots), JetBlue (61), Air France (55), Breeze Airways (54).</li>
+                    <li><strong>Growth Potential:</strong> The backlog will require approximately 4,500-5,500 additional A220-rated pilots.</li>
+                    <li><strong>Certification:</strong> Listed as BD-500 by aviation authorities, covering both A220-100 and A220-300 under a single rating.</li>
                   </ul>
                 </section>
-
                 <section>
                   <h3 className="text-lg font-semibold text-sky-700 mb-2">Operational Reliability & Reach</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-2">
-                    Pilots can use these stats to judge the maturity of the "office" they will be working in:
-                  </p>
                   <ul className="space-y-1.5 text-sm text-slate-600">
                     <li><strong>Flight Hours:</strong> The global fleet has surpassed 3.65 million block hours.</li>
                     <li><strong>Flight Cycles:</strong> Over 2.08 million flights completed.</li>
                     <li><strong>Route Network:</strong> The A220 currently serves over 1,900 routes to more than 500 destinations.</li>
-                    <li><strong>Reliability:</strong> Maintains a 99% operational reliability (3-month rolling average), making it a highly dependable machine for flight crews.</li>
+                    <li><strong>Reliability:</strong> Maintains a 99% operational reliability (3-month rolling average).</li>
                   </ul>
                 </section>
-
                 <section>
                   <h3 className="text-lg font-semibold text-sky-700 mb-2">Why Pilots Choose It (Technical Perks)</h3>
                   <ul className="space-y-1.5 text-sm text-slate-600">
                     <li><strong>Modern Cockpit:</strong> Features five 15.1-inch LCD displays and full Fly-By-Wire technology.</li>
-                    <li><strong>Environmentally Leading:</strong> 25% lower fuel burn and CO2 emissions per seat compared to previous generation aircraft.</li>
-                    <li><strong>Maintenance Intervals:</strong> Pilots deal with fewer mechanical groundings due to longer intervals: 1,000 hours for "A" checks and 8,500 hours for "C" checks.</li>
+                    <li><strong>Environmentally Leading:</strong> 25% lower fuel burn and CO2 emissions per seat.</li>
+                    <li><strong>Maintenance Intervals:</strong> 1,000 hours for "A" checks and 8,500 hours for "C" checks.</li>
                   </ul>
                 </section>
-
                 <div className="bg-sky-50 rounded-xl p-4 border border-sky-200">
                   <h3 className="text-sm font-bold text-sky-800 mb-1 uppercase tracking-wide">Summary for Pilots</h3>
-                  <p className="text-sm text-sky-700 leading-relaxed italic">
-                    "This aircraft is at the 'peak of its youth.' With over 500 planes in the air and another 450+ on the way, an A220 type rating is one of the most future-proof credentials a pilot can hold right now."
-                  </p>
+                  <p className="text-sm text-sky-700 leading-relaxed italic">"This aircraft is at the 'peak of its youth.' With over 500 planes in the air and another 450+ on the way, an A220 type rating is one of the most future-proof credentials a pilot can hold right now."</p>
                 </div>
               </div>
             </div>

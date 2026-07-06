@@ -18,6 +18,8 @@ import { GettingStartedBar } from '../../GettingStartedBar';
 import { CareerPathwaysCarousel } from '../../CareerPathwaysCarousel';
 import { LogbookPreviewPanel, CredentialRequestCard, NotificationsFeedPanel } from '../shared';
 import { PilotReferralShare } from '@/components/referral';
+import { WelcomeGetStartedModal, useWelcomeModal } from '../WelcomeGetStartedModal';
+import { DepartureBriefing } from '../DepartureBriefing';
 import type { TabId } from '../types';
 
 // ─── TAB: HOME ─────────────────────────────────────────────────────────────
@@ -54,6 +56,28 @@ export const HomeTab: React.FC<{
   };
   const [onboardingOpen, setOnboardingOpen] = React.useState(false);
   const [onboardingStep, setOnboardingStep] = React.useState(1);
+
+  // First-time welcome tour (legacy)
+  const { dismissed: tourDismissed, dismiss: dismissTour } = useWelcomeModal();
+  const [showWelcomeTour, setShowWelcomeTour] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!tourDismissed) {
+      const timer = setTimeout(() => setShowWelcomeTour(true), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [tourDismissed]);
+
+  // Departure Briefing spotlight tour
+  const [showDepartureBriefing, setShowDepartureBriefing] = React.useState(() => {
+    // Always show during development; later read from localStorage
+    return true;
+  });
+  const navigateFromBriefing = (tabId: string) => {
+    setShowDepartureBriefing(false);
+    setTab(tabId as TabId);
+  };
+
   const [obATO, setObATO] = React.useState('');
   const [obLicense, setObLicense] = React.useState('');
   const [obMedical, setObMedical] = React.useState('');
@@ -519,6 +543,7 @@ export const HomeTab: React.FC<{
 
           {/* ACCESS RECOGNITION — goes to profile */}
           <motion.div
+            data-tour-target="home-access-recognition"
             className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => setTab('profile' as TabId)}
             variants={{ hidden: {}, visible: {} }}
@@ -564,6 +589,7 @@ export const HomeTab: React.FC<{
 
           {/* DISCOVER PROGRAMS */}
           <div
+            data-tour-target="home-discover-pathways"
             className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => {
               localStorage.setItem('careerpathways_mode', 'true');
@@ -592,6 +618,7 @@ export const HomeTab: React.FC<{
 
           {/* THE PILOT SHORTAGE — pilotshortage.org in-app */}
           <div
+            data-tour-target="home-pilot-shortage"
             className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
             onClick={() => onNavigate('pilotshortage')}
           >
@@ -2018,6 +2045,27 @@ export const HomeTab: React.FC<{
           </motion.div>
         </div>
       )}
+
+      {/* First-time welcome tour modal */}
+      <WelcomeGetStartedModal
+        isOpen={showWelcomeTour}
+        onClose={() => {
+          setShowWelcomeTour(false);
+          dismissTour();
+        }}
+        onStepAction={(stepIndex) => {
+          if (stepIndex === 0) setTab('profile');
+          if (stepIndex === 1) setTab('pathways');
+          if (stepIndex === 2) setTab('verification');
+        }}
+      />
+
+      {/* Departure Briefing spotlight tour */}
+      <DepartureBriefing
+        isOpen={showDepartureBriefing}
+        onClose={() => setShowDepartureBriefing(false)}
+        onNavigateToTab={navigateFromBriefing}
+      />
 
     </motion.div>
   </div>

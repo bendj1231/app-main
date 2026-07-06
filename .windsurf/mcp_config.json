@@ -34,6 +34,13 @@
     "wikimedia-image-search": {
       "command": "npx",
       "args": ["-y", "wikimedia-image-search-mcp"]
+    },
+    "auth0": {
+      "command": "npx",
+      "args": ["-y", "@auth0/auth0-mcp-server", "run"],
+      "env": {
+        "DEBUG": "auth0-mcp"
+      }
     }
   }
 }

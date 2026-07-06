@@ -57,10 +57,6 @@ export const ManufacturerPreviewCard: React.FC<ManufacturerPreviewCardProps> = (
         ) : (
           <Plane size={64} style={{ color: 'rgba(0,0,0,0.2)' }} />
         )}
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ margin: 0, fontSize: '0.7rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.12em', textTransform: 'uppercase' }}>MANUFACTURER</p>
-          <p style={{ margin: '0.25rem 0 0', fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>{manufacturer.name}</p>
-        </div>
         {/* Gradient transition into right panel */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 55%, rgba(15, 23, 42, 0.6) 100%)', pointerEvents: 'none' }} />
       </div>

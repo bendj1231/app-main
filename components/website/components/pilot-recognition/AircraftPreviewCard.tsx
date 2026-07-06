@@ -70,7 +70,10 @@ export function AircraftPreviewCard({ aircraft, manufacturer }: AircraftPreviewC
         minHeight: '420px',
         borderRadius: '16px',
         overflow: 'hidden',
-        background: 'rgba(0,0,0,0.25)',
+        background: 'rgba(15, 23, 42, 0.82)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.12)',
         boxShadow: '0 12px 40px rgba(0,0,0,0.35)',
       }}
     >
@@ -91,7 +94,7 @@ export function AircraftPreviewCard({ aircraft, manufacturer }: AircraftPreviewC
       </div>
 
       {/* Right — Description + Specs */}
-      <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', background: 'rgba(15, 23, 42, 0.6)' }}>
+      <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', background: 'rgba(15, 23, 42, 0.55)' }}>
         {/* Description */}
         <div style={{ padding: '1.5rem', flex: '0 0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
@@ -159,7 +162,7 @@ export function AircraftPreviewCard({ aircraft, manufacturer }: AircraftPreviewC
         </div>
 
         {/* Specs Panel */}
-        <div style={{ flex: '0 0 auto', padding: '1.25rem 1.5rem', background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ flex: '0 0 auto', padding: '1.25rem 1.5rem', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.12)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {/* Stats row */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
             <div style={{ padding: '0.65rem', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px' }}>
