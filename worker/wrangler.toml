@@ -28,6 +28,13 @@ database_id = "1a59c397-fa2a-4a5f-b557-87b54230b202"
 [vars]
 AUTH0_DOMAIN = "auth.pilotrecognition.com"
 
+# KV namespace for AI chat daily rate limits per user
+# Create with: npx wrangler kv namespace create "ai-chat-limits"
+# Then update the id below with the returned namespace ID
+[[kv_namespaces]]
+binding = "AI_CHAT_LIMITS"
+id = "your_kv_namespace_id_here"
+
 # KV namespace for community chat (ephemeral messages, auto-expire)
 # Create with: npx wrangler kv namespace create "pilot-chat"
 # Then update the id below with the returned namespace ID

@@ -3,6 +3,8 @@
  * Replaces Supabase queries with D1 SQLite for profile data
  */
 
+import { getRuleBasedReply, buildPilotSystemPrompt, callOpenRouter } from './ai-chat';
+
 export interface Env {
   pilotrecognition_profiles: D1Database;
   ops_db: D1Database;
@@ -10,6 +12,7 @@ export interface Env {
   reference_data?: D1Database;
   AUTH0_DOMAIN: string;
   OPENROUTER_API_KEY: string;
+  AI_CHAT_LIMITS: KVNamespace;
   CHAT?: KVNamespace;
 }
 
@@ -949,101 +952,50 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       return { success: true, id: crypto.randomUUID() };
     }
 
-    // ── AI Chat (OpenRouter) ───────────────────────────────
+    // ── AI Chat (hybrid rule engine + OpenRouter) ─────────
     case 'aiChat': {
-      const { message, profile_context, pathways_context, user_id } = params || {};
+      const { message, profile_context, pathways_context, user_id, last_topic } = params || {};
       if (!message) throw new Error('message required');
 
       const apiKey = env.OPENROUTER_API_KEY;
       if (!apiKey) throw new Error('OpenRouter API key not configured');
 
-      // Rate limit: 3 AI chat requests per user per day
+      // Rate limit: 3 AI chat requests per user per day (KV-backed)
       const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
       const userIdentifier = user_id || 'anonymous';
       const limit = 3;
+      const rateKey = `rate_limit:aiChat:${userIdentifier}:${today}`;
 
-      // Check current count
-      const { results: rateResults } = await db.prepare(
-        `SELECT request_count FROM rate_limits
-         WHERE user_identifier = ? AND action = ? AND request_date = ?`
-      ).bind(userIdentifier, 'aiChat', today).all();
-
-      const currentCount = Number((rateResults?.[0] as any)?.request_count || 0);
+      const currentCount = Number((await env.AI_CHAT_LIMITS.get(rateKey)) || '0');
       if (currentCount >= limit) {
         throw new Error('Daily AI chat limit reached (3/3). Please try again tomorrow.');
       }
 
-      // Build system prompt with career pathway context
-      let pathwaysInfo = '';
-      if (pathways_context && Array.isArray(pathways_context)) {
-        pathwaysInfo = '\n\nAvailable Pathways:\n' + pathways_context.map((p: any) => {
-          const req = p.requirements || {};
-          return `- ${p.title}: Min ${req.min_hours || 'N/A'} hrs, ${req.license_type || 'N/A'}, ${req.medical_class || 'N/A'}, ${req.elp_level || 'N/A'}, Ratings: ${req.type_ratings?.join(', ') || 'N/A'}`;
-        }).join('\n');
+      // 1. Try rule-based reply first
+      const ruleReply = getRuleBasedReply({
+        message,
+        profile: profile_context,
+        lastTopic: last_topic,
+      });
+
+      if (ruleReply) {
+        // Increment rate limit for rule-based answers too
+        await env.AI_CHAT_LIMITS.put(rateKey, String(currentCount + 1), { expirationTtl: 60 * 60 * 48 });
+        return { ...ruleReply, remaining: limit - currentCount - 1 };
       }
 
-      const systemPrompt = `You are an AI career coach for pilots on PilotRecognition. Your role is to help pilots find their best-fit career pathways (airlines, cargo, corporate aviation, etc.) based on their profile.
-
-${profile_context ? `Pilot Profile Context:
-- License: ${profile_context.license_type || 'Not specified'}
-- Total Hours: ${profile_context.total_flight_hours || 0}
-- Medical: ${profile_context.medical_class || 'Not specified'}
-- English Level: ${profile_context.elp_level || 'Not specified'}
-- Career Goal: ${profile_context.career_goal || 'Not specified'}` : ''}${pathwaysInfo}
-
-Guidelines:
-- Be concise and direct
-- Focus on actionable advice
-- Compare pilot profile against pathway requirements
-- Highlight skill gaps (hours, type ratings, medical, etc.)
-- Suggest specific pathways that match or are close to matching
-- If hours are low, suggest building time through instructing or other roles
-- Keep responses under 150 words`;
+      // 2. LLM fallback for open-ended questions
+      const systemPrompt = buildPilotSystemPrompt(profile_context, pathways_context);
 
       try {
-        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
-            'HTTP-Referer': 'https://pilotrecognition.com',
-            'X-Title': 'PilotRecognition AI Career Coach',
-          },
-          body: JSON.stringify({
-            model: 'poolside/laguna-xs.2:free',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: message },
-            ],
-            max_tokens: 300,
-            temperature: 0.7,
-          }),
-        });
+        const { message: aiMessage } = await callOpenRouter(apiKey, message, systemPrompt);
 
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          console.error('[OpenRouter] HTTP', res.status, 'error:', JSON.stringify(data));
-          throw new Error(data.error?.message || `AI request failed (${res.status})`);
-        }
-
-        const aiMessage = data.choices?.[0]?.message?.content;
-        if (!aiMessage) {
-          console.error('[OpenRouter] empty response:', JSON.stringify(data));
-          throw new Error('Empty AI response');
-        }
-
-        // Increment rate limit count on success
-        await db.prepare(
-          `INSERT INTO rate_limits (user_identifier, action, request_date, request_count)
-           VALUES (?, ?, ?, 1)
-           ON CONFLICT(user_identifier, action, request_date) DO UPDATE SET
-             request_count = request_count + 1`
-        ).bind(userIdentifier, 'aiChat', today).run();
-
-        return { message: aiMessage, model: 'poolside/laguna-xs.2:free', remaining: limit - currentCount - 1 };
-      } catch (err: any) {
-        console.error('[OpenRouter] exception:', err.message);
-        throw new Error(err.message || 'AI request failed');
+        await env.AI_CHAT_LIMITS.put(rateKey, String(currentCount + 1), { expirationTtl: 60 * 60 * 48 });
+        return { message: aiMessage, source: 'llm', model: 'poolside/laguna-xs.2:free', topic: null, remaining: limit - currentCount - 1 };
+      } catch (err) {
+        const errMessage = err instanceof Error ? err.message : String(err);
+        console.error('[OpenRouter] exception:', errMessage);
+        throw new Error(errMessage || 'AI request failed');
       }
     }
 
