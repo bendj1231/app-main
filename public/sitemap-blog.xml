@@ -6,33 +6,40 @@
   <!-- BLOG HOMEPAGE -->
   <url>
     <loc>https://blog.pilotrecognition.com/</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blog.pilotrecognition.com/blog</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   
-  <!-- BLOG POSTS - Examples with News markup -->
-  <!-- Add new blog posts here with news:news tags for Google News -->
-  <!--
+  <!-- BLOG POSTS -->
   <url>
-    <loc>https://blog.pilotrecognition.com/blog/post-slug</loc>
-    <lastmod>2026-05-13</lastmod>
+    <loc>https://blog.pilotrecognition.com/veremark-partnership-announcement</loc>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <news:news>
-      <news:publication>
-        <news:name>PilotRecognition Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-05-13</news:publication_date>
-      <news:title>Blog Post Title</news:title>
-    </news:news>
   </url>
-  -->
+  <url>
+    <loc>https://blog.pilotrecognition.com/cpl-to-airline-bridge</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blog.pilotrecognition.com/atlas-cv-explained</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blog.pilotrecognition.com/commercial-pilot-pipeline-analysis</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

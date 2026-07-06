@@ -6,7 +6,7 @@
   <!-- ENTERPRISE HOMEPAGE -->
   <url>
     <loc>https://enterprise.pilotrecognition.com/</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://enterprise.pilotrecognition.com/" />
@@ -16,31 +16,31 @@
   <!-- ENTERPRISE PAGES -->
   <url>
     <loc>https://enterprise.pilotrecognition.com/enterprise-access</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://enterprise.pilotrecognition.com/enterprise-access/learn-more</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://enterprise.pilotrecognition.com/enterprise-access/airlines</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://enterprise.pilotrecognition.com/enterprise-access/manufacturers</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://enterprise.pilotrecognition.com/enterprise-access/analytics</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -48,13 +48,13 @@
   <!-- FRAMEWORK - HIGH PRIORITY -->
   <url>
     <loc>https://enterprise.pilotrecognition.com/framework</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://enterprise.pilotrecognition.com/framework/full</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -62,7 +62,7 @@
   <!-- UCF OFFICIAL RELEASE - HIGH PRIORITY -->
   <url>
     <loc>https://enterprise.pilotrecognition.com/ucf/official-release</loc>
-    <lastmod>2026-05-14</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
