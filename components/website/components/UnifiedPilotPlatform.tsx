@@ -1113,7 +1113,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     <div
       className={`relative flex flex-col font-sans ${activeTab === 'home' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}
     >
-      <UnifiedPlatformWelcomeScreen firstName={profileData?.first_name} />
+      <UnifiedPlatformWelcomeScreen
+        firstName={profileData?.first_name}
+        auth0UserName={auth0User?.given_name || auth0User?.name}
+      />
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       {activeTab !== 'pilot-shortage-support' && (
         <div className="fixed inset-0 z-0">

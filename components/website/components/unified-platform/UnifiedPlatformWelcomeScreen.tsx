@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface UnifiedPlatformWelcomeScreenProps {
   firstName?: string | null;
+  auth0UserName?: string | null;
   onboardingDone?: boolean;
 }
 
@@ -10,6 +11,7 @@ const STORAGE_KEY_POST_LOGIN = 'pr_post_login_splash';
 
 export const UnifiedPlatformWelcomeScreen: React.FC<UnifiedPlatformWelcomeScreenProps> = ({
   firstName,
+  auth0UserName,
   onboardingDone: onboardingDoneProp,
 }) => {
   const [introPhase, setIntroPhase] = useState<'entering' | 'textExiting' | 'exiting' | 'done'>('entering');
@@ -34,12 +36,12 @@ export const UnifiedPlatformWelcomeScreen: React.FC<UnifiedPlatformWelcomeScreen
   })();
 
   const welcomeName = (() => {
-    const name = firstName || '';
+    const name = firstName || auth0UserName || '';
     const first = String(name).split(' ')[0].replace(/@.*/, '').replace(/^[a-z]/, c => c.toUpperCase());
     return first;
   })();
 
-  console.log('[UnifiedPlatformWelcomeScreen] render:', { shouldShow, introPhase, welcomeName, onboardingDone });
+  console.log('[UnifiedPlatformWelcomeScreen] render:', { shouldShow, introPhase, welcomeName, onboardingDone, firstName, auth0UserName });
 
   useEffect(() => {
     if (introFinishedRef.current || !shouldShow) return;
