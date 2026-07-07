@@ -1,0 +1,6 @@
+[submodule "scripts/jetapi-src"]
+	path = scripts/jetapi-src
+	url = https://github.com/macsencasaus/jetapi.git
+[submodule "waltid-identity"]
+	path = waltid-identity
+	url = https://github.com/walt-id/waltid-identity.git
