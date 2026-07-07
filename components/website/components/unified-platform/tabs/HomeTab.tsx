@@ -9,7 +9,7 @@ import {
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye, Plus,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
   CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users,
-  Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase
+  Linkedin, Instagram, Trophy, Snowflake, Mountain, Anchor, MapPin, Sun, Wind, Compass, Briefcase, ShieldCheck
 } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { safeRedirect } from '@/lib/url-validator';
@@ -109,6 +109,7 @@ export const HomeTab: React.FC<{
   const wrapperRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [wrapperSize, setWrapperSize] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const el = wrapperRef.current;
@@ -116,6 +117,7 @@ export const HomeTab: React.FC<{
     const ro = new ResizeObserver((entries) => {
       const cr = entries[0].contentRect;
       setWrapperSize({ width: cr.width, height: cr.height });
+      setIsMobile(cr.width < 768);
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -284,10 +286,15 @@ export const HomeTab: React.FC<{
   const discoveryDone = (() => {
     try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
   })();
+  const verificationDone = (() => {
+    const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString().toLowerCase();
+    return ['plus', 'silver', 'gold', 'enterprise'].includes(tier);
+  })();
   const steps = [
     { step: 1, label: 'Account Created',     sublabel: 'Profile activated',          done: !!profile,                                          tab: 'profile'   as TabId, icon: User,       highlight: false },
     { step: 2, label: 'Complete Advanced Profile & Sync Logbook', sublabel: 'Add ratings, hours, and logbook', done: hasLogbookSync, tab: 'advanced-profile' as TabId, icon: RefreshCw,  highlight: false },
-    { step: 3, label: 'Discover Pathways',     sublabel: 'Choose what to explore',     done: discoveryDone,                                       tab: 'pathways-discovery' as TabId, icon: Compass,    highlight: false },
+    { step: 3, label: 'Browse Pathways',     sublabel: 'Submit your interest',     done: discoveryDone,                                       tab: 'pathways-discovery' as TabId, icon: Compass,    highlight: false },
+    { step: 4, label: 'Verify Credentials', sublabel: 'Recognition + preferred', done: verificationDone,                                   tab: 'settings' as TabId, icon: ShieldCheck, highlight: false },
   ];
   const completedCount = steps.filter(s => s.done).length;
 
@@ -501,11 +508,11 @@ export const HomeTab: React.FC<{
   };
 
   return (
-    <div ref={wrapperRef} className="w-full h-full flex items-start justify-center overflow-hidden">
+    <div ref={wrapperRef} className={`w-full h-full flex items-start justify-center ${isMobile ? 'overflow-y-auto' : 'overflow-hidden'}`}>
       <motion.div
         ref={frameRef}
-        className="flex flex-col gap-3 px-4 pt-8 pb-4 mx-auto overflow-hidden"
-        style={{
+        className={`flex flex-col gap-3 mx-auto pt-8 pb-4 ${isMobile ? 'w-full h-auto overflow-visible px-0' : 'overflow-hidden px-4'}`}
+        style={isMobile ? { flexShrink: 0 } : {
           width: BASE_WIDTH,
           height: BASE_HEIGHT,
           transform: `scale(${viewportScale})`,
@@ -522,31 +529,33 @@ export const HomeTab: React.FC<{
           onStepClick={(tab) => setTab(tab as TabId)}
           isGuest={!isAuthenticated}
           onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+          isMobile={isMobile}
         />
       </motion.div>
 
-      <div className="flex gap-3 items-stretch flex-1 min-h-0 overflow-hidden">
+      <div className={`gap-3 items-stretch ${isMobile ? 'flex flex-col' : 'flex flex-row flex-1 min-h-0 overflow-hidden'}`}>
         {/* ── LEFT COLUMN ── */}
-        <div className="flex-1 flex flex-col gap-3 min-w-0 min-h-0 overflow-hidden">
+        <div className={`flex flex-col gap-3 ${isMobile ? 'w-full' : 'flex-1 min-w-0 min-h-0 overflow-hidden'}`}>
 
         {/* ── DISCOVER PATHWAYS (auto-rotating carousel) ── */}
-        <motion.div variants={itemVariants} className="flex-1 min-h-0 overflow-hidden">
+        <motion.div variants={itemVariants} className={`overflow-hidden ${isMobile ? 'h-[320px] min-h-[320px]' : 'flex-1 min-h-0'}`}>
           <CareerPathwaysCarousel
             airlinesCount={airlines.length}
             setTab={(tab) => setTab(tab)}
             safeRedirect={safeRedirect}
+            isMobile={isMobile}
           />
         </motion.div>
 
         {/* ── THREE CARDS ROW ── */}
-        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 h-[120px] flex-shrink-0 overflow-hidden">
+        <motion.div variants={itemVariants} className={`flex-shrink-0 ${isMobile ? 'flex flex-col gap-4 h-auto' : 'grid grid-cols-3 gap-3 h-[120px] overflow-hidden'}`}>
 
-          {/* ACCESS RECOGNITION — goes to profile */}
+          {/* ACCESS RECOGNITION — goes to dashboard */}
           <motion.div
             data-tour-target="home-access-recognition"
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
-            onClick={() => setTab('profile' as TabId)}
-            variants={{ hidden: {}, visible: {} }}
+            className={`relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
+            onClick={() => setTab('dashboard' as TabId)}
+            variants={{ hidden: {}, visible: {}}}
             whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(220,38,38,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
             whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(220,38,38,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -570,10 +579,10 @@ export const HomeTab: React.FC<{
                       border: '1px solid rgba(255,255,255,0.45)',
                       boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
                     }}>
-                    <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>
+                    <p className={`font-black tracking-[0.25em] uppercase mb-1 ${isMobile ? 'text-[8px]' : 'text-[8px]'}`} style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>
                       {isPremium ? 'Verified' : 'Profile'}
                     </p>
-                    <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>ACCESS</span><br/><span style={{ color: '#dc2626' }}>RECOGNITION</span></h3>
+                    <h3 className={`font-black tracking-tight leading-tight ${isMobile ? 'text-base' : 'text-lg'}`}><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>ACCESS</span><br/><span style={{ color: '#dc2626' }}>RECOGNITION</span></h3>
                   </div>
                   <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
                   {isPremium && (
@@ -590,7 +599,7 @@ export const HomeTab: React.FC<{
           {/* DISCOVER PROGRAMS */}
           <div
             data-tour-target="home-discover-pathways"
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
+            className={`discover-pathways-card relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
             onClick={() => {
               localStorage.setItem('careerpathways_mode', 'true');
               window.location.href = `${window.location.origin}/?product=careerpathways`;
@@ -610,8 +619,8 @@ export const HomeTab: React.FC<{
                 border: '1px solid rgba(255,255,255,0.45)',
                 boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Career</p>
-              <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>DISCOVER</span><br/><span style={{ color: '#dc2626' }}>PATHWAYS</span></h3>
+              <p className={`font-black tracking-[0.25em] uppercase mb-1 ${isMobile ? 'text-[8px]' : 'text-[8px]'}`} style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Career</p>
+              <h3 className={`font-black tracking-tight leading-tight ${isMobile ? 'text-base' : 'text-lg'}`}><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>DISCOVER</span><br/><span style={{ color: '#dc2626' }}>PATHWAYS</span></h3>
             </div>
             <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
           </div>
@@ -619,7 +628,7 @@ export const HomeTab: React.FC<{
           {/* THE PILOT SHORTAGE — pilotshortage.org in-app */}
           <div
             data-tour-target="home-pilot-shortage"
-            className="relative overflow-hidden cursor-pointer group h-full border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)]"
+            className={`relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
             onClick={() => onNavigate('pilotshortage')}
           >
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/set-04-screenshots/photo1.png')" }} />
@@ -636,8 +645,8 @@ export const HomeTab: React.FC<{
                 border: '1px solid rgba(255,255,255,0.45)',
                 boxShadow: '0 8px 32px rgba(15,39,71,0.08), inset 0 1px 0 rgba(255,255,255,0.45)',
               }}>
-              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Association</p>
-              <h3 className="text-lg font-black tracking-tight leading-tight"><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>THE PILOT</span><br/><span style={{ color: '#dc2626' }}>SHORTAGE</span></h3>
+              <p className={`font-black tracking-[0.25em] uppercase mb-1 ${isMobile ? 'text-[8px]' : 'text-[8px]'}`} style={{ color: isDarkMode ? '#4dd0e1' : 'rgba(248,113,113,0.85)' }}>Association</p>
+              <h3 className={`font-black tracking-tight leading-tight ${isMobile ? 'text-base' : 'text-lg'}`}><span style={{ color: isDarkMode ? '#ffffff' : '#1e3a5f' }}>THE PILOT</span><br/><span style={{ color: '#dc2626' }}>SHORTAGE</span></h3>
             </div>
             <div className="absolute top-0 left-0 right-0 h-[2px] z-30" style={{ background: '#dc2626' }} />
 
@@ -647,7 +656,9 @@ export const HomeTab: React.FC<{
       </div>
 
       {/* ── RIGHT PROFILE CARD ── */}
+      {!isMobile && (
       <motion.div
+        data-tour-target="home-right-profile"
         variants={itemVariants}
         className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] relative h-full"
         style={isDarkMode
@@ -1027,6 +1038,7 @@ export const HomeTab: React.FC<{
         )}
 
       </motion.div>
+      )}
       </div>
 
       {/* ── Refer & Earn (Recognition+ members only) ── */}
@@ -2062,9 +2074,11 @@ export const HomeTab: React.FC<{
 
       {/* Departure Briefing spotlight tour */}
       <DepartureBriefing
+        key={showDepartureBriefing ? 'departure-briefing-open' : 'departure-briefing-closed'}
         isOpen={showDepartureBriefing}
         onClose={() => setShowDepartureBriefing(false)}
         onNavigateToTab={navigateFromBriefing}
+        isMobile={isMobile}
       />
 
     </motion.div>

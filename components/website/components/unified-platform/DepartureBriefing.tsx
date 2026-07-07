@@ -17,7 +17,7 @@ interface Phase {
   body: string;
   button: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  placement?: 'above' | 'below' | 'left' | 'right';
+  placement?: 'above' | 'below' | 'left' | 'right' | 'top' | 'bottom' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
   image?: string;
   navigateTab?: string;
   navigateLabel?: string;
@@ -54,12 +54,12 @@ const PHASES: Phase[] = [
     showcaseAccent: 'from-cyan-500/80 to-blue-400/80',
   },
   {
-    target: 'home-discover-pathways',
-    title: '2. Discover Pathways',
-    body: 'This card opens your career pathways. Tap it to navigate to the pathways tab where we run your raw data against airline demands to generate your percentage-matched roles.',
+    target: 'discover-pathways-card',
+    title: '3. Discover Pathways',
+    body: 'This card opens your career pathways. Tap it to navigate to the pathways tab, where the system analyzes your profile data against current global airline requirements to generate your percentage-matched roles.',
     button: 'Next',
     icon: Map,
-    placement: 'above',
+    placement: 'top-start',
     navigateTab: 'pathways',
     navigateLabel: 'Go to Pathways',
     showcaseTitle: 'Discover Pathways',
@@ -140,7 +140,9 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
 
     const update = () => {
       if (!el || !document.contains(el)) {
-        el = document.querySelector(`[data-tour-target="${target}"]`) as HTMLElement | null;
+        el = document.querySelector(
+          target.startsWith('.') ? target : `[data-tour-target="${target}"]`
+        ) as HTMLElement | null;
         if (!el) {
           rafId = requestAnimationFrame(update);
           return;
@@ -230,12 +232,52 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
     />
   );
 
-  // Position the floating message centered in the viewport
-  const tooltipPosition: React.CSSProperties = {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  };
+  // Position the floating message based on the target and placement
+  const tooltipPosition: React.CSSProperties = (() => {
+    if (current.target === null || !targetRect) {
+      return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+    }
+
+    const MARGIN = 20;
+    const placement = current.placement;
+
+    switch (placement) {
+      case 'top-start':
+        return {
+          top: targetRect.top - MARGIN,
+          left: targetRect.left,
+          transform: 'translate(0, -100%)',
+        };
+      case 'left':
+        return {
+          top: targetRect.top + targetRect.height / 2,
+          left: targetRect.left - MARGIN,
+          transform: 'translate(-100%, -50%)',
+        };
+      case 'right':
+        return {
+          top: targetRect.top + targetRect.height / 2,
+          left: targetRect.right + MARGIN,
+          transform: 'translate(0, -50%)',
+        };
+      case 'above':
+      case 'top':
+        return {
+          top: targetRect.top - MARGIN,
+          left: targetRect.left + targetRect.width / 2,
+          transform: 'translate(-50%, -100%)',
+        };
+      case 'below':
+      case 'bottom':
+        return {
+          top: targetRect.bottom + MARGIN,
+          left: targetRect.left + targetRect.width / 2,
+          transform: 'translate(-50%, 0)',
+        };
+      default:
+        return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+    }
+  })();
 
   const briefingContent = (
     <div className="fixed inset-0 z-[9997] flex items-center justify-center px-4 py-6">
@@ -310,22 +352,60 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
 
       {!isMobile && spotlight}
 
-      {/* Arrow indicator connecting the spotlight to the centered tooltip */}
+      {/* Arrow indicator pointing from the target toward the tooltip */}
       {!isMobile && targetRect && current.target !== null && (
         <div
           className="fixed z-[9998] pointer-events-none"
           style={(() => {
-            const cx = window.innerWidth / 2;
-            const cy = window.innerHeight / 2;
-            const tx = targetRect.left + targetRect.width / 2;
-            const ty = targetRect.top + targetRect.height / 2;
-            const midX = (tx + cx) / 2;
-            const midY = (ty + cy) / 2;
-            const angle = Math.atan2(cy - midY, cx - midX) * (180 / Math.PI) - 90;
+            const MARGIN = 20;
+            const placement = current.placement;
+            let left = targetRect.left + targetRect.width / 2;
+            let top = targetRect.top - MARGIN / 2;
+            let rotation = 180;
+
+            switch (placement) {
+              case 'top-start':
+                left = targetRect.left + 24;
+                top = targetRect.top - MARGIN / 2;
+                rotation = 180;
+                break;
+              case 'left':
+                left = targetRect.left - MARGIN / 2;
+                top = targetRect.top + targetRect.height / 2;
+                rotation = 0;
+                break;
+              case 'right':
+                left = targetRect.right + MARGIN / 2;
+                top = targetRect.top + targetRect.height / 2;
+                rotation = 180;
+                break;
+              case 'above':
+              case 'top':
+                left = targetRect.left + targetRect.width / 2;
+                top = targetRect.top - MARGIN / 2;
+                rotation = 180;
+                break;
+              case 'below':
+              case 'bottom':
+                left = targetRect.left + targetRect.width / 2;
+                top = targetRect.bottom + MARGIN / 2;
+                rotation = 0;
+                break;
+              default:
+                const cx = window.innerWidth / 2;
+                const cy = window.innerHeight / 2;
+                const tx = targetRect.left + targetRect.width / 2;
+                const ty = targetRect.top + targetRect.height / 2;
+                left = (tx + cx) / 2;
+                top = (ty + cy) / 2;
+                rotation = Math.atan2(cy - top, cx - left) * (180 / Math.PI) - 90;
+                break;
+            }
+
             return {
-              left: midX,
-              top: midY,
-              transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+              left,
+              top,
+              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
               width: 0,
               height: 0,
               borderLeft: '8px solid transparent',
