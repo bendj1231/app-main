@@ -388,7 +388,7 @@ export const QuickAccessPathways: React.FC<{
                         handleSelect(pathway);
                       }
                     }}
-                    className={`relative flex flex-col justify-between flex-shrink-0 w-44 h-64 p-5 rounded-2xl border backdrop-blur-xl transition-all duration-300 group cursor-pointer shadow-lg shadow-black/20 text-left overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
+                    className={`relative flex flex-row items-center flex-shrink-0 w-72 h-32 p-4 rounded-2xl border backdrop-blur-xl transition-all duration-300 group cursor-pointer shadow-lg shadow-black/20 text-left overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
                       isSelected
                         ? 'border-indigo-500/70 bg-slate-900/60'
                         : 'border-slate-800/80 bg-slate-900/40 hover:border-indigo-500/50 hover:bg-slate-900/60 hover:-translate-y-1'
@@ -412,7 +412,7 @@ export const QuickAccessPathways: React.FC<{
                     </button>
 
                     {/* Logo container: clean white badge */}
-                    <div className="flex items-center justify-center w-full h-20 bg-white rounded-xl p-3 shadow-inner shadow-black/5">
+                    <div className="flex-shrink-0 flex items-center justify-center h-20 w-20 bg-white rounded-xl p-2 shadow-inner shadow-black/5">
                       <img
                         src={pathway.logo}
                         alt={pathway.name}
@@ -425,28 +425,24 @@ export const QuickAccessPathways: React.FC<{
                     </div>
 
                     {/* Content */}
-                    <div className="mt-4 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h4 className="text-sm font-bold text-white tracking-tight line-clamp-1 mb-1 group-hover:text-indigo-400 transition-colors">
-                          {pathway.name}
-                        </h4>
-                        <p className="text-[11px] font-medium text-slate-300 line-clamp-2 leading-relaxed">
-                          {pathway.subtitle}
-                        </p>
-                      </div>
-                      <div className="mt-3">
-                        <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
-                            pathway.match >= 85
-                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                              : pathway.match >= 70
-                                ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                                : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                          }`}
-                        >
-                          {pathway.match}% Match
-                        </span>
-                      </div>
+                    <div className="ml-4 flex-1 min-w-0 flex flex-col justify-center">
+                      <h4 className="text-sm font-bold text-white tracking-tight truncate mb-1 group-hover:text-indigo-400 transition-colors">
+                        {pathway.name}
+                      </h4>
+                      <p className="text-[11px] font-medium text-slate-300 line-clamp-2 leading-relaxed mb-2">
+                        {pathway.subtitle}
+                      </p>
+                      <span
+                        className={`inline-flex self-start items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
+                          pathway.match >= 85
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                            : pathway.match >= 70
+                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                              : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                        }`}
+                      >
+                        {pathway.match}% Match
+                      </span>
                     </div>
                   </div>
                 );
