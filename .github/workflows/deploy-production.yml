@@ -77,22 +77,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run unit tests
-        run: npm run test:unit
-
-      - name: Run integration tests
-        run: npm run test:integration
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-
-      - name: Run auth tests
-        run: node tests/run-auth-tests.ts
-        env:
-          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
-          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
-          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      - name: Run tests
+        run: npm run test
 
   build:
     name: Build Application
