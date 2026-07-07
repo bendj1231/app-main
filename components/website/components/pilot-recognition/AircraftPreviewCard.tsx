@@ -16,8 +16,8 @@ interface AircraftTypeRating {
   image?: string;
   description?: string;
   demandLevel?: 'none' | 'high' | 'medium' | 'low';
-  lifecycle_stage?: 'early-career' | 'mid-career' | 'mature' | 'retiring';
-  lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring';
+  lifecycle_stage?: 'early-career' | 'mid-career' | 'mature' | 'retiring' | 'end-of-life';
+  lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring' | 'end-of-life';
   operator_count?: number;
   operatorCount?: number;
   pilot_count?: number;

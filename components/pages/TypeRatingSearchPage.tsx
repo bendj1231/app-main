@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Plane, Star, DollarSign, Calendar, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,6 +17,8 @@ import {
   manufacturers as rawManufacturers,
   aircraftTypeRatings as rawAircraftTypeRatings,
 } from '@/data/aircraft-manufacturers';
+
+const EASE_OUT_EXPO: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 // Types from D1 schema
 interface Manufacturer {
@@ -407,6 +410,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
   const [showExtendedInfo, setShowExtendedInfo] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [pendingManufacturerId, setPendingManufacturerId] = useState<string | null>(null);
   const manufacturerCarouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -414,7 +419,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   // Universal search entity tabs
   type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
   const [activeEntity, setActiveEntity] = useState<EntityType>('all');
-  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('all');
+  const [activeEntityCategory, setActiveEntityCategory] = useState<string>('All');
 
   const ENTITY_TABS: { id: EntityType; label: string }[] = [
     { id: 'all', label: 'All' },
@@ -424,9 +429,31 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     { id: 'private-jet', label: 'Private Jet' },
   ];
 
+  // Logo folder categories — matches /images/manufacturer-logos/<category>/
+  const FOLDER_CATEGORY_LABELS: Record<string, string> = {
+    'commercial-jets': 'Commercial Jets',
+    'regional-aircraft': 'Regional Aircraft',
+    'business-private-jets': 'Business & Private Jets',
+    'helicopters': 'Helicopters',
+    'military-defense': 'Military & Defense',
+    'general-aviation': 'General Aviation',
+    'evtol-uam': 'eVTOL & UAM',
+    'agricultural-utility': 'Agricultural & Utility',
+    'autonomous-cargo': 'Autonomous Cargo',
+    'survey-utility': 'Survey & Utility',
+    'other': 'Other',
+  };
+
+  const getManufacturerFolderCategory = (manufacturerId: string): string => {
+    const path = MANUFACTURER_LOGOS[manufacturerId];
+    if (!path) return 'other';
+    const match = path.match(/\/manufacturer-logos\/([^/]+)\//);
+    return match ? match[1] : 'other';
+  };
+
   const ENTITY_CATEGORIES: Record<EntityType, string[]> = {
     all: ['All'],
-    manufacturers: ['All', 'Commercial Jets', 'Regional Aircraft', 'Business & Private', 'Helicopters', 'Military & Defense', 'General Aviation', 'eVTOL & UAM'],
+    manufacturers: ['All', ...Array.from(new Set(Object.values(FOLDER_CATEGORY_LABELS))).sort()],
     airlines: ['All', 'International', 'Regional', 'Low-Cost', 'Cargo', 'Legacy'],
     operators: ['All', 'Commercial', 'Corporate', 'Charter', 'Cargo', 'Training'],
     'private-jet': ['All', 'Light', 'Mid-Size', 'Super Mid-Size', 'Large', 'Ultra-Long Range'],
@@ -437,12 +464,16 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>(HARDCODED_AIRCRAFT);
   const [dataLoading, setDataLoading] = useState(true);
 
-  // Filter manufacturers shown in the carousel by search query
+  // Filter manufacturers shown in the carousel by search query and category
   const filteredManufacturers = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    if (!query) return manufacturers;
-    return manufacturers.filter(m => m.name.toLowerCase().includes(query));
-  }, [searchQuery, manufacturers]);
+    let result = manufacturers;
+    if (activeEntity === 'manufacturers' && activeEntityCategory !== 'All') {
+      result = result.filter(m => FOLDER_CATEGORY_LABELS[getManufacturerFolderCategory(m.id)] === activeEntityCategory);
+    }
+    if (!query) return result;
+    return result.filter(m => m.name.toLowerCase().includes(query));
+  }, [searchQuery, manufacturers, activeEntity, activeEntityCategory]);
 
   // Bookmark state
   const [bookmarkedAircraft, setBookmarkedAircraft] = useState<Set<string>>(new Set());
@@ -640,6 +671,30 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
     setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   };
 
+  const handleManufacturerSelect = (manufacturer: Manufacturer) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setPendingManufacturerId(manufacturer.id);
+
+    // Pause auto-scroll during the transition
+    if (manufacturerCarouselRef.current) {
+      manufacturerCarouselRef.current.style.overflowX = 'hidden';
+    }
+
+    setTimeout(() => {
+      setSelectedManufacturer(manufacturer);
+      setSelectedAircraft(null);
+      setSearchQuery('');
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setPendingManufacturerId(null);
+        if (manufacturerCarouselRef.current) {
+          manufacturerCarouselRef.current.style.overflowX = 'auto';
+        }
+      }, 650);
+    }, 420);
+  };
+
   const getManufacturer = (aircraft: AircraftTypeRating) => {
     return manufacturers.find(m => m.id === aircraft.manufacturer_id);
   };
@@ -751,9 +806,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               <AircraftPreviewCard aircraft={selectedAircraft} manufacturer={getManufacturerById(selectedAircraft.manufacturer_id)} />
             </div>
           ) : (
-            <div className="px-4 md:px-8 lg:px-12">
+            <motion.div
+              key="manufacturer-preview"
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+              className="px-4 md:px-8 lg:px-12"
+            >
               <ManufacturerPreviewCard manufacturer={selectedManufacturer} />
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
@@ -771,128 +832,153 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             </h2>
           </div>
         </div>
-        {selectedManufacturer ? (
-          <div className="pt-1 pb-3 px-5">
-            <ManufacturerAircraftCarousel
-              manufacturerId={selectedManufacturer.id}
-              manufacturerName={selectedManufacturer.name}
-              onSelect={(aircraft) => setSelectedAircraft(aircraft)}
-              selectedId={selectedAircraft?.id}
-              title="Aircraft"
-              categoryFilter={selectedCategory}
-              searchFilter={searchQuery}
-            />
+        <AnimatePresence mode="wait" initial={false}>
+          {selectedManufacturer ? (
+            <motion.div
+              key="aircraft-stage"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
+              className="pt-1 pb-3 px-5"
+            >
+              <ManufacturerAircraftCarousel
+                manufacturerId={selectedManufacturer.id}
+                manufacturerName={selectedManufacturer.name}
+                onSelect={(aircraft) => setSelectedAircraft(aircraft)}
+                selectedId={selectedAircraft?.id}
+                title="Aircraft"
+                categoryFilter={selectedCategory}
+                searchFilter={searchQuery}
+              />
 
-            {/* Search bar + category filter buttons below aircraft carousel */}
-            <div className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0">
-              <button
-                onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-red-500/40 text-white hover:bg-red-500/20 transition-all flex-shrink-0"
-                style={{ background: 'rgba(239, 68, 68, 0.85)', boxShadow: '0 4px 16px rgba(239, 68, 68, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)' }}
+              {/* Search bar + category filter buttons below aircraft carousel */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.4, ease: EASE_OUT_EXPO }}
+                className="mt-4 flex items-center gap-2 max-w-5xl mx-auto px-2 sm:px-0"
               >
-                <X className="w-3 h-3" />
-                Cancel Filter
-              </button>
-
-              <div className="relative flex-shrink-0 w-64 md:w-80">
-                {selectedManufacturer && (
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-white rounded-md flex items-center justify-center p-1 z-10">
-                    <img
-                      src={selectedManufacturer.logo}
-                      alt={selectedManufacturer.name}
-                      className="w-full h-full object-contain"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                    />
-                  </div>
-                )}
-                <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search aircraft, manufacturers..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className={`w-full pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg ${selectedManufacturer ? 'pl-12' : 'pl-4'}`}
-                />
-              </div>
-
-              <div className="flex gap-2 overflow-x-auto items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 <button
-                  onClick={() => setSelectedCategory('all')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                    selectedCategory === 'all'
-                      ? 'bg-blue-500 text-white shadow-lg'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                  }`}
+                  onClick={() => { setSelectedCategory('all'); setSelectedManufacturer(null); setSelectedAircraft(null); }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap backdrop-blur-xl border border-red-500/40 text-white hover:bg-red-500/20 transition-all flex-shrink-0"
+                  style={{ background: 'rgba(239, 68, 68, 0.85)', boxShadow: '0 4px 16px rgba(239, 68, 68, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)' }}
                 >
-                  All
+                  <X className="w-3 h-3" />
+                  Cancel Filter
                 </button>
-                {manufacturerCategories.map(category => (
+
+                <div className="relative flex-shrink-0 w-64 md:w-80">
+                  {selectedManufacturer && (
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-white rounded-md flex items-center justify-center p-1 z-10">
+                      <img
+                        src={selectedManufacturer.logo}
+                        alt={selectedManufacturer.name}
+                        className="w-full h-full object-contain"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    </div>
+                  )}
+                  <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Search aircraft, manufacturers..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className={`w-full pr-11 py-2.5 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg ${selectedManufacturer ? 'pl-12' : 'pl-4'}`}
+                  />
+                </div>
+
+                <div className="flex gap-2 overflow-x-auto items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                   <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all capitalize ${
-                      selectedCategory === category
+                    onClick={() => setSelectedCategory('all')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                      selectedCategory === 'all'
                         ? 'bg-blue-500 text-white shadow-lg'
                         : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
                     }`}
                   >
-                    {category}
+                    All
                   </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-        <div
-          ref={manufacturerCarouselRef}
-          className="flex gap-3 overflow-x-auto pt-1 pb-3 px-5 scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-        >
-          {filteredManufacturers.map(manufacturer => (
-            <button
-              key={manufacturer.id}
-              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 rounded-lg transition-all relative overflow-hidden text-left ${
-                selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
-                  : 'hover:shadow-lg'
-              }`}
-              style={{
-                width: '160px',
-                border: `2px solid ${selectedManufacturer?.id === manufacturer.id ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
-                background: 'rgba(255,255,255,0.08)',
-              }}
-              onMouseEnter={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedManufacturer?.id !== manufacturer.id) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                }
-              }}
+                  {manufacturerCategories.map(category => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all capitalize ${
+                        selectedCategory === category
+                          ? 'bg-blue-500 text-white shadow-lg'
+                          : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="manufacturer-stage"
+              ref={manufacturerCarouselRef}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: EASE_OUT_EXPO }}
+              className="flex gap-3 overflow-x-auto pt-1 pb-3 px-5 scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
             >
-              {/* Top: Logo on light background */}
-              <div className="h-[85px] relative overflow-hidden flex items-center justify-center p-3" style={{ background: '#f3f4f6' }}>
-                <img
-                  src={manufacturer.logo}
-                  alt={manufacturer.name}
-                  className="w-full h-full object-contain"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-              </div>
-              {/* Bottom: Name on dark bg */}
-              <div className="p-3">
-                <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-        )}
+              {filteredManufacturers.map((manufacturer, index) => (
+                <motion.button
+                  key={manufacturer.id}
+                  initial={{ opacity: 0, y: 24, scale: 0.92 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    delay: index * 0.02,
+                    duration: 0.45,
+                    ease: EASE_OUT_EXPO,
+                  }}
+                  whileHover={{ y: -6, scale: 1.04, borderColor: 'rgba(255,255,255,0.35)', backgroundColor: 'rgba(255,255,255,0.14)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleManufacturerSelect(manufacturer)}
+                  disabled={isTransitioning}
+                  className="flex-shrink-0 rounded-lg relative overflow-hidden text-left disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{
+                    width: '160px',
+                    border: '2px solid rgba(255,255,255,0.12)',
+                    background: 'rgba(255,255,255,0.08)',
+                  }}
+                >
+                  {/* Animated glow overlay on tap */}
+                  {isTransitioning && pendingManufacturerId === manufacturer.id && (
+                    <motion.div
+                      className="absolute inset-0 z-0 rounded-lg"
+                      style={{ background: 'radial-gradient(circle at center, rgba(14,165,233,0.55) 0%, transparent 70%)' }}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: [0, 1, 0.6], scale: [0.5, 1.6, 2.2] }}
+                      transition={{ duration: 0.9, ease: 'easeOut' }}
+                    />
+                  )}
+                  {/* Top: Logo on light background */}
+                  <div className="h-[85px] relative overflow-hidden flex items-center justify-center p-3 rounded-t-lg" style={{ background: '#f3f4f6' }}>
+                    <motion.img
+                      src={manufacturer.logo}
+                      alt={manufacturer.name}
+                      className="w-full h-full object-contain relative z-10"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+                  {/* Bottom: Name on dark bg */}
+                  <div className="p-3 relative z-10">
+                    <p className="text-sm font-bold text-white truncate">{manufacturer.name}</p>
+                  </div>
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {(selectedAircraft || selectedManufacturer) && (
@@ -936,15 +1022,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             {/* Left: Entity selector card */}
             <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
               <div className="p-2 text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Discover Pathways</p>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-white/80">Discover Pathways</p>
                 <div className="relative flex items-center justify-center">
                   <select
                     value={activeEntity}
-                    onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('all'); }}
-                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                    onChange={(e) => { setActiveEntity(e.target.value as EntityType); setActiveEntityCategory('All'); }}
+                    className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
                   >
                     {ENTITY_TABS.map(tab => (
-                      <option key={tab.id} value={tab.id} className="bg-white text-slate-900">{tab.label}</option>
+                      <option key={tab.id} value={tab.id} className="bg-slate-900 text-white">{tab.label}</option>
                     ))}
                   </select>
                   <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -956,15 +1042,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             {/* Right: Category selector card */}
             <div className="relative rounded-xl overflow-hidden backdrop-blur-2xl" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
               <div className="p-3 text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-slate-500">Category</p>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 text-white/80">Category</p>
                 <div className="relative flex items-center justify-center">
                   <select
                     value={activeEntityCategory}
                     onChange={(e) => setActiveEntityCategory(e.target.value)}
-                    className="w-full bg-transparent text-slate-900 text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
+                    className="w-full bg-transparent text-white text-sm font-semibold appearance-none cursor-pointer focus:outline-none pr-6"
                   >
                     {ENTITY_CATEGORIES[activeEntity].map(cat => (
-                      <option key={cat} value={cat} className="bg-white text-slate-900">{cat}</option>
+                      <option key={cat} value={cat} className="bg-slate-900 text-white">{cat}</option>
                     ))}
                   </select>
                   <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">

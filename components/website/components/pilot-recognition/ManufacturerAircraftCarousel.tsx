@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { Plane } from 'lucide-react';
 import {
   aircraftTypeRatings as rawAircraftTypeRatings,
   type AircraftTypeRating as DataAircraftTypeRating,
 } from '@/data/aircraft-manufacturers';
+
+const EASE_OUT_EXPO: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 type AircraftTypeRating = DataAircraftTypeRating;
 
@@ -55,12 +58,22 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
         </p>
       </div>
       <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.5rem', scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}>
-        {aircraft.slice(0, 20).map((a) => {
+        {aircraft.slice(0, 20).map((a, index) => {
           const isSelected = selectedId === a.id;
           const isPreviewed = previewedId === a.id;
           return (
-            <button
+            <motion.button
               key={a.id}
+              layout
+              initial={{ opacity: 0, y: 28, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                delay: index * 0.04,
+                duration: 0.45,
+                ease: EASE_OUT_EXPO,
+              }}
+              whileHover={{ y: -5, scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => onSelect?.(a)}
               style={{
                 flex: '0 0 auto',
@@ -70,7 +83,6 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
                 border: `2px solid ${isPreviewed ? 'rgba(56, 189, 248, 0.8)' : isSelected ? 'rgba(239, 68, 68, 0.55)' : 'rgba(255,255,255,0.12)'}`,
                 borderRadius: '12px',
                 cursor: 'pointer',
-                transition: 'all 0.15s',
                 overflow: 'hidden',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = isSelected ? 'rgba(239, 68, 68, 0.35)' : 'rgba(255,255,255,0.18)'; e.currentTarget.style.borderColor = isPreviewed ? 'rgba(56, 189, 248, 1)' : isSelected ? 'rgba(239, 68, 68, 0.75)' : 'rgba(255,255,255,0.25)'; }}
@@ -78,7 +90,7 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
             >
               <div style={{ height: '90px', background: 'rgba(0,0,0,0.2)', position: 'relative', overflow: 'hidden' }}>
                 {a.image ? (
-                  <img src={a.image} alt={a.model} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <motion.img src={a.image} alt={a.model} style={{ width: '100%', height: '100%', objectFit: 'cover' }} whileHover={{ scale: 1.08 }} transition={{ duration: 0.35 }} />
                 ) : (
                   <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Plane size={24} style={{ color: 'rgba(255,255,255,0.3)' }} />
@@ -108,7 +120,7 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
                   {displayName}
                 </p>
               </div>
-            </button>
+            </motion.button>
           );
         })}
       </div>
