@@ -1559,7 +1559,7 @@ async function handleAction(
         'event_attendance', 'forum_posts', 'learning_hours', 'pilot_documents',
         'pilot_platform_connections', 'logbook_hour_tokens', 'p12_verification_events',
         'efb_complexity_tokens', 'sim_session_tokens',
-        'mfa_secrets', 'referral_conversions', 'referral_partners', 'user_app_access',
+        'mfa_secrets', 'referral_conversions', 'referral_partners', 'recognition_plus_referrals', 'user_app_access',
         'job_opportunities', 'enterprise_pathway_cards', 'pathway_card_interests',
         'airline_expectations', 'enterprise_access_requests',
         'support_enquiries', 'meetings', 'admin_notifications', 'blog_posts',
@@ -1705,21 +1705,40 @@ async function handleAction(
       const profileId = params.profileId as string;
       if (!profileId) return { success: false, error: 'profileId required' };
 
-      // Check if profile already has a referral code
-      const existing = await env.DB_PROFILES.prepare(`
-        SELECT referral_code, display_name, email FROM profiles WHERE id = ?
+      // Referral codes live in the Recognition+ trace DB, not the public profiles DB
+      const existingTrace = await env.DB_TRACE.prepare(`
+        SELECT referral_code FROM recognition_plus_referrals WHERE profile_id = ? AND is_active = 1
       `).bind(profileId).first() as Record<string, unknown> | null;
 
-      if (existing?.['referral_code']) {
-        return { success: true, referralCode: existing['referral_code'] };
+      if (existingTrace?.['referral_code']) {
+        return { success: true, referralCode: existingTrace['referral_code'] };
       }
 
-      const code = `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
-      await env.DB_PROFILES.prepare(`
-        UPDATE profiles SET referral_code = ? WHERE id = ?
-      `).bind(code, profileId).run();
+      // Read profile info for the trace and partner records
+      const profile = await env.DB_PROFILES.prepare(`
+        SELECT display_name, email, auth0_id FROM profiles WHERE id = ?
+      `).bind(profileId).first() as Record<string, unknown> | null;
 
-      // Auto-create partner record so webhook can credit them
+      const code = `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+      const now = new Date().toISOString();
+
+      // Store the referral code in the Recognition+ trace DB (DB_TRACE)
+      await env.DB_TRACE.prepare(`
+        INSERT INTO recognition_plus_referrals
+        (id, profile_id, auth0_sub, referral_code, display_name, email, is_active, commission_rate, total_referrals, total_conversions, total_payouts, pending_payouts, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, 1, 20, 0, 0, 0, 0, ?, ?)
+      `).bind(
+        crypto.randomUUID(),
+        profileId,
+        profile?.['auth0_id'] || null,
+        code,
+        profile?.['display_name'] || 'Pilot',
+        profile?.['email'] || null,
+        now,
+        now
+      ).run();
+
+      // Auto-create partner record in DB_OPS so webhooks can credit them
       const partnerId = crypto.randomUUID();
       await env.DB_OPS.prepare(`
         INSERT INTO referral_partners
@@ -1728,8 +1747,8 @@ async function handleAction(
       `).bind(
         partnerId,
         profileId,
-        existing?.['display_name'] || 'Pilot',
-        existing?.['email'] || null,
+        profile?.['display_name'] || 'Pilot',
+        profile?.['email'] || null,
         'pilot',
         code
       ).run();

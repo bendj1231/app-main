@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign } from 'lucide-react';
+import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign, ArrowRight } from 'lucide-react';
 
 interface PilotReferralShareProps {
   userId?: string;
+  compact?: boolean;
 }
 
 interface ReferralStats {
@@ -12,8 +14,9 @@ interface ReferralStats {
   earned: number;
 }
 
-export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }) => {
+export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, compact }) => {
   const { callApi } = useWorkerAuth();
+  const navigate = useNavigate();
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralLink, setReferralLink] = useState<string>('');
   const [copied, setCopied] = useState(false);
@@ -29,15 +32,16 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
 
     try {
       setLoading(true);
-      // Read profile via Worker API
+      // Referral codes live in the Recognition+ trace DB, not the public profiles table
       const rows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'profiles',
+        table: 'recognition_plus_referrals',
         operation: 'select',
-        where: { id: userId },
+        dbName: 'DB_TRACE',
+        where: { profile_id: userId, is_active: 1 },
         limit: 1,
       });
-      const profile = rows?.[0];
-      const code = profile?.['referral_code'] as string | null;
+      const referralRow = rows?.[0];
+      let code = referralRow?.['referral_code'] as string | null;
 
       if (code) {
         setReferralCode(code);
@@ -51,20 +55,46 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
     }
   };
 
+  const generateCode = async () => {
+    if (!userId) return;
+    try {
+      setLoading(true);
+      const genRes = await callApi<Record<string, unknown>>('generateReferral', {
+        profileId: userId,
+        user_id: userId,
+      });
+      const code = (genRes?.['referralCode'] as string | null) ?? (genRes?.['referral_code'] as string | null) ?? null;
+
+      if (code) {
+        setReferralCode(code);
+        setReferralLink(`${window.location.origin}/ref/${code}`);
+        await loadStats(code);
+      } else {
+        console.error('generateReferral did not return a code:', genRes);
+      }
+    } catch (error) {
+      console.error('Error generating referral code:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const loadStats = async (code: string) => {
     try {
-      // Count how many people signed up with this code
+      // Count how many people signed up with this code (referred_by_code is on the profiles DB)
       const signupRows = await callApi<Record<string, unknown>[]>('queryTable', {
         table: 'profiles',
         operation: 'select',
+        dbName: 'DB_PROFILES',
         where: { referred_by_code: code },
       });
       const signups = signupRows?.length ?? 0;
 
-      // Count how many converted to Recognition+ (subscribed)
+      // Count how many converted to Recognition+ (subscribed) — operational DB
       const convRows = await callApi<Record<string, unknown>[]>('queryTable', {
         table: 'referral_conversions',
         operation: 'select',
+        dbName: 'DB_OPS',
         where: { referral_code: code, status: 'subscribed' },
       });
       const subscribed = convRows?.length ?? 0;
@@ -125,7 +155,44 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
   if (!referralCode) {
     return (
       <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
-        <p className="text-slate-400 text-center">No referral code assigned yet.</p>
+        <div className="text-center space-y-3">
+          <p className="text-slate-400 text-sm">No referral code assigned yet.</p>
+          <button
+            onClick={generateCode}
+            disabled={loading}
+            className="bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-colors inline-flex items-center gap-2"
+          >
+            {loading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Share2 className="w-4 h-4" />
+            )}
+            {loading ? 'Generating...' : 'Get code'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">Your Referral Code</p>
+            <p className="text-xl font-bold text-white tracking-wider">{referralCode}</p>
+            <p className="text-slate-400 text-xs mt-1">
+              Earn <span className="text-emerald-400 font-medium">$20</span> per Recognition+ subscription.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/referral')}
+            className="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-colors inline-flex items-center justify-center gap-2 whitespace-nowrap"
+          >
+            Referral Terminal
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     );
   }

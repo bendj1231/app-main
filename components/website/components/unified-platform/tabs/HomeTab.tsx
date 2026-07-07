@@ -524,13 +524,17 @@ export const HomeTab: React.FC<{
         animate="visible"
       >
       <motion.div variants={itemVariants}>
-        <GettingStartedBar
-          steps={steps}
-          onStepClick={(tab) => setTab(tab as TabId)}
-          isGuest={!isAuthenticated}
-          onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-          isMobile={isMobile}
-        />
+        {verificationDone && profile ? (
+          <PilotReferralShare userId={profile?.id} compact />
+        ) : (
+          <GettingStartedBar
+            steps={steps}
+            onStepClick={(tab) => setTab(tab as TabId)}
+            isGuest={!isAuthenticated}
+            onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+            isMobile={isMobile}
+          />
+        )}
       </motion.div>
 
       <div className={`gap-3 items-stretch ${isMobile ? 'flex flex-col' : 'flex flex-row flex-1 min-h-0 overflow-hidden'}`}>
@@ -1040,17 +1044,6 @@ export const HomeTab: React.FC<{
       </motion.div>
       )}
       </div>
-
-      {/* ── Refer & Earn (Recognition+ members only) ── */}
-      {profile && (() => {
-        const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free').toString();
-        const isPaid = tier === 'plus' || tier === 'silver' || tier === 'enterprise' || tier === 'gold';
-        return isPaid;
-      })() && (
-        <motion.div variants={itemVariants} className="mt-4">
-          <PilotReferralShare userId={profile?.id} />
-        </motion.div>
-      )}
 
       {/* ════════════════════════════════════════════════════════════
           ONBOARDING MODAL — 4-step multi-party verification flow

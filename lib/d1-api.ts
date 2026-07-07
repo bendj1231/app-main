@@ -157,7 +157,6 @@ export interface ProfileInput {
   wallet_id?: string;
   wallet_email?: string;
   wallet_did?: string;
-  referral_code?: string;
 }
 
 export async function getProfile(accessToken: string, auth0Id: string) {

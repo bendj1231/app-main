@@ -142,8 +142,31 @@ export const VerificationStatusTab: React.FC<{
 
   const [avatarHover, setAvatarHover] = React.useState(false);
   const [avatarUploading, setAvatarUploading] = React.useState(false);
+  const [inviteCode, setInviteCode] = React.useState<string | null>(null);
   const avatarInputRef = React.useRef<HTMLInputElement>(null);
   const { callApi } = useWorkerAuth();
+
+  React.useEffect(() => {
+    if (!profile?.id) return;
+    let active = true;
+    callApi<Record<string, unknown>[]>('queryTable', {
+      table: 'recognition_plus_referrals',
+      operation: 'select',
+      dbName: 'DB_TRACE',
+      where: { profile_id: profile.id, is_active: 1 },
+      limit: 1,
+    })
+      .then((rows) => {
+        if (!active) return;
+        const code = rows?.[0]?.['referral_code'] as string | null;
+        setInviteCode(code || profile.id.slice(0, 8).toUpperCase());
+      })
+      .catch(() => {
+        if (!active) return;
+        setInviteCode(profile.id.slice(0, 8).toUpperCase());
+      });
+    return () => { active = false; };
+  }, [profile?.id]);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -482,18 +505,15 @@ export const VerificationStatusTab: React.FC<{
             </div>
 
             {/* Invite Code */}
-            {(() => {
-              const inviteCode = profile?.referral_code || (profile?.id ? profile.id.slice(0, 8).toUpperCase() : '');
-              return inviteCode ? (
-                <a
-                  href="/platform?tab=profile"
-                  onClick={(e) => { e.preventDefault(); setTab('profile'); }}
-                  className="mt-3 block w-full text-center text-[10px] font-mono font-bold tracking-wider text-white/40 hover:text-blue-400 transition-colors"
-                >
-                  Invite Code: {inviteCode}
-                </a>
-              ) : null;
-            })()}
+            {inviteCode ? (
+              <a
+                href="/platform?tab=profile"
+                onClick={(e) => { e.preventDefault(); setTab('profile'); }}
+                className="mt-3 block w-full text-center text-[10px] font-mono font-bold tracking-wider text-white/40 hover:text-blue-400 transition-colors"
+              >
+                Invite Code: {inviteCode}
+              </a>
+            ) : null}
           </div>
         </div>
 

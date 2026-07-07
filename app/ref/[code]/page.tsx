@@ -22,18 +22,19 @@ export default function ReferralLandingPage() {
   }, [code]);
 
   const resolveCode = async () => {
-    // Check if it's a pilot referral code (in profiles via Worker API)
+    // Check if it's a pilot referral code (in the Recognition+ trace DB)
     try {
-      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'profiles',
+      const referralRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'recognition_plus_referrals',
         operation: 'select',
-        where: { referral_code: code },
+        dbName: 'DB_TRACE',
+        where: { referral_code: code, is_active: 1 },
         limit: 1,
       });
-      const profile = profileRows?.[0];
+      const referralRecord = referralRows?.[0];
 
-      if (profile) {
-        const name = (profile['display_name'] as string) || (profile['full_name'] as string) || 'A fellow pilot';
+      if (referralRecord) {
+        const name = (referralRecord['display_name'] as string) || 'A fellow pilot';
         setReferrerName(name);
         // Store in cookie — 30 day expiry, read by AuthContext on signup
         document.cookie = `pr_ref=${code}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
@@ -50,6 +51,7 @@ export default function ReferralLandingPage() {
       const partnerRows = await callApi<Record<string, unknown>[]>('queryTable', {
         table: 'referral_partners',
         operation: 'select',
+        dbName: 'DB_OPS',
         where: { referral_code: code, is_active: true },
         limit: 1,
       });

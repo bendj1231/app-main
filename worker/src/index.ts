@@ -280,7 +280,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.hours_minutes || null,
         data.origin_jurisdiction || null,
         data.logbook_sync_valid ? 1 : 0,
-        data.referral_code || generateReferralCode(id),
+        null,
         now,
         now
       ).run();

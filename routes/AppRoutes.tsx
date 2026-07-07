@@ -545,6 +545,7 @@ const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
 const UCFPage = lazy(() => import('@/app/ucf/page'));
 const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/page'));
 const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
+const ReferralTerminalPage = lazy(() => import('@/app/referral/page'));
 const AdminDashboardPage = lazy(() => import('@/app/admin/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const AdminObjectivesPage = lazy(() => import('@/app/admin/objectives/page'));
@@ -1799,6 +1800,7 @@ export const AppRoutes = () => {
 
           {/* Referral invite code route */}
           <Route path="/ref/:code" element={<ReferralLandingPage />} />
+          <Route path="/referral" element={<ReferralTerminalPage />} />
 
           {/* Auth0 callback route */}
           <Route path="/auth/callback" element={<OAuthCallback />} />

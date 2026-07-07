@@ -42,6 +42,7 @@ gcp-oauth.keys.json
 
 # Wrangler local state (SQLite, etc.)
 **/.wrangler/state/
+**/.wrangler/tmp/
 
 # TypeScript build info
 .tsbuildinfo
