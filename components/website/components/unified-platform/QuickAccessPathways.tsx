@@ -311,20 +311,25 @@ export const QuickAccessPathways: React.FC<{
               className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                 active
                   ? 'bg-blue-500/80 text-white shadow-lg border-blue-400/40'
-                  : 'bg-white/12 text-white/80 hover:bg-white/22 hover:text-white border-white/20'
+                  : 'bg-white/12 text-slate-100 hover:bg-white/22 hover:text-white border-white/20'
               }`}
-              style={active ? {
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(59,130,246,0.25)',
-              } : {
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-              }}
+              style={
+                active
+                  ? {
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      boxShadow:
+                        'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(59,130,246,0.25)',
+                    }
+                  : {
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                    }
+              }
             >
               {tab.label}
               <span
-                className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-white/10 text-white/60'}`}
+                className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-white/10 text-white/90'}`}
               >
                 {count}
               </span>
@@ -348,7 +353,10 @@ export const QuickAccessPathways: React.FC<{
             <p className="text-white font-bold text-sm mb-1">
               No {TAB_CONFIG.find((t) => t.id === activeTab)?.label?.toLowerCase()} pathways yet
             </p>
-            <p className="text-white/50 text-xs max-w-sm">
+            <p
+              className="text-[#E2E8F0] text-xs max-w-sm"
+              style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
+            >
               {activeTab === 'submitted'
                 ? 'Submit interest to airlines and track your applications here.'
                 : 'Discover new airline pathways and start matching your profile.'}
@@ -389,23 +397,27 @@ export const QuickAccessPathways: React.FC<{
                       if (!isSelected) {
                         e.currentTarget.style.background = 'rgba(255,255,255,0.30)';
                         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.40)';
-                        e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.boxShadow =
+                          'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.1)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isSelected) {
                         e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
                         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
-                        e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)';
+                        e.currentTarget.style.boxShadow =
+                          'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)';
                       }
                     }}
                   >
-                    {/* Top: Logo on frosted light background */}
+                    {/* Top: Logo badge with frosted light background */}
                     <div
-                      className="h-[90px] relative overflow-hidden flex items-center justify-center p-3"
+                      className="h-[84px] mx-3 mt-3 rounded-md relative overflow-hidden flex items-center justify-center p-3"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.70), rgba(255,255,255,0.40))',
-                        borderBottom: '1px solid rgba(255,255,255,0.15)',
+                        background:
+                          'linear-gradient(135deg, rgba(255,255,255,0.52), rgba(255,255,255,0.28))',
+                        border: '1px solid rgba(255,255,255,0.22)',
+                        borderRadius: '6px',
                       }}
                     >
                       <img
@@ -420,22 +432,39 @@ export const QuickAccessPathways: React.FC<{
                     </div>
                     {/* Bottom: Name and meta on frosted bg */}
                     <div className="p-3.5">
-                      <p className="text-sm font-bold text-white truncate mb-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}>{pathway.name}</p>
-                      <div className="flex items-center justify-between text-[10px] text-white/70 mb-2">
+                      <p
+                        className="text-sm font-bold text-white truncate mb-1"
+                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}
+                      >
+                        {pathway.name}
+                      </p>
+                      <div
+                        className="flex items-center justify-between text-[10px] text-[#E2E8F0] mb-2"
+                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.18)' }}
+                      >
                         <span className="flex items-center gap-1">
                           <Clock size={10} /> {pathway.subtitle}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span
-                          className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full border ${
-                            pathway.match >= 85
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-400/25'
-                              : pathway.match >= 70
-                                ? 'bg-blue-500/15 text-blue-300 border-blue-400/25'
-                                : 'bg-amber-500/15 text-amber-300 border-amber-400/25'
-                          }`}
-                          style={{ backdropFilter: 'blur(4px)' }}
+                          className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full"
+                          style={{
+                            backdropFilter: 'blur(4px)',
+                            background:
+                              pathway.match >= 85
+                                ? 'rgba(16, 185, 129, 0.12)'
+                                : pathway.match >= 70
+                                  ? 'rgba(59, 130, 246, 0.12)'
+                                  : 'rgba(245, 158, 11, 0.12)',
+                            color:
+                              pathway.match >= 85
+                                ? '#10B981'
+                                : pathway.match >= 70
+                                  ? '#3B82F6'
+                                  : '#F59E0B',
+                            border: `1px solid ${pathway.match >= 85 ? 'rgba(16, 185, 129, 0.2)' : pathway.match >= 70 ? 'rgba(59, 130, 246, 0.2)' : 'rgba(245, 158, 11, 0.2)'}`,
+                          }}
                         >
                           {pathway.match}% Match
                         </span>
@@ -452,42 +481,42 @@ export const QuickAccessPathways: React.FC<{
             {/* Scroll arrows */}
             <button
               onClick={() => scrollBy(-1)}
-              className="absolute left-0 top-1/3 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
               style={{
-                background: 'rgba(255,255,255,0.18)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.30)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.12)',
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.30)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.40)';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
               }}
             >
               <ChevronRight size={16} className="text-white rotate-180" />
             </button>
             <button
               onClick={() => scrollBy(1)}
-              className="absolute right-0 top-1/3 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
               style={{
-                background: 'rgba(255,255,255,0.18)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.30)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.12)',
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.30)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.40)';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
               }}
             >
               <ChevronRight size={16} className="text-white" />
@@ -497,18 +526,24 @@ export const QuickAccessPathways: React.FC<{
       </div>
 
       {/* Insights footer */}
-      <div className="mt-6 p-4 rounded-xl" style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))',
-        backdropFilter: 'blur(12px) saturate(1.1)',
-        WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
-        border: '1px solid rgba(255,255,255,0.15)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
-      }}>
+      <div
+        className="mt-6 p-4 rounded-xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))',
+          backdropFilter: 'blur(12px) saturate(1.1)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+          border: '1px solid rgba(255,255,255,0.15)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+        }}
+      >
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 bg-teal-400 rounded-full" />
           <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
         </div>
-        <p className="text-slate-300 text-sm leading-relaxed">
+        <p
+          className="text-[#F1F5F9] text-sm leading-relaxed"
+          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
+        >
           {activeTab === 'submitted' ? (
             <>
               You have submitted interest to{' '}
