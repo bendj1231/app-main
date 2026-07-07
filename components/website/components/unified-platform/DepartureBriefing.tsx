@@ -82,9 +82,9 @@ const PHASES: Phase[] = [
     showcaseAccent: 'from-red-500/80 to-orange-400/80',
   },
   {
-    target: 'home-access-recognition',
+    target: '.access-recognition-card-anchor',
     title: '5. Access Recognition',
-    body: 'Start building your verified logbook here. Tap this card to navigate to the verification tab and add your licenses, hours, and ratings.',
+    body: 'This card initiates your secure credentials locker. Tap it to navigate to the verification matrix where you can upload, audit, and securely verify your active licenses, flight hours, and type ratings for global operators.',
     button: 'Complete Briefing',
     icon: User,
     placement: 'above',
@@ -182,6 +182,11 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
 
   const handleNext = () => {
     if (isLast) {
+      try {
+        localStorage.setItem('hasCompletedBriefing', 'true');
+      } catch {
+        // ignore storage errors
+      }
       onClose();
       onNavigateToTab('dashboard');
     } else {
@@ -458,28 +463,29 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                   alt={current.showcaseTitle}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                {current.target !== 'home-pilot-shortage' && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mb-2 shadow-lg">
-                      <current.icon size={20} className="text-white" />
+                {current.target !== '.pilot-shortage-card-anchor' &&
+                  current.target !== '.access-recognition-card-anchor' && (
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mb-2 shadow-lg">
+                        <current.icon size={20} className="text-white" />
+                      </div>
+                      <h3
+                        className="text-white text-xl font-bold mb-0.5"
+                        style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
+                      >
+                        {current.showcaseTitle}
+                        {current.showcaseTitleHighlight && (
+                          <span className="text-red-500">{current.showcaseTitleHighlight}</span>
+                        )}
+                      </h3>
+                      <p
+                        className="text-white/90 text-sm leading-relaxed"
+                        style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
+                      >
+                        {current.showcaseSubtitle}
+                      </p>
                     </div>
-                    <h3
-                      className="text-white text-xl font-bold mb-0.5"
-                      style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
-                    >
-                      {current.showcaseTitle}
-                      {current.showcaseTitleHighlight && (
-                        <span className="text-red-500">{current.showcaseTitleHighlight}</span>
-                      )}
-                    </h3>
-                    <p
-                      className="text-white/90 text-sm leading-relaxed"
-                      style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
-                    >
-                      {current.showcaseSubtitle}
-                    </p>
-                  </div>
-                )}
+                  )}
               </div>
             )}
             <div className="px-6 py-5">
