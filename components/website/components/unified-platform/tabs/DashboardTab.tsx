@@ -6,7 +6,7 @@ import { InfrastructureDashboard } from '../../InfrastructureDashboard';
 import { RecognitionAIChat } from '../RecognitionAIChat';
 import { LogbookHub } from '@/components/website/components/pilot-recognition/LogbookHub';
 import { InteractiveProfilePreview } from '../InteractiveProfilePreview';
-import { AirlinePathwayCarousel } from '../AirlinePathwayCarousel';
+import { QuickAccessPathways } from '../QuickAccessPathways';
 import type { TabId } from '../types';
 import {
   BookOpen,
@@ -743,8 +743,8 @@ export const DashboardTab: React.FC<{
         </div>
       </div>
 
-      {/* Pathway Recommendations carousel — airline logo style */}
-      <AirlinePathwayCarousel profile={profile} />
+      {/* Quick Access Pathways — airline logo carousel */}
+      <QuickAccessPathways profile={profile} />
 
       {/* Interactive Profile Preview — glassy SaaS command centre */}
       <InteractiveProfilePreview profile={profile as any} setTab={setTab} onNavigate={onNavigate} />

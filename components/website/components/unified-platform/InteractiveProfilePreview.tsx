@@ -282,7 +282,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
+            className="text-[10px] font-black px-3 py-1 rounded-full border"
             style={{
               background: isVerified ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
               color: '#ffffff',
@@ -292,7 +292,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
             {isVerified ? '✓ VERIFIED' : '⚠ PENDING'}
           </span>
           <span
-            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
+            className="text-[10px] font-black px-3 py-1 rounded-full border"
             style={{
               background: isPlus ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
               color: '#ffffff',
@@ -323,19 +323,19 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all flex-1 md:flex-none text-left w-full"
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-semibold transition-all flex-1 md:flex-none text-left w-full"
                   style={{
                     background: isActive
                       ? 'linear-gradient(135deg, #3b82f6, #2563eb)'
-                      : 'rgba(59,130,246,0.12)',
-                    color: '#ffffff',
+                      : 'rgba(255,255,255,0.45)',
+                    color: isActive ? '#ffffff' : '#1e293b',
                     boxShadow: isActive
                       ? '0 4px 12px rgba(59,130,246,0.35)'
                       : '0 1px 2px rgba(0,0,0,0.04)',
-                    border: isActive ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                    border: isActive ? 'none' : '1px solid rgba(255,255,255,0.25)',
                   }}
                 >
-                  <span style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
+                  <span style={{ color: isActive ? '#ffffff' : '#475569' }}><Icon size={18} /></span>
                   <span className="hidden md:inline">{t.label}</span>
                   {isActive && (
                     <svg className="ml-auto w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -360,17 +360,17 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   <button
                     key={link.tab}
                     onClick={() => setTab?.(link.tab)}
-                    className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all text-left w-full"
+                    className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-semibold transition-all text-left w-full"
                     style={{
-                      background: 'rgba(59,130,246,0.12)',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      background: 'rgba(255,255,255,0.45)',
+                      color: '#1e293b',
+                      border: '1px solid rgba(255,255,255,0.25)',
                       boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
                     }}
                   >
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
+                    <span style={{ color: '#475569' }}><Icon size={18} /></span>
                     <span>{link.label}</span>
-                    <ChevronRight size={14} className="ml-auto" style={{ color: 'rgba(255,255,255,0.4)' }} />
+                    <ChevronRight size={14} className="ml-auto" style={{ color: '#94a3b8' }} />
                   </button>
                 );
               })}
@@ -430,27 +430,27 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </div>
                     <p className="text-xs text-slate-500 truncate" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}>{profile?.email || 'No email'}</p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                      <div className="h-1.5 rounded-full overflow-hidden flex-1 max-w-[180px]" style={{ background: 'rgba(0,0,0,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
                         <div
                           className="h-full rounded-full transition-all"
                           style={{ width: `${completionPct}%`, background: 'linear-gradient(90deg, #10b981, #34d399)' }}
                         />
                       </div>
                       <span className="text-[10px] font-black text-slate-500" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}>{completionPct}% complete</span>
+                      {!isVerified && (
+                        <button
+                          onClick={() => setTab?.('advanced-profile' as TabId)}
+                          className="ml-auto px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white transition-all shadow-sm hover:brightness-110"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(220,38,38,0.90), rgba(185,28,28,0.90))',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            boxShadow: '0 4px 12px rgba(220,38,38,0.25), inset 0 1px 0 rgba(255,255,255,0.2)',
+                          }}
+                        >
+                          Verify Identity →
+                        </button>
+                      )}
                     </div>
-                    {!isVerified && (
-                      <button
-                        onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="mt-2 px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white transition-all shadow-sm hover:brightness-110"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(220,38,38,0.90), rgba(185,28,28,0.90))',
-                          border: '1px solid rgba(255,255,255,0.25)',
-                          boxShadow: '0 4px 12px rgba(220,38,38,0.25), inset 0 1px 0 rgba(255,255,255,0.2)',
-                        }}
-                      >
-                        Verify Identity →
-                      </button>
-                    )}
                   </div>
                 </div>
 
@@ -530,7 +530,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                             </div>
                             <div className="min-w-0">
                               <p className="text-[11px] text-slate-700 truncate">{item.text}</p>
-                              <p className="text-[10px] text-slate-400">{item.time}</p>
+                              <p className="text-[10px] text-slate-500" style={{ letterSpacing: '0.03em' }}>{item.time}</p>
                             </div>
                           </div>
                         );
@@ -552,7 +552,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       <Award size={14} className="text-emerald-500" />
                       <p className="text-xs font-bold text-slate-800">Qualifications</p>
                     </div>
-                    <div className="space-y-2">
+                    <div className="grid gap-2.5" style={{ alignItems: 'center' }}>
                       {[
                         { label: 'License', value: license, status: license !== 'Not set' ? 'verified' : 'missing' as const },
                         { label: 'Medical', value: profile?.medical_class || 'Class 1', status: profile?.medical_class ? 'verified' : 'pending' as const },
@@ -564,7 +564,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                         const StatusIcon = cert.status === 'verified' ? CheckCircle2 : cert.status === 'pending' ? Clock : AlertTriangle;
                         const statusColor = cert.status === 'verified' ? '#10b981' : cert.status === 'pending' ? '#f59e0b' : '#ef4444';
                         return (
-                          <div key={cert.label} className="flex items-center justify-between">
+                          <div key={cert.label} className="flex items-center justify-between" style={{ lineHeight: '1.6' }}>
                             <div className="flex items-center gap-2">
                               <StatusIcon size={12} style={{ color: statusColor }} />
                               <span className="text-[11px] text-slate-600">{cert.label}</span>
@@ -576,7 +576,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     </div>
                     <button
                       onClick={() => setTab?.('advanced-profile' as TabId)}
-                      className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
+                      className="mt-4 mb-1 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
                       style={{ background: '#f8fafc' }}
                     >
                       Manage Certificates →
