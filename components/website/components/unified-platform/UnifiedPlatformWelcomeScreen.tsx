@@ -13,21 +13,7 @@ export const UnifiedPlatformWelcomeScreen: React.FC<UnifiedPlatformWelcomeScreen
   onboardingDone: onboardingDoneProp,
 }) => {
   const [introPhase, setIntroPhase] = useState<'entering' | 'textExiting' | 'exiting' | 'done'>('entering');
-  const [dashboardFirstName, setDashboardFirstName] = useState<string | null>(firstName || null);
   const introFinishedRef = useRef(false);
-
-  useEffect(() => {
-    const onProfileLoaded = (e: Event) => {
-      const loadedFirstName = (e as CustomEvent).detail?.firstName;
-      if (loadedFirstName) setDashboardFirstName(loadedFirstName);
-    };
-    window.addEventListener('app:profileLoaded', onProfileLoaded);
-    return () => window.removeEventListener('app:profileLoaded', onProfileLoaded);
-  }, []);
-
-  useEffect(() => {
-    if (firstName) setDashboardFirstName(firstName);
-  }, [firstName]);
 
   const shouldShow = (() => {
     if (typeof window === 'undefined') return false;
@@ -48,7 +34,7 @@ export const UnifiedPlatformWelcomeScreen: React.FC<UnifiedPlatformWelcomeScreen
   })();
 
   const welcomeName = (() => {
-    const name = dashboardFirstName || '';
+    const name = firstName || '';
     const first = String(name).split(' ')[0].replace(/@.*/, '').replace(/^[a-z]/, c => c.toUpperCase());
     return first;
   })();
