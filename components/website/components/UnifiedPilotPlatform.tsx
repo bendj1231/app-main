@@ -56,6 +56,9 @@ import { MessagesPanel } from './unified-platform/MessagesPanel';
 import { NAV_ITEMS, EmailVerifyGate, NotificationsFeedPanel } from './unified-platform/shared';
 import type { TabId, UnifiedPilotPlatformProps } from './unified-platform/types';
 
+// Request counter for observability — we expect exactly one getDashboardData call per user session
+let dashboardRequestCount = 0;
+
 interface ProfileData {
   id?: string;
   display_name?: string;
@@ -560,8 +563,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         }
 
         // Fetch fresh from Worker
+        dashboardRequestCount += 1;
         console.log(
-          '[UnifiedPilotPlatform] Calling getDashboardData with auth0_id:',
+          `[UnifiedPilotPlatform] getDashboardData request #${dashboardRequestCount} for auth0_id:`,
           auth0Id,
           'email:',
           email
