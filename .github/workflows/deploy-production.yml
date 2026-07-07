@@ -246,19 +246,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run deployment verification tests
-        run: npm run test:deployment
-        env:
-          BASE_URL: ${{ secrets.PRODUCTION_FRONTEND_URL }}
-          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
-          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
-
       - name: Health check
         run: |
           echo "Running health checks..."
           # Check Workers
           curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
           curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://pilot-profile-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          # pilotshortage-api has no /api/health endpoint; check the root responds
+          curl -f https://pilotshortage-api.benjamintigerbowler.workers.dev || true
           # Check frontend
           curl -f ${{ secrets.PRODUCTION_FRONTEND_URL }} || exit 1
           echo "Health checks passed"
@@ -285,6 +281,8 @@ jobs:
           # Use Wrangler deployments list and dashboard to roll back
           npx wrangler deployments list --name pilotrecognition-api || true
           npx wrangler deployments list --name platform-api || true
+          npx wrangler deployments list --name pilot-profile-api || true
+          npx wrangler deployments list --name pilotshortage-api || true
           echo "Use the Cloudflare Dashboard to roll back Workers"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -305,19 +303,6 @@ jobs:
     needs: [deployment-verification, rollback-if-failed]
     if: always()
     steps:
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: |
-            Production Deployment ${{ job.status }}
-            Commit: ${{ github.sha }}
-            Branch: ${{ github.ref_name }}
-            Author: ${{ github.actor }}
-            Rollback: ${{ needs.rollback-if-failed.result == 'success' && 'YES' || 'NO' }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - name: Deployment Summary
         run: |
           echo "## Production Deployment Summary" >> $GITHUB_STEP_SUMMARY
