@@ -235,12 +235,25 @@ jobs:
       - name: Health check
         run: |
           echo "Running health checks..."
-          # Check Workers
+          # Check Workers basic health endpoints
           curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
           curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
           curl -f https://pilot-profile-api.benjamintigerbowler.workers.dev/api/health || exit 1
           # pilotshortage-api has no /api/health endpoint; check the root responds
           curl -f https://pilotshortage-api.benjamintigerbowler.workers.dev || true
+
+          # Smoke test the action that was failing with 500.
+          # A non-existent profile should return 200 (or 401/400), never 500.
+          DASHBOARD_STATUS=$(curl -s -o /tmp/dashboard_smoke.json -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"action":"getDashboardData","params":{"auth0_id":"gh-actions-smoke-test@example.com","email":"gh-actions-smoke-test@example.com"}}' \
+            https://pilotrecognition-api.benjamintigerbowler.workers.dev/api)
+          echo "getDashboardData smoke test status: $DASHBOARD_STATUS"
+          if [ "$DASHBOARD_STATUS" = "500" ]; then
+            cat /tmp/dashboard_smoke.json
+            exit 1
+          fi
+
           # Check frontend
           curl -f ${{ secrets.PRODUCTION_FRONTEND_URL }} || exit 1
           echo "Health checks passed"
