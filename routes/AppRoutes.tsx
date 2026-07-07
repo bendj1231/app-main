@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { OAuthCallback } from '@/components/OAuthCallback';
 import { LogbookCallback } from '@/components/LogbookCallback';
@@ -644,7 +643,7 @@ const CareerPathwaysLoadingFallback = () => (
 );
 
 export const AppRoutes = () => {
-  const { oauthAccountCheck } = useAuth();
+  const { oauthAccountCheck, currentUser, userProfile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -676,10 +675,6 @@ export const AppRoutes = () => {
     return fromStorage;
   });
 
-  // Intro splash screen state
-  const [introPhase, setIntroPhase] = useState<'entering' | 'exiting' | 'done'>('entering');
-  const introFinishedRef = React.useRef(false);
-
   // Re-check domain when location changes
   useEffect(() => {
     const hostname = window.location.hostname;
@@ -705,9 +700,11 @@ export const AppRoutes = () => {
     }
   }, [location]);
 
-  // Safety: remove page-exiting class on mount in case it was left behind
+  // Safety: remove page-exiting class on mount in case it was left behind,
+  // and ensure main-site entrance animations are enabled.
   useEffect(() => {
     document.body.classList.remove('page-exiting');
+    document.body.classList.add('app-ready');
   }, []);
 
   // Listen for custom modal events from any page
@@ -741,23 +738,6 @@ export const AppRoutes = () => {
   const handleBack = (fallback: string = '/') => {
     delayedNavigate(fallback);
   };
-
-  // Intro splash screen sequence: hold → exit → done
-  useEffect(() => {
-    if (introFinishedRef.current) return;
-
-    const holdTimer = setTimeout(() => {
-      setIntroPhase('exiting');
-      const exitTimer = setTimeout(() => {
-        setIntroPhase('done');
-        introFinishedRef.current = true;
-        document.body.classList.add('app-ready');
-      }, 700);
-      return () => clearTimeout(exitTimer);
-    }, 1200);
-
-    return () => clearTimeout(holdTimer);
-  }, []);
 
   // If we're currently checking an OAuth account, show a full-screen loading overlay
   // to avoid briefly rendering the Home page before redirecting to /become-member.
@@ -837,6 +817,7 @@ export const AppRoutes = () => {
   // Subdomain routing for platform.pilotrecognition.com
   // NOTE: must be AFTER all hooks to avoid React error #310
   if (window.location.hostname === 'platform.pilotrecognition.com') {
+    console.log('[AppRoutes] platform subdomain early-return, rendering UnifiedPilotPlatform');
     return (
       <Suspense fallback={<LoadingFallback />}>
         <UnifiedPilotPlatform onNavigate={handleNavigate} />
@@ -919,46 +900,6 @@ export const AppRoutes = () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      {/* Intro Splash Screen — shows immediately on app load */}
-      <AnimatePresence>
-        {introPhase !== 'done' && (
-          <motion.div
-            key="intro"
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              scale: 1.05,
-              transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-            }}
-          >
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, y: 30, scale: 0.82 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{
-                opacity: 0,
-                y: -40,
-                scale: 0.92,
-                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
-              }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none mb-4 select-none">
-                <span className="text-slate-900">pilot</span>
-                <span className="text-red-600">recognition</span>
-                <span className="text-slate-900">.com</span>
-              </h1>
-              <p className="text-sm md:text-base text-slate-400 tracking-[0.2em] uppercase font-medium select-none">
-                connecting pilots to the industry
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Persistent dark background — prevents white flash during transitions */}
       <div
         style={{

@@ -114,6 +114,15 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
   );
 
   useEffect(() => {
+    console.log('[DepartureBriefing] component mounted');
+    return () => console.log('[DepartureBriefing] component unmounted');
+  }, []);
+
+  useEffect(() => {
+    console.log('[DepartureBriefing] isOpen changed:', isOpen, 'phase:', phase);
+  }, [isOpen, phase]);
+
+  useEffect(() => {
     if (!isOpen) return;
     const target = PHASES[phase].target;
     if (!target) return;
@@ -187,6 +196,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
       } catch {
         // ignore storage errors
       }
+      window.dispatchEvent(new CustomEvent('app:onboardingComplete'));
       onClose();
     } else {
       setPhase((p) => p + 1);
@@ -231,7 +241,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
         height: targetRect.height,
         borderRadius: targetBorderRadius,
         boxShadow:
-          '0 0 0 9999px rgba(2, 6, 23, 0.25), 0 0 0 4px rgba(255,255,255,0.9), 0 0 32px 8px rgba(255,255,255,0.35)',
+          '0 0 0 4px rgba(255,255,255,0.9), 0 0 32px 8px rgba(255,255,255,0.35)',
       }}
     />
   );
@@ -244,7 +254,33 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
   };
 
   const briefingContent = (
-    <div className="fixed inset-0 z-[9997] flex items-center justify-center px-4 py-6">
+    <motion.div
+      className="fixed inset-0 z-[9997] flex items-center justify-center px-4 py-6"
+      initial={{ opacity: 0, scale: 0.88, y: 60 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{
+        duration: 1.1,
+        ease: [0.22, 1, 0.36, 1] as const,
+      }}
+      onAnimationStart={() => console.log('[DepartureBriefing] main materialize animation started')}
+      onAnimationComplete={() => console.log('[DepartureBriefing] main materialize animation completed')}
+      onUpdate={(latest) => {
+        if (Math.random() > 0.92) {
+          console.log('[DepartureBriefing] main materialize onUpdate:', latest);
+        }
+      }}
+    >
+      {/* Rich materialize glow backdrop */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as const }}
+        style={{
+          background:
+            'radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.18) 0%, rgba(15, 23, 42, 0.45) 50%, transparent 80%)',
+        }}
+      />
       <style>{`
         @keyframes pulse-glow {
           0% {
@@ -259,11 +295,12 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
         }
       `}</style>
 
+
       {/* Background dim overlay — blurred everywhere except the spotlighted target */}
       {current.target === null || !targetRect ? (
         <div
           className="absolute inset-0"
-          style={{ background: 'rgba(8, 10, 15, 0.65)', backdropFilter: 'blur(4px)' }}
+          style={{ background: 'rgba(8, 10, 15, 0.65)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }}
         />
       ) : (
         <>
@@ -275,7 +312,6 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
               right: 0,
               height: targetRect.top,
               background: 'rgba(8, 10, 15, 0.65)',
-              backdropFilter: 'blur(4px)',
             }}
           />
           <div
@@ -286,7 +322,6 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
               right: 0,
               height: window.innerHeight - targetRect.bottom,
               background: 'rgba(8, 10, 15, 0.65)',
-              backdropFilter: 'blur(4px)',
             }}
           />
           <div
@@ -297,7 +332,6 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
               width: targetRect.left,
               height: targetRect.height,
               background: 'rgba(8, 10, 15, 0.65)',
-              backdropFilter: 'blur(4px)',
             }}
           />
           <div
@@ -308,7 +342,6 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
               width: window.innerWidth - targetRect.right,
               height: targetRect.height,
               background: 'rgba(8, 10, 15, 0.65)',
-              backdropFilter: 'blur(4px)',
             }}
           />
         </>
@@ -367,9 +400,12 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
           >
             {/* Hero image */}
             {current.image && (
-              <div
+              <motion.div
                 className="relative w-full overflow-hidden"
                 style={{ height: isMobile ? '220px' : '320px' }}
+                initial={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as const, delay: 0.2 }}
               >
                 <img
                   src={current.image}
@@ -383,7 +419,12 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                       'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 100%)',
                   }}
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 p-6 md:p-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const, delay: 0.5 }}
+                >
                   <h1
                     className="text-white text-3xl md:text-4xl font-bold tracking-tight"
                     style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
@@ -396,35 +437,55 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                   >
                     One platform. Three domains. Your pilot career.
                   </p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
 
             {/* Content column */}
             <div className="px-6 py-8 md:px-12 md:py-10 text-center">
               {/* Step indicator */}
-              <div className="mb-6">
+              <motion.div
+                className="mb-6"
+                initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const, delay: 0.55 }}
+              >
                 <span className="text-[11px] font-black tracking-[0.25em] text-sky-400 uppercase">
                   Getting Started
                 </span>
                 <span className="text-[11px] font-bold text-white/40 ml-3">1/5</span>
-              </div>
+              </motion.div>
 
               {/* Main title */}
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <motion.h2
+                className="text-2xl md:text-3xl font-bold text-white mb-4"
+                initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const, delay: 0.65 }}
+              >
                 {current.title}
                 {current.titleHighlight && (
                   <span className="text-red-500">{current.titleHighlight}</span>
                 )}
-              </h2>
+              </motion.h2>
 
               {/* Main body */}
-              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto mb-8">
+              <motion.p
+                className="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto mb-8"
+                initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const, delay: 0.75 }}
+              >
                 {renderBody(current.body)}
-              </p>
+              </motion.p>
 
               {/* Action buttons */}
-              <div className="flex items-center justify-center gap-4">
+              <motion.div
+                className="flex items-center justify-center gap-4"
+                initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const, delay: 0.85 }}
+              >
                 <button
                   onClick={handleNext}
                   className="relative flex items-center justify-center gap-1 px-7 py-3 rounded-full text-sm font-bold text-white transition-all overflow-hidden"
@@ -449,19 +510,29 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                 >
                   Skip
                 </button>
-              </div>
+              </motion.div>
             </div>
           </div>
         ) : !isMobile ? (
           /* Desktop spotlight tooltip */
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl shadow-slate-950/30 rounded-2xl overflow-hidden w-[460px]">
-            {current.showcaseImage && (
-              <div className="relative h-52 bg-slate-900">
-                <img
-                  src={current.showcaseImage}
-                  alt={current.showcaseTitle}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={phase}
+              className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl shadow-slate-950/30 rounded-2xl overflow-hidden w-[460px]"
+              initial={{ opacity: 0, filter: 'blur(16px)', scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', scale: 1, y: 0 }}
+              exit={{ opacity: 0, filter: 'blur(8px)', scale: 0.95, y: -20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+              onAnimationStart={() => console.log('[DepartureBriefing] spotlight tooltip materialize started, phase:', phase)}
+              onAnimationComplete={() => console.log('[DepartureBriefing] spotlight tooltip materialize completed, phase:', phase)}
+            >
+              {current.showcaseImage && (
+                <div className="relative h-52 bg-slate-900">
+                  <img
+                    src={current.showcaseImage}
+                    alt={current.showcaseTitle}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 {current.target !== '.pilot-shortage-card-anchor' &&
                   current.target !== 'home-access-recognition' && (
                     <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -533,7 +604,8 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
+        </AnimatePresence>
         ) : (
           /* Mobile showcase modal — the card animates into the tour */
           <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl shadow-slate-950/30 overflow-hidden">
@@ -545,6 +617,8 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -40, scale: 0.95 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  onAnimationStart={() => console.log('[DepartureBriefing] mobile showcase materialize started, phase:', phase)}
+                  onAnimationComplete={() => console.log('[DepartureBriefing] mobile showcase materialize completed, phase:', phase)}
                 >
                   <div className="w-full rounded-t-2xl overflow-hidden">
                     <div className="relative h-48 bg-slate-900">
@@ -634,8 +708,10 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 
+  if (!isOpen) return null;
+  console.log('[DepartureBriefing] rendering portal, isOpen:', isOpen, 'phase:', phase);
   return createPortal(briefingContent, document.body);
 };

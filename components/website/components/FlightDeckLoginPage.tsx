@@ -136,6 +136,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     try {
       // Auth0 handles the email/passwordless flow; the callback routes to platform or onboarding.
+      console.log('[FlightDeckLogin] initiating OTP loginWithRedirect');
       await loginWithRedirect();
       setOtpSent(true);
       startResendTimer();

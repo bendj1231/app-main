@@ -98,6 +98,7 @@ import { AtlasCVTab } from './unified-platform/tabs/AtlasCVTab';
 import { EventsTab } from './unified-platform/tabs/EventsTab';
 import { NewsroomTab } from './unified-platform/tabs/NewsroomTab';
 import { SettingsTab } from './unified-platform/tabs/SettingsTab';
+import { UnifiedPlatformWelcomeScreen } from './unified-platform/UnifiedPlatformWelcomeScreen';
 import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatusTab';
 import { VerificationRecurrencyTab } from './unified-platform/tabs/VerificationRecurrencyTab';
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
@@ -536,12 +537,20 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             const ageHours = (now - cachedAt) / (1000 * 60 * 60);
             if (ageHours < 24) {
               const payload = cachedRecord?.payload || cached;
-              setProfileData((payload as { profileData?: ProfileData | null }).profileData || null);
+              const cachedProfileData = (payload as { profileData?: ProfileData | null }).profileData || null;
+              setProfileData(cachedProfileData);
               setWalletChecks((payload as { walletChecks?: WalletCheck[] }).walletChecks || []);
               setCredentials(
                 (payload as { credentials?: Record<string, unknown>[] }).credentials || []
               );
               setNotifCount((payload as { notifCount?: number }).notifCount || 0);
+              if (cachedProfileData?.first_name) {
+                window.dispatchEvent(
+                  new CustomEvent('app:profileLoaded', {
+                    detail: { firstName: cachedProfileData.first_name },
+                  })
+                );
+              }
               console.log('[dashboard] loaded from IndexedDB cache');
               return; // Valid cache — skip Worker call
             }
@@ -611,6 +620,13 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         if (receipts) setWalletChecks(receipts);
         if (credentialList) setCredentials(credentialList);
         setNotifCount(0);
+        if (profileDataState.first_name) {
+          window.dispatchEvent(
+            new CustomEvent('app:profileLoaded', {
+              detail: { firstName: profileDataState.first_name },
+            })
+          );
+        }
 
         // Cache in IndexedDB (persists across browser sessions)
         await cacheBatch(cacheKey, {
@@ -1091,10 +1107,13 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  console.log('[UnifiedPilotPlatform] render, activeTab:', activeTab, 'firstName:', profileData?.first_name);
+
   return (
     <div
       className={`relative flex flex-col font-sans ${activeTab === 'home' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}
     >
+      <UnifiedPlatformWelcomeScreen firstName={profileData?.first_name} />
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       {activeTab !== 'pilot-shortage-support' && (
         <div className="fixed inset-0 z-0">

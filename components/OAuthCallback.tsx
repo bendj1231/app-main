@@ -114,10 +114,12 @@ export const OAuthCallback = () => {
         if (hasProfile) {
           sessionStorage.removeItem('auth0_return_to');
           setProfileCreated(true);
-          console.log('[OAuthCallback] Profile found — redirecting to /platform');
+          try { sessionStorage.setItem('pr_post_login_splash', '1'); } catch {}
+          console.log('[OAuthCallback] Profile found — redirecting to /platform, flag set');
           navigate('/platform', { replace: true });
           return;
         }
+        console.log('[OAuthCallback] No profile found, falling through to returnTo/onboarding');
 
         // ─── STEP 2: No profile → follow returnTo or default to onboarding ───
         const returnTo = sessionStorage.getItem('auth0_return_to');
@@ -125,7 +127,11 @@ export const OAuthCallback = () => {
         if (returnTo) {
           sessionStorage.removeItem('auth0_return_to');
           setProfileCreated(true);
-          console.log('[OAuthCallback] Redirecting to returnTo:', returnTo);
+          const isPlatformReturnTo = returnTo === '/platform' || returnTo.startsWith('/platform');
+          if (isPlatformReturnTo) {
+            try { sessionStorage.setItem('pr_post_login_splash', '1'); } catch {}
+          }
+          console.log('[OAuthCallback] Redirecting to returnTo:', returnTo, 'isPlatformReturnTo:', isPlatformReturnTo, 'flag set:', isPlatformReturnTo);
           navigate(returnTo, { replace: true });
           return;
         }
@@ -163,7 +169,10 @@ export const OAuthCallback = () => {
         if (isPilotTerminal && target !== '/platform') {
           target = '/';
         }
-        console.log('[OAuthCallback] Final navigation target:', target);
+        if (target === '/platform') {
+          try { sessionStorage.setItem('pr_post_login_splash', '1'); } catch {}
+        }
+        console.log('[OAuthCallback] Final navigation target:', target, 'flag set:', target === '/platform');
         navigate(target, { replace: true });
       } catch (err) {
         console.error('Unexpected OAuth callback error:', err);
@@ -209,35 +218,23 @@ export const OAuthCallback = () => {
     );
   }
 
+  // Match the Unified Platform dark-mode background so the Auth0 redirect
+  // feels like a seamless transition into the app.
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      background: 'radial-gradient(ellipse at center, #0f172a 0%, #020617 100%)'
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        {/* Signature red spinner */}
-        <div style={{
-          width: '48px',
-          height: '48px',
-          border: '3px solid rgba(220, 38, 38, 0.15)',
-          borderTopColor: '#dc2626',
-          borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite',
-          margin: '0 auto 20px'
-        }}></div>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>
-          {isLoading ? 'Processing Authentication...' : 'Setting up your profile...'}
-        </h2>
-        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem' }}>Please wait while we complete your sign-in...</p>
-      </div>
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+    <div className="fixed inset-0 z-0 overflow-hidden bg-slate-950">
+      {/* Base gradient */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }}
+      />
+      {/* Atmospheric overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+      <div className="absolute inset-0 backdrop-blur-[1px] bg-slate-900/10" />
+      {/* Vignette */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }}
+      />
     </div>
   );
 };

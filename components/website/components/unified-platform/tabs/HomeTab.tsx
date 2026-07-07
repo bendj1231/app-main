@@ -53,6 +53,7 @@ export const HomeTab: React.FC<{
   const dismissWelcome = () => {
     setWelcomeDismissed(true);
     try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
+    window.dispatchEvent(new CustomEvent('app:onboardingComplete'));
   };
   const [onboardingOpen, setOnboardingOpen] = React.useState(false);
   const [onboardingStep, setOnboardingStep] = React.useState(1);
@@ -63,16 +64,31 @@ export const HomeTab: React.FC<{
 
   React.useEffect(() => {
     if (!tourDismissed) {
-      const timer = setTimeout(() => setShowWelcomeTour(true), 600);
+      const timer = setTimeout(() => {
+        console.log('[HomeTab] legacy WelcomeGetStartedModal opening');
+        setShowWelcomeTour(true);
+      }, 600);
       return () => clearTimeout(timer);
     }
   }, [tourDismissed]);
 
+  React.useEffect(() => {
+    console.log('[HomeTab] showWelcomeTour changed:', showWelcomeTour);
+  }, [showWelcomeTour]);
+
   // Departure Briefing spotlight tour
-  const [showDepartureBriefing, setShowDepartureBriefing] = React.useState(() => {
-    // Always show during development; later read from localStorage
-    return true;
-  });
+  const [showDepartureBriefing, setShowDepartureBriefing] = React.useState(false);
+  React.useEffect(() => {
+    console.log('[HomeTab] showDepartureBriefing changed:', showDepartureBriefing);
+  }, [showDepartureBriefing]);
+  React.useEffect(() => {
+    const onIntroComplete = () => {
+      console.log('[HomeTab] app:introComplete received, opening DepartureBriefing. Current showDepartureBriefing:', showDepartureBriefing);
+      setShowDepartureBriefing(true);
+    };
+    window.addEventListener('app:introComplete', onIntroComplete);
+    return () => window.removeEventListener('app:introComplete', onIntroComplete);
+  }, []);
   const navigateFromBriefing = (tabId: string) => {
     setShowDepartureBriefing(false);
     setTab(tabId as TabId);
@@ -96,6 +112,14 @@ export const HomeTab: React.FC<{
   const [obVaultLinked, setObVaultLinked] = React.useState(false);
   const [obCAA, setObCAA] = React.useState(profile?.caa_region ?? '');
   const [obATOs, setObATOs] = React.useState<string[]>(profile?.ato_name ? [profile.ato_name] : ['']);
+
+  // Welcome loading screen before the main card materializes
+  const [showWelcomeText, setShowWelcomeText] = React.useState(true);
+  React.useEffect(() => {
+    if (!profile) return;
+    const timer = setTimeout(() => setShowWelcomeText(false), 1800);
+    return () => clearTimeout(timer);
+  }, [profile?.id]);
   const [obLogbookProvider, setObLogbookProvider] = React.useState(profile?.logbook_provider ?? '');
   const [obHoursRaw, setObHoursRaw] = React.useState('');
   const [obHoursHash, setObHoursHash] = React.useState('');
@@ -523,17 +547,49 @@ export const HomeTab: React.FC<{
         initial="hidden"
         animate="visible"
       >
-      <motion.div variants={itemVariants}>
-        {verificationDone && profile ? (
+      <motion.div variants={itemVariants} className="space-y-3">
+        {showWelcomeText ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center py-10 text-center"
+          >
+            <p className="text-xs font-bold tracking-[0.3em] uppercase text-slate-500 mb-2">RecognitionOS</p>
+            <h2 className="text-2xl font-black text-white">
+              Welcome{(() => {
+                const name = profile?.first_name || profile?.display_name || profile?.full_name || auth0User?.name || currentUser?.displayName || '';
+                const first = String(name).split(' ')[0].replace(/@.*/, '').replace(/^[a-z]/, c => c.toUpperCase());
+                return first ? `, ${first}` : '';
+              })()}
+            </h2>
+            <p className="text-sm text-slate-400 mt-1">Loading your pilot dashboard...</p>
+          </motion.div>
+        ) : verificationDone && profile ? (
           <PilotReferralShare userId={profile?.id} compact />
         ) : (
-          <GettingStartedBar
-            steps={steps}
-            onStepClick={(tab) => setTab(tab as TabId)}
-            isGuest={!isAuthenticated}
-            onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-            isMobile={isMobile}
-          />
+          <>
+            <div className="px-2">
+              <h2 className="text-lg font-bold text-white">
+                Welcome{(() => {
+                  const name = profile?.first_name || profile?.display_name || profile?.full_name || auth0User?.name || currentUser?.displayName || '';
+                  const first = String(name).split(' ')[0].replace(/@.*/, '').replace(/^[a-z]/, c => c.toUpperCase());
+                  return first ? `, ${first}` : '';
+                })()}
+              </h2>
+              <p className="text-sm text-slate-400">
+                One platform. Three domains. Your pilot career. Complete the steps below to unlock your full profile.
+              </p>
+            </div>
+            <GettingStartedBar
+              steps={steps}
+              onStepClick={(tab) => setTab(tab as TabId)}
+              isGuest={!isAuthenticated}
+              onGuestCta={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+              isMobile={isMobile}
+            />
+          </>
         )}
       </motion.div>
 
@@ -2067,7 +2123,6 @@ export const HomeTab: React.FC<{
 
       {/* Departure Briefing spotlight tour */}
       <DepartureBriefing
-        key={showDepartureBriefing ? 'departure-briefing-open' : 'departure-briefing-closed'}
         isOpen={showDepartureBriefing}
         onClose={() => setShowDepartureBriefing(false)}
         onNavigateToTab={navigateFromBriefing}

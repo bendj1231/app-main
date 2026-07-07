@@ -53,8 +53,13 @@ export const WelcomeGetStartedModal: React.FC<WelcomeGetStartedModalProps> = ({
   }, []);
 
   useEffect(() => {
+    console.log('[WelcomeGetStartedModal] isOpen changed:', isOpen);
     if (isOpen) setStep(0);
   }, [isOpen]);
+
+  useEffect(() => {
+    console.log('[WelcomeGetStartedModal] step changed:', step);
+  }, [step]);
 
   if (!mounted || !isOpen) return null;
 
@@ -226,7 +231,9 @@ export const useWelcomeModal = () => {
   const [dismissed, setDismissed] = useState(() => {
     if (ALWAYS_SHOW_WELCOME) return false;
     try {
-      return localStorage.getItem(STORAGE_KEY) === '1';
+      const stored = localStorage.getItem(STORAGE_KEY) === '1';
+      console.log('[useWelcomeModal] dismissed from localStorage:', stored);
+      return stored;
     } catch {
       return false;
     }
@@ -242,6 +249,7 @@ export const useWelcomeModal = () => {
     try {
       localStorage.setItem(STORAGE_KEY, '1');
     } catch {}
+    window.dispatchEvent(new CustomEvent('app:onboardingComplete'));
   };
 
   return { dismissed: ALWAYS_SHOW_WELCOME ? false : dismissed, dismiss };
