@@ -17,7 +17,7 @@ interface Phase {
   body: string;
   button: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  placement?: 'above' | 'below' | 'left' | 'right' | 'top' | 'bottom' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
+  placement?: 'above' | 'below' | 'left' | 'right';
   image?: string;
   navigateTab?: string;
   navigateLabel?: string;
@@ -54,12 +54,12 @@ const PHASES: Phase[] = [
     showcaseAccent: 'from-cyan-500/80 to-blue-400/80',
   },
   {
-    target: 'discover-pathways-card',
+    target: 'home-discover-pathways',
     title: '3. Discover Pathways',
     body: 'This card opens your career pathways. Tap it to navigate to the pathways tab, where the system analyzes your profile data against current global airline requirements to generate your percentage-matched roles.',
     button: 'Next',
     icon: Map,
-    placement: 'top-start',
+    placement: 'above',
     navigateTab: 'pathways',
     navigateLabel: 'Go to Pathways',
     showcaseTitle: 'Discover Pathways',
@@ -69,7 +69,7 @@ const PHASES: Phase[] = [
   },
   {
     target: 'home-pilot-shortage',
-    title: '3. The Pilot Shortage',
+    title: '4. The Pilot Shortage',
     body: 'This is the advocacy layer. Tap this card to navigate to pilotshortage.org where we publish the data forcing market transparency across the industry.',
     button: 'Next',
     icon: ShieldCheck,
@@ -83,7 +83,7 @@ const PHASES: Phase[] = [
   },
   {
     target: 'home-access-recognition',
-    title: '4. Access Recognition',
+    title: '5. Access Recognition',
     body: 'Start building your verified logbook here. Tap this card to navigate to the verification tab and add your licenses, hours, and ratings.',
     button: 'Complete Briefing',
     icon: User,
@@ -140,9 +140,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
 
     const update = () => {
       if (!el || !document.contains(el)) {
-        el = document.querySelector(
-          target.startsWith('.') ? target : `[data-tour-target="${target}"]`
-        ) as HTMLElement | null;
+        el = document.querySelector(`[data-tour-target="${target}"]`) as HTMLElement | null;
         if (!el) {
           rafId = requestAnimationFrame(update);
           return;
@@ -232,52 +230,12 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
     />
   );
 
-  // Position the floating message based on the target and placement
-  const tooltipPosition: React.CSSProperties = (() => {
-    if (current.target === null || !targetRect) {
-      return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
-    }
-
-    const MARGIN = 20;
-    const placement = current.placement;
-
-    switch (placement) {
-      case 'top-start':
-        return {
-          top: targetRect.top - MARGIN,
-          left: targetRect.left,
-          transform: 'translate(0, -100%)',
-        };
-      case 'left':
-        return {
-          top: targetRect.top + targetRect.height / 2,
-          left: targetRect.left - MARGIN,
-          transform: 'translate(-100%, -50%)',
-        };
-      case 'right':
-        return {
-          top: targetRect.top + targetRect.height / 2,
-          left: targetRect.right + MARGIN,
-          transform: 'translate(0, -50%)',
-        };
-      case 'above':
-      case 'top':
-        return {
-          top: targetRect.top - MARGIN,
-          left: targetRect.left + targetRect.width / 2,
-          transform: 'translate(-50%, -100%)',
-        };
-      case 'below':
-      case 'bottom':
-        return {
-          top: targetRect.bottom + MARGIN,
-          left: targetRect.left + targetRect.width / 2,
-          transform: 'translate(-50%, 0)',
-        };
-      default:
-        return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
-    }
-  })();
+  // Position the floating message centered in the viewport
+  const tooltipPosition: React.CSSProperties = {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
 
   const briefingContent = (
     <div className="fixed inset-0 z-[9997] flex items-center justify-center px-4 py-6">
@@ -352,60 +310,22 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
 
       {!isMobile && spotlight}
 
-      {/* Arrow indicator pointing from the target toward the tooltip */}
+      {/* Arrow indicator connecting the spotlight to the centered tooltip */}
       {!isMobile && targetRect && current.target !== null && (
         <div
           className="fixed z-[9998] pointer-events-none"
           style={(() => {
-            const MARGIN = 20;
-            const placement = current.placement;
-            let left = targetRect.left + targetRect.width / 2;
-            let top = targetRect.top - MARGIN / 2;
-            let rotation = 180;
-
-            switch (placement) {
-              case 'top-start':
-                left = targetRect.left + 24;
-                top = targetRect.top - MARGIN / 2;
-                rotation = 180;
-                break;
-              case 'left':
-                left = targetRect.left - MARGIN / 2;
-                top = targetRect.top + targetRect.height / 2;
-                rotation = 0;
-                break;
-              case 'right':
-                left = targetRect.right + MARGIN / 2;
-                top = targetRect.top + targetRect.height / 2;
-                rotation = 180;
-                break;
-              case 'above':
-              case 'top':
-                left = targetRect.left + targetRect.width / 2;
-                top = targetRect.top - MARGIN / 2;
-                rotation = 180;
-                break;
-              case 'below':
-              case 'bottom':
-                left = targetRect.left + targetRect.width / 2;
-                top = targetRect.bottom + MARGIN / 2;
-                rotation = 0;
-                break;
-              default:
-                const cx = window.innerWidth / 2;
-                const cy = window.innerHeight / 2;
-                const tx = targetRect.left + targetRect.width / 2;
-                const ty = targetRect.top + targetRect.height / 2;
-                left = (tx + cx) / 2;
-                top = (ty + cy) / 2;
-                rotation = Math.atan2(cy - top, cx - left) * (180 / Math.PI) - 90;
-                break;
-            }
-
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            const tx = targetRect.left + targetRect.width / 2;
+            const ty = targetRect.top + targetRect.height / 2;
+            const midX = (tx + cx) / 2;
+            const midY = (ty + cy) / 2;
+            const angle = Math.atan2(cy - midY, cx - midX) * (180 / Math.PI) - 90;
             return {
-              left,
-              top,
-              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+              left: midX,
+              top: midY,
+              transform: `translate(-50%, -50%) rotate(${angle}deg)`,
               width: 0,
               height: 0,
               borderLeft: '8px solid transparent',
@@ -481,7 +401,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                 <span className="text-[11px] font-black tracking-[0.25em] text-sky-400 uppercase">
                   Getting Started
                 </span>
-                <span className="text-[11px] font-bold text-white/40 ml-3">1/4</span>
+                <span className="text-[11px] font-bold text-white/40 ml-3">1/5</span>
               </div>
 
               {/* Main title */}
