@@ -471,11 +471,11 @@ export const DashboardTab: React.FC<{
     <div className="space-y-8 px-6 lg:px-12 xl:px-16">
       <div className="relative">
         <h2 className="text-3xl font-serif text-white tracking-wide mb-2">Recognition Dashboard</h2>
-        <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
+        <div className="h-[2px] bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
       </div>
 
       {/* Recognition AI Chat */}
-      <RecognitionAIChat profile={profile} />
+      <RecognitionAIChat profile={profile as Record<string, unknown>} />
 
       {/* Quick Access Dashboard */}
       <div
@@ -488,12 +488,17 @@ export const DashboardTab: React.FC<{
           <Zap size={22} className="text-amber-400" />
           <h3 className="text-xl font-bold text-white">» QUICK ACCESS</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch auto-rows-fr">
           {/* Flight Bag */}
           <button
             onClick={() => setTab?.('logbook' as TabId)}
-            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{ background: '#ffffff' }}
+            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
+              backdropFilter: 'blur(16px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
+            }}
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
@@ -501,7 +506,7 @@ export const DashboardTab: React.FC<{
             >
               <Briefcase size={24} style={{ color: '#ffffff' }} />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1 flex flex-col">
               <h4 className="text-slate-900 font-bold text-base mb-2">Flight Bag</h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -536,8 +541,13 @@ export const DashboardTab: React.FC<{
           {/* Profile */}
           <button
             onClick={() => setTab?.('profile' as TabId)}
-            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{ background: '#ffffff' }}
+            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
+              backdropFilter: 'blur(16px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
+            }}
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
@@ -545,7 +555,7 @@ export const DashboardTab: React.FC<{
             >
               <User size={24} style={{ color: '#ffffff' }} />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1 flex flex-col">
               <h4 className="text-slate-900 font-bold text-base mb-2">Profile</h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -615,8 +625,13 @@ export const DashboardTab: React.FC<{
           {/* Inbox */}
           <button
             onClick={() => setTab?.('inbox' as TabId)}
-            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{ background: '#ffffff' }}
+            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
+              backdropFilter: 'blur(16px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
+            }}
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
@@ -624,7 +639,7 @@ export const DashboardTab: React.FC<{
             >
               <Mail size={24} style={{ color: '#ffffff' }} />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1 flex flex-col">
               <h4 className="text-slate-900 font-bold text-base mb-2">Inbox</h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -659,8 +674,13 @@ export const DashboardTab: React.FC<{
           {/* Recognition+ */}
           <button
             onClick={() => setTab?.('recognition-plus' as TabId)}
-            className="group flex flex-col items-start gap-3 p-5 rounded-xl border border-white/20 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{ background: '#ffffff' }}
+            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
+              backdropFilter: 'blur(16px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
+            }}
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
@@ -668,7 +688,7 @@ export const DashboardTab: React.FC<{
             >
               <Star size={24} style={{ color: '#ffffff' }} />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1 flex flex-col">
               <h4 className="text-slate-900 font-bold text-base mb-2">Recognition+</h4>
               {(() => {
                 const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free')
@@ -727,7 +747,7 @@ export const DashboardTab: React.FC<{
       <AirlinePathwayCarousel profile={profile} />
 
       {/* Interactive Profile Preview — glassy SaaS command centre */}
-      <InteractiveProfilePreview profile={profile} setTab={setTab} onNavigate={onNavigate} />
+      <InteractiveProfilePreview profile={profile as any} setTab={setTab} onNavigate={onNavigate} />
 
       {/* Digital Logbook Hub */}
       <LogbookHub
@@ -785,7 +805,13 @@ export const DashboardTab: React.FC<{
               bar: 'bg-green-500',
             },
           ].map((p) => (
-            <div key={p.name} className="bg-slate-900/50 border border-slate-700 p-4">
+            <div key={p.name} className="p-4 rounded-xl" style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+              backdropFilter: 'blur(12px) saturate(1.1)',
+              WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+            }}>
               <div className="flex items-center justify-between mb-3">
                 <p.icon size={18} className={p.color} />
                 <span className={`text-xs px-2 py-1 font-bold uppercase ${p.bg}`}>{p.badge}</span>
@@ -811,9 +837,15 @@ export const DashboardTab: React.FC<{
           <Brain size={22} className="text-orange-400" />
           <h3 className="text-xl font-bold text-white">» EXAMINATION PORTAL</h3>
         </div>
-        <div className="bg-slate-900/50 border border-slate-700 p-6">
+        <div className="p-6 rounded-xl" style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+          backdropFilter: 'blur(12px) saturate(1.1)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+          border: '1px solid rgba(255,255,255,0.15)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+        }}>
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.25)' }}>
               <Brain size={22} className="text-orange-600" />
             </div>
             <div className="flex-1">

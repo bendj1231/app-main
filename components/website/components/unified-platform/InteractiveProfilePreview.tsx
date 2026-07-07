@@ -262,10 +262,16 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
       </AnimatePresence>
 
       {!isBooting && <div>
-      {/* Header */}
+      {/* Header — frosted glass */}
       <div
         className="px-5 py-4 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
+        style={{
+          background: 'linear-gradient(135deg, rgba(220,38,38,0.72), rgba(185,28,28,0.62))',
+          backdropFilter: 'blur(20px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(20px) saturate(1.2)',
+          borderBottom: '1px solid rgba(255,255,255,0.18)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 16px rgba(0,0,0,0.08)',
+        }}
       >
         <div className="flex items-center gap-2">
           <Zap size={18} style={{ color: '#ffffff' }} />
@@ -299,13 +305,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
       </div>
 
       <div className="flex flex-col md:flex-row">
-        {/* Sidebar */}
+        {/* Sidebar — frosted glass */}
         <aside
-          className="md:w-56 flex-shrink-0 border-b md:border-b-0 md:border-r border-white/10 p-4"
+          className="md:w-56 flex-shrink-0 border-b md:border-b-0 md:border-r border-white/15 p-4"
           style={{
-            background: 'linear-gradient(180deg, rgba(59,130,246,0.08), rgba(99,102,241,0.04))',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04))',
+            backdropFilter: 'blur(24px) saturate(1.1)',
+            WebkitBackdropFilter: 'blur(24px) saturate(1.1)',
           }}
         >
           {/* Nav tabs */}
@@ -384,43 +390,63 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Mini profile with verification status */}
-                <div className="flex items-start gap-3">
+                {/* Mini profile with verification status — frosted glass card */}
+                <div
+                  className="flex items-start gap-3 p-4 rounded-2xl"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
+                    backdropFilter: 'blur(16px) saturate(1.2)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+                    border: '1px solid rgba(255,255,255,0.22)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
+                  }}
+                >
                   <div
                     className="w-12 h-12 rounded-full flex items-center justify-center text-base font-black flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(220,38,38,0.85), rgba(185,28,28,0.85))',
+                      color: '#fff',
+                      border: '1px solid rgba(255,255,255,0.25)',
+                      boxShadow: '0 4px 12px rgba(220,38,38,0.25)',
+                    }}
                   >
                     {displayName.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-bold text-slate-800 truncate">{displayName}</p>
+                      <p className="text-sm font-bold text-slate-800 truncate" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}>{displayName}</p>
                       <span
                         className="text-[9px] font-black px-1.5 py-0.5 rounded-full border flex items-center gap-1"
                         style={{
-                          background: isVerified ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
+                          background: isVerified ? 'rgba(16,185,129,0.14)' : 'rgba(245,158,11,0.14)',
                           color: isVerified ? '#059669' : '#d97706',
-                          borderColor: isVerified ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)',
+                          borderColor: isVerified ? 'rgba(16,185,129,0.35)' : 'rgba(245,158,11,0.35)',
+                          backdropFilter: 'blur(4px)',
                         }}
                       >
                         {isVerified ? <CheckCircle size={10} /> : <Clock size={10} />}
                         {isVerified ? 'VERIFIED' : 'PENDING'}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 truncate">{profile?.email || 'No email'}</p>
+                    <p className="text-xs text-slate-500 truncate" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}>{profile?.email || 'No email'}</p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.06)' }}>
+                      <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
                         <div
                           className="h-full rounded-full transition-all"
-                          style={{ width: `${completionPct}%`, background: '#10b981' }}
+                          style={{ width: `${completionPct}%`, background: 'linear-gradient(90deg, #10b981, #34d399)' }}
                         />
                       </div>
-                      <span className="text-[10px] text-slate-400">{completionPct}% complete</span>
+                      <span className="text-[10px] font-black text-slate-500" style={{ textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}>{completionPct}% complete</span>
                     </div>
                     {!isVerified && (
                       <button
                         onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="mt-2 px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white bg-red-600 hover:bg-red-700 transition-all shadow-sm"
+                        className="mt-2 px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white transition-all shadow-sm hover:brightness-110"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(220,38,38,0.90), rgba(185,28,28,0.90))',
+                          border: '1px solid rgba(255,255,255,0.25)',
+                          boxShadow: '0 4px 12px rgba(220,38,38,0.25), inset 0 1px 0 rgba(255,255,255,0.2)',
+                        }}
                       >
                         Verify Identity →
                       </button>
@@ -442,8 +468,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     return (
                       <div
                         key={stat.label}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex flex-col"
-                        style={{ background: '#ffffff' }}
+                        className="rounded-xl p-3 border border-white/20 shadow-sm flex flex-col"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                          backdropFilter: 'blur(12px) saturate(1.1)',
+                          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                        }}
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
@@ -474,8 +505,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {/* Recent Activity */}
                   <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-4 border border-white/20 shadow-sm"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <div className="flex items-center gap-2 mb-3">
                       <Zap size={14} className="text-amber-500" />
@@ -504,8 +540,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
 
                   {/* Qualifications with granular status indicators */}
                   <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-4 border border-white/20 shadow-sm"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <div className="flex items-center gap-2 mb-3">
                       <Award size={14} className="text-emerald-500" />
@@ -556,8 +597,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
               >
                 {/* Submitted Pathways — interactive dense tracker */}
                 <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
+                  className="rounded-xl p-4 border border-white/20 shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                    backdropFilter: 'blur(12px) saturate(1.1)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -726,7 +772,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                                 </div>
                                 <div className="grid grid-cols-3 gap-2">
                                   {row.reqs.map((req, ri) => (
-                                    <div key={ri} className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 p-2">
+                                    <div key={ri} className="flex items-center gap-1.5 rounded-lg p-2" style={{ background: 'rgba(255,255,255,0.40)', border: '1px solid rgba(255,255,255,0.25)' }}>
                                       {req.met ? (
                                         <CheckCircle size={12} className="text-emerald-500" />
                                       ) : (
@@ -774,8 +820,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.2 } }}
                       transition={{ duration: 0.25 }}
-                      className="rounded-xl p-4 border border-amber-200 shadow-sm"
-                      style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(251,191,36,0.04))' }}
+                      className="rounded-xl p-4 border border-amber-200/40 shadow-sm"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(245,158,11,0.10), rgba(251,191,36,0.06))',
+                        backdropFilter: 'blur(12px) saturate(1.1)',
+                        WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                      }}
                     >
                       <div className="flex items-center gap-2 mb-4">
                         <Star size={14} className="text-amber-500" />
@@ -835,8 +886,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 </div>
                 {bookmarks.length === 0 ? (
                   <div
-                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-6 border border-white/20 shadow-sm text-center"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <Bookmark size={24} className="text-slate-300 mx-auto mb-2" />
                     <p className="text-sm font-bold text-slate-600">No bookmarks yet</p>
@@ -847,8 +903,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     {bookmarks.map((bm, i) => (
                       <div
                         key={i}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex items-center gap-3"
-                        style={{ background: '#ffffff' }}
+                        className="rounded-xl p-3 border border-white/20 shadow-sm flex items-center gap-3"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                          backdropFilter: 'blur(12px) saturate(1.1)',
+                          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                        }}
                       >
                         <div
                           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -887,8 +948,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 </div>
                 {comparisons.length === 0 ? (
                   <div
-                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-6 border border-white/20 shadow-sm text-center"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <BarChart3 size={24} className="text-slate-300 mx-auto mb-2" />
                     <p className="text-sm font-bold text-slate-600">No comparisons yet</p>
@@ -899,8 +965,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     {comparisons.map((comp, i) => (
                       <div
                         key={i}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm"
-                        style={{ background: '#ffffff' }}
+                        className="rounded-xl p-3 border border-white/20 shadow-sm"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                          backdropFilter: 'blur(12px) saturate(1.1)',
+                          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                        }}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-[11px] font-bold text-slate-800">Comparison #{i + 1}</p>

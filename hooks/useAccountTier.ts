@@ -32,7 +32,8 @@ export function useAccountTier(userId?: string | null): AccountTierState {
     async function loadTier() {
       try {
         const profile = await callApi<Record<string, unknown>>('getProfile', { id: userId });
-        const tier = (profile?.account_tier as AccountTier) || 'free';
+        const rawTier = ((profile?.account_tier || profile?.subscription_tier) as AccountTier) || 'free';
+        const tier = rawTier === 'plus' ? 'recognition_plus' : rawTier;
         if (!cancelled) {
           setState({
             tier,

@@ -82,7 +82,7 @@ const PHASES: Phase[] = [
     showcaseAccent: 'from-red-500/80 to-orange-400/80',
   },
   {
-    target: '.access-recognition-card-anchor',
+    target: 'home-access-recognition',
     title: '5. Access Recognition',
     body: 'This card initiates your secure credentials locker. Tap it to navigate to the verification matrix where you can upload, audit, and securely verify your active licenses, flight hours, and type ratings for global operators.',
     button: 'Complete Briefing',
@@ -121,7 +121,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
     let el: HTMLElement | null = null;
     let rafId: number;
     let observer: ResizeObserver | null = null;
-    let originalStyles: { position: string; zIndex: string; transform: string } | null = null;
+    let originalStyles: { position: string; zIndex: string; transform: string; boxShadow: string; borderRadius: string } | null = null;
 
     const cleanup = () => {
       cancelAnimationFrame(rafId);
@@ -188,7 +188,6 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
         // ignore storage errors
       }
       onClose();
-      onNavigateToTab('dashboard');
     } else {
       setPhase((p) => p + 1);
     }
@@ -464,7 +463,7 @@ export const DepartureBriefing: React.FC<DepartureBriefingProps> = ({
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 {current.target !== '.pilot-shortage-card-anchor' &&
-                  current.target !== '.access-recognition-card-anchor' && (
+                  current.target !== 'home-access-recognition' && (
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mb-2 shadow-lg">
                         <current.icon size={20} className="text-white" />

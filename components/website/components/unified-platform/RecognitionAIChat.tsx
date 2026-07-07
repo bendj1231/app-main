@@ -420,7 +420,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         {/* Left controls */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {!isPlus && (
-            <span className="text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border text-red-600 border-red-400/30 bg-red-400/10">
+            <span className="text-[10px] font-black tracking-wide px-2 py-0.5 rounded-full border text-white border-white/30 bg-slate-900/40">
               {requestsRemaining}/{FREE_DAILY_LIMIT} questions left today
             </span>
           )}
@@ -430,7 +430,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         <div className="text-center">
           <p className="text-2xl font-black tracking-wide">
             <span style={{ color: '#1e293b' }}>Recognition</span>
-            <span style={{ color: '#dc2626' }}> AI</span>
+            <span style={{ color: '#ffffff' }}> AI</span>
           </p>
           <p className="text-[10px] text-slate-400 mt-0.5">
             Get advice on your pathways, career goals, and network.
@@ -474,9 +474,10 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
                 msg.role === 'user'
                   ? {}
                   : {
-                      background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                      background: 'rgba(15,23,42,0.85)',
                       color: '#ffffff',
-                      boxShadow: '0 4px 12px rgba(59,130,246,0.35)',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                     }
               }
             >
@@ -500,9 +501,10 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
             <div
               className="rounded-xl px-4 py-3 flex items-center gap-2"
               style={{
-                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                background: 'rgba(15,23,42,0.85)',
                 color: '#ffffff',
-                boxShadow: '0 4px 12px rgba(59,130,246,0.35)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
               }}
             >
               <Loader2 size={14} className="text-amber-400 animate-spin" />
@@ -556,7 +558,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
                 : PLACEHOLDERS[placeholderIdx]
             }
             disabled={isLoading}
-            className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-[#222222] placeholder-slate-600 focus:outline-none"
           />
           {hasStarted ? (
             <button
@@ -570,7 +572,7 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
             <button
               onClick={() => handleSend()}
               disabled={!input.trim()}
-              className="px-4 py-2 rounded-lg text-sm font-black tracking-wide transition-all hover:scale-105 disabled:opacity-30 disabled:hover:scale-100 bg-red-600 hover:bg-red-500 text-white"
+              className="h-9 px-4 rounded-lg text-sm font-black tracking-wide flex items-center justify-center transition-all hover:scale-105 disabled:opacity-30 disabled:hover:scale-100 bg-red-600 hover:bg-red-500 text-white"
             >
               Search
             </button>

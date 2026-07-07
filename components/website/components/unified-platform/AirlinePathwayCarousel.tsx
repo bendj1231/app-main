@@ -278,9 +278,10 @@ export const AirlinePathwayCarousel: React.FC<{
 
   return (
     <div
-      className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl"
+      className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl rounded-xl"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 12px 40px rgba(0,0,0,0.12)',
       }}
     >
       <div className="flex items-center gap-3 mb-6">
@@ -305,15 +306,23 @@ export const AirlinePathwayCarousel: React.FC<{
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                 active
-                  ? 'bg-blue-500 text-white shadow-lg'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                  ? 'bg-blue-500/80 text-white shadow-lg border-blue-400/40'
+                  : 'bg-white/8 text-white/70 hover:bg-white/16 hover:text-white border-white/15'
               }`}
+              style={active ? {
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(59,130,246,0.25)',
+              } : {
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
             >
               {tab.label}
               <span
-                className={`ml-2 px-1.5 py-0.5 rounded text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-white/10 text-white/60'}`}
+                className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-white/10 text-white/60'}`}
               >
                 {count}
               </span>
@@ -361,33 +370,41 @@ export const AirlinePathwayCarousel: React.FC<{
                   <button
                     key={pathway.id}
                     onClick={() => handleSelect(pathway)}
-                    className={`flex-shrink-0 rounded-lg transition-all relative overflow-hidden text-left ${
-                      isSelected
-                        ? 'ring-2 ring-sky-500 border-sky-500/50 shadow-2xl'
-                        : 'hover:shadow-lg'
+                    className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
+                      isSelected ? 'shadow-2xl' : 'hover:shadow-lg'
                     }`}
                     style={{
-                      width: '160px',
-                      border: `2px solid ${isSelected ? 'rgba(14, 165, 233, 0.5)' : 'rgba(255,255,255,0.12)'}`,
-                      background: 'rgba(255,255,255,0.08)',
+                      width: '170px',
+                      border: `2px solid ${isSelected ? 'rgba(14, 165, 233, 0.55)' : 'rgba(255,255,255,0.18)'}`,
+                      background: isSelected ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.08)',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: isSelected
+                        ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 24px rgba(14,165,233,0.25)'
+                        : 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)',
                     }}
                     onMouseEnter={(e) => {
                       if (!isSelected) {
-                        e.currentTarget.style.background = 'rgba(255,255,255,0.18)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.16)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)';
+                        e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.1)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isSelected) {
                         e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                        e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)';
                       }
                     }}
                   >
-                    {/* Top: Logo on light background */}
+                    {/* Top: Logo on frosted light background */}
                     <div
-                      className="h-[85px] relative overflow-hidden flex items-center justify-center p-3"
-                      style={{ background: '#f3f4f6' }}
+                      className="h-[90px] relative overflow-hidden flex items-center justify-center p-3"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25))',
+                        borderBottom: '1px solid rgba(255,255,255,0.15)',
+                      }}
                     >
                       <img
                         src={pathway.logo}
@@ -399,23 +416,24 @@ export const AirlinePathwayCarousel: React.FC<{
                         }}
                       />
                     </div>
-                    {/* Bottom: Name and meta on dark bg */}
-                    <div className="p-3">
-                      <p className="text-sm font-bold text-white truncate mb-1">{pathway.name}</p>
-                      <div className="flex items-center justify-between text-[10px] text-white/60 mb-1.5">
+                    {/* Bottom: Name and meta on frosted bg */}
+                    <div className="p-3.5">
+                      <p className="text-sm font-bold text-white truncate mb-1" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{pathway.name}</p>
+                      <div className="flex items-center justify-between text-[10px] text-white/70 mb-2">
                         <span className="flex items-center gap-1">
                           <Clock size={10} /> {pathway.subtitle}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span
-                          className={`text-[10px] font-black uppercase px-1.5 py-0.5 rounded ${
+                          className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full border ${
                             pathway.match >= 85
-                              ? 'bg-emerald-500/20 text-emerald-300'
+                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-400/25'
                               : pathway.match >= 70
-                                ? 'bg-blue-500/20 text-blue-300'
-                                : 'bg-amber-500/20 text-amber-300'
+                                ? 'bg-blue-500/15 text-blue-300 border-blue-400/25'
+                                : 'bg-amber-500/15 text-amber-300 border-amber-400/25'
                           }`}
+                          style={{ backdropFilter: 'blur(4px)' }}
                         >
                           {pathway.match}% Match
                         </span>
@@ -432,13 +450,43 @@ export const AirlinePathwayCarousel: React.FC<{
             {/* Scroll arrows */}
             <button
               onClick={() => scrollBy(-1)}
-              className="absolute left-0 top-1/3 -translate-y-1/2 w-8 h-8 bg-slate-900/80 hover:bg-slate-900 border border-white/20 flex items-center justify-center z-10 transition-all rounded-full"
+              className="absolute left-0 top-1/3 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
+              style={{
+                background: 'rgba(255,255,255,0.12)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.22)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+              }}
             >
               <ChevronRight size={16} className="text-white rotate-180" />
             </button>
             <button
               onClick={() => scrollBy(1)}
-              className="absolute right-0 top-1/3 -translate-y-1/2 w-8 h-8 bg-slate-900/80 hover:bg-slate-900 border border-white/20 flex items-center justify-center z-10 transition-all rounded-full"
+              className="absolute right-0 top-1/3 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
+              style={{
+                background: 'rgba(255,255,255,0.12)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.22)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+              }}
             >
               <ChevronRight size={16} className="text-white" />
             </button>
@@ -447,7 +495,13 @@ export const AirlinePathwayCarousel: React.FC<{
       </div>
 
       {/* Insights footer */}
-      <div className="mt-6 p-4 bg-slate-900/30 border border-slate-700">
+      <div className="mt-6 p-4 rounded-xl" style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04))',
+        backdropFilter: 'blur(12px) saturate(1.1)',
+        WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+        border: '1px solid rgba(255,255,255,0.15)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+      }}>
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 bg-teal-400 rounded-full" />
           <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
