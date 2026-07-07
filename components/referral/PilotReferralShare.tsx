@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign, ArrowRight } from 'lucide-react';
@@ -14,6 +14,9 @@ interface ReferralStats {
   earned: number;
 }
 
+// Module-level counter for observability — we expect exactly one load per userId
+let referralRequestCount = 0;
+
 export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, compact }) => {
   const { callApi } = useWorkerAuth();
   const navigate = useNavigate();
@@ -22,13 +25,20 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<ReferralStats>({ signups: 0, subscribed: 0, earned: 0 });
+  const lastLoadedUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Skip if already loaded for this exact userId
+    if (!userId || lastLoadedUserIdRef.current === userId) return;
+    lastLoadedUserIdRef.current = userId;
     loadReferralCode();
   }, [userId]);
 
   const loadReferralCode = async () => {
     if (!userId) { setLoading(false); return; }
+
+    referralRequestCount += 1;
+    console.log(`[PilotReferralShare] loadReferralCode request #${referralRequestCount} for userId:`, userId);
 
     try {
       setLoading(true);
