@@ -81,6 +81,7 @@ const STUBBED_TABLES = new Set([
   'pilot_passkeys',
   'pilot_documents',
   'pilot_notifications',
+  'logbook_provider_sync',
 ]);
 
 function isStubbedQuery(action: string, params?: unknown): boolean {
