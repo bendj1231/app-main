@@ -311,7 +311,7 @@ export const QuickAccessPathways: React.FC<{
               className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                 active
                   ? 'bg-blue-500/80 text-white shadow-lg border-blue-400/40'
-                  : 'bg-white/12 text-slate-100 hover:bg-white/22 hover:text-white border-white/20'
+                  : 'bg-white/12 text-slate-50 hover:bg-white/22 hover:text-white border-white/20'
               }`}
               style={
                 active
@@ -385,39 +385,38 @@ export const QuickAccessPathways: React.FC<{
                     }`}
                     style={{
                       width: '170px',
-                      border: `2px solid ${isSelected ? 'rgba(14, 165, 233, 0.65)' : 'rgba(255,255,255,0.25)'}`,
-                      background: isSelected ? 'rgba(255,255,255,0.24)' : 'rgba(255,255,255,0.14)',
-                      backdropFilter: 'blur(12px) saturate(1.1)',
-                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
-                      boxShadow: isSelected
-                        ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 24px rgba(14,165,233,0.25)'
-                        : 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)',
+                      border: `1px solid ${isSelected ? 'rgba(14, 165, 233, 0.55)' : 'rgba(255,255,255,0.08)'}`,
+                      background: isSelected ? 'rgba(30, 41, 59, 0.55)' : 'rgba(30, 41, 59, 0.45)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
                     }}
                     onMouseEnter={(e) => {
                       if (!isSelected) {
-                        e.currentTarget.style.background = 'rgba(255,255,255,0.30)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.40)';
-                        e.currentTarget.style.boxShadow =
-                          'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.borderColor = 'rgba(226, 35, 26, 0.3)';
+                        e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.35)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isSelected) {
-                        e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
-                        e.currentTarget.style.boxShadow =
-                          'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.06)';
+                        e.currentTarget.style.transform = 'translateY(0px)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
                       }
                     }}
                   >
-                    {/* Top: Logo badge with frosted light background */}
+                    {/* Top: Clean white inner badge for non-transparent logos */}
                     <div
-                      className="h-[84px] mx-3 mt-3 rounded-md relative overflow-hidden flex items-center justify-center p-3"
+                      className="h-[68px] mx-3.5 mt-3.5 rounded-lg relative overflow-hidden flex items-center justify-center p-2"
                       style={{
                         background:
-                          'linear-gradient(135deg, rgba(255,255,255,0.52), rgba(255,255,255,0.28))',
-                        border: '1px solid rgba(255,255,255,0.22)',
-                        borderRadius: '6px',
+                          'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))',
+                        border: '1px solid rgba(255,255,255,0.25)',
+                        boxShadow:
+                          'inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.04)',
                       }}
                     >
                       <img
@@ -463,7 +462,7 @@ export const QuickAccessPathways: React.FC<{
                                 : pathway.match >= 70
                                   ? '#3B82F6'
                                   : '#F59E0B',
-                            border: `1px solid ${pathway.match >= 85 ? 'rgba(16, 185, 129, 0.2)' : pathway.match >= 70 ? 'rgba(59, 130, 246, 0.2)' : 'rgba(245, 158, 11, 0.2)'}`,
+                            border: `1px solid ${pathway.match >= 85 ? 'rgba(16, 185, 129, 0.25)' : pathway.match >= 70 ? 'rgba(59, 130, 246, 0.25)' : 'rgba(245, 158, 11, 0.25)'}`,
                           }}
                         >
                           {pathway.match}% Match
@@ -484,9 +483,9 @@ export const QuickAccessPathways: React.FC<{
               className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
               style={{
                 background: 'rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(4px)',
-                WebkitBackdropFilter: 'blur(4px)',
-                border: '1px solid rgba(255,255,255,0.25)',
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
+                border: '1px solid rgba(255,255,255,0.2)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
               }}
               onMouseEnter={(e) => {
@@ -505,9 +504,9 @@ export const QuickAccessPathways: React.FC<{
               className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
               style={{
                 background: 'rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(4px)',
-                WebkitBackdropFilter: 'blur(4px)',
-                border: '1px solid rgba(255,255,255,0.25)',
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
+                border: '1px solid rgba(255,255,255,0.2)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
               }}
               onMouseEnter={(e) => {
