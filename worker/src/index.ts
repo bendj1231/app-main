@@ -648,7 +648,15 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       ]);
 
       const licensure = (licensureResults?.[0] || null) as Record<string, unknown> | null;
-      const parsedLicensure = licensure?.license_data ? JSON.parse(licensure.license_data as string) : null;
+      let parsedLicensure: unknown = null;
+      if (licensure?.license_data) {
+        try {
+          parsedLicensure = JSON.parse(licensure.license_data as string);
+        } catch (e) {
+          console.error('[getDashboardData] Invalid license_data JSON for profile:', profileId, e);
+          parsedLicensure = null;
+        }
+      }
 
       // Convert is_read integer to read_at string for frontend compatibility
       const notifications = (notificationResults || []).map((n: any) => ({

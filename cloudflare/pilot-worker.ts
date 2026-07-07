@@ -647,7 +647,15 @@ async function handleAction(
       ]);
 
       const licensureRow = licensure as Record<string, unknown> | null;
-      const parsedLicensure = licensureRow?.['license_data'] ? JSON.parse(licensureRow['license_data'] as string) : null;
+      let parsedLicensure: unknown = null;
+      if (licensureRow?.['license_data']) {
+        try {
+          parsedLicensure = JSON.parse(licensureRow['license_data'] as string);
+        } catch (e) {
+          console.error('[getDashboardData] Invalid license_data JSON for profile:', profileId, e);
+          parsedLicensure = null;
+        }
+      }
 
       return {
         profile,
