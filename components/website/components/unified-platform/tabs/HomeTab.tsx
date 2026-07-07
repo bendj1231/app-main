@@ -628,7 +628,7 @@ export const HomeTab: React.FC<{
           {/* THE PILOT SHORTAGE — pilotshortage.org in-app */}
           <div
             data-tour-target="home-pilot-shortage"
-            className={`relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
+            className={`pilot-shortage-card-anchor relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
             onClick={() => onNavigate('pilotshortage')}
           >
             <div className="absolute inset-y-0 right-0 w-[48%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/images/set-04-screenshots/photo1.png')" }} />
