@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Zap, ChevronRight, Plane, Clock, Star, ArrowRight, Send } from 'lucide-react';
+import { Zap, ChevronRight, Plane, Star, ArrowRight, Send } from 'lucide-react';
 
 interface AirlineManifestEntry {
   name: string;
@@ -377,102 +377,78 @@ export const QuickAccessPathways: React.FC<{
               {displayedPathways.map((pathway) => {
                 const isSelected = selectedId === pathway.id;
                 return (
-                  <button
+                  <div
                     key={pathway.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => handleSelect(pathway)}
-                    className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left p-5 ${
-                      isSelected ? 'shadow-2xl' : 'hover:shadow-lg'
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSelect(pathway);
+                      }
+                    }}
+                    className={`relative flex flex-col justify-between flex-shrink-0 w-44 h-64 p-5 rounded-2xl border backdrop-blur-xl transition-all duration-300 group cursor-pointer shadow-lg shadow-black/20 text-left overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
+                      isSelected
+                        ? 'border-indigo-500/70 bg-slate-900/60'
+                        : 'border-slate-800/80 bg-slate-900/40 hover:border-indigo-500/50 hover:bg-slate-900/60 hover:-translate-y-1'
                     }`}
-                    style={{
-                      width: '170px',
-                      border: `1px solid ${isSelected ? 'rgba(14, 165, 233, 0.55)' : 'rgba(255,255,255,0.08)'}`,
-                      background: isSelected ? 'rgba(30, 41, 59, 0.55)' : 'rgba(30, 41, 59, 0.45)',
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                      borderRadius: '12px',
-                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
-                      transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                      boxSizing: 'border-box',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isSelected) {
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                        e.currentTarget.style.borderColor = 'rgba(226, 35, 26, 0.3)';
-                        e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.35)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isSelected) {
-                        e.currentTarget.style.transform = 'translateY(0px)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.25)';
-                      }
-                    }}
                   >
-                    {/* Top: Clean white inner badge for non-transparent logos */}
-                    <div
-                      className="h-[60px] rounded-lg relative overflow-hidden flex items-center justify-center p-2 mb-4"
-                      style={{
-                        background: '#FFFFFF',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        boxShadow:
-                          'inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.04)',
-                      }}
+                    {/* Star / bookmark at top-right */}
+                    <button
+                      type="button"
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute top-3 right-3 z-10 transition-colors"
+                      aria-label={pathway.submitted ? 'Submitted pathway' : 'Submit interest'}
                     >
+                      <Star
+                        size={14}
+                        className={`transition-colors ${
+                          pathway.submitted
+                            ? 'text-amber-400 fill-amber-400'
+                            : 'text-slate-500 hover:text-amber-400'
+                        }`}
+                      />
+                    </button>
+
+                    {/* Logo container: clean white badge */}
+                    <div className="flex items-center justify-center w-full h-20 bg-white rounded-xl p-3 shadow-inner shadow-black/5">
                       <img
                         src={pathway.logo}
                         alt={pathway.name}
-                        className="w-full h-full object-contain"
+                        className="max-h-full max-w-full object-contain"
                         referrerPolicy="no-referrer"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
                     </div>
-                    {/* Bottom: Name and meta */}
-                    <div>
-                      <p
-                        className="text-sm font-bold text-white truncate mb-1"
-                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}
-                      >
-                        {pathway.name}
-                      </p>
-                      <div
-                        className="flex items-center justify-between text-[10px] text-[#FFFFFF] mb-2"
-                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.18)' }}
-                      >
-                        <span className="flex items-center gap-1">
-                          <Clock size={10} /> {pathway.subtitle}
-                        </span>
+
+                    {/* Content */}
+                    <div className="mt-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="text-sm font-bold text-white tracking-tight line-clamp-1 mb-1 group-hover:text-indigo-400 transition-colors">
+                          {pathway.name}
+                        </h4>
+                        <p className="text-[11px] font-medium text-slate-300 line-clamp-2 leading-relaxed">
+                          {pathway.subtitle}
+                        </p>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="mt-3">
                         <span
-                          className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full"
-                          style={{
-                            backdropFilter: 'blur(4px)',
-                            background:
-                              pathway.match >= 85
-                                ? 'rgba(16, 185, 129, 0.12)'
-                                : pathway.match >= 70
-                                  ? 'rgba(59, 130, 246, 0.12)'
-                                  : 'rgba(245, 158, 11, 0.12)',
-                            color:
-                              pathway.match >= 85
-                                ? '#10B981'
-                                : pathway.match >= 70
-                                  ? '#3B82F6'
-                                  : '#F59E0B',
-                            border: `1px solid ${pathway.match >= 85 ? 'rgba(16, 185, 129, 0.25)' : pathway.match >= 70 ? 'rgba(59, 130, 246, 0.25)' : 'rgba(245, 158, 11, 0.25)'}`,
-                          }}
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
+                            pathway.match >= 85
+                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                              : pathway.match >= 70
+                                ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                                : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                          }`}
                         >
                           {pathway.match}% Match
                         </span>
-                        {pathway.submitted && activeTab !== 'submitted' && (
-                          <Star size={12} className="text-amber-400 fill-amber-400" />
-                        )}
                       </div>
                     </div>
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -539,30 +515,39 @@ export const QuickAccessPathways: React.FC<{
           <div className="w-2 h-2 bg-teal-400 rounded-full" />
           <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
         </div>
+
+        {/* Visual stat callout */}
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="text-3xl font-black text-white">
+            {activeTab === 'submitted'
+              ? allPathways.filter((p) => p.submitted).length
+              : displayedPathways.length}
+          </span>
+          <span className="text-sm text-slate-300 font-medium">
+            {activeTab === 'submitted'
+              ? 'airlines submitted'
+              : `${activeTab === 'latest' ? 'new' : 'high-potential'} pathways`}
+          </span>
+        </div>
+
         <p
           className="text-[#FFFFFF] text-sm leading-relaxed"
           style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
         >
           {activeTab === 'submitted' ? (
             <>
-              You have submitted interest to{' '}
-              <span className="text-white font-bold">
-                {allPathways.filter((p) => p.submitted).length} airlines
-              </span>
-              . Verified pilots receive faster responses through the PilotRecognition pathway
+              Verified pilots receive faster responses through the PilotRecognition pathway
               pipeline.
             </>
           ) : (
             <>
-              Your profile matches{' '}
-              <span className="text-white font-bold">
-                {displayedPathways.length} {activeTab === 'latest' ? 'new' : 'high-potential'}{' '}
-                pathways
-              </span>{' '}
-              with an average compatibility of{' '}
+              Your profile matches these pathways with an average compatibility of{' '}
               <span className="text-white font-bold">{averageMatch}%</span>. Focus on completing the{' '}
-              <span className="text-blue-400 font-bold">Transition Program</span> to increase your
-              match score by an average of <span className="text-green-400 font-bold">12%</span>.
+              <span className="text-indigo-400 font-bold underline decoration-indigo-400/50 underline-offset-2">
+                Transition Program
+              </span>{' '}
+              to increase your match score by an average of{' '}
+              <span className="text-green-400 font-bold">12%</span>.
             </>
           )}
         </p>
@@ -570,7 +555,7 @@ export const QuickAccessPathways: React.FC<{
           onClick={() =>
             window.dispatchEvent(new CustomEvent('open-tab', { detail: { tab: 'pathways' } }))
           }
-          className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+          className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors underline underline-offset-2"
         >
           Browse all pathways <ArrowRight size={14} />
         </button>
