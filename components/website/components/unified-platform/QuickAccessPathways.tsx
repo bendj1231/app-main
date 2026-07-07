@@ -380,7 +380,7 @@ export const QuickAccessPathways: React.FC<{
                   <button
                     key={pathway.id}
                     onClick={() => handleSelect(pathway)}
-                    className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left ${
+                    className={`flex-shrink-0 rounded-xl transition-all relative overflow-hidden text-left p-5 ${
                       isSelected ? 'shadow-2xl' : 'hover:shadow-lg'
                     }`}
                     style={{
@@ -390,8 +390,9 @@ export const QuickAccessPathways: React.FC<{
                       backdropFilter: 'blur(16px)',
                       WebkitBackdropFilter: 'blur(16px)',
                       borderRadius: '12px',
-                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
                       transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                      boxSizing: 'border-box',
                     }}
                     onMouseEnter={(e) => {
                       if (!isSelected) {
@@ -404,16 +405,15 @@ export const QuickAccessPathways: React.FC<{
                       if (!isSelected) {
                         e.currentTarget.style.transform = 'translateY(0px)';
                         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
+                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.25)';
                       }
                     }}
                   >
                     {/* Top: Clean white inner badge for non-transparent logos */}
                     <div
-                      className="h-[68px] mx-3.5 mt-3.5 rounded-lg relative overflow-hidden flex items-center justify-center p-2"
+                      className="h-[60px] rounded-lg relative overflow-hidden flex items-center justify-center p-2 mb-4"
                       style={{
-                        background:
-                          'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))',
+                        background: '#FFFFFF',
                         border: '1px solid rgba(255,255,255,0.25)',
                         boxShadow:
                           'inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.04)',
@@ -429,8 +429,8 @@ export const QuickAccessPathways: React.FC<{
                         }}
                       />
                     </div>
-                    {/* Bottom: Name and meta on frosted bg */}
-                    <div className="p-3.5">
+                    {/* Bottom: Name and meta */}
+                    <div>
                       <p
                         className="text-sm font-bold text-white truncate mb-1"
                         style={{ textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}
@@ -438,7 +438,7 @@ export const QuickAccessPathways: React.FC<{
                         {pathway.name}
                       </p>
                       <div
-                        className="flex items-center justify-between text-[10px] text-[#E2E8F0] mb-2"
+                        className="flex items-center justify-between text-[10px] text-[#FFFFFF] mb-2"
                         style={{ textShadow: '0 1px 2px rgba(0,0,0,0.18)' }}
                       >
                         <span className="flex items-center gap-1">
@@ -540,7 +540,7 @@ export const QuickAccessPathways: React.FC<{
           <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
         </div>
         <p
-          className="text-[#F1F5F9] text-sm leading-relaxed"
+          className="text-[#FFFFFF] text-sm leading-relaxed"
           style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
         >
           {activeTab === 'submitted' ? (
