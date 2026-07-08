@@ -504,6 +504,14 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   const [flightLogs, setFlightLogs] = useState<FlightLogEntry[]>(MOCK_FLIGHT_LOGS);
   const [loading, setLoading] = useState(true);
   const { callApi, callPilotApi } = useWorkerAuth();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   interface CrewMember {
     id: string;
@@ -734,12 +742,12 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
         width: '100%',
         maxWidth: useFullscreenLayout ? '100%' : '1200px',
         margin: '0 auto',
-        padding: useFullscreenLayout ? '0' : '2rem clamp(1.5rem, 4vw, 3rem)'
+        padding: useFullscreenLayout ? '0' : (isMobile ? '1rem 0.75rem' : '2rem clamp(1.5rem, 4vw, 3rem)')
       }}>
         {/* Header — hidden when embedded in profile page */}
         {!embedded && (
         <header style={{
-          padding: '3rem 4rem',
+          padding: isMobile ? '1.5rem 1rem' : '3rem 4rem',
           background: 'rgba(8, 8, 10, 0.6)',
           backdropFilter: 'blur(10px)',
           borderRadius: '20px',
@@ -752,43 +760,45 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             onClick={onBack}
             style={{
               position: 'absolute',
-              top: '2rem',
-              left: '2rem',
-              padding: '0.5rem 1rem',
+              top: isMobile ? '1rem' : '2rem',
+              left: isMobile ? '1rem' : '2rem',
+              padding: isMobile ? '0.25rem' : '0.5rem 1rem',
               border: 'none',
               background: 'transparent',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
-              fontSize: '0.875rem',
+              fontSize: isMobile ? '1.25rem' : '0.875rem',
               fontWeight: 500,
               color: '#0ea5e9'
             }}
           >
-            ← BACK TO PROFILE
+            {isMobile ? '←' : '← BACK TO PROFILE'}
           </button>
 
-          <div style={{
-            position: 'absolute',
-            top: '2rem',
-            right: '2rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: '0.75rem',
-            color: '#64748b',
-            fontWeight: 500
-          }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#10b981',
-              display: 'inline-block'
-            }} />
-            VERIFIED IDENTITY
-          </div>
+          {!isMobile && (
+            <div style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.75rem',
+              color: '#64748b',
+              fontWeight: 500
+            }}>
+              <span style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#10b981',
+                display: 'inline-block'
+              }} />
+              VERIFIED IDENTITY
+            </div>
+          )}
 
           <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', fontSize: '2rem', fontWeight: 700, fontFamily: 'Arial, sans-serif', justifyContent: 'center' }}>
@@ -810,7 +820,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
         <div style={{
           background: useFullscreenLayout ? 'transparent' : 'rgba(8, 8, 10, 0.15)',
           borderRadius: useFullscreenLayout ? '0px' : '24px',
-          padding: useFullscreenLayout ? '0' : '3rem',
+          padding: useFullscreenLayout ? '0' : (isMobile ? '1rem 0.75rem' : '3rem'),
           boxShadow: useFullscreenLayout ? 'none' : '0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.1)',
           position: 'relative',
           border: useFullscreenLayout ? 'none' : '1px solid rgba(255, 255, 255, 0.12)',
@@ -829,7 +839,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 <p style={{ margin: '0 0 0.75rem', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase', textAlign: 'center' }}>Recent Flights</p>
                 <div className="recent-flights-carousel" style={{
                   display: 'flex',
-                  gap: '1rem',
+                  gap: isMobile ? '0.75rem' : '1rem',
                   overflowX: 'auto',
                   paddingBottom: '0.75rem',
                   scrollSnapType: 'x mandatory',
@@ -841,8 +851,8 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                       key={log.id}
                       onClick={() => handleRecentFlightClick(log)}
                       style={{
-                        flex: '0 0 45%',
-                        minWidth: '520px',
+                        flex: isMobile ? '0 0 85%' : '0 0 45%',
+                        minWidth: isMobile ? '280px' : '520px',
                         border: 'none',
                         borderRadius: '18px',
                         padding: 0,
@@ -854,7 +864,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     >
                       <div style={{
                         display: 'flex',
-                        height: '240px',
+                        height: isMobile ? '180px' : '240px',
                         borderRadius: '18px',
                         overflow: 'hidden',
                         background: 'rgba(8, 8, 10, 0.45)',
@@ -871,7 +881,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         }} />
                         <div style={{
                           flex: '1 1 55%',
-                          padding: '1.25rem',
+                          padding: isMobile ? '0.75rem' : '1.25rem',
                           display: 'flex',
                           flexDirection: 'column',
                           justifyContent: 'center',
@@ -880,13 +890,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                           backdropFilter: 'blur(8px)',
                           WebkitBackdropFilter: 'blur(8px)',
                         }}>
-                          <p style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>{log.aircraftType}</p>
-                          <p style={{ margin: '0 0 0.9rem', fontSize: '0.8rem', color: '#94a3b8' }}>{log.registration || '—'} · {log.date}</p>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                            <span style={{ fontSize: '0.75rem', color: '#ffffff', fontWeight: 600 }}>{log.route || '—'}</span>
-                            <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 700, textTransform: 'uppercase', padding: '0.15rem 0.5rem', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)' }}>{log.category || '—'}</span>
+                          <p style={{ margin: '0 0 0.25rem', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#ffffff' }}>{log.aircraftType}</p>
+                          <p style={{ margin: '0 0 0.5rem', fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#94a3b8' }}>{log.registration || '—'} · {log.date}</p>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                            <span style={{ fontSize: isMobile ? '0.7rem' : '0.75rem', color: '#ffffff', fontWeight: 600 }}>{log.route || '—'}</span>
+                            <span style={{ fontSize: isMobile ? '0.65rem' : '0.7rem', color: '#10b981', fontWeight: 700, textTransform: 'uppercase', padding: '0.15rem 0.5rem', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)' }}>{log.category || '—'}</span>
                           </div>
-                          <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          <p style={{ margin: 0, fontSize: isMobile ? '0.7rem' : '0.75rem', color: '#64748b', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                             {log.remarks || 'No remarks recorded.'}
                           </p>
                         </div>
@@ -1132,13 +1142,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 WebkitBackdropFilter: useFullscreenLayout ? 'none' : 'blur(20px) saturate(1.2)',
               }}
             >
-              <div style={{ display: 'flex', flexDirection: useFullscreenLayout ? 'row' : 'column', position: 'relative' }}>
+              <div style={{ display: 'flex', flexDirection: (useFullscreenLayout && !isMobile) ? 'row' : 'column', position: 'relative' }}>
                 <div
                   style={{
                     position: 'relative',
-                    height: useFullscreenLayout ? 'auto' : '200px',
-                    minHeight: useFullscreenLayout ? '460px' : '200px',
-                    flex: inlineFullscreen ? '0 0 100%' : (useFullscreenLayout ? '0 0 45%' : 'auto'),
+                    height: isMobile ? '180px' : (useFullscreenLayout ? 'auto' : '200px'),
+                    minHeight: isMobile ? '180px' : (useFullscreenLayout ? '460px' : '200px'),
+                    flex: inlineFullscreen ? '0 0 100%' : ((useFullscreenLayout && !isMobile) ? '0 0 45%' : 'auto'),
                     backgroundImage: `url('${getAircraftImage(previewLog.aircraftType, previewLog.image)}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -1256,7 +1266,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   width: inlineFullscreen ? '55%' : 'auto',
                   height: inlineFullscreen ? '100%' : 'auto',
                   flex: useFullscreenLayout && !inlineFullscreen ? '1 1 55%' : 'auto',
-                  padding: useFullscreenLayout ? '1.5rem clamp(1.5rem, 4vw, 3rem)' : '1.5rem',
+                  padding: useFullscreenLayout ? '1.5rem clamp(1.5rem, 4vw, 3rem)' : (isMobile ? '1rem 0.75rem' : '1.5rem'),
                   background: useFullscreenLayout && !inlineFullscreen ? 'rgba(8, 8, 10, 0.85)' : 'transparent',
                   backdropFilter: useFullscreenLayout && !inlineFullscreen ? 'blur(16px)' : 'none',
                   WebkitBackdropFilter: useFullscreenLayout && !inlineFullscreen ? 'blur(16px)' : 'none',
@@ -1300,7 +1310,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   {!inlineFullscreen && (
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: useFullscreenLayout ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(220px, 1fr))',
+                    gridTemplateColumns: isMobile ? '1fr' : (useFullscreenLayout ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(220px, 1fr))'),
                     gap: '1rem',
                     marginBottom: '1.5rem',
                     maxWidth: useFullscreenLayout ? '1200px' : '100%',
@@ -1357,7 +1367,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
               <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <div style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+                  gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, minmax(0, 1fr))',
                   gap: '1rem',
                 }}>
                   {[
@@ -1404,15 +1414,15 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           {previewLog && (
             <div style={{
               width: '100%',
-              padding: useFullscreenLayout ? '1.5rem clamp(1.5rem, 4vw, 3rem)' : '1.5rem',
+              padding: useFullscreenLayout ? '1.5rem clamp(1.5rem, 4vw, 3rem)' : (isMobile ? '1rem 0.75rem' : '1.5rem'),
               marginBottom: useFullscreenLayout ? '1.5rem' : '0',
             }}>
               <div style={{ maxWidth: useFullscreenLayout ? '1200px' : '100%', margin: useFullscreenLayout ? '0 auto' : '0' }}>
                 <p style={{ margin: '0 0 0.75rem', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>Flight Debrief</p>
                 <div style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                  gap: '1.25rem',
+                  gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: isMobile ? '1rem' : '1.25rem',
                   background: 'rgba(8, 8, 10, 0.35)',
                   borderRadius: '24px',
                   padding: '1.5rem',
@@ -1448,7 +1458,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           {previewLog && (
             <div style={{
               width: '100%',
-              padding: useFullscreenLayout ? '0 clamp(1.5rem, 4vw, 3rem) 1.5rem' : '0 1.5rem 1.5rem',
+              padding: useFullscreenLayout ? '0 clamp(1.5rem, 4vw, 3rem) 1.5rem' : (isMobile ? '0 0.75rem 1rem' : '0 1.5rem 1.5rem'),
               marginBottom: useFullscreenLayout ? '1.5rem' : '0',
             }}>
               <div style={{ maxWidth: useFullscreenLayout ? '1200px' : '100%', margin: useFullscreenLayout ? '0 auto' : '0' }}>
@@ -1678,7 +1688,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         }}
                       />
 
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
                         <button
                           onClick={() => { setAddingCrew(false); setCrewSearchQuery(''); setCrewSearchResults([]); setSelectedCrewProfile(null); setCrewRole(''); setCrewComment(''); }}
                           style={{
@@ -1744,7 +1754,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           {previewLog && (
             <div style={{
               width: '100%',
-              padding: useFullscreenLayout ? '0 clamp(1.5rem, 4vw, 3rem) 1.5rem' : '0 1.5rem 1.5rem',
+              padding: useFullscreenLayout ? '0 clamp(1.5rem, 4vw, 3rem) 1.5rem' : (isMobile ? '0 0.75rem 1rem' : '0 1.5rem 1.5rem'),
               marginBottom: useFullscreenLayout ? '1.5rem' : '0',
             }}>
               <div style={{ maxWidth: useFullscreenLayout ? '1200px' : '100%', margin: useFullscreenLayout ? '0 auto' : '0' }}>
@@ -1767,15 +1777,16 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
               display: 'flex',
-              justifyContent: 'space-between',
+              justifyContent: isMobile ? 'center' : 'space-between',
               alignItems: 'center',
               gap: '1rem',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
+              textAlign: isMobile ? 'center' : 'left'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <p style={{ margin: 0, fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textTransform: 'uppercase' }}>Cumulative Flight Log</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: isMobile ? '100%' : 'auto', justifyContent: isMobile ? 'center' : 'flex-start' }}>
+                <p style={{ margin: 0, fontSize: isMobile ? '0.65rem' : '0.7rem', fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textTransform: 'uppercase' }}>Cumulative Flight Log</p>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '1rem' : '1.5rem', flexWrap: 'wrap', justifyContent: isMobile ? 'center' : 'flex-start' }}>
                 {[
                   { label: 'Total Hours', value: `${totalHours.toFixed(1)}h`, color: '#38bdf8' },
                   { label: 'Total PIC', value: `${(totalHours * 0.55).toFixed(1)}h`, color: '#a78bfa' },
