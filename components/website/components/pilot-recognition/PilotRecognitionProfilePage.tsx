@@ -1099,7 +1099,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     transformOrigin: 'top center',
                 }}>
 
-                {/* Recognition Score Display */}
+                {/* Recognition Score Display — hidden on Flightbook tab to keep that view focused on the logbook */}
+                {activeSection !== 'my_flightbook' && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1137,6 +1138,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             />
                         ) : null}
                 </motion.div>
+                )}
 
                 {/* ── UPGRADE MODAL (free tier) ── */}
                 {showUpgradeModal && (
