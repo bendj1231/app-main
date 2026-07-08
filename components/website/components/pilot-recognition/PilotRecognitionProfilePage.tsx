@@ -877,20 +877,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 transition={{ duration: 0.35 }}
                 style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: embedded ? 'auto' : '100vh' }}
             >
-                {/* Sidebar Navigation — old card style; hidden on mobile */}
-                {!embedded && !isMobile && (
+                {/* Sidebar Navigation — old card style; becomes full-screen menu on mobile */}
+                {!embedded && (
                     <motion.aside
-                        initial={{ opacity: 0, x: -32 }}
-                        animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -280 }}
+                        initial={{ opacity: 0, x: isMobile ? '-100%' : -32 }}
+                        animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : (isMobile ? '-100%' : -280) }}
                         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                         style={{
-                            width: '280px',
+                            width: isMobile ? '100vw' : '280px',
                             flexShrink: 0,
-                            padding: '5rem 1rem 2rem 1.5rem',
+                            padding: isMobile ? '1.5rem 1.25rem 2rem' : '5rem 1rem 2rem 1.5rem',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '0.75rem',
-                            background: 'transparent',
+                            background: isMobile ? 'rgba(8, 12, 24, 0.85)' : 'transparent',
                             borderRight: 'none',
                             position: 'fixed',
                             left: 0,
@@ -901,24 +901,52 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             boxSizing: 'border-box',
                             pointerEvents: sidebarOpen ? 'auto' : 'none',
                             zIndex: 40,
+                            backdropFilter: isMobile ? 'blur(20px)' : 'none',
+                            WebkitBackdropFilter: isMobile ? 'blur(20px)' : 'none',
                         }}>
-                        {/* Header with chevron */}
+                        {/* Header with chevron and close button on mobile */}
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
+                            justifyContent: 'space-between',
                             gap: '0.5rem',
                             marginBottom: '1.5rem',
                             paddingLeft: '0.25rem',
                             overflow: 'hidden',
                             width: '100%',
                         }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                            <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
-                                <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', minWidth: 0 }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                                <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
+                                    <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+                                </div>
                             </div>
+                            {isMobile && (
+                                <button
+                                    onClick={() => setSidebarOpen(false)}
+                                    aria-label="Close menu"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.08)',
+                                        border: '1px solid rgba(255,255,255,0.12)',
+                                        borderRadius: '50%',
+                                        width: '40px',
+                                        height: '40px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            )}
                         </div>
 
                         {/* Navigation Items — card style */}
@@ -942,13 +970,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 return (
                                     <button
                                         key={item.id}
-                                        onClick={() => setActiveSection(item.id as ProfileSection)}
+                                        onClick={() => { setActiveSection(item.id as ProfileSection); if (isMobile) setSidebarOpen(false); }}
                                         style={{
                                             position: 'relative',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
-                                            padding: '0.875rem 1rem',
+                                            padding: isMobile ? '1rem 1.25rem' : '0.875rem 1rem',
                                             borderRadius: '4px',
                                             background: isAdminItem
                                                 ? (isActive ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.08)')
@@ -962,7 +990,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
                                             textAlign: 'left',
-                                            fontSize: '0.85rem',
+                                            fontSize: isMobile ? '1rem' : '0.85rem',
                                             fontWeight: 500,
                                             boxShadow: isVaultItem
                                                 ? (isActive ? '0 4px 20px rgba(220,38,38,0.4)' : '0 4px 20px rgba(0,0,0,0.3)')
@@ -1029,8 +1057,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </motion.aside>
                 )}
 
-                {/* Floating sidebar toggle when collapsed; hidden on mobile */}
-                {!embedded && !sidebarOpen && !isMobile && (
+                {/* Floating sidebar toggle when collapsed; visible on mobile too */}
+                {!embedded && !sidebarOpen && (
                     <div
                         className="group"
                         style={{
