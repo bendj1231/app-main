@@ -188,6 +188,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const initialSection = sectionFromUrl || 'dashboard';
     const [activeSection, setActiveSectionState] = useState<ProfileSection>(initialSection);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const check = () => setIsMobile(window.innerWidth < 768);
+      check();
+      window.addEventListener('resize', check);
+      return () => window.removeEventListener('resize', check);
+    }, []);
 
     const setActiveSection = useCallback((section: ProfileSection) => {
         setActiveSectionState(section);
@@ -214,14 +222,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         }
     }, [searchParams]);
 
-    // My Flightbook launches in a full-width view with a foldable overlay sidebar
+    // My Flightbook launches in a full-width view with a foldable overlay sidebar.
+    // On mobile the sidebar is always hidden so the main content uses the full width.
     useEffect(() => {
-        if (activeSection === 'my_flightbook') {
+        if (isMobile) {
+            setSidebarOpen(false);
+        } else if (activeSection === 'my_flightbook') {
             setSidebarOpen(false);
         } else {
             setSidebarOpen(true);
         }
-    }, [activeSection]);
+    }, [activeSection, isMobile]);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -826,7 +837,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     return (
         <div 
-            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : (activeSection === 'my_flightbook' ? 'visible' : 'hidden') }}
+            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : ((activeSection === 'my_flightbook' || isMobile) ? 'visible' : 'hidden') }}
             className={theme === 'light' ? 'light-theme' : 'dark-theme'}
             data-theme={theme}
         >
@@ -866,8 +877,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 transition={{ duration: 0.35 }}
                 style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: embedded ? 'auto' : '100vh' }}
             >
-                {/* Sidebar Navigation — old card style */}
-                {!embedded && (
+                {/* Sidebar Navigation — old card style; hidden on mobile */}
+                {!embedded && !isMobile && (
                     <motion.aside
                         initial={{ opacity: 0, x: -32 }}
                         animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -280 }}
@@ -1018,8 +1029,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </motion.aside>
                 )}
 
-                {/* Floating sidebar toggle when collapsed */}
-                {!embedded && !sidebarOpen && (
+                {/* Floating sidebar toggle when collapsed; hidden on mobile */}
+                {!embedded && !sidebarOpen && !isMobile && (
                     <div
                         className="group"
                         style={{
@@ -1088,14 +1099,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     zIndex: 10, 
                     flex: 1, 
                     maxWidth: embedded ? '100%' : 'none', 
-                    margin: embedded ? '0' : (activeSection === 'my_flightbook' ? '0' : (sidebarOpen ? '0 0 0 280px' : '0')), 
+                    margin: embedded ? '0' : ((activeSection === 'my_flightbook' || isMobile) ? '0' : (sidebarOpen ? '0 0 0 280px' : '0')),
                     minHeight: embedded ? 'auto' : '100vh',
                     minWidth: 0,
-                    overflowY: activeSection === 'my_flightbook' ? 'visible' : 'auto',
+                    overflowY: (activeSection === 'my_flightbook' || isMobile) ? 'visible' : 'auto',
                     overflowX: 'hidden',
-                    paddingTop: activeSection === 'my_flightbook' ? '5.5rem' : 0,
+                    paddingTop: (activeSection === 'my_flightbook' || isMobile) ? '5.5rem' : 0,
                     transition: 'margin 0.45s ease',
-                    transform: activeSection === 'my_flightbook' ? 'none' : 'scale(0.8)',
+                    transform: (activeSection === 'my_flightbook' || isMobile) ? 'none' : 'scale(0.8)',
                     transformOrigin: 'top center',
                 }}>
 
