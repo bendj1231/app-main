@@ -46,6 +46,8 @@ The middle layer — type rating centers, ATOs, and airlines — is a pass-throu
 
 Experienced instructors with 6,000+ hours are ignored because the system is designed around hour-counting gates rather than competency. The supply of qualified pilots is artificially constrained, even when talent exists.
 
+One way to re-open the left side is to give low-hour graduates a structured way to gain experience and credibility outside the traditional CFI bottleneck — for example, associate or ambassador programs that connect them directly with ATOs, type rating centers, and operators while building a verified professional profile.
+
 ### Scenario 2: The Right Side Tightens
 
 - If manufacturers face shortages of materials, labor, or capital, aircraft production slows.

@@ -8,7 +8,7 @@ export interface BookmarkItem {
   id: string;
   user_id: string;
   item_id: string;
-  item_type: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer';
+  item_type: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer' | 'airline_expectation';
   title: string;
   description?: string;
   image_url?: string;
@@ -19,7 +19,7 @@ export interface BookmarkItem {
 
 export interface BookmarkCreateInput {
   item_id: string;
-  item_type: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer';
+  item_type: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer' | 'airline_expectation';
   title: string;
   description?: string;
   image_url?: string;
@@ -63,7 +63,7 @@ class BookmarkService {
    * Get bookmarks by type for the current user
    */
   async getBookmarksByType(
-    itemType: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer',
+    itemType: BookmarkItem['item_type'],
     userId: string
   ): Promise<BookmarkItem[]> {
     try {
@@ -149,7 +149,7 @@ class BookmarkService {
    */
   async toggleBookmark(
     itemId: string,
-    itemType: 'aircraft' | 'pathway' | 'program' | 'airline' | 'manufacturer',
+    itemType: BookmarkItem['item_type'],
     bookmarkData: Omit<BookmarkCreateInput, 'item_id' | 'item_type'>,
     userId: string
   ): Promise<{ action: 'added' | 'removed'; bookmark?: BookmarkItem }> {
@@ -202,7 +202,8 @@ class BookmarkService {
         pathway: 0,
         program: 0,
         airline: 0,
-        manufacturer: 0
+        manufacturer: 0,
+        airline_expectation: 0
       };
 
       bookmarks.forEach(bookmark => {
@@ -220,7 +221,8 @@ class BookmarkService {
         pathway: 0,
         program: 0,
         airline: 0,
-        manufacturer: 0
+        manufacturer: 0,
+        airline_expectation: 0
       };
     }
   }

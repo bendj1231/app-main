@@ -11,10 +11,10 @@ interface WelcomeGetStartedModalProps {
 const STEPS = [
   {
     image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1200&q=80',
-    title: 'Claim your profile & logbook',
+    title: 'Welcome to RecognitionOS',
     description:
-      'Add your licenses and current flight hours. This instantly generates your free dashboard and matches you to active pathways.',
-    action: 'Claim My Profile',
+      'Your pilot career runs on three connected domains: pilotcareerpathways.com for matched opportunities, pilotrecognition.com for your verified profile, and pilotshortage.org for industry advocacy and resources.',
+    action: 'Complete My Profile',
   },
   {
     image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=1200&q=80',
@@ -32,8 +32,8 @@ const STEPS = [
   },
 ];
 
-const HERO_HEADLINE = 'Welcome to PilotRecognition';
-const HERO_SUBHEADLINE = 'Claim your profile, connect your logbook, and instantly see percentage-matched pathways across the entire aviation industry.';
+const HERO_HEADLINE = 'RecognitionOS';
+const HERO_SUBHEADLINE = 'One platform. Three domains. Your pilot career.';
 
 const STORAGE_KEY = 'pr_welcome_get_started_dismissed';
 

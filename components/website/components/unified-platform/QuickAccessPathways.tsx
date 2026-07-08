@@ -1,32 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Zap, ChevronRight, Plane, Star, ArrowRight, Send } from 'lucide-react';
-
-interface AirlineManifestEntry {
-  name: string;
-  status: string;
-  file: string;
-  title: string;
-  url?: string | null;
-  width?: number | null;
-  height?: number | null;
-  mime?: string | null;
-  path: string;
-  source?: string;
-  note?: string;
-}
-
-interface AirlinePathway {
-  id: string;
-  name: string;
-  logo: string;
-  region: string;
-  category: string;
-  match: number;
-  gaps: number;
-  subtitle: string;
-  benefits: string[];
-  submitted?: boolean;
-}
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Zap, ChevronRight, Plane, Star, Send, X, Activity, Award, Clock } from 'lucide-react';
+import {
+  useAirlinePathways,
+  type AirlinePathway,
+  type AirlinePathwayProfile,
+} from './useAirlinePathways';
 
 type PathwayTab = 'latest' | 'recommended' | 'submitted';
 
@@ -36,301 +16,434 @@ const TAB_CONFIG: { id: PathwayTab; label: string }[] = [
   { id: 'submitted', label: 'Submitted' },
 ];
 
-const RECOMMENDED_AIRLINES = new Set([
-  'Singapore Airlines',
-  'Cathay Pacific',
-  'Philippine Airlines',
-  'Cebu Pacific',
-  'Qantas',
-  'Air New Zealand',
-  'All Nippon Airways',
-  'Japan Airlines',
-  'Korean Air',
-  'Malaysia Airlines',
-  'Thai Airways',
-  'Vietnam Airlines',
-  'IndiGo',
-  'Air India',
-  'Garuda Indonesia',
-  'EVA Air',
-  'China Airlines',
-  'AirAsia',
-  'Bangkok Airways',
-  'Fiji Airways',
-  'SriLankan Airlines',
-  'Biman Bangladesh Airlines',
-  'Royal Brunei Airlines',
-]);
+const PathwayCard: React.FC<{ pathway: AirlinePathway; onClick: () => void }> = ({
+  pathway,
+  onClick,
+}) => {
+  const badgeColor =
+    pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
 
-const LATEST_AIRLINES = new Set([
-  'Starlux Airlines',
-  'Zipair',
-  'Akasa Air',
-  'Air Seoul',
-  'Tway Air',
-  'Peach Aviation',
-  'Scoot',
-  'Jeju Air',
-  'Jin Air',
-  'Air Busan',
-  'Eastar Jet',
-  'Skymark Airlines',
-  'Star Flyer',
-  'Solaseed Air',
-  'Spring Japan',
-  'Hong Kong Express',
-  'Tigerair Taiwan',
-  'Mandarin Airlines',
-  'VietJet Air',
-  'Bamboo Airways',
-  'Thai AirAsia',
-  'Thai Lion Air',
-  'Nok Air',
-  'Citilink',
-  'Batik Air',
-  'Lion Air',
-  'SkyJet Airlines',
-  'Sunlight Air',
-  'Royal Air Philippines',
-  'Air Juan',
-  'Sky Pasada',
-  'Cebgo',
-  'Philippines AirAsia',
-]);
+  return (
+    <div
+      onClick={onClick}
+      className="group flex w-[300px] max-w-full flex-shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-xl shadow-slate-200/50 transition-all hover:scale-[1.02] hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/5 active:scale-[0.98] cursor-pointer sm:w-[420px] sm:max-w-[420px] sm:flex-row"
+    >
+      {/* Left: airline logo */}
+      <div className="relative h-32 sm:h-auto w-full shrink-0 overflow-hidden flex items-center justify-center bg-slate-50 border-b sm:border-b-0 sm:border-r border-slate-100 sm:w-5/12">
+        <img
+          src={pathway.logo}
+          alt={pathway.name}
+          className="h-full w-full max-h-[70%] max-w-[70%] sm:max-h-[75%] sm:max-w-[75%] object-contain object-center"
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
+      </div>
 
-const SUBMITTED_AIRLINES = new Set([
-  'Cebu Pacific',
-  'Philippine Airlines',
-  'AirAsia',
-  'Philippines AirAsia',
-]);
+      {/* Right: content */}
+      <div className="flex w-full flex-col justify-between p-4 sm:w-7/12 sm:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h4 className="text-sm sm:text-base font-bold tracking-tight text-slate-900 truncate">
+              {pathway.name}
+            </h4>
+            <p className="mt-0.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-indigo-600/90 truncate">
+              {pathway.subtitle}
+            </p>
+          </div>
+          {/* Match badge */}
+          <span
+            className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full border text-[10px] font-extrabold shadow-sm"
+            style={{
+              background: `${badgeColor}15`,
+              color: badgeColor,
+              borderColor: `${badgeColor}30`,
+              boxShadow: `0 1px 10px ${badgeColor}10`,
+            }}
+          >
+            {pathway.match}
+          </span>
+        </div>
 
-const SUBTITLES = [
-  'First Officer Pipeline',
-  'Direct Entry Captain',
-  'Cadet Development Program',
-  'Type-Rated Placement',
-  'International Expansion',
-  'Regional FO Track',
-];
+        {/* Stats block */}
+        <div className="my-3 grid grid-cols-2 gap-2 rounded-xl border border-slate-200/60 bg-slate-50 p-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Region</p>
+            <p className="mt-0.5 text-sm font-black text-slate-900 truncate">{pathway.region}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Category</p>
+            <p className="mt-0.5 text-sm font-black text-slate-900 truncate">{pathway.category}</p>
+          </div>
+        </div>
 
-function generateSubtitle(name: string): string {
-  const idx = name.length % SUBTITLES.length;
-  return SUBTITLES[idx];
-}
+        {/* Action */}
+        <div className="flex items-center justify-between">
+          <div className="group/action inline-flex items-center -ml-2 px-2 py-1.5 rounded-lg text-xs font-bold text-slate-900 hover:bg-slate-100 transition-colors hover:text-red-600">
+            View Pathway Details
+            <ChevronRight
+              size={14}
+              className="ml-1.5 transform transition-transform group-hover/action:translate-x-0.5"
+            />
+          </div>
+          {pathway.submitted && (
+            <Star size={14} className="text-amber-500 fill-amber-500" />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-function generateMatch(name: string): number {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = (hash << 5) - hash + name.charCodeAt(i);
-    hash |= 0;
-  }
-  const base = 65 + (Math.abs(hash) % 30);
-  return Math.min(98, Math.max(55, base));
-}
+type ModalTab = 'expectations' | 'requirements' | 'pathways';
 
-function generateGaps(match: number): number {
-  if (match >= 90) return 1;
-  if (match >= 80) return 2;
-  if (match >= 70) return 4;
-  return 6;
-}
+const PathwayModal: React.FC<{
+  pathway: AirlinePathway;
+  onClose: () => void;
+  onSelect?: (airline: AirlinePathway) => void;
+}> = ({ pathway, onClose, onSelect }) => {
+  const [activeTab, setActiveTab] = useState<ModalTab>('expectations');
+  const badgeColor =
+    pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
 
-function generateBenefits(match: number): string[] {
-  if (match >= 90) return ['Fast-track', 'Hiring now'];
-  if (match >= 80) return ['Training included', 'Global network'];
-  if (match >= 70) return ['Competitive package', 'Upgrade path'];
-  return ['Entry pathway', 'Build hours'];
-}
+  const requirements = [
+    { label: 'Total Flight Time', value: `${1500 + pathway.gaps * 100} hours`, met: pathway.match >= 80 },
+    { label: 'Medical Certificate', value: 'Class 1', met: true },
+    { label: 'ICAO English Proficiency', value: 'Level 4+', met: pathway.match >= 70 },
+    { label: 'Type Rating / Training', value: pathway.category, met: pathway.gaps <= 2 },
+    { label: 'Background & References', value: 'Verified', met: pathway.submitted },
+  ];
 
-function regionFromPath(path: string): string {
-  const first = path.split('/')[0];
-  return first
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
+  const TAB_CONFIG: { id: ModalTab; label: string }[] = [
+    { id: 'expectations', label: 'Expectations' },
+    { id: 'requirements', label: 'Requirements' },
+    { id: 'pathways', label: 'Pathways' },
+  ];
 
-function categoryFromPath(path: string): string {
-  const second = path.split('/')[1] || 'operator';
-  return second
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
+  return ReactDOM.createPortal(
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.div
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[linear-gradient(180deg,rgba(10,15,25,0.98)_0%,rgba(5,8,14,1)_100%)] border border-slate-200 dark:border-white/[0.08] shadow-[0_24px_64px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_64px_rgba(0,0,0,0.6)]"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.98 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-black/[0.06] dark:bg-white/[0.06] hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10"
+        >
+          <X size={14} className="text-slate-500 dark:text-white/70" />
+        </button>
 
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
+        {/* Hero */}
+        <div className="relative h-56 md:h-72 w-full overflow-hidden flex items-center justify-center bg-slate-900">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, rgba(5,8,14,0.95) 0%, rgba(5,8,14,0.4) 50%, transparent 100%)' }}
+          />
+          <img
+            src={pathway.logo}
+            alt={pathway.name}
+            className="relative z-10 h-28 md:h-36 w-auto max-w-[70%] object-contain drop-shadow-2xl"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="text-[10px] font-black tracking-[0.2em] uppercase mb-1" style={{ color: badgeColor }}>
+                  {pathway.region} · {pathway.category}
+                </p>
+                <h2 className="text-3xl md:text-4xl font-black text-white">{pathway.name}</h2>
+                <p className="text-sm text-white/50 mt-1">{pathway.subtitle}</p>
+              </div>
+              <span
+                className="text-sm font-black px-3 py-1 rounded-full mb-1 shrink-0 ml-4"
+                style={{
+                  background: `${badgeColor}15`,
+                  color: badgeColor,
+                  border: `1px solid ${badgeColor}30`,
+                }}
+              >
+                Match {pathway.match}
+              </span>
+            </div>
+          </div>
+        </div>
 
-interface AirlinePathwayProfile {
-  total_flight_hours?: number | string | null;
-  verification_status?: string | Record<string, unknown> | null;
-  subscription_tier?: string | null;
-  recognition_tier?: string | null;
-}
+        {/* Body */}
+        <div className="relative p-6 md:p-8">
+          {/* Tabs */}
+          <div className="flex items-center gap-2 mb-6 p-1 rounded-xl bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06]">
+            {TAB_CONFIG.map((tab) => {
+              const active = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-black tracking-wide transition-all ${
+                    active
+                      ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/10'
+                      : 'text-slate-500 dark:text-white/40 hover:text-slate-900 dark:hover:text-white/80'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab content */}
+          <div className="space-y-6 relative z-10 mb-6 min-h-[260px]">
+            {activeTab === 'expectations' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="flex items-center gap-4 p-4 rounded-xl border" style={{ background: `${badgeColor}10`, borderColor: `${badgeColor}25` }}>
+                  <div
+                    className="w-14 h-14 flex items-center justify-center rounded-full border text-lg font-extrabold shadow-sm shrink-0"
+                    style={{
+                      background: `${badgeColor}15`,
+                      color: badgeColor,
+                      borderColor: `${badgeColor}30`,
+                      boxShadow: `0 1px 10px ${badgeColor}10`,
+                    }}
+                  >
+                    {pathway.match}
+                  </div>
+                  <div>
+                    <p className="text-slate-900 dark:text-white font-bold text-sm">Profile Match</p>
+                    <p className="text-slate-500 dark:text-white/35 text-xs mt-0.5">
+                      {pathway.match >= 85 ? 'Strong fit for your profile' : pathway.match >= 70 ? 'Good fit with minor gaps' : 'Entry pathway — build hours to improve'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Activity size={14} className="text-slate-400 dark:text-white/40" />
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">What to Expect</p>
+                  </div>
+                  <p className="text-sm text-slate-700 dark:text-white/70 leading-relaxed">
+                    The {pathway.subtitle} at {pathway.name} is a {pathway.category.toLowerCase()} opportunity based in {pathway.region}. Expect structured training, competitive progression, and access to a {pathway.match >= 80 ? 'global' : 'regional'} network.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Award size={14} className="text-slate-400 dark:text-white/40" />
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Highlights</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {pathway.benefits.map((benefit) => (
+                      <span
+                        key={benefit}
+                        className="px-3 py-1.5 rounded-full text-[11px] font-black"
+                        style={{ background: `${badgeColor}15`, color: badgeColor, border: `1px solid ${badgeColor}30` }}
+                      >
+                        {benefit}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'requirements' && (
+              <div className="space-y-4 animate-in fade-in duration-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Clock size={14} className="text-slate-400 dark:text-white/40" />
+                  <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Eligibility Checklist</p>
+                </div>
+                {requirements.map((req) => (
+                  <div
+                    key={req.label}
+                    className="flex items-center justify-between rounded-xl p-3.5 border"
+                    style={{ background: req.met ? `${badgeColor}08` : 'rgba(245,158,11,0.06)', borderColor: req.met ? `${badgeColor}25` : 'rgba(245,158,11,0.15)' }}
+                  >
+                    <div>
+                      <p className={`text-xs font-black ${req.met ? 'text-slate-900 dark:text-white' : 'text-amber-700 dark:text-amber-300'}`}>{req.label}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-white/40 mt-0.5">{req.value}</p>
+                    </div>
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
+                      style={{
+                        background: req.met ? `${badgeColor}20` : 'rgba(245,158,11,0.12)',
+                        color: req.met ? badgeColor : '#f59e0b',
+                      }}
+                    >
+                      {req.met ? '✓' : '!'}
+                    </div>
+                  </div>
+                ))}
+                <p className="text-[10px] text-slate-500 dark:text-white/30 leading-relaxed">
+                  {pathway.gaps} gaps identified. Closing these will improve your match score and move you closer to eligibility.
+                </p>
+              </div>
+            )}
+
+            {activeTab === 'pathways' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="rounded-xl p-5 bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-white/[0.06] backdrop-blur-xl">
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Match</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.match}%</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Gaps</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.gaps}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Status</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.submitted ? 'Submitted' : 'Open'}</p>
+                    </div>
+                  </div>
+                  <div className="h-px bg-slate-200 dark:bg-white/5 mb-4" />
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Region</p>
+                      <p className="text-sm text-slate-700 dark:text-white/80">{pathway.region}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Category</p>
+                      <p className="text-sm text-slate-700 dark:text-white/80">{pathway.category}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Program</p>
+                      <p className="text-sm text-slate-700 dark:text-white/80">{pathway.subtitle}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {pathway.submitted ? (
+                  <div className="flex items-center gap-3 rounded-xl p-4 bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06]">
+                    <div className="w-10 h-10 rounded-full border-2 border-slate-200 dark:border-white/10 flex items-center justify-center bg-emerald-500/10">
+                      <Star size={16} className="text-emerald-500 fill-emerald-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-slate-900 dark:text-white">Interest Submitted</p>
+                      <p className="text-[10px] text-slate-500 dark:text-white/50">You have expressed interest in this pathway.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-xl p-4" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                    <div className="flex items-start gap-2">
+                      <Award size={14} className="text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-black text-amber-700 dark:text-amber-300">Open Pathway</p>
+                        <p className="text-[10px] text-amber-700/70 dark:text-amber-300/60 leading-relaxed mt-1">
+                          Submit your interest to signal your application intent and track this pathway in your dashboard.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Action */}
+          <button
+            onClick={() => {
+              onSelect?.(pathway);
+              onClose();
+            }}
+            className="w-full py-3 text-white font-black rounded-xl transition-all text-sm tracking-wide"
+            style={{
+              background: 'linear-gradient(135deg, #dc2626 0%, #be123c 100%)',
+              boxShadow: '0 8px 24px -8px rgba(220,38,38,0.4)',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 12px 32px -10px rgba(220,38,38,0.55)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(220,38,38,0.4)'; }}
+          >
+            {onSelect ? 'View Full Pathway Details' : 'Submit Interest'}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>,
+    document.body
+  );
+};
 
 export const QuickAccessPathways: React.FC<{
   profile?: AirlinePathwayProfile;
   onSelect?: (airline: AirlinePathway) => void;
-}> = ({ profile, onSelect }) => {
-  const [manifest, setManifest] = useState<AirlineManifestEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+  pathways?: AirlinePathway[];
+  recommended?: AirlinePathway[];
+  latest?: AirlinePathway[];
+  submitted?: AirlinePathway[];
+  loading?: boolean;
+}> = ({ profile, onSelect, pathways: pathwaysProp, recommended: recommendedProp, latest: latestProp, submitted: submittedProp, loading: loadingProp }) => {
+  const hook = useAirlinePathways(profile);
+  const allPathways = pathwaysProp ?? hook.pathways;
+  const recommended = recommendedProp ?? hook.recommended;
+  const latest = latestProp ?? hook.latest;
+  const submitted = submittedProp ?? hook.submitted;
+  const loading = loadingProp ?? hook.loading;
   const [activeTab, setActiveTab] = useState<PathwayTab>('recommended');
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [selectedPathway, setSelectedPathway] = useState<AirlinePathway | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/images/airline-logos/APAC/manifest.json')
-      .then((r) => r.json())
-      .then((data: AirlineManifestEntry[]) => {
-        if (cancelled) return;
-        const valid = data.filter((e) => e.status === 'downloaded' && e.path);
-        setManifest(valid);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Failed to load airline logo manifest:', err);
-        setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const allPathways = useMemo<AirlinePathway[]>(() => {
-    const hours =
-      typeof profile?.total_flight_hours === 'string'
-        ? parseFloat(profile.total_flight_hours)
-        : typeof profile?.total_flight_hours === 'number'
-          ? profile.total_flight_hours
-          : 0;
-    const verified =
-      (typeof profile?.verification_status === 'string' &&
-        profile.verification_status === 'verified') ||
-      (typeof profile?.verification_status === 'object' &&
-        profile?.verification_status !== null &&
-        profile.verification_status.status === 'verified');
-    const isSubscriber =
-      profile?.subscription_tier === 'recognition_plus' ||
-      profile?.recognition_tier === 'recognition_plus' ||
-      profile?.subscription_tier === 'enterprise';
-
-    return manifest.map((entry) => {
-      let match = generateMatch(entry.name);
-      if (verified) match += 5;
-      if (isSubscriber) match += 3;
-      if (hours >= 1500) match += 4;
-      else if (hours >= 500) match += 2;
-      match = Math.min(99, match);
-      const gaps = generateGaps(match);
-      return {
-        id: slugify(entry.name),
-        name: entry.name,
-        logo: `/images/airline-logos/APAC/${entry.path}`,
-        region: regionFromPath(entry.path),
-        category: categoryFromPath(entry.path),
-        match,
-        gaps,
-        subtitle: generateSubtitle(entry.name),
-        benefits: generateBenefits(match),
-        submitted: SUBMITTED_AIRLINES.has(entry.name),
-      };
-    });
-  }, [manifest, profile]);
-
-  const filteredPathways = useMemo(() => {
-    if (activeTab === 'recommended') {
-      return allPathways
-        .filter((p) => RECOMMENDED_AIRLINES.has(p.name))
-        .sort((a, b) => b.match - a.match);
-    }
-    if (activeTab === 'latest') {
-      return allPathways
-        .filter((p) => LATEST_AIRLINES.has(p.name))
-        .sort((a, b) => b.match - a.match);
-    }
-    if (activeTab === 'submitted') {
-      return allPathways.filter((p) => p.submitted).sort((a, b) => b.match - a.match);
-    }
-    return allPathways;
-  }, [allPathways, activeTab]);
+  const filteredPathways =
+    activeTab === 'recommended'
+      ? recommended
+      : activeTab === 'latest'
+        ? latest
+        : activeTab === 'submitted'
+          ? submitted
+          : allPathways;
 
   const displayedPathways = filteredPathways.slice(0, 20);
-  const averageMatch = displayedPathways.length
-    ? Math.round(displayedPathways.reduce((sum, p) => sum + p.match, 0) / displayedPathways.length)
-    : 0;
-
-  const scrollBy = (direction: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({ left: direction * 320, behavior: 'smooth' });
-  };
 
   const handleSelect = (pathway: AirlinePathway) => {
-    setSelectedId(pathway.id);
-    onSelect?.(pathway);
+    setSelectedPathway(pathway);
   };
 
   return (
-    <div
-      className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl rounded-xl"
-      style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10))',
-        backdropFilter: 'blur(24px) saturate(1.3)',
-        WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 16px 48px rgba(0,0,0,0.14)',
-      }}
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <Zap size={22} className="text-amber-400" />
-        <h3 className="text-xl font-bold text-white">» QUICK ACCESS PATHWAYS</h3>
+    <div className="w-full space-y-6 text-slate-900 rounded-2xl p-4 md:p-8 bg-transparent">
+      {/* Header — same style as Digital Logbook section header */}
+      <div className="flex items-center gap-3">
+        <Zap size={22} className="text-red-500" />
+        <div>
+          <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">Career Pathways</p>
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">Quick Access Pathways</h3>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div
-        className="flex gap-2 mb-6 overflow-x-auto pb-1"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
+      <div className="flex items-center gap-2 text-xs font-bold">
         {TAB_CONFIG.map((tab) => {
           const count =
             tab.id === 'recommended'
-              ? allPathways.filter((p) => RECOMMENDED_AIRLINES.has(p.name)).length
+              ? recommended.length
               : tab.id === 'latest'
-                ? allPathways.filter((p) => LATEST_AIRLINES.has(p.name)).length
-                : allPathways.filter((p) => p.submitted).length;
+                ? latest.length
+                : submitted.length;
           const active = activeTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+              className={`px-3 md:px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
                 active
-                  ? 'bg-blue-500/80 text-white shadow-lg border-blue-400/40'
-                  : 'bg-white/12 text-slate-50 hover:bg-white/22 hover:text-white border-white/20'
+                  ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/10'
+                  : 'bg-slate-200/60 text-slate-600 hover:bg-slate-200/90'
               }`}
-              style={
-                active
-                  ? {
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      boxShadow:
-                        'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(59,130,246,0.25)',
-                    }
-                  : {
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                    }
-              }
             >
               {tab.label}
-              <span
-                className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-white/10 text-white/90'}`}
-              >
+              <span className={`ml-1 text-[10px] ${active ? 'opacity-80' : 'text-slate-400'}`}>
                 {count}
               </span>
             </button>
@@ -339,24 +452,21 @@ export const QuickAccessPathways: React.FC<{
       </div>
 
       {/* Carousel */}
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-2xl">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="flex items-center gap-3 text-white/60">
+            <div className="flex items-center gap-3 text-slate-500">
               <Plane size={20} className="animate-pulse" />
               <span className="text-sm font-bold">Loading airline pathways...</span>
             </div>
           </div>
         ) : displayedPathways.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Send size={32} className="text-white/30 mb-3" />
-            <p className="text-white font-bold text-sm mb-1">
+            <Send size={32} className="text-slate-300 mb-3" />
+            <p className="text-slate-900 font-bold text-sm mb-1">
               No {TAB_CONFIG.find((t) => t.id === activeTab)?.label?.toLowerCase()} pathways yet
             </p>
-            <p
-              className="text-[#E2E8F0] text-xs max-w-sm"
-              style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
-            >
+            <p className="text-slate-500 text-xs max-w-sm">
               {activeTab === 'submitted'
                 ? 'Submit interest to airlines and track your applications here.'
                 : 'Discover new airline pathways and start matching your profile.'}
@@ -364,198 +474,46 @@ export const QuickAccessPathways: React.FC<{
           </div>
         ) : (
           <>
-            <div
-              ref={scrollRef}
-              className="flex gap-3 overflow-x-auto pt-1 pb-3 px-1 scroll-smooth"
-              style={{
-                scrollbarWidth: 'thin',
-                scrollbarColor: 'rgba(255,255,255,0.2) transparent',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
-              }}
-            >
-              {displayedPathways.map((pathway) => {
-                const isSelected = selectedId === pathway.id;
-                return (
-                  <div
-                    key={pathway.id}
-                    role="button"
-                    tabIndex={0}
+            <style>{`
+              @keyframes pathwayScroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .pathway-carousel {
+                animation: pathwayScroll 45s linear infinite;
+              }
+              .pathway-carousel:hover {
+                animation-play-state: paused;
+              }
+            `}</style>
+            <div className="relative overflow-hidden py-4">
+              <div
+                key={activeTab}
+                className="pathway-carousel flex gap-4 px-4 md:px-6"
+                style={{ width: 'max-content' }}
+              >
+                {[...displayedPathways, ...displayedPathways].map((pathway, i) => (
+                  <PathwayCard
+                    key={`${pathway.id}-${i}`}
+                    pathway={pathway}
                     onClick={() => handleSelect(pathway)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSelect(pathway);
-                      }
-                    }}
-                    className={`relative flex flex-row items-center flex-shrink-0 w-72 h-32 p-4 rounded-2xl border backdrop-blur-xl transition-all duration-300 group cursor-pointer shadow-lg shadow-black/20 text-left overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
-                      isSelected
-                        ? 'border-indigo-500/70 bg-slate-900/60'
-                        : 'border-slate-800/80 bg-slate-900/40 hover:border-indigo-500/50 hover:bg-slate-900/60 hover:-translate-y-1'
-                    }`}
-                  >
-                    {/* Star / bookmark at top-right */}
-                    <button
-                      type="button"
-                      onClick={(e) => e.stopPropagation()}
-                      className="absolute top-3 right-3 z-10 transition-colors"
-                      aria-label={pathway.submitted ? 'Submitted pathway' : 'Submit interest'}
-                    >
-                      <Star
-                        size={14}
-                        className={`transition-colors ${
-                          pathway.submitted
-                            ? 'text-amber-400 fill-amber-400'
-                            : 'text-slate-500 hover:text-amber-400'
-                        }`}
-                      />
-                    </button>
-
-                    {/* Logo container: clean white badge */}
-                    <div className="flex-shrink-0 flex items-center justify-center h-20 w-20 bg-white rounded-xl p-2 shadow-inner shadow-black/5">
-                      <img
-                        src={pathway.logo}
-                        alt={pathway.name}
-                        className="max-h-full max-w-full object-contain"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="ml-4 flex-1 min-w-0 flex flex-col justify-center">
-                      <h4 className="text-sm font-bold text-white tracking-tight truncate mb-1 group-hover:text-indigo-400 transition-colors">
-                        {pathway.name}
-                      </h4>
-                      <p className="text-[11px] font-medium text-slate-300 line-clamp-2 leading-relaxed mb-2">
-                        {pathway.subtitle}
-                      </p>
-                      <span
-                        className={`inline-flex self-start items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
-                          pathway.match >= 85
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : pathway.match >= 70
-                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                              : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                        }`}
-                      >
-                        {pathway.match}% Match
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  />
+                ))}
+              </div>
             </div>
-
-            {/* Scroll arrows */}
-            <button
-              onClick={() => scrollBy(-1)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
-              style={{
-                background: 'rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-              }}
-            >
-              <ChevronRight size={16} className="text-white rotate-180" />
-            </button>
-            <button
-              onClick={() => scrollBy(1)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center z-10 transition-all rounded-full"
-              style={{
-                background: 'rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 12px rgba(0,0,0,0.10)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-              }}
-            >
-              <ChevronRight size={16} className="text-white" />
-            </button>
           </>
         )}
       </div>
 
-      {/* Insights footer */}
-      <div
-        className="mt-6 p-4 rounded-xl"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))',
-          backdropFilter: 'blur(12px) saturate(1.1)',
-          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
-          border: '1px solid rgba(255,255,255,0.15)',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
-        }}
-      >
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 bg-teal-400 rounded-full" />
-          <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
-        </div>
-
-        {/* Visual stat callout */}
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-3xl font-black text-white">
-            {activeTab === 'submitted'
-              ? allPathways.filter((p) => p.submitted).length
-              : displayedPathways.length}
-          </span>
-          <span className="text-sm text-slate-300 font-medium">
-            {activeTab === 'submitted'
-              ? 'airlines submitted'
-              : `${activeTab === 'latest' ? 'new' : 'high-potential'} pathways`}
-          </span>
-        </div>
-
-        <p
-          className="text-[#FFFFFF] text-sm leading-relaxed"
-          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}
-        >
-          {activeTab === 'submitted' ? (
-            <>
-              Verified pilots receive faster responses through the PilotRecognition pathway
-              pipeline.
-            </>
-          ) : (
-            <>
-              Your profile matches these pathways with an average compatibility of{' '}
-              <span className="text-white font-bold">{averageMatch}%</span>. Focus on completing the{' '}
-              <span className="text-indigo-400 font-bold underline decoration-indigo-400/50 underline-offset-2">
-                Transition Program
-              </span>{' '}
-              to increase your match score by an average of{' '}
-              <span className="text-green-400 font-bold">12%</span>.
-            </>
-          )}
-        </p>
-        <button
-          onClick={() =>
-            window.dispatchEvent(new CustomEvent('open-tab', { detail: { tab: 'pathways' } }))
-          }
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors underline underline-offset-2"
-        >
-          Browse all pathways <ArrowRight size={14} />
-        </button>
-      </div>
+      <AnimatePresence>
+        {selectedPathway && (
+          <PathwayModal
+            pathway={selectedPathway}
+            onClose={() => setSelectedPathway(null)}
+            onSelect={onSelect}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

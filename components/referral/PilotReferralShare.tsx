@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
-import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, DollarSign, ArrowRight } from 'lucide-react';
+import { Link2, Copy, Check, Share2, Mail, Twitter, Facebook, QrCode, Download, ArrowRight } from 'lucide-react';
 
 interface PilotReferralShareProps {
   userId?: string;
@@ -23,6 +23,7 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralLink, setReferralLink] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<ReferralStats>({ signups: 0, subscribed: 0, earned: 0 });
   const lastLoadedUserIdRef = useRef<string | null>(null);
@@ -129,6 +130,14 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
     }
   };
 
+  const copyReferralCode = () => {
+    if (referralCode) {
+      navigator.clipboard.writeText(referralCode);
+      setCodeCopied(true);
+      setTimeout(() => setCodeCopied(false), 2000);
+    }
+  };
+
   const shareViaEmail = () => {
     const subject = encodeURIComponent('Join PilotRecognition.com — Pilot Career Advancement');
     const body = encodeURIComponent(
@@ -154,9 +163,9 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
 
   if (loading) {
     return (
-      <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
-        <div className="flex items-center justify-center py-8">
-          <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl shadow-2xl shadow-black/30">
+        <div className="flex items-center justify-center py-10">
+          <div className="w-6 h-6 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
     );
@@ -164,20 +173,20 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
 
   if (!referralCode) {
     return (
-      <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6">
-        <div className="text-center space-y-3">
-          <p className="text-slate-400 text-sm">No referral code assigned yet.</p>
+      <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl shadow-2xl shadow-black/30">
+        <div className="text-center space-y-4 py-6">
+          <p className="text-slate-400 text-sm font-medium">No referral code assigned yet.</p>
           <button
             onClick={generateCode}
             disabled={loading}
-            className="bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-black rounded-lg shadow-md shadow-red-600/10 active:scale-95 transition-all"
           >
             {loading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
               <Share2 className="w-4 h-4" />
             )}
-            {loading ? 'Generating...' : 'Get code'}
+            {loading ? 'Generating...' : 'Get Referral Code'}
           </button>
         </div>
       </div>
@@ -208,123 +217,109 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId, 
   }
 
   return (
-    <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6 space-y-6">
-      {/* Header */}
-      <div>
-        <h3 className="text-white font-semibold flex items-center gap-2">
-          <Share2 className="w-5 h-5 text-emerald-400" />
-          Refer & Earn
-        </h3>
-        <p className="text-slate-400 text-sm mt-1">
-          Share your link. Earn <strong className="text-emerald-400">$20</strong> for every pilot who subscribes to Recognition+.
-        </p>
+    <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl shadow-2xl shadow-black/30 space-y-6">
+      {/* TOP MODULE: Referral Code Identifier */}
+      <div className="flex items-center justify-between rounded-xl bg-slate-950 border border-slate-800 p-4">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Your Referral Code</p>
+          <p className="text-lg font-black text-white font-mono tracking-wider mt-0.5">{referralCode}</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">
+            Earn <span className="text-emerald-400 font-bold">$20</span> per Recognition+ subscription.
+          </p>
+        </div>
+        <button
+          onClick={copyReferralCode}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white text-xs font-black rounded-lg transition-colors shrink-0 ml-4"
+        >
+          {codeCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          {codeCopied ? 'Copied!' : 'Copy Code'}
+        </button>
       </div>
 
-      {/* Earnings Badge */}
-      {stats.earned > 0 && (
-        <div className="bg-emerald-600/20 border border-emerald-500/40 rounded-xl p-4 flex items-center gap-3">
-          <DollarSign className="w-6 h-6 text-emerald-400 shrink-0" />
-          <div>
-            <p className="text-emerald-300 font-bold text-lg">${stats.earned.toFixed(2)}</p>
-            <p className="text-emerald-400/70 text-xs">Total referral earnings</p>
-          </div>
-        </div>
-      )}
-
-      {/* Referral Link Display */}
-      <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4">
-        <div className="flex items-center gap-3">
-          <Link2 className="w-5 h-5 text-blue-400 shrink-0" />
+      {/* LINK MODULE: Clean Referral Link Input Action Box */}
+      <div className="relative flex items-center justify-between rounded-xl bg-slate-950 border border-slate-800 focus-within:border-red-500/30 transition-colors p-2 pl-4">
+        <div className="flex items-center gap-3 overflow-hidden min-w-0">
+          <Link2 className="w-4 h-4 text-slate-500 shrink-0" />
           <input
             type="text"
             value={referralLink}
             readOnly
-            className="flex-1 bg-transparent text-slate-300 text-sm focus:outline-none"
+            className="w-full min-w-0 bg-transparent text-xs font-mono font-bold text-slate-300 tracking-wide focus:outline-none truncate"
           />
-          <button
-            onClick={copyToClipboard}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm transition-colors"
-          >
-            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied ? 'Copied!' : 'Copy'}
-          </button>
         </div>
+        <button
+          onClick={copyToClipboard}
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-black rounded-lg shadow-md shadow-red-600/10 active:scale-95 transition-all shrink-0 ml-2"
+        >
+          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          {copied ? 'Copied!' : 'Copy Link'}
+        </button>
       </div>
 
-      {/* Referral Code */}
-      <div className="bg-gradient-to-r from-emerald-600/20 to-blue-600/20 border border-emerald-500/30 rounded-xl p-4">
-        <p className="text-slate-400 text-xs uppercase tracking-wider mb-2">Your Referral Code</p>
-        <p className="text-2xl font-bold text-white tracking-wider">{referralCode}</p>
-      </div>
-
-      {/* Share Options */}
-      <div>
-        <p className="text-slate-400 text-sm mb-3">Share via</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button
-            onClick={copyToClipboard}
-            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-3 rounded-lg text-sm transition-colors"
-          >
-            <Copy className="w-4 h-4" />
-            Copy Link
-          </button>
+      {/* MIDDLE MODULE: Crisp Social Share Matrix Hub */}
+      <div className="space-y-2">
+        <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block">Share Via Networks</label>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <button
             onClick={shareViaEmail}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-sm transition-colors"
+            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-xs font-bold text-slate-200 transition-colors"
           >
             <Mail className="w-4 h-4" />
-            Email
+            <span>Email Dispatch</span>
           </button>
           <button
             onClick={shareViaTwitter}
-            className="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-4 py-3 rounded-lg text-sm transition-colors"
+            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-xs font-bold text-slate-200 transition-colors"
           >
             <Twitter className="w-4 h-4" />
-            Twitter
+            <span>X / Twitter</span>
           </button>
           <button
             onClick={shareViaFacebook}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-lg text-sm transition-colors"
+            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-xs font-bold text-slate-200 transition-colors"
           >
             <Facebook className="w-4 h-4" />
-            Facebook
+            <span>Facebook</span>
           </button>
         </div>
       </div>
 
-      {/* QR Code */}
-      <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <QrCode className="w-5 h-5 text-purple-400" />
-            <div>
-              <p className="text-white text-sm font-medium">QR Code</p>
-              <p className="text-slate-400 text-xs">Download for print materials</p>
-            </div>
+      {/* LOWER MODULE: Highly Visual Download Block Bar Layout */}
+      <div className="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/80">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 border border-slate-800 text-slate-400 shrink-0">
+            <QrCode className="w-4 h-4" />
           </div>
-          <button
-            onClick={downloadQRCode}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Download
-          </button>
+          <div className="min-w-0">
+            <h4 className="text-xs font-bold text-white">Unique QR Code Identifier</h4>
+            <p className="text-[11px] text-slate-400 mt-0.5">Download asset for printed materials and logbooks.</p>
+          </div>
         </div>
+        <button
+          onClick={downloadQRCode}
+          className="text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg border border-slate-700 transition-colors shrink-0 ml-3 inline-flex items-center gap-2"
+        >
+          <Download className="w-4 h-4" />
+          Download QR
+        </button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-700">
-        <div className="text-center">
-          <p className="text-2xl font-bold text-white">{stats.signups}</p>
-          <p className="text-slate-400 text-xs">Signed Up</p>
-        </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-emerald-400">{stats.subscribed}</p>
-          <p className="text-slate-400 text-xs">Subscribed</p>
-        </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-emerald-400">${stats.earned.toFixed(0)}</p>
-          <p className="text-slate-400 text-xs">Earned</p>
+      {/* BOTTOM MODULE: Live Analytics Metrics Board Ledger */}
+      <div className="border-t border-slate-900 pt-6">
+        <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block mb-4">Terminal Performance</label>
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-900">
+            <p className="text-2xl font-black text-white">{stats.signups}</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Signed Up</p>
+          </div>
+          <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-900">
+            <p className="text-2xl font-black text-white">{stats.subscribed}</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Subscribed</p>
+          </div>
+          <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-900">
+            <p className="text-2xl font-black text-emerald-400">${stats.earned.toFixed(2)}</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Total Earned</p>
+          </div>
         </div>
       </div>
     </div>

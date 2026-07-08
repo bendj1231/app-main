@@ -32,7 +32,8 @@
   "include": [
     "app/**/*",
     "src/**/*",
-    "components/**/*"
+    "components/**/*",
+    "routes/**/*"
   ],
   "exclude": [
     "node_modules",

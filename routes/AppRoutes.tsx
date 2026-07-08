@@ -607,6 +607,11 @@ const CareerPathwaysApp = lazy(() =>
     default: m.CareerPathwaysApp,
   }))
 );
+const MyPathwaysStandalonePage = lazy(() =>
+  import('@/components/career-pathways/pages/MyPathwaysStandalonePage').then((m) => ({
+    default: m.MyPathwaysStandalonePage,
+  }))
+);
 const DevDomainSelector = lazy(() =>
   import('@/components/DevDomainSelector').then((m) => ({ default: m.DevDomainSelector }))
 );
@@ -1665,6 +1670,7 @@ export const AppRoutes = () => {
               />
             }
           />
+          <Route path="/my-pathways" element={<MyPathwaysStandalonePage onLogin={() => setIsLoginModalOpen(true)} />} />
           <Route path="/platform/career-progress" element={<CareerProgressDashboard />} />
           <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
           <Route

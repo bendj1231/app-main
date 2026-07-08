@@ -134,6 +134,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
 
   const navLinks = [
     { label: 'Home', path: '/', icon: Home, tier: 'public', external: '/platform?tab=home' },
+    { label: 'My Pathways', path: '/my-pathways', icon: Map, tier: 'public' },
     { label: 'Expectations', path: '/airline-expectations', icon: Building2, tier: 'public' },
     { label: 'type-ratings', path: '/type-ratings', icon: Target, tier: 'public' },
     { label: 'pathways', path: '/discover', icon: Target, tier: 'public' },

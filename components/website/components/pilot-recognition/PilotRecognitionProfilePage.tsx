@@ -5,7 +5,7 @@ import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle, User, FileText, Shield, Settings } from 'lucide-react';
 
-type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard' | 'cockpit';
+type ProfileSection = 'dashboard' | 'overview' | 'statistics' | 'logbook' | 'my_flightbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard' | 'cockpit';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -17,6 +17,8 @@ import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { AdminDashboardPanel } from './AdminDashboardPanel';
+import { PilotProfileDashboard } from './PilotProfileDashboard';
+import { LogbookHub } from './LogbookHub';
 import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
@@ -181,9 +183,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     // MSFS 2024 Style Sidebar Navigation
     const [searchParams, setSearchParams] = useSearchParams();
     const rawSection = searchParams.get('section');
-    const validSections: ProfileSection[] = ['overview', 'statistics', 'logbook', 'photos', 'identity', 'vault', 'admin_dashboard', 'cockpit'];
+    const validSections: ProfileSection[] = ['dashboard', 'overview', 'statistics', 'logbook', 'my_flightbook', 'photos', 'identity', 'vault', 'admin_dashboard', 'cockpit'];
     const sectionFromUrl: ProfileSection | null = rawSection && validSections.includes(rawSection as ProfileSection) ? (rawSection as ProfileSection) : null;
-    const initialSection = sectionFromUrl || 'overview';
+    const initialSection = sectionFromUrl || 'dashboard';
     const [activeSection, setActiveSectionState] = useState<ProfileSection>(initialSection);
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -211,6 +213,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setActiveSectionState(section);
         }
     }, [searchParams]);
+
+    // My Flightbook launches in a full-width view with a foldable overlay sidebar
+    useEffect(() => {
+        if (activeSection === 'my_flightbook') {
+            setSidebarOpen(false);
+        } else {
+            setSidebarOpen(true);
+        }
+    }, [activeSection]);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -815,7 +826,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     return (
         <div 
-            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : 'hidden' }}
+            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : (activeSection === 'my_flightbook' ? 'visible' : 'hidden') }}
             className={theme === 'light' ? 'light-theme' : 'dark-theme'}
             data-theme={theme}
         >
@@ -902,10 +913,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         {/* Navigation Items — card style */}
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
                             {[
-                                { id: 'overview',   label: 'Profile Information' },
-                                { id: 'statistics', label: 'License & Medical' },
-                                { id: 'logbook',    label: 'Flight Logbooks' },
-                                { id: 'photos',     label: 'Documents' },
+                                { id: 'dashboard',     label: 'Dashboard' },
+                                { id: 'overview',      label: 'Profile Information' },
+                                { id: 'statistics',    label: 'License & Medical' },
+                                { id: 'logbook',       label: 'Flight Logbooks' },
+                                { id: 'my_flightbook', label: 'My Flightbook' },
+                                { id: 'photos',        label: 'Documents' },
                                 { id: 'identity',   label: 'Experience & Career' },
                                 { id: 'cockpit',    label: 'Cockpit' },
                                 { id: 'vault',      label: 'Public Profile', isVault: true },
@@ -1075,12 +1088,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     zIndex: 10, 
                     flex: 1, 
                     maxWidth: embedded ? '100%' : 'none', 
-                    margin: embedded ? '0' : (sidebarOpen ? '0 0 0 280px' : '0'), 
-                    minHeight: embedded ? 'auto' : '100vh', 
-                    overflowY: 'auto', 
-                    paddingTop: 0,
+                    margin: embedded ? '0' : (activeSection === 'my_flightbook' ? '0' : (sidebarOpen ? '0 0 0 280px' : '0')), 
+                    minHeight: embedded ? 'auto' : '100vh',
+                    minWidth: 0,
+                    overflowY: activeSection === 'my_flightbook' ? 'visible' : 'auto',
+                    overflowX: 'hidden',
+                    paddingTop: activeSection === 'my_flightbook' ? '5.5rem' : 0,
                     transition: 'margin 0.45s ease',
-                    transform: 'scale(0.8)',
+                    transform: activeSection === 'my_flightbook' ? 'none' : 'scale(0.8)',
                     transformOrigin: 'top center',
                 }}>
 
@@ -1417,47 +1432,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
 
-                    {/* Official Documentation — Moved from Overview */}
-                    <div style={{ marginBottom: '2rem' }}>
-                        <CategorySection title="Official Documentation" description="Verification & Resumes">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{
-                                    background: 'rgba(30, 41, 59, 0.6)',
-                                    borderRadius: '24px',
-                                    padding: '1.75rem',
-                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
-                                    display: 'grid',
-                                    gridTemplateColumns: '1fr auto',
-                                    gap: '1.5rem',
-                                    alignItems: 'center'
-                                }}>
-                                    <div>
-                                        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>Digital Flight Logbook</h3>
-                                        <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>View your complete collection of licenses, flight hours, certifications, and professional milestones.</p>
-                                    </div>
-                                    <button
-                                        style={{
-                                            padding: '8px 16px',
-                                            minWidth: 180,
-                                            borderRadius: '999px',
-                                            border: '1px solid rgba(148,163,184,0.25)',
-                                            background: 'rgba(255,255,255,0.03)',
-                                            color: '#94a3b8',
-                                            fontWeight: 600,
-                                            fontSize: '0.85rem',
-                                            cursor: 'pointer',
-                                            whiteSpace: 'nowrap' as const,
-                                            textAlign: 'center' as const
-                                        }}
-                                        onClick={() => setCurrentDocumentationPage('logbook')}
-                                    >
-                                        View Logbook
-                                    </button>
-                                </div>
-                            </div>
-                        </CategorySection>
-                    </div>
-
                     <DigitalLogbookPage
                         embedded
                         onBack={() => setActiveSection('overview')}
@@ -1470,62 +1444,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         } : null}
                     />
 
-                    {/* Flight Hours Summary — Moved from Overview */}
-                    <div style={{ marginTop: '2rem' }}>
-                        <CategorySection title="Flight Hours Summary" description="Your verified and self-declared flight hours">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                {/* Flight Hours & Recognition Score Tiles */}
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', width: '100%' }}>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Flight Hours</p>
-                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.total_hours || 0).toLocaleString()}</p>
-                                        {profileData?.veremark_verified ? (
-                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#22c55e' }}>✓ Verified via Veremark</p>
-                                        ) : (
-                                            <button
-                                                onClick={() => isPremium ? setShowWalletGate(true) : setShowUpgradeModal(true)}
-                                                style={{ marginTop: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
-                                            >
-                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                                Sync Logbook
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition Score</p>
-                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
-                                        <p style={{ margin: '0.2rem 0 0', fontSize: '0.62rem', color: isPremium ? '#f59e0b' : '#64748b' }}>
-                                            {isPremium ? 'Tier 2: Advanced' : 'Upgrade to unlock'}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Logbook Hour Breakdown — DUAL XC, XC PIC, PIC LCL, DUAL LCL */}
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', width: '100%' }}>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL XC</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_xc_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Cross Country</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>XC PIC</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.xc_pic_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Cross Country PIC</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>PIC LCL</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.pic_local_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>PIC Local</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL LCL</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_local_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Local</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CategorySection>
-                    </div>
+                    <LogbookHub
+                        profile={profileData}
+                        onNavigate={onNavigate}
+                        onCompleteProfile={() => setActiveSection('overview')}
+                    />
 
                     {/* ATO Hour Verification — Pillar 5 */}
                     <div style={{ marginTop: '2rem' }}>
@@ -1533,6 +1456,31 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             <ATOVerificationRequestSection />
                         </CategorySection>
                     </div>
+                </motion.section>
+                )}
+
+                {/* ── MY FLIGHTBOOK SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'my_flightbook' && (
+                <motion.section
+                    key="my_flightbook"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '0', minHeight: '100vh' }}>
+
+                    <DigitalLogbookPage
+                        embedded
+                        inlineFullscreen
+                        onBack={() => setActiveSection('logbook')}
+                        userProfile={profileData ? {
+                            id: profileData.id || profileData.user_id,
+                            uid: profileData.id || profileData.user_id,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || '',
+                            email: profileData.email || '',
+                        } : null}
+                    />
                 </motion.section>
                 )}
 
@@ -1872,6 +1820,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         )}
                     </div>
+                </motion.section>
+                )}
+
+                {/* ── DASHBOARD SECTION — Pilot Career Overview ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'dashboard' && (
+                <motion.section
+                    key="dashboard"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}>
+                    <PilotProfileDashboard
+                        profile={profileData}
+                        onNavigate={onNavigate}
+                    />
                 </motion.section>
                 )}
 

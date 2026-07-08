@@ -1,6 +1,29 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Loader2, X, MessageCircle } from 'lucide-react';
+import { ThemeContext } from '../../context/ThemeContext';
+
+// Safe hook that handles missing ThemeProvider (e.g. portal usage)
+const useSafeTheme = () => {
+  try {
+    const context = useContext(ThemeContext);
+    return (
+      context || {
+        isDarkMode: false,
+        toggleTheme: () => {},
+        isAutoMode: false,
+        resetToAutoTheme: () => {},
+      }
+    );
+  } catch {
+    return {
+      isDarkMode: false,
+      toggleTheme: () => {},
+      isAutoMode: false,
+      resetToAutoTheme: () => {},
+    };
+  }
+};
 
 interface Message {
   role: 'user' | 'assistant';
@@ -72,6 +95,8 @@ function incrementDailyCount(): number {
 }
 
 export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
+  const { isDarkMode } = useSafeTheme();
+
   const isPlus =
     (profile?.subscription_tier as string) === 'plus' ||
     (profile?.subscription_tier as string) === 'enterprise' ||
@@ -402,12 +427,18 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
 
   return (
     <div
-      className="rounded-2xl border border-white/40 p-8"
+      className={`rounded-2xl border p-8 ${
+        isDarkMode ? 'border-white/10' : 'border-white/40'
+      }`}
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.4))',
+        background: isDarkMode
+          ? 'linear-gradient(135deg, rgba(15,23,42,0.85), rgba(30,41,59,0.9))'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.4))',
         backdropFilter: 'blur(16px) saturate(1.2)',
         WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
-        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
+        boxShadow: isDarkMode
+          ? 'inset 0 1px 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)'
+          : 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
       }}
     >
       {/* Top Bar Header */}
@@ -429,10 +460,14 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         {/* Centered title */}
         <div className="text-center">
           <p className="text-2xl font-black tracking-wide">
-            <span style={{ color: '#1e293b' }}>Recognition</span>
-            <span style={{ color: '#ffffff' }}> AI</span>
+            <span className={isDarkMode ? 'text-white' : 'text-slate-950'}>Recognition</span>
+            <span className="text-red-600"> AI</span>
           </p>
-          <p className="text-[10px] text-slate-400 mt-0.5">
+          <p
+            className={`text-[10px] mt-0.5 ${
+              isDarkMode ? 'text-white/50' : 'text-slate-400'
+            }`}
+          >
             Get advice on your pathways, career goals, and network.
           </p>
         </div>
@@ -442,10 +477,12 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
           {hasStarted && (
             <button
               onClick={resetChat}
-              className="p-1.5 rounded-lg hover:bg-white/40 transition-colors"
+              className={`p-1.5 rounded-lg transition-colors ${
+                isDarkMode ? 'hover:bg-white/10' : 'hover:bg-white/40'
+              }`}
               title="Close chat"
             >
-              <X size={14} className="text-slate-400" />
+              <X size={14} className={isDarkMode ? 'text-white/50' : 'text-slate-400'} />
             </button>
           )}
         </div>
@@ -473,12 +510,19 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
               style={
                 msg.role === 'user'
                   ? {}
-                  : {
-                      background: 'rgba(15,23,42,0.85)',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                    }
+                  : isDarkMode
+                    ? {
+                        background: 'rgba(15,23,42,0.85)',
+                        color: '#ffffff',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                      }
+                    : {
+                        background: '#2563eb',
+                        color: '#ffffff',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                      }
               }
             >
               <p className="text-[13px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
@@ -500,12 +544,21 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
           >
             <div
               className="rounded-xl px-4 py-3 flex items-center gap-2"
-              style={{
-                background: 'rgba(15,23,42,0.85)',
-                color: '#ffffff',
-                border: '1px solid rgba(255,255,255,0.12)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-              }}
+              style={
+                isDarkMode
+                  ? {
+                      background: 'rgba(15,23,42,0.85)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                    }
+                  : {
+                      background: '#2563eb',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                    }
+              }
             >
               <Loader2 size={14} className="text-amber-400 animate-spin" />
               <p className="text-[13px] text-white/70">Checking the charts…</p>
@@ -526,10 +579,16 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
                 <button
                   key={q}
                   onClick={() => handleSend(q)}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all"
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all ${
+                    isDarkMode
+                      ? 'bg-slate-800/60 border-white/10 hover:bg-slate-700/60'
+                      : 'bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                  }`}
                 >
-                  <MessageCircle size={10} className="text-red-500" />
-                  <span className="text-[11px] text-slate-600 font-medium">{q}</span>
+                  <MessageCircle size={10} className={isDarkMode ? 'text-red-400' : 'text-red-500'} />
+                  <span className={`text-[11px] font-medium ${isDarkMode ? 'text-white/80' : 'text-slate-600'}`}>
+                    {q}
+                  </span>
                 </button>
               ))}
             </motion.div>
@@ -537,14 +596,20 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
         <div ref={messagesEndRef} />
       </motion.div>
 
-      {/* Input area — always white search bar, floating */}
+      {/* Input area — white in light mode, dark glass in dark mode */}
       <motion.div
         className="mt-4"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-red-500/20 transition-all">
+        <div
+          className={`flex items-center gap-3 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 transition-all ${
+            isDarkMode
+              ? 'bg-slate-900/60 border border-white/10 focus-within:ring-red-500/30'
+              : 'bg-white border border-slate-200 focus-within:ring-red-500/20'
+          }`}
+        >
           <EpauletIcon3 size={18} className="text-red-600 flex-shrink-0" />
           <input
             ref={inputRef}
@@ -558,7 +623,11 @@ export const RecognitionAIChat: React.FC<Props> = ({ profile }) => {
                 : PLACEHOLDERS[placeholderIdx]
             }
             disabled={isLoading}
-            className="flex-1 bg-transparent text-sm text-[#222222] placeholder-slate-600 focus:outline-none"
+            className={`flex-1 bg-transparent text-sm focus:outline-none ${
+              isDarkMode
+                ? 'text-white placeholder-white/40'
+                : 'text-[#222222] placeholder-slate-600'
+            }`}
           />
           {hasStarted ? (
             <button

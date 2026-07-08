@@ -14,6 +14,7 @@ const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage').then(m 
 const AirlinesPage = lazy(() => import('./pages/AirlinesPage').then(m => ({ default: m.AirlinesPage })));
 const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ default: m.GetStartedPage })));
 const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').then(m => ({ default: m.PathwayDashboardPage })));
+const MyPathwaysPage = lazy(() => import('./pages/MyPathwaysPage').then(m => ({ default: m.MyPathwaysPage })));
 const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
 const ProfilePage = lazy(() => import('@/app/professional-profile/page.tsx'));
@@ -243,6 +244,10 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
                   <Navigate to="/get-started" replace />
                 )
               } 
+            />
+            <Route 
+              path="/my-pathways" 
+              element={<MyPathwaysPage />}
             />
             {/* Unified Platform Pages - from pilotrecognition.com */}
             <Route 

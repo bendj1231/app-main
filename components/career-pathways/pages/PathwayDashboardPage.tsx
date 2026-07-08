@@ -18,6 +18,11 @@ import {
   Lock
 } from 'lucide-react';
 import { usePathwayMatching } from '../../../hooks/usePathwayMatching';
+import {
+  BookmarkedAircraftExpectations,
+  ProfileVisitTracker,
+  SubmittedInterestsPathways,
+} from '../components';
 
 interface PathwayDashboardPageProps {
   onNavigate?: (path: string) => void;
@@ -268,6 +273,10 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Bookmarks & submitted interests */}
+            <BookmarkedAircraftExpectations />
+            <SubmittedInterestsPathways />
           </div>
 
           {/* Sidebar — Profile Card */}
@@ -350,6 +359,8 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
                 </div>
               )}
             </div>
+
+            <ProfileVisitTracker />
           </div>
         </div>
       </div>

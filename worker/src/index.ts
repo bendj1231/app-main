@@ -198,6 +198,22 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       return null;
     }
 
+    case 'searchProfiles': {
+      const { query, limit = 20 } = params || {};
+      if (!query || typeof query !== 'string' || query.trim().length < 2) {
+        return { results: [] };
+      }
+      const term = `%${query.trim().toLowerCase()}%`;
+      const maxResults = Math.min(Number(limit) || 20, 50);
+      const { results } = await db.prepare(`
+        SELECT id, auth0_id, email, full_name, display_name, first_name, last_name, avatar_url, profile_image_url, total_flight_hours, current_flight_hours, license_id, country_of_license, ratings, current_occupation, status
+        FROM profiles
+        WHERE LOWER(full_name) LIKE ? OR LOWER(display_name) LIKE ? OR LOWER(email) LIKE ? OR LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?
+        LIMIT ?
+      `).bind(term, term, term, term, term, maxResults).all();
+      return { results: results || [] };
+    }
+
     case 'createProfile': {
       const id = crypto.randomUUID();
       const now = new Date().toISOString();

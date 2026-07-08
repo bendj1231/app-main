@@ -11,6 +11,7 @@ import type { TabId } from '../types';
 import {
   BookOpen,
   Globe,
+  Home,
   User,
   Shield,
   Target,
@@ -21,15 +22,15 @@ import {
   Brain,
   Clock,
   PlayCircle,
-  Briefcase,
   Mail,
   Star,
   ArrowRight,
 } from 'lucide-react';
+import { useAirlinePathways } from '../useAirlinePathways';
 
 const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 
-interface DashboardProfile {
+export interface DashboardProfile {
   last_flown?: string | null;
   last_flight_date?: string | null;
   total_flight_hours?: number | string | null;
@@ -86,13 +87,19 @@ export const DashboardTab: React.FC<{
   ];
   const dashFeatures = dashTier === 'free' ? dashFreeFeatures : dashPlusFeatures;
 
+  const { pathways, recommended, latest, submitted, loading: pathwaysLoading } =
+    useAirlinePathways(profile);
+  const topMatch = !pathwaysLoading
+    ? [...pathways].sort((a, b) => b.match - a.match)[0]
+    : undefined;
+
   if (!currentUser)
     return (
       <motion.div
         className="flex w-full"
         style={{
-          height: 'calc(100vh - 108px)',
-          maxHeight: 'calc(100vh - 108px)',
+          height: 'calc(100dvh - 108px)',
+          maxHeight: 'calc(100dvh - 108px)',
           overflow: 'hidden',
         }}
         initial={{ opacity: 0 }}
@@ -468,8 +475,8 @@ export const DashboardTab: React.FC<{
     );
 
   return (
-    <div className="space-y-8 px-6 lg:px-12 xl:px-16">
-      <div className="relative">
+    <div className="w-full min-h-[100dvh] space-y-8 px-4 md:px-6 lg:px-12 xl:px-16 pb-20 md:pb-0">
+      <div className="relative hidden md:block">
         <h2 className="text-3xl font-serif text-white tracking-wide mb-2">Recognition Dashboard</h2>
         <div className="h-[2px] bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
       </div>
@@ -478,276 +485,236 @@ export const DashboardTab: React.FC<{
       <RecognitionAIChat profile={profile as Record<string, unknown>} />
 
       {/* Quick Access Dashboard */}
-      <div
-        className="backdrop-blur-2xl border border-white/20 p-8 shadow-2xl"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-        }}
-      >
-        <div className="flex items-center gap-3 mb-6">
-          <Zap size={22} className="text-amber-400" />
-          <h3 className="text-xl font-bold text-white">» QUICK ACCESS</h3>
+      <div className="w-full rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur-2xl shadow-2xl shadow-black/20 p-8">
+        <div className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-6">
+          <Zap size={16} className="text-amber-400" />
+          <span>Quick Access</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch auto-rows-fr">
-          {/* Flight Bag */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch auto-rows-fr">
+          {/* My Pathways */}
           <button
-            onClick={() => setTab?.('logbook' as TabId)}
-            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
-              backdropFilter: 'blur(16px) saturate(1.2)',
-              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
-            }}
+            type="button"
+            onClick={() => onNavigate(`my-pathways${window.location.search}`)}
+            className="group relative flex flex-col justify-between p-5 rounded-2xl border border-slate-700/50 bg-slate-950/40 backdrop-blur-xl shadow-xl shadow-black/20 hover:border-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-red-500/40"
           >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}
-            >
-              <Briefcase size={24} style={{ color: '#ffffff' }} />
-            </div>
-            <div className="w-full flex-1 flex flex-col">
-              <h4 className="text-slate-900 font-bold text-base mb-2">Flight Bag</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">Last Flown</span>
-                  <span className="text-slate-900 text-sm font-bold">
-                    {profile?.last_flown || profile?.last_flight_date || 'N/A'}
+            <div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/10">
+                <Plane size={20} strokeWidth={2.5} />
+              </div>
+              <h4 className="text-base font-black text-white mt-4 tracking-tight">My Pathways</h4>
+
+              <div className="mt-4 space-y-2.5 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-slate-400">Matches</span>
+                  <span className="font-black text-white">
+                    {pathwaysLoading ? '—' : recommended.length}
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">Total Hours</span>
-                  <span className="text-blue-600 text-sm font-black">
-                    {profile?.total_flight_hours || 0}
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-slate-400">Top Match</span>
+                  <span className="font-black text-indigo-400 text-right truncate max-w-[110px]">
+                    {topMatch ? `${topMatch.name} ${topMatch.match}%` : '—'}
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">Career</span>
-                  <span className="text-slate-900 text-xs font-bold">
-                    {profile?.current_occupation || profile?.license_type || 'Not set'}
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-slate-400">Submitted</span>
+                  <span className="font-black text-white">
+                    {pathwaysLoading ? '—' : submitted.length}
                   </span>
                 </div>
               </div>
             </div>
-            <div
-              className="mt-auto flex items-center gap-1 text-xs font-bold"
-              style={{ color: '#dc2626' }}
-            >
-              <span>Open Logbook</span>
-              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            <div className="mt-6 flex items-center text-xs font-bold text-slate-400 group-hover:text-red-400 transition-colors">
+              <span>Open My Pathways</span>
+              <ArrowRight
+                size={14}
+                strokeWidth={2.5}
+                className="ml-1 transform group-hover:translate-x-0.5 transition-transform"
+              />
             </div>
           </button>
 
           {/* Profile */}
           <button
+            type="button"
             onClick={() => setTab?.('profile' as TabId)}
-            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
-              backdropFilter: 'blur(16px) saturate(1.2)',
-              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
-            }}
+            className="group relative flex flex-col justify-between p-5 rounded-2xl border border-slate-700/50 bg-slate-950/40 backdrop-blur-xl shadow-xl shadow-black/20 hover:border-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-red-500/40"
           >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}
-            >
-              <User size={24} style={{ color: '#ffffff' }} />
-            </div>
-            <div className="w-full flex-1 flex flex-col">
-              <h4 className="text-slate-900 font-bold text-base mb-2">Profile</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">Name</span>
-                  <span className="text-slate-900 text-sm font-bold truncate max-w-[120px]">
-                    {profile?.display_name || profile?.full_name || 'Guest'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">License</span>
-                  <span className="text-slate-900 text-xs font-bold">
-                    {profile?.license_type || 'Not set'}
-                  </span>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-xs">Completion</span>
-                    <span className="text-emerald-600 text-sm font-black">
-                      {Math.round(
-                        ([
-                          !!profile?.full_name,
-                          !!profile?.current_occupation,
-                          !!profile?.license_type,
-                          !!profile?.total_flight_hours,
-                          !!profile?.last_flown,
-                        ].filter(Boolean).length /
-                          5) *
-                          100
-                      )}
-                      %
-                    </span>
+            {(() => {
+              const completion = Math.round(
+                ([
+                  !!profile?.full_name,
+                  !!profile?.current_occupation,
+                  !!profile?.license_type,
+                  !!profile?.total_flight_hours,
+                  !!profile?.last_flown,
+                ].filter(Boolean).length /
+                  5) *
+                  100
+              );
+              return (
+                <>
+                  <div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/10">
+                      <User size={20} strokeWidth={2.5} />
+                    </div>
+                    <h4 className="text-base font-black text-white mt-4 tracking-tight">Profile</h4>
+
+                    <div className="mt-4 space-y-2.5 text-xs">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-slate-400">Name</span>
+                        <span className="font-black text-white truncate max-w-[110px]">
+                          {profile?.display_name || profile?.full_name || 'Guest'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-slate-400">License</span>
+                        <span className="font-bold italic text-slate-500">
+                          {profile?.license_type || 'Not set'}
+                        </span>
+                      </div>
+                      <div className="pt-1">
+                        <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase">
+                          <span>Completion</span>
+                          <span className="text-emerald-400">{completion}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full mt-1.5 overflow-hidden border border-slate-700/30">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400"
+                            style={{ width: `${completion}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    className="h-2 rounded-full overflow-hidden"
-                    style={{ background: '#e2e8f0' }}
-                  >
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${Math.round(
-                          ([
-                            !!profile?.full_name,
-                            !!profile?.current_occupation,
-                            !!profile?.license_type,
-                            !!profile?.total_flight_hours,
-                            !!profile?.last_flown,
-                          ].filter(Boolean).length /
-                            5) *
-                            100
-                        )}%`,
-                        background: '#10b981',
-                      }}
+                  <div className="mt-6 flex items-center text-xs font-bold text-slate-400 group-hover:text-red-400 transition-colors">
+                    <span>View Profile</span>
+                    <ArrowRight
+                      size={14}
+                      strokeWidth={2.5}
+                      className="ml-1 transform group-hover:translate-x-0.5 transition-transform"
                     />
                   </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="mt-auto flex items-center gap-1 text-xs font-bold"
-              style={{ color: '#dc2626' }}
-            >
-              <span>View Profile</span>
-              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-            </div>
+                </>
+              );
+            })()}
           </button>
 
           {/* Inbox */}
           <button
+            type="button"
             onClick={() => setTab?.('inbox' as TabId)}
-            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
-              backdropFilter: 'blur(16px) saturate(1.2)',
-              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
-            }}
+            className="group relative flex flex-col justify-between p-5 rounded-2xl border border-slate-700/50 bg-slate-950/40 backdrop-blur-xl shadow-xl shadow-black/20 hover:border-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-red-500/40"
           >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}
-            >
-              <Mail size={24} style={{ color: '#ffffff' }} />
-            </div>
-            <div className="w-full flex-1 flex flex-col">
-              <h4 className="text-slate-900 font-bold text-base mb-2">Inbox</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-xs">Unread</span>
-                  <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full">
-                    3
-                  </span>
+            <div>
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/10">
+                <Mail size={20} strokeWidth={2.5} />
+                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white ring-2 ring-slate-950">
+                  3
+                </span>
+              </div>
+              <h4 className="text-base font-black text-white mt-4 tracking-tight">Inbox</h4>
+
+              <div className="mt-4 space-y-2 text-[11px] leading-relaxed font-medium">
+                <div className="flex items-start gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <p>
+                    New pathway match: <span className="text-white font-bold">Emirates</span>
+                  </p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0 mt-1" />
-                  <span className="text-slate-700 text-xs leading-snug">
-                    New pathway match: Emirates
-                  </span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1" />
-                  <span className="text-slate-700 text-xs leading-snug">
-                    Medical cert expiring soon
-                  </span>
+                <div className="flex items-start gap-1.5 text-slate-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 shrink-0" />
+                  <p>Medical cert expiring soon</p>
                 </div>
               </div>
             </div>
-            <div
-              className="mt-auto flex items-center gap-1 text-xs font-bold"
-              style={{ color: '#dc2626' }}
-            >
+            <div className="mt-6 flex items-center text-xs font-bold text-slate-400 group-hover:text-red-400 transition-colors">
               <span>Open Inbox</span>
-              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight
+                size={14}
+                strokeWidth={2.5}
+                className="ml-1 transform group-hover:translate-x-0.5 transition-transform"
+              />
             </div>
           </button>
 
           {/* Recognition+ */}
           <button
+            type="button"
             onClick={() => setTab?.('recognition-plus' as TabId)}
-            className="group flex flex-col items-start gap-3 h-full p-6 rounded-xl border border-white/25 transition-all hover:scale-[1.02] hover:shadow-lg text-left"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08))',
-              backdropFilter: 'blur(16px) saturate(1.2)',
-              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.06)',
-            }}
+            className="group relative flex flex-col justify-between p-5 rounded-2xl border border-slate-700/50 bg-slate-950/40 backdrop-blur-xl shadow-xl shadow-black/20 hover:border-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-red-500/40"
           >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}
-            >
-              <Star size={24} style={{ color: '#ffffff' }} />
-            </div>
-            <div className="w-full flex-1 flex flex-col">
-              <h4 className="text-slate-900 font-bold text-base mb-2">Recognition+</h4>
-              {(() => {
-                const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free')
-                  .toString()
-                  .toLowerCase();
-                const isMember = tier !== 'free' && tier !== 'bronze';
-                const verifStatus =
-                  (profile?.verification_status as Record<string, unknown>)?.status ||
-                  (profile?.verification_status as string) ||
-                  'unverified';
-                return (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500 text-xs">Status</span>
-                      <span
-                        className={`text-sm font-bold ${isMember ? 'text-amber-600' : 'text-slate-500'}`}
-                      >
-                        {isMember ? 'Active Member' : 'Free Account'}
-                      </span>
+            {(() => {
+              const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free')
+                .toString()
+                .toLowerCase();
+              const isMember = tier !== 'free' && tier !== 'bronze';
+              const verifStatus =
+                (profile?.verification_status as Record<string, unknown>)?.status ||
+                (profile?.verification_status as string) ||
+                'unverified';
+              const manageLabel = tier === 'free' || tier === 'bronze' ? 'Upgrade Now' : 'Manage Plan';
+              return (
+                <>
+                  <div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/10">
+                      <Star size={20} strokeWidth={2.5} />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500 text-xs">Verification</span>
-                      <span
-                        className={`text-sm font-black ${verifStatus === 'verified' ? 'text-emerald-600' : 'text-yellow-600'}`}
-                      >
-                        {verifStatus === 'verified' ? 'Verified' : 'Pending'}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500 text-xs">Tier</span>
-                      <span className="text-slate-900 text-xs font-bold capitalize">{tier}</span>
+                    <h4 className="text-base font-black text-white mt-4 tracking-tight">
+                      Recognition+
+                    </h4>
+
+                    <div className="mt-4 space-y-2.5 text-xs">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-slate-400">Status</span>
+                        <span className="font-black text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          {isMember ? 'Active Member' : 'Free Account'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-slate-400">Verification</span>
+                        <span
+                          className={`font-black ${
+                            verifStatus === 'verified' ? 'text-emerald-400' : 'text-amber-500'
+                          }`}
+                        >
+                          {verifStatus === 'verified' ? 'Verified' : 'Pending'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-slate-400">Tier</span>
+                        <span className="font-black text-white capitalize">{tier}</span>
+                      </div>
                     </div>
                   </div>
-                );
-              })()}
-            </div>
-            <div
-              className="mt-auto flex items-center gap-1 text-xs font-bold"
-              style={{ color: '#dc2626' }}
-            >
-              <span>
-                {(() => {
-                  const tier = (profile?.subscription_tier || profile?.recognition_tier || 'free')
-                    .toString()
-                    .toLowerCase();
-                  return tier === 'free' || tier === 'bronze' ? 'Upgrade Now' : 'Manage Plan';
-                })()}
-              </span>
-              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-            </div>
+                  <div className="mt-6 flex items-center text-xs font-bold text-slate-400 group-hover:text-red-400 transition-colors">
+                    <span>{manageLabel}</span>
+                    <ArrowRight
+                      size={14}
+                      strokeWidth={2.5}
+                      className="ml-1 transform group-hover:translate-x-0.5 transition-transform"
+                    />
+                  </div>
+                </>
+              );
+            })()}
           </button>
         </div>
       </div>
 
       {/* Quick Access Pathways — airline logo carousel */}
-      <QuickAccessPathways profile={profile} />
+      <QuickAccessPathways
+        profile={profile}
+        pathways={pathways}
+        recommended={recommended}
+        latest={latest}
+        submitted={submitted}
+        loading={pathwaysLoading}
+      />
 
       {/* Interactive Profile Preview — glassy SaaS command centre */}
-      <InteractiveProfilePreview profile={profile as any} setTab={setTab} onNavigate={onNavigate} />
+      <InteractiveProfilePreview profile={profile as Record<string, unknown>} setTab={setTab} onNavigate={onNavigate} />
 
       {/* Digital Logbook Hub */}
       <LogbookHub
@@ -878,6 +845,35 @@ export const DashboardTab: React.FC<{
           </div>
         </div>
       </div>
+
+      {/* Mobile bottom navigation — matches img 2 */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 md:hidden z-50">
+        <nav className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
+          {[
+            { id: 'home', label: 'Home', icon: Home },
+            { id: 'dashboard', label: 'Flight Deck', icon: Plane },
+            { id: 'profile', label: 'Profile', icon: User },
+            { id: 'inbox', label: 'Inbox', icon: Mail },
+            { id: 'recognition-plus', label: 'Recognition+', icon: Star },
+          ].map((item) => {
+            const Icon = item.icon;
+            const active = item.id === 'dashboard';
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setTab?.(item.id as TabId)}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors ${
+                  active ? 'text-red-600' : 'text-slate-500'
+                }`}
+              >
+                <Icon size={20} strokeWidth={active ? 2.5 : 2} />
+                <span className="text-[10px] font-bold leading-none">{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
     </div>
-  );
+);
 };

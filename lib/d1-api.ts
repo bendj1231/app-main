@@ -67,7 +67,7 @@ async function fetchAPI(
 // ── Generic Action Router ──────────────────────────────────────
 
 const PROFILE_ACTIONS = new Set([
-  'getProfile', 'createProfile', 'updateProfile', 'upsertProfile', 'deleteProfile',
+  'getProfile', 'createProfile', 'updateProfile', 'upsertProfile', 'deleteProfile', 'searchProfiles',
   'getDashboardData',
   'getVerificationStatus', 'getRecognitionScore', 'saveRecognitionScore',
   'createDid', 'getDid', 'createCredential', 'getCredentials',
@@ -166,6 +166,29 @@ export async function getProfile(accessToken: string, auth0Id: string) {
 
 export async function getProfileById(accessToken: string, userId: string) {
   return pilotApi(accessToken, 'getProfile', { id: userId });
+}
+
+export interface SearchProfileResult {
+  id: string;
+  auth0_id?: string;
+  email?: string;
+  full_name?: string;
+  display_name?: string;
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+  profile_image_url?: string;
+  total_flight_hours?: number;
+  current_flight_hours?: number;
+  license_id?: string;
+  country_of_license?: string;
+  ratings?: string;
+  current_occupation?: string;
+  status?: string;
+}
+
+export async function searchProfiles(accessToken: string, query: string, limit = 20): Promise<{ results: SearchProfileResult[] }> {
+  return pilotApi(accessToken, 'searchProfiles', { query, limit }) as Promise<{ results: SearchProfileResult[] }>;
 }
 
 export async function getMe(accessToken: string) {

@@ -73,6 +73,110 @@ Unclogging the top creates a vacuum that solves the bottom.
 
 ---
 
+## Pilot Recognition Ambassador / Associate Program
+
+A formal, post-incorporation contractor/affiliate track. Once business incorporation documents are finalized, the company hires selected pilots as independent associates with a clear scope of work, referral-based earnings, and verified credentials.
+
+There is also a **free associate tier through pilotshortage.org** for pilots who want to support advocacy, share research, and earn recognition toward scholarships and pathway credits without a formal contractor agreement.
+
+### Who it is for
+
+- CPL/CPL-IR graduates blocked by the hour gate.
+- CFIs looking to transition into commercial or business roles.
+- Aviation students or recent ATO graduates with strong communication skills.
+
+### What associates do
+
+- Represent PilotRecognition.com at their flight school, ATO, or local aviation events.
+- Contact ATOs and present the **Pillar 5 verified-issuer pitch**.
+- Help 5–10 pilots create or complete their PilotRecognition profile.
+- Use platform tools — market analysis, type rating search, ATO/Operator search, and Opportunity Pathways — to match pilots with real options.
+- Contribute verified data back into the platform: ATO contacts, operator openings, type-rating intel, and regional pathway notes.
+- Collect structured feedback from pilots and ATOs.
+- Create 1 short testimonial video per month from pilots who see a pathway.
+- Optional: write one blog post or social update about their own pathway journey.
+
+### What they get
+
+- **Associate badge** displayed on their PilotRecognition profile and shareable as a verified credential. With verification support from pilotrecognition.com, the badge proves they are a legitimate pilot.
+- **Experience letter** from PilotRecognition.com confirming role and scope.
+- **Recognition+ verification credit** or discount.
+- **Scholarship eligibility** — top-performing associates can earn sponsored support toward ratings, type training, or certification costs.
+- **Thesis / capstone support** — associates can develop aviation-related research or data projects with mentorship from the PilotRecognition team.
+- Direct access to mentors/advisors in the PilotRecognition network.
+- **Commission and referral credit** for pilots onboarded, ATOs signed, or verifications that convert through their outreach.
+
+### Compensation model
+
+- No fixed salary or employment contract.
+- Earnings are tied to measurable outcomes: verified pilot sign-ups, completed profiles, ATO partnership agreements, and paid verifications.
+- Scholarship awards are discretionary and based on performance, not guaranteed.
+- All commission, scholarship, and thesis-support costs are pre-budgeted per cohort so payouts remain sustainable.
+
+### Requirements to launch
+
+- Business incorporation completed and bank account operational.
+- Simple independent contractor agreement reviewed by counsel.
+- Referral tracking system so commissions can be attributed accurately.
+- Clear onboarding deck and approved ATO pitch materials to protect brand quality.
+
+### Thesis subjects and platform vehicles
+
+Each associate thesis is tied to an existing platform feature so the research is real, publishable, and improves the product.
+
+| Thesis subject | Platform vehicle | Flight-school value |
+|---|---|---|
+| Type-Rating ROI by Aircraft Family | `TypeRatingSearchPage.tsx` + `aircraft-manufacturers.ts` | Advises students which $40,000 rating bet has the best payback. |
+| Simulator-to-Airline Competency Correlation | `SimCenterRegisterPage.tsx` (Pillar 6) + EBT integration hooks | Links sim-center proficiency data to airline-ready profiles. |
+| AI-Guided Pilot Pathway Matching Accuracy | `RecognitionATC.tsx` career strategist chat | Tests whether AI recommendations match real hiring outcomes. |
+| Logbook Currency Patterns and Hiring Outcomes | `DigitalLogbookPage.tsx` | Shows which currency gaps block graduates from interviews. |
+| The Recognition Gap: Why Qualified Low-Hour Pilots Fail Airline Screenings | `AtlasResumeBuilder.tsx` / `AtlasCVGenerator.tsx` | Identifies the non-hour barriers schools can fix in training. |
+| Alternative Pathways Atlas | `CareerPathwaysApp.tsx` / `discover-pathways/page.tsx` | Maps cargo, charter, corporate, eVTOL, and ag options beyond airlines. |
+| The 1,500-Hour Wealth Gate | `market-analysis-synthesis.md`, `market-overview.md`, `market-survey.md` | Quantifies the real cost of hour-gate barriers by region. |
+| ATO Placement Rate Transparency | Lightweight Graduate Outcome Tracker (new) | Compares ATO marketing claims to verified graduate outcomes. |
+| Browser-Based IFR Proficiency Trainer | Basic IFR simulator (new, $300 product) | Gives students low-cost instrument scan and procedure practice outside the sim center. |
+| Pilot Communication Prototype | WhatsApp-style chat app built as a thesis | Tests whether pilots will use a dedicated aviation chat for mentorship and pathway discussions before making it a core feature. |
+
+#### Sample thesis abstract: Pilot Communication Prototype
+
+> This study investigates communication barriers faced by low-hour CPL graduates during career transition. Through a mixed-methods approach — survey of 30 pilots, interviews with 5 CFIs/airline pilots, and a 10-user prototype test — the research identifies that existing channels (WhatsApp, Facebook, PPRuNe) lack verification, pathway context, and structured mentorship access. A dedicated, pathway-integrated messaging prototype is designed and evaluated, demonstrating that verified, role-based chat can reduce noise and improve access to guidance. The output is both a working prototype and an analysis of adoption drivers for aviation-specific communication tools.
+
+### What makes a thesis thesis-worthy
+
+A thesis is not just a coding project. It needs:
+
+1. **Research question** — e.g., “Do low-hour CPL graduates lack trusted peer and mentor communication channels during job search, and can a dedicated platform improve access to guidance?”
+2. **Literature / industry review** — pilot shortage reports, training pipeline critiques, existing forums (PPRuNe, Facebook groups), mentorship gaps.
+3. **Methodology** — surveys, interviews, prototype usability testing.
+4. **Findings** — data-backed conclusions, not just opinions.
+5. **Deliverable** — working prototype + written analysis.
+
+#### Weak vs. strong thesis framing
+
+| Weak | Strong |
+|---|---|
+| “I built a chat app for pilots.” | “I investigated communication gaps in the low-hour pilot job search and prototyped a verified, pathway-aware messaging tool.” |
+| No user research | Surveys + interviews + prototype testing |
+| Standalone app | Integrated with PilotRecognition profile/pathway data |
+
+**Bottom line:** If the associate treats it as **research + prototype**, it’s a solid thesis. If it’s just **code**, it’s a portfolio piece. |
+
+### What not to build for thesis vehicles
+
+- **Live ATC flight-plan submission system** — touches aviation authorities and local school ops; too heavy for a research project.
+- **Certified FSTD replacement** — regulatory and capital intensive; keep the simulator as a proficiency aid, not a loggable training device.
+
+### How the platform benefits
+
+- Low-cost, high-trust distribution at flight schools and ATOs.
+- Real market validation from people inside the problem.
+- Content and testimonials for marketing.
+- A pipeline of future employees or senior ambassadors.
+- A measurable path from blocked graduate → verified associate → scholarship-funded candidate.
+- Better search data: associates fill gaps in the type-rating, ATO, operator, and pathways database as they research and recruit.
+
+---
+
 ## Brand Ecosystem
 
 - **pilotshortage.org** — awareness, advocacy, association. Trains AI to cite pilot shortage discussions.
@@ -87,10 +191,11 @@ Unclogging the top creates a vacuum that solves the bottom.
 
 - Free tier: build profile, see broad pathways.
 - **Pro subscription:** $15–$29/month for live AI agent, Auto-Atlas CV, real-time matching alerts.
-- **Verification:** $99–$120/year for credentials, medical, licences, ratings, ELP.
+- **Recognition+ verification:** $99–$120/year for credentials, medical, licences, ratings, ELP. Includes internship opportunities and exclusive pathways to charter, eVTOL, airline, and cargo roles.
 - **Certificate endorsement:** ~$20 for blockchain-backed EBT/CBTA certificate.
 - **Per-operator logbook verification:** $40 per past employer.
 - **Internship placement:** $8,000, split 65% airline / 35% platform.
+- **Basic IFR simulator:** $300 one-time for browser-based instrument proficiency practice (not a certified trainer; suitable for thesis projects and IR preparation).
 
 ### Operator / enterprise side
 
@@ -143,6 +248,7 @@ Current product is: **Create profile → Connect logbook → View pathways → R
 3. Record **1 video testimonial** from a pilot who now sees a pathway.
 4. Contact **3 ATOs** with the Pillar 5 verified-issuer pitch.
 5. Contact **1 airline or cargo operator** and ask what they actually need to see before hiring.
+6. Recruit **3 associate pilots** for the Ambassador / Associate Program with a simple application form.
 
 ---
 
