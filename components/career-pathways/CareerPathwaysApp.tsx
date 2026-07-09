@@ -34,6 +34,9 @@ const MyPathwaysPage = lazy(() =>
 const EnterpriseDirectoryPage = lazy(() =>
   import('./pages/EnterpriseDirectoryPage').then((m) => ({ default: m.EnterpriseDirectoryPage }))
 );
+const CareerPathwaysHomePage = lazy(() =>
+  import('./pages/CareerPathwaysHomePage').then((m) => ({ default: m.CareerPathwaysHomePage }))
+);
 const BecomeMemberPage = lazy(() =>
   import('@/components/website/components/BecomeMemberPage').then((m) => ({
     default: m.BecomeMemberPage,
@@ -218,9 +221,12 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
             <Route path="/callback" element={<OAuthCallback />} />
             <Route path="/auth/callback" element={<OAuthCallback />} />
 
-            {/* Main pathways explorer - CSS hides PlatformNavbar and sidebar */}
-            <Route path="/" element={<PathwaysPageModernWrapper />} />
-            <Route path="/pathways" element={<PathwaysPageModernWrapper />} />
+            {/* Main pathways hub - redesigned home with category cards and recommended carousel */}
+            <Route path="/" element={<CareerPathwaysHomePage />} />
+            <Route path="/pathways" element={<CareerPathwaysHomePage />} />
+
+            {/* Full pathways explorer - CSS hides PlatformNavbar and sidebar */}
+            <Route path="/discover" element={<PathwaysPageModernWrapper />} />
             <Route path="/programs" element={<ProgramsPage onNavigate={handleNavigate} />} />
             <Route
               path="/programs/:programId"
