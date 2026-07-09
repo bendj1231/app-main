@@ -787,6 +787,15 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
     const match = flightLogs.find((log) => log.registration === flightParam);
     if (match) {
       setSelectedLog(imgParam ? { ...match, image: imgParam } : match);
+      setLedgerTab('all');
+      window.setTimeout(() => {
+        const row = document.getElementById(`logbook-row-${match.id}`);
+        if (row) {
+          row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          document.getElementById('logbook-ledger-table')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }
   }, [flightLogs, flightParam, imgParam]);
 
@@ -1295,6 +1304,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
             {/* Table - Standard Format */}
             {
               <div
+                id="logbook-ledger-table"
                 style={{
                   overflowX: 'auto',
                   background: useFullscreenLayout ? 'rgba(255, 255, 255, 0.07)' : 'transparent',
@@ -3698,6 +3708,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
                         return (
                           <tr
                             key={log.id}
+                            id={`logbook-row-${log.id}`}
                             className={`logbook-glass-row ${selectedLog?.id === log.id ? 'selected' : ''}`}
                             style={{
                               borderBottom: useFullscreenLayout
