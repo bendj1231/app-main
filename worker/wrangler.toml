@@ -5,28 +5,35 @@ compatibility_date = "2026-06-19"
 [[d1_databases]]
 binding = "pilotrecognition_profiles"
 database_name = "pilotrecognition-profiles"
-database_id = "2a2b2862-a310-41c3-9d95-f13a85f4f6f4"
+database_id = "31ca7e1b-e3dc-4927-a2ed-681728e98395"
 
 # Wingmentor Program Database
 [[d1_databases]]
 binding = "wingmentor_program"
 database_name = "wingmentor-program"
-database_id = "5ef76bc5-9783-4ad5-8751-05b21d70e135"
+database_id = "a538a90a-9774-4d17-b3f9-553ba5e4cc7d"
 
 # pilotrecognition-d1 (OPS) — security_events, ai_usage_log, payouts, etc.
 [[d1_databases]]
 binding = "ops_db"
 database_name = "pilotrecognition-d1"
-database_id = "0652ca22-adb0-4642-8658-ccc3ad74d263"
+database_id = "79ea18cc-4b8b-4e9d-b982-58512e57403a"
 
 # Reference data — enterprise, pathways, blog posts, etc.
 [[d1_databases]]
 binding = "reference_data"
 database_name = "pilotrecognition-reference-data"
-database_id = "1a59c397-fa2a-4a5f-b557-87b54230b202"
+database_id = "44192d9d-4dac-4191-bd17-a527887be5ff"
 
 [vars]
 AUTH0_DOMAIN = "auth.pilotrecognition.com"
+
+# KV namespace for AI chat daily rate limits per user
+# Create with: npx wrangler kv namespace create "ai-chat-limits"
+# Then update the id below with the returned namespace ID
+[[kv_namespaces]]
+binding = "AI_CHAT_LIMITS"
+id = "446c49db52334b86881ccbd549db690e"
 
 # KV namespace for community chat (ephemeral messages, auto-expire)
 # Create with: npx wrangler kv namespace create "pilot-chat"

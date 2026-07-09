@@ -855,7 +855,7 @@ export const HomeTab: React.FC<{
                   <div className="flex flex-col items-center w-full">
                     <p className="text-lg font-black text-center truncate w-full tracking-tight" style={{ color: '#ffffff' }}>{displayName}</p>
                     {handle && !handleSource.includes('@') && (
-                      <p className="text-[11px] font-bold text-center mt-1" style={{ color: isDarkMode ? '#FF00FF' : '#5e85a8' }}>@{handle}</p>
+                      <p className="text-[11px] font-bold text-center mt-1" style={{ color: isDarkMode ? '#87CEEB' : '#5e85a8' }}>@{handle}</p>
                     )}
                   </div>
                 );

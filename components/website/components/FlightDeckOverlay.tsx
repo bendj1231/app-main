@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -129,7 +129,8 @@ export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, on
 
           {/* Animated mesh gradient background */}
           <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-            <MeshGradient
+            <div style={{ position: 'absolute', inset: 0, background: '#0f172a' }} />
+            <SafeMeshGradient
               className="w-full h-full"
               colors={[
                 '#dbeafe', '#94a3b8', '#64748b', '#475569',

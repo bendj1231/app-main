@@ -6,7 +6,7 @@ import { motion, type Variants } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { NewsroomModal } from './NewsroomModal';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import BookmarkedPathways from './pathways/BookmarkedPathways';
 import BookmarksView from './bookmarks/BookmarksView';
@@ -453,7 +453,9 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         >
             {/* MeshGradient Background - Same as PathwayGrid */}
             <div className="fixed inset-0 z-0">
-                <MeshGradient
+                {/* Solid fallback background */}
+                <div className="absolute inset-0 bg-slate-900" />
+                <SafeMeshGradient
                     className="w-full h-full"
                     colors={[
                         "#dbeafe",

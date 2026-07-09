@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 
 export const BecomeMemberConfirmPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +16,8 @@ export const BecomeMemberConfirmPage: React.FC = () => {
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden text-slate-100">
       <div className="fixed inset-0 z-0">
-        <MeshGradient
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0f172a' }} />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={[
             '#dbeafe',

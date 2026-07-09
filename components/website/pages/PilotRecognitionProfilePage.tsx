@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 
 interface PilotRecognitionProfilePageProps {
     onNavigate?: (page: string) => void;
@@ -10,7 +10,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     return (
         <div className="relative min-h-screen flex items-start justify-center px-4 py-12">
             <div className="fixed inset-0 z-0">
-                <MeshGradient
+                <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0f172a' }} />
+                <SafeMeshGradient
                     className="w-full h-full"
                     colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
                     speed={0.22}

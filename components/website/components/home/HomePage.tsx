@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, User, CheckCircle2, Zap, Navigation, X, ShieldCheck, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X, ShieldCheck, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
 import { ThemeContext } from '../../context/ThemeContext';
-
+import { HomeLabel } from './HomeLabel';
+import { RevealOnScroll } from '../RevealOnScroll';
+import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { IMAGES } from '@/lib/website-constants';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { PathwayGrid, type Slide } from './PathwayGrid';
+import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { HomePageSchema } from '../seo/HomePageSchema';
-import { getDevicePerformanceTier, shouldEnable3DEffects, getHomepageGraphicsConfig, type HomepageGraphicsConfig } from '@/lib/device-detection';
+import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/lib/device-detection';
+import { NewsroomModal } from '../NewsroomModal';
 import { RecognitionATC } from '../RecognitionATC';
 
 interface HomePageProps {
@@ -40,6 +45,50 @@ const navItems = [
     { name: 'Profile', target: 'profile' },
     { name: 'Contact', target: 'dashboard' },
 ];
+
+// Animated Header Component for Join Section
+const AnimatedHeader: React.FC = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
+    const items = [
+        { text: 'Programs', color: 'text-red-500' },
+        { text: 'Recognition', color: 'text-red-500' },
+        { text: 'Pathways', color: 'text-red-500' }
+    ];
+
+    useEffect(() => {
+        // Get animation duration multiplier based on device tier
+        const multiplier = getAnimationDurationMultiplier();
+        const intervalTime = 2500 * multiplier;
+        
+        const interval = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % items.length);
+        }, intervalTime);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <h1 className="text-5xl md:text-8xl font-serif leading-tight mb-4 tracking-tighter flex items-center justify-center gap-4 flex-wrap">
+            <span className="text-white">Pilot</span>
+            <span className="relative inline-block min-w-[280px] md:min-w-[400px] transition-all duration-500">
+                {items.map((item, index) => (
+                    <span
+                        key={index}
+                        className={`${item.color} transition-all duration-500 ${
+                            index === activeIndex 
+                                ? 'opacity-100 transform translate-y-0' 
+                                : 'opacity-0 transform -translate-y-4 absolute left-0 right-0'
+                        }`}
+                        style={{
+                            textShadow: index === activeIndex ? '0 0 30px rgba(239,68,68,0.4)' : 'none'
+                        }}
+                    >
+                        {item.text}
+                    </span>
+                ))}
+            </span>
+        </h1>
+    );
+};
 
 const tabsData = [
     {
@@ -573,15 +622,27 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
+    const [showAllCategories, setShowAllCategories] = useState(false);
+    const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
+    const [platformImageIndex, setPlatformImageIndex] = useState(0);
     const [pilotShortageImageIndex, setPilotShortageImageIndex] = useState(0);
+    const platformImages = ['/images/set-06-pathways/typeratingsearch.png', '/images/set-07-ui-graphics/AE.png', '/images/set-07-ui-graphics/DP.png'];
     const pilotShortageImages = ['/images/set-07-ui-graphics/worker.png', '/images/set-07-ui-graphics/event2.png'];
 
     // Auto-advance platform news cards every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveBillboardSlide(prev => (prev + 1) % 3);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Auto-shuffle platform images every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPlatformImageIndex(prev => (prev + 1) % platformImages.length);
         }, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -843,6 +904,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
     const carouselRef = useRef<HTMLDivElement>(null);
     const pathwaysCarouselRef = useRef<HTMLDivElement>(null);
+    const homePRCarouselRef = useRef<HTMLDivElement>(null);
     const topRecommendedCarouselRef = useRef<HTMLDivElement>(null);
     const [isOverWhite, setIsOverWhite] = useState(false);
     const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<any>(null);
@@ -1038,6 +1100,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 />
             </div>
 
+            <div data-section="2">
+                <HomeLabel />
+            </div>
+
             {/* Enrollment Confirmation Modal */}
             <AnimatePresence>
                 {showEnrollmentModal && (
@@ -1200,36 +1266,25 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
             <div data-section="3" className="relative w-full min-h-screen overflow-hidden">
-                <div className="fixed inset-0 z-0">
-                    {graphicsConfig ? (
-                        <MeshGradient
+                <div className="fixed inset-0 z-0" style={{ background: isDarkMode ? '#020617' : '#0f172a' }}>
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            background: isDarkMode
+                                ? 'linear-gradient(160deg, #020617 0%, #0f172a 40%, #111827 100%)'
+                                : 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)'
+                        }}
+                    />
+                    {graphicsConfig?.enableMeshGradient && (
+                        <SafeMeshGradient
                             className="w-full h-full"
                             colors={isDarkMode ? [
-                                '#020617',
-                                '#0f172a',
-                                '#1e293b',
-                                '#1e3a5f',
-                                '#111827'
+                                '#020617','#0f172a','#1e293b','#1e3a5f','#111827'
                             ] : [
-                                '#dbeafe',
-                                '#94a3b8',
-                                '#64748b',
-                                '#475569',
-                                '#334155',
-                                '#1e3a5f',
-                                '#1e3a8a',
-                                '#0f172a'
+                                '#dbeafe','#94a3b8','#64748b','#475569',
+                                '#334155','#1e3a5f','#1e3a8a','#0f172a'
                             ]}
                             speed={graphicsConfig.meshGradientSpeed}
-                        />
-                    ) : (
-                        <div
-                            className="w-full h-full"
-                            style={{
-                                background: isDarkMode
-                                    ? 'linear-gradient(160deg, #020617 0%, #0f172a 40%, #111827 100%)'
-                                    : 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)'
-                            }}
                         />
                     )}
                 </div>
@@ -1238,133 +1293,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {deviceTier === 'low' ? (
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
-                        <div ref={pathwayGridRef} className="relative z-0 pt-0 md:pt-16">
+                        <div ref={pathwayGridRef} className="relative z-0 pt-12 md:pt-16">
                             <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} onBecomeMemberOpen={onJoinUs} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                         </div>
                     </React.Suspense>
                 ) : (
-                    <div ref={pathwayGridRef} className="relative z-0 pt-0 md:pt-16">
+                    <div ref={pathwayGridRef} className="relative z-0 pt-12 md:pt-16">
                         <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} onBecomeMemberOpen={onJoinUs} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                     </div>
                 )}
             </div>
 
-            {/* === OUR PURPOSE — FEATURE STORIES CAROUSEL === */}
-            <div data-section="purpose" className="relative z-50 w-full px-4 md:px-8 -mt-16 md:mt-0 pt-8 md:pt-12 pb-8 md:pb-12 bg-white overflow-hidden">
-                <div className="max-w-7xl mx-auto">
-                    {/* Header */}
-                    <div className="mb-6">
-                        <p className="text-xs uppercase tracking-[0.2em] font-semibold text-slate-500 mb-2">Recognition in Action</p>
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-                            Our <span className="text-red-600">purpose</span>
-                        </h2>
-                        <p className="text-slate-600 text-sm md:text-base max-w-2xl">
-                            Verifying pilots through Recognition+. Building trusted profiles that connect aviators to verified pathways, opportunities, and the industry partners that matter.
-                        </p>
-                        <div className="mt-3 w-12 h-1.5 bg-blue-900 rounded-full" />
-                    </div>
-
-                    {/* Horizontal story cards */}
-                    <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-                        {[
-                            {
-                                image: '/images/set-06-pathways/pathway4.png',
-                                tags: ['Career Pathways', 'Type Rating Search'],
-                                title: 'From first solo to airline-ready: mapped career pathways',
-                                desc: 'Compare airline requirements, explore type ratings, and align your profile with operator expectations.',
-                                date: '08 July 2026',
-                                readTime: '4 min read',
-                                href: 'pathways-modern'
-                            },
-                            {
-                                image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-                                tags: ['Pilot Shortage', 'Foundation Program'],
-                                title: 'Addressing the global pilot shortage through verified training',
-                                desc: 'Structured foundation and transition programs that pair aspiring aviators with mentorship and operator connections.',
-                                date: '06 July 2026',
-                                readTime: '5 min read',
-                                href: 'foundation-program'
-                            },
-                            {
-                                image: '/images/set-03-recognition/recognition-unlock.png',
-                                tags: ['Recognition+', 'Verification'],
-                                title: 'Turn your logbook into a credential airlines trust',
-                                desc: 'Recognition+ tokenizes your licensing history and verifies your hours so operators can hire with confidence.',
-                                date: '04 July 2026',
-                                readTime: '3 min read',
-                                href: 'recognition-plus'
-                            },
-                            {
-                                image: '/images/set-07-ui-graphics/terminal.png',
-                                tags: ['Pilot Terminal', 'Community'],
-                                title: 'A professional network built by pilots, for pilots',
-                                desc: 'Join verified discussions, access flight deck tools, and connect with operators through fair, two-way communication.',
-                                date: '02 July 2026',
-                                readTime: '4 min read',
-                                href: 'https://pilotterminal.com',
-                                external: true
-                            }
-                        ].map((story, idx) => (
-                            <article
-                                key={idx}
-                                className="min-w-[85vw] md:min-w-[360px] lg:min-w-[420px] snap-start bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-lg flex flex-col"
-                            >
-                                <div className="aspect-[16/10] overflow-hidden">
-                                    <img
-                                        src={story.image}
-                                        alt={story.title}
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                                    />
-                                </div>
-                                <div className="p-5 flex flex-col flex-1">
-                                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                                        {story.tags.map((tag) => (
-                                            <span key={tag} className="px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <h3 className="text-lg font-bold text-slate-900 leading-tight mb-2">
-                                        {story.title}
-                                    </h3>
-                                    <p className="text-sm text-slate-600 leading-relaxed mb-4 flex-1">
-                                        {story.desc}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs text-slate-400">{story.date} — {story.readTime}</span>
-                                        {story.external ? (
-                                            <a
-                                                href={story.href}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-1 text-sm font-bold text-red-600 hover:text-red-700"
-                                            >
-                                                Read
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </a>
-                                        ) : (
-                                            <button
-                                                onClick={() => onNavigate?.(story.href)}
-                                                className="inline-flex items-center gap-1 text-sm font-bold text-red-600 hover:text-red-700"
-                                            >
-                                                Read
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
             {/* === BECOME A MEMBER BANNER === */}
-            <div data-section="4" className="relative z-30 w-full px-4 md:px-8 py-10 hidden md:block">
+            <div data-section="4" className="relative z-30 w-full px-4 md:px-8 py-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative overflow-hidden shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
                         <div className="px-8 py-8 md:px-10 md:py-10 flex flex-col lg:flex-row items-center gap-8 min-h-[280px]">
@@ -1411,6 +1352,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                     >
                         Aviation industry first pilot <span className="text-red-500">recognition</span> platform built for
                     </h4>
+                    <div className="mt-5">
+                        <button
+                            onClick={() => onNavigate?.('enterprise-access')}
+                            className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition-colors"
+                        >
+                            Learn more for Aviation Industry
+                        </button>
+                    </div>
                 </div>
                 <div className="max-w-7xl mx-auto relative">
                     <div className="absolute inset-y-0 left-0 w-16 pointer-events-none bg-gradient-to-r from-white to-transparent" />
@@ -1433,56 +1382,50 @@ export const HomePage: React.FC<HomePageProps> = ({
                 `}</style>
             </div>
 
-            {/* === FULL IMAGE BANNER - Background Image Layout === */}
-            <div data-section="6" className="relative z-30 w-full min-h-[420px] md:h-[520px] lg:h-[600px] overflow-hidden flex items-end md:items-center">
-                {/* Background image */}
-                <img
-                    src="/images/set-03-recognition/recognition-unlock.png"
-                    alt="Recognition+ Unlocks"
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: 'center center' }}
-                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80'; }}
-                />
-
-                {/* Dark gradient overlay — mobile-first bottom-heavy, desktop left-to-right */}
-                <div
-                    className="absolute inset-0 hidden md:block"
-                    style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.55) 45%, rgba(2,6,23,0.2) 70%, rgba(2,6,23,0) 100%)' }}
-                />
-                <div
-                    className="absolute inset-0 md:hidden"
-                    style={{ background: 'linear-gradient(to bottom, rgba(2,6,23,0.2) 0%, rgba(2,6,23,0.55) 45%, rgba(2,6,23,0.82) 100%)' }}
-                />
-
-                {/* Text Content */}
-                <div className="relative z-10 w-full px-5 pb-8 pt-24 md:py-0 md:px-14 lg:px-20">
-                    <div className="max-w-lg">
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-3">
+            {/* === FULL IMAGE BANNER - Split Layout === */}
+            <div data-section="6" className="relative z-30 w-full h-[400px] md:h-[520px] lg:h-[600px] overflow-hidden flex">
+                {/* Left Half - Text Content */}
+                <div className="relative z-10 w-1/2 flex items-center bg-slate-950 px-8 md:px-14 lg:px-20">
+                    <div>
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-4">
                             <span className="text-red-500">Recognition+</span> Unlocks
                         </h3>
-                        <p className="text-slate-300 text-sm md:text-base mb-5 max-w-sm leading-relaxed">
+                        <p className="text-slate-300 text-sm md:text-base mb-6 max-w-sm">
                             Get the recognition you deserve. Background screened, prepared through programs, connected to pathways — giving your profile the edge that airlines notice.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                             <button
                                 onClick={() => onNavigate?.('recognition-plus')}
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white font-semibold text-xs sm:text-sm rounded-full hover:bg-slate-100 transition-colors shadow-lg group"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 font-semibold text-sm rounded-full hover:bg-slate-100 transition-colors shadow-lg group"
                             >
-                                <span className="text-slate-900">Learn more about <span className="text-red-600">Recognition+</span></span>
-                                <svg className="w-4 h-4 text-slate-900 group-hover:translate-x-1 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <span>Secure your Profile with <span className="text-red-500">Recognition+</span></span>
+                                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <circle cx="12" cy="12" r="10" strokeWidth="2" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 12h4m0 0l-2-2m2 2l-2 2" />
                                 </svg>
                             </button>
                             <button
-                                onClick={() => onNavigate?.('become-member')}
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-white text-xs sm:text-sm font-semibold rounded-full transition-all hover:bg-white/20"
+                                onClick={() => onNavigate?.('pilot-recognition')}
+                                className="inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-full transition-all hover:bg-white/20"
                                 style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
                             >
-                                Get Started — Create Recognition Profile
+                                Learn more about Recognition Profile
                             </button>
                         </div>
                     </div>
+                </div>
+
+                {/* Right Half - Image with gradient fade from left */}
+                <div className="relative w-1/2">
+                    <img
+                        src="/images/set-03-recognition/recognition-unlock.png"
+                        alt="Recognition+ Unlocks"
+                        className="w-full h-full object-cover"
+                        style={{ objectPosition: '20% center' }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80'; }}
+                    />
+                    {/* Gradient fade from left (slate-950) to transparent */}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 0%, rgba(2,6,23,0.6) 30%, transparent 70%)' }} />
                 </div>
             </div>
 
@@ -1572,340 +1515,983 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {/* === DISCOVER PATHWAYS - Three Vertical Cards === */}
             <div data-section="8" className="relative z-10 bg-white">
-            <div className="relative z-30 w-full px-4 md:px-8 py-8 md:py-12 bg-white">
+            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pb-6 sm:pb-8 pt-8 sm:pt-10 md:pt-12">
                 <div className="max-w-7xl mx-auto">
-                    {/* Section Header */}
-                    <div className="mb-6 md:flex md:items-end md:justify-between gap-6">
-                        <div>
-                            <p className="text-xs uppercase tracking-[0.2em] font-semibold text-red-500 mb-2">Solving the global pilot shortage</p>
-                            <h2 className="text-2xl md:text-4xl font-bold text-slate-900 mb-2">
-                                Pilot<span className="text-red-500">Shortage</span>.org
-                            </h2>
-                            <p className="text-slate-600 text-sm md:text-base max-w-xl">
-                                An independent initiative helping the aviation industry understand, track, and solve the pilot shortage through data, mentorship, and accessible pathways.
-                            </p>
-                            <div className="mt-3 w-12 h-1.5 bg-red-500 rounded-full" />
+                    {/* Section Header - Centered */}
+                    <div className="mb-6 text-center">
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-black">PilotTerminal.com</span> <span className="text-black">Pilot pathways</span></h2>
+                        <p className="text-slate-600 text-sm md:text-base">One profile across three platforms</p>
+                    </div>
+
+                    {/* Three Cards Grid - Portal Pathways Style */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
+                        {/* Card 1 - Pilot Terminal */}
+                        <div
+                            onClick={() => window.open('https://pilotterminal.com', '_blank', 'noopener,noreferrer')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 order-3 md:order-1 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src="/images/set-04-screenshots/terminal.png"
+                                alt="Pilot Terminal Background"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Connect
+                                </div>
+
+                                
+
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">Pilot<span className="text-red-500">Terminal</span><span className="text-black">.com</span></h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Professional pilot network and flight deck tools</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="hidden md:flex items-center gap-2">
-                            <a
-                                href="https://pilotterminal.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-all"
-                            >
-                                PilotTerminal.com
-                            </a>
-                            <a
-                                href="https://pilotcareerpathways.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-all"
-                            >
-                                pilotcareerpathways.com
-                            </a>
+
+                        {/* Card 2 - Pilot Shortage */}
+                        <div
+                            onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 order-2 md:order-2 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src={pilotShortageImages[pilotShortageImageIndex]}
+                                alt="Pilot Shortage Event"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Serve communities
+                                </div>
+
+                                
+
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot<span className="text-red-500">shortage</span>.org</h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Global pilot shortage analytics and industry insights</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 3 - Pilot Pathways */}
+                        <div
+                            onClick={() => onNavigate?.('discover-pathways')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 order-1 md:order-3 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                        >
+                            {/* Shuffling Background Images */}
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={platformImageIndex}
+                                    src={platformImages[platformImageIndex]}
+                                    alt="Pilot Pathways Background"
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                    initial={{ opacity: 0, scale: 1.05 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                                />
+                            </AnimatePresence>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Save lives
+                                </div>
+
+                                
+
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot<span className="text-black">career</span><span className="text-red-500">pathways</span><span className="text-black">.coim</span></h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Career pathways from student to captain</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* PilotShortage.org Feature Card */}
-                    <div className="relative overflow-hidden rounded-2xl md:rounded-3xl min-h-[420px] md:min-h-[480px] flex flex-col justify-end group cursor-pointer">
-                        {/* Background image */}
-                        <img
-                            src={pilotShortageImages[pilotShortageImageIndex]}
-                            alt="PilotShortage.org initiative"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/30" />
-
-                        {/* Content */}
-                        <div className="relative z-10 p-5 md:p-8">
-                            <div className="flex flex-wrap items-center gap-2 mb-3">
-                                <span className="inline-block px-2.5 py-1 bg-red-500/90 text-white text-xs font-semibold rounded-full">Advocacy</span>
-                                <span className="inline-block px-2.5 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">Workforce Data</span>
-                                <span className="inline-block px-2.5 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">Mentorship</span>
-                            </div>
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Building the next generation of pilots</h3>
-                            <p className="text-sm md:text-base text-slate-200 leading-relaxed mb-5 max-w-2xl">
-                                PilotShortage.org connects aspiring aviators with verified training pathways, mentorship networks, and workforce intelligence. We work with flight schools, airlines, and regulators to lower barriers and grow the pilot pipeline.
-                            </p>
-                            <div className="flex flex-wrap items-center gap-3 mb-5">
-                                {[
-                                    { value: '800k+', label: 'Pilot gap by 2037' },
-                                    { value: '50h', label: 'Free mentorship' },
-                                    { value: 'Global', label: 'Workforce data' }
-                                ].map((stat, i) => (
-                                    <div key={i} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-2">
-                                        <p className="text-white font-bold text-sm">{stat.value}</p>
-                                        <p className="text-slate-300 text-[10px] uppercase tracking-wider">{stat.label}</p>
-                                    </div>
-                                ))}
-                            </div>
-                            <a
-                                href="https://pilotshortage.org"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 rounded-full text-sm font-bold hover:bg-slate-100 transition-colors"
-                            >
-                                Visit pilotshortage.org
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
             </div>
 
             {/* === PLATFORM NEWS UPDATES === */}
-            <div data-section="9" className="relative z-30 w-full px-4 md:px-8 py-6 md:py-10 bg-slate-100">
+            <div data-section="9" className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-4 md:py-6">
                 <div className="max-w-7xl mx-auto">
-                    {/* Header */}
-                    <div className="mb-6">
-                        <p className="text-xs uppercase tracking-[0.2em] font-semibold text-slate-500 mb-2">Platform Updates</p>
-                        <h3 className="text-2xl md:text-3xl font-bold text-slate-900">
-                            Latest platform stories shaping pilot progression
-                        </h3>
-                        <div className="mt-3 w-12 h-1.5 bg-blue-900 rounded-full" />
-                    </div>
-
-                    {/* Carousel */}
-                    <div className="relative overflow-hidden">
-                        <div className="relative flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${activeBillboardSlide * 100}%)` }}>
-                            {[
-                                {
-                                    tag: 'Pilot Pathways',
-                                    category: 'Pathways',
-                                    title: 'New expectations from 10+ airlines',
-                                    desc: 'Updated requirements and expectation changes from more than 10 airlines and operators are now reflected across the pathways guidance.',
-                                    cta: 'Review pathway updates',
-                                    target: 'pathways-modern',
-                                    image: '/images/set-06-pathways/pathway4.png',
-                                    date: '08 July 2026',
-                                    readTime: '3 min read'
-                                },
-                                {
-                                    tag: 'pilotshortage.org',
-                                    category: 'Mentorship',
-                                    title: 'Foundation program mentorship grows',
-                                    desc: 'The platform now features a 50-pilot mentorship foundation program that pairs experienced crew with aspiring aviators.',
-                                    cta: 'Explore the mentorship program',
-                                    target: 'foundation-program',
-                                    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-                                    date: '06 July 2026',
-                                    readTime: '4 min read'
-                                },
-                                {
-                                    tag: 'Pilot Terminal',
-                                    category: 'Discussion',
-                                    title: 'Discussion on Boeing 797 progression',
-                                    desc: 'Pilot Terminal conversations now explore the new Boeing 797 and how future type ratings will be impacted.',
-                                    cta: 'See the latest terminal news',
-                                    target: 'pilot-recognition-profile',
-                                    image: '/images/set-06-pathways/pathway4.png',
-                                    date: '04 July 2026',
-                                    readTime: '5 min read'
-                                }
-                            ].map((slide, idx) => (
-                                <article key={idx} className="min-w-full px-1">
-                                    <div
-                                        className="relative overflow-hidden rounded-2xl md:rounded-3xl min-h-[420px] md:min-h-[480px] flex flex-col justify-end cursor-pointer group"
-                                        onClick={() => onNavigate?.(slide.target)}
-                                    >
-                                        {/* Background image */}
-                                        <img
-                                            src={slide.image}
-                                            alt={slide.title}
-                                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-
-                                        {/* Gradient overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/20" />
-
-                                        {/* Content */}
-                                        <div className="relative z-10 p-5 md:p-8">
-                                            {/* Tags */}
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <span className="px-2.5 py-1 bg-white text-blue-900 text-xs font-bold rounded-full">{slide.category}</span>
-                                                <span className="px-2.5 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">{slide.tag}</span>
-                                            </div>
-
-                                            {/* Title */}
-                                            <h4 className="text-xl md:text-2xl font-bold text-white leading-tight mb-2 flex items-start justify-between gap-3">
-                                                {slide.title}
-                                                <svg className="w-6 h-6 text-white flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </h4>
-
-                                            {/* Description */}
-                                            <p className="text-sm text-slate-200 leading-relaxed mb-3 line-clamp-3">
-                                                {slide.desc}
-                                            </p>
-
-                                            {/* Meta */}
-                                            <div className="flex items-center gap-2 text-xs text-slate-300">
-                                                <span>{slide.date}</span>
-                                                <span className="w-1 h-1 rounded-full bg-slate-400" />
-                                                <span>{slide.readTime}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
+                    <div className="overflow-hidden rounded-[2rem] bg-white ring-1 ring-slate-200 shadow-2xl">
+                        <div className="px-5 py-4 sm:px-7 sm:py-5 rounded-t-[2rem] bg-red-600 text-white">
+                            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs uppercase tracking-[0.24em] font-semibold text-white border border-white/20">
+                                Platform Updates
+                            </div>
+                            <h3 className="mt-4 text-xl sm:text-2xl font-semibold text-white">
+                                Latest platform stories shaping pilot progression
+                            </h3>
+                        </div>
+                        <div className="px-5 pb-5 sm:px-7 sm:pb-6 bg-white">
+                            <p className="text-sm sm:text-base text-slate-700 max-w-2xl">
+                                Stay current with platform-specific updates from Pilot Pathways, PilotShortage.org, and Pilot Terminal.
+                            </p>
                         </div>
 
-                        {/* Indicators */}
-                        <div className="mt-5 flex justify-center gap-2">
-                            {[0, 1, 2].map((index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setActiveBillboardSlide(index)}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${activeBillboardSlide === index ? 'w-10 bg-red-600' : 'w-6 bg-slate-300'}`}
-                                />
-                            ))}
+                        <div className="relative overflow-hidden p-4 sm:p-5 bg-slate-100/20 backdrop-blur-xl border border-white/20 shadow-2xl shadow-slate-900/10 rounded-[1.75rem]">
+                            <div className="absolute inset-0 bg-slate-200/20 backdrop-blur-xl pointer-events-none" />
+                            <div className="relative flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${activeBillboardSlide * 100}%)` }}>
+                                <article className="min-w-full rounded-[1.7rem] border border-white/30 bg-white/70 backdrop-blur-xl p-5 shadow-xl shadow-slate-900/10 ring-1 ring-white/30">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">Pilot Pathways</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">New expectations from 10+ airlines</h4>
+                                        </div>
+                                        <Globe className="h-7 w-7 text-red-600" />
+                                    </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        Updated requirements and expectation changes from more than 10 airlines and operators are now reflected across the pathways guidance.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('pathways-modern')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        Review pathway updates
+                                    </button>
+                                </article>
+
+                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">pilotshortage.org</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">Foundation program mentorship grows</h4>
+                                        </div>
+                                        <Zap className="h-7 w-7 text-red-600" />
+                                    </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        The platform now features a 50-pilot mentorship foundation program that pairs experienced crew with aspiring aviators.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('foundation-program')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        Explore the mentorship program
+                                    </button>
+                                </article>
+
+                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">Pilot Terminal</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">Discussion on Boeing 797 progression</h4>
+                                        </div>
+                                        <Layers className="h-7 w-7 text-red-600" />
+                                    </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        Pilot Terminal conversations now explore the new Boeing 797 and how future type ratings will be impacted.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('pilot-recognition-profile')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        See the latest terminal news
+                                    </button>
+                                </article>
+                            </div>
+
+                            <div className="mt-4 flex justify-center gap-2">
+                                {[0, 1, 2].map((index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setActiveBillboardSlide(index)}
+                                        className={`h-1.5 rounded-full transition-all duration-300 ${activeBillboardSlide === index ? 'w-10 bg-red-600' : 'w-6 bg-slate-300'}`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-                        {/* === VERIFICATION & AMBASSADOR PROGRAM SECTION === */}
-            <div data-section="11" className="relative z-30 bg-white w-full px-4 md:px-8 py-12 md:py-20">
+            {/* === RECOMMENDED PATHWAYS CAROUSEL === */}
+            <div data-section="10" className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8">
                 <div className="max-w-7xl mx-auto">
-                    {/* Section Header */}
-                    <div className="mb-10 md:mb-12 text-center max-w-3xl mx-auto">
-                        <p className="text-xs uppercase tracking-[0.2em] font-semibold text-red-500 mb-3">Verification that protects pilots & operators</p>
-                        <h2 className="text-2xl md:text-4xl font-bold text-slate-900 mb-4">
-                            Verified by the industry. Trusted by the people who matter.
-                        </h2>
-                        <p className="text-slate-600 text-sm md:text-base leading-relaxed">
-                            PilotRecognition contacts your ATO, operator, and Civil Aviation Authority directly to confirm hours, ratings, and credentials — maintaining absolute transparency and reducing falsification risk for everyone.
-                        </p>
-                        <div className="mt-4 w-12 h-1.5 bg-red-500 rounded-full mx-auto" />
+                    {/* Header */}
+                    <div className="mb-6 text-center">
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Recommended <span className="text-red-500">Pathways</span></h2>
+                        <p className="text-slate-600 text-sm mb-4">26 pathways matched to your Recognition Profile</p>
+
+                        {/* Match Filter */}
+                        <div className="flex items-center justify-center gap-2 flex-wrap">
+                            {[
+                                { key: 'all' as const, label: 'All' },
+                                { key: 'low' as const, label: 'Low 60-75%' },
+                                { key: 'mid' as const, label: 'Mid 75-90%' },
+                                { key: 'high' as const, label: 'High 90%+' },
+                            ].map((filter) => (
+                                <button
+                                    key={filter.key}
+                                    onClick={() => setActiveMatchFilter(filter.key)}
+                                    className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                        activeMatchFilter === filter.key
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                                    }`}
+                                >
+                                    {filter.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Image grid + content */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                        {/* Left - Image collage */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <img
-                                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80"
-                                alt="Pilots in briefing"
-                                className="w-full h-40 md:h-48 object-cover rounded-xl"
-                            />
-                            <img
-                                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80"
-                                alt="Aircraft on runway"
-                                className="w-full h-40 md:h-48 object-cover rounded-xl"
-                            />
-                            <img
-                                src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80"
-                                alt="Professional handshake"
-                                className="w-full h-40 md:h-48 object-cover rounded-xl col-span-2"
-                            />
+                    {/* Hint */}
+                    <div className="text-center mb-4">
+                        <span className="text-sm text-slate-500">Swipe left or right and click to select a card</span>
+                    </div>
+
+                    {/* Horizontal Scrolling Carousel */}
+                    <div className="relative w-full mb-6">
+                        <style>{`
+                            .top-rec-carousel::-webkit-scrollbar { display: none; }
+                            .top-rec-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+                            .top-rec-carousel > div { scroll-snap-align: center; }
+                        `}</style>
+                        <div ref={topRecommendedCarouselRef} className="top-rec-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '16px', paddingRight: '16px' }}>
+                            {/* Featured Card - Foundation Program */}
+                            <div
+                                className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 hover:scale-100"
+                                style={{ width: '600px' }}
+                                onClick={(e) => {
+                                    setSelectedCarouselPathway({ id: 'FOUNDATION-PROGRAM-ENROLL', title: 'Foundation Program', company: 'PilotRecognition', location: 'Global', tags: ['Featured Program', '50 Hours Mentorship'] });
+                                    const card = e.currentTarget;
+                                    const carousel = topRecommendedCarouselRef.current;
+                                    if (carousel && card) carousel.scrollLeft = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+                                }}
+                            >
+                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                    <img src="/images/set-08-website/program1.png" alt="Foundation Program" className="w-full h-full object-cover" loading="lazy" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                    <div className="absolute top-3 right-3 flex gap-2">
+                                        <span className="px-3 py-1 rounded-full bg-blue-500/90 text-white text-xs font-semibold">Featured</span>
+                                        <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                        <h4 className="text-lg font-serif font-normal text-white">Foundation Program</h4>
+                                        <p className="text-white/80 text-sm">PilotRecognition · Global</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Pathway Cards */}
+                            {HOME_PATHWAYS.filter(pathway => {
+                                if (activeMatchFilter === 'all') return true;
+                                if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                                if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                                return pathway.matchProbability >= 90;
+                            }).map((pathway) => (
+                                <div
+                                    key={pathway.id}
+                                    className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 hover:scale-100"
+                                    style={{ width: '600px' }}
+                                    onClick={(e) => {
+                                        setSelectedCarouselPathway(pathway);
+                                        const card = e.currentTarget;
+                                        const carousel = topRecommendedCarouselRef.current;
+                                        if (carousel && card) carousel.scrollLeft = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+                                    }}
+                                >
+                                    <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                        <img src={pathway.image} alt={pathway.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/default-airline.jpg'; }} />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                        <div className="absolute top-3 right-3 flex gap-2">
+                                            <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold">{pathway.matchProbability}% Match</span>
+                                            <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {pathway.pr}</span>
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                            <p className="text-[10px] font-bold tracking-wider uppercase text-blue-300 mb-1">{pathway.category}</p>
+                                            <h4 className="text-base font-serif font-normal text-white">{pathway.title}</h4>
+                                            <p className="text-white/70 text-sm">{pathway.company}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
+                    </div>
 
-                        {/* Right - Content */}
-                        <div className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-100">
-                            <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-red-500 mb-3">How verification works</p>
-                            <h3 className="text-2xl md:text-3xl text-slate-900 mb-5" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
-                                A verification layer built for aviation
-                            </h3>
+                    {/* Selected Pathway Panel */}
+                    {(() => {
+                        const filteredPathways = HOME_PATHWAYS.filter(pathway => {
+                            if (activeMatchFilter === 'all') return true;
+                            if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                            if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                            return pathway.matchProbability >= 90;
+                        });
+                        // cards[0] = intro Foundation card, cards[1..n] = filteredPathways[0..n-1]
+                        const introCard = { id: 'FOUNDATION-PROGRAM-ENROLL', title: 'Foundation Program', company: 'PilotRecognition', location: 'Global', tags: ['Featured Program', '50 Hours Mentorship'] };
+                        const allCardData = [introCard, ...filteredPathways];
 
-                            <div className="space-y-4 mb-6">
+                        const navigateCarousel = (direction: 'prev' | 'next') => {
+                            const carousel = topRecommendedCarouselRef.current;
+                            if (!carousel) return;
+                            const cards = Array.from(carousel.children) as HTMLElement[];
+                            const center = carousel.scrollLeft + carousel.offsetWidth / 2;
+                            let closest = 0;
+                            let minDist = Infinity;
+                            cards.forEach((card, i) => {
+                                const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+                                if (dist < minDist) { minDist = dist; closest = i; }
+                            });
+                            const targetIdx = direction === 'prev'
+                                ? Math.max(0, closest - 1)
+                                : Math.min(cards.length - 1, closest + 1);
+                            const targetCard = cards[targetIdx];
+                            if (targetCard) {
+                                carousel.scrollLeft = targetCard.offsetLeft - (carousel.offsetWidth / 2) + (targetCard.offsetWidth / 2);
+                                const pathway = allCardData[targetIdx];
+                                if (pathway) setSelectedCarouselPathway(pathway);
+                            }
+                        };
+
+                        return selectedCarouselPathway ? (
+                            <div className="flex items-center justify-center gap-4 mt-2 mb-4">
+                                <button
+                                    onClick={() => navigateCarousel('prev')}
+                                    className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
+                                >
+                                    ‹
+                                </button>
+                                <div className="text-center max-w-xl">
+                                    <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Selected Pathway</p>
+                                    <h3 className="text-xl font-serif font-normal text-slate-900 mb-1">{selectedCarouselPathway.title}</h3>
+                                    <p className="text-sm text-slate-600 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
+                                    <p className="text-sm text-slate-500 mb-4">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                                    <a
+                                        href="https://pilotcareerpathways.com"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="inline-flex px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
+                                    >
+                                        Visit pilotcareerpathways.com
+                                    </a>
+                                    <p className="mt-4 text-sm font-semibold text-slate-900">Your Recognition Profile auto syncs for pathway submissions.</p>
+                                    <p className="mt-2 text-xs leading-relaxed text-slate-500">
+                                        This is not a job board but a pooling of interest system posted by the operator to receive insights and network with pilots through fair, two-way private communications between pilot and industry.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => navigateCarousel('next')}
+                                    className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
+                                >
+                                    ›
+                                </button>
+                            </div>
+                        ) : null;
+                    })()}
+                </div>
+            </div>
+
+            {/* === DISCOVER PROGRAMS SECTION === */}
+            <div data-section="11" className="relative z-30 bg-white w-full px-4 md:px-8 py-12">
+                <div className="max-w-7xl mx-auto">
+                    {/* Section Header - Centered */}
+                    <div className="mb-6 text-center">
+                        <h2
+                            className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 cursor-pointer hover:text-red-600 transition-colors inline-block"
+                            onClick={() => onNavigate('discover-programs')}
+                        >
+                            Discover programs through <span className="text-red-500">pilotshortage.org</span>
+                        </h2>
+                        <p className="text-slate-600 text-sm md:text-base">Structured training pathways from flight school to airline-ready professional</p>
+                    </div>
+                    {/* Foundation Program Showcase */}
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                        <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr] gap-0">
+                            {/* Left - Image */}
+                            <div className="relative bg-slate-900 flex items-center justify-center">
+                                <img
+                                    src="/images/set-03-recognition/pr2.png"
+                                    alt="Foundation Program Certificate of Completion"
+                                    className="w-full h-auto object-contain block"
+                                />
+                            </div>
+                            {/* Right - Content */}
+                            <div className="p-6 md:p-10 flex flex-col justify-center">
+                                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-3">Foundation Program</p>
+                                <h3 className="text-2xl md:text-3xl text-slate-900 mb-4" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                                    Complete the Foundation Program
+                                </h3>
+                                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                    50 hours of verified mentorship with industry professionals. EBT CBTA-aligned competency assessment that measures your readiness against real airline standards. Upon completion, your Recognition Profile is elevated with verified credentials.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                                    The Foundation Program mission is aimed at aligning graduating pilots to mentor the next generation while building captain leadership, EBT/CBTA, and Airbus-aligned skills needed to traverse into the airline industry.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                    Prepare yourself with a pilot self-development program that can continue into our Transition Program with a graduate discount, including EBT CBTA familiarization, sponsor internships, operations with selected operators, and industry-connected interviews aligned to EBT fundamentals.
+                                </p>
+                                <div className="flex flex-wrap gap-3 mb-3">
+                                    <a
+                                        href="https://pilotshortage.org"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
+                                    >
+                                        Become a member at pilotshortage.org
+                                    </a>
+                                    <a
+                                        href="/foundation-program"
+                                        className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
+                                    >
+                                        Enroll for Foundation Program
+                                    </a>
+                                </div>
+                                <p className="text-[10px] text-slate-400 italic">
+                                    Certification of completion and verification charges apply
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Gradient Blur Transition between PathwayGrid and Showcase */}
+            <div className="relative h-32 w-full z-40 pointer-events-none overflow-hidden">
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        background: 'linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.3) 40%, rgba(15,23,42,0.7) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        maskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)'
+                    }}
+                />
+            </div>
+
+            {/* === AIRBNB-STYLE SHOWCASE SECTION REMOVED === */}
+            {false && <div className="relative pt-8 pb-16 px-4 md:px-6 overflow-hidden">
+                {/* Mesh Gradient Background - Darkened for white text readability */}
+                <div className="absolute inset-0 z-0">
+                    {graphicsConfig?.enableMeshGradient ? (
+                        <SafeMeshGradient
+                            className="w-full h-full"
+                            colors={[
+                                "#000000",
+                                "#050a14",
+                                "#0d1f3c",
+                                "#1e293b",
+                                "#0f172a",
+                                "#1e3a5f",
+                                "#172554",
+                                "#020617"
+                            ]}
+                            speed={graphicsConfig.meshGradientSpeed}
+                        />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #020617 0%, #0d1f3c 50%, #020617 100%)' }} />
+                    )}
+                </div>
+
+            {/* Product Tabs Selection Section */}
+            <div className="relative z-20">
+                <div className="max-w-7xl mx-auto flex items-center justify-center gap-1 md:gap-8 px-4 py-6">
+                    {[
+                        { id: 'programs' as const, label: 'Programs' },
+                        { id: 'pathways' as const, label: 'Pathways' },
+                        { id: 'profile' as const, label: 'Recognition Profile' }
+                    ].map((tab) => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveProductTab(tab.id)}
+                            className={`relative pb-1 text-base md:text-lg tracking-wide transition-all duration-300 ${
+                                activeProductTab === tab.id
+                                    ? 'text-white font-medium'
+                                    : 'text-slate-400 hover:text-white'
+                            }`}
+                            style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}
+                        >
+                            {tab.label}
+                            {activeProductTab === tab.id && (
+                                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500" />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+                    {activeProductTab === 'pathways' && (
+                <div className="relative z-10">
+                    {/* Hero Section */}
+                    <div className="mb-8 text-center pt-16">
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover <span className="text-red-500">Pathways</span></p>
+                        <h1 className="text-4xl md:text-5xl font-serif font-normal text-white mb-2">
+                            <span style={{ color: '#ffffff' }}>Pilot Recognition</span>{' '}
+                            <span style={{ color: '#dc2626' }}>Pathways</span>
+                        </h1>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="mb-6 flex justify-center px-4">
+                        <div className="w-full max-w-2xl">
+                            <div className="bg-white rounded-lg px-4 py-3 text-slate-700 text-sm border border-slate-300">
+                                Search pathways, airlines, or locations...
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Category Pills */}
+                    <div className="mb-8 flex flex-wrap justify-center gap-2 px-4">
+                        {(() => {
+                            const allCats = [
+                                'All',
+                                'Pilot Training & Certification',
+                                'Career Progression',
+                                'Commercial Operations',
+                                'Specialized Operations',
+                                'Humanitarian & Aid',
+                                'Remote & Bush Operations',
+                                'Emerging Technologies',
+                                'Military & Government',
+                                'Aviation Support Services',
+                                'Aviation Industry'
+                            ];
+                            const visible = showAllCategories ? allCats : allCats.slice(0, 4);
+                            return (
+                                <>
+                                    {visible.map((cat, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setActiveCarouselCategory(cat)}
+                                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                                activeCarouselCategory === cat
+                                                    ? 'bg-blue-500 text-white'
+                                                    : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
+                                            }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                    {!showAllCategories && (
+                                        <button
+                                            onClick={() => setShowAllCategories(true)}
+                                            className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 text-blue-400 hover:bg-white/20 border border-white/10 transition-all"
+                                        >
+                                            View More
+                                        </button>
+                                    )}
+                                </>
+                            );
+                        })()}
+                    </div>
+
+                    {/* Recommended Pathways Header */}
+                    <div className="mb-4 w-full px-4 text-left">
+                        <h2 className="text-3xl md:text-4xl font-normal text-slate-900" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                            Recommended <span className="text-red-500">Pathways</span>
+                        </h2>
+                        <p className="text-slate-400 text-xs mt-1">26 pathways available</p>
+                    </div>
+
+                    {/* Match Filter */}
+                    <div className="mb-4 w-full max-w-7xl mx-auto px-4 flex justify-center">
+                        <div className="flex items-center gap-2">
+                            <span className="text-base text-slate-400">Match Filter:</span>
+                            <div className="flex gap-2">
                                 {[
-                                    {
-                                        title: 'Direct authority confirmation',
-                                        desc: 'We reach out to your ATO, training provider, operator, and CAA to confirm licenses, medicals, type ratings, and logged hours — so your profile reflects what you have actually done.'
-                                    },
-                                    {
-                                        title: 'W3C Verified Credentials',
-                                        desc: 'Once confirmed, your credentials are issued as sovereign digital tokens to your own wallet. You hold the proof; operators receive the confirmation, not your private documents.'
-                                    },
-                                    {
-                                        title: 'Continuous compliance',
-                                        desc: 'Expiry dates, recency, and renewal status are tracked automatically. You stay current, and operators see your real readiness without chasing paperwork.'
+                                    { key: 'all' as const, label: 'All' },
+                                    { key: 'low' as const, label: 'Low 60-75%' },
+                                    { key: 'mid' as const, label: 'Mid 75-90%' },
+                                    { key: 'high' as const, label: 'High 90%+' },
+                                ].map((filter) => (
+                                    <button
+                                        key={filter.key}
+                                        onClick={() => setActiveMatchFilter(filter.key)}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                                            activeMatchFilter === filter.key
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                        }`}
+                                    >
+                                        {filter.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Selection hint */}
+                    <div className="text-center mb-4">
+                        <span className="text-sm font-normal text-white/50">Swipe left or right and click to select a card</span>
+                    </div>
+
+                    {/* Pathway Cards Carousel - Full PathwaysPageModern Style */}
+                    <div className="relative w-full mb-6">
+                        <style>{`
+                            .pathways-carousel::-webkit-scrollbar { display: none; }
+                            .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+                            .pathways-carousel {
+                                scroll-snap-type: x mandatory;
+                                scroll-behavior: smooth;
+                                scroll-padding-left: 16px;
+                                scroll-padding-right: 16px;
+                            }
+                            .pathways-carousel > div {
+                                scroll-snap-align: center;
+                            }
+                        `}</style>
+                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '16px', paddingRight: '16px' }}>
+                            {/* Intro Card */}
+                            <div
+                                key="FOUNDATION-PROGRAM-ENROLL"
+                                className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
+                                style={{ width: '600px', scrollSnapAlign: 'center' }}
+                                onClick={(e) => {
+                                    setSelectedCarouselPathway({
+                                        id: 'FOUNDATION-PROGRAM-ENROLL',
+                                        title: 'Foundation Program',
+                                        company: 'PilotRecognition',
+                                        location: 'Global',
+                                        tags: ['Featured Program', '50 Hours Mentorship']
+                                    });
+                                    // Center the card
+                                    const card = e.currentTarget;
+                                    const carousel = pathwaysCarouselRef.current;
+                                    if (carousel && card) {
+                                        const cardLeft = card.offsetLeft;
+                                        const cardWidth = card.offsetWidth;
+                                        const carouselWidth = carousel.offsetWidth;
+                                        carousel.scrollLeft = cardLeft - (carouselWidth / 2) + (cardWidth / 2);
                                     }
-                                ].map((item, i) => (
-                                    <div key={i} className="flex gap-3">
-                                        <div className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">{i + 1}</div>
-                                        <div>
-                                            <p className="font-semibold text-slate-900 text-sm mb-1">{item.title}</p>
-                                            <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+                                    // Scroll to the selected pathway section
+                                    setTimeout(() => {
+                                        const selectedSection = document.querySelector('[data-selected-pathway="true"]');
+                                        if (selectedSection) {
+                                            selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        }
+                                    }, 300);
+                                }}
+                            >
+                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                    <img
+                                        src="/images/set-08-website/program1.png"
+                                        alt="Foundation Program"
+                                        className="w-full h-full object-cover"
+                                        loading="lazy"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                    <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                                    <div className="absolute top-3 right-3 flex gap-2 items-start">
+                                        <span className="px-3 py-1 rounded-full bg-blue-500/90 text-white text-xs font-semibold">Featured</span>
+                                        <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                        <div className="flex items-center justify-center gap-2 mb-1">
+                                            <h4 className="text-lg font-serif font-normal text-white">Foundation Program</h4>
+                                        </div>
+                                        <p className="text-white/80 text-sm">PilotRecognition · Global</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Cadet Programme Cards */}
+                            {HOME_PATHWAYS.filter(pathway => {
+                                const matchesMatch = (() => {
+                                    if (activeMatchFilter === 'all') return true;
+                                    if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                                    if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                                    return pathway.matchProbability >= 90;
+                                })();
+                                const matchesCategory = activeCarouselCategory === 'All' || pathway.category === activeCarouselCategory;
+                                return matchesMatch && matchesCategory;
+                            }).map((pathway) => (
+                                <div
+                                    key={pathway.id}
+                                    className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
+                                    style={{ width: '600px', scrollSnapAlign: 'center' }}
+                                    onClick={(e) => {
+                                        setSelectedCarouselPathway(pathway);
+                                        // Center the card
+                                        const card = e.currentTarget;
+                                        const carousel = pathwaysCarouselRef.current;
+                                        if (carousel && card) {
+                                            const cardLeft = card.offsetLeft;
+                                            const cardWidth = card.offsetWidth;
+                                            const carouselWidth = carousel.offsetWidth;
+                                            carousel.scrollLeft = cardLeft - (carouselWidth / 2) + (cardWidth / 2);
+                                        }
+                                        // Scroll to the selected pathway section
+                                        setTimeout(() => {
+                                            const selectedSection = document.querySelector('[data-selected-pathway="true"]');
+                                            if (selectedSection) {
+                                                selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                            }
+                                        }, 300);
+                                    }}
+                                >
+                                    <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                        <img 
+                                            src={pathway.image} 
+                                            alt={pathway.title} 
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                            onError={(e) => { (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/default-airline.jpg'; }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                                        <div className="absolute top-3 right-3 flex gap-2 items-start">
+                                            <button className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
+                                                {pathway.matchProbability}% Match
+                                            </button>
+                                            <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                            <div className="flex items-center justify-center gap-2 mb-1">
+                                                <h4 className="text-lg font-serif font-normal text-white">{pathway.title}</h4>
+                                            </div>
+                                            <p className="text-white/80 text-sm">{pathway.company} · {pathway.location}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Selected Pathway Display */}
+                    {selectedCarouselPathway && (
+                        <div data-selected-pathway="true" className="flex items-center justify-center gap-4 mt-4 mb-8">
+                            <button
+                                onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: -616, behavior: 'smooth' })}
+                                className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <div className="text-center max-w-xl">
+                                <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
+                                <h3 className="text-xl font-serif font-normal text-white mb-1">{selectedCarouselPathway.title}</h3>
+                                <p className="text-sm text-white/70 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
+                                <p className="text-sm leading-relaxed text-white/70">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                            </div>
+                            <button
+                                onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: 616, behavior: 'smooth' })}
+                                className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                            >
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Profile Alignment Section */}
+                    {selectedCarouselPathway && (
+                        <div className="mb-16">
+                            {/* CTA Button */}
+                            <div className="text-center mb-6">
+                                <button
+                                    onClick={() => selectedCarouselPathway.matchProbability >= 75 ? onNavigate('pathways-modern') : onNavigate('become-member')}
+                                    className={`px-8 py-3 rounded-lg text-sm font-semibold transition-all ${
+                                        selectedCarouselPathway.matchProbability >= 75
+                                            ? 'bg-red-500 hover:bg-red-600 text-white'
+                                            : 'bg-amber-500 hover:bg-amber-600 text-white'
+                                    }`}
+                                >
+                                    {selectedCarouselPathway.matchProbability >= 75 
+                                        ? 'Submit Interest for Pathway' 
+                                        : 'Improve Your Profile'}
+                                </button>
+                            </div>
+                            <div className="text-center mb-6">
+                                <p className="text-xs uppercase tracking-widest text-white/70 mb-2">REQUIREMENTS & PROFILE ALIGNMENT</p>
+                                <p className="text-sm text-white/50">Updated: {new Date().toLocaleDateString()}</p>
+                            </div>
+
+                        </div>
+                    )}
+
+                                    </div>
+            )}
+
+            {activeProductTab === 'programs' && (
+                <div className="relative z-10 mb-16">
+
+                    {/* Direct Entry Pathways */}
+                    <div className="mb-8">
+                        <div className="max-w-6xl mx-auto px-4 mb-6">
+                            <h3 className="text-2xl text-white mb-2" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pathway Opportunities</h3>
+                            <p className="text-sm text-slate-400">Cadet programs, career pathways, and specialized operations from the PilotRecognition network</p>
+                        </div>
+                        {/* Scrollable Carousel - Edge to Edge */}
+                        <div className="relative w-full overflow-x-auto pb-4" style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+                            <div className="flex gap-4 px-4 min-w-max">
+                                {[...HOME_PATHWAYS, ...HOME_PATHWAYS].map((pathway, idx) => (
+                                    <div
+                                        key={`${pathway.id}-${idx}`}
+                                        className="flex-shrink-0 w-[240px] sm:w-[260px] md:w-[280px] lg:w-[300px] snap-center bg-white/10 backdrop-blur-md rounded-lg border border-white/20 overflow-hidden hover:scale-[1.02] transition-transform cursor-pointer select-none"
+                                        onClick={() => onNavigate('airline-expectations')}
+                                    >
+                                        <div className="h-[120px] sm:h-[140px] md:h-[160px] overflow-hidden relative">
+                                            <img
+                                                src={pathway.image}
+                                                alt={pathway.title}
+                                                className="w-full h-full object-cover opacity-80 pointer-events-none"
+                                                loading="lazy"
+                                                onError={(e) => { (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/default-airline.jpg'; }}
+                                            />
+                                        </div>
+                                        <div className="p-3 sm:p-4">
+                                            <p className="text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-blue-400 mb-1 sm:mb-2">{pathway.category}</p>
+                                            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                                                <span className="px-1.5 sm:px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/30 rounded text-[9px] sm:text-[10px] font-bold text-emerald-300">
+                                                    {pathway.matchProbability}% Match
+                                                </span>
+                                                <span className="px-1.5 sm:px-2 py-0.5 bg-sky-500/20 border border-sky-500/30 rounded text-[9px] sm:text-[10px] font-bold text-sky-300">
+                                                    PR: {pathway.pr}
+                                                </span>
+                                            </div>
+                                            <h4 className="text-sm sm:text-lg text-white font-medium mb-1 leading-tight">{pathway.title}</h4>
+                                            <p className="text-[10px] sm:text-xs text-slate-400 mb-1 sm:mb-2">{pathway.company}</p>
+                                            <div className="flex flex-wrap gap-1">
+                                                {pathway.tags.slice(0, 2).map((tag, tidx) => (
+                                                    <span key={tidx} className="px-1.5 sm:px-2 py-0.5 bg-white/10 rounded text-[9px] sm:text-[10px] text-slate-300">{tag}</span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-
-                            <div className="border-t border-slate-200 pt-6 mb-6">
-                                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-red-500 mb-3">Ambassador & internship program</p>
-                                <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                    PilotRecognition is open to graduates and experienced instructors who want to shape the future of aviation. We offer ambassador missions and internship roles where you help other pilots, participate in talks with major airlines and ATOs, and work alongside professional pilots who understand where the industry is heading.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    Whether you are a 200-hour graduate facing the 1,500-hour gap, or an instructor with extensive hours ready to convert your experience into recognized industry standing, our ecosystem connects you to pathways posted on <a href="https://pilotcareerpathways.com" target="_blank" rel="noopener noreferrer" className="text-red-600 font-semibold hover:underline">pilotcareerpathways.com</a>.
-                                </p>
-                            </div>
-
-                            <div className="flex flex-wrap gap-3">
-                                <a
-                                    href="https://pilotcareerpathways.com"
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
-                                >
-                                    Explore pathways
-                                </a>
-                                <a
-                                    href="/foundation-program"
-                                    className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
-                                >
-                                    Enroll for Foundation Program
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
-
-            {/* About Us section — Image 1 inspired layout */}
-            <div data-section="12" className="relative w-full bg-slate-950">
-                {/* Clean top image */}
-                <div className="relative w-full h-[360px] md:h-[480px] lg:h-[560px] overflow-hidden bg-slate-900">
-                    <img
-                        src="/images/set-08-website/program1.png"
-                        alt="About PilotRecognition"
-                        className="w-full h-full object-cover"
-                        style={{ objectPosition: 'center center' }}
-                        onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80'; }}
-                    />
-                </div>
-
-                {/* Dark quote section */}
-                <div className="relative px-5 md:px-12 lg:px-20 py-10 md:py-14">
-                    <div className="max-w-4xl mx-auto md:mx-0 md:max-w-2xl">
-                        <p className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-3">
-                            At a glance
+            {activeProductTab === 'profile' && (
+                <div className="relative z-10 mb-16">
+                    {/* Hero Intro */}
+                    <div className="max-w-4xl mx-auto px-4 mb-10 text-center">
+                        <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-blue-400 mb-3">Live Real-Time Profile</p>
+                        <h3 className="text-2xl md:text-3xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                            Not a Static CV — Your Currency for Pathway Access
+                        </h3>
+                        <p className="text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                            Airlines don't hire from paper. They pull from live, verified profiles. Your Recognition Profile updates automatically as you log hours, complete assessments, and earn credentials. It is your single source of truth — ATS-readable, shareable via link, and benchmarked against real airline expectations. Stop sending resumes into black holes. Let operators see your current readiness in real time.
                         </p>
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight mb-4">
-                            About <span className="text-red-500">PilotRecognition</span>
-                        </h2>
-                        <div className="w-10 h-1 bg-red-500 mb-8" />
+                    </div>
 
-                        <div className="relative pl-8 md:pl-12">
-                            <span className="absolute top-0 left-0 text-6xl md:text-7xl text-red-500/60 leading-none font-serif">“</span>
-                            <p className="text-slate-200 text-base md:text-lg leading-relaxed mb-6">
-                                Aviation's first pilot-owned career platform. The industry has never given pilots the infrastructure to prove who they are — only the paperwork to survive audits. PilotRecognition fixes that by turning your logbook, license, medical, and credentials into a verified recognition profile that reflects what you've actually done. Your credentials are issued as sovereign W3C Verified Credential tokens to your own cryptographic wallet; we receive the confirmation, not the paper.
-                            </p>
-                            <p className="text-white font-semibold">Benjamin Bowler</p>
-                            <p className="text-slate-400 text-sm">Founder & CEO, PilotRecognition</p>
-                        </div>
+                    {/* Demo Profile Card */}
+                    <div className="max-w-4xl mx-auto px-4 mb-12">
+                        <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-white/30 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
+                            {/* ATLAS-style Header Bar */}
+                            <div className="bg-red-600 px-4 py-3 border-b border-red-700">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-0.5">Pilot Recognition Profile</p>
+                                        <h4 className="text-sm font-bold text-white">Pete Michelle</h4>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-1">SHARE LINK</p>
+                                        <button
+                                            onClick={() => onNavigate('pilot-recognition-profile')}
+                                            className="px-2 py-1 bg-white border border-red-300 rounded text-[10px] font-medium text-red-700 hover:bg-red-50 transition-colors"
+                                        >
+                                            Copy URL
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                        {/* Progress bar indicator */}
-                        <div className="mt-8 w-full max-w-xs h-1 bg-white/20 rounded-full overflow-hidden">
-                            <div className="h-full w-1/3 bg-red-500 rounded-full" />
+                            <div className="p-3 sm:p-4">
+                                {/* Profile Header */}
+                                <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-200">
+                                    <div className="w-[60px] h-[60px] rounded-full bg-slate-900 flex items-center justify-center text-white text-lg font-semibold flex-shrink-0">
+                                        PM
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-xs text-blue-600 font-semibold tracking-[0.18em] mb-1">ATPL (USA) · 8 Ratings</p>
+                                        <p className="text-[10px] text-slate-500 truncate">pete.michelle@aviation.com</p>
+                                    </div>
+                                    <div className="flex flex-col gap-1 items-end flex-shrink-0">
+                                        <div className="text-right">
+                                            <p className="text-[9px] tracking-[0.12em] text-slate-500 uppercase mb-0.5">Flight Hours</p>
+                                            <p className="text-lg font-bold text-slate-900">3,500</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-[9px] tracking-[0.12em] text-slate-500 uppercase mb-0.5">Score</p>
+                                            <p className="text-lg font-bold text-slate-900">847</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* ATLAS-style Data Grid */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                                    {[
+                                        { label: 'License Type', value: 'ATPL' },
+                                        { label: 'License Number', value: 'A-789456' },
+                                        { label: 'License Status', value: 'Valid' },
+                                        { label: 'English Level', value: 'Level 6' },
+                                        { label: 'Career Stage', value: 'Captain' },
+                                        { label: 'Last Flown', value: '2 days ago' },
+                                        { label: 'Countries Visited', value: '12' },
+                                        { label: 'Favorite Aircraft', value: 'B737-800' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="bg-slate-50/80 rounded-lg p-2 border border-slate-100 text-center">
+                                            <p className="text-[9px] text-slate-500 tracking-[0.1em] mb-0.5">{item.label}</p>
+                                            <p className="text-xs font-bold text-slate-900">{item.value}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* ATLAS-style Footer */}
+                            <div className="bg-slate-50 px-4 py-2 border-t border-slate-200">
+                                <div className="flex items-center justify-between">
+                                    <p className="text-[9px] text-slate-500">
+                                        ATLAS CV · ATS-Readable · Verified
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate('pilot-licensure-experience')}
+                                        className="text-[9px] text-blue-600 font-medium hover:underline"
+                                    >
+                                        View Full Profile →
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    {/* Feature highlights moved to Discover Pilot Recognition section */}
+                </div>
+            )}
+            </div>}
+
+            {/* About Us section - Moved above iPad section */}
+            <div data-section="12" className="relative bg-white pt-24 pb-12 px-6">
+                <div className="max-w-6xl mx-auto text-center relative z-20">
+                    <p className="text-lg font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
+                        ABOUT US
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-serif text-slate-900 leading-tight mb-6">
+                        About PilotRecognition
+                    </h2>
+
+                        <div className="max-w-4xl mx-auto space-y-6 mb-12 text-left">
+                            <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
+                                Aviation's first pilot-owned career platform. The industry has never given pilots the infrastructure to prove who they are — only the paperwork to survive audits. PilotRecognition fixes that. You sync your logbook, verify your license, medical, and credentials through international verification providers, and build a recognition profile that reflects what you've actually done — not just what you claim. Your credentials are issued as sovereign W3C Verified Credential tokens to your own cryptographic wallet. The platform never retains your documents after verification. We receive the confirmation — not the paper.
+                            </p>
+                            <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
+                                It is not a job board but a professional networking platform—similar to LinkedIn for the aviation industry. Instead of pilots sending CVs into a void, operators post pathway cards showing exactly what they need: hours, ratings, nationality requirements, type rating preferences, experience level. You align your profile against those requirements and submit interest. If an operator wants to move forward, they send you a consent message — free. They may include a confidential offer document that self-destructs within 5 days of inactivity. You read it, negotiate if needed, and decide. Operators pay a flat annual subscription for advanced search tools; there are absolutely no success, connection, or placement fees for either side.
+                            </p>
+                            <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
+                                The Foundation Program builds the verified competency record operators look for. It covers 50 hours of logged mentorship, EBT CBTA-aligned industry education, type rating investment risk management, and a practical mentorship interview. Free to enter. Certification is $49 at completion. Everything you complete is appended to your profile and made available to operators with your consent.
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => onNavigate('accreditation')}
+                            className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
+                        >
+                            LEARN MORE ABOUT OUR ACCREDITATIONS AND SUPPORT PROVIDED <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
                 </div>
             </div>
 
@@ -1943,54 +2529,32 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
                 </div>
 
-                {/* Join The Network Section */}
-                <div className="relative py-16 md:py-24 px-5 md:px-8 bg-black overflow-hidden" id="join-network-section">
-                    {/* Subtle grid/noise background */}
-                    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-slate-950" />
+                {/* Join The Network Section - Simplified */}
+                <div className="relative py-8 md:py-12 px-4 md:px-6 bg-[#05091a] overflow-hidden" id="join-network-section">
+                    
+                    {/* MeshGradient Background - Deep navy/blue palette */}
+                    <div className="absolute inset-0 z-0 h-full w-full">
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #1e3a8a 0%, #0f2060 40%, #080e2a 75%, #05091a 100%)' }} />
+                        {graphicsConfig?.enableMeshGradient && (
+                            <SafeMeshGradient
+                                className="w-full h-full"
+                                colors={[
+                                    "#05091a","#080e2a","#0a1240","#0d1850","#0f2060",
+                                    "#112878","#1e3a8a","#1e40af","#1d4ed8"
+                                ]}
+                                speed={graphicsConfig.meshGradientSpeed}
+                            />
+                        )}
+                        {/* Deep blue overlay — dark blue at top, deeper navy at bottom */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(8,14,50,0.75) 0%, rgba(5,10,35,0.82) 40%, rgba(3,6,20,0.94) 100%)' }} />
+                        {graphicsConfig?.enableBackdropBlur && (
+                            <div className="absolute inset-0 backdrop-blur-[1px]" />
+                        )}
+                    </div>
 
-                    <div className="max-w-5xl mx-auto relative z-10">
-                        <div className="text-center mb-10">
-                            <p className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 mb-4">
-                                Join the network
-                            </p>
-                            <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-normal text-white leading-[1.05] mb-6">
-                                <span className="text-white">Pilot</span>{' '}
-                                <span className="text-red-500">Recognition</span>
-                            </h2>
-                            <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-                                One verified profile connects you to airline pathways, foundation programs, and a global pilot community. Get recognized by the industry that matters.
-                            </p>
-
-                            {/* CTA pills */}
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
-                                <button
-                                    onClick={() => onNavigate?.('become-member')}
-                                    className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-red-600/25"
-                                >
-                                    Get Started Free
-                                </button>
-                                <button
-                                    onClick={() => onNavigate?.('recognition-plus')}
-                                    className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white font-semibold text-sm transition-all active:scale-95"
-                                >
-                                    Learn about Recognition+
-                                </button>
-                            </div>
-
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-4 max-w-xl mx-auto">
-                                {[
-                                    { value: '15+', label: 'Partner Airlines' },
-                                    { value: '50h', label: 'Mentorship Program' },
-                                    { value: 'W3C', label: 'Verified Credentials' }
-                                ].map((stat, i) => (
-                                    <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                                        <p className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</p>
-                                        <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider">{stat.label}</p>
-                                    </div>
-                                ))}
-                            </div>
+                    <div className="max-w-7xl mx-auto relative z-10">
+                        <div className="text-center mb-12">
+                                <AnimatedHeader />
                         </div>
                     </div>
                 </div>
@@ -2056,103 +2620,51 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Footer */}
-            <footer data-section="13" className="relative z-10 mt-auto bg-white text-slate-900 overflow-hidden border-t border-slate-200">
-                <div className="relative z-10 max-w-6xl mx-auto px-6 py-14 md:py-20">
-                    {/* Top row: brand + newsletter */}
-                    <div className="grid md:grid-cols-2 gap-10 mb-12 pb-12 border-b border-slate-200">
+            <footer data-section="13" className="relative z-10 mt-auto bg-slate-900 text-white py-12 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
-                            <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                                Pilot<span className="text-red-500">Recognition</span>
-                            </h3>
-                            <p className="text-slate-600 text-sm leading-relaxed max-w-sm mb-6">
-                                The Aviation Industry's First Pilot Recognition-Based Platform. Verified profiles, trusted pathways, and a global pilot community.
-                            </p>
-                            <div className="flex items-center gap-3">
-                                {[
-                                    { label: 'LinkedIn', href: 'https://linkedin.com/company/pilotrecognition' },
-                                    { label: 'YouTube', href: 'https://youtube.com/@pilotrecognition' },
-                                    { label: 'X', href: 'https://x.com/pilotrecognition' },
-                                    { label: 'TikTok', href: 'https://tiktok.com/@pilotrecognition' },
-                                ].map((social) => (
-                                    <a
-                                        key={social.label}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-white transition-colors"
-                                    >
-                                        {social.label[0]}
-                                    </a>
-                                ))}
-                            </div>
+                            <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
+                            <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
                         </div>
-
-                        <div className="md:text-right">
-                            <p className="text-sm font-semibold text-slate-900 mb-3">Stay in the loop</p>
-                            <p className="text-slate-600 text-sm mb-4">Get pathway drops, airline updates, and platform news.</p>
-                            <div className="flex flex-col sm:flex-row md:justify-end gap-2">
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="px-4 py-2.5 rounded-full bg-white border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-red-500/50"
-                                />
-                                <button
-                                    onClick={() => onNavigate('newsletter-signup')}
-                                    className="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-colors"
-                                >
-                                    Subscribe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Link columns */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Platform</h4>
-                            <ul className="space-y-2.5 text-slate-600 text-sm">
-                                <li><button onClick={() => onNavigate('recognition-plus')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Pilot Recognition</button></li>
-                                <li><button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Pathways</button></li>
-                                <li><button onClick={() => onNavigate('programs')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Programs</button></li>
-                                <li><button onClick={() => onNavigate('airline-expectations')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Airline Expectations</button></li>
+                            <h3 className="font-bold text-lg mb-4">Platform</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('recognition-plus')} className="hover:text-white cursor-pointer transition-colors text-left">Pilot Recognition</button></li>
+                                <li><button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors text-left">Pathways</button></li>
+                                <li><button onClick={() => onNavigate('programs')} className="hover:text-white cursor-pointer transition-colors text-left">Programs</button></li>
+                                <li><button onClick={() => onNavigate('airline-expectations')} className="hover:text-white cursor-pointer transition-colors text-left">Airline Expectations</button></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Programs</h4>
-                            <ul className="space-y-2.5 text-slate-600 text-sm">
-                                <li><button onClick={() => onNavigate('foundational-program')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Foundation Program</button></li>
-                                <li><button onClick={() => onNavigate('transition-program')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Transition Program</button></li>
-                                <li><button onClick={() => onNavigate('airbus-aligned-ebt-cbta-programs')} className="hover:text-red-600 cursor-pointer transition-colors text-left">EBT CBTA</button></li>
-                                <li><button onClick={() => onNavigate('become-member')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Become a Member</button></li>
+                            <h3 className="font-bold text-lg mb-4">Programs</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('foundational-program')} className="hover:text-white cursor-pointer transition-colors text-left">Foundation Program</button></li>
+                                <li><button onClick={() => onNavigate('transition-program')} className="hover:text-white cursor-pointer transition-colors text-left">Transition Program</button></li>
+                                <li><button onClick={() => onNavigate('airbus-aligned-ebt-cbta-programs')} className="hover:text-white cursor-pointer transition-colors text-left">EBT CBTA</button></li>
+                                <li><button onClick={() => onNavigate('become-member')} className="hover:text-white cursor-pointer transition-colors text-left">Become a Member</button></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Contact</h4>
-                            <ul className="space-y-2.5 text-slate-600 text-sm">
-                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-red-600 cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
-                                <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-red-600 cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
-                                <li><span className="text-slate-500">Dubai, UAE</span></li>
+                            <h3 className="font-bold text-lg mb-4">Contact</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
+                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
+                                <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Legal</h4>
-                            <ul className="space-y-2.5 text-slate-600 text-sm">
-                                <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Privacy Policy</button></li>
-                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Terms of Service</button></li>
-                                <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Cookie Policy</button></li>
-                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Our Services</button></li>
+                            <h3 className="font-bold text-lg mb-4">Legal</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Privacy Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-white cursor-pointer transition-colors text-left">Terms of Service</button></li>
+                                <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Cookie Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-white cursor-pointer transition-colors text-left">Our Services</button></li>
                             </ul>
                         </div>
                     </div>
-
-                    {/* Bottom bar */}
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-200 text-slate-500 text-xs">
-                        <p>&copy; 2024 PilotRecognition — Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
-                        <div className="flex items-center gap-4">
-                            <button onClick={() => onNavigate('privacy-policy')} className="hover:text-slate-900 transition-colors">Privacy</button>
-                            <button onClick={() => onNavigate('terms-of-service')} className="hover:text-slate-900 transition-colors">Terms</button>
-                            <button onClick={() => onNavigate('cookie-policy')} className="hover:text-slate-900 transition-colors">Cookies</button>
-                        </div>
+                    <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
+                        <p>&copy; 2024 PilotRecognition - Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
                     </div>
                 </div>
             </footer>

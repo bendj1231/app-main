@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -101,15 +101,14 @@ export const CareerProgressDashboard: React.FC = () => {
   if (isLoading) {
     return (
       <div className="relative min-h-screen flex items-center justify-center">
-        <div className="fixed inset-0 z-0">
-          {graphicsConfig.enableMeshGradient ? (
-            <MeshGradient
+        <div className="fixed inset-0 z-0" style={{ background: '#0f172a' }}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
+          {graphicsConfig.enableMeshGradient && (
+            <SafeMeshGradient
               className="w-full h-full"
               colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
               speed={graphicsConfig.meshGradientSpeed}
             />
-          ) : (
-            <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
           <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
@@ -126,15 +125,14 @@ export const CareerProgressDashboard: React.FC = () => {
   return (
     <div className="relative min-h-screen flex flex-col font-sans">
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
-      <div className="fixed inset-0 z-0">
-        {graphicsConfig.enableMeshGradient ? (
-          <MeshGradient
+      <div className="fixed inset-0 z-0" style={{ background: '#0f172a' }}>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
+        {graphicsConfig.enableMeshGradient && (
+          <SafeMeshGradient
             className="w-full h-full"
             colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
             speed={graphicsConfig.meshGradientSpeed}
           />
-        ) : (
-          <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
         <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />

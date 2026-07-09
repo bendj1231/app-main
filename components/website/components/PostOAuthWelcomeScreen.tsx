@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 
 interface PostOAuthWelcomeScreenProps {
   userName?: string;
@@ -70,7 +70,15 @@ export const PostOAuthWelcomeScreen: React.FC<PostOAuthWelcomeScreenProps> = ({
     >
       {/* Animated mesh gradient background */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <MeshGradient
+        {/* Solid fallback background */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: '#0f172a',
+          }}
+        />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={[
             '#dbeafe',
