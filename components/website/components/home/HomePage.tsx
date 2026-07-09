@@ -9,6 +9,7 @@ import {
   X,
   ShieldCheck,
   Clock,
+  Globe,
 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { ThemeContext } from '../../context/ThemeContext';
