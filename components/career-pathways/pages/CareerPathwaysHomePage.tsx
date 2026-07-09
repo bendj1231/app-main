@@ -136,42 +136,51 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = () 
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Hero */}
-      <section className="relative overflow-hidden px-4 pt-16 pb-12 md:pt-24 md:pb-16 lg:pt-32 lg:pb-24">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-cyan-600/10 rounded-full blur-[100px]" />
-        </div>
+      {/* Netflix-style Hero */}
+      <section className="relative min-h-[75vh] md:min-h-[80vh] flex items-end overflow-hidden">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/set-02-pilot-gap/expect.png)',
+          }}
+        />
 
-        <div className="relative max-w-6xl mx-auto text-center">
+        {/* Gradient overlays — left, bottom, and top */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 to-transparent" />
+
+        <div className="relative w-full max-w-7xl mx-auto px-4 pb-12 md:pb-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/60 border border-slate-700/60 text-xs font-medium text-slate-300 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/70 border border-slate-700/60 text-xs font-medium text-slate-300 mb-5">
               <Plane className="w-3.5 h-3.5 text-indigo-400" />
               <span>Aviation Career GPS</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-5">
-              From license to airline.
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-5 leading-[1.1]">
+              From license
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400">
-                One platform for every step.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                to airline.
               </span>
             </h1>
 
-            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p className="text-base md:text-lg text-slate-300 max-w-xl mb-8 leading-relaxed">
               Discover training, type ratings, verified profiles, and operator pathways built for
               pilots — not recruiters.
             </p>
 
             {/* Search */}
-            <div className="max-w-xl mx-auto mb-6">
+            <div className="max-w-2xl mb-6">
               <div className="relative group">
-                <div className="absolute inset-0 bg-indigo-500/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative flex items-center gap-3 bg-slate-900/80 border border-slate-700 rounded-2xl px-4 py-3.5 shadow-xl backdrop-blur-sm">
+                <div className="absolute -inset-1 bg-indigo-500/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative flex items-center gap-3 bg-slate-900/90 border border-slate-700 rounded-2xl px-4 py-3.5 shadow-2xl backdrop-blur-md">
                   <Search className="w-5 h-5 text-slate-400 shrink-0" />
                   <input
                     type="text"
@@ -182,7 +191,7 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = () 
                   />
                   <button
                     onClick={() => navigate('/type-ratings')}
-                    className="shrink-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition-colors"
+                    className="shrink-0 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-colors"
                   >
                     Search
                   </button>
@@ -191,12 +200,12 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = () 
             </div>
 
             {/* Search tags */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex flex-wrap gap-2">
               {featuredSearchTags.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => navigate('/type-ratings')}
-                  className="px-3 py-1.5 text-xs text-slate-400 bg-slate-900/60 border border-slate-800 rounded-full hover:text-white hover:border-slate-600 transition-colors"
+                  className="px-3 py-1.5 text-xs text-slate-300 bg-slate-900/70 border border-slate-700/60 rounded-full hover:text-white hover:border-slate-500 transition-colors"
                 >
                   {tag}
                 </button>
@@ -207,8 +216,23 @@ export const CareerPathwaysHomePage: React.FC<CareerPathwaysHomePageProps> = () 
       </section>
 
       {/* Hub Grid */}
-      <section className="px-4 pb-12 md:pb-20">
+      <section className="px-4 py-12 md:py-20 -mt-12 relative z-10">
         <div className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">Start your journey</h2>
+              <p className="text-sm text-slate-400">
+                Everything in the middle of your aviation career.
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/discover')}
+              className="hidden sm:flex items-center gap-1.5 text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
+              Browse all <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
           <motion.div
             variants={containerVariants}
             initial="hidden"
