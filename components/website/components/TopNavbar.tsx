@@ -142,6 +142,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
+  const [domainBrand] = useState<'recognition' | 'shortage' | 'careerpathways'>(() => {
+    if (typeof window === 'undefined') return 'recognition';
+    const domain = window.location.hostname;
+    if (domain.includes('pilotshortage.org')) return 'shortage';
+    if (domain.includes('pilotcareerpathways.com')) return 'careerpathways';
+    // Check for localStorage override
+    const override = localStorage.getItem('brand_override');
+    if (override === 'shortage' || override === 'recognition' || override === 'careerpathways') {
+      return override as 'recognition' | 'shortage' | 'careerpathways';
+    }
+    return 'recognition';
+  });
   const [countryCode, setCountryCode] = useState<string>(() => {
     try {
       const cachedCountry = localStorage.getItem('cachedCountryCode');
