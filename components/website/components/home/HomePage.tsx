@@ -910,7 +910,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
               }
             >
-              <div ref={pathwayGridRef} className="relative z-0 pt-12 md:pt-16">
+              <div ref={pathwayGridRef} className="relative z-0 pt-0 md:pt-16">
                 <PathwayGrid
                   slides={allSlides}
                   onNavigate={onNavigate}
@@ -923,7 +923,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </React.Suspense>
           ) : (
-            <div ref={pathwayGridRef} className="relative z-0 pt-12 md:pt-16">
+            <div ref={pathwayGridRef} className="relative z-0 pt-0 md:pt-16">
               <PathwayGrid
                 slides={allSlides}
                 onNavigate={onNavigate}
