@@ -2056,19 +2056,15 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* Footer */}
-            <footer data-section="13" className="relative z-10 mt-auto bg-black text-white overflow-hidden">
-                {/* Subtle texture */}
-                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-950/50 to-black" />
-
+            <footer data-section="13" className="relative z-10 mt-auto bg-white text-slate-900 overflow-hidden border-t border-slate-200">
                 <div className="relative z-10 max-w-6xl mx-auto px-6 py-14 md:py-20">
                     {/* Top row: brand + newsletter */}
-                    <div className="grid md:grid-cols-2 gap-10 mb-12 pb-12 border-b border-white/10">
+                    <div className="grid md:grid-cols-2 gap-10 mb-12 pb-12 border-b border-slate-200">
                         <div>
                             <h3 className="text-2xl md:text-3xl font-bold mb-3">
                                 Pilot<span className="text-red-500">Recognition</span>
                             </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+                            <p className="text-slate-600 text-sm leading-relaxed max-w-sm mb-6">
                                 The Aviation Industry's First Pilot Recognition-Based Platform. Verified profiles, trusted pathways, and a global pilot community.
                             </p>
                             <div className="flex items-center gap-3">
@@ -2083,7 +2079,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-9 h-9 rounded-full bg-white/10 hover:bg-red-600 border border-white/10 flex items-center justify-center text-xs font-semibold text-white transition-colors"
+                                        className="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-white transition-colors"
                                     >
                                         {social.label[0]}
                                     </a>
@@ -2092,13 +2088,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                         </div>
 
                         <div className="md:text-right">
-                            <p className="text-sm font-semibold text-white mb-3">Stay in the loop</p>
-                            <p className="text-slate-400 text-sm mb-4">Get pathway drops, airline updates, and platform news.</p>
+                            <p className="text-sm font-semibold text-slate-900 mb-3">Stay in the loop</p>
+                            <p className="text-slate-600 text-sm mb-4">Get pathway drops, airline updates, and platform news.</p>
                             <div className="flex flex-col sm:flex-row md:justify-end gap-2">
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
-                                    className="px-4 py-2.5 rounded-full bg-white/10 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-red-500/50"
+                                    className="px-4 py-2.5 rounded-full bg-white border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-red-500/50"
                                 />
                                 <button
                                     onClick={() => onNavigate('newsletter-signup')}
@@ -2113,49 +2109,49 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {/* Link columns */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">Platform</h4>
-                            <ul className="space-y-2.5 text-slate-400 text-sm">
-                                <li><button onClick={() => onNavigate('recognition-plus')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Pilot Recognition</button></li>
-                                <li><button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Pathways</button></li>
-                                <li><button onClick={() => onNavigate('programs')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Programs</button></li>
-                                <li><button onClick={() => onNavigate('airline-expectations')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Airline Expectations</button></li>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Platform</h4>
+                            <ul className="space-y-2.5 text-slate-600 text-sm">
+                                <li><button onClick={() => onNavigate('recognition-plus')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Pilot Recognition</button></li>
+                                <li><button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Pathways</button></li>
+                                <li><button onClick={() => onNavigate('programs')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Programs</button></li>
+                                <li><button onClick={() => onNavigate('airline-expectations')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Airline Expectations</button></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">Programs</h4>
-                            <ul className="space-y-2.5 text-slate-400 text-sm">
-                                <li><button onClick={() => onNavigate('foundational-program')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Foundation Program</button></li>
-                                <li><button onClick={() => onNavigate('transition-program')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Transition Program</button></li>
-                                <li><button onClick={() => onNavigate('airbus-aligned-ebt-cbta-programs')} className="hover:text-red-400 cursor-pointer transition-colors text-left">EBT CBTA</button></li>
-                                <li><button onClick={() => onNavigate('become-member')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Become a Member</button></li>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Programs</h4>
+                            <ul className="space-y-2.5 text-slate-600 text-sm">
+                                <li><button onClick={() => onNavigate('foundational-program')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Foundation Program</button></li>
+                                <li><button onClick={() => onNavigate('transition-program')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Transition Program</button></li>
+                                <li><button onClick={() => onNavigate('airbus-aligned-ebt-cbta-programs')} className="hover:text-red-600 cursor-pointer transition-colors text-left">EBT CBTA</button></li>
+                                <li><button onClick={() => onNavigate('become-member')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Become a Member</button></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">Contact</h4>
-                            <ul className="space-y-2.5 text-slate-400 text-sm">
-                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-red-400 cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
-                                <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-red-400 cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Contact</h4>
+                            <ul className="space-y-2.5 text-slate-600 text-sm">
+                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-red-600 cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
+                                <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-red-600 cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                                 <li><span className="text-slate-500">Dubai, UAE</span></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">Legal</h4>
-                            <ul className="space-y-2.5 text-slate-400 text-sm">
-                                <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Privacy Policy</button></li>
-                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Terms of Service</button></li>
-                                <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Cookie Policy</button></li>
-                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-400 cursor-pointer transition-colors text-left">Our Services</button></li>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">Legal</h4>
+                            <ul className="space-y-2.5 text-slate-600 text-sm">
+                                <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Privacy Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Terms of Service</button></li>
+                                <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Cookie Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-red-600 cursor-pointer transition-colors text-left">Our Services</button></li>
                             </ul>
                         </div>
                     </div>
 
                     {/* Bottom bar */}
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-slate-500 text-xs">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-200 text-slate-500 text-xs">
                         <p>&copy; 2024 PilotRecognition — Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
                         <div className="flex items-center gap-4">
-                            <button onClick={() => onNavigate('privacy-policy')} className="hover:text-white transition-colors">Privacy</button>
-                            <button onClick={() => onNavigate('terms-of-service')} className="hover:text-white transition-colors">Terms</button>
-                            <button onClick={() => onNavigate('cookie-policy')} className="hover:text-white transition-colors">Cookies</button>
+                            <button onClick={() => onNavigate('privacy-policy')} className="hover:text-slate-900 transition-colors">Privacy</button>
+                            <button onClick={() => onNavigate('terms-of-service')} className="hover:text-slate-900 transition-colors">Terms</button>
+                            <button onClick={() => onNavigate('cookie-policy')} className="hover:text-slate-900 transition-colors">Cookies</button>
                         </div>
                     </div>
                 </div>
