@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Minimize } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { RecognitionAIChat } from '@/components/website/components/unified-platform/RecognitionAIChat';
 import { type SearchProfileResult } from '@/lib/d1-api';
@@ -621,6 +621,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }, []);
   const useFullscreenLayout = isFullscreen || inlineFullscreen;
   const resolvedUserId = useMemo(() => userProfile?.id ?? userProfile?.uid ?? null, [userProfile]);
 
