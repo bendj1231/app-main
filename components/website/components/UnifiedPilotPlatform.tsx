@@ -18,7 +18,6 @@ import {
   Moon,
   Sun,
   Home,
-  Plane,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -1422,7 +1421,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               >
                 {[
                   { id: 'home', label: 'Home' },
-                  { id: 'dashboard', label: 'Flight Deck' },
                   { id: 'profile', label: 'Profile' },
                   { id: 'logbook', label: 'Flight Bag' },
                   { id: 'inbox', label: 'Inbox' },
@@ -1461,7 +1459,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               >
                 {[
                   { id: 'home', label: 'Home' },
-                  { id: 'dashboard', label: 'Flight Deck' },
                   { id: 'logbook', label: 'Flight Bag' },
                   { id: 'recognition-plus', label: 'Recognition+' },
                 ].map(({ id, label }) => {
@@ -1822,7 +1819,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                             <nav className="flex flex-col gap-2 mb-4">
                               {[
                                 { id: 'home', label: 'Home' },
-                                { id: 'dashboard', label: 'Flight Deck' },
                                 { id: 'profile', label: 'Profile' },
                                 { id: 'logbook', label: 'Flight Bag' },
                                 { id: 'inbox', label: 'Inbox' },
@@ -1981,7 +1977,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           <nav className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
             {[
               { id: 'home', label: 'Home', icon: Home },
-              { id: 'dashboard', label: 'Flight Deck', icon: Plane },
               { id: 'profile', label: 'Profile', icon: User },
               { id: 'logbook', label: 'Flight Bag', icon: BookMarked },
               { id: 'inbox', label: 'Inbox', icon: MessageSquare },

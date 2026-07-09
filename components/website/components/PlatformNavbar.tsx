@@ -22,7 +22,6 @@ interface Notification {
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
-  { id: 'dashboard', label: 'Flight Deck' },
   { id: 'profile', label: 'Profile' },
   { id: 'logbook', label: 'Flight Bag' },
   { id: 'bookmarks', label: 'Bookmarks' },
@@ -162,7 +161,6 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({
             >
               {[
                 { id: 'home', label: 'Home' },
-                { id: 'dashboard', label: 'Flight Deck' },
                 { id: 'profile', label: 'Profile' },
                 { id: 'logbook', label: 'Flight Bag' },
                 { id: 'bookmarks', label: 'Bookmarks' },
@@ -199,7 +197,6 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({
             >
               {[
                 { id: 'home', label: 'Home' },
-                { id: 'dashboard', label: 'Flight Deck' },
                 { id: 'logbook', label: 'Flight Bag' },
                 { id: 'recognition-plus', label: 'Recognition+' },
               ].map(({ id, label }) => (
