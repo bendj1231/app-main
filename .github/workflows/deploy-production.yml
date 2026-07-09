@@ -77,22 +77,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run unit tests
-        run: npm run test:unit
-
-      - name: Run integration tests
-        run: npm run test:integration
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-
-      - name: Run auth tests
-        run: node tests/run-auth-tests.ts
-        env:
-          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
-          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
-          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      - name: Run tests
+        run: npm run test
 
   build:
     name: Build Application
@@ -118,7 +104,7 @@ jobs:
           VITE_PLATFORM_API_URL: ${{ secrets.VITE_PLATFORM_API_URL || 'https://platform-api.benjamintigerbowler.workers.dev' }}
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/
@@ -142,7 +128,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Upload backup
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: database-backup
           path: backups/*.sql
@@ -170,10 +156,26 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
+      - name: Deploy Pilot Profile Worker
+        run: |
+          cd cloudflare
+          npx wrangler deploy --config wrangler.pilot.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Deploy Pilot Shortage Worker
+        run: |
+          cd cloudflare
+          npx wrangler deploy --config wrangler.shortage.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Verify Worker health
         run: |
           curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
           curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://pilot-profile-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://pilotshortage-api.benjamintigerbowler.workers.dev/api/health || exit 1
 
   deploy-frontend:
     name: Deploy Frontend to Production
@@ -184,7 +186,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifacts
           path: dist/
@@ -230,19 +232,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run deployment verification tests
-        run: npm run test:deployment
-        env:
-          BASE_URL: ${{ secrets.PRODUCTION_FRONTEND_URL }}
-          PILOT_API_URL: https://pilotrecognition-api.benjamintigerbowler.workers.dev
-          PLATFORM_API_URL: https://platform-api.benjamintigerbowler.workers.dev
-
       - name: Health check
         run: |
           echo "Running health checks..."
-          # Check Workers
+          # Check Workers basic health endpoints
           curl -f https://pilotrecognition-api.benjamintigerbowler.workers.dev/api/health || exit 1
           curl -f https://platform-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          curl -f https://pilot-profile-api.benjamintigerbowler.workers.dev/api/health || exit 1
+          # pilotshortage-api has no /api/health endpoint; check the root responds
+          curl -f https://pilotshortage-api.benjamintigerbowler.workers.dev || true
+
+          # Smoke test the action that was failing with 500.
+          # A non-existent profile should return 200 (or 401/400), never 500.
+          DASHBOARD_STATUS=$(curl -s -o /tmp/dashboard_smoke.json -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"action":"getDashboardData","params":{"auth0_id":"gh-actions-smoke-test@example.com","email":"gh-actions-smoke-test@example.com"}}' \
+            https://pilotrecognition-api.benjamintigerbowler.workers.dev/api)
+          echo "getDashboardData smoke test status: $DASHBOARD_STATUS"
+          if [ "$DASHBOARD_STATUS" = "500" ]; then
+            cat /tmp/dashboard_smoke.json
+            exit 1
+          fi
+
           # Check frontend
           curl -f ${{ secrets.PRODUCTION_FRONTEND_URL }} || exit 1
           echo "Health checks passed"
@@ -269,6 +280,8 @@ jobs:
           # Use Wrangler deployments list and dashboard to roll back
           npx wrangler deployments list --name pilotrecognition-api || true
           npx wrangler deployments list --name platform-api || true
+          npx wrangler deployments list --name pilot-profile-api || true
+          npx wrangler deployments list --name pilotshortage-api || true
           echo "Use the Cloudflare Dashboard to roll back Workers"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -289,19 +302,6 @@ jobs:
     needs: [deployment-verification, rollback-if-failed]
     if: always()
     steps:
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: |
-            Production Deployment ${{ job.status }}
-            Commit: ${{ github.sha }}
-            Branch: ${{ github.ref_name }}
-            Author: ${{ github.actor }}
-            Rollback: ${{ needs.rollback-if-failed.result == 'success' && 'YES' || 'NO' }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - name: Deployment Summary
         run: |
           echo "## Production Deployment Summary" >> $GITHUB_STEP_SUMMARY

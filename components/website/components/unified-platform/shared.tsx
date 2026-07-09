@@ -1,35 +1,30 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
   Home,
   User,
-  Shield,
-  Map,
-  BookOpen,
   Plane,
-  Wrench,
-  FileText,
   BookMarked,
   Inbox,
-  Calendar,
-  Newspaper,
   Settings,
-  BarChart3,
   CheckCircle,
   XCircle,
   Clock,
   RefreshCw,
   Bell,
   Building2,
-  AlertTriangle,
-  Star,
   BadgeCheck,
-  Target,
   X,
   Lock,
 } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import type { NavItem } from './types';
+
+interface LogRecord {
+  date?: string;
+  [key: string]: unknown;
+}
 
 interface Profile {
   id?: string;
@@ -114,7 +109,7 @@ export const LogbookPreviewPanel: React.FC<{ profile: Profile; onOpenLogbook: ()
       where: { user_id: id },
       limit: 3,
     }).then((rows) => {
-      const sorted = (rows || []).sort((a: any, b: any) => {
+      const sorted = (rows || []).sort((a: LogRecord, b: LogRecord) => {
         const da = a.date || '';
         const db = b.date || '';
         return db.localeCompare(da);
@@ -124,7 +119,7 @@ export const LogbookPreviewPanel: React.FC<{ profile: Profile; onOpenLogbook: ()
     return () => {
       active = false;
     };
-  }, [profile?.id]);
+  }, [callApi, profile?.id]);
   const totalHours = profile?.total_flight_hours ?? 0;
   return (
     <div
@@ -305,33 +300,48 @@ export const CredentialRequestCard: React.FC<{
   );
 };
 
-export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Profile; onClose?: () => void }> = ({
-  profileId,
-  profile,
-  onClose,
-}) => {
+interface NotificationItem {
+  id?: string;
+  type?: string;
+  title?: string;
+  body?: string;
+  message?: string;
+  data?: string | Record<string, unknown>;
+  is_read?: boolean;
+  read_at?: string;
+  created_at?: string;
+  action?: { label: string; schools: string[] };
+  _crewResponse?: 'accept' | 'report_falsified';
+}
+
+export const NotificationsFeedPanel: React.FC<{
+  profileId?: string;
+  profile?: Profile;
+  onClose?: () => void;
+}> = ({ profileId, profile, onClose }) => {
   const { callApi } = useWorkerAuth();
-  const [notifs, setNotifs] = React.useState<Record<string, unknown>[]>([]);
+  const [notifs, setNotifs] = React.useState<NotificationItem[]>([]);
+  const [respondingIds, setRespondingIds] = React.useState<Set<string>>(new Set());
   React.useEffect(() => {
     if (!profileId) return;
     let active = true;
-    callApi<Record<string, unknown>[]>('queryTable', {
-      table: 'pilot_notifications',
-      operation: 'select',
-      where: { pilot_id: profileId },
-      limit: 8,
-    }).then((rows) => {
-      const sorted = (rows || []).sort((a: any, b: any) => {
-        const ca = a.created_at || '';
-        const cb = b.created_at || '';
-        return cb.localeCompare(ca);
+    callApi<NotificationItem[]>('getNotifications', { user_id: profileId, limit: 50 })
+      .then((rows) => {
+        const normalized = (rows || []).map((n) => ({ ...n, is_read: !!n.read_at }));
+        const sorted = normalized.sort((a, b) => {
+          const ca = a.created_at || '';
+          const cb = b.created_at || '';
+          return cb.localeCompare(ca);
+        });
+        if (active) setNotifs(sorted);
+      })
+      .catch(() => {
+        if (active) setNotifs([]);
       });
-      if (active) setNotifs(sorted);
-    });
     return () => {
       active = false;
     };
-  }, [profileId]);
+  }, [profileId, callApi]);
 
   const hours = profile?.total_flight_hours ?? 0;
   const targetHours = 1500;
@@ -419,14 +429,53 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
 
   const markRead = async (id: string) => {
     if (!id.startsWith('rp-')) {
-      await callApi('queryTable', {
-        table: 'pilot_notifications',
-        operation: 'update',
-        id,
-        data: { is_read: true },
+      try {
+        await callApi('markNotificationRead', { id });
+      } catch {
+        /* ignore */
+      }
+    }
+    setNotifs((prev) =>
+      prev.map((n) =>
+        n.id === id ? { ...n, is_read: true, read_at: n.read_at || new Date().toISOString() } : n
+      )
+    );
+  };
+
+  const respondToCrewTag = async (
+    id: string,
+    mentionId: string,
+    response: 'accept' | 'report_falsified'
+  ) => {
+    if (!profileId || respondingIds.has(mentionId)) return;
+    setRespondingIds((prev) => new Set(prev).add(mentionId));
+    try {
+      await callApi('respondToFlightCrewTag', {
+        mention_id: mentionId,
+        response,
+        user_id: profileId,
+      });
+      setNotifs((prev) =>
+        prev.map((n) =>
+          n.id === id
+            ? {
+                ...n,
+                is_read: true,
+                read_at: n.read_at || new Date().toISOString(),
+                _crewResponse: response,
+              }
+            : n
+        )
+      );
+    } catch (err) {
+      console.error('Failed to respond to crew tag:', err);
+    } finally {
+      setRespondingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(mentionId);
+        return next;
       });
     }
-    setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
   };
 
   const avatarFor = (type: string) => {
@@ -434,23 +483,81 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
     if (type === 'pr_system')
       return { src: null, badge: 'pr', color: '#dc2626', bg: 'rgba(0,0,0,0.06)', label: 'PR' };
     if (type === 'recognition_plus')
-      return { src: null, badge: 'rplus', color: '#dc2626', bg: 'rgba(220,38,38,0.08)', label: 'Recognition+' };
+      return {
+        src: null,
+        badge: 'rplus',
+        color: '#dc2626',
+        bg: 'rgba(220,38,38,0.08)',
+        label: 'Recognition+',
+      };
     if (type === 'credential_request')
-      return { src: 'https://i.pravatar.cc/150?u=operator', badge: null, color: '#f97316', bg: 'rgba(249,115,22,0.12)', label: 'Operator' };
+      return {
+        src: 'https://i.pravatar.cc/150?u=operator',
+        badge: null,
+        color: '#f97316',
+        bg: 'rgba(249,115,22,0.12)',
+        label: 'Operator',
+      };
     if (type === 'credential_expiry')
-      return { src: 'https://i.pravatar.cc/150?u=authority', badge: null, color: '#ef4444', bg: 'rgba(239,68,68,0.1)', label: 'CAA' };
+      return {
+        src: 'https://i.pravatar.cc/150?u=authority',
+        badge: null,
+        color: '#ef4444',
+        bg: 'rgba(239,68,68,0.1)',
+        label: 'CAA',
+      };
     if (type === 'tc_update')
-      return { src: 'https://i.pravatar.cc/150?u=legal', badge: null, color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', label: 'Legal' };
+      return {
+        src: 'https://i.pravatar.cc/150?u=legal',
+        badge: null,
+        color: '#3b82f6',
+        bg: 'rgba(59,130,246,0.1)',
+        label: 'Legal',
+      };
     if (type === 'subscription_expiry')
-      return { src: 'https://i.pravatar.cc/150?u=premium', badge: null, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', label: 'Recognition+' };
+      return {
+        src: 'https://i.pravatar.cc/150?u=premium',
+        badge: null,
+        color: '#f59e0b',
+        bg: 'rgba(245,158,11,0.1)',
+        label: 'Recognition+',
+      };
     if (type === 'pathway_reminder')
-      return { src: userPic || 'https://i.pravatar.cc/150?u=pathway', badge: null, color: '#38bdf8', bg: 'rgba(56,189,248,0.12)', label: 'Pathways' };
+      return {
+        src: userPic || 'https://i.pravatar.cc/150?u=pathway',
+        badge: null,
+        color: '#38bdf8',
+        bg: 'rgba(56,189,248,0.12)',
+        label: 'Pathways',
+      };
     if (type === 'flight_school_reminder')
-      return { src: 'https://i.pravatar.cc/150?u=ato', badge: null, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', label: 'ATO' };
-    return { src: userPic || 'https://i.pravatar.cc/150?u=system', badge: null, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', label: 'System' };
+      return {
+        src: 'https://i.pravatar.cc/150?u=ato',
+        badge: null,
+        color: '#f59e0b',
+        bg: 'rgba(245,158,11,0.12)',
+        label: 'ATO',
+      };
+    if (type === 'flight_crew_tag')
+      return {
+        src: 'https://i.pravatar.cc/150?u=crew',
+        badge: null,
+        color: '#38bdf8',
+        bg: 'rgba(56,189,248,0.12)',
+        label: 'Crew Tag',
+      };
+    return {
+      src: userPic || 'https://i.pravatar.cc/150?u=system',
+      badge: null,
+      color: '#94a3b8',
+      bg: 'rgba(148,163,184,0.1)',
+      label: 'System',
+    };
   };
 
-  const isPlus = (profile as Record<string, unknown>)?.subscription_tier === 'plus' || (profile as Record<string, unknown>)?.subscription_tier === 'enterprise';
+  const isPlus =
+    (profile as Record<string, unknown>)?.subscription_tier === 'plus' ||
+    (profile as Record<string, unknown>)?.subscription_tier === 'enterprise';
   const profileComplete = !!(profile?.license_type || profile?.pilot_stage);
 
   const recognitionPlusWelcome = profileComplete
@@ -503,7 +610,9 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-slate-200/60">
         <div>
-          <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">Activity</p>
+          <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">
+            Activity
+          </p>
           <p className="text-sm font-black text-slate-900 tracking-wide">Notifications</p>
         </div>
         <div className="flex items-center gap-2">
@@ -526,37 +635,79 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
 
       {!profile?.full_name || !profile?.current_occupation || !profile?.license_type ? (
         <div className="px-5 py-8 max-h-[380px] overflow-y-auto">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-4 max-w-sm mx-auto text-center">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.15)' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="space-y-4 max-w-sm mx-auto text-center"
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto"
+              style={{
+                background: 'rgba(220,38,38,0.08)',
+                border: '1px solid rgba(220,38,38,0.15)',
+              }}
+            >
               <Lock size={28} className="text-red-500" />
             </div>
             <div>
               <p className="text-sm font-black text-slate-800">Complete Your Advanced Profile</p>
               <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                Finish your profile to unlock activity notifications, pathway reminders, and credential alerts.
+                Finish your profile to unlock activity notifications, pathway reminders, and
+                credential alerts.
               </p>
             </div>
             <div className="space-y-2 pt-2 text-left">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
-                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.full_name ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                style={{
+                  background: 'rgba(248,250,252,0.8)',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.full_name ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}
+                >
                   {profile?.full_name ? '✓' : '1'}
                 </div>
                 <span className="text-[10px] font-bold text-slate-600">Full Name</span>
-                <span className="ml-auto text-[9px] text-slate-400">{profile?.full_name ? 'Done' : 'Required'}</span>
+                <span className="ml-auto text-[9px] text-slate-400">
+                  {profile?.full_name ? 'Done' : 'Required'}
+                </span>
               </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
-                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.current_occupation ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                style={{
+                  background: 'rgba(248,250,252,0.8)',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.current_occupation ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}
+                >
                   {profile?.current_occupation ? '✓' : '2'}
                 </div>
                 <span className="text-[10px] font-bold text-slate-600">Current Occupation</span>
-                <span className="ml-auto text-[9px] text-slate-400">{profile?.current_occupation ? 'Done' : 'Required'}</span>
+                <span className="ml-auto text-[9px] text-slate-400">
+                  {profile?.current_occupation ? 'Done' : 'Required'}
+                </span>
               </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(248,250,252,0.8)', border: '1px solid rgba(0,0,0,0.06)' }}>
-                <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.license_type ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                style={{
+                  background: 'rgba(248,250,252,0.8)',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${profile?.license_type ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}
+                >
                   {profile?.license_type ? '✓' : '3'}
                 </div>
                 <span className="text-[10px] font-bold text-slate-600">License Type</span>
-                <span className="ml-auto text-[9px] text-slate-400">{profile?.license_type ? 'Done' : 'Required'}</span>
+                <span className="ml-auto text-[9px] text-slate-400">
+                  {profile?.license_type ? 'Done' : 'Required'}
+                </span>
               </div>
             </div>
             {onClose && (
@@ -571,122 +722,182 @@ export const NotificationsFeedPanel: React.FC<{ profileId?: string; profile?: Pr
           </motion.div>
         </div>
       ) : (
-      <div className="px-3 py-3 max-h-[380px] overflow-y-auto">
-        {allNotifs.length === 0 ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="text-center">
-              <Bell size={24} className="text-slate-200 mx-auto mb-2" />
-              <p className="text-sm text-slate-400">No notifications yet</p>
-              <p className="text-[11px] text-slate-300 mt-1">New activity will appear here</p>
+        <div className="px-3 py-3 max-h-[380px] overflow-y-auto">
+          {allNotifs.length === 0 ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <Bell size={24} className="text-slate-200 mx-auto mb-2" />
+                <p className="text-sm text-slate-400">No notifications yet</p>
+                <p className="text-[11px] text-slate-300 mt-1">New activity will appear here</p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="space-y-2.5">
-            {allNotifs.map((n) => {
-              const cfg = avatarFor(n.type);
-              return (
-                <div
-                  key={n.id ?? n.type}
-                  className={`flex items-start gap-3 px-3.5 py-3.5 rounded-xl cursor-pointer transition-all ${
-                    n.is_read
-                      ? 'hover:bg-white/40'
-                      : 'hover:bg-white/60'
-                  }`}
-                  style={{
-                    background: n.is_read
-                      ? 'linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 100%)'
-                      : 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.5)',
-                    boxShadow: n.is_read
-                      ? '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)'
-                      : '0 4px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
-                  }}
-                  onClick={() => n.id && !n.is_read && markRead(n.id)}
-                >
-                  <div className="relative flex-shrink-0 mt-0.5">
-                    {cfg.badge ? (
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black"
-                        style={{ background: cfg.bg, border: `2px solid ${cfg.color}30` }}
-                      >
-                        {cfg.badge === 'pr' ? (
-                          <span><span className="text-black">P</span><span className="text-red-600">R</span></span>
-                        ) : cfg.badge === 'rplus' ? (
-                          <span className="text-red-600">R+</span>
-                        ) : null}
-                      </div>
-                    ) : (
-                      <img
-                        src={cfg.src || ''}
-                        alt={cfg.label}
-                        className="w-10 h-10 rounded-full object-cover"
-                        style={{ border: `2px solid ${cfg.color}40` }}
-                      />
-                    )}
-                    {!n.is_read && (
-                      <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-white" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className={`text-[12px] font-bold truncate ${n.is_read ? 'text-slate-500' : 'text-slate-900'}`}>
-                        {n.title}
-                      </p>
-                      <span className="text-[8px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}30` }}>
-                        {cfg.label}
-                      </span>
+          ) : (
+            <div className="space-y-2.5">
+              {allNotifs.map((n) => {
+                const cfg = avatarFor(n.type);
+                return (
+                  <div
+                    key={n.id ?? n.type}
+                    className={`flex items-start gap-3 px-3.5 py-3.5 rounded-xl cursor-pointer transition-all ${
+                      n.is_read ? 'hover:bg-white/40' : 'hover:bg-white/60'
+                    }`}
+                    style={{
+                      background: n.is_read
+                        ? 'linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 100%)'
+                        : 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(255,255,255,0.5)',
+                      boxShadow: n.is_read
+                        ? '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)'
+                        : '0 4px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
+                    }}
+                    onClick={() => n.id && !n.is_read && markRead(n.id)}
+                  >
+                    <div className="relative flex-shrink-0 mt-0.5">
+                      {cfg.badge ? (
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black"
+                          style={{ background: cfg.bg, border: `2px solid ${cfg.color}30` }}
+                        >
+                          {cfg.badge === 'pr' ? (
+                            <span>
+                              <span className="text-black">P</span>
+                              <span className="text-red-600">R</span>
+                            </span>
+                          ) : cfg.badge === 'rplus' ? (
+                            <span className="text-red-600">R+</span>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <img
+                          src={cfg.src || ''}
+                          alt={cfg.label}
+                          className="w-10 h-10 rounded-full object-cover"
+                          style={{ border: `2px solid ${cfg.color}40` }}
+                        />
+                      )}
+                      {!n.is_read && (
+                        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-white" />
+                      )}
                     </div>
-                    {n.body && (
-                      <p className={`text-[11px] mt-1 leading-relaxed line-clamp-2 ${n.is_read ? 'text-slate-400' : 'text-slate-500'}`}>
-                        {n.body}
-                      </p>
-                    )}
-                    {n.action && (
-                      <div className="mt-2.5 flex flex-wrap gap-1.5">
-                        {n.action.schools.map((school: string) => (
-                          <button
-                            key={school}
-                            className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-wider text-white transition-all hover:brightness-110"
-                            style={{ background: cfg.color }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              alert(`Booking request for ${school} — contact integration placeholder`);
-                            }}
-                          >
-                            {n.action.label} {school}
-                          </button>
-                        ))}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p
+                          className={`text-[12px] font-bold truncate ${n.is_read ? 'text-slate-500' : 'text-slate-900'}`}
+                        >
+                          {n.title}
+                        </p>
+                        <span
+                          className="text-[8px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full flex-shrink-0"
+                          style={{
+                            background: cfg.bg,
+                            color: cfg.color,
+                            border: `1px solid ${cfg.color}30`,
+                          }}
+                        >
+                          {cfg.label}
+                        </span>
                       </div>
-                    )}
-                    {n.created_at && (
-                      <p className="text-[10px] text-slate-400 mt-1.5">
-                        {new Date(n.created_at).toLocaleDateString('en-GB', {
-                          day: 'numeric',
-                          month: 'short',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </p>
-                    )}
+                      {(n.body || n.message) && (
+                        <p
+                          className={`text-[11px] mt-1 leading-relaxed line-clamp-2 ${n.is_read ? 'text-slate-400' : 'text-slate-500'}`}
+                        >
+                          {String(n.body || n.message)}
+                        </p>
+                      )}
+                      {n.action && (
+                        <div className="mt-2.5 flex flex-wrap gap-1.5">
+                          {n.action.schools.map((school: string) => (
+                            <button
+                              key={school}
+                              className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-wider text-white transition-all hover:brightness-110"
+                              style={{ background: cfg.color }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                alert(
+                                  `Booking request for ${school} — contact integration placeholder`
+                                );
+                              }}
+                            >
+                              {n.action.label} {school}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {n.type === 'flight_crew_tag' &&
+                        (() => {
+                          let parsedData: Record<string, unknown> = {};
+                          try {
+                            parsedData =
+                              typeof n.data === 'string'
+                                ? (JSON.parse(n.data) as Record<string, unknown>)
+                                : (n.data as Record<string, unknown>) || {};
+                          } catch {
+                            /* ignore */
+                          }
+                          const mentionId =
+                            typeof parsedData.mention_id === 'string' ? parsedData.mention_id : '';
+                          const responded = n._crewResponse;
+                          if (!mentionId) return null;
+                          return (
+                            <div className="mt-2.5 flex flex-wrap gap-2">
+                              {responded ? (
+                                <span className="text-[10px] font-black uppercase px-2 py-1 rounded-full bg-slate-200 text-slate-600">
+                                  {responded === 'accept' ? 'Accepted' : 'Reported falsified'}
+                                </span>
+                              ) : (
+                                <>
+                                  <button
+                                    className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-wider text-white transition-all hover:brightness-110 bg-emerald-500 disabled:opacity-50"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      respondToCrewTag(String(n.id), mentionId, 'accept');
+                                    }}
+                                    disabled={respondingIds.has(mentionId)}
+                                  >
+                                    {respondingIds.has(mentionId) ? '…' : 'ACCEPT'}
+                                  </button>
+                                  <button
+                                    className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-wider text-white transition-all hover:brightness-110 bg-red-500 disabled:opacity-50"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      respondToCrewTag(String(n.id), mentionId, 'report_falsified');
+                                    }}
+                                    disabled={respondingIds.has(mentionId)}
+                                  >
+                                    {respondingIds.has(mentionId) ? '…' : 'REPORT FALSIFIED'}
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      {n.created_at && (
+                        <p className="text-[10px] text-slate-400 mt-1.5">
+                          {new Date(n.created_at).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
 
       {!!(profile?.full_name && profile?.current_occupation && profile?.license_type) && (
-      <div className="px-5 py-3 border-t border-slate-200/60 bg-slate-50/50">
-        <button
-          className="w-full text-center text-[11px] font-black text-slate-500 hover:text-slate-700 transition-colors"
-        >
-          View all in Inbox →
-        </button>
-      </div>
+        <div className="px-5 py-3 border-t border-slate-200/60 bg-slate-50/50">
+          <button className="w-full text-center text-[11px] font-black text-slate-500 hover:text-slate-700 transition-colors">
+            View all in Inbox →
+          </button>
+        </div>
       )}
     </div>
   );

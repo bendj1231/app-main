@@ -3,7 +3,9 @@
  * Replaces direct Supabase profile queries with batched Worker API calls
  */
 
-const API_BASE = import.meta.env.VITE_PILOT_API_URL || 'https://pilot-profile-api.benjamintigerbowler.workers.dev';
+const API_BASE =
+  import.meta.env.VITE_PILOT_API_URL ||
+  'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 interface Profile {
   id: string;
@@ -38,8 +40,8 @@ interface Profile {
   subscription_tier?: string;
   created_at: string;
   updated_at: string;
-  badges?: any[];
-  flight_hours?: any;
+  badges?: unknown[];
+  flight_hours?: unknown;
 }
 
 async function fetchApi(path: string, options?: RequestInit) {
@@ -61,12 +63,10 @@ async function fetchApi(path: string, options?: RequestInit) {
 
 export const profileApi = {
   // Get full profile with badges and flight hours in ONE request
-  getFullProfile: (id: string): Promise<Profile> =>
-    fetchApi(`/api/profile/${id}`),
+  getFullProfile: (id: string): Promise<Profile> => fetchApi(`/api/profile/${id}`),
 
   // Get by Auth0 ID (used during login)
-  getByAuth0Id: (auth0Id: string): Promise<Profile> =>
-    fetchApi(`/api/profile/auth0/${auth0Id}`),
+  getByAuth0Id: (auth0Id: string): Promise<Profile> => fetchApi(`/api/profile/auth0/${auth0Id}`),
 
   // Create profile after first login
   createProfile: (data: Partial<Profile>): Promise<Profile> =>
@@ -83,11 +83,11 @@ export const profileApi = {
     }),
 
   // Get mentorship badges
-  getMentorshipBadges: (userId: string): Promise<any[]> =>
+  getMentorshipBadges: (userId: string): Promise<unknown[]> =>
     fetchApi(`/api/profile/${userId}/mentorship-badges`),
 
   // Get flight hours
-  getFlightHours: (userId: string): Promise<any> =>
+  getFlightHours: (userId: string): Promise<unknown> =>
     fetchApi(`/api/profile/${userId}/flight-hours`),
 };
 

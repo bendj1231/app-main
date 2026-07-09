@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, useMemo, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,22 +7,52 @@ import { OAuthCallback } from '@/components/OAuthCallback';
 
 // Lazy load page components - using actual platform pathways content as main page
 import type { PathwaysPageModernProps } from '../../portal/pages/PathwaysPageModern';
-const PathwaysPageModernLazy = lazy(() => import('../../portal/pages/PathwaysPageModern').then(m => ({ default: m.default })));
-const PathwaysPageModern = PathwaysPageModernLazy as React.LazyExoticComponent<React.FC<PathwaysPageModernProps>>;
-const ProgramsPage = lazy(() => import('./pages/ProgramsPage').then(m => ({ default: m.ProgramsPage })));
-const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage').then(m => ({ default: m.ProgramDetailPage })));
-const AirlinesPage = lazy(() => import('./pages/AirlinesPage').then(m => ({ default: m.AirlinesPage })));
-const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ default: m.GetStartedPage })));
-const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').then(m => ({ default: m.PathwayDashboardPage })));
-const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
-const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
+const PathwaysPageModernLazy = lazy(() =>
+  import('../../portal/pages/PathwaysPageModern').then((m) => ({ default: m.default }))
+);
+const PathwaysPageModern = PathwaysPageModernLazy as React.LazyExoticComponent<
+  React.FC<PathwaysPageModernProps>
+>;
+const ProgramsPage = lazy(() =>
+  import('./pages/ProgramsPage').then((m) => ({ default: m.ProgramsPage }))
+);
+const ProgramDetailPage = lazy(() =>
+  import('./pages/ProgramDetailPage').then((m) => ({ default: m.ProgramDetailPage }))
+);
+const AirlinesPage = lazy(() =>
+  import('./pages/AirlinesPage').then((m) => ({ default: m.AirlinesPage }))
+);
+const GetStartedPage = lazy(() =>
+  import('./pages/GetStartedPage').then((m) => ({ default: m.GetStartedPage }))
+);
+const PathwayDashboardPage = lazy(() =>
+  import('./pages/PathwayDashboardPage').then((m) => ({ default: m.PathwayDashboardPage }))
+);
+const MyPathwaysPage = lazy(() =>
+  import('./pages/MyPathwaysPage').then((m) => ({ default: m.MyPathwaysPage }))
+);
+const EnterpriseDirectoryPage = lazy(() =>
+  import('./pages/EnterpriseDirectoryPage').then((m) => ({ default: m.EnterpriseDirectoryPage }))
+);
+const BecomeMemberPage = lazy(() =>
+  import('@/components/website/components/BecomeMemberPage').then((m) => ({
+    default: m.BecomeMemberPage,
+  }))
+);
 const ProfilePage = lazy(() => import('@/app/professional-profile/page.tsx'));
-const DiscoverPathwaysPage = lazy(() => import('@/app/discover-pathways/page'));
 
 // Unified platform pages
-const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
-const TypeRatingSearchPage = lazy(() => import('@/components/pages/TypeRatingSearchPage').then(m => ({ default: m.default })));
-const GlobalAviationAuthoritiesPage = lazy(() => import('@/components/pages/GlobalAviationAuthoritiesPage').then(m => ({ default: m.default })));
+const PortalAirlineExpectationsPage = lazy(() =>
+  import('../../portal/pages/PortalAirlineExpectationsPage').then((m) => ({
+    default: m.PortalAirlineExpectationsPage,
+  }))
+);
+const TypeRatingSearchPage = lazy(() =>
+  import('@/components/pages/TypeRatingSearchPage').then((m) => ({ default: m.default }))
+);
+const GlobalAviationAuthoritiesPage = lazy(() =>
+  import('@/components/pages/GlobalAviationAuthoritiesPage').then((m) => ({ default: m.default }))
+);
 
 const PageLoader = () => (
   <div className="min-h-screen bg-slate-950 flex items-center justify-center">
@@ -37,7 +67,8 @@ const useHideUnifiedPlatformNav = () => {
     const style = document.createElement('style');
     style.id = 'career-pathways-unified-hide';
     style.textContent = `
-      /* Hide PlatformNavbar — it's a fixed div with height:68px + gradient bg */
+      /* Hide PlatformNavbar — covers gradient and transparent/glass variants */
+      .platform-navbar,
       div[style*="height: 68px"][style*="linear-gradient"] {
         display: none !important;
       }
@@ -85,20 +116,20 @@ const useHideUnifiedPlatformNav = () => {
     // JavaScript-based sidebar removal - more aggressive
     const removeSidebars = () => {
       const all = document.querySelectorAll('div, aside');
-      all.forEach(el => {
+      all.forEach((el) => {
         const computed = window.getComputedStyle(el);
         const style = (el as HTMLElement).style;
-        
+
         // Remove if it looks like a sidebar
         if (
-          computed.position === 'fixed' && 
+          computed.position === 'fixed' &&
           (computed.left === '0px' || parseInt(computed.width) >= 280) &&
-          (parseInt(computed.width) <= 400)
+          parseInt(computed.width) <= 400
         ) {
           (el as HTMLElement).style.display = 'none';
           (el as HTMLElement).remove();
         }
-        
+
         // Remove by inline styles
         if (
           style.width?.includes('340px') ||
@@ -146,45 +177,40 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
   const navigate = useNavigate();
   const { isAuthenticated, user, isLoading: isAuth0Loading } = useAuth0();
   const { currentUser, userProfile } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState<string>('');
-  const [userAvatar, setUserAvatar] = useState<string>('');
+  // AuthContext is the source of truth; Auth0 is the underlying provider.
+  // If either says we're logged in, treat the user as authenticated.
+  const isLoggedIn = useMemo(
+    () => (isAuthenticated && !!user) || !!currentUser,
+    [isAuthenticated, user, currentUser]
+  );
+  const userName = useMemo(() => {
+    if (!isLoggedIn) return '';
+    // Prefer AuthContext profile (Cloudflare D1) over Auth0/Google picture
+    return (
+      userProfile?.display_name ||
+      userProfile?.full_name ||
+      currentUser?.email?.split('@')[0] ||
+      'Pilot'
+    );
+  }, [isLoggedIn, userProfile, currentUser]);
+  const userAvatar = useMemo(() => {
+    if (!isLoggedIn) return '';
+    return userProfile?.profile_image_url || user?.picture || '';
+  }, [isLoggedIn, userProfile, user]);
 
-  useEffect(() => {
-    // AuthContext is the source of truth; Auth0 is the underlying provider.
-    // If either says we're logged in, treat the user as authenticated.
-    const loggedIn = (isAuthenticated && !!user) || !!currentUser;
-    if (loggedIn) {
-      setIsLoggedIn(true);
-      // Prefer AuthContext profile image (Cloudflare D1) over Auth0/Google picture
-      setUserName(
-        userProfile?.display_name ||
-        userProfile?.full_name ||
-        currentUser?.email?.split('@')[0] ||
-        'Pilot'
-      );
-      setUserAvatar(userProfile?.profile_image_url || user?.picture || '');
-    } else {
-      setIsLoggedIn(false);
-      setUserName('');
-      setUserAvatar('');
-    }
-  }, [isAuthenticated, user, currentUser, userProfile]);
-  
   const handleNavigate = (path: string) => {
     navigate(path);
   };
 
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <CareerPathwaysNavbar 
-        onLogin={onLogin} 
+      <CareerPathwaysNavbar
+        onLogin={onLogin}
         isLoggedIn={isLoggedIn}
         userName={userName}
         userAvatar={userAvatar}
       />
-      
+
       <main className={`${isLoggedIn ? 'pt-16' : 'pt-24'}`}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -193,105 +219,94 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
             <Route path="/auth/callback" element={<OAuthCallback />} />
 
             {/* Main pathways explorer - CSS hides PlatformNavbar and sidebar */}
-            <Route 
-              path="/" 
-              element={<PathwaysPageModernWrapper />} 
+            <Route path="/" element={<PathwaysPageModernWrapper />} />
+            <Route path="/pathways" element={<PathwaysPageModernWrapper />} />
+            <Route path="/programs" element={<ProgramsPage onNavigate={handleNavigate} />} />
+            <Route
+              path="/programs/:programId"
+              element={<ProgramDetailPage onNavigate={handleNavigate} />}
             />
-            <Route 
-              path="/pathways" 
-              element={<PathwaysPageModernWrapper />} 
+            <Route path="/discover" element={<PathwaysPageModernWrapper />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/airlines" element={<AirlinesPage onNavigate={handleNavigate} />} />
+            <Route path="/get-started" element={<GetStartedPage />} />
+            <Route
+              path="/become-member"
+              element={
+                <BecomeMemberPage
+                  onBack={() => navigate('/')}
+                  onNavigate={handleNavigate}
+                  onLogin={onLogin}
+                />
+              }
             />
-            <Route 
-              path="/programs" 
-              element={<ProgramsPage onNavigate={handleNavigate} />} 
-            />
-            <Route 
-              path="/programs/:programId" 
-              element={<ProgramDetailPage onNavigate={handleNavigate} />} 
-            />
-            <Route 
-              path="/discover" 
-              element={<PathwaysPageModernWrapper />} 
-            />
-            <Route 
-              path="/profile" 
-              element={<ProfilePage />} 
-            />
-            <Route 
-              path="/airlines" 
-              element={<AirlinesPage onNavigate={handleNavigate} />} 
-            />
-            <Route 
-              path="/get-started" 
-              element={<GetStartedPage />} 
-            />
-            <Route 
-              path="/become-member" 
-              element={<BecomeMemberPage onBack={() => navigate('/')} onNavigate={handleNavigate} onLogin={onLogin} />} 
-            />
-            <Route 
-              path="/dashboard" 
+            <Route
+              path="/dashboard"
               element={
                 isAuth0Loading ? (
                   <PageLoader />
                 ) : isLoggedIn || isAuthenticated ? (
-                  <PathwayDashboardPage 
-                    onNavigate={handleNavigate} 
+                  <PathwayDashboardPage
+                    onNavigate={handleNavigate}
                     pilotId={user?.sub || undefined}
                   />
                 ) : (
                   <Navigate to="/get-started" replace />
                 )
-              } 
+              }
             />
+            <Route path="/my-pathways" element={<MyPathwaysPage />} />
             {/* Unified Platform Pages - from pilotrecognition.com */}
-            <Route 
-              path="/airline-expectations" 
+            <Route
+              path="/airline-expectations"
               element={
                 <UnifiedPageWrapper>
-                  <PortalAirlineExpectationsPage onBack={() => navigate('/')} onNavigate={handleNavigate} />
+                  <PortalAirlineExpectationsPage
+                    onBack={() => navigate('/')}
+                    onNavigate={handleNavigate}
+                  />
                 </UnifiedPageWrapper>
-              } 
+              }
             />
-            <Route 
-              path="/type-ratings" 
+            <Route
+              path="/type-ratings"
               element={
                 <UnifiedPageWrapper>
                   <TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => navigate('/')} />
                 </UnifiedPageWrapper>
-              } 
+              }
             />
-            <Route 
-              path="/authorities" 
+            <Route
+              path="/authorities"
               element={
                 <UnifiedPageWrapper>
                   <GlobalAviationAuthoritiesPage />
                 </UnifiedPageWrapper>
-              } 
+              }
             />
-            <Route 
-              path="/enterprise" 
-              element={<EnterpriseDirectoryPage onNavigate={handleNavigate} />} 
+            <Route
+              path="/enterprise"
+              element={<EnterpriseDirectoryPage onNavigate={handleNavigate} />}
             />
-            
+
             {/* Redirects from old paths */}
             <Route path="/home" element={<Navigate to="/discover" replace />} />
-            
+
             {/* 404 */}
-            <Route 
-              path="*" 
+            <Route
+              path="*"
               element={
                 <div className="min-h-screen flex flex-col items-center justify-center">
                   <h1 className="text-4xl font-bold text-white mb-4">404</h1>
                   <p className="text-slate-400 mb-6">Page not found</p>
-                  <button 
+                  <button
                     onClick={() => navigate('/discover')}
                     className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white transition-colors"
                   >
                     Go Home
                   </button>
                 </div>
-              } 
+              }
             />
           </Routes>
         </Suspense>

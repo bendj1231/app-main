@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { safeRedirect } from '@/lib/url-validator';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { OAuthCallback } from '@/components/OAuthCallback';
 import { LogbookCallback } from '@/components/LogbookCallback';
@@ -545,6 +544,7 @@ const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
 const UCFPage = lazy(() => import('@/app/ucf/page'));
 const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/page'));
 const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
+const ReferralTerminalPage = lazy(() => import('@/app/referral/page'));
 const AdminDashboardPage = lazy(() => import('@/app/admin/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const AdminObjectivesPage = lazy(() => import('@/app/admin/objectives/page'));
@@ -607,6 +607,11 @@ const CareerPathwaysApp = lazy(() =>
     default: m.CareerPathwaysApp,
   }))
 );
+const MyPathwaysStandalonePage = lazy(() =>
+  import('@/components/career-pathways/pages/MyPathwaysStandalonePage').then((m) => ({
+    default: m.MyPathwaysStandalonePage,
+  }))
+);
 const DevDomainSelector = lazy(() =>
   import('@/components/DevDomainSelector').then((m) => ({ default: m.DevDomainSelector }))
 );
@@ -643,48 +648,68 @@ const CareerPathwaysLoadingFallback = () => (
 );
 
 export const AppRoutes = () => {
-  const { oauthAccountCheck } = useAuth();
+  const { oauthAccountCheck, currentUser, userProfile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isBecomeMemberOpen, setIsBecomeMemberOpen] = useState(false);
   const [careerPathwaysMode, setCareerPathwaysMode] = useState(() => {
     // Check on initial render
+    const hostname = window.location.hostname;
+    const searchParams = new URLSearchParams(window.location.search);
     const isDomain =
-      window.location.hostname === 'careerpathways.pilotrecognition.com' ||
-      window.location.hostname === 'pilotcareerpathways.com' ||
-      window.location.hostname === 'www.pilotcareerpathways.com';
-    const isLocalDev =
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      new URLSearchParams(window.location.search).get('product') === 'careerpathways';
-    const fromStorage = localStorage.getItem('careerpathways_mode') === 'true';
-    return isDomain || isLocalDev || fromStorage;
-  });
+      hostname === 'careerpathways.pilotrecognition.com' ||
+      hostname === 'pilotcareerpathways.com' ||
+      hostname === 'www.pilotcareerpathways.com';
+    const isProductMode = searchParams.get('product') === 'careerpathways';
+    const isLocalDev = (hostname === 'localhost' || hostname === '127.0.0.1') && isProductMode;
 
-  // Intro splash screen state
-  const [introPhase, setIntroPhase] = useState<'entering' | 'exiting' | 'done'>('entering');
-  const introFinishedRef = React.useRef(false);
+    // Career-pathways domains or explicit ?product=careerpathways always activate the mode
+    if (isDomain || isLocalDev || isProductMode) {
+      return true;
+    }
+
+    // On the main domain's root path, always show the main home page and clear stale mode
+    if (window.location.pathname === '/') {
+      localStorage.removeItem('careerpathways_mode');
+      return false;
+    }
+
+    // On other paths, allow localStorage to preserve the mode during in-app navigation
+    const fromStorage = localStorage.getItem('careerpathways_mode') === 'true';
+    return fromStorage;
+  });
 
   // Re-check domain when location changes
   useEffect(() => {
+    const hostname = window.location.hostname;
+    const searchParams = new URLSearchParams(window.location.search);
     const isDomain =
-      window.location.hostname === 'careerpathways.pilotrecognition.com' ||
-      window.location.hostname === 'pilotcareerpathways.com' ||
-      window.location.hostname === 'www.pilotcareerpathways.com';
-    const isLocalDev =
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+      hostname === 'careerpathways.pilotrecognition.com' ||
+      hostname === 'pilotcareerpathways.com' ||
+      hostname === 'www.pilotcareerpathways.com';
+    const isProductMode = searchParams.get('product') === 'careerpathways';
+    const isLocalDev = (hostname === 'localhost' || hostname === '127.0.0.1') && isProductMode;
 
-    if (isDomain || isLocalDev) {
+    if (isDomain || isLocalDev || isProductMode) {
       localStorage.setItem('careerpathways_mode', 'true');
       const t = setTimeout(() => setCareerPathwaysMode(true), 0);
       return () => clearTimeout(t);
     }
+
+    // On the main domain's root path, always reset to main home page
+    if (!isDomain && window.location.pathname === '/') {
+      localStorage.removeItem('careerpathways_mode');
+      const t = setTimeout(() => setCareerPathwaysMode(false), 0);
+      return () => clearTimeout(t);
+    }
   }, [location]);
 
-  // Safety: remove page-exiting class on mount in case it was left behind
+  // Safety: remove page-exiting class on mount in case it was left behind,
+  // and ensure main-site entrance animations are enabled.
   useEffect(() => {
     document.body.classList.remove('page-exiting');
+    document.body.classList.add('app-ready');
   }, []);
 
   // Listen for custom modal events from any page
@@ -718,23 +743,6 @@ export const AppRoutes = () => {
   const handleBack = (fallback: string = '/') => {
     delayedNavigate(fallback);
   };
-
-  // Intro splash screen sequence: hold → exit → done
-  useEffect(() => {
-    if (introFinishedRef.current) return;
-
-    const holdTimer = setTimeout(() => {
-      setIntroPhase('exiting');
-      const exitTimer = setTimeout(() => {
-        setIntroPhase('done');
-        introFinishedRef.current = true;
-        document.body.classList.add('app-ready');
-      }, 700);
-      return () => clearTimeout(exitTimer);
-    }, 1200);
-
-    return () => clearTimeout(holdTimer);
-  }, []);
 
   // If we're currently checking an OAuth account, show a full-screen loading overlay
   // to avoid briefly rendering the Home page before redirecting to /become-member.
@@ -814,6 +822,7 @@ export const AppRoutes = () => {
   // Subdomain routing for platform.pilotrecognition.com
   // NOTE: must be AFTER all hooks to avoid React error #310
   if (window.location.hostname === 'platform.pilotrecognition.com') {
+    console.log('[AppRoutes] platform subdomain early-return, rendering UnifiedPilotPlatform');
     return (
       <Suspense fallback={<LoadingFallback />}>
         <UnifiedPilotPlatform onNavigate={handleNavigate} />
@@ -896,46 +905,6 @@ export const AppRoutes = () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      {/* Intro Splash Screen — shows immediately on app load */}
-      <AnimatePresence>
-        {introPhase !== 'done' && (
-          <motion.div
-            key="intro"
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              scale: 1.05,
-              transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-            }}
-          >
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, y: 30, scale: 0.82 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{
-                opacity: 0,
-                y: -40,
-                scale: 0.92,
-                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
-              }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none mb-4 select-none">
-                <span className="text-slate-900">pilot</span>
-                <span className="text-red-600">recognition</span>
-                <span className="text-slate-900">.com</span>
-              </h1>
-              <p className="text-sm md:text-base text-slate-400 tracking-[0.2em] uppercase font-medium select-none">
-                connecting pilots to the industry
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Persistent dark background — prevents white flash during transitions */}
       <div
         style={{
@@ -1049,10 +1018,7 @@ export const AppRoutes = () => {
             path="/why-recognition"
             element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
           />
-          <Route
-            path="/wingmentor-learn-more"
-            element={<WingMentorLearnMorePage />}
-          />
+          <Route path="/wingmentor-learn-more" element={<WingMentorLearnMorePage />} />
           <Route
             path="/mission-vision"
             element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
@@ -1704,6 +1670,7 @@ export const AppRoutes = () => {
               />
             }
           />
+          <Route path="/my-pathways" element={<MyPathwaysStandalonePage onLogin={() => setIsLoginModalOpen(true)} />} />
           <Route path="/platform/career-progress" element={<CareerProgressDashboard />} />
           <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
           <Route
@@ -1780,6 +1747,7 @@ export const AppRoutes = () => {
 
           {/* Referral invite code route */}
           <Route path="/ref/:code" element={<ReferralLandingPage />} />
+          <Route path="/referral" element={<ReferralTerminalPage />} />
 
           {/* Auth0 callback route */}
           <Route path="/auth/callback" element={<OAuthCallback />} />

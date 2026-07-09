@@ -195,7 +195,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
               style={{ textShadow: '0 1px 4px rgba(0,0,0,0.35), 0 0 12px rgba(0,0,0,0.15)' }}
             >
               <span style={{ color: '#dc2626' }}>Recognition</span>
-              <span style={{ color: '#ffffff' }}>OS</span>
+              <span className="text-slate-900">OS</span>
             </p>
             <p
               className="text-[10px] font-bold tracking-[0.3em] mt-2"
@@ -248,68 +248,45 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
 
   return (
     <div
-      className="rounded-2xl border border-white/25 overflow-hidden relative"
-      style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
-        backdropFilter: 'blur(40px) saturate(1.2)',
-        WebkitBackdropFilter: 'blur(40px) saturate(1.2)',
-        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.08)',
-        minHeight: '420px',
-      }}
+      className="w-full rounded-2xl border border-white/60 bg-slate-100/40 p-4 md:p-6 backdrop-blur-xl shadow-2xl shadow-slate-300/40 text-slate-900 overflow-hidden relative"
+      style={{ minHeight: '420px' }}
     >
       <AnimatePresence>
         {isBooting && <BootScreen />}
       </AnimatePresence>
 
       {!isBooting && <div>
-      {/* Header */}
-      <div
-        className="px-5 py-4 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)' }}
-      >
+      {/* Header — clean light glass */}
+      <div className="py-4 flex flex-wrap items-center justify-between gap-2 bg-white/40 backdrop-blur-md border-b border-slate-200/60">
         <div className="flex items-center gap-2">
-          <Zap size={18} style={{ color: '#ffffff' }} />
-          <ChevronsRight size={16} style={{ color: 'rgba(255,255,255,0.7)' }} />
-          <p className="text-base font-black text-white tracking-wider uppercase">
+          <Zap size={18} className="text-amber-500" />
+          <ChevronsRight size={16} className="text-slate-400" />
+          <p className="text-sm md:text-base font-black text-slate-900 tracking-wider uppercase">
             Quick Access
           </p>
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
-            style={{
-              background: isVerified ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
-              color: '#ffffff',
-              borderColor: 'rgba(255,255,255,0.3)',
-            }}
+            className={`inline-flex items-center px-2 py-1 md:px-2.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider border ${isVerified ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
           >
-            {isVerified ? '✓ VERIFIED' : '⚠ PENDING'}
+            {isVerified ? <CheckCircle size={10} className="mr-1" /> : <AlertCircle size={10} className="mr-1" />}
+            {isVerified ? 'Verified' : 'Pending'}
           </span>
           <span
-            className="text-[10px] font-black px-2 py-0.5 rounded-full border"
-            style={{
-              background: isPlus ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
-              color: '#ffffff',
-              borderColor: 'rgba(255,255,255,0.3)',
-            }}
+            className={`inline-flex items-center px-2 py-1 md:px-2.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider border ${isPlus ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`}
           >
-            {isPlus ? 'RECOGNITION+' : 'FREE'}
+            {isPlus ? 'Recognition+' : 'Free'}
           </span>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row">
-        {/* Sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-6">
+        {/* Sidebar — clean unified menu */}
         <aside
-          className="md:w-56 flex-shrink-0 border-b md:border-b-0 md:border-r border-white/10 p-4"
-          style={{
-            background: 'linear-gradient(180deg, rgba(59,130,246,0.08), rgba(99,102,241,0.04))',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-          }}
+          className="lg:col-span-3 space-y-2 bg-white/40 p-3 rounded-2xl border border-white/80 shadow-sm"
         >
           {/* Nav tabs */}
-          <nav className="flex md:flex-col gap-1.5">
+          <nav className="space-y-2">
             {TABS.map((t) => {
               const Icon = t.icon;
               const isActive = activeTab === t.id;
@@ -317,24 +294,22 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all flex-1 md:flex-none text-left w-full"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(135deg, #3b82f6, #2563eb)'
-                      : 'rgba(59,130,246,0.12)',
-                    color: '#ffffff',
-                    boxShadow: isActive
-                      ? '0 4px 12px rgba(59,130,246,0.35)'
-                      : '0 1px 2px rgba(0,0,0,0.04)',
-                    border: isActive ? 'none' : '1px solid rgba(255,255,255,0.08)',
-                  }}
+                  className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-all text-left ${
+                    isActive
+                      ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/10'
+                      : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
+                  }`}
                 >
-                  <span style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
-                  <span className="hidden md:inline">{t.label}</span>
-                  {isActive && (
-                    <svg className="ml-auto w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <span className="flex items-center gap-2">
+                    <span className={isActive ? '' : 'text-slate-400'}><Icon size={18} /></span>
+                    {t.label}
+                  </span>
+                  {isActive ? (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
+                  ) : (
+                    <ChevronRight size={14} className="text-slate-400" />
                   )}
                 </button>
               );
@@ -342,38 +317,32 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
           </nav>
 
           {/* Quick actions */}
-          <div className="mt-3 hidden md:block">
-            <div className="flex flex-col gap-1.5">
-              {[
-                { label: 'Edit Profile', tab: 'advanced-profile' as TabId, icon: User },
-                { label: 'Flight Bag', tab: 'logbook' as TabId, icon: Briefcase },
-                { label: 'Recognition+', tab: 'recognition' as TabId, icon: Star },
-              ].map((link) => {
-                const Icon = link.icon;
-                return (
-                  <button
-                    key={link.tab}
-                    onClick={() => setTab?.(link.tab)}
-                    className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-[13px] font-medium transition-all text-left w-full"
-                    style={{
-                      background: 'rgba(59,130,246,0.12)',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-                    }}
-                  >
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}><Icon size={18} /></span>
-                    <span>{link.label}</span>
-                    <ChevronRight size={14} className="ml-auto" style={{ color: 'rgba(255,255,255,0.4)' }} />
-                  </button>
-                );
-              })}
-            </div>
+          <div className="hidden md:block space-y-2">
+            {[
+              { label: 'Edit Profile', tab: 'advanced-profile' as TabId, icon: User },
+              { label: 'Flight Bag', tab: 'logbook' as TabId, icon: Briefcase },
+              { label: 'Recognition+', tab: 'recognition' as TabId, icon: Star },
+            ].map((link) => {
+              const Icon = link.icon;
+              return (
+                <button
+                  key={link.tab}
+                  onClick={() => setTab?.(link.tab)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl text-slate-600 hover:bg-white/60 hover:text-slate-900 text-xs font-semibold transition-all text-left"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-slate-400"><Icon size={18} /></span>
+                    {link.label}
+                  </span>
+                  <ChevronRight size={14} className="text-slate-400" />
+                </button>
+              );
+            })}
           </div>
         </aside>
 
         {/* Content */}
-        <div className="flex-1 p-4 md:p-5 min-h-[420px]">
+        <div className="lg:col-span-9 space-y-6">
           <AnimatePresence mode="wait">
             {activeTab === 'overview' && (
               <motion.div
@@ -384,57 +353,53 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                {/* Mini profile with verification status */}
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-base font-black flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff' }}
-                  >
-                    {displayName.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-bold text-slate-800 truncate">{displayName}</p>
-                      <span
-                        className="text-[9px] font-black px-1.5 py-0.5 rounded-full border flex items-center gap-1"
-                        style={{
-                          background: isVerified ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
-                          color: isVerified ? '#059669' : '#d97706',
-                          borderColor: isVerified ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)',
-                        }}
-                      >
-                        {isVerified ? <CheckCircle size={10} /> : <Clock size={10} />}
-                        {isVerified ? 'VERIFIED' : 'PENDING'}
-                      </span>
+                {/* Mini profile with verification status — clean light glass */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 md:p-5 rounded-2xl border border-white bg-white/80 shadow-lg shadow-slate-200/50">
+                  <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                    <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-base md:text-lg shadow-md shadow-red-600/10">
+                      {displayName.charAt(0).toUpperCase()}
                     </div>
-                    <p className="text-xs text-slate-400 truncate">{profile?.email || 'No email'}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <div className="h-1.5 rounded-full overflow-hidden flex-1" style={{ background: 'rgba(0,0,0,0.06)' }}>
-                        <div
-                          className="h-full rounded-full transition-all"
-                          style={{ width: `${completionPct}%`, background: '#10b981' }}
-                        />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-sm md:text-base font-black text-slate-900 truncate max-w-[180px] sm:max-w-xs">{profile?.email || displayName}</h3>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${isVerified ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-amber-50 text-amber-600 border-amber-200'}`}>
+                          {isVerified ? 'Verified' : 'Pending'}
+                        </span>
                       </div>
-                      <span className="text-[10px] text-slate-400">{completionPct}% complete</span>
+                      <p className="text-[11px] md:text-xs text-slate-500 font-semibold mt-0.5">
+                        Pilot Account ID: #{profile?.id ? String(profile.id).slice(-5).toUpperCase() : '29481'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 md:gap-6">
+                    <div className="text-left sm:text-right">
+                      <div className="flex items-center gap-3 justify-start sm:justify-end">
+                        <span className="text-xs font-semibold text-slate-500">Profile Strength</span>
+                        <span className="text-sm font-extrabold text-slate-900">{completionPct}%</span>
+                      </div>
+                      <div className="w-full sm:w-40 h-2 bg-slate-200 rounded-full mt-1.5 overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: `${completionPct}%` }} />
+                      </div>
                     </div>
                     {!isVerified && (
                       <button
                         onClick={() => setTab?.('advanced-profile' as TabId)}
-                        className="mt-2 px-3 py-1 rounded-full text-[10px] font-black tracking-wider text-white bg-red-600 hover:bg-red-700 transition-all shadow-sm"
+                        className="w-full sm:w-auto inline-flex items-center justify-center px-4 md:px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black rounded-xl shadow-md shadow-red-600/10 hover:from-red-500 hover:to-rose-500 transition-all transform active:scale-95"
                       >
-                        Verify Identity →
+                        Verify Identity
+                        <svg className="w-3.5 h-3.5 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                       </button>
                     )}
                   </div>
                 </div>
 
                 {/* Stats grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {[
-                    { label: 'Total Hours', value: animatedHours, suffix: 'h', icon: Clock, color: '#38bdf8' },
-                    { label: 'License', value: license, suffix: '', icon: Shield, color: '#34d399' },
-                    { label: 'Career', value: occupation, suffix: '', icon: Briefcase, color: '#f59e0b' },
-                    { label: 'Tier', value: isPlus ? 'Recognition+' : 'Free', suffix: '', icon: Star, color: isPlus ? '#f472b6' : '#94a3b8' },
+                    { label: 'Total Hours', value: animatedHours, suffix: 'h', icon: Clock, color: 'text-slate-500', empty: false },
+                    { label: 'License', value: license, suffix: '', icon: Shield, color: 'text-slate-500', empty: license === 'Not set' },
+                    { label: 'Career', value: occupation, suffix: '', icon: Briefcase, color: 'text-slate-500', empty: occupation === 'Not set' },
+                    { label: 'Tier', value: isPlus ? 'Recognition+' : 'Free', suffix: '', icon: Star, color: isPlus ? 'text-indigo-600' : 'text-slate-500', empty: false },
                   ].map((stat) => {
                     const Icon = stat.icon;
                     const isHoursCard = stat.label === 'Total Hours';
@@ -442,28 +407,28 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     return (
                       <div
                         key={stat.label}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex flex-col"
-                        style={{ background: '#ffffff' }}
+                        className="bg-white/80 border border-white p-3 md:p-4 rounded-xl shadow-sm flex flex-col justify-between min-h-[90px] md:min-h-[100px]"
                       >
-                        <div className="flex items-center gap-2 mb-2">
-                          <div
-                            className="w-7 h-7 rounded-lg flex items-center justify-center"
-                            style={{ background: `${stat.color}15` }}
-                          >
-                            <Icon size={14} style={{ color: stat.color }} />
-                          </div>
-                          <span className="text-[10px] font-bold text-slate-500 uppercase">{stat.label}</span>
+                        <div>
+                          <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                            <span className={stat.color}><Icon size={12} className="md:w-[14px] md:h-[14px]" /></span>
+                            {stat.label}
+                          </p>
+                          <h4 className="text-xl md:text-2xl font-black text-slate-900 mt-2">
+                            {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
+                            {stat.suffix && <span className="text-[10px] md:text-xs font-bold text-slate-400 ml-1">{stat.suffix.toUpperCase()}</span>}
+                          </h4>
                         </div>
-                        <p className="text-lg font-black text-slate-800">
-                          {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
-                          <span className="text-xs text-slate-400 ml-0.5">{stat.suffix}</span>
-                        </p>
+                        {stat.empty && (
+                          <p className="text-xs md:text-sm font-bold italic text-slate-400 mt-3">Not set</p>
+                        )}
                         {showLogbookCta && (
                           <button
                             onClick={() => setTab?.('logbook' as TabId)}
-                            className="mt-auto pt-2 text-[10px] font-black tracking-wider text-blue-600 hover:text-blue-700 transition-all text-left"
+                            className="text-[10px] md:text-[11px] font-bold text-red-600 hover:underline mt-2 text-left flex items-center gap-1"
                           >
-                            Sync Logbook →
+                            <span>Sync Logbook</span>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                           </button>
                         )}
                       </div>
@@ -473,29 +438,28 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {/* Recent Activity */}
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Zap size={14} className="text-amber-500" />
-                      <p className="text-xs font-bold text-slate-800">Recent Activity</p>
-                    </div>
-                    <div className="space-y-2.5">
+                  <div className="bg-white/80 border border-white p-5 rounded-2xl shadow-md">
+                    <h5 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <span className="w-1.5 h-4 bg-red-500 rounded-full" />
+                      Recent Activity
+                    </h5>
+                    <div className="space-y-3.5 text-xs">
                       {recentActivity.map((item, i) => {
                         const Icon = item.icon;
                         return (
-                          <div key={i} className="flex items-start gap-2.5">
-                            <div
-                              className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-                              style={{ background: `${item.color}15` }}
-                            >
-                              <Icon size={12} style={{ color: item.color }} />
+                          <div key={i} className="flex justify-between items-start border-b border-slate-100 pb-2.5">
+                            <div className="flex items-start gap-2.5">
+                              <div
+                                className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
+                                style={{ background: `${item.color}15` }}
+                              >
+                                <Icon size={12} style={{ color: item.color }} />
+                              </div>
+                              <div>
+                                <p className="font-bold text-slate-900">{item.text}</p>
+                              </div>
                             </div>
-                            <div className="min-w-0">
-                              <p className="text-[11px] text-slate-700 truncate">{item.text}</p>
-                              <p className="text-[10px] text-slate-400">{item.time}</p>
-                            </div>
+                            <span className="text-[10px] font-semibold text-slate-400 whitespace-nowrap">{item.time}</span>
                           </div>
                         );
                       })}
@@ -503,42 +467,44 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                   </div>
 
                   {/* Qualifications with granular status indicators */}
-                  <div
-                    className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                    style={{ background: '#ffffff' }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <Award size={14} className="text-emerald-500" />
-                      <p className="text-xs font-bold text-slate-800">Qualifications</p>
-                    </div>
-                    <div className="space-y-2">
-                      {[
-                        { label: 'License', value: license, status: license !== 'Not set' ? 'verified' : 'missing' as const },
-                        { label: 'Medical', value: profile?.medical_class || 'Class 1', status: profile?.medical_class ? 'verified' : 'pending' as const },
-                        { label: 'English (ICAO)', value: profile?.icao_english_level || 'Level 4', status: profile?.icao_english_level ? 'verified' : 'pending' as const },
-                        { label: 'Type Ratings', value: (profile?.type_ratings?.length || 0) + ' held', status: (profile?.type_ratings?.length || 0) > 0 ? 'verified' : 'missing' as const },
-                        { label: 'Identity (KYC)', value: isVerified ? 'Verified' : 'Pending', status: isVerified ? 'verified' : 'pending' as const },
-                        { label: 'Flight Recency', value: profile?.last_flown || 'No recent flights', status: profile?.last_flown ? 'verified' : 'missing' as const },
-                      ].map((cert) => {
-                        const StatusIcon = cert.status === 'verified' ? CheckCircle2 : cert.status === 'pending' ? Clock : AlertTriangle;
-                        const statusColor = cert.status === 'verified' ? '#10b981' : cert.status === 'pending' ? '#f59e0b' : '#ef4444';
-                        return (
-                          <div key={cert.label} className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <StatusIcon size={12} style={{ color: statusColor }} />
-                              <span className="text-[11px] text-slate-600">{cert.label}</span>
+                  <div className="bg-white/80 border border-white p-5 rounded-2xl shadow-md flex flex-col justify-between">
+                    <div>
+                      <h5 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span className="w-1.5 h-4 bg-indigo-500 rounded-full" />
+                        Qualifications
+                      </h5>
+                      <div className="space-y-3 text-xs font-semibold">
+                        {[
+                          { label: 'License', value: license, status: license !== 'Not set' ? 'verified' : 'missing' as const },
+                          { label: 'Medical', value: profile?.medical_class || 'Class 1', status: profile?.medical_class ? 'verified' : 'pending' as const },
+                          { label: 'English (ICAO)', value: profile?.icao_english_level || 'Level 4', status: profile?.icao_english_level ? 'verified' : 'pending' as const },
+                          { label: 'Type Ratings', value: (profile?.type_ratings?.length || 0) + ' held', status: (profile?.type_ratings?.length || 0) > 0 ? 'verified' : 'missing' as const },
+                          { label: 'Identity (KYC)', value: isVerified ? 'Verified' : 'Pending', status: isVerified ? 'verified' : 'pending' as const },
+                          { label: 'Flight Recency', value: profile?.last_flown || 'No recent flights', status: profile?.last_flown ? 'verified' : 'missing' as const },
+                        ].map((cert, idx) => {
+                          const StatusIcon = cert.status === 'verified' ? CheckCircle2 : cert.status === 'pending' ? Clock : AlertTriangle;
+                          const statusColor = cert.status === 'verified' ? '#10b981' : cert.status === 'pending' ? '#f59e0b' : '#ef4444';
+                          const isMissing = cert.status === 'missing';
+                          return (
+                            <div
+                              key={cert.label}
+                              className={`flex justify-between items-center ${idx > 0 ? 'border-t border-slate-100/70 pt-2' : ''}`}
+                            >
+                              <span className={`flex items-center gap-2 ${isMissing ? 'text-slate-400' : 'text-slate-900'}`}>
+                                <StatusIcon size={12} style={{ color: statusColor }} />
+                                {cert.label}
+                              </span>
+                              <span className={`text-[11px] font-bold text-right ${isMissing ? 'italic text-slate-500' : 'text-slate-900'}`}>{cert.value}</span>
                             </div>
-                            <span className="text-[11px] font-bold text-slate-700">{cert.value}</span>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                     <button
                       onClick={() => setTab?.('advanced-profile' as TabId)}
-                      className="mt-3 w-full py-2 rounded-lg text-[10px] font-black tracking-wider text-slate-500 hover:text-slate-700 transition-all border border-gray-100 hover:border-gray-200"
-                      style={{ background: '#f8fafc' }}
+                      className="w-full text-center mt-5 py-2.5 rounded-xl bg-slate-950 text-white font-bold text-xs hover:bg-slate-900 transition-colors"
                     >
-                      Manage Certificates →
+                      Manage Certificates & Records →
                     </button>
                   </div>
                 </div>
@@ -556,8 +522,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
               >
                 {/* Submitted Pathways — interactive dense tracker */}
                 <div
-                  className="rounded-xl p-4 border border-gray-100 shadow-sm"
-                  style={{ background: '#ffffff' }}
+                  className="rounded-xl p-4 border border-white/20 shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                    backdropFilter: 'blur(12px) saturate(1.1)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -726,7 +697,7 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                                 </div>
                                 <div className="grid grid-cols-3 gap-2">
                                   {row.reqs.map((req, ri) => (
-                                    <div key={ri} className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 p-2">
+                                    <div key={ri} className="flex items-center gap-1.5 rounded-lg p-2" style={{ background: 'rgba(255,255,255,0.40)', border: '1px solid rgba(255,255,255,0.25)' }}>
                                       {req.met ? (
                                         <CheckCircle size={12} className="text-emerald-500" />
                                       ) : (
@@ -774,8 +745,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.2 } }}
                       transition={{ duration: 0.25 }}
-                      className="rounded-xl p-4 border border-amber-200 shadow-sm"
-                      style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(251,191,36,0.04))' }}
+                      className="rounded-xl p-4 border border-amber-200/40 shadow-sm"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(245,158,11,0.10), rgba(251,191,36,0.06))',
+                        backdropFilter: 'blur(12px) saturate(1.1)',
+                        WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                      }}
                     >
                       <div className="flex items-center gap-2 mb-4">
                         <Star size={14} className="text-amber-500" />
@@ -835,8 +811,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 </div>
                 {bookmarks.length === 0 ? (
                   <div
-                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-6 border border-white/20 shadow-sm text-center"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <Bookmark size={24} className="text-slate-300 mx-auto mb-2" />
                     <p className="text-sm font-bold text-slate-600">No bookmarks yet</p>
@@ -847,8 +828,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     {bookmarks.map((bm, i) => (
                       <div
                         key={i}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm flex items-center gap-3"
-                        style={{ background: '#ffffff' }}
+                        className="rounded-xl p-3 border border-white/20 shadow-sm flex items-center gap-3"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                          backdropFilter: 'blur(12px) saturate(1.1)',
+                          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                        }}
                       >
                         <div
                           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -887,8 +873,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                 </div>
                 {comparisons.length === 0 ? (
                   <div
-                    className="rounded-xl p-6 border border-gray-100 shadow-sm text-center"
-                    style={{ background: '#ffffff' }}
+                    className="rounded-xl p-6 border border-white/20 shadow-sm text-center"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                      backdropFilter: 'blur(12px) saturate(1.1)',
+                      WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                    }}
                   >
                     <BarChart3 size={24} className="text-slate-300 mx-auto mb-2" />
                     <p className="text-sm font-bold text-slate-600">No comparisons yet</p>
@@ -899,8 +890,13 @@ export const InteractiveProfilePreview: React.FC<InteractiveProfilePreviewProps>
                     {comparisons.map((comp, i) => (
                       <div
                         key={i}
-                        className="rounded-xl p-3 border border-gray-100 shadow-sm"
-                        style={{ background: '#ffffff' }}
+                        className="rounded-xl p-3 border border-white/20 shadow-sm"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06))',
+                          backdropFilter: 'blur(12px) saturate(1.1)',
+                          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.04)',
+                        }}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-[11px] font-bold text-slate-800">Comparison #{i + 1}</p>

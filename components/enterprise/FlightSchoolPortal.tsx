@@ -1,72 +1,134 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Link2, Users, DollarSign, TrendingUp,
-  Share2, Copy, Check, X, Download, Mail, Plus, Filter,
-  Calendar, ArrowUpRight, ArrowDownRight, AlertCircle,
-  FileText, Settings, Bell, ChevronRight, ChevronDown,
-  ExternalLink, RefreshCw
+  LayoutDashboard,
+  Link2,
+  Users,
+  DollarSign,
+  TrendingUp,
+  Share2,
+  Copy,
+  Check,
+  Download,
+  Mail,
+  Plus,
+  Filter,
+  FileText,
+  Settings,
+  Bell,
+  ExternalLink,
+  RefreshCw,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useEnterprisePortal } from './hooks/useEnterprisePortal';
 import { FlightSchoolAnalyticsDashboard } from '../../components/referral';
 
 interface FlightSchoolPortalProps {
   flightSchoolId: string;
-  user: any;
+  user: unknown;
 }
-
-const WORKER_BASE = import.meta.env.VITE_WORKER_API_URL || 'https://api.pilotrecognition.com';
 
 type Tab = 'overview' | 'referrals' | 'payouts' | 'marketing' | 'pilots' | 'settings';
 
-export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSchoolId, user }) => {
+interface FlightSchool {
+  id?: string;
+  name?: string;
+  referral_code?: string;
+  commission_rate?: number;
+  payout_method?: string;
+  contact_name?: string;
+  [key: string]: unknown;
+}
+
+interface Referral {
+  id?: string;
+  pilot_email?: string;
+  pilot_name?: string;
+  status?: string;
+  commission_status?: string;
+  commission_amount?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+interface Payout {
+  id?: string;
+  amount?: string;
+  status?: string;
+  payout_method?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+interface Notification {
+  id?: string;
+  title?: string;
+  message?: string;
+  read?: boolean;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({
+  flightSchoolId,
+  user: _user,
+}) => {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
-  const [flightSchool, setFlightSchool] = useState<any>(null);
+  const [flightSchool, setFlightSchool] = useState<FlightSchool | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState<string | null>(null);
-  const [referrals, setReferrals] = useState<any[]>([]);
-  const [payouts, setPayouts] = useState<any[]>([]);
+  const [referrals, setReferrals] = useState<Referral[]>([]);
+  const [payouts, setPayouts] = useState<Payout[]>([]);
   const [showNewReferralModal, setShowNewReferralModal] = useState(false);
   const [newReferralEmail, setNewReferralEmail] = useState('');
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
   const { callApi } = useEnterprisePortal();
 
-  useEffect(() => {
-    loadFlightSchoolData();
-  }, [flightSchoolId]);
-
-  const loadFlightSchoolData = async () => {
+  const loadFlightSchoolData = useCallback(async () => {
     try {
       setLoading(true);
 
       // Load flight school data from Worker
-      const schoolData = await callApi('getFlightSchool', { enterprise_id: flightSchoolId }) as Record<string, unknown> | null;
+      const schoolData = (await callApi('getFlightSchool', {
+        enterprise_id: flightSchoolId,
+      })) as FlightSchool | null;
       if (schoolData) setFlightSchool(schoolData);
 
       // Load referrals from Worker
-      const referralData = await callApi('getFlightSchoolReferrals', { flight_school_id: flightSchoolId }) as unknown[] | null;
+      const referralData = (await callApi('getFlightSchoolReferrals', {
+        flight_school_id: flightSchoolId,
+      })) as Referral[] | null;
       if (referralData) setReferrals(referralData);
 
       // Load payouts from Worker
-      const payoutData = await callApi('getFlightSchoolPayouts', { flight_school_id: flightSchoolId }) as unknown[] | null;
+      const payoutData = (await callApi('getFlightSchoolPayouts', {
+        flight_school_id: flightSchoolId,
+      })) as Payout[] | null;
       if (payoutData) setPayouts(payoutData);
 
       // Load notifications from Worker
-      const notificationData = await callApi('getFlightSchoolNotifications', { flight_school_id: flightSchoolId }) as unknown[] | null;
+      const notificationData = (await callApi('getFlightSchoolNotifications', {
+        flight_school_id: flightSchoolId,
+      })) as Notification[] | null;
       if (notificationData) {
         setNotifications(notificationData);
-        setUnreadNotifications(notificationData.filter((n: any) => !n.read).length);
+        setUnreadNotifications(notificationData.filter((n) => !n.read).length);
       }
     } catch (error) {
       console.error('Error loading flight school data:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [callApi, flightSchoolId]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadFlightSchoolData();
+  }, [flightSchoolId, loadFlightSchoolData]);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -100,29 +162,30 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await callApi('markNotificationRead', { id: notificationId });
-      setNotifications(prev =>
-        prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
+      await callApi('markFlightSchoolNotificationRead', { id: notificationId });
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
       );
-      setUnreadNotifications(prev => Math.max(0, prev - 1));
+      setUnreadNotifications((prev) => Math.max(0, prev - 1));
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
   };
 
-  const referralLink = flightSchool 
+  const referralLink = flightSchool
     ? `${window.location.origin}/ref/${flightSchool.referral_code}`
     : '';
 
   const stats = {
     totalReferrals: referrals.length,
-    completedReferrals: referrals.filter(r => r.status === 'completed' || r.status === 'paid').length,
+    completedReferrals: referrals.filter((r) => r.status === 'completed' || r.status === 'paid')
+      .length,
     pendingCommissions: referrals
-      .filter(r => r.commission_status === 'eligible' || r.commission_status === 'pending')
+      .filter((r) => r.commission_status === 'eligible' || r.commission_status === 'pending')
       .reduce((sum, r) => sum + parseFloat(r.commission_amount), 0),
     paidCommissions: payouts
-      .filter(p => p.status === 'completed')
-      .reduce((sum, p) => sum + parseFloat(p.amount), 0)
+      .filter((p) => p.status === 'completed')
+      .reduce((sum, p) => sum + parseFloat(p.amount), 0),
   };
 
   if (loading) {
@@ -169,7 +232,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                   {notifications.length === 0 ? (
                     <p className="text-slate-500 text-sm p-4 text-center">No notifications</p>
                   ) : (
-                    notifications.map(notification => (
+                    notifications.map((notification) => (
                       <div
                         key={notification.id}
                         className={`p-4 border-b border-slate-800 hover:bg-slate-800/50 cursor-pointer ${!notification.read ? 'bg-slate-800/30' : ''}`}
@@ -262,7 +325,8 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
           </button>
         </div>
         <p className="text-slate-400 text-xs mt-2">
-          Share this link with pilots. You'll earn ${flightSchool?.commission_rate || 20} for each pilot who completes the program.
+          Share this link with pilots. You'll earn ${flightSchool?.commission_rate || 20} for each
+          pilot who completes the program.
         </p>
       </div>
 
@@ -275,8 +339,8 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
             { id: 'payouts', label: 'Payouts', icon: DollarSign },
             { id: 'marketing', label: 'Marketing', icon: Share2 },
             { id: 'pilots', label: 'Pilots', icon: Users },
-            { id: 'settings', label: 'Settings', icon: Settings }
-          ].map(tab => (
+            { id: 'settings', label: 'Settings', icon: Settings },
+          ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as Tab)}
@@ -330,14 +394,20 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
               <table className="w-full">
                 <thead>
                   <tr className="text-left border-b border-slate-700">
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Pilot Email</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Status</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Commission</th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Pilot Email
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Status
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Commission
+                    </th>
                     <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800">
-                  {referrals.map(referral => (
+                  {referrals.map((referral) => (
                     <tr key={referral.id} className="hover:bg-slate-800/30">
                       <td className="py-3 px-4 text-white">{referral.pilot_email}</td>
                       <td className="py-3 px-4">
@@ -378,14 +448,20 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
               <table className="w-full">
                 <thead>
                   <tr className="text-left border-b border-slate-700">
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Amount</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Status</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Method</th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Amount
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Status
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Method
+                    </th>
                     <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800">
-                  {payouts.map(payout => (
+                  {payouts.map((payout) => (
                     <tr key={payout.id} className="hover:bg-slate-800/30">
                       <td className="py-3 px-4 text-white font-semibold">
                         ${parseFloat(payout.amount).toFixed(2)}
@@ -423,7 +499,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
             className="space-y-6"
           >
             <h2 className="text-xl font-bold text-white">Marketing Materials</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <MarketingCard
                 title="Email Template"
@@ -446,7 +522,13 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                 description="Download QR code for print materials"
                 icon={Download}
                 action="Generate QR"
-                onAction={() => window.open(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(referralLink)}`, '_blank', 'noopener,noreferrer')}
+                onAction={() =>
+                  window.open(
+                    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(referralLink)}`,
+                    '_blank',
+                    'noopener,noreferrer'
+                  )
+                }
               />
               <MarketingCard
                 title="Referral Card"
@@ -480,21 +562,33 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                 </button>
               </div>
             </div>
-            
+
             <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
                   <tr className="text-left border-b border-slate-700">
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Pilot Name</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Email</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Status</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Progress</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Commission</th>
-                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">Actions</th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Pilot Name
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Email
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Status
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Progress
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Commission
+                    </th>
+                    <th className="pb-3 px-4 text-slate-400 text-xs font-medium uppercase">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800">
-                  {referrals.map(referral => (
+                  {referrals.map((referral) => (
                     <tr key={referral.id} className="hover:bg-slate-800/30">
                       <td className="py-3 px-4 text-white">{referral.pilot_name || 'N/A'}</td>
                       <td className="py-3 px-4 text-slate-300">{referral.pilot_email}</td>
@@ -508,15 +602,16 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                               referral.status === 'completed' || referral.status === 'paid'
                                 ? 'bg-emerald-500'
                                 : referral.status === 'signed_up'
-                                ? 'bg-amber-500'
-                                : 'bg-slate-500'
+                                  ? 'bg-amber-500'
+                                  : 'bg-slate-500'
                             }`}
                             style={{
-                              width: referral.status === 'completed' || referral.status === 'paid'
-                                ? '100%'
-                                : referral.status === 'signed_up'
-                                ? '50%'
-                                : '10%'
+                              width:
+                                referral.status === 'completed' || referral.status === 'paid'
+                                  ? '100%'
+                                  : referral.status === 'signed_up'
+                                    ? '50%'
+                                    : '10%',
                             }}
                           />
                         </div>
@@ -527,16 +622,31 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
                           <button
-                            onClick={() => window.open(`mailto:${referral.pilot_email}`, '_blank', 'noopener,noreferrer')}
+                            onClick={() =>
+                              window.open(
+                                `mailto:${referral.pilot_email}`,
+                                '_blank',
+                                'noopener,noreferrer'
+                              )
+                            }
                             className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
                           >
                             <Mail className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => copyToClipboard(generateReferralLink(referral.pilot_email), 'pilot-link')}
+                            onClick={() =>
+                              copyToClipboard(
+                                generateReferralLink(referral.pilot_email),
+                                'pilot-link'
+                              )
+                            }
                             className="text-emerald-400 hover:text-emerald-300 text-sm flex items-center gap-1"
                           >
-                            {copied === 'pilot-link' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                            {copied === 'pilot-link' ? (
+                              <Check className="w-4 h-4" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
                           </button>
                         </div>
                       </td>
@@ -562,13 +672,18 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
               <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
                 <p className="text-slate-400 text-sm">Active Pilots</p>
                 <p className="text-2xl font-bold text-emerald-400 mt-1">
-                  {referrals.filter(r => r.status === 'signed_up' || r.status === 'completed' || r.status === 'paid').length}
+                  {
+                    referrals.filter(
+                      (r) =>
+                        r.status === 'signed_up' || r.status === 'completed' || r.status === 'paid'
+                    ).length
+                  }
                 </p>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
                 <p className="text-slate-400 text-sm">Completed Program</p>
                 <p className="text-2xl font-bold text-purple-400 mt-1">
-                  {referrals.filter(r => r.status === 'completed' || r.status === 'paid').length}
+                  {referrals.filter((r) => r.status === 'completed' || r.status === 'paid').length}
                 </p>
               </div>
             </div>
@@ -584,19 +699,23 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
             className="space-y-4"
           >
             <h2 className="text-xl font-bold text-white">Settings</h2>
-            
+
             <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-6 space-y-4">
               <div>
-                <label className="block text-slate-400 text-sm mb-2">Commission Rate ($ per pilot)</label>
+                <label className="block text-slate-400 text-sm mb-2">
+                  Commission Rate ($ per pilot)
+                </label>
                 <input
                   type="number"
                   value={flightSchool?.commission_rate || 20}
                   readOnly
                   className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-300"
                 />
-                <p className="text-slate-500 text-xs mt-1">Contact support to change commission rate</p>
+                <p className="text-slate-500 text-xs mt-1">
+                  Contact support to change commission rate
+                </p>
               </div>
-              
+
               <div>
                 <label className="block text-slate-400 text-sm mb-2">Payout Method</label>
                 <input
@@ -606,7 +725,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                   className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-300"
                 />
               </div>
-              
+
               <div className="pt-4 border-t border-slate-700">
                 <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
                   Contact Support to Change Settings
@@ -632,7 +751,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6"
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-bold text-white mb-4">Add New Referral</h3>
               <div className="space-y-4">
@@ -641,7 +760,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                   <input
                     type="email"
                     value={newReferralEmail}
-                    onChange={e => setNewReferralEmail(e.target.value)}
+                    onChange={(e) => setNewReferralEmail(e.target.value)}
                     className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white"
                     placeholder="pilot@example.com"
                   />
@@ -673,7 +792,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
 const StatCard: React.FC<{
   label: string;
   value: string | number;
-  icon: any;
+  icon: LucideIcon;
   color: string;
 }> = ({ label, value, icon: Icon, color }) => (
   <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
@@ -691,7 +810,7 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
     clicked: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     signed_up: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     completed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    paid: 'bg-purple-500/20 text-purple-400 border-purple-500/30'
+    paid: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
   };
 
   return (
@@ -707,7 +826,7 @@ const PayoutStatusBadge: React.FC<{ status: string }> = ({ status }) => {
     processing: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     completed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     failed: 'bg-red-500/20 text-red-400 border-red-500/30',
-    cancelled: 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+    cancelled: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
   };
 
   return (
@@ -720,7 +839,7 @@ const PayoutStatusBadge: React.FC<{ status: string }> = ({ status }) => {
 const MarketingCard: React.FC<{
   title: string;
   description: string;
-  icon: any;
+  icon: LucideIcon;
   action: string;
   onAction: () => void;
   copied?: boolean;
@@ -743,7 +862,7 @@ const MarketingCard: React.FC<{
   </div>
 );
 
-const getEmailTemplate = (school: any) => `
+const getEmailTemplate = (school: FlightSchool | null) => `
 Subject: Join PilotRecognition.com - Exclusive Invitation
 
 Hi [Pilot Name],
@@ -764,7 +883,7 @@ Best regards,
 ${school?.contact_name || 'Your Flight School'}
 `;
 
-const getSocialMediaPost = (school: any) => `
+const getSocialMediaPost = (school: FlightSchool | null) => `
 🚀 Exciting news for pilots!
 
 I'm thrilled to share PilotRecognition.com with my network. This platform is transforming how pilots connect with airline opportunities.

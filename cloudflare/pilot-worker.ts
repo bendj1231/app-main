@@ -647,7 +647,15 @@ async function handleAction(
       ]);
 
       const licensureRow = licensure as Record<string, unknown> | null;
-      const parsedLicensure = licensureRow?.['license_data'] ? JSON.parse(licensureRow['license_data'] as string) : null;
+      let parsedLicensure: unknown = null;
+      if (licensureRow?.['license_data']) {
+        try {
+          parsedLicensure = JSON.parse(licensureRow['license_data'] as string);
+        } catch (e) {
+          console.error('[getDashboardData] Invalid license_data JSON for profile:', profileId, e);
+          parsedLicensure = null;
+        }
+      }
 
       return {
         profile,
@@ -2006,6 +2014,7 @@ async function handleAction(
     case 'queryTable': {
       const table = params.table as string;
       const operation = params.operation as string;
+      const dbName = (params.dbName as string | undefined) || 'DB';
       if (!table || !operation) throw new Error('Missing table or operation');
       const allowedTables = new Set([
         'profiles', 'recognition_scores', 'payments', 'pilot_credentials', 'pilot_dids',
@@ -2016,9 +2025,12 @@ async function handleAction(
         'event_attendance', 'forum_posts', 'learning_hours', 'pilot_documents',
         'pilot_platform_connections', 'logbook_hour_tokens', 'p12_verification_events',
         'efb_complexity_tokens', 'sim_session_tokens',
-        'pilot_licensure_experience', 'mfa_secrets', 'referral_conversions', 'referral_partners', 'user_app_access'
+        'pilot_licensure_experience', 'mfa_secrets', 'referral_conversions', 'referral_partners', 'recognition_plus_referrals', 'user_app_access'
       ]);
       if (!allowedTables.has(table)) throw new Error(`Table '${table}' not allowed`);
+
+      const dbs: Record<string, D1Database> = { DB: env.DB, DB_TRACE: env.DB_TRACE, DB_DOCS: env.DB_DOCS, PILOT_DB: env.PILOT_DB };
+      const targetDb = dbs[dbName] || env.DB;
 
       if (operation === 'select') {
         const where = params.where as Record<string, unknown> | undefined;
@@ -2037,7 +2049,7 @@ async function handleAction(
         if (orderBy) sql += ` ORDER BY ${orderBy}`;
         sql += ' LIMIT ?';
         binds.push(limit);
-        const { results } = await db.prepare(sql).bind(...binds).all();
+        const { results } = await targetDb.prepare(sql).bind(...binds).all();
         return results || [];
       }
 
@@ -2048,7 +2060,7 @@ async function handleAction(
         const cols = ['id', ...Object.keys(data)];
         const vals = [id, ...Object.values(data)];
         const placeholders = vals.map(() => '?').join(', ');
-        await db.prepare(`INSERT INTO ${table} (${cols.join(', ')}) VALUES (${placeholders})`).bind(...vals).run();
+        await targetDb.prepare(`INSERT INTO ${table} (${cols.join(', ')}) VALUES (${placeholders})`).bind(...vals).run();
         return { id };
       }
 
@@ -2064,14 +2076,14 @@ async function handleAction(
         if (sets.length === 0) throw new Error('No fields to update');
         sets.push("updated_at = datetime('now')");
         values.push(id);
-        await db.prepare(`UPDATE ${table} SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
+        await targetDb.prepare(`UPDATE ${table} SET ${sets.join(', ')} WHERE id = ?`).bind(...values).run();
         return { updated: true };
       }
 
       if (operation === 'delete') {
         const id = params.id as string;
         if (!id) throw new Error('Missing id');
-        await db.prepare(`DELETE FROM ${table} WHERE id = ?`).bind(id).run();
+        await targetDb.prepare(`DELETE FROM ${table} WHERE id = ?`).bind(id).run();
         return { deleted: true };
       }
 
@@ -2087,7 +2099,7 @@ async function handleAction(
             }
           }
         }
-        const result = await db.prepare(sql).bind(...binds).first() as { count: number } | null;
+        const result = await targetDb.prepare(sql).bind(...binds).first() as { count: number } | null;
         return { count: result?.count || 0 };
       }
 
@@ -2155,21 +2167,40 @@ async function handleAction(
       const profileId = params.profileId as string;
       if (!profileId) return { success: false, error: 'profileId required' };
 
-      // Check if profile already has a referral code
-      const existing = await env.DB.prepare(`
-        SELECT referral_code, display_name, email FROM profiles WHERE id = ?
+      // Referral codes live in the Recognition+ trace DB, not the public profiles DB
+      const existingTrace = await env.DB_TRACE.prepare(`
+        SELECT referral_code FROM recognition_plus_referrals WHERE profile_id = ? AND is_active = 1
       `).bind(profileId).first() as Record<string, unknown> | null;
 
-      if (existing?.['referral_code']) {
-        return { success: true, referralCode: existing['referral_code'] };
+      if (existingTrace?.['referral_code']) {
+        return { success: true, referralCode: existingTrace['referral_code'] };
       }
 
-      const code = `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
-      await env.DB.prepare(`
-        UPDATE profiles SET referral_code = ? WHERE id = ?
-      `).bind(code, profileId).run();
+      // Read profile info for the trace and partner records
+      const profile = await env.DB.prepare(`
+        SELECT display_name, email, auth0_id FROM profiles WHERE id = ?
+      `).bind(profileId).first() as Record<string, unknown> | null;
 
-      // Auto-create partner record so webhook can credit them
+      const code = `REF${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+      const now = new Date().toISOString();
+
+      // Store the referral code in the Recognition+ trace DB (DB_TRACE)
+      await env.DB_TRACE.prepare(`
+        INSERT INTO recognition_plus_referrals
+        (id, profile_id, auth0_sub, referral_code, display_name, email, is_active, commission_rate, total_referrals, total_conversions, total_payouts, pending_payouts, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, 1, 20, 0, 0, 0, 0, ?, ?)
+      `).bind(
+        crypto.randomUUID(),
+        profileId,
+        profile?.['auth0_id'] || null,
+        code,
+        profile?.['display_name'] || 'Pilot',
+        profile?.['email'] || null,
+        now,
+        now
+      ).run();
+
+      // Auto-create partner record in the local DB so webhooks can credit them
       const partnerId = crypto.randomUUID();
       await env.DB.prepare(`
         INSERT INTO referral_partners
@@ -2178,8 +2209,8 @@ async function handleAction(
       `).bind(
         partnerId,
         profileId,
-        existing?.['display_name'] || 'Pilot',
-        existing?.['email'] || null,
+        profile?.['display_name'] || 'Pilot',
+        profile?.['email'] || null,
         'pilot',
         code
       ).run();

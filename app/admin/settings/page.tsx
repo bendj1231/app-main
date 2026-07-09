@@ -29,7 +29,7 @@ export default function AdminSettingsPage() {
   const [formData, setFormData] = useState({
     displayName: userProfile?.display_name || '',
     email: userProfile?.email || '',
-    referralCode: userProfile?.referral_code || '',
+    referralCode: '',
     phoneNumber: userProfile?.phone_number || '',
     region: userProfile?.region || '',
   });
@@ -44,13 +44,13 @@ export default function AdminSettingsPage() {
 
   useEffect(() => {
     if (userProfile) {
-      setFormData({
+      setFormData((prev) => ({
+        ...prev,
         displayName: userProfile.display_name || '',
         email: userProfile.email || '',
-        referralCode: userProfile.referral_code || '',
         phoneNumber: userProfile.phone_number || '',
         region: userProfile.region || '',
-      });
+      }));
     }
     if (isAdmin) {
       fetchAdminUsers();
@@ -59,6 +59,30 @@ export default function AdminSettingsPage() {
   }, [userProfile, isAdmin]);
 
   const { callApi } = useWorkerAuth();
+
+  // Load the admin's referral code from the Recognition+ trace DB (not the profiles table)
+  const fetchReferralCode = async () => {
+    if (!currentUser?.id) return;
+    try {
+      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'recognition_plus_referrals',
+        operation: 'select',
+        dbName: 'DB_TRACE',
+        where: { profile_id: currentUser.id, is_active: 1 },
+        limit: 1,
+      });
+      const code = (rows?.[0]?.['referral_code'] as string) || '';
+      setFormData((prev) => ({ ...prev, referralCode: code }));
+    } catch (err) {
+      console.error('Error fetching referral code:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      fetchReferralCode();
+    }
+  }, [currentUser?.id]);
 
   const fetchAdminUsers = async () => {
     try {
@@ -235,14 +259,17 @@ export default function AdminSettingsPage() {
     setMessage('');
 
     try {
-      // Check if code is already taken by another user
+      const newCode = formData.referralCode.toUpperCase();
+
+      // Check if code is already taken by another user in the Recognition+ trace DB
       const existingRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'profiles',
+        table: 'recognition_plus_referrals',
         operation: 'select',
-        where: { referral_code: formData.referralCode.toUpperCase() },
+        dbName: 'DB_TRACE',
+        where: { referral_code: newCode, is_active: 1 },
         limit: 500,
       });
-      const existing = (existingRows || []).find((p: any) => p.id !== currentUser.id);
+      const existing = (existingRows || []).find((r: any) => r.profile_id !== currentUser.id);
 
       if (existing) {
         setMessage('This referral code is already taken');
@@ -251,12 +278,37 @@ export default function AdminSettingsPage() {
         return;
       }
 
-      await callApi('queryTable', {
-        table: 'profiles',
-        operation: 'update',
-        id: currentUser.id,
-        data: { referral_code: formData.referralCode.toUpperCase() },
+      // Find the current user's existing trace record
+      const ownRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'recognition_plus_referrals',
+        operation: 'select',
+        dbName: 'DB_TRACE',
+        where: { profile_id: currentUser.id },
+        limit: 1,
       });
+      const ownRecord = ownRows?.[0];
+
+      if (ownRecord?.['id']) {
+        await callApi('queryTable', {
+          table: 'recognition_plus_referrals',
+          operation: 'update',
+          dbName: 'DB_TRACE',
+          id: ownRecord['id'] as string,
+          data: { referral_code: newCode },
+        });
+      } else {
+        await callApi('queryTable', {
+          table: 'recognition_plus_referrals',
+          operation: 'insert',
+          dbName: 'DB_TRACE',
+          data: {
+            profile_id: currentUser.id,
+            referral_code: newCode,
+            is_active: 1,
+            commission_rate: 20,
+          },
+        });
+      }
 
       setMessage('Referral code updated successfully');
       setMessageType('success');

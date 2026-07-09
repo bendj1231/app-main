@@ -4,7 +4,7 @@
   <!-- SUPPORT HOMEPAGE -->
   <url>
     <loc>https://support.pilotrecognition.com/</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -12,19 +12,19 @@
   <!-- SUPPORT PAGES -->
   <url>
     <loc>https://support.pilotrecognition.com/faq</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://support.pilotrecognition.com/contact-support</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://support.pilotrecognition.com/technical-index</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

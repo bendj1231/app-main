@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAccountTier } from '@/hooks/useAccountTier';
 import type { TabId } from '../types';
 
 interface RecognitionPlusTabProps {
@@ -49,12 +51,20 @@ const AnimateIn: React.FC<{ children: React.ReactNode; className?: string }> = (
 };
 
 export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ setTab, onNavigate }) => {
+  const { currentUser, userProfile } = useAuth();
+  const { tier, isRecognitionPlus, loading: tierLoading } = useAccountTier(currentUser?.id);
+  const profileTier = ((userProfile?.account_tier || userProfile?.subscription_tier) as string) || 'free';
+  const normalizedProfileTier = profileTier === 'plus' ? 'recognition_plus' : profileTier;
+  const isPaidFromProfile = normalizedProfileTier === 'recognition_plus' || normalizedProfileTier === 'enterprise' || normalizedProfileTier === 'enterprise_admin';
+  const isPaid = isRecognitionPlus || isPaidFromProfile;
+
   return (
     <div
       className="relative z-10 flex flex-col w-full"
     >
       {/* ═══════════════════════════════════════════════════
           HERO — Full viewport, cinematic, massive type
+          (switches to verified dashboard when user is Recognition+)
       ═══════════════════════════════════════════════════ */}
       <section
         className="relative flex items-center justify-center overflow-visible"
@@ -74,66 +84,136 @@ export const RecognitionPlusTab: React.FC<RecognitionPlusTabProps> = ({ setTab, 
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           >
-            {/* Massive headline */}
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-6">
-              RECOGNITION
-              <span
-                className="text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ea580c 100%)',
-                }}
-              >
-                +
-              </span>
-            </h1>
+            {tierLoading ? (
+              <div className="flex flex-col items-center gap-4 py-12">
+                <Loader2 size={40} className="text-white/80 animate-spin" />
+                <span className="text-sm text-red-100 tracking-wide">Loading your status...</span>
+              </div>
+            ) : isPaid ? (
+              <>
+                {/* Verified badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                  <ShieldCheck size={14} />
+                  Recognition+ Active
+                </div>
 
-            {/* Subhead */}
-            <p className="text-base sm:text-lg md:text-xl text-red-100 font-light tracking-wide max-w-2xl mx-auto mb-4 leading-relaxed">
-              Your license is your leverage. We make the industry see it.
-            </p>
+                {/* Massive headline */}
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.85] mb-6">
+                  YOU ARE
+                  <br />
+                  <span className="text-transparent bg-clip-text"
+                    style={{ backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ea580c 100%)' }}>
+                    PRE-CLEARED
+                  </span>
+                </h1>
 
-            {/* Description */}
-            <p className="text-sm text-red-200/80 max-w-xl mx-auto mb-10 leading-relaxed">
-              Recognition+ is not a subscription. It is a one-time verification that turns your CAAP
-              license, medical, and flight hours into a live, industry-trusted credential. Airlines
-              do not read PDFs. They pull verified profiles.
-            </p>
+                {/* Subhead */}
+                <p className="text-base sm:text-lg md:text-xl text-red-100 font-light tracking-wide max-w-2xl mx-auto mb-4 leading-relaxed">
+                  Your profile is verified and live. Airlines can pull your attested credentials instantly.
+                </p>
 
-            {/* CTA Row */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button
-                onClick={() => onNavigate('recognition-plus')}
-                className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-slate-900 transition-all hover:scale-105 flex items-center gap-3 rounded-full"
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)',
-                  boxShadow: '0 4px 20px rgba(255,255,255,0.15), 0 1px 4px rgba(0,0,0,0.1)',
-                }}
-              >
-                Request Verification
-                <ChevronRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1 text-slate-700"
-                />
-              </button>
-              <button
-                onClick={() => setTab('recognition-plus-tab' as TabId)}
-                className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-white transition-all hover:scale-105 flex items-center gap-3 rounded-full"
-                style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(12px)',
-                }}
-              >
-                Learn More
-                <ChevronRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1 text-white/80"
-                />
-              </button>
-              <span className="text-xs text-red-200/70 font-medium tracking-wide">
-                $120 one-time · No recurring fees
-              </span>
-            </div>
+                {/* Description */}
+                <p className="text-sm text-red-200/80 max-w-xl mx-auto mb-10 leading-relaxed">
+                  Tier: <span className="text-white font-semibold uppercase">{tier}</span>. Keep your license, medical, and hours current to stay pull-ready.
+                </p>
+
+                {/* CTA Row */}
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <button
+                    onClick={() => onNavigate('wallet')}
+                    className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-slate-900 transition-all hover:scale-105 flex items-center gap-3 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)',
+                      boxShadow: '0 4px 20px rgba(255,255,255,0.15), 0 1px 4px rgba(0,0,0,0.1)',
+                    }}
+                  >
+                    View Verification Wallet
+                    <ChevronRight
+                      size={18}
+                      className="transition-transform group-hover:translate-x-1 text-slate-700"
+                    />
+                  </button>
+                  <button
+                    onClick={() => onNavigate('profile')}
+                    className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-white transition-all hover:scale-105 flex items-center gap-3 rounded-full"
+                    style={{
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      backdropFilter: 'blur(12px)',
+                    }}
+                  >
+                    Go to Profile
+                    <ChevronRight
+                      size={18}
+                      className="transition-transform group-hover:translate-x-1 text-white/80"
+                    />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Massive headline */}
+                <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-6">
+                  RECOGNITION
+                  <span
+                    className="text-transparent bg-clip-text"
+                    style={{
+                      backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ea580c 100%)',
+                    }}
+                  >
+                    +
+                  </span>
+                </h1>
+
+                {/* Subhead */}
+                <p className="text-base sm:text-lg md:text-xl text-red-100 font-light tracking-wide max-w-2xl mx-auto mb-4 leading-relaxed">
+                  Your license is your leverage. We make the industry see it.
+                </p>
+
+                {/* Description */}
+                <p className="text-sm text-red-200/80 max-w-xl mx-auto mb-10 leading-relaxed">
+                  Recognition+ is not a subscription. It is a one-time verification that turns your CAAP
+                  license, medical, and flight hours into a live, industry-trusted credential. Airlines
+                  do not read PDFs. They pull verified profiles.
+                </p>
+
+                {/* CTA Row */}
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <button
+                    onClick={() => onNavigate('recognition-plus')}
+                    className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-slate-900 transition-all hover:scale-105 flex items-center gap-3 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)',
+                      boxShadow: '0 4px 20px rgba(255,255,255,0.15), 0 1px 4px rgba(0,0,0,0.1)',
+                    }}
+                  >
+                    Request Verification
+                    <ChevronRight
+                      size={18}
+                      className="transition-transform group-hover:translate-x-1 text-slate-700"
+                    />
+                  </button>
+                  <button
+                    onClick={() => setTab('recognition-plus-tab' as TabId)}
+                    className="group px-8 py-3.5 text-sm font-black uppercase tracking-[0.15em] text-white transition-all hover:scale-105 flex items-center gap-3 rounded-full"
+                    style={{
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      backdropFilter: 'blur(12px)',
+                    }}
+                  >
+                    Learn More
+                    <ChevronRight
+                      size={18}
+                      className="transition-transform group-hover:translate-x-1 text-white/80"
+                    />
+                  </button>
+                  <span className="text-xs text-red-200/70 font-medium tracking-wide">
+                    $120 one-time · No recurring fees
+                  </span>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
 

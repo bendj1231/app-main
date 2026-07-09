@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft, X, Send, Bot, User, Upload } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useTheme } from '@/components/website/context/ThemeContext';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { CockpitFlightHoursDashboard } from '../unified-platform/CockpitFlightHoursDashboard';
 
@@ -96,19 +97,20 @@ const PROVIDER_META: Record<string, { name: string; logo: string; logoImg?: stri
 };
 
 const StatCard: React.FC<{ label: string; value: string | number; sub?: string; icon: React.ReactNode; accent: string }> = ({ label, value, sub, icon, accent }) => (
-  <div className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+  <div className="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.07]">
     <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${accent}18`, border: `1px solid ${accent}30` }}>
       {icon}
     </div>
     <div>
-      <p className="text-[9px] font-black tracking-[0.18em] text-white/30 uppercase">{label}</p>
-      <p className="text-xl font-black text-white leading-tight">{value}</p>
-      {sub && <p className="text-[10px] text-white/40">{sub}</p>}
+      <p className="text-[9px] font-black tracking-[0.18em] text-slate-400 dark:text-white/30 uppercase">{label}</p>
+      <p className="text-xl font-black text-slate-900 dark:text-white leading-tight">{value}</p>
+      {sub && <p className="text-[10px] text-slate-500 dark:text-white/40">{sub}</p>}
     </div>
   </div>
 );
 
 const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => void }> = ({ provider, onOpenLogbook }) => {
+  const { isDarkMode } = useTheme();
   const meta = PROVIDER_META[provider.provider] ?? PROVIDER_META.manual;
   const isActive = provider.status === 'active';
   const lastSync = provider.last_synced_at
@@ -119,9 +121,9 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
     <div
       className="rounded-xl overflow-hidden transition-all"
       style={{
-        background: '#000000',
-        border: `1px solid ${isActive ? meta.color + '30' : 'rgba(255,255,255,0.08)'}`,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+        background: isDarkMode ? '#000000' : '#ffffff',
+        border: `1px solid ${isActive ? meta.color + '30' : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+        boxShadow: isDarkMode ? '0 8px 32px rgba(0,0,0,0.5)' : '0 8px 32px rgba(0,0,0,0.08)',
       }}
     >
       <div className="p-4">
@@ -129,7 +131,7 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
           <div
             className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
             style={{
-              background: '#111111',
+              background: isDarkMode ? '#111111' : '#f8fafc',
               border: `1px solid ${meta.color}25`,
             }}
           >
@@ -137,7 +139,7 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-sm font-black text-white">{meta.name}</p>
+              <p className={`text-sm font-black ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{meta.name}</p>
               {isActive ? (
                 <span className="flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }}>
                   <CheckCircle size={8} /> SYNCED
@@ -148,34 +150,34 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
                 </span>
               )}
             </div>
-            <p className="text-[10px] text-white/30">Last sync: {lastSync}</p>
+            <p className={`text-[10px] ${isDarkMode ? 'text-white/30' : 'text-slate-400'}`}>Last sync: {lastSync}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 mt-3">
           <div
             className="rounded-lg p-2.5 text-center"
-            style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: isDarkMode ? '#111111' : '#f8fafc', border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}
           >
-            <p className="text-lg font-black text-white">{provider.total_hours?.toFixed(1) ?? '—'}</p>
-            <p className="text-[9px] text-white/30 font-black tracking-wider uppercase">Total Hrs</p>
+            <p className={`text-lg font-black ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{provider.total_hours?.toFixed(1) ?? '—'}</p>
+            <p className={`text-[9px] font-black tracking-wider uppercase ${isDarkMode ? 'text-white/30' : 'text-slate-400'}`}>Total Hrs</p>
           </div>
           <div
             className="rounded-lg p-2.5 text-center"
-            style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: isDarkMode ? '#111111' : '#f8fafc', border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}
           >
-            <p className="text-lg font-black text-white">{provider.flight_count ?? '—'}</p>
-            <p className="text-[9px] text-white/30 font-black tracking-wider uppercase">Flights</p>
+            <p className={`text-lg font-black ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{provider.flight_count ?? '—'}</p>
+            <p className={`text-[9px] font-black tracking-wider uppercase ${isDarkMode ? 'text-white/30' : 'text-slate-400'}`}>Flights</p>
           </div>
         </div>
       </div>
 
-      <div className="flex border-t border-white/5">
-        <button onClick={onOpenLogbook} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 hover:bg-white/5 transition-colors text-[10px] font-black tracking-wider" style={{ color: meta.color }}>
+      <div className={`flex border-t ${isDarkMode ? 'border-white/5' : 'border-slate-200'}`}>
+        <button onClick={onOpenLogbook} className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 transition-colors text-[10px] font-black tracking-wider ${isDarkMode ? 'hover:bg-white/5' : 'hover:bg-slate-100'}`} style={{ color: meta.color }}>
           <BookMarked size={11} /> VIEW LOGBOOK
         </button>
         {meta.url && (
-          <a href={meta.url} target="_blank" rel="noopener noreferrer" className="px-3 flex items-center justify-center border-l border-white/5 hover:bg-white/5 transition-colors text-white/30 hover:text-white/60">
+          <a href={meta.url} target="_blank" rel="noopener noreferrer" className={`px-3 flex items-center justify-center border-l ${isDarkMode ? 'border-white/5 hover:bg-white/5 text-white/30 hover:text-white/60' : 'border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-600'} transition-colors`}>
             <ExternalLink size={12} />
           </a>
         )}
@@ -185,6 +187,7 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
 };
 
 const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; onSelect: (key: string) => void; onConnect?: (key: string) => void }> = ({ providerKey, selected, onSelect, onConnect }) => {
+  const { isDarkMode } = useTheme();
   const meta = PROVIDER_META[providerKey] ?? PROVIDER_META.manual;
   const isComing = meta.status === 'coming_soon';
   const isRecognitionPlus = providerKey === 'recognitionplus';
@@ -192,9 +195,9 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
     <div
       className="relative group flex flex-row items-center gap-3 px-3 rounded-xl w-full transition-all overflow-hidden"
       style={{
-        background: isRecognitionPlus ? '#dc2626' : '#000000',
-        border: selected ? `1px solid ${meta.color}40` : isRecognitionPlus ? '1px solid rgba(255,255,255,0.25)' : '1px solid rgba(255,255,255,0.08)',
-        boxShadow: selected ? `0 0 20px ${meta.color}15` : isRecognitionPlus ? '0 4px 24px rgba(220,38,38,0.35)' : '0 4px 16px rgba(0,0,0,0.4)',
+        background: isRecognitionPlus ? '#dc2626' : (isDarkMode ? '#000000' : '#ffffff'),
+        border: selected ? `1px solid ${meta.color}40` : isRecognitionPlus ? '1px solid rgba(255,255,255,0.25)' : `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+        boxShadow: selected ? `0 0 20px ${meta.color}15` : isRecognitionPlus ? '0 4px 24px rgba(220,38,38,0.35)' : (isDarkMode ? '0 4px 16px rgba(0,0,0,0.4)' : '0 4px 16px rgba(0,0,0,0.08)'),
       }}
     >
       {/* Logo — directly on card, no box */}
@@ -209,13 +212,13 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
       {/* Middle text */}
       <div className="flex-1 min-w-0 py-2.5">
         <div className="flex items-center gap-1.5">
-          <span className={`text-xs font-black tracking-wide ${isRecognitionPlus ? 'text-white' : 'text-white'}`}>{meta.name.toUpperCase()}</span>
+          <span className={`text-xs font-black tracking-wide ${isRecognitionPlus || isDarkMode ? 'text-white' : 'text-slate-900'}`}>{meta.name.toUpperCase()}</span>
           {meta.badge && (
             <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full" style={isRecognitionPlus ? { background: 'rgba(255,255,255,0.2)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)' } : { background: 'rgba(16,185,129,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }}>{meta.badge}</span>
           )}
         </div>
-        <p className={`text-[9px] mt-0.5 ${isRecognitionPlus ? 'text-white/70' : 'text-white/30'}`}>{meta.region}{providerKey === 'myflightbook' ? ' · Default logbook' : ''}</p>
-        <p className={`text-[9px] mt-0.5 ${isRecognitionPlus ? 'text-white/50' : 'text-white/20'}`}>{meta.supports}</p>
+        <p className={`text-[9px] mt-0.5 ${isRecognitionPlus ? 'text-white/70' : (isDarkMode ? 'text-white/30' : 'text-slate-500')}`}>{meta.region}{providerKey === 'myflightbook' ? ' · Default logbook' : ''}</p>
+        <p className={`text-[9px] mt-0.5 ${isRecognitionPlus ? 'text-white/50' : (isDarkMode ? 'text-white/20' : 'text-slate-400')}`}>{meta.supports}</p>
       </div>
 
       {/* Right: Connect / Import button */}
@@ -228,14 +231,16 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
         className={`flex-shrink-0 px-3 py-1.5 text-[10px] font-black tracking-wide transition-all hover:brightness-110 ${
           isRecognitionPlus
             ? 'bg-white text-red-600 rounded-full'
-            : 'text-white rounded-lg'
+            : isDarkMode
+              ? 'text-white rounded-lg'
+              : 'text-slate-900 rounded-lg bg-slate-100 border border-slate-200'
         }`}
-        style={isRecognitionPlus ? {} : {
+        style={isRecognitionPlus ? {} : (isDarkMode ? {
           background: 'rgba(255,255,255,0.08)',
           border: '1px solid rgba(255,255,255,0.15)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-        }}
+        } : {})}
       >
         {isRecognitionPlus ? 'Get Verified →' : meta.supports === 'CSV Import Only' ? 'Import CSV →' : 'Connect →'}
       </button>
@@ -244,6 +249,95 @@ const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; on
       {selected && (
         <div className="absolute inset-0 rounded-xl pointer-events-none" style={{ boxShadow: `inset 0 0 0 1px ${meta.color}30, 0 0 24px ${meta.color}10` }} />
       )}
+    </div>
+  );
+};
+
+type AircraftCarouselItem = {
+  name: string;
+  type: string;
+  hours: number;
+  date: string;
+  color: string;
+  img: string;
+  tail: string;
+  landings: number;
+  grade: string;
+  instructor: string;
+  remarks: string;
+  route: string;
+  conditions: string;
+  engine: string;
+  totalTime: number;
+  crew: { name: string; role: string; position: string; pic: string }[];
+};
+
+const FlightCard: React.FC<{ ac: AircraftCarouselItem; onClick: () => void }> = ({ ac, onClick }) => {
+  return (
+    <div
+      onClick={onClick}
+      className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white shadow-xl shadow-black/10 dark:shadow-black/40 transition-all hover:scale-[1.02] hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/5 active:scale-[0.98] cursor-pointer sm:w-auto sm:max-w-xl sm:flex-row"
+    >
+      {/* Left: Aircraft Image with clean, ambient vignette mask */}
+      <div className="relative h-40 w-full shrink-0 overflow-hidden sm:h-auto sm:w-5/12">
+        <img
+          src={ac.img}
+          alt={ac.type}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-slate-950/20 to-white dark:to-slate-950" />
+      </div>
+
+      {/* Right: Beautifully structured, high-contrast typography */}
+      <div className="flex w-full flex-col justify-between p-4 sm:w-7/12 sm:p-6">
+        {/* Header Block */}
+        <div className="flex items-start justify-between">
+          <div>
+            <h4 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white sm:text-xl">{ac.name}</h4>
+            <p className="mt-0.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-indigo-400/90">{ac.type} · {ac.tail}</p>
+          </div>
+          {/* Polished glassmorphism badge */}
+          <span
+            className="flex h-9 w-9 items-center justify-center rounded-full border text-xs font-extrabold shadow-sm"
+            style={{
+              background: `${ac.color}15`,
+              color: ac.color,
+              borderColor: `${ac.color}30`,
+              boxShadow: `0 1px 10px ${ac.color}10`,
+            }}
+          >
+            {ac.grade}
+          </span>
+        </div>
+
+        {/* Clean, high-contrast stats block */}
+        <div className="my-4 grid grid-cols-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-800/60 bg-slate-50 dark:bg-slate-900/40 p-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Duration</p>
+            <p className="mt-0.5 text-base font-black text-slate-900 dark:text-white">{ac.hours}h</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Landings</p>
+            <p className="mt-0.5 text-base font-black text-slate-900 dark:text-white">{ac.landings}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Date</p>
+            <p className="mt-1.5 whitespace-nowrap text-xs font-bold text-slate-700 dark:text-slate-200">{ac.date}</p>
+          </div>
+        </div>
+
+        {/* Notes & ultra-visible action trigger */}
+        <div>
+          <p className="mb-3 line-clamp-2 text-xs font-medium italic leading-relaxed text-slate-700 dark:text-slate-300">
+            {ac.remarks}
+          </p>
+          <div className="group inline-flex items-center -ml-2 px-2 py-1.5 rounded-lg text-xs font-bold text-slate-900 dark:text-white bg-slate-100/0 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors hover:text-red-600 dark:hover:text-red-400">
+            View Flight Details
+            <ChevronRight size={14} className="ml-1.5 transform transition-transform group-hover:translate-x-0.5" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -395,8 +489,8 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
   if (subPage === 'logbook') {
     return (
       <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
-        <div className="px-5 lg:px-7 pt-4 pb-2 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-          <button onClick={() => setSubPage('hub')} className="flex items-center gap-1.5 text-[10px] font-black tracking-wider text-white/40 hover:text-white transition-colors">
+        <div className="px-5 lg:px-7 pt-4 pb-2 flex items-center gap-3 border-b border-slate-200 dark:border-white/[0.07]">
+          <button onClick={() => setSubPage('hub')} className="flex items-center gap-1.5 text-[10px] font-black tracking-wider text-slate-400 dark:text-white/40 hover:text-slate-700 dark:hover:text-white transition-colors">
             <ArrowLeft size={12} /> BACK TO LOGBOOK HUB
           </button>
         </div>
@@ -409,12 +503,12 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-slate-900 dark:text-white">
       {/* Header */}
       <div>
-        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase mb-1">Pilot Recognition</p>
-        <h1 className="text-2xl font-black text-white">Digital Logbook</h1>
-        <p className="text-sm text-white/40 mt-0.5">Verified Flight Record Registry</p>
+        <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 dark:text-white/30 uppercase mb-1">Pilot Recognition</p>
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white">Digital Logbook</h1>
+        <p className="text-sm text-slate-500 dark:text-white/40 mt-0.5">Verified Flight Record Registry</p>
       </div>
 
       {/* Recent Aircraft Carousel */}
@@ -461,7 +555,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
           </div>
         </div>
       ) : (
-        <div className="relative overflow-hidden rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/[0.07] shadow-sm">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
             <div>
               <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Recent Activity</p>
@@ -483,191 +577,50 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
               animation-play-state: paused;
             }
           `}</style>
-          <div className="aircraft-carousel flex gap-3 px-4" style={{ width: 'max-content' }}>
-            {AIRCRAFT_CAROUSEL_DATA.map((ac, i) => (
-              <div
-                key={`${ac.name}-${i}`}
-                onClick={() => openAircraftModal(ac)}
-                className="flex-shrink-0 w-[28rem] h-48 rounded-xl overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer relative flex"
-                style={{
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                {/* Left: Aircraft Image */}
-                <div className="relative w-[45%] h-full flex-shrink-0">
-                  <img
-                    src={ac.img}
-                    alt={ac.type}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                  {/* Gradient fade to right */}
-                  <div
-                    className="absolute inset-y-0 right-0 w-16"
-                    style={{ background: 'linear-gradient(to right, transparent, rgba(15,23,42,0.95))' }}
-                  />
-                </div>
-
-                {/* Right: Glassmorphism Flight Story */}
-                <div
-                  className="flex-1 h-full p-4 flex flex-col justify-between relative"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.85) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                  }}
-                >
-                  {/* Top: Aircraft identity */}
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-black text-white leading-tight">{ac.name}</p>
-                        <p className="text-[10px] text-white/40">{ac.type} · {ac.tail}</p>
-                      </div>
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${ac.color}15`, color: ac.color, border: `1px solid ${ac.color}30` }}>
-                        {ac.grade}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Middle: Flight metrics */}
-                  <div className="flex items-center gap-4 mt-2">
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Duration</p>
-                      <p className="text-base font-black text-white">{ac.hours}h</p>
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Landings</p>
-                      <p className="text-base font-black text-white">{ac.landings}</p>
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Date</p>
-                      <p className="text-xs font-black text-white/70">{ac.date}</p>
-                    </div>
-                  </div>
-
-                  {/* Bottom: CFI remarks */}
-                  <div className="mt-2">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-[8px] font-black tracking-wider text-white/30 uppercase">CFI</span>
-                      <span className="text-[9px] text-white/50">{ac.instructor}</span>
-                    </div>
-                    <p className="text-[10px] text-white/50 leading-relaxed line-clamp-2">{ac.remarks}</p>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="mt-2 w-full h-0.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${Math.min((ac.hours / 5) * 100, 100)}%`, background: ac.color }} />
-                  </div>
-
-                  {/* Blinking click indicator */}
-                  <div className="absolute bottom-2 right-3">
-                    <span className="text-[8px] font-black tracking-wider text-red-400 uppercase animate-pulse">Click me →</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Duplicate for seamless loop */}
-            {AIRCRAFT_CAROUSEL_DATA.map((ac, i) => (
-              <div
-                key={`dup-${ac.name}-${i}`}
-                onClick={() => openAircraftModal(ac)}
-                className="flex-shrink-0 w-[28rem] h-48 rounded-xl overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer relative flex"
-                style={{
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                {/* Left: Aircraft Image */}
-                <div className="relative w-[45%] h-full flex-shrink-0">
-                  <img
-                    src={ac.img}
-                    alt={ac.type}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                  {/* Gradient fade to right */}
-                  <div
-                    className="absolute inset-y-0 right-0 w-16"
-                    style={{ background: 'linear-gradient(to right, transparent, rgba(15,23,42,0.95))' }}
-                  />
-                </div>
-
-                {/* Right: Glassmorphism Flight Story */}
-                <div
-                  className="flex-1 h-full p-4 flex flex-col justify-between relative"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.85) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                  }}
-                >
-                  {/* Top: Aircraft identity */}
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-black text-white leading-tight">{ac.name}</p>
-                        <p className="text-[10px] text-white/40">{ac.type} · {ac.tail}</p>
-                      </div>
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${ac.color}15`, color: ac.color, border: `1px solid ${ac.color}30` }}>
-                        {ac.grade}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Middle: Flight metrics */}
-                  <div className="flex items-center gap-4 mt-2">
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Duration</p>
-                      <p className="text-base font-black text-white">{ac.hours}h</p>
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Landings</p>
-                      <p className="text-base font-black text-white">{ac.landings}</p>
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black tracking-wider text-white/30 uppercase">Date</p>
-                      <p className="text-xs font-black text-white/70">{ac.date}</p>
-                    </div>
-                  </div>
-
-                  {/* Bottom: CFI remarks */}
-                  <div className="mt-2">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-[8px] font-black tracking-wider text-white/30 uppercase">CFI</span>
-                      <span className="text-[9px] text-white/50">{ac.instructor}</span>
-                    </div>
-                    <p className="text-[10px] text-white/50 leading-relaxed line-clamp-2">{ac.remarks}</p>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="mt-2 w-full h-0.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${Math.min((ac.hours / 5) * 100, 100)}%`, background: ac.color }} />
-                  </div>
-
-                  {/* Blinking click indicator */}
-                  <div className="absolute bottom-2 right-3">
-                    <span className="text-[8px] font-black tracking-wider text-red-400 uppercase animate-pulse">Click me →</span>
-                  </div>
-                </div>
-              </div>
+          <div className="aircraft-carousel flex gap-4 px-6" style={{ width: 'max-content' }}>
+            {[...AIRCRAFT_CAROUSEL_DATA, ...AIRCRAFT_CAROUSEL_DATA].map((ac, i) => (
+              <FlightCard key={`${ac.name}-${i}`} ac={ac} onClick={() => openAircraftModal(ac)} />
             ))}
           </div>
         </div>
 
-        {/* Cinematic connect banner — below carousel */}
-        <div className="px-4 pt-2 pb-3">
+        {/* Premium connect banner — below carousel */}
+        <div className="px-4 pt-2 pb-4">
           <button
-            onClick={() => providersRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            className="w-full rounded-xl px-4 py-3 text-center transition-all hover:brightness-110"
-            style={{
-              background: '#dc2626',
-              border: '1px solid rgba(220,38,38,0.5)',
-              cursor: 'pointer',
-            }}
+            onClick={() => setSubPage('logbook')}
+            className="relative w-full overflow-hidden rounded-2xl border border-white/60 dark:border-slate-800 bg-white/75 dark:bg-slate-950/40 p-5 backdrop-blur-xl shadow-xl shadow-slate-200/50 dark:shadow-black/30 text-left"
           >
-            <p className="text-[10px] text-white/90 leading-relaxed tracking-wide">
-              <span className="font-black text-white">Connect your logbook</span> to view cinematic recent activities in your flight logs — turning every log into a real life memorable experience
-            </p>
+            {/* Subtle back-glow decoration for premium depth */}
+            <div className="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-red-500/5 dark:bg-indigo-500/10 blur-3xl pointer-events-none" />
+
+            <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
+              {/* Icon + Explainer Content */}
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 dark:bg-gradient-to-tr dark:from-indigo-500/20 dark:to-purple-500/20 text-red-500 dark:text-indigo-400 border border-red-100 dark:border-indigo-500/30 shadow-sm shadow-red-500/5 dark:shadow-inner">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                    {providers.length > 0 ? 'Your Flight Records' : 'Sync Your Flight Records'}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed max-w-xl font-medium">
+                    {providers.length > 0
+                      ? 'Your logbook is connected. Open your flight records to review entries, verify hours, and track your pathway progress.'
+                      : <>Connect your logbook to unlock <span className="text-red-600 dark:text-indigo-400 font-bold hover:underline cursor-pointer">cinematic activity timelines</span> in your flight logs—transforming everyday entries into unforgettable, interactive flight memory tracks.</>}
+                  </p>
+                </div>
+              </div>
+
+              {/* Conditional CTA */}
+              <span className="group w-full sm:w-auto shrink-0 inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-black tracking-wide shadow-md shadow-red-600/10 hover:shadow-lg hover:shadow-red-600/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
+                {providers.length > 0 ? 'View Logbook' : 'Connect Logbook'}
+                <svg className="w-3.5 h-3.5 ml-1.5 transform transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+            </div>
           </button>
         </div>
       </div>
@@ -686,14 +639,18 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
-            className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-2xl"
-            style={{ background: 'linear-gradient(180deg, rgba(10,15,25,0.98) 0%, rgba(5,8,14,1) 100%)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.6)' }}
-            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[linear-gradient(180deg,rgba(10,15,25,0.98)_0%,rgba(5,8,14,1)_100%)] border border-slate-200 dark:border-white/[0.08] shadow-[0_24px_64px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_64px_rgba(0,0,0,0.6)]"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <button onClick={() => setSelectedAircraft(null)} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}><X size={14} className="text-white/70" /></button>
+            <button
+              onClick={() => setSelectedAircraft(null)}
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-black/[0.06] dark:bg-white/[0.06] hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10"
+            >
+              <X size={14} className="text-slate-500 dark:text-white/70" />
+            </button>
 
             <div className="relative h-64 md:h-80 w-full overflow-hidden">
               <img src={selectedAircraft.img} alt={selectedAircraft.name} className="w-full h-full object-cover" />
@@ -710,70 +667,129 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
               </div>
             </div>
 
-            <div className="p-6 md:p-8 space-y-6">
-              {/* Flight Date & Crew */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Clock size={14} className="text-white/40" />
-                  <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Flight Date</p>
-                </div>
-                <p className="text-2xl font-black text-white">{selectedAircraft.date}</p>
+            <div className="relative p-6 md:p-8">
+              <div className="space-y-6 relative z-10 mb-6">
+                {/* Flight Date & Crew */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Clock size={14} className="text-slate-400 dark:text-white/40" />
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Flight Date</p>
+                  </div>
+                  <p className="text-2xl font-black text-slate-900 dark:text-white">{selectedAircraft.date}</p>
 
-                {/* Crew on Board */}
-                <div className="flex items-center gap-2 mt-4">
-                  <User size={14} className="text-white/40" />
-                  <p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Crew on Board</p>
-                </div>
-                {selectedAircraft.crew && selectedAircraft.crew.length > 0 ? (
-                  <div className="flex flex-wrap gap-3">
-                    {selectedAircraft.crew.map((member: any, idx: number) => (
-                      <div key={idx} className="flex items-center gap-3 rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                        <img src={member.pic} alt={member.name} className="w-10 h-10 rounded-full object-cover" style={{ border: '2px solid rgba(255,255,255,0.1)' }} />
+                  {/* Crew on Board */}
+                  <div className="flex items-center gap-2 mt-4">
+                    <User size={14} className="text-slate-400 dark:text-white/40" />
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Crew on Board</p>
+                  </div>
+                  {selectedAircraft.crew && selectedAircraft.crew.length > 0 ? (
+                    <div className="flex flex-wrap gap-3">
+                      {selectedAircraft.crew.map((member: any, idx: number) => (
+                        <div key={idx} className="flex items-center gap-3 rounded-xl p-3 bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06]">
+                          <img src={member.pic} alt={member.name} className="w-10 h-10 rounded-full object-cover border-2 border-slate-200 dark:border-white/10" />
+                          <div>
+                            <p className="text-xs font-black text-slate-900 dark:text-white">{member.name}</p>
+                            <p className="text-[10px] text-slate-500 dark:text-white/50">{member.role}</p>
+                            <p className="text-[9px] font-black tracking-wider uppercase" style={{ color: selectedAircraft.color }}>{member.position}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-xl p-4" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                      <div className="flex items-start gap-2">
+                        <AlertCircle size={14} className="text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-xs font-black text-white">{member.name}</p>
-                          <p className="text-[10px] text-white/50">{member.role}</p>
-                          <p className="text-[9px] font-black tracking-wider uppercase" style={{ color: selectedAircraft.color }}>{member.position}</p>
+                          <p className="text-xs font-black text-amber-600 dark:text-amber-300">Crew Data Missing</p>
+                          <p className="text-[10px] text-amber-600/70 dark:text-amber-300/60 leading-relaxed mt-1">
+                            This logbook entry does not contain crew assignment data. When your logbook is scanned, crew roles and seat positions are extracted to verify PIC/SIC allocation and training authority. Without crew data, this entry cannot be cross-checked for dual-instruction validity or multi-crew currency. Please update your source logbook with pilot names, roles, and positions before re-uploading.
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
-                    <div className="flex items-start gap-2">
-                      <AlertCircle size={14} className="text-amber-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-xs font-black text-amber-300">Crew Data Missing</p>
-                        <p className="text-[10px] text-amber-300/60 leading-relaxed mt-1">
-                          This logbook entry does not contain crew assignment data. When your logbook is scanned, crew roles and seat positions are extracted to verify PIC/SIC allocation and training authority. Without crew data, this entry cannot be cross-checked for dual-instruction validity or multi-crew currency. Please update your source logbook with pilot names, roles, and positions before re-uploading.
-                        </p>
-                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Flight Debrief */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2"><Award size={14} className="text-white/40" /><p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Flight Debrief</p></div>
-                  <div className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)', border: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+                  <div className="flex items-center gap-2"><Award size={14} className="text-slate-400 dark:text-white/40" /><p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Flight Debrief</p></div>
+                  <div className="rounded-xl p-5 bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-white/[0.06] backdrop-blur-xl">
                     <div className="grid grid-cols-3 gap-4 mb-4">
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider">Duration</p><p className="text-xl font-black text-white">{selectedAircraft.hours}h</p></div>
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider">Landings</p><p className="text-xl font-black text-white">{selectedAircraft.landings}</p></div>
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider">Total Airframe</p><p className="text-xl font-black text-white">{selectedAircraft.totalTime}h</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Duration</p><p className="text-xl font-black text-slate-900 dark:text-white">{selectedAircraft.hours}h</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Landings</p><p className="text-xl font-black text-slate-900 dark:text-white">{selectedAircraft.landings}</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Total Time</p><p className="text-xl font-black text-slate-900 dark:text-white">{selectedAircraft.totalTime}h</p></div>
                     </div>
-                    <div className="h-px bg-white/5 mb-4" />
+                    <div className="h-px bg-slate-200 dark:bg-white/5 mb-4" />
                     <div className="space-y-3">
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">CFI</p><p className="text-sm text-white/80">{selectedAircraft.instructor}</p></div>
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Remarks</p><p className="text-sm text-white/80 leading-relaxed">{selectedAircraft.remarks}</p></div>
-                      <div><p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Engine</p><p className="text-sm text-white/80">{selectedAircraft.engine}</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">CFI</p><p className="text-sm text-slate-700 dark:text-white/80">{selectedAircraft.instructor}</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Remarks</p><p className="text-sm text-slate-700 dark:text-white/80 leading-relaxed">{selectedAircraft.remarks}</p></div>
+                      <div><p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Engine</p><p className="text-sm text-slate-700 dark:text-white/80">{selectedAircraft.engine}</p></div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2"><Bot size={14} className="text-red-400" /><p className="text-[10px] font-black tracking-[0.2em] text-red-400 uppercase">Logbook AI Assistant</p></div>
-                  <div className="rounded-xl flex flex-col" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)', border: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', height: '320px' }}>
-                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start relative z-10">
+                {/* LEFT SIDE: Glassy Ledger Entry (60%) */}
+                <div className="lg:col-span-7 flex flex-col h-full rounded-2xl border border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-900/20 backdrop-blur-xl p-5 shadow-xl shadow-black/10 dark:shadow-black/40">
+                  <div className="flex items-center gap-2 mb-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                    <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                    <span>Glassy Ledger Entry</span>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-950 bg-slate-50 dark:bg-slate-950/60">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-200 dark:border-slate-900 text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 dark:bg-slate-950/90">
+                          <th className="py-3 px-4">Date</th>
+                          <th className="py-3 px-4">Aircraft</th>
+                          <th className="py-3 px-4">Route</th>
+                          <th className="py-3 px-4 text-center">Dur</th>
+                          <th className="py-3 px-4 text-center">Ldgs</th>
+                          <th className="py-3 px-4 text-center">Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200/60 dark:divide-slate-900/60 text-slate-700 dark:text-slate-300 font-medium">
+                        <tr className="hover:bg-slate-100 dark:hover:bg-white/[0.02] transition-colors cursor-pointer">
+                          <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">{selectedAircraft.date}</td>
+                          <td className="py-3.5 px-4 text-slate-900 dark:text-white font-bold">
+                            {selectedAircraft.name}
+                            <span className="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 ml-1">{selectedAircraft.tail}</span>
+                          </td>
+                          <td className="py-3.5 px-4 font-mono text-slate-500 dark:text-slate-400">{selectedAircraft.route}</td>
+                          <td className="py-3.5 px-4 text-center font-bold" style={{ color: selectedAircraft.color }}>{selectedAircraft.hours}h</td>
+                          <td className="py-3.5 px-4 text-center font-bold text-slate-900 dark:text-white">{selectedAircraft.landings}</td>
+                          <td className="py-3.5 px-4 text-center">
+                            <span
+                              className="inline-flex items-center justify-center w-5 h-5 rounded-full border text-[10px] font-black"
+                              style={{
+                                background: `${selectedAircraft.color}10`,
+                                color: selectedAircraft.color,
+                                borderColor: `${selectedAircraft.color}30`,
+                              }}
+                            >
+                              {selectedAircraft.grade}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* RIGHT SIDE: Logbook AI Companion Panel (40%) */}
+                <div className="lg:col-span-5 flex flex-col justify-between min-h-[340px] rounded-2xl border border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-900/20 backdrop-blur-xl p-5 shadow-xl shadow-black/10 dark:shadow-black/40">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4 text-xs font-bold text-red-500 dark:text-red-400 uppercase tracking-widest">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                      <span>Logbook AI Assistant</span>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto space-y-3 max-h-[200px] pr-1">
                       {chatMessages.map((msg, idx) => (
                         <motion.div
                           key={idx}
@@ -782,70 +798,44 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
                         >
-                          <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                          <div className={`max-w-[90%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
                             msg.role === 'user'
                               ? 'bg-red-600 text-white'
-                              : 'bg-white/[0.06] border border-white/[0.10] text-white/90'
+                              : 'bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-900 text-slate-700 dark:text-slate-300'
                           }`}>
-                            <p className="text-[13px] leading-relaxed whitespace-pre-wrap">{msg.text.split('**').map((part: string, i: number) => i % 2 === 1 ? <strong key={i} className="text-white">{part}</strong> : part)}</p>
+                            <p className="whitespace-pre-wrap">{msg.text.split('**').map((part: string, i: number) => i % 2 === 1 ? <strong key={i} className="text-slate-900 dark:text-white">{part}</strong> : part)}</p>
                           </div>
                         </motion.div>
                       ))}
                     </div>
-                    <div className="p-3 border-t border-white/5">
-                      <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-red-500/20 transition-all">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-red-600 flex-shrink-0">
-                          <rect x="4" y="4" width="16" height="2.5" rx="1" fill="currentColor" />
-                          <rect x="4" y="9.25" width="16" height="2.5" rx="1" fill="currentColor" />
-                          <rect x="4" y="14.5" width="16" height="2.5" rx="1" fill="currentColor" />
+                  </div>
+
+                  <div className="mt-4 relative flex items-center rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-900 focus-within:border-red-500/40 transition-colors">
+                    <input
+                      type="text"
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && sendChat()}
+                      placeholder="Ask about your flight metrics..."
+                      className="w-full bg-transparent py-3 pl-4 pr-12 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
+                    />
+                    <div className="absolute right-2">
+                      <button
+                        onClick={sendChat}
+                        disabled={!chatInput.trim()}
+                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white shadow-md shadow-red-600/20 active:scale-95 transition-all disabled:opacity-30"
+                      >
+                        <svg className="w-3 h-3 transform rotate-45 -translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9-7-9-7v14z" />
                         </svg>
-                        <input
-                          value={chatInput}
-                          onChange={(e) => setChatInput(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && sendChat()}
-                          placeholder="Ask about this flight..."
-                          className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
-                        />
-                        <button
-                          onClick={sendChat}
-                          disabled={!chatInput.trim()}
-                          className="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-105 disabled:opacity-30 disabled:hover:scale-100 bg-red-600 hover:bg-red-500"
-                        >
-                          <Send size={14} className="text-white" />
-                        </button>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-2"><BookMarked size={14} className="text-white/40" /><p className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">Glassy Ledger Entry</p></div>
-                <div className="rounded-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.3)' }}>
-                  <div className="grid grid-cols-12 gap-0 text-[9px] font-black tracking-wider text-white/30 uppercase border-b border-white/5 px-4 py-2" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                    <div className="col-span-2">Date</div>
-                    <div className="col-span-2">Aircraft</div>
-                    <div className="col-span-2">Route</div>
-                    <div className="col-span-1 text-center">Dur</div>
-                    <div className="col-span-1 text-center">Ldgs</div>
-                    <div className="col-span-2">Conditions</div>
-                    <div className="col-span-2 text-right">Grade</div>
-                  </div>
-                  <div className="grid grid-cols-12 gap-0 items-center text-[10px] text-white/80 px-4 py-3 border-b border-white/5">
-                    <div className="col-span-2 font-black text-white">{selectedAircraft.date}</div>
-                    <div className="col-span-2"><p className="font-black text-white">{selectedAircraft.name}</p><p className="text-white/40">{selectedAircraft.tail}</p></div>
-                    <div className="col-span-2 font-medium">{selectedAircraft.route}</div>
-                    <div className="col-span-1 text-center font-black" style={{ color: selectedAircraft.color }}>{selectedAircraft.hours}h</div>
-                    <div className="col-span-1 text-center font-black text-white">{selectedAircraft.landings}</div>
-                    <div className="col-span-2 text-white/50">{selectedAircraft.conditions}</div>
-                    <div className="col-span-2 text-right"><span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${selectedAircraft.color}15`, color: selectedAircraft.color, border: `1px solid ${selectedAircraft.color}30` }}>{selectedAircraft.grade}</span></div>
-                  </div>
-                  <div className="px-4 py-3" style={{ background: 'rgba(255,255,255,0.015)' }}>
-                    <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">CFI Remarks</p>
-                    <p className="text-[11px] text-white/70 leading-relaxed">{selectedAircraft.remarks}</p>
-                  </div>
-                </div>
-              </div>
+              {/* Background decorative luxury glow */}
+              <div className="absolute -bottom-20 left-10 h-64 w-64 rounded-full bg-gradient-to-tr from-red-600/5 via-transparent to-transparent blur-3xl pointer-events-none" />
             </div>
           </motion.div>
         </motion.div>
@@ -917,7 +907,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
           </div>
           <div className="space-y-1.5">
             {recentFlights.map(log => (
-              <div key={log.id} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div key={log.id} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(14,165,233,0.1)', border: '1px solid rgba(14,165,233,0.2)' }}>
                   <Plane size={13} className="text-sky-400" />
                 </div>

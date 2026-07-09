@@ -134,21 +134,21 @@ export default function AdminDashboardPage() {
     const fetchStats = async () => {
       console.log('[AdminDashboard] fetchStats() starting...');
       try {
-        // Get current admin's profile (wrapped — profiles table sometimes 500s)
-        let adminProfileId = '';
+        // Get current admin's invite code from the Recognition+ trace DB
+        let adminProfileId = currentUser?.id || '';
         let adminInviteCode = '';
         try {
-          console.log('[AdminDashboard] Calling db.from(profiles).select() for admin profile...');
-          const { data: adminProfile } = await db
-            .from('profiles')
-            .select('id, referral_code, display_name')
-            .eq('id', currentUser?.id)
+          console.log('[AdminDashboard] Calling db.from(recognition_plus_referrals).select() for admin invite code...');
+          const { data: adminReferral } = await db
+            .from('recognition_plus_referrals')
+            .select('id, referral_code, profile_id')
+            .eq('profile_id', currentUser?.id)
+            .eq('is_active', 1)
             .single()
-            .dbName('DB_PROFILES');
-          adminProfileId = adminProfile?.id || '';
-          adminInviteCode = adminProfile?.referral_code || '';
-          console.log('[AdminDashboard] adminProfile:', adminProfile);
-        } catch { console.log('[AdminDashboard] profiles query failed (timeout)'); }
+            .dbName('DB_TRACE');
+          adminInviteCode = adminReferral?.referral_code || '';
+          console.log('[AdminDashboard] adminReferral:', adminReferral);
+        } catch { console.log('[AdminDashboard] recognition_plus_referrals query failed (timeout)'); }
 
         // Count pilots referred by this admin (isolated catch)
         let pilotsReferred = 0;
@@ -1236,8 +1236,25 @@ export default function AdminDashboardPage() {
                     onClick={async () => {
                       if (!inviteCodeInput.trim() || !currentUser?.id) return;
                       try {
-                        await db.from('profiles').update({ referral_code: inviteCodeInput.trim() }).eq('id', currentUser.id).dbName('DB_PROFILES');
-                        setDashboardData((prev) => ({ ...prev, karlInviteCode: inviteCodeInput.trim() }));
+                        const { data: existing } = await db
+                          .from('recognition_plus_referrals')
+                          .select('id')
+                          .eq('profile_id', currentUser.id)
+                          .single()
+                          .dbName('DB_TRACE');
+                        if (existing?.id) {
+                          await db
+                            .from('recognition_plus_referrals')
+                            .update({ referral_code: inviteCodeInput.trim().toUpperCase() })
+                            .eq('id', existing.id)
+                            .dbName('DB_TRACE');
+                        } else {
+                          await db
+                            .from('recognition_plus_referrals')
+                            .insert({ profile_id: currentUser.id, referral_code: inviteCodeInput.trim().toUpperCase(), is_active: 1, commission_rate: 20 })
+                            .dbName('DB_TRACE');
+                        }
+                        setDashboardData((prev) => ({ ...prev, karlInviteCode: inviteCodeInput.trim().toUpperCase() }));
                         setInviteCodeInput('');
                       } catch (err) {
                         console.error('Error updating invite code:', err);

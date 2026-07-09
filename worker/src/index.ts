@@ -198,6 +198,22 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       return null;
     }
 
+    case 'searchProfiles': {
+      const { query, limit = 20 } = params || {};
+      if (!query || typeof query !== 'string' || query.trim().length < 2) {
+        return { results: [] };
+      }
+      const term = `%${query.trim().toLowerCase()}%`;
+      const maxResults = Math.min(Number(limit) || 20, 50);
+      const { results } = await db.prepare(`
+        SELECT id, auth0_id, email, full_name, display_name, first_name, last_name, avatar_url, profile_image_url, total_flight_hours, current_flight_hours, license_id, country_of_license, ratings, current_occupation, status
+        FROM profiles
+        WHERE LOWER(full_name) LIKE ? OR LOWER(display_name) LIKE ? OR LOWER(email) LIKE ? OR LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?
+        LIMIT ?
+      `).bind(term, term, term, term, term, maxResults).all();
+      return { results: results || [] };
+    }
+
     case 'createProfile': {
       const id = crypto.randomUUID();
       const now = new Date().toISOString();
@@ -280,7 +296,7 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
         data.hours_minutes || null,
         data.origin_jurisdiction || null,
         data.logbook_sync_valid ? 1 : 0,
-        data.referral_code || generateReferralCode(id),
+        null,
         now,
         now
       ).run();
@@ -648,7 +664,15 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       ]);
 
       const licensure = (licensureResults?.[0] || null) as Record<string, unknown> | null;
-      const parsedLicensure = licensure?.license_data ? JSON.parse(licensure.license_data as string) : null;
+      let parsedLicensure: unknown = null;
+      if (licensure?.license_data) {
+        try {
+          parsedLicensure = JSON.parse(licensure.license_data as string);
+        } catch (e) {
+          console.error('[getDashboardData] Invalid license_data JSON for profile:', profileId, e);
+          parsedLicensure = null;
+        }
+      }
 
       // Convert is_read integer to read_at string for frontend compatibility
       const notifications = (notificationResults || []).map((n: any) => ({

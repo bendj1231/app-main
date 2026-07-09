@@ -186,7 +186,7 @@ export const InfrastructureDashboard: React.FC = () => {
   }
 
   if (error) {
-    return <p className="text-xs text-red-400 py-2">Error loading infra stats: {error}</p>;
+    return null;
   }
 
   if (!stats) return null;

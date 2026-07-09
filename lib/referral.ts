@@ -10,18 +10,20 @@ export async function getOrCreateReferralCode(
   profileId: string
 ): Promise<string | null> {
   try {
-    const profiles = await api(accessToken, 'queryTable', {
-      table: 'profiles',
+    // Referral codes live in the Recognition+ trace DB (DB_TRACE)
+    const rows = await api(accessToken, 'queryTable', {
+      table: 'recognition_plus_referrals',
       operation: 'select',
-      where: { id: profileId },
+      dbName: 'DB_TRACE',
+      where: { profile_id: profileId, is_active: 1 },
       limit: 1,
     }) as Record<string, unknown>[];
-    const profile = profiles?.[0];
+    const referral = rows?.[0];
 
-    if (profile?.referral_code) return profile.referral_code as string;
+    if (referral?.['referral_code']) return referral['referral_code'] as string;
 
-    const res = await api(accessToken, 'generateReferral', { auth0Id, profileId }) as Record<string, unknown>;
-    return res?.referralCode as string | null ?? null;
+    const res = await api(accessToken, 'generateReferral', { profileId, user_id: profileId }) as Record<string, unknown>;
+    return (res?.referralCode as string | null) ?? (res?.referral_code as string | null) ?? null;
   } catch {
     return null;
   }
@@ -40,6 +42,7 @@ export async function applyReferralCode(
   await api(accessToken, 'queryTable', {
     table: 'profiles',
     operation: 'update',
+    dbName: 'DB_PROFILES',
     id: profileId,
     data: { referred_by_code: referralCode },
   });
@@ -54,26 +57,28 @@ export async function getReferralStats(
   credits: number;
   totalReferred: number;
 }> {
-  const profiles = await api(accessToken, 'queryTable', {
-    table: 'profiles',
+  const rows = await api(accessToken, 'queryTable', {
+    table: 'recognition_plus_referrals',
     operation: 'select',
-    where: { id: profileId },
+    dbName: 'DB_TRACE',
+    where: { profile_id: profileId, is_active: 1 },
     limit: 1,
   }) as Record<string, unknown>[];
-  const profile = profiles?.[0];
+  const referral = rows?.[0];
 
   const referrals = await api(accessToken, 'queryTable', {
     table: 'referrals',
     operation: 'select',
+    dbName: 'DB_OPS',
     where: { referrer_profile_id: profileId, status: 'credited' },
     limit: 1000,
   }) as Record<string, unknown>[];
 
-  const code = (profile?.referral_code as string) ?? null;
+  const code = (referral?.['referral_code'] as string) ?? null;
   return {
     referralCode: code,
     referralLink: code ? buildReferralLink(code) : null,
-    credits: (profile?.referral_credits as number) ?? 0,
+    credits: (referral?.['referral_credits'] as number) ?? 0,
     totalReferred: referrals?.length ?? 0,
   };
 }

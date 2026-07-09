@@ -502,10 +502,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     ?.split('=')[1]
                 : null;
             if (refCode) {
+              // Referral codes live in the Recognition+ trace DB, not the public profiles table
               const referrerRows = await callApi<Record<string, unknown>[]>('queryTable', {
-                table: 'profiles',
+                table: 'recognition_plus_referrals',
                 operation: 'select',
-                where: { referral_code: refCode },
+                dbName: 'DB_TRACE',
+                where: { referral_code: refCode, is_active: 1 },
                 limit: 1,
               });
               const referrer = referrerRows?.[0];
@@ -513,10 +515,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 await callApi('queryTable', {
                   table: 'profiles',
                   operation: 'update',
+                  dbName: 'DB_PROFILES',
                   id: userId,
                   data: {
                     referred_by_code: refCode,
-                    referred_by_profile_id: (referrer as Record<string, unknown>).id,
+                    referred_by_profile_id: referrer['profile_id'] as string,
                   },
                 });
                 // Clear cookie after attribution
@@ -529,7 +532,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           // Generate referral code for new pilot (non-blocking)
           try {
-            await callApi('generateReferral', { auth0Id: userData.auth0Id || userId, profileId: userId });
+            await callApi('generateReferral', { profileId: userId, user_id: userId });
           } catch {}
         }
       } catch (profileError) {

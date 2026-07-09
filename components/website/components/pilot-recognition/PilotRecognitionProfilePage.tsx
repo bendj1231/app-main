@@ -5,7 +5,7 @@ import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus, Award, Plane, RefreshCw, Upload, FileCheck, TrendingUp, ShieldCheck, Sparkles, Bot, CheckCircle2, AlertCircle, User, FileText, Shield, Settings } from 'lucide-react';
 
-type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard' | 'cockpit';
+type ProfileSection = 'dashboard' | 'overview' | 'statistics' | 'logbook' | 'my_flightbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard' | 'cockpit';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -17,6 +17,8 @@ import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { AdminDashboardPanel } from './AdminDashboardPanel';
+import { PilotProfileDashboard } from './PilotProfileDashboard';
+import { LogbookHub } from './LogbookHub';
 import { useRecognitionScore } from '@/hooks/useRecognitionScore';
 import { useVaultProfile } from '@/hooks/useVaultProfile';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
@@ -181,11 +183,19 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     // MSFS 2024 Style Sidebar Navigation
     const [searchParams, setSearchParams] = useSearchParams();
     const rawSection = searchParams.get('section');
-    const validSections: ProfileSection[] = ['overview', 'statistics', 'logbook', 'photos', 'identity', 'vault', 'admin_dashboard', 'cockpit'];
+    const validSections: ProfileSection[] = ['dashboard', 'overview', 'statistics', 'logbook', 'my_flightbook', 'photos', 'identity', 'vault', 'admin_dashboard', 'cockpit'];
     const sectionFromUrl: ProfileSection | null = rawSection && validSections.includes(rawSection as ProfileSection) ? (rawSection as ProfileSection) : null;
-    const initialSection = sectionFromUrl || 'overview';
+    const initialSection = sectionFromUrl || 'dashboard';
     const [activeSection, setActiveSectionState] = useState<ProfileSection>(initialSection);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const check = () => setIsMobile(window.innerWidth < 768);
+      check();
+      window.addEventListener('resize', check);
+      return () => window.removeEventListener('resize', check);
+    }, []);
 
     const setActiveSection = useCallback((section: ProfileSection) => {
         setActiveSectionState(section);
@@ -211,6 +221,18 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setActiveSectionState(section);
         }
     }, [searchParams]);
+
+    // My Flightbook launches in a full-width view with a foldable overlay sidebar.
+    // On mobile the sidebar is always hidden so the main content uses the full width.
+    useEffect(() => {
+        if (isMobile) {
+            setSidebarOpen(false);
+        } else if (activeSection === 'my_flightbook') {
+            setSidebarOpen(false);
+        } else {
+            setSidebarOpen(true);
+        }
+    }, [activeSection, isMobile]);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -815,7 +837,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     return (
         <div 
-            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : 'hidden' }}
+            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : ((activeSection === 'my_flightbook' || isMobile) ? 'visible' : 'hidden') }}
             className={theme === 'light' ? 'light-theme' : 'dark-theme'}
             data-theme={theme}
         >
@@ -855,20 +877,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 transition={{ duration: 0.35 }}
                 style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: embedded ? 'auto' : '100vh' }}
             >
-                {/* Sidebar Navigation — old card style */}
+                {/* Sidebar Navigation — old card style; becomes full-screen menu on mobile */}
                 {!embedded && (
                     <motion.aside
-                        initial={{ opacity: 0, x: -32 }}
-                        animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -280 }}
+                        initial={{ opacity: 0, x: isMobile ? '-100%' : -32 }}
+                        animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : (isMobile ? '-100%' : -280) }}
                         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                         style={{
-                            width: '280px',
+                            width: isMobile ? '100vw' : '280px',
                             flexShrink: 0,
-                            padding: '5rem 1rem 2rem 1.5rem',
+                            padding: isMobile ? '1.5rem 1.25rem 2rem' : '5rem 1rem 2rem 1.5rem',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '0.75rem',
-                            background: 'transparent',
+                            background: isMobile ? 'rgba(8, 12, 24, 0.85)' : 'transparent',
                             borderRight: 'none',
                             position: 'fixed',
                             left: 0,
@@ -879,33 +901,63 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             boxSizing: 'border-box',
                             pointerEvents: sidebarOpen ? 'auto' : 'none',
                             zIndex: 40,
+                            backdropFilter: isMobile ? 'blur(20px)' : 'none',
+                            WebkitBackdropFilter: isMobile ? 'blur(20px)' : 'none',
                         }}>
-                        {/* Header with chevron */}
+                        {/* Header with chevron and close button on mobile */}
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
+                            justifyContent: 'space-between',
                             gap: '0.5rem',
                             marginBottom: '1.5rem',
                             paddingLeft: '0.25rem',
                             overflow: 'hidden',
                             width: '100%',
                         }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                            <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
-                                <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', minWidth: 0 }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                                <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
+                                    <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+                                </div>
                             </div>
+                            {isMobile && (
+                                <button
+                                    onClick={() => setSidebarOpen(false)}
+                                    aria-label="Close menu"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.08)',
+                                        border: '1px solid rgba(255,255,255,0.12)',
+                                        borderRadius: '50%',
+                                        width: '40px',
+                                        height: '40px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            )}
                         </div>
 
                         {/* Navigation Items — card style */}
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
                             {[
-                                { id: 'overview',   label: 'Profile Information' },
-                                { id: 'statistics', label: 'License & Medical' },
-                                { id: 'logbook',    label: 'Flight Logbooks' },
-                                { id: 'photos',     label: 'Documents' },
+                                { id: 'dashboard',     label: 'Dashboard' },
+                                { id: 'overview',      label: 'Profile Information' },
+                                { id: 'statistics',    label: 'License & Medical' },
+                                { id: 'logbook',       label: 'Flight Logbooks' },
+                                { id: 'my_flightbook', label: 'My Flightbook' },
+                                { id: 'photos',        label: 'Documents' },
                                 { id: 'identity',   label: 'Experience & Career' },
                                 { id: 'cockpit',    label: 'Cockpit' },
                                 { id: 'vault',      label: 'Public Profile', isVault: true },
@@ -918,13 +970,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 return (
                                     <button
                                         key={item.id}
-                                        onClick={() => setActiveSection(item.id as ProfileSection)}
+                                        onClick={() => { setActiveSection(item.id as ProfileSection); if (isMobile) setSidebarOpen(false); }}
                                         style={{
                                             position: 'relative',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
-                                            padding: '0.875rem 1rem',
+                                            padding: isMobile ? '1rem 1.25rem' : '0.875rem 1rem',
                                             borderRadius: '4px',
                                             background: isAdminItem
                                                 ? (isActive ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.08)')
@@ -938,7 +990,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
                                             textAlign: 'left',
-                                            fontSize: '0.85rem',
+                                            fontSize: isMobile ? '1rem' : '0.85rem',
                                             fontWeight: 500,
                                             boxShadow: isVaultItem
                                                 ? (isActive ? '0 4px 20px rgba(220,38,38,0.4)' : '0 4px 20px rgba(0,0,0,0.3)')
@@ -1005,7 +1057,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </motion.aside>
                 )}
 
-                {/* Floating sidebar toggle when collapsed */}
+                {/* Floating sidebar toggle when collapsed; visible on mobile too */}
                 {!embedded && !sidebarOpen && (
                     <div
                         className="group"
@@ -1075,16 +1127,19 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     zIndex: 10, 
                     flex: 1, 
                     maxWidth: embedded ? '100%' : 'none', 
-                    margin: embedded ? '0' : (sidebarOpen ? '0 0 0 280px' : '0'), 
-                    minHeight: embedded ? 'auto' : '100vh', 
-                    overflowY: 'auto', 
-                    paddingTop: 0,
+                    margin: embedded ? '0' : ((activeSection === 'my_flightbook' || isMobile) ? '0' : (sidebarOpen ? '0 0 0 280px' : '0')),
+                    minHeight: embedded ? 'auto' : '100vh',
+                    minWidth: 0,
+                    overflowY: (activeSection === 'my_flightbook' || isMobile) ? 'visible' : 'auto',
+                    overflowX: 'hidden',
+                    paddingTop: (activeSection === 'my_flightbook' || isMobile) ? '5.5rem' : 0,
                     transition: 'margin 0.45s ease',
-                    transform: 'scale(0.8)',
+                    transform: (activeSection === 'my_flightbook' || isMobile) ? 'none' : 'scale(0.8)',
                     transformOrigin: 'top center',
                 }}>
 
-                {/* Recognition Score Display */}
+                {/* Recognition Score Display — hidden on Flightbook tab to keep that view focused on the logbook */}
+                {activeSection !== 'my_flightbook' && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1122,6 +1177,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             />
                         ) : null}
                 </motion.div>
+                )}
 
                 {/* ── UPGRADE MODAL (free tier) ── */}
                 {showUpgradeModal && (
@@ -1417,47 +1473,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
 
-                    {/* Official Documentation — Moved from Overview */}
-                    <div style={{ marginBottom: '2rem' }}>
-                        <CategorySection title="Official Documentation" description="Verification & Resumes">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{
-                                    background: 'rgba(30, 41, 59, 0.6)',
-                                    borderRadius: '24px',
-                                    padding: '1.75rem',
-                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
-                                    display: 'grid',
-                                    gridTemplateColumns: '1fr auto',
-                                    gap: '1.5rem',
-                                    alignItems: 'center'
-                                }}>
-                                    <div>
-                                        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>Digital Flight Logbook</h3>
-                                        <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>View your complete collection of licenses, flight hours, certifications, and professional milestones.</p>
-                                    </div>
-                                    <button
-                                        style={{
-                                            padding: '8px 16px',
-                                            minWidth: 180,
-                                            borderRadius: '999px',
-                                            border: '1px solid rgba(148,163,184,0.25)',
-                                            background: 'rgba(255,255,255,0.03)',
-                                            color: '#94a3b8',
-                                            fontWeight: 600,
-                                            fontSize: '0.85rem',
-                                            cursor: 'pointer',
-                                            whiteSpace: 'nowrap' as const,
-                                            textAlign: 'center' as const
-                                        }}
-                                        onClick={() => setCurrentDocumentationPage('logbook')}
-                                    >
-                                        View Logbook
-                                    </button>
-                                </div>
-                            </div>
-                        </CategorySection>
-                    </div>
-
                     <DigitalLogbookPage
                         embedded
                         onBack={() => setActiveSection('overview')}
@@ -1470,62 +1485,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         } : null}
                     />
 
-                    {/* Flight Hours Summary — Moved from Overview */}
-                    <div style={{ marginTop: '2rem' }}>
-                        <CategorySection title="Flight Hours Summary" description="Your verified and self-declared flight hours">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                {/* Flight Hours & Recognition Score Tiles */}
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', width: '100%' }}>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Flight Hours</p>
-                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.total_hours || 0).toLocaleString()}</p>
-                                        {profileData?.veremark_verified ? (
-                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#22c55e' }}>✓ Verified via Veremark</p>
-                                        ) : (
-                                            <button
-                                                onClick={() => isPremium ? setShowWalletGate(true) : setShowUpgradeModal(true)}
-                                                style={{ marginTop: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
-                                            >
-                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                                Sync Logbook
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition Score</p>
-                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
-                                        <p style={{ margin: '0.2rem 0 0', fontSize: '0.62rem', color: isPremium ? '#f59e0b' : '#64748b' }}>
-                                            {isPremium ? 'Tier 2: Advanced' : 'Upgrade to unlock'}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Logbook Hour Breakdown — DUAL XC, XC PIC, PIC LCL, DUAL LCL */}
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', width: '100%' }}>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL XC</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_xc_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Cross Country</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>XC PIC</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.xc_pic_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Cross Country PIC</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>PIC LCL</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.pic_local_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>PIC Local</p>
-                                    </div>
-                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
-                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL LCL</p>
-                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_local_hours || 0).toLocaleString()}</p>
-                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Local</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CategorySection>
-                    </div>
+                    <LogbookHub
+                        profile={profileData}
+                        onNavigate={onNavigate}
+                        onCompleteProfile={() => setActiveSection('overview')}
+                    />
 
                     {/* ATO Hour Verification — Pillar 5 */}
                     <div style={{ marginTop: '2rem' }}>
@@ -1533,6 +1497,31 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             <ATOVerificationRequestSection />
                         </CategorySection>
                     </div>
+                </motion.section>
+                )}
+
+                {/* ── MY FLIGHTBOOK SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'my_flightbook' && (
+                <motion.section
+                    key="my_flightbook"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '0', minHeight: '100vh' }}>
+
+                    <DigitalLogbookPage
+                        embedded
+                        inlineFullscreen
+                        onBack={() => setActiveSection('logbook')}
+                        userProfile={profileData ? {
+                            id: profileData.id || profileData.user_id,
+                            uid: profileData.id || profileData.user_id,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || '',
+                            email: profileData.email || '',
+                        } : null}
+                    />
                 </motion.section>
                 )}
 
@@ -1872,6 +1861,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         )}
                     </div>
+                </motion.section>
+                )}
+
+                {/* ── DASHBOARD SECTION — Pilot Career Overview ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'dashboard' && (
+                <motion.section
+                    key="dashboard"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}>
+                    <PilotProfileDashboard
+                        profile={profileData}
+                        onNavigate={onNavigate}
+                    />
                 </motion.section>
                 )}
 

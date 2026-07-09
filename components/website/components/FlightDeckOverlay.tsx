@@ -60,6 +60,7 @@ export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, on
     setOtpLoading(true);
     setError('');
     try {
+      console.log('[FlightDeckOverlay] initiating loginWithRedirect');
       await loginWithRedirect();
       setOtpSent(true);
       startResendTimer();
@@ -72,16 +73,19 @@ export const FlightDeckOverlay: React.FC<FlightDeckOverlayProps> = ({ isOpen, on
 
   const handleGoogleLogin = async () => {
     setError('');
+    console.log('[FlightDeckOverlay] initiating Google loginWithRedirect');
     await loginWithRedirect({ authorizationParams: { connection: 'google-oauth2' } });
   };
 
   const handleYahooLogin = async () => {
     setError('');
+    console.log('[FlightDeckOverlay] initiating Yahoo loginWithRedirect');
     await loginWithRedirect({ authorizationParams: { connection: 'yahoo' } });
   };
 
   const handleOutlookLogin = async () => {
     setError('');
+    console.log('[FlightDeckOverlay] initiating Outlook loginWithRedirect');
     await loginWithRedirect({ authorizationParams: { connection: 'windowslive' } });
   };
 
