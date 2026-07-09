@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
@@ -291,7 +291,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
       {/* Animated mesh gradient background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-        <MeshGradient
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={[
             '#dbeafe',

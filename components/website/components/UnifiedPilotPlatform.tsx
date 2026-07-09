@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { safeRedirect } from '@/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import {
   User,
@@ -1097,46 +1097,43 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     >
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       {activeTab !== 'pilot-shortage-support' && (
-        <div className="fixed inset-0 z-0">
-        {graphicsConfig.enableMeshGradient ? (
-          <MeshGradient
-            className="w-full h-full"
-            colors={isDarkMode ? [
-              '#dbeafe',
-              '#94a3b8',
-              '#64748b',
-              '#475569',
-              '#334155',
-              '#1e3a5f',
-              '#1e3a8a',
-              '#0f172a',
-            ] : [
-              '#ffffff',
-              '#f0f5fa',
-              '#c8d8e8',
-              '#9ab0c8',
-              '#5e85a8',
-              '#345a7d',
-              '#1e3a5f',
-              '#0f2747',
-            ]}
-            speed={graphicsConfig.meshGradientSpeed}
-          />
-        ) : (
-          <div
-            className="w-full h-full"
-            style={{ background: isDarkMode ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)' }}
-          />
-        )}
-        <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`} />
-        <div className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`} />
         <div
-          className="absolute inset-0"
-          style={{
-            background: isDarkMode ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
-          }}
-        />
-      </div>
+          className="fixed inset-0 z-0"
+          style={{ background: isDarkMode ? '#0f172a' : '#f0f5fa' }}
+        >
+          {/* Solid fallback gradient always visible underneath */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isDarkMode
+                ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)'
+                : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)',
+            }}
+          />
+          {/* WebGL shader overlay — client-side only */}
+          {graphicsConfig.enableMeshGradient && (
+            <SafeMeshGradient
+              className="w-full h-full"
+              colors={isDarkMode ? [
+                '#dbeafe','#94a3b8','#64748b','#475569',
+                '#334155','#1e3a5f','#1e3a8a','#0f172a',
+              ] : [
+                '#ffffff','#f0f5fa','#c8d8e8','#9ab0c8',
+                '#5e85a8','#345a7d','#1e3a5f','#0f2747',
+              ]}
+              speed={graphicsConfig.meshGradientSpeed}
+            />
+          )}
+          {/* Atmospheric overlays */}
+          <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`} />
+          <div className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`} />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isDarkMode ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
+            }}
+          />
+        </div>
       )}
 
       {/* ── TOP NAV BAR ── */}

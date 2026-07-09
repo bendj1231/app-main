@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 import { BookmarkService } from '@/services/bookmarkService';
@@ -804,9 +804,10 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
   return (
     <div className="min-h-screen relative text-slate-900 font-sans">
-      {/* MeshGradient Background */}
+      {/* SafeMeshGradient Background */}
       <div className="fixed inset-0 z-0">
-        <MeshGradient
+        <div className="absolute inset-0 bg-[#4a4a4d]" />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={["#4a4a4d", "#60606a", "#7a7a8b", "#ffffff"]}
           speed={1.0}

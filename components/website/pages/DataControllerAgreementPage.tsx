@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface CollapsibleSectionProps {
@@ -64,7 +64,8 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
         <div className="relative min-h-screen flex items-center justify-center px-4 py-12">
             {/* Shader background matching BecomeMemberPage */}
             <div className="fixed inset-0 z-0">
-                <MeshGradient
+                <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0f172a' }} />
+                <SafeMeshGradient
                     className="w-full h-full"
                     colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
                     speed={0.22}

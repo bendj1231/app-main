@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowLeft, Calendar, Award, FileText, TrendingUp, Bell } from 'lucide-react';
 import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 
 interface OfficialExaminationBoardPageProps {
     onBack: () => void;
@@ -38,9 +38,9 @@ const OfficialExaminationBoardPage: React.FC<OfficialExaminationBoardPageProps> 
 
     return (
         <div className="min-h-screen bg-slate-50 relative">
-            {/* MeshGradient Shader Background */}
-            <div className="absolute inset-0 z-0">
-                <MeshGradient
+            {/* SafeMeshGradient Shader Background */}
+            <div className="absolute inset-0 z-0 bg-[#dbeafe]">
+                <SafeMeshGradient
                     className="w-full h-full"
                     colors={[
                         "#dbeafe",

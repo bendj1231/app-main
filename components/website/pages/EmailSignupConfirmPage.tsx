@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface EmailSignupConfirmPageProps {
@@ -71,7 +71,8 @@ export const EmailSignupConfirmPage: React.FC<EmailSignupConfirmPageProps> = ({ 
 
       {/* Shader background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-        <MeshGradient
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0f172a' }} />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={[
             '#dbeafe',

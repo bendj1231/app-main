@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { CareerPathwaysNavbar } from '../layout/CareerPathwaysNavbar';
 import { BreadcrumbSchema } from '../../website/components/seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '@/lib/device-detection';
@@ -245,10 +245,13 @@ export const GetStartedPage: React.FC = () => {
                 {/* Background */}
                 <div className="fixed inset-0 z-0 overflow-hidden">
                     {enable3D && createPortal(
-                        <MeshGradient
-                            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
-                            speed={0.22}
-                        />,
+                        <>
+                            <div className="fixed inset-0 bg-slate-950" />
+                            <SafeMeshGradient
+                                colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+                                speed={0.22}
+                            />
+                        </>,
                         document.body
                     )}
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />

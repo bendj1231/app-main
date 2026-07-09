@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { Upload, Download } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
@@ -870,7 +870,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
       {/* MeshGradient Background - Same as Portal 2 */}
       {!embedded && (
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-        <MeshGradient
+        {/* Solid fallback background for environments without WebGL */}
+        <div style={{ position: 'absolute', inset: 0, background: '#0f172a' }} />
+        <SafeMeshGradient
           className="w-full h-full"
           colors={[
             "#dbeafe",

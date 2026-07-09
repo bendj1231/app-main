@@ -24,7 +24,7 @@ import { uploadProfileImage } from '@/lib/cloudinaryClient';
 import ProfileImage from '@/components/ProfileImage';
 import { getProfileImageUrl } from '@/lib/cloudinaryConfig';
 import { cleanupOldProfileImage } from '@/lib/cloudinaryDelete';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { VerificationStatusTab } from '../unified-platform/tabs/VerificationStatusTab';

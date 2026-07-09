@@ -8,7 +8,7 @@ import { HomeLabel } from './HomeLabel';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { IMAGES } from '@/lib/website-constants';
-import { MeshGradient } from '@paper-design/shaders-react';
+import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
 import { PathwayGrid, type Slide } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
@@ -1266,36 +1266,25 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
             <div data-section="3" className="relative w-full min-h-screen overflow-hidden">
-                <div className="fixed inset-0 z-0">
-                    {graphicsConfig ? (
-                        <MeshGradient
+                <div className="fixed inset-0 z-0" style={{ background: isDarkMode ? '#020617' : '#0f172a' }}>
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            background: isDarkMode
+                                ? 'linear-gradient(160deg, #020617 0%, #0f172a 40%, #111827 100%)'
+                                : 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)'
+                        }}
+                    />
+                    {graphicsConfig?.enableMeshGradient && (
+                        <SafeMeshGradient
                             className="w-full h-full"
                             colors={isDarkMode ? [
-                                '#020617',
-                                '#0f172a',
-                                '#1e293b',
-                                '#1e3a5f',
-                                '#111827'
+                                '#020617','#0f172a','#1e293b','#1e3a5f','#111827'
                             ] : [
-                                '#dbeafe',
-                                '#94a3b8',
-                                '#64748b',
-                                '#475569',
-                                '#334155',
-                                '#1e3a5f',
-                                '#1e3a8a',
-                                '#0f172a'
+                                '#dbeafe','#94a3b8','#64748b','#475569',
+                                '#334155','#1e3a5f','#1e3a8a','#0f172a'
                             ]}
                             speed={graphicsConfig.meshGradientSpeed}
-                        />
-                    ) : (
-                        <div
-                            className="w-full h-full"
-                            style={{
-                                background: isDarkMode
-                                    ? 'linear-gradient(160deg, #020617 0%, #0f172a 40%, #111827 100%)'
-                                    : 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)'
-                            }}
                         />
                     )}
                 </div>
@@ -1988,7 +1977,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {/* Mesh Gradient Background - Darkened for white text readability */}
                 <div className="absolute inset-0 z-0">
                     {graphicsConfig?.enableMeshGradient ? (
-                        <MeshGradient
+                        <SafeMeshGradient
                             className="w-full h-full"
                             colors={[
                                 "#000000",
@@ -2545,24 +2534,16 @@ export const HomePage: React.FC<HomePageProps> = ({
                     
                     {/* MeshGradient Background - Deep navy/blue palette */}
                     <div className="absolute inset-0 z-0 h-full w-full">
-                        {graphicsConfig?.enableMeshGradient ? (
-                            <MeshGradient
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #1e3a8a 0%, #0f2060 40%, #080e2a 75%, #05091a 100%)' }} />
+                        {graphicsConfig?.enableMeshGradient && (
+                            <SafeMeshGradient
                                 className="w-full h-full"
                                 colors={[
-                                    "#05091a",
-                                    "#080e2a",
-                                    "#0a1240",
-                                    "#0d1850",
-                                    "#0f2060",
-                                    "#112878",
-                                    "#1e3a8a",
-                                    "#1e40af",
-                                    "#1d4ed8"
+                                    "#05091a","#080e2a","#0a1240","#0d1850","#0f2060",
+                                    "#112878","#1e3a8a","#1e40af","#1d4ed8"
                                 ]}
                                 speed={graphicsConfig.meshGradientSpeed}
                             />
-                        ) : (
-                            <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, #1e3a8a 0%, #0f2060 40%, #080e2a 75%, #05091a 100%)' }} />
                         )}
                         {/* Deep blue overlay — dark blue at top, deeper navy at bottom */}
                         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(8,14,50,0.75) 0%, rgba(5,10,35,0.82) 40%, rgba(3,6,20,0.94) 100%)' }} />
