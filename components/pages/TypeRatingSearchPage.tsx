@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-import React, { useState, useRef, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
-import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
-=======
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, User, Clock, Award, Shield, ChevronDown } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
->>>>>>> e9915c6fc42e47f16c780d183759e650b0d56e91
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
 
@@ -438,10 +431,9 @@ export default function TypeRatingSearchPage({
 
   return (
     <div className="min-h-screen relative text-slate-900 font-sans">
-      {/* SafeMeshGradient Background */}
+      {/* MeshGradient Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[#4a4a4d]" />
-        <SafeMeshGradient
+        <MeshGradient
           className="w-full h-full"
           colors={['#020617', '#0f172a', '#1e293b', '#1e3a5f', '#111827']}
           speed={0.22}
