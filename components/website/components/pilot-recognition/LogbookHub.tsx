@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { safeRedirect } from '@/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft, X, Send, Bot, User, Upload } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -360,6 +361,18 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
   const [chatMessages, setChatMessages] = useState<{role:'user'|'assistant';text:string}[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [csvModalProvider, setCsvModalProvider] = useState<string | null>(null);
+  const [, setSearchParams] = useSearchParams();
+
+  const viewFlightInLogbook = useCallback((ac: typeof AIRCRAFT_CAROUSEL_DATA[number]) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('tab', 'profile');
+      next.set('section', 'my_flightbook');
+      next.set('flight', ac.tail);
+      if (ac.img) next.set('img', ac.img);
+      return next;
+    });
+  }, [setSearchParams]);
 
   const AIRCRAFT_CAROUSEL_DATA = [
     { name: 'Cessna 172S', type: 'C172', hours: 3.2, date: '28 Jun 2026', color: '#38bdf8', img: '/images/manufacturers/cessna/cessna-cessna_172.jpg', tail: 'RP-C1234', landings: 4, grade: 'A-', instructor: 'Capt. Reyes', remarks: 'Smooth short-field landing. Wind correction on final was precise.', route: 'RPLL - RPLC', conditions: 'VFR, 12kt wind 090°', engine: 'Lycoming IO-360-L2A', totalTime: 342.5, crew: [
@@ -579,7 +592,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile, onNavigate, onC
           `}</style>
           <div className="aircraft-carousel flex gap-4 px-6" style={{ width: 'max-content' }}>
             {[...AIRCRAFT_CAROUSEL_DATA, ...AIRCRAFT_CAROUSEL_DATA].map((ac, i) => (
-              <FlightCard key={`${ac.name}-${i}`} ac={ac} onClick={() => openAircraftModal(ac)} />
+              <FlightCard key={`${ac.name}-${i}`} ac={ac} onClick={() => viewFlightInLogbook(ac)} />
             ))}
           </div>
         </div>

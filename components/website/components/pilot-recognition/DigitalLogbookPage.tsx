@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { Plus, Search, Minimize } from 'lucide-react';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
@@ -630,6 +631,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
   }, []);
   const useFullscreenLayout = isFullscreen || inlineFullscreen;
   const resolvedUserId = useMemo(() => userProfile?.id ?? userProfile?.uid ?? null, [userProfile]);
+  const [searchParams] = useSearchParams();
+  const flightParam = searchParams.get('flight');
+  const imgParam = searchParams.get('img');
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -776,6 +780,15 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Data fetch when the resolved user ID is known; fetchFlightLogs handles loading/logs state.
     if (resolvedUserId) fetchFlightLogs();
   }, [resolvedUserId, fetchFlightLogs]);
+
+  // Select the flight passed in the URL query params (e.g. from the dashboard carousel)
+  useEffect(() => {
+    if (!flightParam || flightLogs.length === 0) return;
+    const match = flightLogs.find((log) => log.registration === flightParam);
+    if (match) {
+      setSelectedLog(imgParam ? { ...match, image: imgParam } : match);
+    }
+  }, [flightLogs, flightParam, imgParam]);
 
   // Search PilotRecognition profiles when adding crew
   useEffect(() => {
