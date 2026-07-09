@@ -788,15 +788,12 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({
     if (match) {
       setSelectedLog(imgParam ? { ...match, image: imgParam } : match);
       setLedgerTab('all');
-      window.setTimeout(() => {
-        const row = document.getElementById(`logbook-row-${match.id}`);
-        if (row) {
-          row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          document.getElementById('logbook-ledger-table')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
     }
+    // Land on the ledger table so the page doesn't stay at the bottom
+    // when navigating from a scrolled dashboard.
+    window.setTimeout(() => {
+      document.getElementById('logbook-ledger-table')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
   }, [flightLogs, flightParam, imgParam]);
 
   // Search PilotRecognition profiles when adding crew
