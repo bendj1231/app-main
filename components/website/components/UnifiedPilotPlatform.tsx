@@ -232,51 +232,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   }, [profileData?.consent_version]);
 
-  // Auto-redirect to pathways discovery when logbook sync completes on advanced-profile tab
-  useEffect(() => {
-    const hasLogbookSync = !!profileData?.logbook_sync_valid || !!profileData?.logbook_provider;
-    const discoveryDone = (() => {
-      try {
-        return localStorage.getItem('pathways_discovery_done') === 'true';
-      } catch {
-        return false;
-      }
-    })();
-    const alreadyRedirected = (() => {
-      try {
-        return sessionStorage.getItem('pathways_discovery_redirected') === '1';
-      } catch {
-        return false;
-      }
-    })();
-    if (
-      hasLogbookSync &&
-      !discoveryDone &&
-      !alreadyRedirected &&
-      activeTab === 'advanced-profile'
-    ) {
-      try {
-        sessionStorage.setItem('pathways_discovery_redirected', '1');
-      } catch {}
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setActiveTab('pathways-discovery');
-    }
-  }, [profileData?.logbook_sync_valid, profileData?.logbook_provider, activeTab]);
-
-  // Sync URL with active tab — preserve hash for scroll targets
-  useEffect(() => {
-    const hash = window.location.hash;
-    setSearchParams({ tab: activeTab }, { replace: true });
-    if (hash) {
-      // Restore hash after searchParams update strips it
-      window.history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search + hash
-      );
-    }
-  }, [activeTab, setSearchParams]);
-
   // Scroll to hash target after tab content mounts
   useEffect(() => {
     const hash = window.location.hash;
@@ -293,13 +248,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       return () => clearTimeout(timer);
     }
   }, [activeTab]);
-
-  // Sync incoming URL param
-  useEffect(() => {
-    const t = searchParams.get('tab') as TabId;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (t && t !== activeTab) setActiveTab(t);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── IndexedDB cache helper for dashboard batch ──
   const dbName = 'pr-dashboard-cache';
@@ -679,6 +627,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const prevTabRef = useRef<TabId>('home');
   const setTab = useCallback(
     (t: TabId) => {
+      console.log('[UnifiedPilotPlatform.setTab] requested:', t, 'current:', activeTab);
       prevTabRef.current = activeTab;
       setActiveTab(t);
       setSearchParams({ tab: t });
@@ -686,15 +635,24 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     [activeTab, setSearchParams]
   );
 
+  // Log every activeTab change for debugging
+  useEffect(() => {
+    console.log('[UnifiedPilotPlatform.activeTab] changed to:', activeTab);
+  }, [activeTab]);
+
   // Sync activeTab with URL ?tab= query param when it changes externally
+  // Only runs when searchParams actually changes (e.g. back button, direct link),
+  // NOT when activeTab changes from a user click, so it cannot override setTab.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const tabFromUrl = searchParams.get('tab') as TabId;
+    console.log('[UnifiedPilotPlatform.urlSync] urlTab:', tabFromUrl, 'activeTab:', activeTab);
     if (tabFromUrl && tabFromUrl !== activeTab) {
       prevTabRef.current = activeTab;
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(tabFromUrl);
     }
-  }, [activeTab, searchParams]);
+  }, [searchParams]);
 
   // Listen for tab-switch events fired from embedded child components (e.g. profile page wallet CTA)
   useEffect(() => {
@@ -705,6 +663,37 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     window.addEventListener('switch-platform-tab', handler);
     return () => window.removeEventListener('switch-platform-tab', handler);
   }, [setTab]);
+
+  // Auto-redirect to pathways discovery when logbook sync completes on advanced-profile tab
+  useEffect(() => {
+    const hasLogbookSync = !!profileData?.logbook_sync_valid || !!profileData?.logbook_provider;
+    const discoveryDone = (() => {
+      try {
+        return localStorage.getItem('pathways_discovery_done') === 'true';
+      } catch {
+        return false;
+      }
+    })();
+    const alreadyRedirected = (() => {
+      try {
+        return sessionStorage.getItem('pathways_discovery_redirected') === '1';
+      } catch {
+        return false;
+      }
+    })();
+    if (
+      hasLogbookSync &&
+      !discoveryDone &&
+      !alreadyRedirected &&
+      activeTab === 'advanced-profile'
+    ) {
+      try {
+        sessionStorage.setItem('pathways_discovery_redirected', '1');
+      } catch {}
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTab('pathways-discovery');
+    }
+  }, [profileData?.logbook_sync_valid, profileData?.logbook_provider, activeTab, setTab]);
 
   const isCiphertext = (v: unknown) => typeof v === 'string' && v.trim().startsWith('{"iv"');
   const looksLikeEmailPrefix = (v: string) => /^[a-z0-9_.]+$/.test(v) && v.length > 3;

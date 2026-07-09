@@ -610,11 +610,15 @@ export const HomeTab: React.FC<{
         {/* ── THREE CARDS ROW ── */}
         <motion.div variants={itemVariants} className={`flex-shrink-0 ${isMobile ? 'flex flex-col gap-4 h-auto' : 'grid grid-cols-3 gap-3 h-[120px] overflow-hidden'}`}>
 
-          {/* ACCESS RECOGNITION — goes to dashboard */}
+          {/* ACCESS RECOGNITION — goes to dashboard (debugging in place) */}
           <motion.div
             data-tour-target="home-access-recognition"
             className={`relative overflow-hidden cursor-pointer group border border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(15,39,71,0.10)] ${isMobile ? 'w-full h-[120px]' : 'h-full'}`}
-            onClick={() => setTab('dashboard' as TabId)}
+            onPointerDown={(e) => console.log('[AccessRecognitionCard] pointerDown', e.target, e.currentTarget)}
+            onClick={(e) => {
+              console.log('[AccessRecognitionCard] click', { target: e.target, currentTarget: e.currentTarget });
+              setTab('dashboard' as TabId);
+            }}
             variants={{ hidden: {}, visible: {}}}
             whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(220,38,38,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)' }}
             whileTap={{ scale: 0.96, boxShadow: '0 0 40px rgba(220,38,38,0.4), inset 0 0 0 1px rgba(255,255,255,0.25)' }}
