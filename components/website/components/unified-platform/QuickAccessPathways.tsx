@@ -20,8 +20,7 @@ const PathwayCard: React.FC<{ pathway: AirlinePathway; onClick: () => void }> = 
   pathway,
   onClick,
 }) => {
-  const badgeColor =
-    pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
+  const badgeColor = pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
 
   return (
     <div
@@ -74,7 +73,9 @@ const PathwayCard: React.FC<{ pathway: AirlinePathway; onClick: () => void }> = 
             <p className="mt-0.5 text-sm font-black text-slate-900 truncate">{pathway.region}</p>
           </div>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Category</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Category
+            </p>
             <p className="mt-0.5 text-sm font-black text-slate-900 truncate">{pathway.category}</p>
           </div>
         </div>
@@ -88,9 +89,7 @@ const PathwayCard: React.FC<{ pathway: AirlinePathway; onClick: () => void }> = 
               className="ml-1.5 transform transition-transform group-hover/action:translate-x-0.5"
             />
           </div>
-          {pathway.submitted && (
-            <Star size={14} className="text-amber-500 fill-amber-500" />
-          )}
+          {pathway.submitted && <Star size={14} className="text-amber-500 fill-amber-500" />}
         </div>
       </div>
     </div>
@@ -105,11 +104,14 @@ const PathwayModal: React.FC<{
   onSelect?: (airline: AirlinePathway) => void;
 }> = ({ pathway, onClose, onSelect }) => {
   const [activeTab, setActiveTab] = useState<ModalTab>('expectations');
-  const badgeColor =
-    pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
+  const badgeColor = pathway.match >= 85 ? '#10b981' : pathway.match >= 70 ? '#3b82f6' : '#f59e0b';
 
   const requirements = [
-    { label: 'Total Flight Time', value: `${1500 + pathway.gaps * 100} hours`, met: pathway.match >= 80 },
+    {
+      label: 'Total Flight Time',
+      value: `${1500 + pathway.gaps * 100} hours`,
+      met: pathway.match >= 80,
+    },
     { label: 'Medical Certificate', value: 'Class 1', met: true },
     { label: 'ICAO English Proficiency', value: 'Level 4+', met: pathway.match >= 70 },
     { label: 'Type Rating / Training', value: pathway.category, met: pathway.gaps <= 2 },
@@ -125,8 +127,14 @@ const PathwayModal: React.FC<{
   return ReactDOM.createPortal(
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={{
+        background: 'rgba(0,0,0,0.75)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -151,7 +159,10 @@ const PathwayModal: React.FC<{
         <div className="relative h-56 md:h-72 w-full overflow-hidden flex items-center justify-center bg-slate-900">
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(5,8,14,0.95) 0%, rgba(5,8,14,0.4) 50%, transparent 100%)' }}
+            style={{
+              background:
+                'linear-gradient(to top, rgba(5,8,14,0.95) 0%, rgba(5,8,14,0.4) 50%, transparent 100%)',
+            }}
           />
           <img
             src={pathway.logo}
@@ -165,7 +176,10 @@ const PathwayModal: React.FC<{
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-[10px] font-black tracking-[0.2em] uppercase mb-1" style={{ color: badgeColor }}>
+                <p
+                  className="text-[10px] font-black tracking-[0.2em] uppercase mb-1"
+                  style={{ color: badgeColor }}
+                >
                   {pathway.region} · {pathway.category}
                 </p>
                 <h2 className="text-3xl md:text-4xl font-black text-white">{pathway.name}</h2>
@@ -211,7 +225,10 @@ const PathwayModal: React.FC<{
           <div className="space-y-6 relative z-10 mb-6 min-h-[260px]">
             {activeTab === 'expectations' && (
               <div className="space-y-6 animate-in fade-in duration-200">
-                <div className="flex items-center gap-4 p-4 rounded-xl border" style={{ background: `${badgeColor}10`, borderColor: `${badgeColor}25` }}>
+                <div
+                  className="flex items-center gap-4 p-4 rounded-xl border"
+                  style={{ background: `${badgeColor}10`, borderColor: `${badgeColor}25` }}
+                >
                   <div
                     className="w-14 h-14 flex items-center justify-center rounded-full border text-lg font-extrabold shadow-sm shrink-0"
                     style={{
@@ -224,9 +241,15 @@ const PathwayModal: React.FC<{
                     {pathway.match}
                   </div>
                   <div>
-                    <p className="text-slate-900 dark:text-white font-bold text-sm">Profile Match</p>
+                    <p className="text-slate-900 dark:text-white font-bold text-sm">
+                      Profile Match
+                    </p>
                     <p className="text-slate-500 dark:text-white/35 text-xs mt-0.5">
-                      {pathway.match >= 85 ? 'Strong fit for your profile' : pathway.match >= 70 ? 'Good fit with minor gaps' : 'Entry pathway — build hours to improve'}
+                      {pathway.match >= 85
+                        ? 'Strong fit for your profile'
+                        : pathway.match >= 70
+                          ? 'Good fit with minor gaps'
+                          : 'Entry pathway — build hours to improve'}
                     </p>
                   </div>
                 </div>
@@ -234,24 +257,35 @@ const PathwayModal: React.FC<{
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Activity size={14} className="text-slate-400 dark:text-white/40" />
-                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">What to Expect</p>
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">
+                      What to Expect
+                    </p>
                   </div>
                   <p className="text-sm text-slate-700 dark:text-white/70 leading-relaxed">
-                    The {pathway.subtitle} at {pathway.name} is a {pathway.category.toLowerCase()} opportunity based in {pathway.region}. Expect structured training, competitive progression, and access to a {pathway.match >= 80 ? 'global' : 'regional'} network.
+                    The {pathway.subtitle} at {pathway.name} is a {pathway.category.toLowerCase()}{' '}
+                    opportunity based in {pathway.region}. Expect structured training, competitive
+                    progression, and access to a {pathway.match >= 80 ? 'global' : 'regional'}{' '}
+                    network.
                   </p>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Award size={14} className="text-slate-400 dark:text-white/40" />
-                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Highlights</p>
+                    <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">
+                      Highlights
+                    </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {pathway.benefits.map((benefit) => (
                       <span
                         key={benefit}
                         className="px-3 py-1.5 rounded-full text-[11px] font-black"
-                        style={{ background: `${badgeColor}15`, color: badgeColor, border: `1px solid ${badgeColor}30` }}
+                        style={{
+                          background: `${badgeColor}15`,
+                          color: badgeColor,
+                          border: `1px solid ${badgeColor}30`,
+                        }}
                       >
                         {benefit}
                       </span>
@@ -265,17 +299,28 @@ const PathwayModal: React.FC<{
               <div className="space-y-4 animate-in fade-in duration-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Clock size={14} className="text-slate-400 dark:text-white/40" />
-                  <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">Eligibility Checklist</p>
+                  <p className="text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-white/40 uppercase">
+                    Eligibility Checklist
+                  </p>
                 </div>
                 {requirements.map((req) => (
                   <div
                     key={req.label}
                     className="flex items-center justify-between rounded-xl p-3.5 border"
-                    style={{ background: req.met ? `${badgeColor}08` : 'rgba(245,158,11,0.06)', borderColor: req.met ? `${badgeColor}25` : 'rgba(245,158,11,0.15)' }}
+                    style={{
+                      background: req.met ? `${badgeColor}08` : 'rgba(245,158,11,0.06)',
+                      borderColor: req.met ? `${badgeColor}25` : 'rgba(245,158,11,0.15)',
+                    }}
                   >
                     <div>
-                      <p className={`text-xs font-black ${req.met ? 'text-slate-900 dark:text-white' : 'text-amber-700 dark:text-amber-300'}`}>{req.label}</p>
-                      <p className="text-[10px] text-slate-500 dark:text-white/40 mt-0.5">{req.value}</p>
+                      <p
+                        className={`text-xs font-black ${req.met ? 'text-slate-900 dark:text-white' : 'text-amber-700 dark:text-amber-300'}`}
+                      >
+                        {req.label}
+                      </p>
+                      <p className="text-[10px] text-slate-500 dark:text-white/40 mt-0.5">
+                        {req.value}
+                      </p>
                     </div>
                     <div
                       className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
@@ -289,7 +334,8 @@ const PathwayModal: React.FC<{
                   </div>
                 ))}
                 <p className="text-[10px] text-slate-500 dark:text-white/30 leading-relaxed">
-                  {pathway.gaps} gaps identified. Closing these will improve your match score and move you closer to eligibility.
+                  {pathway.gaps} gaps identified. Closing these will improve your match score and
+                  move you closer to eligibility.
                 </p>
               </div>
             )}
@@ -299,31 +345,53 @@ const PathwayModal: React.FC<{
                 <div className="rounded-xl p-5 bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-white/[0.06] backdrop-blur-xl">
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Match</p>
-                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.match}%</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">
+                        Match
+                      </p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">
+                        {pathway.match}%
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Gaps</p>
-                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.gaps}</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">
+                        Gaps
+                      </p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">
+                        {pathway.gaps}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">Status</p>
-                      <p className="text-xl font-black text-slate-900 dark:text-white">{pathway.submitted ? 'Submitted' : 'Open'}</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider">
+                        Status
+                      </p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white">
+                        {pathway.submitted ? 'Submitted' : 'Open'}
+                      </p>
                     </div>
                   </div>
                   <div className="h-px bg-slate-200 dark:bg-white/5 mb-4" />
                   <div className="space-y-3">
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Region</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">
+                        Region
+                      </p>
                       <p className="text-sm text-slate-700 dark:text-white/80">{pathway.region}</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Category</p>
-                      <p className="text-sm text-slate-700 dark:text-white/80">{pathway.category}</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">
+                        Category
+                      </p>
+                      <p className="text-sm text-slate-700 dark:text-white/80">
+                        {pathway.category}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">Program</p>
-                      <p className="text-sm text-slate-700 dark:text-white/80">{pathway.subtitle}</p>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-wider mb-1">
+                        Program
+                      </p>
+                      <p className="text-sm text-slate-700 dark:text-white/80">
+                        {pathway.subtitle}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -334,18 +402,34 @@ const PathwayModal: React.FC<{
                       <Star size={16} className="text-emerald-500 fill-emerald-500" />
                     </div>
                     <div>
-                      <p className="text-xs font-black text-slate-900 dark:text-white">Interest Submitted</p>
-                      <p className="text-[10px] text-slate-500 dark:text-white/50">You have expressed interest in this pathway.</p>
+                      <p className="text-xs font-black text-slate-900 dark:text-white">
+                        Interest Submitted
+                      </p>
+                      <p className="text-[10px] text-slate-500 dark:text-white/50">
+                        You have expressed interest in this pathway.
+                      </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                  <div
+                    className="rounded-xl p-4"
+                    style={{
+                      background: 'rgba(245,158,11,0.06)',
+                      border: '1px solid rgba(245,158,11,0.15)',
+                    }}
+                  >
                     <div className="flex items-start gap-2">
-                      <Award size={14} className="text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                      <Award
+                        size={14}
+                        className="text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5"
+                      />
                       <div>
-                        <p className="text-xs font-black text-amber-700 dark:text-amber-300">Open Pathway</p>
+                        <p className="text-xs font-black text-amber-700 dark:text-amber-300">
+                          Open Pathway
+                        </p>
                         <p className="text-[10px] text-amber-700/70 dark:text-amber-300/60 leading-relaxed mt-1">
-                          Submit your interest to signal your application intent and track this pathway in your dashboard.
+                          Submit your interest to signal your application intent and track this
+                          pathway in your dashboard.
                         </p>
                       </div>
                     </div>
@@ -366,8 +450,12 @@ const PathwayModal: React.FC<{
               background: 'linear-gradient(135deg, #dc2626 0%, #be123c 100%)',
               boxShadow: '0 8px 24px -8px rgba(220,38,38,0.4)',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 12px 32px -10px rgba(220,38,38,0.55)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(220,38,38,0.4)'; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 12px 32px -10px rgba(220,38,38,0.55)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(220,38,38,0.4)';
+            }}
           >
             {onSelect ? 'View Full Pathway Details' : 'Submit Interest'}
           </button>
@@ -386,7 +474,15 @@ export const QuickAccessPathways: React.FC<{
   latest?: AirlinePathway[];
   submitted?: AirlinePathway[];
   loading?: boolean;
-}> = ({ profile, onSelect, pathways: pathwaysProp, recommended: recommendedProp, latest: latestProp, submitted: submittedProp, loading: loadingProp }) => {
+}> = ({
+  profile,
+  onSelect,
+  pathways: pathwaysProp,
+  recommended: recommendedProp,
+  latest: latestProp,
+  submitted: submittedProp,
+  loading: loadingProp,
+}) => {
   const hook = useAirlinePathways(profile);
   const allPathways = pathwaysProp ?? hook.pathways;
   const recommended = recommendedProp ?? hook.recommended;
@@ -412,12 +508,14 @@ export const QuickAccessPathways: React.FC<{
   };
 
   return (
-    <div className="w-full space-y-6 text-slate-900 rounded-2xl p-4 md:p-8 bg-transparent">
+    <div className="hidden sm:block w-full space-y-6 text-slate-900 rounded-2xl p-4 md:p-8 bg-transparent">
       {/* Header — same style as Digital Logbook section header */}
       <div className="flex items-center gap-3">
         <Zap size={22} className="text-red-500" />
         <div>
-          <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">Career Pathways</p>
+          <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+            Career Pathways
+          </p>
           <h3 className="text-lg md:text-xl font-bold text-slate-900">Quick Access Pathways</h3>
         </div>
       </div>

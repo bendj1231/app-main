@@ -11,7 +11,6 @@ import type { TabId } from '../types';
 import {
   BookOpen,
   Globe,
-  Home,
   User,
   Shield,
   Target,
@@ -87,8 +86,13 @@ export const DashboardTab: React.FC<{
   ];
   const dashFeatures = dashTier === 'free' ? dashFreeFeatures : dashPlusFeatures;
 
-  const { pathways, recommended, latest, submitted, loading: pathwaysLoading } =
-    useAirlinePathways(profile);
+  const {
+    pathways,
+    recommended,
+    latest,
+    submitted,
+    loading: pathwaysLoading,
+  } = useAirlinePathways(profile);
   const topMatch = !pathwaysLoading
     ? [...pathways].sort((a, b) => b.match - a.match)[0]
     : undefined;
@@ -654,7 +658,8 @@ export const DashboardTab: React.FC<{
                 (profile?.verification_status as Record<string, unknown>)?.status ||
                 (profile?.verification_status as string) ||
                 'unverified';
-              const manageLabel = tier === 'free' || tier === 'bronze' ? 'Upgrade Now' : 'Manage Plan';
+              const manageLabel =
+                tier === 'free' || tier === 'bronze' ? 'Upgrade Now' : 'Manage Plan';
               return (
                 <>
                   <div>
@@ -704,17 +709,23 @@ export const DashboardTab: React.FC<{
       </div>
 
       {/* Quick Access Pathways — airline logo carousel */}
-      <QuickAccessPathways
-        profile={profile}
-        pathways={pathways}
-        recommended={recommended}
-        latest={latest}
-        submitted={submitted}
-        loading={pathwaysLoading}
-      />
+      <div className="hidden md:block">
+        <QuickAccessPathways
+          profile={profile}
+          pathways={pathways}
+          recommended={recommended}
+          latest={latest}
+          submitted={submitted}
+          loading={pathwaysLoading}
+        />
+      </div>
 
       {/* Interactive Profile Preview — glassy SaaS command centre */}
-      <InteractiveProfilePreview profile={profile as Record<string, unknown>} setTab={setTab} onNavigate={onNavigate} />
+      <InteractiveProfilePreview
+        profile={profile as Record<string, unknown>}
+        setTab={setTab}
+        onNavigate={onNavigate}
+      />
 
       {/* Digital Logbook Hub */}
       <LogbookHub
@@ -772,13 +783,18 @@ export const DashboardTab: React.FC<{
               bar: 'bg-green-500',
             },
           ].map((p) => (
-            <div key={p.name} className="p-4 rounded-xl" style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
-              backdropFilter: 'blur(12px) saturate(1.1)',
-              WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
-            }}>
+            <div
+              key={p.name}
+              className="p-4 rounded-xl"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+                backdropFilter: 'blur(12px) saturate(1.1)',
+                WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+              }}
+            >
               <div className="flex items-center justify-between mb-3">
                 <p.icon size={18} className={p.color} />
                 <span className={`text-xs px-2 py-1 font-bold uppercase ${p.bg}`}>{p.badge}</span>
@@ -804,15 +820,21 @@ export const DashboardTab: React.FC<{
           <Brain size={22} className="text-orange-400" />
           <h3 className="text-xl font-bold text-white">» EXAMINATION PORTAL</h3>
         </div>
-        <div className="p-6 rounded-xl" style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
-          backdropFilter: 'blur(12px) saturate(1.1)',
-          WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
-          border: '1px solid rgba(255,255,255,0.15)',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
-        }}>
+        <div
+          className="p-6 rounded-xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+            backdropFilter: 'blur(12px) saturate(1.1)',
+            WebkitBackdropFilter: 'blur(12px) saturate(1.1)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 12px rgba(0,0,0,0.04)',
+          }}
+        >
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.25)' }}>
+            <div
+              className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(255,255,255,0.25)' }}
+            >
               <Brain size={22} className="text-orange-600" />
             </div>
             <div className="flex-1">
@@ -845,35 +867,6 @@ export const DashboardTab: React.FC<{
           </div>
         </div>
       </div>
-
-      {/* Mobile bottom navigation — matches img 2 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 md:hidden z-50">
-        <nav className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
-          {[
-            { id: 'home', label: 'Home', icon: Home },
-            { id: 'dashboard', label: 'Flight Deck', icon: Plane },
-            { id: 'profile', label: 'Profile', icon: User },
-            { id: 'inbox', label: 'Inbox', icon: Mail },
-            { id: 'recognition-plus', label: 'Recognition+', icon: Star },
-          ].map((item) => {
-            const Icon = item.icon;
-            const active = item.id === 'dashboard';
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setTab?.(item.id as TabId)}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors ${
-                  active ? 'text-red-600' : 'text-slate-500'
-                }`}
-              >
-                <Icon size={20} strokeWidth={active ? 2.5 : 2} />
-                <span className="text-[10px] font-bold leading-none">{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
     </div>
-);
+  );
 };
