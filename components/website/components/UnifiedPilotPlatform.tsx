@@ -2,42 +2,23 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { safeRedirect } from '@/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SafeMeshGradient } from '@/components/ui/SafeMeshGradient';
+import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/lib/device-detection';
 import {
   User,
-  Shield,
-  ShieldCheck,
   Settings,
-  LogOut,
   Bell,
   MessageSquare,
   Menu,
   X,
-  Send,
-  ChevronRight,
-  CreditCard,
   BookMarked,
-  RefreshCw,
-  Eye,
-  Linkedin,
-  Instagram,
-  Youtube,
-  Facebook,
-  Twitter,
-  ExternalLink,
-  CheckCircle2,
-  ArrowRight,
-  ChevronLeft,
   Info,
   AlertCircle,
-  Monitor,
-  Award,
-  Target,
-  TrendingUp,
   Star,
   Moon,
   Sun,
+  Home,
+  Plane,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -87,6 +68,14 @@ interface WalletCheck {
   [key: string]: unknown;
 }
 
+interface CredentialStatus {
+  status?: string;
+  expiry?: string;
+  label?: string;
+  expires_at?: string;
+  [key: string]: unknown;
+}
+
 import { HomeTab } from './unified-platform/tabs/HomeTab';
 import { ProfileTab } from './unified-platform/tabs/ProfileTab';
 import { PathwaysTab } from './unified-platform/tabs/PathwaysTab';
@@ -98,6 +87,7 @@ import { AtlasCVTab } from './unified-platform/tabs/AtlasCVTab';
 import { EventsTab } from './unified-platform/tabs/EventsTab';
 import { NewsroomTab } from './unified-platform/tabs/NewsroomTab';
 import { SettingsTab } from './unified-platform/tabs/SettingsTab';
+import { UnifiedPlatformWelcomeScreen } from './unified-platform/UnifiedPlatformWelcomeScreen';
 import { VerificationStatusTab } from './unified-platform/tabs/VerificationStatusTab';
 import { VerificationRecurrencyTab } from './unified-platform/tabs/VerificationRecurrencyTab';
 import { ScoreTab } from './unified-platform/tabs/ScoreTab';
@@ -115,9 +105,21 @@ import { PilotShortageSupportPage } from './PilotShortageSupportPage';
 const useSafeTheme = () => {
   try {
     const context = React.useContext(ThemeContext);
-    return context || { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
+    return (
+      context || {
+        isDarkMode: false,
+        toggleTheme: () => {},
+        isAutoMode: false,
+        resetToAutoTheme: () => {},
+      }
+    );
   } catch {
-    return { isDarkMode: false, toggleTheme: () => {}, isAutoMode: false, resetToAutoTheme: () => {} };
+    return {
+      isDarkMode: false,
+      toggleTheme: () => {},
+      isAutoMode: false,
+      resetToAutoTheme: () => {},
+    };
   }
 };
 
@@ -202,7 +204,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   };
   const { callApi, callBatch } = useWorkerAuth();
-  const [emailVerified, setEmailVerified] = useState<boolean>(true);
+  const emailVerified = useMemo(() => !!auth0User?.email_verified, [auth0User]);
   const [resendingSent, setResendingSent] = useState(false);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
 
@@ -221,13 +223,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     };
   }, [activeTab]);
 
-  // Check email verification status via Auth0
-  useEffect(() => {
-    if (auth0User) {
-      setEmailVerified(!!(auth0User as any).email_verified);
-    }
-  }, [auth0User]);
-
   // Check if T&C version has been updated since user last accepted
   useEffect(() => {
     const CURRENT_TC_VERSION = 'v2-2026';
@@ -241,13 +236,29 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   useEffect(() => {
     const hasLogbookSync = !!profileData?.logbook_sync_valid || !!profileData?.logbook_provider;
     const discoveryDone = (() => {
-      try { return localStorage.getItem('pathways_discovery_done') === 'true'; } catch { return false; }
+      try {
+        return localStorage.getItem('pathways_discovery_done') === 'true';
+      } catch {
+        return false;
+      }
     })();
     const alreadyRedirected = (() => {
-      try { return sessionStorage.getItem('pathways_discovery_redirected') === '1'; } catch { return false; }
+      try {
+        return sessionStorage.getItem('pathways_discovery_redirected') === '1';
+      } catch {
+        return false;
+      }
     })();
-    if (hasLogbookSync && !discoveryDone && !alreadyRedirected && activeTab === 'advanced-profile') {
-      try { sessionStorage.setItem('pathways_discovery_redirected', '1'); } catch {}
+    if (
+      hasLogbookSync &&
+      !discoveryDone &&
+      !alreadyRedirected &&
+      activeTab === 'advanced-profile'
+    ) {
+      try {
+        sessionStorage.setItem('pathways_discovery_redirected', '1');
+      } catch {}
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab('pathways-discovery');
     }
   }, [profileData?.logbook_sync_valid, profileData?.logbook_provider, activeTab]);
@@ -258,7 +269,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     setSearchParams({ tab: activeTab }, { replace: true });
     if (hash) {
       // Restore hash after searchParams update strips it
-      window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+      window.history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search + hash
+      );
     }
   }, [activeTab, setSearchParams]);
 
@@ -300,31 +315,39 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     });
   }, []);
 
-  const cacheBatch = async (key: string, payload: Record<string, unknown>) => {
-    const db = await dbPromise;
-    const tx = db.transaction(storeName, 'readwrite');
-    tx.objectStore(storeName).put({ payload, cachedAt: Date.now() }, key);
-  };
-
-  const readCachedBatch = async (key: string): Promise<Record<string, unknown> | null> => {
-    try {
+  const cacheBatch = useCallback(
+    async (key: string, payload: Record<string, unknown>) => {
       const db = await dbPromise;
-      const tx = db.transaction(storeName, 'readonly');
-      const record = await new Promise<
-        { payload: Record<string, unknown>; cachedAt: number } | undefined
-      >((resolve, reject) => {
-        const req = tx.objectStore(storeName).get(key);
-        req.onsuccess = () =>
-          resolve(req.result as { payload: Record<string, unknown>; cachedAt: number } | undefined);
-        req.onerror = () => reject(req.error);
-      });
-      return record?.payload ?? null;
-    } catch {
-      return null;
-    }
-  };
+      const tx = db.transaction(storeName, 'readwrite');
+      tx.objectStore(storeName).put({ payload, cachedAt: Date.now() }, key);
+    },
+    [dbPromise]
+  );
 
-  const clearDashboardCache = async () => {
+  const readCachedBatch = useCallback(
+    async (key: string): Promise<Record<string, unknown> | null> => {
+      try {
+        const db = await dbPromise;
+        const tx = db.transaction(storeName, 'readonly');
+        const record = await new Promise<
+          { payload: Record<string, unknown>; cachedAt: number } | undefined
+        >((resolve, reject) => {
+          const req = tx.objectStore(storeName).get(key);
+          req.onsuccess = () =>
+            resolve(
+              req.result as { payload: Record<string, unknown>; cachedAt: number } | undefined
+            );
+          req.onerror = () => reject(req.error);
+        });
+        return record?.payload ?? null;
+      } catch {
+        return null;
+      }
+    },
+    [dbPromise]
+  );
+
+  const clearDashboardCache = useCallback(async () => {
     try {
       const db = await dbPromise;
       const tx = db.transaction(storeName, 'readwrite');
@@ -332,7 +355,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     } catch {
       /* no-op */
     }
-  };
+  }, [dbPromise]);
 
   const [_dataWarnings, _setDataWarnings] = useState<string[]>([]);
   const [_isRefreshing, _setIsRefreshing] = useState(false);
@@ -516,12 +539,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     const loadDashboard = async () => {
       try {
         const email = auth0User?.email;
-        console.log(
-          '[UnifiedPilotPlatform] loadDashboard() called, auth0Id:',
-          auth0Id,
-          'email:',
-          email
-        );
 
         // Check IndexedDB cache first (survives browser restarts)
         const cacheKey = `dashboard:${auth0Id}`;
@@ -536,13 +553,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             const ageHours = (now - cachedAt) / (1000 * 60 * 60);
             if (ageHours < 24) {
               const payload = cachedRecord?.payload || cached;
-              setProfileData((payload as { profileData?: ProfileData | null }).profileData || null);
+              const cachedProfileData =
+                (payload as { profileData?: ProfileData | null }).profileData || null;
+              setProfileData(cachedProfileData);
               setWalletChecks((payload as { walletChecks?: WalletCheck[] }).walletChecks || []);
               setCredentials(
                 (payload as { credentials?: Record<string, unknown>[] }).credentials || []
               );
               setNotifCount((payload as { notifCount?: number }).notifCount || 0);
-              console.log('[dashboard] loaded from IndexedDB cache');
+              if (cachedProfileData?.first_name) {
+                window.dispatchEvent(
+                  new CustomEvent('app:profileLoaded', {
+                    detail: { firstName: cachedProfileData.first_name },
+                  })
+                );
+              }
+
               return; // Valid cache — skip Worker call
             }
           } catch {
@@ -551,20 +577,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         }
 
         // Fetch fresh from Worker
-        console.log(
-          '[UnifiedPilotPlatform] Calling getDashboardData with auth0_id:',
-          auth0Id,
-          'email:',
-          email
-        );
+
         const data = (await callApi('getDashboardData', { auth0_id: auth0Id, email })) as Record<
           string,
           unknown
         >;
-        console.log('[UnifiedPilotPlatform] getDashboardData response:', {
-          hasProfile: !!data?.profile,
-          keys: Object.keys(data || {}),
-        });
+
         if (!data?.profile) {
           console.warn('[dashboard] no profile found for auth0_id:', auth0Id, 'data:', data);
           return;
@@ -611,6 +629,13 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         if (receipts) setWalletChecks(receipts);
         if (credentialList) setCredentials(credentialList);
         setNotifCount(0);
+        if (profileDataState.first_name) {
+          window.dispatchEvent(
+            new CustomEvent('app:profileLoaded', {
+              detail: { firstName: profileDataState.first_name },
+            })
+          );
+        }
 
         // Cache in IndexedDB (persists across browser sessions)
         await cacheBatch(cacheKey, {
@@ -620,14 +645,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           notifCount: 0,
           cachedAt: Date.now(),
         });
-        console.log('[dashboard] fetched from Worker and cached in IndexedDB');
       } catch (err) {
         console.error('[dashboard] unified load failed:', err);
       }
     };
 
     loadDashboard();
-  }, [auth0User?.sub, callApi]);
+  }, [
+    auth0User?.sub,
+    auth0User?.email,
+    auth0User?.family_name,
+    auth0User?.given_name,
+    auth0User?.name,
+    callApi,
+    cacheBatch,
+    readCachedBatch,
+  ]);
 
   // AuthContext userProfile seed — only used if passed from login flow
   useEffect(() => {
@@ -635,29 +668,33 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setProfileData(userProfile as ProfileData);
     }
-  }, [userProfile]);
+  }, [profileData?.id, userProfile]);
 
   const handleLogout = useCallback(async () => {
     await clearDashboardCache();
     await logout();
     onNavigate('home');
-  }, [logout, onNavigate]);
+  }, [clearDashboardCache, logout, onNavigate]);
 
   const prevTabRef = useRef<TabId>('home');
-  const setTab = (t: TabId) => {
-    prevTabRef.current = activeTab;
-    setActiveTab(t);
-    setSearchParams({ tab: t });
-  };
+  const setTab = useCallback(
+    (t: TabId) => {
+      prevTabRef.current = activeTab;
+      setActiveTab(t);
+      setSearchParams({ tab: t });
+    },
+    [activeTab, setSearchParams]
+  );
 
   // Sync activeTab with URL ?tab= query param when it changes externally
   useEffect(() => {
     const tabFromUrl = searchParams.get('tab') as TabId;
     if (tabFromUrl && tabFromUrl !== activeTab) {
       prevTabRef.current = activeTab;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(tabFromUrl);
     }
-  }, [searchParams]);
+  }, [activeTab, searchParams]);
 
   // Listen for tab-switch events fired from embedded child components (e.g. profile page wallet CTA)
   useEffect(() => {
@@ -667,7 +704,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     };
     window.addEventListener('switch-platform-tab', handler);
     return () => window.removeEventListener('switch-platform-tab', handler);
-  }, []);
+  }, [setTab]);
 
   const isCiphertext = (v: unknown) => typeof v === 'string' && v.trim().startsWith('{"iv"');
   const looksLikeEmailPrefix = (v: string) => /^[a-z0-9_.]+$/.test(v) && v.length > 3;
@@ -774,14 +811,25 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
             {/* Profile completeness gate for AI insights */}
             {(!profileData?.license_type || !profileData?.current_occupation) && (
-              <div className="rounded-xl p-4" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}>
+              <div
+                className="rounded-xl p-4"
+                style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)' }}
+              >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: 'rgba(220,38,38,0.08)',
+                      border: '1px solid rgba(220,38,38,0.2)',
+                    }}
+                  >
                     <span className="text-red-600 text-sm font-black">PR°</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-[10px] font-black tracking-wider text-red-600 uppercase">RECOGNITION+ — Pilot Verification</p>
+                      <p className="text-[10px] font-black tracking-wider text-red-600 uppercase">
+                        RECOGNITION+ — Pilot Verification
+                      </p>
                       <button
                         onClick={() => setTab('profile')}
                         className="px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110 flex-shrink-0"
@@ -790,9 +838,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                         GO TO PROFILE →
                       </button>
                     </div>
-                    <p className="text-base font-black text-slate-900 mt-0.5">Complete Your Profile for AI Pathway Matching</p>
+                    <p className="text-base font-black text-slate-900 mt-0.5">
+                      Complete Your Profile for AI Pathway Matching
+                    </p>
                     <p className="text-xs text-slate-500 mt-0.5 leading-relaxed truncate">
-                      Unlock AI-powered pathway recommendations, verification alerts, and recurrency monitoring.
+                      Unlock AI-powered pathway recommendations, verification alerts, and recurrency
+                      monitoring.
                     </p>
                   </div>
                 </div>
@@ -808,32 +859,67 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
             {/* Recognition+ Compliance Grid — visible to all, verification gated */}
             {(() => {
-              const isPlus = profileData?.subscription_tier === 'plus' || profileData?.subscription_tier === 'enterprise' || profileData?.verified_account;
+              const isPlus =
+                profileData?.subscription_tier === 'plus' ||
+                profileData?.subscription_tier === 'enterprise' ||
+                profileData?.verified_account;
 
               const now = Date.now();
-              const findCred = (type: string) => credentials.find(c => String(c?.credential_type || '').toLowerCase() === type);
+              const findCred = (type: string) =>
+                credentials.find((c) => String(c?.credential_type || '').toLowerCase() === type);
               const licenseCred = findCred('license');
               const medicalCred = findCred('medical');
               const elpCred = findCred('english_proficiency') || findCred('elp');
               const radioCred = findCred('radio_license');
 
-              const computeStatus = (cred: any, label: string, fallback: any) => {
+              const computeStatus = (
+                cred: CredentialStatus | undefined,
+                label: string,
+                fallback: CredentialStatus
+              ) => {
                 if (!cred) return fallback;
                 const status = String(cred.status || '').toLowerCase();
                 const expires = cred.expires_at ? new Date(cred.expires_at).getTime() : null;
-                const daysLeft = expires ? Math.ceil((expires - now) / (1000 * 60 * 60 * 24)) : null;
-                const expiryStr = expires ? new Date(expires).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : fallback.expiry;
+                const daysLeft = expires
+                  ? Math.ceil((expires - now) / (1000 * 60 * 60 * 24))
+                  : null;
+                const expiryStr = expires
+                  ? new Date(expires).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })
+                  : fallback.expiry;
 
-                if (status === 'expired' || status === 'revoked') return { ...fallback, expiry: expiryStr, status: 'expired' };
-                if (status === 'flagged' || status === 'fraudulent') return { ...fallback, expiry: expiryStr, status: 'expired' };
-                if (expires && daysLeft !== null && daysLeft <= 90) return { ...fallback, expiry: expiryStr, status: 'warning', label: `${label} · ${daysLeft}d left` };
-                if (status === 'active' || status === 'verified' || status === 'valid') return { ...fallback, expiry: expiryStr, status: 'valid' };
+                if (status === 'expired' || status === 'revoked')
+                  return { ...fallback, expiry: expiryStr, status: 'expired' };
+                if (status === 'flagged' || status === 'fraudulent')
+                  return { ...fallback, expiry: expiryStr, status: 'expired' };
+                if (expires && daysLeft !== null && daysLeft <= 90)
+                  return {
+                    ...fallback,
+                    expiry: expiryStr,
+                    status: 'warning',
+                    label: `${label} · ${daysLeft}d left`,
+                  };
+                if (status === 'active' || status === 'verified' || status === 'valid')
+                  return { ...fallback, expiry: expiryStr, status: 'valid' };
                 return { ...fallback, expiry: expiryStr, status: 'warning' };
               };
 
-              const authority = (profileData?.caa as string) || (profileData?.authority as string) || (profileData?.country as string) || 'CAAP';
-              const ato = (profileData?.ato as string) || (profileData?.training_provider as string) || 'your ATO';
-              const operator = (profileData?.current_employer as string) || (profileData?.operator as string) || 'your operator';
+              const authority =
+                (profileData?.caa as string) ||
+                (profileData?.authority as string) ||
+                (profileData?.country as string) ||
+                'CAAP';
+              const ato =
+                (profileData?.ato as string) ||
+                (profileData?.training_provider as string) ||
+                'your ATO';
+              const operator =
+                (profileData?.current_employer as string) ||
+                (profileData?.operator as string) ||
+                'your operator';
 
               const getAdvisory = (type: string) => {
                 const advisories: Record<string, string> = {
@@ -848,34 +934,59 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               };
 
               const items = [
-                computeStatus(medicalCred, 'Medical', { label: 'Medical Class 1', expiry: '02 May 2026', status: 'expired' }),
-                computeStatus(licenseCred, 'License', { label: 'CAAP CPL', expiry: '23 Oct 2030', status: 'valid' }),
+                computeStatus(medicalCred, 'Medical', {
+                  label: 'Medical Class 1',
+                  expiry: '02 May 2026',
+                  status: 'expired',
+                }),
+                computeStatus(licenseCred, 'License', {
+                  label: 'CAAP CPL',
+                  expiry: '23 Oct 2030',
+                  status: 'valid',
+                }),
                 { label: 'IR Recurrency', expiry: '15 Aug 2026', status: 'warning' },
                 { label: 'ME Recurrency', expiry: '22 Jul 2026', status: 'warning' },
-                computeStatus(elpCred, 'ELP', { label: 'ELP Level 5', expiry: '24 Oct 2030', status: 'valid' }),
-                computeStatus(radioCred, 'Radio', { label: 'NTC Radio', expiry: '30 Jul 2028', status: 'valid' }),
+                computeStatus(elpCred, 'ELP', {
+                  label: 'ELP Level 5',
+                  expiry: '24 Oct 2030',
+                  status: 'valid',
+                }),
+                computeStatus(radioCred, 'Radio', {
+                  label: 'NTC Radio',
+                  expiry: '30 Jul 2028',
+                  status: 'valid',
+                }),
               ].map((item) => ({
                 ...item,
-                detail: {
-                  'Medical Class 1': 'Valid medical required for all commercial operations. Night, IFR, and multi-crew privileges suspended if expired.',
-                  'CAAP CPL': 'Commercial license must match current ratings. IR and ME endorsements must be reflected in the ATO training record.',
-                  'IR Recurrency': 'Instrument rating recurrency includes 6 approaches, hold, and tracking within preceding 6 months.',
-                  'ME Recurrency': 'Multi-engine privileges require 3 takeoffs and landings within 90 days or a PC/IPC check.',
-                  'ELP Level 5': 'ICAO English Level 5 is valid indefinitely. Some airlines accept Level 4 for domestic routes only.',
-                  'NTC Radio': 'Radio telephony license authorizes use of ATC frequencies. Required for IFR, Class C and above.',
-                }[item.label] || '',
-                advisory: getAdvisory({
-                  'Medical Class 1': 'medical',
-                  'CAAP CPL': 'license',
-                  'IR Recurrency': 'ir',
-                  'ME Recurrency': 'me',
-                  'ELP Level 5': 'elp',
-                  'NTC Radio': 'radio',
-                }[item.label] || ''),
+                detail:
+                  {
+                    'Medical Class 1':
+                      'Valid medical required for all commercial operations. Night, IFR, and multi-crew privileges suspended if expired.',
+                    'CAAP CPL':
+                      'Commercial license must match current ratings. IR and ME endorsements must be reflected in the ATO training record.',
+                    'IR Recurrency':
+                      'Instrument rating recurrency includes 6 approaches, hold, and tracking within preceding 6 months.',
+                    'ME Recurrency':
+                      'Multi-engine privileges require 3 takeoffs and landings within 90 days or a PC/IPC check.',
+                    'ELP Level 5':
+                      'ICAO English Level 5 is valid indefinitely. Some airlines accept Level 4 for domestic routes only.',
+                    'NTC Radio':
+                      'Radio telephony license authorizes use of ATC frequencies. Required for IFR, Class C and above.',
+                  }[item.label] || '',
+                advisory: getAdvisory(
+                  {
+                    'Medical Class 1': 'medical',
+                    'CAAP CPL': 'license',
+                    'IR Recurrency': 'ir',
+                    'ME Recurrency': 'me',
+                    'ELP Level 5': 'elp',
+                    'NTC Radio': 'radio',
+                  }[item.label] || ''
+                ),
               }));
 
-              const expiredCount = items.filter(i => i.status === 'expired').length;
-              const warningCount = items.filter(i => i.status === 'warning').length;
+              const expiredCount = items.filter((i) => i.status === 'expired').length;
+              const warningCount = items.filter((i) => i.status === 'warning').length;
 
               const handleItemClick = (label: string) => {
                 if (isPlus) {
@@ -887,12 +998,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
               return (
                 <>
-                  <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div
+                    className="rounded-2xl overflow-hidden"
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                    }}
+                  >
                     <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
                       <div>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Compliance</p>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">
+                          Compliance
+                        </p>
                         <p className="text-sm font-black text-white">Recognition+</p>
-                        <p className="text-[9px] font-black text-red-400 tracking-wider mt-0.5">Recognition+ Preview</p>
+                        <p className="text-[9px] font-black text-red-400 tracking-wider mt-0.5">
+                          Recognition+ Preview
+                        </p>
                       </div>
                       <button
                         onClick={() => setTab('recognition-plus')}
@@ -904,36 +1025,84 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     </div>
                     {/* Intro & tooltips */}
                     <div className="px-5 pt-4 pb-2">
-                      <div className="rounded-xl p-4" style={{ background: '#ffffff', border: '1px solid rgba(220,38,38,0.15)' }}>
+                      <div
+                        className="rounded-xl p-4"
+                        style={{ background: '#ffffff', border: '1px solid rgba(220,38,38,0.15)' }}
+                      >
                         <div className="flex items-start gap-2 mb-3">
                           <Info size={14} className="text-red-500 flex-shrink-0 mt-0.5" />
                           <p className="text-[10px] text-slate-600 leading-relaxed">
-                            <span className="font-black text-red-600">Recognition+ Verification</span> cross-checks your credentials against your issuing Civil Aviation Authority. Each item below is reviewed for expiry, endorsement validity, and recurrency currency. Pilots with fully verified profiles rank higher in airline pulls and skip manual screening.
+                            <span className="font-black text-red-600">
+                              Recognition+ Verification
+                            </span>{' '}
+                            cross-checks your credentials against your issuing Civil Aviation
+                            Authority. Each item below is reviewed for expiry, endorsement validity,
+                            and recurrency currency. Pilots with fully verified profiles rank higher
+                            in airline pulls and skip manual screening.
                           </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {[
-                            { label: 'Medical', tip: 'Class 1 medical drives ALL commercial privileges. No medical = no hire.' },
-                            { label: 'License', tip: 'CPL must reflect current IR/ME ratings. Mismatched ratings void insurance.' },
-                            { label: 'IR Recurrency', tip: '6 approaches + hold within 6 months. Not 12 months — do not confuse with biennial.' },
-                            { label: 'ME Recurrency', tip: '3 T/O & landings in 90 days OR a PC check. Day/night does not matter for currency.' },
-                            { label: 'ELP', tip: 'Level 5 is indefinite. Some operators demand re-test every 6 years.' },
-                            { label: 'Radio', tip: 'NTC license must be active for IFR and Class C+. No radio = no IFR clearance.' },
+                            {
+                              label: 'Medical',
+                              tip: 'Class 1 medical drives ALL commercial privileges. No medical = no hire.',
+                            },
+                            {
+                              label: 'License',
+                              tip: 'CPL must reflect current IR/ME ratings. Mismatched ratings void insurance.',
+                            },
+                            {
+                              label: 'IR Recurrency',
+                              tip: '6 approaches + hold within 6 months. Not 12 months — do not confuse with biennial.',
+                            },
+                            {
+                              label: 'ME Recurrency',
+                              tip: '3 T/O & landings in 90 days OR a PC check. Day/night does not matter for currency.',
+                            },
+                            {
+                              label: 'ELP',
+                              tip: 'Level 5 is indefinite. Some operators demand re-test every 6 years.',
+                            },
+                            {
+                              label: 'Radio',
+                              tip: 'NTC license must be active for IFR and Class C+. No radio = no IFR clearance.',
+                            },
                           ].map((t) => (
                             <div key={t.label} className="group relative">
-                              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-black tracking-wider text-white border border-red-400/40 cursor-help transition-colors hover:bg-red-600" style={{ background: '#dc2626' }}>
+                              <span
+                                className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-black tracking-wider text-white border border-red-400/40 cursor-help transition-colors hover:bg-red-600"
+                                style={{ background: '#dc2626' }}
+                              >
                                 <Info size={10} /> {t.label}
                               </span>
-                              <div className="absolute left-0 bottom-full mb-2 w-56 p-2.5 rounded-lg text-[10px] text-white/90 leading-relaxed opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-20" style={{ background: 'rgba(5,8,14,0.95)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
+                              <div
+                                className="absolute left-0 bottom-full mb-2 w-56 p-2.5 rounded-lg text-[10px] text-white/90 leading-relaxed opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-20"
+                                style={{
+                                  background: 'rgba(5,8,14,0.95)',
+                                  border: '1px solid rgba(255,255,255,0.12)',
+                                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                                }}
+                              >
                                 {t.tip}
                               </div>
                             </div>
                           ))}
                         </div>
-                        <div className="mt-3 flex items-start gap-2 rounded-lg p-2.5" style={{ background: 'rgba(220,38,38,0.04)', border: '1px solid rgba(220,38,38,0.15)' }}>
+                        <div
+                          className="mt-3 flex items-start gap-2 rounded-lg p-2.5"
+                          style={{
+                            background: 'rgba(220,38,38,0.04)',
+                            border: '1px solid rgba(220,38,38,0.15)',
+                          }}
+                        >
                           <AlertCircle size={13} className="text-red-500 flex-shrink-0 mt-0.5" />
                           <p className="text-[9px] text-slate-500 leading-relaxed">
-                            <span className="font-black text-red-600">Details to catch:</span> Expired medicals void CPL privileges immediately — there is no grace period. IR recurrency is 6 months, not 12. Logbook entries for dual instruction must match your ATO training records or verification will flag a mismatch. Always keep your radio license active; a lapsed NTC license blocks IFR renewals.
+                            <span className="font-black text-red-600">Details to catch:</span>{' '}
+                            Expired medicals void CPL privileges immediately — there is no grace
+                            period. IR recurrency is 6 months, not 12. Logbook entries for dual
+                            instruction must match your ATO training records or verification will
+                            flag a mismatch. Always keep your radio license active; a lapsed NTC
+                            license blocks IFR renewals.
                           </p>
                         </div>
                       </div>
@@ -941,26 +1110,58 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
                     <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {items.map((item) => {
-                        const statusColor = item.status === 'expired' ? '#ef4444' : item.status === 'warning' ? '#f59e0b' : '#34d399';
-                        const statusBg = item.status === 'expired' ? 'rgba(239,68,68,0.1)' : item.status === 'warning' ? 'rgba(245,158,11,0.1)' : 'rgba(52,211,153,0.1)';
-                        const statusBorder = item.status === 'expired' ? 'rgba(239,68,68,0.2)' : item.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(52,211,153,0.2)';
+                        const statusColor =
+                          item.status === 'expired'
+                            ? '#ef4444'
+                            : item.status === 'warning'
+                              ? '#f59e0b'
+                              : '#34d399';
+                        const statusBg =
+                          item.status === 'expired'
+                            ? 'rgba(239,68,68,0.1)'
+                            : item.status === 'warning'
+                              ? 'rgba(245,158,11,0.1)'
+                              : 'rgba(52,211,153,0.1)';
+                        const statusBorder =
+                          item.status === 'expired'
+                            ? 'rgba(239,68,68,0.2)'
+                            : item.status === 'warning'
+                              ? 'rgba(245,158,11,0.2)'
+                              : 'rgba(52,211,153,0.2)';
                         return (
                           <button
                             key={item.label}
                             onClick={() => handleItemClick(item.label)}
                             className="rounded-xl p-4 text-left transition-all hover:bg-white/5 flex flex-col gap-2"
-                            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', cursor: 'pointer' }}
+                            style={{
+                              background: 'rgba(255,255,255,0.03)',
+                              border: '1px solid rgba(255,255,255,0.06)',
+                              cursor: 'pointer',
+                            }}
                           >
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0">
-                                <p className="text-[10px] font-black tracking-wider text-white/40 uppercase">{item.label}</p>
-                                <p className="text-xs font-black text-white mt-0.5">{item.expiry}</p>
+                                <p className="text-[10px] font-black tracking-wider text-white/40 uppercase">
+                                  {item.label}
+                                </p>
+                                <p className="text-xs font-black text-white mt-0.5">
+                                  {item.expiry}
+                                </p>
                               </div>
-                              <span className="text-[9px] font-black px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: statusBg, color: statusColor, border: `1px solid ${statusBorder}` }}>
+                              <span
+                                className="text-[9px] font-black px-2 py-0.5 rounded-full flex-shrink-0"
+                                style={{
+                                  background: statusBg,
+                                  color: statusColor,
+                                  border: `1px solid ${statusBorder}`,
+                                }}
+                              >
                                 {item.status.toUpperCase()}
                               </span>
                             </div>
-                            <p className="text-[10px] text-white/50 leading-relaxed">{item.detail}</p>
+                            <p className="text-[10px] text-white/50 leading-relaxed">
+                              {item.detail}
+                            </p>
                             {item.advisory && (
                               <p className="text-[9px] text-white/30 leading-relaxed italic border-t border-white/5 pt-2 mt-1">
                                 Advisory: {item.advisory}
@@ -972,11 +1173,25 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     </div>
                     {(expiredCount > 0 || warningCount > 0) && (
                       <div className="px-5 pb-4">
-                        <div className="rounded-lg p-3 flex items-center gap-3" style={{ background: expiredCount > 0 ? 'rgba(220,38,38,0.08)' : 'rgba(245,158,11,0.08)', border: `1px solid ${expiredCount > 0 ? 'rgba(220,38,38,0.15)' : 'rgba(245,158,11,0.15)'}` }}>
+                        <div
+                          className="rounded-lg p-3 flex items-center gap-3"
+                          style={{
+                            background:
+                              expiredCount > 0 ? 'rgba(220,38,38,0.08)' : 'rgba(245,158,11,0.08)',
+                            border: `1px solid ${expiredCount > 0 ? 'rgba(220,38,38,0.15)' : 'rgba(245,158,11,0.15)'}`,
+                          }}
+                        >
                           <span className="text-lg">{expiredCount > 0 ? '⚠' : '⏰'}</span>
                           <p className="text-xs text-white/70">
-                            <span className="font-black text-white">{expiredCount > 0 ? `${expiredCount} item${expiredCount > 1 ? 's' : ''} expired` : `${warningCount} item${warningCount > 1 ? 's' : ''} expiring soon`}</span>
-                            {' — '}{expiredCount > 0 ? 'Your Class 1 Medical has expired. CPL is invalid for commercial operations until renewed.' : 'Review your upcoming recurrencies before they lapse.'}
+                            <span className="font-black text-white">
+                              {expiredCount > 0
+                                ? `${expiredCount} item${expiredCount > 1 ? 's' : ''} expired`
+                                : `${warningCount} item${warningCount > 1 ? 's' : ''} expiring soon`}
+                            </span>
+                            {' — '}
+                            {expiredCount > 0
+                              ? 'Your Class 1 Medical has expired. CPL is invalid for commercial operations until renewed.'
+                              : 'Review your upcoming recurrencies before they lapse.'}
                           </p>
                         </div>
                       </div>
@@ -985,13 +1200,31 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
                   {/* Upgrade prompt modal for non-plus users */}
                   {upgradePrompt && (
-                    <div className="fixed inset-0 z-[999] flex items-center justify-center px-4" onClick={() => setUpgradePrompt(null)}>
+                    <div
+                      className="fixed inset-0 z-[999] flex items-center justify-center px-4"
+                      onClick={() => setUpgradePrompt(null)}
+                    >
                       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-                      <div className="relative z-10 w-full max-w-md rounded-2xl p-6 text-center" style={{ background: 'rgba(15,23,42,0.98)', border: '1px solid rgba(220,38,38,0.3)' }} onClick={(e) => e.stopPropagation()}>
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)' }}>
+                      <div
+                        className="relative z-10 w-full max-w-md rounded-2xl p-6 text-center"
+                        style={{
+                          background: 'rgba(15,23,42,0.98)',
+                          border: '1px solid rgba(220,38,38,0.3)',
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div
+                          className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                          style={{
+                            background: 'rgba(220,38,38,0.15)',
+                            border: '1px solid rgba(220,38,38,0.3)',
+                          }}
+                        >
                           <span className="text-red-500 text-xl font-black">🔒</span>
                         </div>
-                        <p className="text-base font-black text-white mb-1">Verification Requires Recognition+</p>
+                        <p className="text-base font-black text-white mb-1">
+                          Verification Requires Recognition+
+                        </p>
                         <p className="text-xs text-white/50 mb-5 max-w-xs mx-auto">
                           {upgradePrompt === 'Recognition+'
                             ? 'Upgrade to Recognition+ to begin verification of your licenses and logbook.'
@@ -1008,7 +1241,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                           <button
                             onClick={() => setUpgradePrompt(null)}
                             className="px-6 py-2.5 rounded-full text-sm font-black tracking-wider text-white/50 transition-all hover:text-white"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                            style={{
+                              background: 'rgba(255,255,255,0.05)',
+                              border: '1px solid rgba(255,255,255,0.1)',
+                            }}
                           >
                             MAYBE LATER
                           </button>
@@ -1095,42 +1331,63 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     <div
       className={`relative flex flex-col font-sans ${activeTab === 'home' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}
     >
+      <UnifiedPlatformWelcomeScreen
+        firstName={profileData?.first_name}
+        auth0UserName={auth0User?.given_name || auth0User?.name}
+      />
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       {activeTab !== 'pilot-shortage-support' && (
-        <div
-          className="fixed inset-0 z-0"
-          style={{ background: isDarkMode ? '#0f172a' : '#f0f5fa' }}
-        >
-          {/* Solid fallback gradient always visible underneath */}
+        <div className="fixed inset-0 z-0">
+          {graphicsConfig.enableMeshGradient ? (
+            <MeshGradient
+              className="w-full h-full"
+              colors={
+                isDarkMode
+                  ? [
+                      '#dbeafe',
+                      '#94a3b8',
+                      '#64748b',
+                      '#475569',
+                      '#334155',
+                      '#1e3a5f',
+                      '#1e3a8a',
+                      '#0f172a',
+                    ]
+                  : [
+                      '#ffffff',
+                      '#f0f5fa',
+                      '#c8d8e8',
+                      '#9ab0c8',
+                      '#5e85a8',
+                      '#345a7d',
+                      '#1e3a5f',
+                      '#0f2747',
+                    ]
+              }
+              speed={graphicsConfig.meshGradientSpeed}
+            />
+          ) : (
+            <div
+              className="w-full h-full"
+              style={{
+                background: isDarkMode
+                  ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)'
+                  : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)',
+              }}
+            />
+          )}
+          <div
+            className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`}
+          />
+          <div
+            className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`}
+          />
           <div
             className="absolute inset-0"
             style={{
               background: isDarkMode
-                ? 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)'
-                : 'linear-gradient(135deg, #f0f5fa 0%, #1e3a5f 100%)',
-            }}
-          />
-          {/* WebGL shader overlay — client-side only */}
-          {graphicsConfig.enableMeshGradient && (
-            <SafeMeshGradient
-              className="w-full h-full"
-              colors={isDarkMode ? [
-                '#dbeafe','#94a3b8','#64748b','#475569',
-                '#334155','#1e3a5f','#1e3a8a','#0f172a',
-              ] : [
-                '#ffffff','#f0f5fa','#c8d8e8','#9ab0c8',
-                '#5e85a8','#345a7d','#1e3a5f','#0f2747',
-              ]}
-              speed={graphicsConfig.meshGradientSpeed}
-            />
-          )}
-          {/* Atmospheric overlays */}
-          <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60' : 'bg-gradient-to-b from-white/10 via-slate-200/20 to-slate-400/40'}`} />
-          <div className={`absolute inset-0 backdrop-blur-[1px] ${isDarkMode ? 'bg-slate-900/10' : 'bg-white/5'}`} />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: isDarkMode ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
+                ? 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)'
+                : 'radial-gradient(ellipse at center, transparent 40%, rgba(15,39,71,0.65) 100%)',
             }}
           />
         </div>
@@ -1165,82 +1422,82 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         {activeTab !== 'home' && (
           <React.Fragment>
             {/* Centre — full island nav container (lg+ only) */}
-        <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2">
-          <div
-            className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
-            style={{
-              background: 'rgba(0,0,0,0.35)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              backdropFilter: 'blur(12px)',
-            }}
-          >
-            {[
-              { id: 'home', label: 'Home' },
-              { id: 'dashboard', label: 'Flight Deck' },
-              { id: 'profile', label: 'Profile' },
-              { id: 'logbook', label: 'Flight Bag' },
-              { id: 'inbox', label: 'Inbox' },
-              { id: 'recognition-plus', label: 'Recognition+' },
-            ].map(({ id, label }) => {
-              const isActive = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => setTab(id as TabId)}
-                  className={`relative px-3 lg:px-5 py-2 rounded-xl text-xs lg:text-sm font-bold tracking-wide transition-all whitespace-nowrap ${
-                    isActive
-                      ? 'text-white bg-white/10'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {label}
-                  {isActive && (
-                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+            <div className="hidden lg:flex flex-1 items-center justify-center min-w-0 mx-2">
+              <div
+                className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
+                style={{
+                  background: 'rgba(0,0,0,0.35)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+                {[
+                  { id: 'home', label: 'Home' },
+                  { id: 'dashboard', label: 'Flight Deck' },
+                  { id: 'profile', label: 'Profile' },
+                  { id: 'logbook', label: 'Flight Bag' },
+                  { id: 'inbox', label: 'Inbox' },
+                  { id: 'recognition-plus', label: 'Recognition+' },
+                ].map(({ id, label }) => {
+                  const isActive = activeTab === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => setTab(id as TabId)}
+                      className={`relative px-3 lg:px-5 py-2 rounded-xl text-xs lg:text-sm font-bold tracking-wide transition-all whitespace-nowrap ${
+                        isActive
+                          ? 'text-white bg-white/10'
+                          : 'text-white/60 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {label}
+                      {isActive && (
+                        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-        {/* Compact island nav for medium screens where full nav won't fit */}
-        <div className="hidden md:flex lg:hidden flex-1 items-center justify-center min-w-0 mx-2">
-          <div
-            className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
-            style={{
-              background: 'rgba(0,0,0,0.35)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              backdropFilter: 'blur(12px)',
-            }}
-          >
-            {[
-              { id: 'home', label: 'Home' },
-              { id: 'dashboard', label: 'Flight Deck' },
-              { id: 'logbook', label: 'Flight Bag' },
-              { id: 'recognition-plus', label: 'Recognition+' },
-            ].map(({ id, label }) => {
-              const isActive = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => setTab(id as TabId)}
-                  className={`relative px-3 py-2 rounded-xl text-xs font-bold tracking-wide transition-all whitespace-nowrap ${
-                    isActive
-                      ? 'text-white bg-white/10'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {label}
-                  {isActive && (
-                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </React.Fragment>
-    )}
+            {/* Compact island nav for medium screens where full nav won't fit */}
+            <div className="hidden md:flex lg:hidden flex-1 items-center justify-center min-w-0 mx-2">
+              <div
+                className="flex items-center gap-1 overflow-hidden px-2 py-1.5 rounded-2xl"
+                style={{
+                  background: 'rgba(0,0,0,0.35)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+                {[
+                  { id: 'home', label: 'Home' },
+                  { id: 'dashboard', label: 'Flight Deck' },
+                  { id: 'logbook', label: 'Flight Bag' },
+                  { id: 'recognition-plus', label: 'Recognition+' },
+                ].map(({ id, label }) => {
+                  const isActive = activeTab === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => setTab(id as TabId)}
+                      className={`relative px-3 py-2 rounded-xl text-xs font-bold tracking-wide transition-all whitespace-nowrap ${
+                        isActive
+                          ? 'text-white bg-white/10'
+                          : 'text-white/60 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {label}
+                      {isActive && (
+                        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </React.Fragment>
+        )}
 
         {/* Right — MSFS-style square tile icon toolbar */}
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -1285,7 +1542,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   <MessageSquare size={20} className="text-white" strokeWidth={2} />
                 </button>
 
-                <MessagesPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} profile={profileData} />
+                <MessagesPanel
+                  isOpen={chatOpen}
+                  onClose={() => setChatOpen(false)}
+                  profile={profileData}
+                />
 
                 {/* Notification bell tile */}
                 <div className="relative" onMouseDown={(e) => e.stopPropagation()}>
@@ -1331,7 +1592,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                         style={{
                           background: '#dc2626',
                           border: '2px solid rgba(15,22,35,0.95)',
-                          boxShadow: '0 0 0 1px rgba(255,255,255,0.5), 0 2px 8px rgba(220,38,38,0.5)',
+                          boxShadow:
+                            '0 0 0 1px rgba(255,255,255,0.5), 0 2px 8px rgba(220,38,38,0.5)',
                         }}
                       >
                         {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
@@ -1361,7 +1623,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                             border: '1px solid rgba(255,255,255,0.6)',
                             backdropFilter: 'blur(32px) saturate(1.6)',
                             WebkitBackdropFilter: 'blur(32px) saturate(1.6)',
-                            boxShadow: '0 24px 64px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.4)',
+                            boxShadow:
+                              '0 24px 64px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.4)',
                           }}
                         >
                           <NotificationsFeedPanel
@@ -1441,7 +1704,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 </button>
 
                 {/* Avatar + Hamburger unified island */}
-                <div className="relative flex items-center" onMouseDown={(e) => e.stopPropagation()}>
+                <div
+                  className="relative flex items-center"
+                  onMouseDown={(e) => e.stopPropagation()}
+                >
                   <div
                     className="flex items-center transition-all duration-150 overflow-hidden"
                     style={{
@@ -1454,13 +1720,15 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                     }}
                     onMouseEnter={(e) => {
                       if (!hamburgerOpen) {
-                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.6)';
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          'rgba(255,255,255,0.6)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.45)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!hamburgerOpen) {
-                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          'rgba(255,255,255,0.15)';
                         (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)';
                       }
                     }}
@@ -1505,828 +1773,148 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                       }}
                       className="flex items-center justify-center w-10 h-full transition-colors hover:bg-white/5"
                     >
-                      <Menu size={18} className="text-white" strokeWidth={2} />
+                      {hamburgerOpen ? (
+                        <X size={18} className="text-white" strokeWidth={2} />
+                      ) : (
+                        <Menu size={18} className="text-white" strokeWidth={2} />
+                      )}
                     </button>
                   </div>
 
-                  {/* Navigation dropdown — anchored to unified island */}
-                  {hamburgerOpen && (
-                    <div
-                      className="absolute right-0 top-12 w-56 z-50 shadow-2xl"
-                      style={{
-                        background: 'rgba(15,23,42,0.97)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        backdropFilter: 'blur(16px)',
-                      }}
-                    >
-                      <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">
-                          Navigation
-                        </p>
-                      </div>
-                      <div className="py-1">
-                        {[
-                          { label: 'Pilot Terminal', url: 'https://pilotterminal.com' },
-                          { label: 'Recognition Profile', url: '/recognition-plus' },
-                          { label: 'Career Pathways', url: 'https://pilotcareerpathways.com' },
-                          { label: 'Pilot Shortage', url: 'https://pilotshortage.org' },
-                        ].map((item) => (
-                          <button
-                            key={item.label}
-                            onClick={() => {
-                              setHamburgerOpen(false);
-                              if (item.url.startsWith('http')) {
-                                window.open(item.url, '_blank', 'noopener,noreferrer');
-                              } else {
-                                safeRedirect(item.url);
-                              }
-                            }}
-                            className="w-full flex items-center px-4 py-2.5 transition-colors group hover:bg-white/5"
-                          >
-                            <span className="text-[11px] font-black tracking-wide text-white/60 group-hover:text-white transition-colors">
-                              {item.label.toUpperCase()}
-                            </span>
-                          </button>
-                        ))}
-                        <div className="px-3 py-2 mt-1">
-                          <button
-                            onClick={() => {
-                              setHamburgerOpen(false);
-                              safeRedirect('/recognition-plus');
-                            }}
-                            className="w-full flex items-center justify-center px-3 py-2.5 rounded-lg text-[10px] font-black tracking-wider text-white transition-all hover:brightness-110"
-                            style={{ background: '#dc2626' }}
-                          >
-                            GET RECOGNITION+
-                          </button>
-                        </div>
-                      </div>
-                      {currentUser && (
-                        <div className="border-t border-white/5 py-1">
-                          <button
-                            onClick={() => {
-                              setHamburgerOpen(false);
-                              logout();
-                            }}
-                            className="w-full flex items-center px-4 py-2.5 hover:bg-red-500/10 transition-colors group"
-                          >
-                            <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">
-                              SIGN OUT
-                            </span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
+                  {/* Full-height sidebar navigation — replaces the small dropdown */}
                   <AnimatePresence>
-                    {false && (
+                    {hamburgerOpen && (
                       <>
                         {/* Backdrop */}
                         <motion.div
-                          className="fixed inset-0 z-[100]"
+                          className="fixed inset-0 z-[80]"
                           style={{
                             background: 'rgba(0,0,0,0.65)',
-                            backdropFilter: 'blur(10px)',
-                            WebkitBackdropFilter: 'blur(10px)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
                           }}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.2 }}
-                          onClick={() => {
-                            setProfileDropOpen(false);
-                            setProfileModalView('menu');
-                          }}
+                          onClick={() => setHamburgerOpen(false)}
                         />
-                        {/* Modal */}
-                        <motion.div
-                          className="fixed inset-0 z-[101] flex items-center justify-center p-4"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          onClick={() => {
-                            setProfileDropOpen(false);
-                            setProfileModalView('menu');
+                        {/* Sidebar */}
+                        <motion.aside
+                          className="fixed top-0 right-0 bottom-0 z-[90] w-80 max-w-full shadow-2xl"
+                          style={{
+                            background: 'rgba(8, 12, 24, 0.92)',
+                            borderLeft: '1px solid rgba(255,255,255,0.08)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
                           }}
+                          initial={{ x: '100%' }}
+                          animate={{ x: 0 }}
+                          exit={{ x: '100%' }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         >
-                          <motion.div
-                            className="w-full max-w-md max-h-[90vh] overflow-y-auto flex flex-col relative"
-                            style={{
-                              background:
-                                'linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.95))',
-                              border: '1px solid rgba(255,255,255,0.15)',
-                              boxShadow:
-                                '0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
-                              borderRadius: 18,
-                              backdropFilter: 'blur(24px)',
-                              WebkitBackdropFilter: 'blur(24px)',
-                            }}
-                            initial={{ opacity: 0, scale: 0.82, y: 30, filter: 'blur(20px)' }}
-                            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20, filter: 'blur(14px)' }}
-                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {/* Shimmer overlay */}
-                            <div className="absolute inset-0 pointer-events-none rounded-[18px] overflow-hidden">
-                              <div
-                                className="absolute inset-0"
-                                style={{
-                                  background:
-                                    'radial-gradient(circle at 20% 0%, rgba(56,189,248,0.12), transparent 40%), radial-gradient(circle at 80% 100%, rgba(99,102,241,0.1), transparent 45%)',
-                                }}
-                              />
+                          <div className="flex flex-col h-full p-5 pt-20 overflow-y-auto">
+                            {/* Header */}
+                            <div className="flex items-center justify-between mb-6">
+                              <div>
+                                <p className="text-xs text-slate-400 font-medium">Pilot Platform</p>
+                                <p className="text-xl text-white font-serif mt-0.5">Navigation</p>
+                              </div>
+                              <button
+                                onClick={() => setHamburgerOpen(false)}
+                                className="p-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 transition-colors"
+                                aria-label="Close menu"
+                              >
+                                <X size={20} className="text-white" strokeWidth={2} />
+                              </button>
                             </div>
 
-                            {profileModalView === 'recognition-profile' ? (
-                              <>
-                                {/* Back header */}
-                                <div className="relative px-6 pt-6 pb-2 flex items-center gap-3">
+                            {/* Platform tabs */}
+                            <nav className="flex flex-col gap-2 mb-4">
+                              {[
+                                { id: 'home', label: 'Home' },
+                                { id: 'dashboard', label: 'Flight Deck' },
+                                { id: 'profile', label: 'Profile' },
+                                { id: 'logbook', label: 'Flight Bag' },
+                                { id: 'inbox', label: 'Inbox' },
+                                { id: 'recognition-plus', label: 'Recognition+' },
+                              ].map((item) => {
+                                const isActive = activeTab === item.id;
+                                return (
                                   <button
-                                    onClick={() => setProfileModalView('menu')}
-                                    className="flex items-center gap-1.5 text-[10px] font-black text-white/60 hover:text-white transition-colors"
-                                  >
-                                    <ChevronLeft size={14} />
-                                    BACK TO MENU
-                                  </button>
-                                </div>
-
-                                {/* Profile identity */}
-                                <div className="relative flex flex-col items-center px-6 pb-6">
-                                  <div
-                                    className="w-20 h-20 rounded-full overflow-hidden mb-3"
-                                    style={{
-                                      border: '2px solid rgba(255,255,255,0.25)',
-                                      boxShadow: '0 0 24px rgba(56,189,248,0.25)',
-                                    }}
-                                  >
-                                    <ProfileImage
-                                      url={profileData?.profile_image_url}
-                                      publicId={profileData?.profile_image_public_id}
-                                      name={displayName}
-                                      size={80}
-                                      className="w-full h-full"
-                                      fallbackClassName="rounded-full text-xl bg-blue-500 text-white"
-                                    />
-                                  </div>
-                                  <p className="text-lg font-black text-white tracking-tight text-center">
-                                    {displayName}
-                                  </p>
-                                  <p className="text-[10px] text-white/40 text-center mt-0.5">
-                                    {profileData?.email ?? auth0User?.email}
-                                  </p>
-                                </div>
-
-                                {/* Recognition Profile - Advance Account Setup checklist */}
-                                <div className="relative px-4 pb-4">
-                                  {(() => {
-                                    const setupSteps = [
-                                      {
-                                        label: 'Complete Profile',
-                                        done:
-                                          !!profileData?.full_name &&
-                                          !!profileData?.current_occupation,
-                                      },
-                                      {
-                                        label: 'Upload Flight Logbook',
-                                        done: !!profileData?.logbook_sync_valid,
-                                      },
-                                      {
-                                        label: 'Verify Credentials',
-                                        done: walletChecks.some((c) => c.status === 'verified'),
-                                      },
-                                      {
-                                        label: 'Connect Social Accounts',
-                                        done:
-                                          !!profileData?.linkedin_url ||
-                                          !!profileData?.instagram_url ||
-                                          !!profileData?.youtube_url,
-                                      },
-                                      {
-                                        label: 'Upgrade to Recognition+',
-                                        done:
-                                          profileData?.subscription_tier === 'plus' ||
-                                          profileData?.subscription_tier === 'enterprise',
-                                      },
-                                    ];
-                                    const completedSteps = setupSteps.filter((s) => s.done).length;
-                                    return (
-                                      <div
-                                        className="rounded-2xl p-4"
-                                        style={{
-                                          background: 'rgba(255,255,255,0.05)',
-                                          border: '1px solid rgba(255,255,255,0.1)',
-                                          backdropFilter: 'blur(12px)',
-                                          WebkitBackdropFilter: 'blur(12px)',
-                                        }}
-                                      >
-                                        <div className="flex items-center justify-between mb-3">
-                                          <div className="flex items-center gap-2">
-                                            <Settings size={16} className="text-white/60" />
-                                            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">
-                                              Advance Account Setup
-                                            </span>
-                                          </div>
-                                          <span className="text-[10px] font-black text-white/40">
-                                            {completedSteps}/{setupSteps.length} completed
-                                          </span>
-                                        </div>
-                                        <div className="space-y-2">
-                                          {setupSteps.map(({ label, done }) => (
-                                            <button
-                                              key={label}
-                                              onClick={() => {
-                                                setProfileDropOpen(false);
-                                                setProfileModalView('menu');
-                                                if (label === 'Upgrade to Recognition+')
-                                                  safeRedirect('/recognition-plus');
-                                                else if (label === 'Complete Profile')
-                                                  setTab('advanced-profile' as TabId);
-                                                else if (label === 'Upload Flight Logbook')
-                                                  setTab('logbook' as TabId);
-                                                else if (label === 'Verify Credentials')
-                                                  setTab('wallet' as TabId);
-                                                else if (label === 'Connect Social Accounts')
-                                                  setTab('profile' as TabId);
-                                              }}
-                                              className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
-                                              style={{
-                                                background: done
-                                                  ? 'rgba(16,185,129,0.1)'
-                                                  : 'rgba(255,255,255,0.04)',
-                                                border: `1px solid ${done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}`,
-                                              }}
-                                              onMouseEnter={(e) => {
-                                                if (!done) {
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.background = 'rgba(37,99,235,0.85)';
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.borderColor = 'rgba(96,165,250,0.5)';
-                                                }
-                                              }}
-                                              onMouseLeave={(e) => {
-                                                if (!done) {
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.background = 'rgba(255,255,255,0.04)';
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.borderColor = 'rgba(255,255,255,0.08)';
-                                                }
-                                              }}
-                                            >
-                                              <div className="flex items-center gap-3">
-                                                {done ? (
-                                                  <CheckCircle2
-                                                    size={14}
-                                                    className="text-emerald-400"
-                                                  />
-                                                ) : (
-                                                  <div
-                                                    className="w-3.5 h-3.5 rounded-full"
-                                                    style={{
-                                                      border: '1.5px solid rgba(255,255,255,0.25)',
-                                                    }}
-                                                  />
-                                                )}
-                                                <span
-                                                  className={`text-[11px] font-bold tracking-wide ${done ? 'text-white/60' : 'text-white group-hover:text-white'}`}
-                                                >
-                                                  {label.toUpperCase()}
-                                                </span>
-                                              </div>
-                                              {!done && (
-                                                <ArrowRight
-                                                  size={14}
-                                                  className="text-white/30 group-hover:text-white"
-                                                />
-                                              )}
-                                            </button>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    );
-                                  })()}
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                {/* Header label */}
-                                <div className="relative px-6 pt-6 pb-2">
-                                  <p
-                                    className="text-[10px] text-white/80 tracking-[0.25em] uppercase"
-                                    style={{
-                                      fontFamily: 'Georgia, "Times New Roman", serif',
-                                      fontWeight: 400,
-                                    }}
-                                  >
-                                    MY SETTINGS
-                                  </p>
-                                </div>
-
-                                {/* Profile identity */}
-                                <div className="relative flex flex-col items-center px-6 pb-6">
-                                  <div
-                                    className="w-20 h-20 rounded-full overflow-hidden mb-3"
-                                    style={{
-                                      border: '2px solid rgba(255,255,255,0.25)',
-                                      boxShadow: '0 0 24px rgba(56,189,248,0.25)',
-                                    }}
-                                  >
-                                    <ProfileImage
-                                      url={profileData?.profile_image_url}
-                                      publicId={profileData?.profile_image_public_id}
-                                      name={displayName}
-                                      size={80}
-                                      className="w-full h-full"
-                                      fallbackClassName="rounded-full text-xl bg-blue-500 text-white"
-                                    />
-                                  </div>
-                                  <p className="text-lg font-black text-white tracking-tight text-center">
-                                    {displayName}
-                                  </p>
-                                  <p className="text-[10px] text-white/40 text-center mt-0.5">
-                                    {profileData?.email ?? auth0User?.email}
-                                  </p>
-                                </div>
-
-                                {/* Menu rows */}
-                                <div className="relative px-4 pb-4 space-y-2">
-                                  {/* Recognition+ subscription row */}
-                                  {(() => {
-                                    const isSubscribed =
-                                      profileData?.subscription_tier === 'plus' ||
-                                      profileData?.subscription_tier === 'enterprise';
-                                    return (
-                                      <button
-                                        onClick={() => {
-                                          setProfileDropOpen(false);
-                                          safeRedirect('/recognition-plus');
-                                        }}
-                                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
-                                        style={{
-                                          background: isSubscribed
-                                            ? 'rgba(239,68,68,0.12)'
-                                            : 'rgba(255,255,255,0.08)',
-                                          border: `1.5px solid ${isSubscribed ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)'}`,
-                                          backdropFilter: 'blur(8px)',
-                                          WebkitBackdropFilter: 'blur(8px)',
-                                        }}
-                                        onMouseEnter={(e) => {
-                                          (e.currentTarget as HTMLElement).style.background =
-                                            isSubscribed
-                                              ? 'rgba(239,68,68,0.85)'
-                                              : 'rgba(37,99,235,0.85)';
-                                          (e.currentTarget as HTMLElement).style.borderColor =
-                                            isSubscribed
-                                              ? 'rgba(248,113,113,0.5)'
-                                              : 'rgba(96,165,250,0.5)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                          (e.currentTarget as HTMLElement).style.background =
-                                            isSubscribed
-                                              ? 'rgba(239,68,68,0.12)'
-                                              : 'rgba(255,255,255,0.08)';
-                                          (e.currentTarget as HTMLElement).style.borderColor =
-                                            isSubscribed
-                                              ? 'rgba(239,68,68,0.3)'
-                                              : 'rgba(255,255,255,0.15)';
-                                        }}
-                                      >
-                                        <div className="flex items-center gap-3">
-                                          <CreditCard
-                                            size={16}
-                                            className={
-                                              isSubscribed
-                                                ? 'text-red-400 group-hover:text-white'
-                                                : 'text-white/70 group-hover:text-white'
-                                            }
-                                          />
-                                          <div className="text-left">
-                                            <p className="text-[11px] font-black text-white tracking-wide">
-                                              {isSubscribed
-                                                ? 'MANAGE RECOGNITION+'
-                                                : 'GET RECOGNITION+'}
-                                            </p>
-                                            <p className="text-[9px] text-white/40 group-hover:text-white/60">
-                                              {isSubscribed
-                                                ? 'Subscription & billing'
-                                                : 'Upgrade for verification & tools'}
-                                            </p>
-                                          </div>
-                                        </div>
-                                        <ChevronRight
-                                          size={14}
-                                          className="text-white/30 group-hover:text-white"
-                                        />
-                                      </button>
-                                    );
-                                  })()}
-
-                                  {/* Standard rows */}
-                                  {/* eslint-disable-next-line react-hooks/refs */}
-                                  {[
-                                    {
-                                      label: 'My Pathway Bookmarks',
-                                      sub: 'Saved opportunities',
-                                      icon: BookMarked,
-                                      onClick: () => {
-                                        setProfileDropOpen(false);
-                                        setTab('pathways' as TabId);
-                                      },
-                                    },
-                                    {
-                                      label: 'Who Saw My Profile?',
-                                      sub: 'Profile visibility log',
-                                      icon: Eye,
-                                      onClick: () => {
-                                        setProfileDropOpen(false);
-                                        safeRedirect('/profile-views');
-                                      },
-                                    },
-                                    {
-                                      label: 'Edit Profile',
-                                      sub: 'Update pilot details',
-                                      icon: User,
-                                      onClick: () => {
-                                        setProfileDropOpen(false);
-                                        setTab('profile' as TabId);
-                                      },
-                                    },
-                                    {
-                                      label: 'My Recognition Profile',
-                                      sub: 'Advanced licensure & experience',
-                                      icon: ShieldCheck,
-                                      onClick: () => setProfileModalView('recognition-profile'),
-                                    },
-                                    {
-                                      label: 'My Vault',
-                                      sub: 'Credentials & wallet',
-                                      icon: Shield,
-                                      onClick: () => {
-                                        setProfileDropOpen(false);
-                                        setTab('wallet' as TabId);
-                                      },
-                                    },
-                                    {
-                                      label: 'Settings',
-                                      sub: 'Account preferences',
-                                      icon: Settings,
-                                      onClick: () => {
-                                        setProfileDropOpen(false);
-                                        setTab('settings' as TabId);
-                                      },
-                                    },
-                                  ].map(({ label, sub, icon: Icon, onClick }) => (
-                                    <button
-                                      key={label}
-                                      onClick={onClick}
-                                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
-                                      style={{
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        backdropFilter: 'blur(8px)',
-                                        WebkitBackdropFilter: 'blur(8px)',
-                                      }}
-                                      onMouseEnter={(e) => {
-                                        (e.currentTarget as HTMLElement).style.background =
-                                          'rgba(37,99,235,0.85)';
-                                        (e.currentTarget as HTMLElement).style.borderColor =
-                                          'rgba(96,165,250,0.5)';
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        (e.currentTarget as HTMLElement).style.background =
-                                          'rgba(255,255,255,0.05)';
-                                        (e.currentTarget as HTMLElement).style.borderColor =
-                                          'rgba(255,255,255,0.1)';
-                                      }}
-                                    >
-                                      <div className="flex items-center gap-3">
-                                        <Icon
-                                          size={16}
-                                          className="text-white/60 group-hover:text-white"
-                                        />
-                                        <div className="text-left">
-                                          <p className="text-[11px] font-black text-white/80 group-hover:text-white tracking-wide">
-                                            {label.toUpperCase()}
-                                          </p>
-                                          <p className="text-[9px] text-white/35 group-hover:text-white/60">
-                                            {sub}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <ChevronRight
-                                        size={14}
-                                        className="text-white/25 group-hover:text-white"
-                                      />
-                                    </button>
-                                  ))}
-
-                                  {/* Sync Digital Logbook — black rectangle */}
-                                  <button
+                                    key={item.id}
                                     onClick={() => {
-                                      setProfileDropOpen(false);
-                                      setTab('logbook' as TabId);
+                                      setTab(item.id as TabId);
+                                      setHamburgerOpen(false);
                                     }}
-                                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
-                                    style={{
-                                      background: 'rgba(0,0,0,0.55)',
-                                      border: '1px solid rgba(255,255,255,0.12)',
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      (e.currentTarget as HTMLElement).style.background =
-                                        'rgba(0,0,0,0.75)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      (e.currentTarget as HTMLElement).style.background =
-                                        'rgba(0,0,0,0.55)';
-                                    }}
+                                    className={`w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-all ${
+                                      isActive
+                                        ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-500/25'
+                                        : 'bg-blue-500/10 hover:bg-blue-500/20 text-white'
+                                    }`}
                                   >
-                                    <div className="flex items-center gap-3">
-                                      <RefreshCw size={16} className="text-white" />
-                                      <div className="text-left">
-                                        <p className="text-[11px] font-black text-white tracking-wide">
-                                          SYNC DIGITAL LOGBOOK
-                                        </p>
-                                        <p className="text-[9px] text-white/40">
-                                          Import flight hours
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <ChevronRight size={14} className="text-white/30" />
+                                    {item.label}
                                   </button>
+                                );
+                              })}
+                            </nav>
 
-                                  {/* Advance Account Setup */}
-                                  {(() => {
-                                    const setupSteps = [
-                                      {
-                                        label: 'Complete Profile',
-                                        done:
-                                          !!profileData?.full_name &&
-                                          !!profileData?.current_occupation,
-                                      },
-                                      {
-                                        label: 'Upload Flight Logbook',
-                                        done: !!profileData?.logbook_sync_valid,
-                                      },
-                                      {
-                                        label: 'Verify Credentials',
-                                        done: walletChecks.some((c) => c.status === 'verified'),
-                                      },
-                                      {
-                                        label: 'Connect Social Accounts',
-                                        done:
-                                          !!profileData?.linkedin_url ||
-                                          !!profileData?.instagram_url ||
-                                          !!profileData?.youtube_url,
-                                      },
-                                      {
-                                        label: 'Upgrade to Recognition+',
-                                        done:
-                                          profileData?.subscription_tier === 'plus' ||
-                                          profileData?.subscription_tier === 'enterprise',
-                                      },
-                                    ];
-                                    const completedSteps = setupSteps.filter((s) => s.done).length;
-                                    return (
-                                      <div
-                                        className="rounded-2xl p-4 mt-4"
-                                        style={{
-                                          background: 'rgba(255,255,255,0.05)',
-                                          border: '1px solid rgba(255,255,255,0.1)',
-                                          backdropFilter: 'blur(12px)',
-                                          WebkitBackdropFilter: 'blur(12px)',
-                                        }}
-                                      >
-                                        <div className="flex items-center justify-between mb-3">
-                                          <div className="flex items-center gap-2">
-                                            <Settings size={16} className="text-white/60" />
-                                            <span className="text-[10px] font-black tracking-wider uppercase text-white/50">
-                                              Advance Account Setup
-                                            </span>
-                                          </div>
-                                          <span className="text-[10px] font-black text-white/40">
-                                            {completedSteps}/{setupSteps.length} completed
-                                          </span>
-                                        </div>
-                                        <div className="space-y-2">
-                                          {setupSteps.map(({ label, done }) => (
-                                            <button
-                                              key={label}
-                                              onClick={() => {
-                                                setProfileDropOpen(false);
-                                                if (label === 'Upgrade to Recognition+')
-                                                  safeRedirect('/recognition-plus');
-                                                else if (label === 'Complete Profile')
-                                                  setTab('advanced-profile' as TabId);
-                                                else if (label === 'Upload Flight Logbook')
-                                                  setTab('logbook' as TabId);
-                                                else if (label === 'Verify Credentials')
-                                                  setTab('wallet' as TabId);
-                                                else if (label === 'Connect Social Accounts')
-                                                  setTab('profile' as TabId);
-                                              }}
-                                              className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group"
-                                              style={{
-                                                background: done
-                                                  ? 'rgba(16,185,129,0.1)'
-                                                  : 'rgba(255,255,255,0.04)',
-                                                border: `1px solid ${done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}`,
-                                              }}
-                                              onMouseEnter={(e) => {
-                                                if (!done) {
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.background = 'rgba(37,99,235,0.85)';
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.borderColor = 'rgba(96,165,250,0.5)';
-                                                }
-                                              }}
-                                              onMouseLeave={(e) => {
-                                                if (!done) {
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.background = 'rgba(255,255,255,0.04)';
-                                                  (
-                                                    e.currentTarget as HTMLElement
-                                                  ).style.borderColor = 'rgba(255,255,255,0.08)';
-                                                }
-                                              }}
-                                            >
-                                              <div className="flex items-center gap-3">
-                                                {done ? (
-                                                  <CheckCircle2
-                                                    size={14}
-                                                    className="text-emerald-400"
-                                                  />
-                                                ) : (
-                                                  <div
-                                                    className="w-3.5 h-3.5 rounded-full"
-                                                    style={{
-                                                      border: '1.5px solid rgba(255,255,255,0.25)',
-                                                    }}
-                                                  />
-                                                )}
-                                                <span
-                                                  className={`text-[11px] font-bold tracking-wide ${done ? 'text-white/60' : 'text-white group-hover:text-white'}`}
-                                                >
-                                                  {label.toUpperCase()}
-                                                </span>
-                                              </div>
-                                              {!done && (
-                                                <ArrowRight
-                                                  size={14}
-                                                  className="text-white/30 group-hover:text-white"
-                                                />
-                                              )}
-                                            </button>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    );
-                                  })()}
-                                </div>
+                            {/* Divider */}
+                            <div className="h-px bg-white/10 my-3" />
 
-                                {/* Connected accounts */}
-                                <div className="relative px-4 pb-4">
-                                  <p className="text-[9px] font-black text-white/30 tracking-wider uppercase mb-2 px-1">
-                                    Connected Accounts
-                                  </p>
-                                  <div className="grid grid-cols-5 gap-2">
-                                    {[
-                                      { icon: Linkedin, label: 'LinkedIn', field: 'linkedin_url' },
-                                      {
-                                        icon: Instagram,
-                                        label: 'Instagram',
-                                        field: 'instagram_url',
-                                      },
-                                      { icon: Youtube, label: 'YouTube', field: 'youtube_url' },
-                                      { icon: Facebook, label: 'Facebook', field: 'facebook_url' },
-                                      { icon: Twitter, label: 'X', field: 'twitter_url' },
-                                    ].map(({ icon: Icon, label, field }) => {
-                                      const connected = !!((
-                                        profileData as Record<string, unknown>
-                                      )?.[field] as string | undefined);
-                                      const url = (profileData as Record<string, unknown>)?.[
-                                        field
-                                      ] as string | undefined;
-                                      return (
-                                        <button
-                                          key={label}
-                                          title={label}
-                                          className="relative flex items-center justify-center rounded-xl transition-all aspect-square w-full"
-                                          style={{
-                                            background: connected
-                                              ? 'rgba(37,99,235,0.2)'
-                                              : 'rgba(255,255,255,0.05)',
-                                            border: `1px solid ${connected ? 'rgba(96,165,250,0.4)' : 'rgba(255,255,255,0.1)'}`,
-                                          }}
-                                          onMouseEnter={(e) => {
-                                            (e.currentTarget as HTMLElement).style.background =
-                                              'rgba(255,255,255,0.12)';
-                                          }}
-                                          onMouseLeave={(e) => {
-                                            (e.currentTarget as HTMLElement).style.background =
-                                              connected
-                                                ? 'rgba(37,99,235,0.2)'
-                                                : 'rgba(255,255,255,0.05)';
-                                          }}
-                                          onClick={() => {
-                                            setProfileDropOpen(false);
-                                            if (connected && url) {
-                                              window.open(url, '_blank', 'noopener,noreferrer');
-                                            } else {
-                                              setTab('profile' as TabId);
-                                            }
-                                          }}
-                                        >
-                                          <Icon
-                                            size={18}
-                                            className={connected ? 'text-white' : 'text-white/50'}
-                                          />
-                                          {connected && (
-                                            <div
-                                              className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-                                              style={{ background: '#34d399' }}
-                                            />
-                                          )}
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
+                            {/* External links */}
+                            <div className="flex flex-col gap-1 mb-4">
+                              <p className="text-[10px] font-black tracking-[0.2em] text-white/30 uppercase px-1 mb-1">
+                                External
+                              </p>
+                              {[
+                                { label: 'Pilot Terminal', url: 'https://pilotterminal.com' },
+                                {
+                                  label: 'Career Pathways',
+                                  url: 'https://pilotcareerpathways.com',
+                                },
+                                { label: 'Pilot Shortage', url: 'https://pilotshortage.org' },
+                              ].map((item) => (
+                                <button
+                                  key={item.label}
+                                  onClick={() => {
+                                    setHamburgerOpen(false);
+                                    window.open(item.url, '_blank', 'noopener,noreferrer');
+                                  }}
+                                  className="w-full text-left px-4 py-2.5 rounded-md text-xs font-black tracking-wide text-white/60 hover:text-white hover:bg-white/5 transition-colors"
+                                >
+                                  {item.label.toUpperCase()}
+                                </button>
+                              ))}
+                            </div>
 
-                                {/* Branding + domain quick access */}
-                                <div className="relative px-6 py-5 border-t border-white/10">
-                                  <div className="flex items-center justify-center gap-4 mb-4 text-[11px] font-black tracking-wide">
-                                    <span className="text-white">Pilot</span>
-                                    <span className="text-red-500">Recognition</span>
-                                    <span className="text-white">.com</span>
-                                  </div>
-                                  <div className="flex items-center justify-center gap-3 flex-wrap">
-                                    {[
-                                      {
-                                        label: 'PilotShortage.org',
-                                        url: 'https://pilotshortage.org',
-                                      },
-                                      {
-                                        label: 'pilotcareerpathways.com',
-                                        url: 'https://pilotcareerpathways.com',
-                                      },
-                                      {
-                                        label: 'PilotTerminal.com',
-                                        url: 'https://pilotterminal.com',
-                                      },
-                                    ].map(({ label, url }) => (
-                                      <a
-                                        key={label}
-                                        href={url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-1 text-[9px] text-white/50 hover:text-white transition-colors"
-                                      >
-                                        {label} <ExternalLink size={10} />
-                                      </a>
-                                    ))}
-                                  </div>
-                                </div>
+                            {/* Recognition+ CTA */}
+                            <div className="mt-auto pt-4">
+                              <button
+                                onClick={() => {
+                                  setHamburgerOpen(false);
+                                  safeRedirect('/recognition-plus');
+                                }}
+                                className="w-full py-3 rounded-lg text-xs font-black tracking-wider text-white transition-all hover:brightness-110 shadow-lg"
+                                style={{ background: '#dc2626' }}
+                              >
+                                GET RECOGNITION+
+                              </button>
 
-                                {/* Sign out */}
-                                <div className="relative px-4 pb-6 pt-2">
-                                  <button
-                                    onClick={() => {
-                                      setProfileDropOpen(false);
-                                      logout();
-                                    }}
-                                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl transition-all"
-                                    style={{
-                                      background: 'rgba(239,68,68,0.12)',
-                                      border: '1px solid rgba(239,68,68,0.25)',
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      (e.currentTarget as HTMLElement).style.background =
-                                        'rgba(239,68,68,0.22)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      (e.currentTarget as HTMLElement).style.background =
-                                        'rgba(239,68,68,0.12)';
-                                    }}
-                                  >
-                                    <LogOut size={14} className="text-red-400" />
-                                    <span className="text-[11px] font-black text-red-400 tracking-wide">
-                                      SIGN OUT
-                                    </span>
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                          </motion.div>
-                        </motion.div>
+                              {currentUser && (
+                                <button
+                                  onClick={() => {
+                                    setHamburgerOpen(false);
+                                    logout();
+                                  }}
+                                  className="w-full mt-3 py-3 rounded-lg text-xs font-black tracking-wider text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                >
+                                  SIGN OUT
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </motion.aside>
                       </>
                     )}
                   </AnimatePresence>
@@ -2360,13 +1948,16 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             </>
           )}
         </div>
-  </div>
+      </div>
 
       {/* ── MAIN CONTENT (no sidebar) ── */}
       <main
-        className={`flex-1 pt-[68px] ${activeTab === 'home' ? 'overflow-hidden' : 'overflow-y-auto'}`}
+        className={`flex-1 pt-[68px] ${activeTab === 'home' ? 'overflow-hidden' : 'overflow-y-auto'} pb-16 md:pb-0`}
       >
-        <div className={`h-full ${activeTab === 'home' ? 'max-w-none mx-0 p-0' : 'max-w-none mx-auto p-3 lg:p-4'}`} style={{ position: 'relative' }}>
+        <div
+          className={`h-full ${activeTab === 'home' ? 'max-w-none mx-0 p-0' : 'max-w-none mx-auto p-3 lg:p-4'}`}
+          style={{ position: 'relative' }}
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               className="h-full"
@@ -2393,6 +1984,38 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           userEmail={profileData?.email || auth0User?.email || currentUser?.email || ''}
           onDismiss={() => setPasskeyPromptDismissed(true)}
         />
+      )}
+
+      {/* ── MOBILE BOTTOM NAVIGATION ── */}
+      {activeTab !== 'home' && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 md:hidden z-50">
+          <nav className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
+            {[
+              { id: 'home', label: 'Home', icon: Home },
+              { id: 'dashboard', label: 'Flight Deck', icon: Plane },
+              { id: 'profile', label: 'Profile', icon: User },
+              { id: 'logbook', label: 'Flight Bag', icon: BookMarked },
+              { id: 'inbox', label: 'Inbox', icon: MessageSquare },
+              { id: 'recognition-plus', label: 'Recognition+', icon: Star },
+            ].map((item) => {
+              const Icon = item.icon;
+              const active = item.id === activeTab;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setTab(item.id as TabId)}
+                  className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors ${
+                    active ? 'text-red-600' : 'text-slate-500'
+                  }`}
+                >
+                  <Icon size={20} strokeWidth={active ? 2.5 : 2} />
+                  <span className="text-[10px] font-bold leading-none">{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
       )}
     </div>
   );
