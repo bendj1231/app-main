@@ -21854,6 +21854,197 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     },
   },
   {
+    id: 'bn-2t-turbine-islander',
+    manufacturer_id: 'britten-norman',
+    model: 'BN-2T Turbine Islander',
+    category: 'turboprop',
+    image:
+      '/images/manufacturers/britten-norman/turboprop/bn-2t-turbine-islander/britten-norman-bn-2t-turbine-islander.jpg',
+    description:
+      'The Britten-Norman BN-2T Turbine Islander is a twin-turboprop derivative of the BN-2 Islander, offering improved performance and reliability for short-haul operations.',
+    first_flight: 1980,
+    specifications: {
+      max_takeoff_weight: '3,175 kg',
+      cruising_speed: '315 km/h',
+      range: '1,093 km',
+      capacity: 10,
+      engines: 2,
+      engine_type: 'Rolls-Royce 250 / Allison 250 turboprop',
+      length: '10.86 m',
+      wingspan: '14.94 m',
+      height: '4.18 m',
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10,
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'],
+      },
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station'],
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'],
+      },
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check'],
+    },
+  },
+  {
+    id: 'bn-2a-trislander',
+    manufacturer_id: 'britten-norman',
+    model: 'BN-2A Trislander',
+    category: 'regional',
+    image:
+      '/images/manufacturers/britten-norman/regional/bn-2a-trislander/britten-norman-bn-2a-trislander.jpg',
+    description:
+      'The Britten-Norman BN-2A Trislander is a three-engined stretched derivative of the Islander regional airliner, capable of seating up to 18 passengers.',
+    first_flight: 1970,
+    specifications: {
+      max_takeoff_weight: '4,536 kg',
+      cruising_speed: '309 km/h',
+      range: '1,609 km',
+      capacity: 18,
+      engines: 3,
+      engine_type: 'Lycoming O-540-E4C5',
+      length: '15.01 m',
+      wingspan: '16.15 m',
+      height: '4.32 m',
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10,
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'],
+      },
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station'],
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'],
+      },
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check'],
+    },
+  },
+  {
+    id: 'defender',
+    manufacturer_id: 'britten-norman',
+    model: 'Defender',
+    category: 'utility',
+    image: '/images/manufacturers/britten-norman/utility/defender/britten-norman-defender.jpg',
+    description:
+      'The Britten-Norman Defender is a twin-turboprop surveillance and utility aircraft based on the Turbine Islander, used by military and law enforcement operators worldwide.',
+    first_flight: 1976,
+    specifications: {
+      max_takeoff_weight: '3,856 kg',
+      cruising_speed: '326 km/h',
+      range: '1,863 km',
+      capacity: 16,
+      engines: 2,
+      engine_type: 'Rolls-Royce 250 / Allison 250 turboprop',
+      length: '12.20 m',
+      wingspan: '16.15 m',
+      height: '4.40 m',
+    },
+    training_requirements: {
+      minimum_hours: 1500,
+      required_licenses: ['CPL', 'IR', 'ME'],
+      medical_certificate: 'Class 1',
+      english_proficiency: 'ICAO Level 4',
+      ground_school_hours: 80,
+      simulator_hours: 20,
+      flight_hours: 10,
+    },
+    training_curriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures'],
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around'],
+      },
+    ],
+    simulator_details: {
+      type: 'Full Flight Simulator',
+      locations: ['Manufacturer training center'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station'],
+    },
+    instructor_qualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating'],
+      },
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewal_requirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check'],
+    },
+  },
+  {
     id: 'evektor-sportstar',
     manufacturer_id: 'evektor',
     model: 'SportStar RTC',
