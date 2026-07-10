@@ -3466,7 +3466,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'flagship',
     subcategory: 'widebody',
-    image: '/images/manufacturers/airbus/flagship/a330/airbus-a330.jpg',
+    image: '/images/manufacturers/airbus/a330/a330/airbus-a330.jpg',
     description:
       'The A330 is one of the most successful wide-body aircraft in history. It was designed alongside the four-engine A340, sharing a near-identical flight deck. Today, the family has evolved into the A330neo (-800 and -900 variants), which uses Rolls-Royce Trent 7000 engines and A350-style wings to fly further and more efficiently. For pilots, the A330 offers a seamless step up from the A320 with minimal "Difference Training."',
     why_choose_rating:
@@ -4142,7 +4142,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: '/images/manufacturers/airbus/commercial/a330-200/airbus-a330-200-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200/airbus-a330-200-1.jpg',
     description:
       'The Airbus A330-200 is the shorter fuselage, longer-range variant of the A330 family, designed for medium-to-long-haul routes.',
     first_flight: 1997,
@@ -4206,7 +4206,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: '/images/manufacturers/airbus/commercial/a330-300/airbus-a330-300.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-300/airbus-a330-300-turkish-tc-jnk.jpg',
     description:
       'The Airbus A330-300ceo is an older generation that remains heavily in service with a large pool of rated pilots, often serving as a bridge to the A350.',
     first_flight: 1992,
@@ -4270,7 +4270,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-800',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: '/images/manufacturers/airbus/commercial/a330-800/airbus-a330-800.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-800/airbus-a330-800-kuwait-9k-apg.jpg',
     description:
       'The Airbus A330-800 is the upgraded A330-200 featuring Rolls-Royce Trent 7000 engines and aerodynamic improvements for better fuel efficiency.',
     first_flight: 2018,
@@ -4334,7 +4334,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-900',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: '/images/manufacturers/airbus/flagship/a330-900/airbus-a330-900.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-900/airbus-a330-900-flagship.jpg',
     description:
       'The Airbus A330-900neo is a fuel-efficient widebody favorite for airlines like Delta Air Lines and TAP Air Portugal.',
     first_flight: 2017,
@@ -4729,7 +4729,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: '/images/manufacturers/airbus/cargo/a330-300-p2f/airbus-a330-300-p2f.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-300-p2f/airbus-a330-300-p2f.jpg',
     description:
       'The Airbus A330-300P2F is the most popular medium-to-long-range freighter conversion today, offering high volume and excellent efficiency for e-commerce with operators like FedEx, UPS, and DHL.',
     first_flight: 2017,
@@ -4793,7 +4793,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: '/images/manufacturers/airbus/cargo/a330-200f/airbus-a330-200f-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200f/airbus-a330-200f-1.jpg',
     description:
       'The Airbus A330-200F is one of the few wide-body aircraft originally built by Airbus as a freighter from day one, featuring a distinctive "nose bubble" to keep the cargo floor level on the ground.',
     first_flight: 2009,
@@ -4862,7 +4862,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: '/images/manufacturers/airbus/cargo/a330-200p2f/airbus-a330-200p2f.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200p2f/airbus-a330-200p2f.jpg',
     description:
       'The Airbus A330-200P2F is a converted version of the A330-200, offering longer range than the -300P2F but slightly less volume for medium-to-long-range cargo operations.',
     first_flight: 2018,
@@ -6419,7 +6419,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330P2F',
     category: 'cargo',
     subcategory: 'p2f-conversion',
-    image: '/images/manufacturers/airbus/cargo/a330p2f/airbus-a330p2f.jpg',
+    image: '/images/manufacturers/airbus/a330/a330p2f/airbus-a330p2f.jpg',
     description:
       'The Airbus A330P2F is a passenger-to-freighter conversion of the A330, featuring a large cargo door and reinforced floor for cargo operations.',
     first_flight: 2017,
@@ -7059,7 +7059,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330 MRTT',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: '/images/manufacturers/airbus/military/a330-mrtt/airbus-a330-mrtt.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-mrtt/airbus-a330-mrtt.jpg',
     description:
       'The Airbus A330 MRTT (Multi Role Tanker Transport) is a military derivative of the A330 used for aerial refueling and transport.',
     first_flight: 2007,
@@ -21163,7 +21163,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'hondajet',
     model: 'HondaJet',
     category: 'private',
-    image: '/images/manufacturers/hondajet/hondajet-hondajet.jpg',
+    image: '/images/manufacturers/hondajet/private/hondajet/hondajet-hondajet.jpg',
     description:
       'The HondaJet is a light business jet. It features over-the-wing engine mounts for improved aerodynamics and cabin space.',
     first_flight: 2003,
@@ -21226,7 +21226,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'hondajet',
     model: 'HondaJet 2600',
     category: 'private',
-    image: '/images/manufacturers/hondajet/hondajet-hondajet-2600.jpg',
+    image: '/images/manufacturers/hondajet/private/hondajet-2600/hondajet-hondajet-2600.jpg',
     description:
       'The HondaJet 2600 Concept is a stretched version of the HondaJet. It is designed for transcontinental range.',
     first_flight: 2021,
@@ -24853,7 +24853,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-200',
     category: 'commercial',
-    image: '/images/manufacturers/airbus/commercial/a330-200/airbus-a330-200-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200/airbus-a330-200-1.jpg',
     description: 'Shortened longer-range A330.',
     first_flight: 1997,
     specifications: {
@@ -24915,7 +24915,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-300',
     category: 'commercial',
-    image: '/images/manufacturers/airbus/commercial/a330-300/airbus-a330-300.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-300/airbus-a330-300-turkish-tc-jnk.jpg',
     description: 'Original longer A330.',
     first_flight: 1992,
     specifications: {
@@ -24977,7 +24977,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-800neo',
     category: 'commercial',
-    image: '/images/manufacturers/airbus/commercial/a330-800/airbus-a330-800-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-800/airbus-a330-800-1.jpg',
     description: 'Re-engined shortened A330.',
     first_flight: 2018,
     specifications: {
@@ -25039,7 +25039,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-900neo',
     category: 'commercial',
-    image: '/images/manufacturers/airbus/commercial/a330-900/airbus-a330-900.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-900/airbus-a330-900-first-takeoff.jpg',
     description: 'Re-engined longer A330.',
     first_flight: 2017,
     specifications: {
@@ -25101,7 +25101,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-200F',
     category: 'cargo',
-    image: '/images/manufacturers/airbus/cargo/a330-200f/airbus-a330-200f-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200f/airbus-a330-200f-1.jpg',
     description: 'Freighter based on A330-200.',
     first_flight: 2009,
     specifications: {
@@ -25163,7 +25163,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330 MRTT',
     category: 'military',
-    image: '/images/manufacturers/airbus/military/a330-mrtt/airbus-a330-mrtt-1.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-mrtt/airbus-a330-mrtt-1.jpg',
     description: 'Multi-role tanker transport.',
     first_flight: 2007,
     specifications: {
@@ -25225,7 +25225,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-300P2F',
     category: 'cargo',
-    image: '/images/manufacturers/airbus/cargo/a330-300-p2f/airbus-a330-300-p2f.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-300-p2f/airbus-a330-300-p2f.jpg',
     description: 'P2F conversion for A330-300.',
     first_flight: 2020,
     specifications: {
@@ -25287,7 +25287,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-200 ACJ',
     category: 'private',
-    image: '/images/manufacturers/airbus/private/a330-200-acj/airbus-a330-200-acj.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-200-acj/airbus-a330-200-acj.jpg',
     description: 'Ultra-long range VIP transport.',
     first_flight: 2001,
     specifications: {
@@ -25349,7 +25349,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-300 ACJ',
     category: 'private',
-    image: '/images/manufacturers/airbus/private/a330-300-acj/airbus-a330-300-acj.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-300-acj/airbus-a330-300-acj.jpg',
     description: 'Largest ACJ cabin.',
     first_flight: 2001,
     specifications: {
@@ -25411,7 +25411,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A330-700L BelugaXL',
     category: 'cargo',
-    image: '/images/manufacturers/airbus/cargo/a330-700l/airbus-a330-700l.jpg',
+    image: '/images/manufacturers/airbus/a330/a330-700l/airbus-a330-700l.jpg',
     description: 'Next-gen oversized cargo aircraft.',
     first_flight: 2018,
     specifications: {
