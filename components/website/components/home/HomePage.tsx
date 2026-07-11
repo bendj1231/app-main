@@ -1848,6 +1848,12 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                             <div className="flex flex-wrap gap-3">
                                 <a
+                                    href="/internship-program"
+                                    className="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
+                                >
+                                    Apply for Internship
+                                </a>
+                                <a
                                     href="https://pilotcareerpathways.com"
                                     target="_blank"
                                     rel="noreferrer noopener"

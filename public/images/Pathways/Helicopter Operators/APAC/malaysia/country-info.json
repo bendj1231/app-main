@@ -1,0 +1,32 @@
+{
+  "country": "malaysia",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "MHS Aviation Berhad",
+          "file": "mhs-aviation-berhad.svg",
+          "serviceType": "Offshore oil and gas, charter, SAR",
+          "status": "pending"
+        },
+        {
+          "name": "Weststar Group",
+          "file": "weststar-group.svg",
+          "serviceType": "Offshore, VIP, charter",
+          "status": "pending"
+        },
+        {
+          "name": "Mycopter Aviation Services",
+          "file": "mycopter-aviation-services.svg",
+          "serviceType": "Helicopter maintenance",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

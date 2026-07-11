@@ -1,0 +1,44 @@
+{
+  "country": "sri-lanka",
+  "region": "APAC",
+  "totalOperators": 5,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 5,
+      "operators": [
+        {
+          "name": "IWS Aviation",
+          "file": "iws-aviation.svg",
+          "serviceType": "Charter, maintenance",
+          "status": "pending"
+        },
+        {
+          "name": "Air SENOK",
+          "file": "air-senok.svg",
+          "serviceType": "Private helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Rathna Aviation",
+          "file": "rathna-aviation.svg",
+          "serviceType": "Charter helicopter service",
+          "status": "pending"
+        },
+        {
+          "name": "Senok Air",
+          "file": "senok-air.svg",
+          "serviceType": "Private air charter",
+          "status": "pending"
+        },
+        {
+          "name": "Senok Air Leisure",
+          "file": "senok-air-leisure.svg",
+          "serviceType": "Helicopter tours",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

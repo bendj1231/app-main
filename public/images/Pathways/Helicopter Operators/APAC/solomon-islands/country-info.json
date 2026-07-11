@@ -1,0 +1,20 @@
+{
+  "country": "solomon-islands",
+  "region": "APAC",
+  "totalOperators": 1,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 1,
+      "operators": [
+        {
+          "name": "Helicopter Support (H.A.S. Pty Ltd)",
+          "file": "helicopter-support-h-a-s-pty-ltd.svg",
+          "serviceType": "Charter, utility",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

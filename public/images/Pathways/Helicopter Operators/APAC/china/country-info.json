@@ -1,0 +1,50 @@
+{
+  "country": "china",
+  "region": "APAC",
+  "totalOperators": 6,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 6,
+      "operators": [
+        {
+          "name": "Shanghai New Sky Helicopter",
+          "file": "shanghai-new-sky-helicopter.svg",
+          "serviceType": "VIP, emergency rescue, medical, filming",
+          "status": "pending"
+        },
+        {
+          "name": "Eastern General Aviation",
+          "file": "eastern-general-aviation.svg",
+          "serviceType": "Scenic, charter, training, rescue",
+          "status": "pending"
+        },
+        {
+          "name": "GDAT General Aviation",
+          "file": "gdat-general-aviation.svg",
+          "serviceType": "Police, fire, HEMS, offshore, utility",
+          "status": "pending"
+        },
+        {
+          "name": "Inner Mongolia Eagle Aviation Group",
+          "file": "inner-mongolia-eagle-aviation-group.svg",
+          "serviceType": "Agricultural, rescue, training",
+          "status": "pending"
+        },
+        {
+          "name": "Suzhou Feixian (Ruohang)",
+          "file": "suzhou-feixian-ruohang.svg",
+          "serviceType": "General aviation, helicopter operations",
+          "status": "pending"
+        },
+        {
+          "name": "CITIC Offshore Helicopter",
+          "file": "citic-offshore-helicopter.svg",
+          "serviceType": "Offshore, marine surveillance",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

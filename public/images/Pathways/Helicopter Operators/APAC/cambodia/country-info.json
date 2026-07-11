@@ -1,0 +1,32 @@
+{
+  "country": "cambodia",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Helicopters Cambodia",
+          "file": "helicopters-cambodia.svg",
+          "serviceType": "Scenic, mining exploration, surveys",
+          "status": "pending"
+        },
+        {
+          "name": "Helistar Cambodia",
+          "file": "helistar-cambodia.svg",
+          "serviceType": "Scenic, charter, VIP, mining support",
+          "status": "pending"
+        },
+        {
+          "name": "Helitop Aviation",
+          "file": "helitop-aviation.svg",
+          "serviceType": "Chartered flights, scenic, emergency",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

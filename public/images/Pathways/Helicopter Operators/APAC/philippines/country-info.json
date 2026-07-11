@@ -1,0 +1,38 @@
+{
+  "country": "philippines",
+  "region": "APAC",
+  "totalOperators": 4,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 4,
+      "operators": [
+        {
+          "name": "Asia Aircraft Philippines",
+          "file": "asia-aircraft-philippines.svg",
+          "serviceType": "Charter, heavy lift, survey",
+          "status": "pending"
+        },
+        {
+          "name": "PhilJets",
+          "file": "philjets.svg",
+          "serviceType": "Helicopter charter, private jet",
+          "status": "pending"
+        },
+        {
+          "name": "LionAir Incorporated",
+          "file": "lionair-incorporated.svg",
+          "serviceType": "Private jet and helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "AirTaxi.PH",
+          "file": "airtaxi-ph.svg",
+          "serviceType": "Charter planes",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

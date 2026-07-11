@@ -1,0 +1,56 @@
+{
+  "country": "nepal",
+  "region": "APAC",
+  "totalOperators": 7,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 7,
+      "operators": [
+        {
+          "name": "Fishtail Air",
+          "file": "fishtail-air.svg",
+          "serviceType": "Charter, rescue, trans-border",
+          "status": "pending"
+        },
+        {
+          "name": "Air Dynasty",
+          "file": "air-dynasty.svg",
+          "serviceType": "Sightseeing, VIP, SAR, medevac, high-altitude",
+          "status": "pending"
+        },
+        {
+          "name": "Kailash Helicopter Services",
+          "file": "kailash-helicopter-services.svg",
+          "serviceType": "Rescue, charter, tours, medevac",
+          "status": "pending"
+        },
+        {
+          "name": "Mustang Helicopter",
+          "file": "mustang-helicopter.svg",
+          "serviceType": "High-altitude, rescue, cargo, skydiving",
+          "status": "pending"
+        },
+        {
+          "name": "Shree Airlines",
+          "file": "shree-airlines.svg",
+          "serviceType": "Mi-17 operations, CRJ jet fleet",
+          "status": "pending"
+        },
+        {
+          "name": "Heli Everest",
+          "file": "heli-everest.svg",
+          "serviceType": "Charter, tours",
+          "status": "pending"
+        },
+        {
+          "name": "Basecamp Helicopter",
+          "file": "basecamp-helicopter.svg",
+          "serviceType": "High-altitude, rescue, logistics",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "country": "new-zealand",
+  "region": "APAC",
+  "totalOperators": 19,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 8,
+      "operators": [
+        {
+          "name": "The Helicopter Line",
+          "file": "the-helicopter-line.svg",
+          "serviceType": "Scenic, charter, tourism",
+          "status": "pending"
+        },
+        {
+          "name": "GCH Aviation",
+          "file": "gch-aviation.svg",
+          "serviceType": "Scenic, rescue, air ambulance, training",
+          "status": "pending"
+        },
+        {
+          "name": "Heletranz Helicopters",
+          "file": "heletranz-helicopters.svg",
+          "serviceType": "VIP, scenic, charter",
+          "status": "pending"
+        },
+        {
+          "name": "Advanced Flight",
+          "file": "advanced-flight.svg",
+          "serviceType": "Charter, management, training",
+          "status": "pending"
+        },
+        {
+          "name": "Rotor Work",
+          "file": "rotor-work.svg",
+          "serviceType": "Scenic, charter, agricultural",
+          "status": "pending"
+        },
+        {
+          "name": "Beck Helicopters",
+          "file": "beck-helicopters.svg",
+          "serviceType": "Aerial services",
+          "status": "pending"
+        },
+        {
+          "name": "Escape Aviation",
+          "file": "escape-aviation.svg",
+          "serviceType": "Luxury charters, wilderness",
+          "status": "pending"
+        },
+        {
+          "name": "Alpine Helicopters",
+          "file": "alpine-helicopters.svg",
+          "serviceType": "Scenic, charter",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "general_aviation",
+      "label": "General Aviation",
+      "count": 6,
+      "operators": [
+        {
+          "name": "Mainland Air",
+          "file": "mainland-air.svg",
+          "serviceType": "Flight training, air charter",
+          "status": "pending"
+        },
+        {
+          "name": "Eagleflight Technics",
+          "file": "eagleflight-technics.svg",
+          "serviceType": "Charter, UAV, training",
+          "status": "pending"
+        },
+        {
+          "name": "Island Aviation",
+          "file": "island-aviation.svg",
+          "serviceType": "Scenic flights, connections",
+          "status": "pending"
+        },
+        {
+          "name": "Air Safaris",
+          "file": "air-safaris.svg",
+          "serviceType": "Scenic flights",
+          "status": "pending"
+        },
+        {
+          "name": "INFLITE Aviation Services",
+          "file": "inflite-aviation-services.svg",
+          "serviceType": "Aircraft management, private aviation",
+          "status": "pending"
+        },
+        {
+          "name": "Tasman Aviation",
+          "file": "tasman-aviation.svg",
+          "serviceType": "Charter flights",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "scenic",
+      "label": "Scenic & Tourism",
+      "count": 5,
+      "operators": [
+        {
+          "name": "Glenorchy Air",
+          "file": "glenorchy-air.svg",
+          "serviceType": "Scenic flights to Milford Sound, Mt Cook",
+          "status": "pending"
+        },
+        {
+          "name": "Air Milford",
+          "file": "air-milford.svg",
+          "serviceType": "Scenic flights",
+          "status": "pending"
+        },
+        {
+          "name": "Southern Alps Air",
+          "file": "southern-alps-air.svg",
+          "serviceType": "Wanaka scenic flights",
+          "status": "pending"
+        },
+        {
+          "name": "Mount Cook Ski Planes & Helicopters",
+          "file": "mount-cook-ski-planes-helicopters.svg",
+          "serviceType": "Glacier flights, scenic",
+          "status": "pending"
+        },
+        {
+          "name": "Glacier Southern Lakes Helicopters",
+          "file": "glacier-southern-lakes-helicopters.svg",
+          "serviceType": "Queenstown scenic flights",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,405 @@
+{
+  "region": "APAC",
+  "totalCountries": 29,
+  "totalOperators": 157,
+  "categoryLabels": {
+    "helicopter": "Helicopter Operators",
+    "general_aviation": "General Aviation",
+    "air_ambulance": "Air Ambulance & Medical",
+    "agricultural": "Agricultural Aviation",
+    "flight_training": "Flight Training",
+    "scenic": "Scenic & Tourism",
+    "private_jet": "Private Jet Charter"
+  },
+  "countries": [
+    {
+      "country": "australia",
+      "totalOperators": 27,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 5
+        },
+        {
+          "key": "general_aviation",
+          "label": "General Aviation",
+          "count": 6
+        },
+        {
+          "key": "air_ambulance",
+          "label": "Air Ambulance & Medical",
+          "count": 7
+        },
+        {
+          "key": "agricultural",
+          "label": "Agricultural Aviation",
+          "count": 4
+        },
+        {
+          "key": "flight_training",
+          "label": "Flight Training",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "country": "new-zealand",
+      "totalOperators": 19,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 8
+        },
+        {
+          "key": "general_aviation",
+          "label": "General Aviation",
+          "count": 6
+        },
+        {
+          "key": "scenic",
+          "label": "Scenic & Tourism",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "country": "bangladesh",
+      "totalOperators": 10,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "country": "india",
+      "totalOperators": 8,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        },
+        {
+          "key": "flight_training",
+          "label": "Flight Training",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "country": "japan",
+      "totalOperators": 7,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 4
+        },
+        {
+          "key": "general_aviation",
+          "label": "General Aviation",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "indonesia",
+      "totalOperators": 7,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "country": "nepal",
+      "totalOperators": 7,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "country": "kazakhstan",
+      "totalOperators": 7,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "country": "china",
+      "totalOperators": 6,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "country": "papua-new-guinea",
+      "totalOperators": 6,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "country": "vietnam",
+      "totalOperators": 5,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "country": "sri-lanka",
+      "totalOperators": 5,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "country": "singapore",
+      "totalOperators": 4,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 1
+        },
+        {
+          "key": "private_jet",
+          "label": "Private Jet Charter",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "thailand",
+      "totalOperators": 4,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "country": "philippines",
+      "totalOperators": 4,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "country": "malaysia",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "taiwan",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "hong-kong",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "fiji",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "cambodia",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "new-caledonia",
+      "totalOperators": 3,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "country": "laos",
+      "totalOperators": 2,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "country": "uzbekistan",
+      "totalOperators": 2,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "country": "azerbaijan",
+      "totalOperators": 2,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "country": "vanuatu",
+      "totalOperators": 2,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "country": "french-polynesia",
+      "totalOperators": 2,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "country": "south-korea",
+      "totalOperators": 1,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "country": "myanmar",
+      "totalOperators": 1,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "country": "solomon-islands",
+      "totalOperators": 1,
+      "categories": [
+        {
+          "key": "helicopter",
+          "label": "Helicopter Operators",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "country": "pakistan",
+      "totalOperators": 0,
+      "categories": []
+    },
+    {
+      "country": "brunei",
+      "totalOperators": 0,
+      "categories": []
+    },
+    {
+      "country": "maldives",
+      "totalOperators": 0,
+      "categories": []
+    },
+    {
+      "country": "kiribati",
+      "totalOperators": 0,
+      "categories": []
+    },
+    {
+      "country": "samoa",
+      "totalOperators": 0,
+      "categories": []
+    }
+  ]
+}

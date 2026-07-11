@@ -1,0 +1,204 @@
+{
+  "country": "australia",
+  "region": "APAC",
+  "totalOperators": 27,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 5,
+      "operators": [
+        {
+          "name": "Nautilus Aviation",
+          "file": "nautilus-aviation.svg",
+          "serviceType": "EMS, SAR, VIP, charter, tourism",
+          "status": "pending"
+        },
+        {
+          "name": "McDermott Aviation",
+          "file": "mcdermott-aviation.svg",
+          "serviceType": "Fire-fighting, aerial lifting, construction",
+          "status": "pending"
+        },
+        {
+          "name": "Professional Helicopter Services",
+          "file": "professional-helicopter-services.svg",
+          "serviceType": "Training, charter, EMS",
+          "status": "pending"
+        },
+        {
+          "name": "Helifarm",
+          "file": "helifarm.svg",
+          "serviceType": "Agricultural, utility",
+          "status": "pending"
+        },
+        {
+          "name": "Valhalla Helicopters",
+          "file": "valhalla-helicopters.svg",
+          "serviceType": "Charter, VIP",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "general_aviation",
+      "label": "General Aviation",
+      "count": 6,
+      "operators": [
+        {
+          "name": "National Jet Express",
+          "file": "national-jet-express.svg",
+          "serviceType": "FIFO charter, cargo",
+          "status": "pending"
+        },
+        {
+          "name": "Brooks Airways",
+          "file": "brooks-airways.svg",
+          "serviceType": "Private charter, FIFO, medEvac",
+          "status": "pending"
+        },
+        {
+          "name": "Hardy Aviation",
+          "file": "hardy-aviation.svg",
+          "serviceType": "Charter, passenger, freight",
+          "status": "pending"
+        },
+        {
+          "name": "Machjet International",
+          "file": "machjet-international.svg",
+          "serviceType": "Charter, aeromedical, FBO",
+          "status": "pending"
+        },
+        {
+          "name": "AERgO International",
+          "file": "aergo-international.svg",
+          "serviceType": "Charter, VIP, government, FIFO",
+          "status": "pending"
+        },
+        {
+          "name": "GAM Group",
+          "file": "gam-group.svg",
+          "serviceType": "Cargo, charter, VIP, FIFO, medical",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "air_ambulance",
+      "label": "Air Ambulance & Medical",
+      "count": 7,
+      "operators": [
+        {
+          "name": "CareFlight",
+          "file": "careflight.svg",
+          "serviceType": "Air ambulance, rescue",
+          "status": "pending"
+        },
+        {
+          "name": "Royal Flying Doctor Service",
+          "file": "royal-flying-doctor-service.svg",
+          "serviceType": "Air ambulance, medical evacuation",
+          "status": "pending"
+        },
+        {
+          "name": "LifeFlight Australia",
+          "file": "lifeflight-australia.svg",
+          "serviceType": "Air ambulance, rescue",
+          "status": "pending"
+        },
+        {
+          "name": "Pel-Air",
+          "file": "pel-air.svg",
+          "serviceType": "Air ambulance",
+          "status": "pending"
+        },
+        {
+          "name": "MedSTAR",
+          "file": "medstar.svg",
+          "serviceType": "Air ambulance",
+          "status": "pending"
+        },
+        {
+          "name": "Snowy Hydro SouthCare",
+          "file": "snowy-hydro-southcare.svg",
+          "serviceType": "Air ambulance, rescue",
+          "status": "pending"
+        },
+        {
+          "name": "Westpac Lifesaver Rescue Helicopter",
+          "file": "westpac-lifesaver-rescue-helicopter.svg",
+          "serviceType": "Air ambulance, rescue",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "agricultural",
+      "label": "Agricultural Aviation",
+      "count": 4,
+      "operators": [
+        {
+          "name": "Air Ag",
+          "file": "air-ag.svg",
+          "serviceType": "Agricultural spraying",
+          "status": "pending"
+        },
+        {
+          "name": "Robins Aviation",
+          "file": "robins-aviation.svg",
+          "serviceType": "Aerial agriculture",
+          "status": "pending"
+        },
+        {
+          "name": "Rebel Ag Aviation",
+          "file": "rebel-ag-aviation.svg",
+          "serviceType": "Aerial agriculture",
+          "status": "pending"
+        },
+        {
+          "name": "Dunn Aviation",
+          "file": "dunn-aviation.svg",
+          "serviceType": "Aerial agriculture",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "flight_training",
+      "label": "Flight Training",
+      "count": 5,
+      "operators": [
+        {
+          "name": "Flight One Education",
+          "file": "flight-one-education.svg",
+          "serviceType": "Pilot training (fixed-wing and rotary)",
+          "status": "pending"
+        },
+        {
+          "name": "Flight Training Adelaide",
+          "file": "flight-training-adelaide.svg",
+          "serviceType": "Airline pilot training",
+          "status": "pending"
+        },
+        {
+          "name": "National Aviation Academy",
+          "file": "national-aviation-academy.svg",
+          "serviceType": "Fixed-wing flight training",
+          "status": "pending"
+        },
+        {
+          "name": "Quantum Aviation",
+          "file": "quantum-aviation.svg",
+          "serviceType": "Flying school, charter",
+          "status": "pending"
+        },
+        {
+          "name": "Airspeed Aviation",
+          "file": "airspeed-aviation.svg",
+          "serviceType": "Flight training",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

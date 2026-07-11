@@ -1,0 +1,32 @@
+{
+  "country": "fiji",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Heli-Tours Fiji",
+          "file": "heli-tours-fiji.svg",
+          "serviceType": "Resort transfers, scenic, medevac, SAR",
+          "status": "pending"
+        },
+        {
+          "name": "Island Hoppers Fiji",
+          "file": "island-hoppers-fiji.svg",
+          "serviceType": "Express transfers, scenic flights",
+          "status": "pending"
+        },
+        {
+          "name": "Helipro Fiji",
+          "file": "helipro-fiji.svg",
+          "serviceType": "Aero medical evacuation, rescue",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

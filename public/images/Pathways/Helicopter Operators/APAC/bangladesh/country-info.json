@@ -1,0 +1,74 @@
+{
+  "country": "bangladesh",
+  "region": "APAC",
+  "totalOperators": 10,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 10,
+      "operators": [
+        {
+          "name": "Fly Helicopter Service Bangladesh",
+          "file": "fly-helicopter-service-bangladesh.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Meghna Aviation Limited",
+          "file": "meghna-aviation-limited.svg",
+          "serviceType": "Corporate air transportation",
+          "status": "pending"
+        },
+        {
+          "name": "R&R Aviation (Sikder Group)",
+          "file": "r-r-aviation-sikder-group.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Bashundhara Airways Limited",
+          "file": "bashundhara-airways-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Square Air Limited",
+          "file": "square-air-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Impress Aviation Limited",
+          "file": "impress-aviation-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "BRB Air Limited",
+          "file": "brb-air-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Partex Aviation Limited",
+          "file": "partex-aviation-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "South Asian Airlines Limited",
+          "file": "south-asian-airlines-limited.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Helicopter BD",
+          "file": "helicopter-bd.svg",
+          "serviceType": "Helicopter charter, flight charters",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

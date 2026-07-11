@@ -1,5 +1,5 @@
 {
-  "totalFiles": 68,
+  "totalFiles": 89,
   "categories": [
     "agricultural-utility",
     "autonomous-cargo",
@@ -14,46 +14,40 @@
     "survey-utility"
   ],
   "categoryManifest": {
-    "general-aviation": [
-      "aero-east-europe-logo.png",
-      "aeroprakt-logo.png",
-      "american-champion-logo.png",
-      "aviat-logo.png",
-      "bristell-logo.png",
-      "britten-norman-logo.png",
-      "cirrus-logo.png",
-      "elixir-logo.webp",
-      "evektor-logo.jpg",
-      "foxcon-logo.jpg",
-      "grob-logo.jpg",
-      "icon-logo.jpg",
-      "jmb-logo.png",
-      "mahindra-logo.png",
-      "mooney-logo.png",
-      "pacific-aerospace-logo.jpg",
-      "piper-logo.svg",
-      "pipistrel-logo.png",
-      "sling-logo.png",
-      "tecnam-logo.png",
-      "velocity-logo.png",
-      "vulcanair-logo.png",
-      "waco-logo.png"
-    ],
-    "commercial-jets": [
-      "airbus-logo.png",
-      "boeing-logo.png",
-      "comac-logo.jpg"
-    ],
     "agricultural-utility": [
       "airtractor-logo.svg",
       "thrush-logo.jpg"
     ],
-    "military-defense": [
-      "antonov-logo.png",
-      "dornier-logo.svg",
-      "hindustan-logo.jpg",
-      "ilyushin-logo.png",
-      "raytheon-logo.svg"
+    "autonomous-cargo": [
+      "elroy-air-logo.jpg",
+      "pyka-logo.jpg",
+      "sabrewing-logo.jpg"
+    ],
+    "business-private-jets": [
+      "beechcraft-logo.png",
+      "beechcraft-logo.svg",
+      "bombardier-logo.svg",
+      "cessna-logo.png",
+      "cessna-logo.svg",
+      "dassault-logo.png",
+      "dassault-logo.svg",
+      "embraer-logo.svg",
+      "epic-logo.jpg",
+      "gulfstream-logo.svg",
+      "gulfstream-logo.webp",
+      "hondajet-logo.png",
+      "hondajet-logo.svg",
+      "pilatus-logo.svg",
+      "socata-logo.jpg",
+      "socata-logo.png",
+      "twin-commander-logo.png"
+    ],
+    "commercial-jets": [
+      "airbus-logo.png",
+      "airbus-logo.svg",
+      "boeing-logo.png",
+      "boeing-logo.svg",
+      "comac-logo.jpg"
     ],
     "evtol-uam": [
       "archer-logo.svg",
@@ -67,41 +61,69 @@
       "supernal-logo.jpg",
       "wisk-logo.jpg"
     ],
-    "regional-aircraft": [
-      "atr-logo.png",
-      "bombardier-logo.svg",
-      "de-havilland-logo.png",
-      "embraer-logo.svg",
-      "let-logo.svg",
-      "mitsubishi-logo.svg"
-    ],
-    "business-private-jets": [
+    "general-aviation": [
+      "aero-east-europe-logo.png",
+      "aeroprakt-logo.png",
+      "american-champion-logo.png",
+      "aviat-logo.png",
       "beechcraft-logo.png",
+      "bristell-logo.png",
+      "britten-norman-logo.png",
       "cessna-logo.png",
-      "dassault-logo.png",
-      "epic-logo.jpg",
-      "gulfstream-logo.webp",
-      "hondajet-logo.png",
+      "cirrus-logo.png",
+      "de-havilland-logo.png",
+      "elixir-logo.webp",
+      "evektor-logo.jpg",
+      "foxcon-logo.jpg",
+      "grob-logo.jpg",
+      "icon-logo.jpg",
+      "jmb-logo.png",
+      "mahindra-logo.png",
+      "mitsubishi-logo.svg",
+      "mooney-logo.png",
+      "pacific-aerospace-logo.jpg",
       "pilatus-logo.svg",
-      "socata-logo.jpg",
-      "socata-logo.png",
-      "twin-commander-logo.png"
+      "piper-logo.svg",
+      "pipistrel-logo.png",
+      "quest-logo.png",
+      "sling-logo.png",
+      "tecnam-logo.png",
+      "tecnam-logo.svg",
+      "velocity-logo.png",
+      "vulcanair-logo.png",
+      "waco-logo.png"
     ],
     "helicopters": [
       "bell-logo.svg",
       "leonardo-logo.png",
-      "sikorsky-logo.png"
+      "leonardo-logo.svg",
+      "sikorsky-logo.png",
+      "sikorsky-logo.svg"
     ],
-    "autonomous-cargo": [
-      "elroy-air-logo.jpg",
-      "pyka-logo.jpg",
-      "sabrewing-logo.jpg"
-    ],
-    "survey-utility": [
-      "fugro-logo.svg"
+    "military-defense": [
+      "antonov-logo.png",
+      "antonov-logo.svg",
+      "dornier-logo.svg",
+      "hindustan-logo.jpg",
+      "ilyushin-logo.png",
+      "raytheon-logo.svg"
     ],
     "other": [
       "mlg-logo.jpg"
+    ],
+    "regional-aircraft": [
+      "atr-logo.png",
+      "atr-logo.svg",
+      "bombardier-logo.svg",
+      "comac-logo.jpg",
+      "de-havilland-logo.png",
+      "dornier-logo.svg",
+      "embraer-logo.svg",
+      "let-logo.svg",
+      "mitsubishi-logo.svg"
+    ],
+    "survey-utility": [
+      "fugro-logo.svg"
     ]
   },
   "uncategorized": []

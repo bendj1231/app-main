@@ -734,8 +734,8 @@ const MANUFACTURER_LOGOS: Record<string, string> = {
   Bombardier: '/images/manufacturer-logos/regional-aircraft/bombardier-logo.svg',
   ATR: '/images/manufacturer-logos/regional-aircraft/atr-logo.svg',
   Tecnam: '/images/manufacturer-logos/general-aviation/tecnam-logo.svg',
-  Cirrus: '/images/manufacturer-logos/general-aviation/cirrus-logo.svg',
-  Mooney: '/images/manufacturer-logos/general-aviation/mooney-logo.svg',
+  Cirrus: '/images/manufacturer-logos/general-aviation/cirrus-logo.png',
+  Mooney: '/images/manufacturer-logos/general-aviation/mooney-logo.png',
 };
 
 const getManufacturerLogo = (name: string) => MANUFACTURER_LOGOS[name] || '';

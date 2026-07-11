@@ -1,0 +1,32 @@
+{
+  "country": "hong-kong",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Heliservices Hong Kong",
+          "file": "heliservices-hong-kong.svg",
+          "serviceType": "Sightseeing, VIP, filming, lifting",
+          "status": "pending"
+        },
+        {
+          "name": "Government Flying Service",
+          "file": "government-flying-service.svg",
+          "serviceType": "Emergency helicopter, fixed-wing",
+          "status": "pending"
+        },
+        {
+          "name": "Seaplane Group",
+          "file": "seaplane-group.svg",
+          "serviceType": "Charter, private jet, cross-border",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

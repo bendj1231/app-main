@@ -1,0 +1,69 @@
+{
+  "country": "india",
+  "region": "APAC",
+  "totalOperators": 8,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Pawan Hans Limited",
+          "file": "pawan-hans-limited.svg",
+          "serviceType": "Offshore, VIP, charter, SAR",
+          "status": "pending"
+        },
+        {
+          "name": "Global Vectra Helicorp",
+          "file": "global-vectra-helicorp.svg",
+          "serviceType": "Offshore, VIP, charter",
+          "status": "pending"
+        },
+        {
+          "name": "Heligo Charters",
+          "file": "heligo-charters.svg",
+          "serviceType": "Offshore, VIP, charter",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "flight_training",
+      "label": "Flight Training",
+      "count": 5,
+      "operators": [
+        {
+          "name": "Chimes Aviation Academy",
+          "file": "chimes-aviation-academy.svg",
+          "serviceType": "Flying training, DGCA approved",
+          "status": "pending"
+        },
+        {
+          "name": "Skynex Aero",
+          "file": "skynex-aero.svg",
+          "serviceType": "Flight training school",
+          "status": "pending"
+        },
+        {
+          "name": "Flight Simulation Technique Centre",
+          "file": "flight-simulation-technique-centre.svg",
+          "serviceType": "CPL training, type rating",
+          "status": "pending"
+        },
+        {
+          "name": "Redbird Aviation",
+          "file": "redbird-aviation.svg",
+          "serviceType": "Flight training academy",
+          "status": "pending"
+        },
+        {
+          "name": "Garg Aviation Limited",
+          "file": "garg-aviation-limited.svg",
+          "serviceType": "Pilot training institute",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

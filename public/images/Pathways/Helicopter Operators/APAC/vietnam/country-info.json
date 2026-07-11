@@ -1,0 +1,44 @@
+{
+  "country": "vietnam",
+  "region": "APAC",
+  "totalOperators": 5,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 5,
+      "operators": [
+        {
+          "name": "Vietnam Helicopters",
+          "file": "vietnam-helicopters.svg",
+          "serviceType": "Cargo, training, tourism, medevac, SAR",
+          "status": "pending"
+        },
+        {
+          "name": "VNH Central",
+          "file": "vnh-central.svg",
+          "serviceType": "Central Vietnam helicopter operations",
+          "status": "pending"
+        },
+        {
+          "name": "Aerial.vn",
+          "file": "aerial-vn.svg",
+          "serviceType": "Helicopter tours, charters, filming",
+          "status": "pending"
+        },
+        {
+          "name": "Vietnam Helicopter Travel",
+          "file": "vietnam-helicopter-travel.svg",
+          "serviceType": "Tours, leasing, training",
+          "status": "pending"
+        },
+        {
+          "name": "Uni Group Asia",
+          "file": "uni-group-asia.svg",
+          "serviceType": "Charter, medivac",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

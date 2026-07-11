@@ -1,0 +1,32 @@
+{
+  "country": "new-caledonia",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Hélicocéan",
+          "file": "h-licoc-an.svg",
+          "serviceType": "Tours, charter, lifting, surveys",
+          "status": "pending"
+        },
+        {
+          "name": "Helisud",
+          "file": "helisud.svg",
+          "serviceType": "Scenic tours, aerial work",
+          "status": "pending"
+        },
+        {
+          "name": "HeliCal (HCM Group)",
+          "file": "helical-hcm-group.svg",
+          "serviceType": "Nickel mining, drilling prospecting",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

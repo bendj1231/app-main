@@ -1,0 +1,38 @@
+{
+  "country": "thailand",
+  "region": "APAC",
+  "totalOperators": 4,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 4,
+      "operators": [
+        {
+          "name": "Thai Aviation Services",
+          "file": "thai-aviation-services.svg",
+          "serviceType": "Offshore oil and gas",
+          "status": "pending"
+        },
+        {
+          "name": "Advance Aviation",
+          "file": "advance-aviation.svg",
+          "serviceType": "VIP helicopter charter, private jet",
+          "status": "pending"
+        },
+        {
+          "name": "Silk Sky Air",
+          "file": "silk-sky-air.svg",
+          "serviceType": "Luxury helicopter tours, VIP transfers",
+          "status": "pending"
+        },
+        {
+          "name": "Andaman Aerodrome",
+          "file": "andaman-aerodrome.svg",
+          "serviceType": "Helicopter charter",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

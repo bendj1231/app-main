@@ -1,0 +1,56 @@
+{
+  "country": "indonesia",
+  "region": "APAC",
+  "totalOperators": 7,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 7,
+      "operators": [
+        {
+          "name": "Derazona Helicopters",
+          "file": "derazona-helicopters.svg",
+          "serviceType": "Offshore, utility, charter",
+          "status": "pending"
+        },
+        {
+          "name": "Equator Avia Persada",
+          "file": "equator-avia-persada.svg",
+          "serviceType": "VIP, charter, medevac, survey",
+          "status": "pending"
+        },
+        {
+          "name": "ALTIUS Indonesia",
+          "file": "altius-indonesia.svg",
+          "serviceType": "VIP executive transport",
+          "status": "pending"
+        },
+        {
+          "name": "Falcon Patriot Udara",
+          "file": "falcon-patriot-udara.svg",
+          "serviceType": "Executive transport, surveillance",
+          "status": "pending"
+        },
+        {
+          "name": "SGi",
+          "file": "sgi.svg",
+          "serviceType": "Mining support, SAR, firefighting, offshore",
+          "status": "pending"
+        },
+        {
+          "name": "Volta Pasifik Aviasi",
+          "file": "volta-pasifik-aviasi.svg",
+          "serviceType": "Passenger, patrol, agriculture, tourism",
+          "status": "pending"
+        },
+        {
+          "name": "Matthew Air Nusantara",
+          "file": "matthew-air-nusantara.svg",
+          "serviceType": "Charter",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

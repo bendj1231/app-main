@@ -1,0 +1,56 @@
+{
+  "country": "kazakhstan",
+  "region": "APAC",
+  "totalOperators": 7,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 7,
+      "operators": [
+        {
+          "name": "Air Tengri",
+          "file": "air-tengri.svg",
+          "serviceType": "Offshore, MEDEVAC, VIP",
+          "status": "pending"
+        },
+        {
+          "name": "Burundaiavia",
+          "file": "burundaiavia.svg",
+          "serviceType": "Sightseeing, cargo transport",
+          "status": "pending"
+        },
+        {
+          "name": "Prime Aviation",
+          "file": "prime-aviation.svg",
+          "serviceType": "Oil and gas, forestry, marine",
+          "status": "pending"
+        },
+        {
+          "name": "Sky Service",
+          "file": "sky-service.svg",
+          "serviceType": "Helicopter and aircraft charter",
+          "status": "pending"
+        },
+        {
+          "name": "Tamga Jet",
+          "file": "tamga-jet.svg",
+          "serviceType": "Business aviation",
+          "status": "pending"
+        },
+        {
+          "name": "Kazavialesoohrana",
+          "file": "kazavialesoohrana.svg",
+          "serviceType": "Forest fire detection and extinguishing",
+          "status": "pending"
+        },
+        {
+          "name": "NCA North Caspian Aviation",
+          "file": "nca-north-caspian-aviation.svg",
+          "serviceType": "Aerial surveys, patrol",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

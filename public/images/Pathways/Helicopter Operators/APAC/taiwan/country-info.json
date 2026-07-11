@@ -1,0 +1,32 @@
+{
+  "country": "taiwan",
+  "region": "APAC",
+  "totalOperators": 3,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Ginger Aviation",
+          "file": "ginger-aviation.svg",
+          "serviceType": "Aerial surveying, photography, spraying",
+          "status": "pending"
+        },
+        {
+          "name": "Apex Aviation",
+          "file": "apex-aviation.svg",
+          "serviceType": "Offshore wind operations",
+          "status": "pending"
+        },
+        {
+          "name": "Dong Fang Offshore",
+          "file": "dong-fang-offshore.svg",
+          "serviceType": "Offshore wind operations",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

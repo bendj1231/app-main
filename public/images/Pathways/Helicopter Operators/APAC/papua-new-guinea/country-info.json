@@ -1,0 +1,50 @@
+{
+  "country": "papua-new-guinea",
+  "region": "APAC",
+  "totalOperators": 6,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 6,
+      "operators": [
+        {
+          "name": "Pacific Helicopters",
+          "file": "pacific-helicopters.svg",
+          "serviceType": "Oil, gas, mining, construction",
+          "status": "pending"
+        },
+        {
+          "name": "Heli Solutions Ltd",
+          "file": "heli-solutions-ltd.svg",
+          "serviceType": "Executive charter, surveys, cargo, training",
+          "status": "pending"
+        },
+        {
+          "name": "Niugini Helicopters",
+          "file": "niugini-helicopters.svg",
+          "serviceType": "Ad-hoc charter",
+          "status": "pending"
+        },
+        {
+          "name": "Manolos Aviation Ltd",
+          "file": "manolos-aviation-ltd.svg",
+          "serviceType": "Charter, medical evacuation",
+          "status": "pending"
+        },
+        {
+          "name": "SIL Aviation",
+          "file": "sil-aviation.svg",
+          "serviceType": "Flight hire, helicopters and fixed-wing",
+          "status": "pending"
+        },
+        {
+          "name": "Helifix Operations Ltd",
+          "file": "helifix-operations-ltd.svg",
+          "serviceType": "Charter, medevac, survey",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

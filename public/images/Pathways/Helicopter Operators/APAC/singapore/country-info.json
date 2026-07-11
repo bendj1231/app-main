@@ -1,0 +1,45 @@
+{
+  "country": "singapore",
+  "region": "APAC",
+  "totalOperators": 4,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 1,
+      "operators": [
+        {
+          "name": "Singapore Heli Services",
+          "file": "singapore-heli-services.svg",
+          "serviceType": "Charter, sightseeing, filming",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "private_jet",
+      "label": "Private Jet Charter",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Air Charter Service Singapore",
+          "file": "air-charter-service-singapore.svg",
+          "serviceType": "Private helicopter charter",
+          "status": "pending"
+        },
+        {
+          "name": "Singapore Air Charter",
+          "file": "singapore-air-charter.svg",
+          "serviceType": "Private jet charter",
+          "status": "pending"
+        },
+        {
+          "name": "Air 7 Asia",
+          "file": "air-7-asia.svg",
+          "serviceType": "Private jet charter, aircraft management",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

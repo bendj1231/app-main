@@ -1,0 +1,26 @@
+{
+  "country": "vanuatu",
+  "region": "APAC",
+  "totalOperators": 2,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 2,
+      "operators": [
+        {
+          "name": "Vanuatu Helicopters",
+          "file": "vanuatu-helicopters.svg",
+          "serviceType": "Scenic, charter, volcano viewing",
+          "status": "pending"
+        },
+        {
+          "name": "Unity Airlines",
+          "file": "unity-airlines.svg",
+          "serviceType": "Air charter and tour operator",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

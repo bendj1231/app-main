@@ -1,0 +1,63 @@
+{
+  "country": "japan",
+  "region": "APAC",
+  "totalOperators": 7,
+  "categories": [
+    {
+      "key": "helicopter",
+      "label": "Helicopter Operators",
+      "count": 4,
+      "operators": [
+        {
+          "name": "Central Helicopter Service",
+          "file": "central-helicopter-service.svg",
+          "serviceType": "EMS (HEMS), firefighting, rescue",
+          "status": "pending"
+        },
+        {
+          "name": "Aero Asahi Corporation",
+          "file": "aero-asahi-corporation.svg",
+          "serviceType": "Offshore, EMS, survey, power line",
+          "status": "pending"
+        },
+        {
+          "name": "NOEVIR AVIATION",
+          "file": "noevir-aviation.svg",
+          "serviceType": "Charter, FBO, maintenance",
+          "status": "pending"
+        },
+        {
+          "name": "New Japan Helicopter",
+          "file": "new-japan-helicopter.svg",
+          "serviceType": "Material transport, aerial photography",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "general_aviation",
+      "label": "General Aviation",
+      "count": 3,
+      "operators": [
+        {
+          "name": "Aeroworks International",
+          "file": "aeroworks-international.svg",
+          "serviceType": "Business jet ground handling",
+          "status": "pending"
+        },
+        {
+          "name": "Japan General Aviation Service",
+          "file": "japan-general-aviation-service.svg",
+          "serviceType": "Aircraft sales, maintenance",
+          "status": "pending"
+        },
+        {
+          "name": "Japan Biz Aviation",
+          "file": "japan-biz-aviation.svg",
+          "serviceType": "Business aviation, HondaJet charter",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}
