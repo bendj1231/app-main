@@ -246,6 +246,11 @@ export default function TypeRatingSearchPage({
   const manufacturerCarouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to top when landing on the page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Universal search entity tabs
   type EntityType = 'all' | 'manufacturers' | 'airlines' | 'operators' | 'private-jet';
   const [activeEntity, setActiveEntity] = useState<EntityType>('all');
@@ -339,6 +344,11 @@ export default function TypeRatingSearchPage({
   useEffect(() => {
     const manufacturerParam = searchParams.get('manufacturer');
     const aircraftParam = searchParams.get('aircraft');
+    const searchQueryParam = searchParams.get('search');
+
+    if (searchQueryParam) {
+      setSearchQuery(searchQueryParam);
+    }
 
     if (manufacturerParam) {
       const manufacturer = manufacturers.find((m) => m.id === manufacturerParam);

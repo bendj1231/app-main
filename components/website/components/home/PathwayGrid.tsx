@@ -187,19 +187,17 @@ const getViewCards = (isLoggedIn: boolean, _isEnrolledInFoundation: boolean = fa
       icon: GraduationCap,
       badge: 'NEW',
       accentColor: 'from-amber-500/80 to-orange-400/80',
-      isLightMode: true,
     },
 
     {
       id: 'pilot-recognition',
-      image: '/images/pilotrecognitioncompoennt.png',
+      image: '/images/New%20Folder%20With%20Items/pilotrecognitioncompoennt.png',
       title: 'Recognition Profile Learn More',
       subtitle:
         'Falsified hours are a liability airlines cannot afford. Our zero-knowledge pipeline tokenizes your licensing history.',
       icon: Compass,
       badge: 'NEW',
       accentColor: 'from-violet-500/80 to-purple-400/80',
-      isLightMode: true,
     },
     {
       id: 'pathways',
@@ -208,7 +206,6 @@ const getViewCards = (isLoggedIn: boolean, _isEnrolledInFoundation: boolean = fa
       subtitle:
         'Hiring and career opportunities posted by operators — flight schools, manufacturers, and mainline airlines — searched daily by verified pilots.',
       icon: ShoppingBag,
-      isLightMode: true,
       badge: 'NEW',
       accentColor: 'from-rose-500/80 to-pink-400/80',
     },
@@ -555,47 +552,9 @@ const AccessPlatformCard: React.FC<{
 
   return (
     <div
-      className={`relative w-full h-full overflow-hidden ${isMobile ? 'rounded-none' : 'rounded-xl'}`}
-      style={
-        isMobile
-          ? undefined
-          : {
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(24px) saturate(130%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(130%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-            }
-      }
+      className="relative w-full h-full overflow-hidden rounded-none"
+      style={isMobile ? undefined : { background: 'transparent' }}
     >
-      {/* Background layer with crossfade — desktop only */}
-      {!isMobile && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={slide.id}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <img
-              src={slide.bgImage}
-              alt="Flight Deck"
-              className="w-full h-full object-cover"
-              style={{
-                objectPosition: 'right top',
-                opacity: 1,
-                maskImage:
-                  'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
-                WebkitMaskImage:
-                  'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
-              }}
-            />
-          </motion.div>
-        </AnimatePresence>
-      )}
-
       {/* Content layer with shuffle animation */}
       {isMobile ? (
         /* Mobile: full-screen hero section matching reference design */
@@ -712,82 +671,20 @@ const AccessPlatformCard: React.FC<{
           </div>
         </>
       ) : (
-        /* Desktop: side-by-side layout */
-        <div className="absolute inset-0 flex items-center px-6 md:px-10 py-6 md:py-8">
-          <div className="relative w-[44%] overflow-hidden">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={slide.id}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="relative z-10 scale-90 origin-top-left"
-              >
-                {/* Micro-header with chevron */}
-                <div className="flex items-center gap-1.5 mb-4">
-                  <span className={`${slide.microHeaderColor} text-xs`}>&#8811;</span>
-                  <p
-                    className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em]`}
-                  >
-                    {slide.microHeader}
-                  </p>
-                </div>
+        /* Desktop: Airbus-inspired full-viewport hero with MeshGradient background */
+        <div className="absolute inset-0 flex flex-col">
+          {/* Subtle edge vignette for text readability over the shader background */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'linear-gradient(to right, rgba(2,6,23,0.6) 0%, rgba(2,6,23,0.2) 40%, rgba(2,6,23,0.2) 60%, rgba(2,6,23,0.6) 100%)',
+            }}
+          />
 
-                {/* Main headline */}
-                <h1 className="font-extrabold text-white uppercase tracking-tight leading-tight mb-4 text-3xl">
-                  {slide.title}
-                  <span className="text-red-600 font-extrabold uppercase tracking-tight">
-                    {slide.titleHighlight}
-                  </span>
-                  <span className="text-white">{slide.titleSuffix}</span>
-                </h1>
-
-                {/* Body text */}
-                <p className="text-slate-300 leading-relaxed mb-6 text-sm max-w-sm">
-                  {slide.description}
-                </p>
-
-                {/* Buttons */}
-                <div className="flex flex-row gap-3">
-                  {!isLoggedIn && (
-                    <button
-                      onClick={() =>
-                        slide.primaryButtonAction === 'become-member' && onBecomeMemberOpen
-                          ? onBecomeMemberOpen()
-                          : onNavigate(slide.primaryButtonAction)
-                      }
-                      className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
-                    >
-                      {slide.primaryButtonText}
-                    </button>
-                  )}
-                  <button
-                    onClick={() => onLogin && onLogin()}
-                    className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/40 hover:border-white/60 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
-                  >
-                    Sign In
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Right side callout with blur gradient overlay */}
-          <div className="flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
-            {/* Blur + gradient overlay - dark navy to match left side */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to right, rgba(15,23,42,0) 0%, rgba(20,30,60,0.65) 30%, rgba(25,35,70,0.85) 100%)',
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)',
-              }}
-            />
-            <div className="relative z-10 text-right pr-10 pl-8 overflow-hidden">
+          {/* Main content — left/center-aligned headline + description + CTAs */}
+          <div className="relative z-10 flex-1 flex items-center w-full max-w-[1600px] mx-auto px-6 lg:px-12 xl:px-20 py-10">
+            <div className="w-full max-w-3xl">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={slide.id}
@@ -796,23 +693,109 @@ const AccessPlatformCard: React.FC<{
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
+                  transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
+                  {/* Micro-header */}
                   <p
-                    className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-2`}
+                    className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-4`}
                   >
-                    &#8811; {slide.rightMicroHeader}
+                    &#8811; {slide.microHeader}
                   </p>
-                  <h2 className="font-extrabold uppercase tracking-tight leading-tight mb-3 text-white text-2xl">
-                    {slide.rightTitle}
-                    <span className="text-red-500">{slide.rightTitleHighlight}</span>
-                  </h2>
-                  <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
-                    {slide.rightDescription}{' '}
-                    <span className="text-red-400">{slide.rightHighlightText}</span>
+
+                  {/* Large headline */}
+                  <h1 className="font-extrabold text-white uppercase tracking-tight leading-[0.95] mb-6 text-4xl md:text-5xl lg:text-6xl xl:text-[5.5rem]">
+                    {slide.title}
+                    <span className="text-red-600 font-extrabold uppercase tracking-tight">
+                      {slide.titleHighlight}
+                    </span>
+                    <span className="text-white">{slide.titleSuffix}</span>
+                  </h1>
+
+                  {/* Description */}
+                  <p className="text-slate-300 leading-relaxed mb-8 text-base md:text-lg max-w-xl">
+                    {slide.description}
                   </p>
+
+                  {/* Buttons */}
+                  {!isLoggedIn && (
+                    <div className="flex flex-row gap-3">
+                      <button
+                        onClick={() =>
+                          slide.primaryButtonAction === 'become-member' && onBecomeMemberOpen
+                            ? onBecomeMemberOpen()
+                            : onNavigate(slide.primaryButtonAction)
+                        }
+                        className="px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
+                      >
+                        {slide.primaryButtonText}
+                      </button>
+                      <button
+                        onClick={() => onLogin && onLogin()}
+                        className="px-8 py-3.5 bg-white/10 hover:bg-white/20 border border-white/40 hover:border-white/60 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
+                      >
+                        Sign In
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Bottom-right info card — like the Airbus feature card */}
+          <div className="absolute z-20 bottom-8 right-6 lg:bottom-12 lg:right-12 xl:bottom-16 xl:right-16 w-full max-w-[380px]">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={slide.id}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
+                style={{
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  borderRadius: '16px',
+                  padding: '1.5rem',
+                }}
+              >
+                <p
+                  className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-2`}
+                >
+                  &#8811; {slide.rightMicroHeader}
+                </p>
+                <h2 className="font-extrabold uppercase tracking-tight leading-tight mb-3 text-white text-lg md:text-xl">
+                  {slide.rightTitle}
+                  <span className="text-red-500">{slide.rightTitleHighlight}</span>
+                </h2>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  {slide.rightDescription}{' '}
+                  <span className="text-red-400">{slide.rightHighlightText}</span>
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Scroll-down indicator */}
+          <div className="absolute z-20 bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white">
+            <span className="text-[10px] uppercase tracking-widest drop-shadow-md">Scroll</span>
+            <div className="w-10 h-10 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-black/20">
+              <svg
+                className="w-5 h-5 animate-bounce"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -1321,50 +1304,61 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                       </motion.div>
                     </div>
                   ) : (
-                    <div className="w-full flex items-start justify-center">
-                      <div
+                    <div className="w-full flex flex-col">
+                      {/* Full-viewport hero card — breaks out of the constrained parent to fill the viewport */}
+                      <motion.div
+                        key={currentCards[0].id}
+                        variants={cardVariants}
+                        className="relative w-screen h-screen min-h-[600px] rounded-none"
                         style={{
-                          width: HOME_BASE_WIDTH,
-                          transform: `scale(${homeViewportScale})`,
-                          transformOrigin: 'top center',
-                          flexShrink: 0,
+                          marginLeft: 'calc(-50vw + 50%)',
+                          marginTop: '-64px',
                         }}
                       >
-                        {/* Full-width panoramic hero card */}
-                        <motion.div
-                          key={currentCards[0].id}
-                          variants={cardVariants}
-                          className="mb-6 h-[380px]"
+                        <AccessPlatformCard
+                          onLogin={onLogin || (() => {})}
+                          onBecomeMemberOpen={onBecomeMemberOpen}
+                          onNavigate={onNavigate}
+                          isLoggedIn={isLoggedIn}
+                        />
+                      </motion.div>
+
+                      {/* Bottom 3 cards — desktop reference sizes */}
+                      <div className="w-full flex items-start justify-center">
+                        <div
+                          style={{
+                            width: HOME_BASE_WIDTH,
+                            transform: `scale(${homeViewportScale})`,
+                            transformOrigin: 'top center',
+                            flexShrink: 0,
+                          }}
                         >
-                          <AccessPlatformCard
-                            onLogin={onLogin || (() => {})}
-                            onBecomeMemberOpen={onBecomeMemberOpen}
-                            onNavigate={onNavigate}
-                            isLoggedIn={isLoggedIn}
-                          />
-                        </motion.div>
-                        {/* Bottom 3 cards — desktop reference sizes */}
-                        <div className="grid grid-cols-3 gap-6">
-                          {currentCards.slice(2, 5).map((card) => (
-                            <motion.div key={card.id} variants={cardVariants} className="h-[245px]">
-                              <GridCard
-                                card={card}
-                                isHovered={hoveredCard === card.id}
-                                onHover={() => setHoveredCard(card.id)}
-                                onLeave={() => setHoveredCard(null)}
-                                onClick={getCardClickHandler(card)}
-                                onNavigate={onNavigate}
-                                className="w-full h-full"
-                                isLoggedIn={isLoggedIn}
-                                isEnrolledInFoundation={isEnrolledInFoundation}
-                                isLargeCard={true}
-                                currentViewKey={currentViewKey}
-                                setFoundationNavTarget={setFoundationNavTarget}
-                                setShowFoundationLoading={setShowFoundationLoading}
-                                forceDesktop={true}
-                              />
-                            </motion.div>
-                          ))}
+                          <div className="grid grid-cols-3 gap-6 py-6">
+                            {currentCards.slice(2, 5).map((card) => (
+                              <motion.div
+                                key={card.id}
+                                variants={cardVariants}
+                                className="h-[245px]"
+                              >
+                                <GridCard
+                                  card={card}
+                                  isHovered={hoveredCard === card.id}
+                                  onHover={() => setHoveredCard(card.id)}
+                                  onLeave={() => setHoveredCard(null)}
+                                  onClick={getCardClickHandler(card)}
+                                  onNavigate={onNavigate}
+                                  className="w-full h-full"
+                                  isLoggedIn={isLoggedIn}
+                                  isEnrolledInFoundation={isEnrolledInFoundation}
+                                  isLargeCard={true}
+                                  currentViewKey={currentViewKey}
+                                  setFoundationNavTarget={setFoundationNavTarget}
+                                  setShowFoundationLoading={setShowFoundationLoading}
+                                  forceDesktop={true}
+                                />
+                              </motion.div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2683,11 +2677,12 @@ const GridCard: React.FC<GridCardProps> = ({
                     ${
                       card.isLightMode
                         ? 'bg-slate-50 border border-slate-200'
-                        : 'bg-black/85 border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]'
+                        : 'backdrop-blur-md border border-white/[0.12] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]'
                     }
                     ${enableAnimations ? 'transition-transform duration-300 ease-out' : ''}
                     ${enableAnimations && isHovered ? 'scale-[1.01] brightness-110' : 'scale-100'}
                 `}
+              style={card.isLightMode ? undefined : { background: 'rgba(15, 23, 42, 0.72)' }}
             >
               {/* Selected Card Highlight Strip */}
               <div
@@ -2925,9 +2920,7 @@ const GridCard: React.FC<GridCardProps> = ({
               ) : card.id === 'pathways' ||
                 card.id === 'pilot-recognition' ||
                 card.id === 'programs' ? (
-                <div
-                  className={`absolute top-4 right-4 px-4 py-1.5 text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'bg-slate-200 text-slate-700' : 'bg-[#ff9f1c] text-black'}`}
-                >
+                <div className="absolute top-4 right-4 px-4 py-1.5 text-sm font-bold uppercase tracking-wider bg-white/10 text-white border border-white/20 backdrop-blur-md rounded-sm">
                   NEW
                 </div>
               ) : (
@@ -2941,7 +2934,12 @@ const GridCard: React.FC<GridCardProps> = ({
               {/* MSFS Style Content Area - Bottom section with conditional light/dark styling */}
               {isLargeCard && (
                 <div
-                  className={`absolute bottom-0 left-0 right-0 p-2 pr-10 md:p-2 md:pr-12 z-20 transition-colors duration-300 ${card.isLightMode ? 'bg-white border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-10' : ''}`}
+                  className={`absolute bottom-0 left-0 right-0 p-2 pr-10 md:p-2 md:pr-12 z-20 transition-colors duration-300 backdrop-blur-md ${card.isLightMode ? 'bg-white/95 border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'border-t border-white/10'} ${card.id === 'w1000-suite' ? 'pb-10' : ''}`}
+                  style={
+                    card.isLightMode || isMsfsSelected
+                      ? undefined
+                      : { background: 'rgba(15, 23, 42, 0.72)' }
+                  }
                 >
                   <div className="flex flex-col justify-between min-h-[68px] md:min-h-[74px] lg:min-h-[80px]">
                     {/* Title row with double chevrons - MSFS style */}

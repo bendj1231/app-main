@@ -474,6 +474,7 @@ export const QuickAccessPathways: React.FC<{
   latest?: AirlinePathway[];
   submitted?: AirlinePathway[];
   loading?: boolean;
+  darkMode?: boolean;
 }> = ({
   profile,
   onSelect,
@@ -482,6 +483,7 @@ export const QuickAccessPathways: React.FC<{
   latest: latestProp,
   submitted: submittedProp,
   loading: loadingProp,
+  darkMode = false,
 }) => {
   const hook = useAirlinePathways(profile);
   const allPathways = pathwaysProp ?? hook.pathways;
@@ -508,15 +510,23 @@ export const QuickAccessPathways: React.FC<{
   };
 
   return (
-    <div className="hidden sm:block w-full space-y-6 text-slate-900 rounded-2xl p-4 md:p-8 bg-transparent">
+    <div
+      className={`hidden sm:block w-full space-y-6 rounded-2xl p-4 md:p-8 bg-transparent ${darkMode ? 'text-white' : 'text-slate-900'}`}
+    >
       {/* Header — same style as Digital Logbook section header */}
       <div className="flex items-center gap-3">
         <Zap size={22} className="text-red-500" />
         <div>
-          <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+          <p
+            className={`text-[10px] font-black tracking-[0.2em] uppercase ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}
+          >
             Career Pathways
           </p>
-          <h3 className="text-lg md:text-xl font-bold text-slate-900">Quick Access Pathways</h3>
+          <h3
+            className={`text-lg md:text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}
+          >
+            Quick Access Pathways
+          </h3>
         </div>
       </div>
 
@@ -537,7 +547,9 @@ export const QuickAccessPathways: React.FC<{
               className={`px-3 md:px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
                 active
                   ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/10'
-                  : 'bg-slate-200/60 text-slate-600 hover:bg-slate-200/90'
+                  : darkMode
+                    ? 'bg-white/10 text-slate-300 hover:bg-white/15'
+                    : 'bg-slate-200/60 text-slate-600 hover:bg-slate-200/90'
               }`}
             >
               {tab.label}
@@ -553,18 +565,20 @@ export const QuickAccessPathways: React.FC<{
       <div className="relative overflow-hidden rounded-2xl">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="flex items-center gap-3 text-slate-500">
+            <div
+              className={`flex items-center gap-3 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}
+            >
               <Plane size={20} className="animate-pulse" />
               <span className="text-sm font-bold">Loading airline pathways...</span>
             </div>
           </div>
         ) : displayedPathways.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Send size={32} className="text-slate-300 mb-3" />
-            <p className="text-slate-900 font-bold text-sm mb-1">
+            <Send size={32} className={`mb-3 ${darkMode ? 'text-slate-500' : 'text-slate-300'}`} />
+            <p className={`font-bold text-sm mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
               No {TAB_CONFIG.find((t) => t.id === activeTab)?.label?.toLowerCase()} pathways yet
             </p>
-            <p className="text-slate-500 text-xs max-w-sm">
+            <p className={`text-xs max-w-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
               {activeTab === 'submitted'
                 ? 'Submit interest to airlines and track your applications here.'
                 : 'Discover new airline pathways and start matching your profile.'}

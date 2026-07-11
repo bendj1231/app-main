@@ -6,13 +6,15 @@ import { CareerPathwaysNavbar } from './layout/CareerPathwaysNavbar';
 import { OAuthCallback } from '@/components/OAuthCallback';
 
 // Lazy load page components - using actual platform pathways content as main page
-import type { PathwaysPageModernProps } from '../../portal/pages/PathwaysPageModern';
-const PathwaysPageModernLazy = lazy(() =>
-  import('../../portal/pages/PathwaysPageModern').then((m) => ({ default: m.default }))
+const DiscoverPage = lazy(() =>
+  import('./pages/DiscoverPage').then((m) => ({ default: m.DiscoverPage }))
 );
-const PathwaysPageModern = PathwaysPageModernLazy as React.LazyExoticComponent<
-  React.FC<PathwaysPageModernProps>
->;
+const GetRatedPage = lazy(() =>
+  import('./pages/GetRatedPage').then((m) => ({ default: m.GetRatedPage }))
+);
+const PathwayFilteredPage = lazy(() =>
+  import('./pages/PathwayFilteredPage').then((m) => ({ default: m.PathwayFilteredPage }))
+);
 const ProgramsPage = lazy(() =>
   import('./pages/ProgramsPage').then((m) => ({ default: m.ProgramsPage }))
 );
@@ -36,6 +38,9 @@ const EnterpriseDirectoryPage = lazy(() =>
 );
 const CareerPathwaysHomePage = lazy(() =>
   import('./pages/CareerPathwaysHomePage').then((m) => ({ default: m.CareerPathwaysHomePage }))
+);
+const PilotReelsPage = lazy(() =>
+  import('./pages/PilotReelsPage').then((m) => ({ default: m.PilotReelsPage }))
 );
 const BecomeMemberPage = lazy(() =>
   import('@/components/website/components/BecomeMemberPage').then((m) => ({
@@ -159,13 +164,6 @@ const useHideUnifiedPlatformNav = () => {
   }, []);
 };
 
-// Wrapper component that passes embedded=true to hide PlatformNavbar and PathwaysSidebar
-const PathwaysPageModernWrapper = () => {
-  // PathwaysPageModern now properly handles embedded={true} to hide its own navbar and sidebar
-  // No CSS injection or DOM manipulation needed
-  return <PathwaysPageModern embedded={true} />;
-};
-
 // Wrapper for unified platform pages to hide their navbars/sidebars
 const UnifiedPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useHideUnifiedPlatformNav();
@@ -222,17 +220,20 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
             <Route path="/auth/callback" element={<OAuthCallback />} />
 
             {/* Main pathways hub - redesigned home with category cards and recommended carousel */}
-            <Route path="/" element={<CareerPathwaysHomePage />} />
-            <Route path="/pathways" element={<CareerPathwaysHomePage />} />
+            <Route path="/" element={<Navigate to="/pathways" replace />} />
+            <Route path="/pathways" element={<CareerPathwaysHomePage onLogin={onLogin} />} />
+            <Route path="/pilot-reels" element={<PilotReelsPage />} />
 
             {/* Full pathways explorer - CSS hides PlatformNavbar and sidebar */}
-            <Route path="/discover" element={<PathwaysPageModernWrapper />} />
+            <Route path="/discover" element={<DiscoverPage />} />
+            <Route path="/get-rated" element={<GetRatedPage />} />
+            <Route path="/pathway/:pathwayType" element={<PathwayFilteredPage />} />
             <Route path="/programs" element={<ProgramsPage onNavigate={handleNavigate} />} />
             <Route
               path="/programs/:programId"
               element={<ProgramDetailPage onNavigate={handleNavigate} />}
             />
-            <Route path="/discover" element={<PathwaysPageModernWrapper />} />
+            <Route path="/discover" element={<DiscoverPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/airlines" element={<AirlinesPage onNavigate={handleNavigate} />} />
             <Route path="/get-started" element={<GetStartedPage />} />

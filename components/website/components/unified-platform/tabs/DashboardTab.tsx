@@ -717,6 +717,7 @@ export const DashboardTab: React.FC<{
           latest={latest}
           submitted={submitted}
           loading={pathwaysLoading}
+          darkMode
         />
       </div>
 

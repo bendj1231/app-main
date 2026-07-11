@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { safeRedirect } from '@/lib/url-validator';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkerAuth } from '@/hooks/useWorkerAuth';
+import { useTheme } from '@/components/website/context/ThemeContext';
 import ProfileImage from '@/components/ProfileImage';
 import { MessagesPanel } from '@/components/website/components/unified-platform/MessagesPanel';
 import { NotificationsFeedPanel } from '@/components/website/components/unified-platform/shared';
 import {
-  Target,
   User,
   Menu,
   X,
-  Building2,
   ExternalLink,
   Bell,
   Settings,
   MessageSquare,
-  Home,
   LogOut,
   ChevronRight,
   Shield,
   Map,
+  Monitor,
+  Moon,
+  Sun,
 } from 'lucide-react';
 
 interface CareerPathwaysNavbarProps {
@@ -43,11 +44,12 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   isLoggedIn = false,
   isVerified: _isVerified = false,
 }) => {
-  const location = useLocation();
+  const showAuthButtons = !isLoggedIn;
   const navigate = useNavigate();
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User } = useAuth0();
   const { callApi } = useWorkerAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const displayName =
     userProfile?.display_name ||
     userProfile?.full_name ||
@@ -126,36 +128,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const navLinks = [
-    { label: 'Home', path: '/', icon: Home, tier: 'public', external: '/platform?tab=home' },
-    { label: 'My Pathways', path: '/my-pathways', icon: Map, tier: 'public' },
-    { label: 'Expectations', path: '/airline-expectations', icon: Building2, tier: 'public' },
-    { label: 'type-ratings', path: '/type-ratings', icon: Target, tier: 'public' },
-    { label: 'pathways', path: '/discover', icon: Target, tier: 'public' },
-    {
-      label: 'Recognition+',
-      path: '/authorities',
-      icon: Building2,
-      tier: 'public',
-      external: '/platform?tab=recognition-plus-tab',
-    },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/') {
-      // Home is an external link to the unified platform — never "active" here
-      return false;
-    }
-    if (path === '/discover') {
-      return (
-        location.pathname === '/discover' ||
-        location.pathname === '/' ||
-        location.pathname === '/pathways'
-      );
-    }
-    return location.pathname === path || location.pathname.startsWith(path + '/');
-  };
 
   return (
     <>
@@ -243,59 +215,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                 pilotcareer<span className="text-red-500">pathways</span>.com
               </h1>
             </Link>
-
-            {/* Desktop Navigation — center island style */}
-            <nav className="hidden lg:flex items-center gap-1 rounded-full bg-white/10 border border-white/15 px-3 py-2 backdrop-blur-xl shadow-lg shadow-black/10">
-              {navLinks.map((link, index) => {
-                const active = isActive(link.path);
-                const baseClass = `relative px-4 py-2 rounded-xl text-sm font-bold tracking-wide transition-all select-none flex items-center gap-1.5 ${
-                  active
-                    ? 'text-white bg-white/10'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`;
-
-                return (
-                  <React.Fragment key={link.path}>
-                    {index === 1 && (
-                      <div
-                        className="w-px h-5 self-center mx-1"
-                        style={{
-                          background:
-                            'linear-gradient(to bottom, transparent, rgba(255,255,255,0.25), transparent)',
-                        }}
-                      />
-                    )}
-                    {link.external ? (
-                      <a
-                        href={
-                          link.external.startsWith('/')
-                            ? `${window.location.origin}${link.external}`
-                            : link.external
-                        }
-                        onClick={(e) => {
-                          e.preventDefault();
-                          localStorage.removeItem('careerpathways_mode');
-                          const url = link.external!.startsWith('/')
-                            ? `${window.location.origin}${link.external}`
-                            : link.external;
-                          window.location.href = url;
-                        }}
-                        className={baseClass}
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link to={link.path} className={baseClass}>
-                        {link.label}
-                        {active && (
-                          <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-red-500" />
-                        )}
-                      </Link>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </nav>
 
             {/* Right — MSFS-style square tile icon toolbar (mirrors PlatformNavbar exactly) */}
             <div
@@ -638,31 +557,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                             backdropFilter: 'blur(16px)',
                           }}
                         >
-                          <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                            <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">
-                              Navigation
-                            </p>
-                          </div>
-                          <div className="py-1">
-                            {navLinks.map((link) => (
-                              <button
-                                key={link.path}
-                                onClick={() => {
-                                  if (link.external) {
-                                    window.location.href = link.external;
-                                  } else {
-                                    navigate(link.path);
-                                  }
-                                  setHamburgerOpen(false);
-                                }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group"
-                              >
-                                <span className="text-[11px] font-black text-white/60 group-hover:text-white tracking-wide transition-colors">
-                                  {link.label.toUpperCase()}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
                           <div className="border-t border-white/5 py-1">
                             <button
                               onClick={() => {
@@ -686,7 +580,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                     </div>
                   </div>
                 </>
-              ) : (
+              ) : showAuthButtons ? (
                 <>
                   <button
                     onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
@@ -696,11 +590,11 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                       border: '1px solid rgba(59,130,246,0.5)',
                     }}
                   >
-                    LOGIN
+                    Login
                   </button>
                   <button
                     onClick={() => {
-                      safeRedirect('/become-member');
+                      window.location.href = `${window.location.origin}/platform?tab=recognition-plus`;
                     }}
                     className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
                     style={{
@@ -708,10 +602,32 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
                       border: '1px solid rgba(239,68,68,0.5)',
                     }}
                   >
-                    BECOME A MEMBER
+                    Create Recognition Account
                   </button>
                 </>
-              )}
+              ) : null}
+
+              {/* Theme & platform toggles */}
+              <div className="flex items-center gap-2 ml-2">
+                <button
+                  onClick={() => navigate('/platform?tab=home')}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all"
+                  title="Platform"
+                >
+                  <Monitor className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={toggleTheme}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border-2 shadow-lg ${
+                    isDarkMode
+                      ? 'bg-slate-900 hover:bg-slate-700 text-amber-400 border-amber-400 hover:border-amber-300 shadow-amber-500/30'
+                      : 'bg-white hover:bg-amber-50 text-amber-600 border-amber-500 hover:border-amber-600 shadow-amber-500/20'
+                  }`}
+                  title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
           </div>
         </div>

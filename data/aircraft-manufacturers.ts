@@ -36436,8 +36436,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Challenger 350',
     category: 'private',
-    image:
-      '/images/manufacturers/bombardier/private/challenger-350/bombardier-challenger-350-1.jpg',
+    image: '/images/manufacturers/bombardier/private/challenger-350/bombardier-challenger-350.jpg',
     description: 'Enhanced Challenger 300.',
     first_flight: 2013,
     specifications: {

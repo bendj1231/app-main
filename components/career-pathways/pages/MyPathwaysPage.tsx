@@ -28,7 +28,7 @@ export const MyPathwaysPage: React.FC = () => {
   const { pathways, recommended, latest, submitted, loading } = useAirlinePathways(profile);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative z-10 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="hidden md:block">
           <QuickAccessPathways
@@ -38,6 +38,7 @@ export const MyPathwaysPage: React.FC = () => {
             latest={latest}
             submitted={submitted}
             loading={loading}
+            darkMode
             onSelect={(pathway) => navigate(`/pathways-detail/${pathway.id}`)}
           />
         </div>

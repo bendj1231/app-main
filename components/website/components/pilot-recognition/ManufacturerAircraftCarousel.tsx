@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plane, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plane, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   aircraftTypeRatings as rawAircraftTypeRatings,
   type AircraftTypeRating as DataAircraftTypeRating,
@@ -49,6 +49,9 @@ interface ManufacturerAircraftCarouselProps {
   searchFilter?: string;
   sort?: 'newest' | 'oldest' | 'trending' | 'recommended';
   floating?: boolean;
+  additionalAircraft?: AircraftTypeRating[];
+  leadCardLabel?: string;
+  onLeadCardClick?: () => void;
 }
 
 export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarouselProps> = ({
@@ -66,6 +69,9 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
   searchFilter,
   sort = 'newest',
   floating = false,
+  additionalAircraft = [],
+  leadCardLabel,
+  onLeadCardClick,
 }) => {
   const aircraft = useMemo(() => {
     const query = searchFilter?.trim().toLowerCase();
@@ -105,7 +111,7 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
         const getScore = (a: AircraftWithStats) => {
           const year = getYear(a.first_flight);
           const operators = Number(a.operator_count) || Number(a.operatorCount) || 0;
-          const reputation = Number(a.reputation_score) || Number(a.reputationScore) || 0;
+          const reputation = Number(a.reputationScore) || 0;
           // Newer + more operators + higher reputation = better recommendation
           return year * 0.5 + operators * 5 + reputation * 20;
         };
@@ -116,8 +122,8 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
         break;
     }
 
-    return filtered;
-  }, [manufacturerId, categoryFilter, searchFilter, sort]);
+    return [...filtered, ...additionalAircraft];
+  }, [manufacturerId, categoryFilter, searchFilter, sort, additionalAircraft]);
 
   // Time-based synchronized image cycling (all components use same formula)
   const timeIndex = useSyncExternalStore(subscribeTimeIndex, getTimeIndex, getServerTimeIndex);
@@ -367,8 +373,61 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
               msOverflowStyle: 'none',
             }}
           >
-            {/* Manufacturer logo card as first carousel card */}
-            {(manufacturer?.logo || manufacturerLogo) && (
+            {/* Lead card (Get Rated or manufacturer logo) */}
+            {leadCardLabel ? (
+              <motion.button
+                type="button"
+                initial={{ opacity: 0, y: 30, scale: 0.92 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
+                onClick={() => onLeadCardClick?.()}
+                className="w-[280px] min-w-[280px] md:w-[360px] md:min-w-[360px] lg:w-[420px] lg:min-w-[420px]"
+                style={{
+                  border: 'none',
+                  borderRadius: '20px',
+                  padding: 0,
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  outline: 'none',
+                  scrollSnapAlign: 'center',
+                }}
+              >
+                <div
+                  className="h-[170px] md:h-[200px] lg:h-[220px] flex flex-col items-center justify-center gap-3"
+                  style={{
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    background:
+                      'linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(30, 41, 70, 0.65) 100%)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    boxShadow:
+                      '0 16px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
+                    transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+                    position: 'relative',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      pointerEvents: 'none',
+                      zIndex: 2,
+                      borderRadius: '20px',
+                      boxShadow: 'inset 0 0 40px rgba(0,0,0,0.35), inset 0 0 80px rgba(0,0,0,0.15)',
+                    }}
+                  />
+                  <Star
+                    className="w-8 h-8 text-white/90 relative z-10"
+                    fill="currentColor"
+                    strokeWidth={0}
+                  />
+                  <span className="text-xl md:text-2xl font-black text-white uppercase tracking-wide relative z-10">
+                    {leadCardLabel}
+                  </span>
+                </div>
+              </motion.button>
+            ) : manufacturer?.logo || manufacturerLogo ? (
               <motion.button
                 type="button"
                 initial={{ opacity: 0, y: 30, scale: 0.92 }}
@@ -404,7 +463,6 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
                     position: 'relative',
                   }}
                 >
-                  {/* Edge vignette */}
                   <div
                     style={{
                       position: 'absolute',
@@ -432,7 +490,7 @@ export const ManufacturerAircraftCarousel: React.FC<ManufacturerAircraftCarousel
                   />
                 </div>
               </motion.button>
-            )}
+            ) : null}
 
             {aircraft.map((a, index) => {
               const isSelected = selectedId === a.id;
