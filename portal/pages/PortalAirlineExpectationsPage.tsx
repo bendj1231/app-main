@@ -576,7 +576,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'royaljordanian',
-    logo: '/images/airline-logos/middle-east/jordan/international-operators/royal-jordanian.jpg',
+    logo: '/images/airline-logos/middle-east/jordan/international-operators/royal-jordanian.svg',
     heroImage:
       '/images/airline-logos/middle-east/jordan/international-operators/royal-jordanian-aircraft.jpg',
     name: 'Royal Jordanian',
@@ -593,7 +593,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'saudia',
-    logo: '/images/airline-logos/middle-east/saudi-arabia/international-operators/saudia.png',
+    logo: '/images/airline-logos/middle-east/saudi-arabia/international-operators/saudia.svg',
     heroImage:
       '/images/airline-logos/middle-east/saudi-arabia/international-operators/saudia-aircraft.jpg',
     name: 'Saudia',
@@ -610,7 +610,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'omanair',
-    logo: '/images/airline-logos/middle-east/oman/international-operators/oman-air.png',
+    logo: '/images/airline-logos/middle-east/oman/international-operators/oman-air.svg',
     heroImage:
       '/images/airline-logos/middle-east/oman/international-operators/oman-air-aircraft.jpg',
     name: 'Oman Air',
@@ -1152,7 +1152,7 @@ const AIRLINES: Airline[] = [
   // Europe
   {
     id: 'lufthansa',
-    logo: '/images/airlines/lufthansa/logo/lufthansa-logo.svg',
+    logo: '/images/airline-logos/europe/germany/international-operators/lufthansa.svg',
     heroImage:
       '/images/airline-logos/europe/germany/international-operators/lufthansa-aircraft.jpg',
     name: 'Lufthansa',
@@ -1468,7 +1468,7 @@ const AIRLINES: Airline[] = [
   // Americas
   {
     id: 'delta',
-    logo: '/images/airlines/delta-air-lines/logo/delta-air-lines-logo.svg',
+    logo: '/images/airline-logos/americas/united-states/international-operators/delta.svg',
     heroImage:
       '/images/airline-logos/americas/united-states/international-operators/delta-aircraft.jpg',
     name: 'Delta Air Lines',
@@ -1486,7 +1486,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'american',
-    logo: '/images/airlines/american-airlines/logo/american-airlines-logo.svg',
+    logo: '/images/airline-logos/americas/united-states/international-operators/american-airlines.svg',
     heroImage:
       '/images/airline-logos/americas/united-states/international-operators/american-airlines-aircraft.jpg',
     name: 'American Airlines',
@@ -1522,7 +1522,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'southwest',
-    logo: '/images/airlines/southwest-airlines/logo/southwest-airlines-logo.svg',
+    logo: '/images/airline-logos/americas/united-states/international-operators/southwest.svg',
     heroImage:
       '/images/airline-logos/americas/united-states/international-operators/southwest-aircraft.jpg',
     name: 'Southwest Airlines',
@@ -2824,6 +2824,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'aircanadarouge',
+    logo: '/images/airline-logos/americas/canada/regional-operators/air-canada-rouge.svg',
     heroImage:
       '/images/airline-logos/americas/canada/regional-operators/air-canada-rouge-aircraft.jpg',
     name: 'Air Canada Rouge',
@@ -2840,6 +2841,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'spirit',
+    logo: '/images/airline-logos/americas/united-states/regional-operators/spirit.svg',
     heroImage:
       '/images/airline-logos/americas/united-states/regional-operators/spirit-aircraft.jpg',
     name: 'Spirit Airlines',
@@ -2857,6 +2859,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'frontier',
     logo: '/images/airline-logos/americas/united-states/regional-operators/frontier.svg',
+    heroImage:
+      '/images/airline-logos/americas/united-states/regional-operators/frontier-aircraft.jpg',
     name: 'Frontier Airlines',
     location: 'United States',
     salaryRange: '$45,000 - $95,000/year',
@@ -2872,6 +2876,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'allegiant',
     logo: '/images/airline-logos/americas/united-states/regional-operators/allegiant.svg',
+    heroImage:
+      '/images/airline-logos/americas/united-states/regional-operators/allegiant-aircraft.jpg',
     name: 'Allegiant Air',
     location: 'United States',
     salaryRange: '$45,000 - $95,000/year',
@@ -2887,6 +2893,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'hawaiian',
     logo: '/images/airline-logos/americas/united-states/regional-operators/hawaiian-airlines.svg',
+    heroImage:
+      '/images/airline-logos/americas/united-states/regional-operators/hawaiian-airlines-aircraft.jpg',
     name: 'Hawaiian Airlines',
     location: 'United States',
     salaryRange: '$55,000 - $120,000/year',
@@ -2902,6 +2910,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'airtransat',
     logo: '/images/airline-logos/americas/canada/regional-operators/air-transat.svg',
+    heroImage: '/images/airline-logos/americas/canada/regional-operators/air-transat-aircraft.jpg',
     name: 'Air Transat',
     location: 'Canada',
     salaryRange: '$50,000 - $100,000/year',
@@ -2917,6 +2926,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'porter',
     logo: '/images/airline-logos/americas/canada/regional-operators/porter-airlines.svg',
+    heroImage:
+      '/images/airline-logos/americas/canada/regional-operators/porter-airlines-aircraft.jpg',
     name: 'Porter Airlines',
     location: 'Canada',
     salaryRange: '$45,000 - $95,000/year',
@@ -2932,6 +2943,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'azul',
     logo: '/images/airline-logos/americas/brazil/regional-operators/azul.svg',
+    heroImage: '/images/airline-logos/americas/brazil/regional-operators/azul-aircraft.jpg',
     name: 'Azul Brazilian Airlines',
     location: 'Brazil',
     salaryRange: '$40,000 - $85,000/year',
@@ -2947,6 +2959,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'aerolineas',
     logo: '/images/airline-logos/americas/argentina/international-operators/aerolineas-argentinas.svg',
+    heroImage:
+      '/images/airline-logos/americas/argentina/international-operators/aerolineas-argentinas-aircraft.jpg',
     name: 'Aerolíneas Argentinas',
     location: 'Argentina',
     salaryRange: '$35,000 - $75,000/year',
@@ -2962,6 +2976,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'skyairline',
     logo: '/images/airline-logos/americas/chile/regional-operators/sky-airline.svg',
+    heroImage: '/images/airline-logos/americas/chile/regional-operators/sky-airline-aircraft.jpg',
     name: 'Sky Airline',
     location: 'Chile',
     salaryRange: '$35,000 - $70,000/year',
@@ -2977,6 +2992,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'jetsmart',
     logo: '/images/airline-logos/americas/chile/regional-operators/jetsmart.svg',
+    heroImage: '/images/airline-logos/americas/chile/regional-operators/jetsmart-aircraft.jpg',
     name: 'JetSMART',
     location: 'Chile',
     salaryRange: '$35,000 - $70,000/year',
@@ -2991,6 +3007,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'airmalta',
+    logo: '/images/airline-logos/europe/malta/international-operators/air-malta.svg',
     heroImage: '/images/airline-logos/europe/malta/international-operators/air-malta-aircraft.jpg',
     name: 'Air Malta',
     location: 'Malta',
@@ -3006,6 +3023,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'airserbia',
+    logo: '/images/airline-logos/europe/serbia/international-operators/air-serbia.svg',
     heroImage:
       '/images/airline-logos/europe/serbia/international-operators/air-serbia-aircraft.jpg',
     name: 'Air Serbia',
@@ -3022,6 +3040,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'croatiaair',
+    logo: '/images/airline-logos/europe/croatia/international-operators/croatia-airlines.svg',
     heroImage:
       '/images/airline-logos/europe/croatia/international-operators/croatia-airlines-aircraft.jpg',
     name: 'Croatia Airlines',
@@ -3038,6 +3057,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'tarom',
+    logo: '/images/airline-logos/europe/romania/international-operators/tarom.svg',
     heroImage: '/images/airline-logos/europe/romania/international-operators/tarom-aircraft.jpg',
     name: 'TAROM',
     location: 'Romania',
@@ -3053,6 +3073,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'uia',
+    logo: '/images/airline-logos/europe/ukraine/international-operators/ukraine-international-airlines.svg',
     heroImage:
       '/images/airline-logos/europe/ukraine/international-operators/ukraine-international-airlines-aircraft.jpg',
     name: 'Ukraine International Airlines',
@@ -3070,6 +3091,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'ryanair',
     logo: '/images/airline-logos/europe/ireland/international-operators/ryanair.svg',
+    heroImage: '/images/airline-logos/europe/ireland/international-operators/ryanair-aircraft.jpg',
     name: 'Ryanair',
     location: 'Ireland',
     salaryRange: '$40,000 - $85,000/year',
@@ -3085,6 +3107,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'easyjet',
     logo: '/images/airline-logos/europe/united-kingdom/regional-operators/easyjet.svg',
+    heroImage:
+      '/images/airline-logos/europe/united-kingdom/regional-operators/easyjet-aircraft.jpg',
     name: 'easyJet',
     location: 'United Kingdom',
     salaryRange: '$45,000 - $90,000/year',
@@ -3100,6 +3124,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'wizzair',
     logo: '/images/airline-logos/europe/hungary/international-operators/wizz-air.svg',
+    heroImage: '/images/airline-logos/europe/hungary/international-operators/wizz-air-aircraft.jpg',
     name: 'Wizz Air',
     location: 'Hungary',
     salaryRange: '$35,000 - $75,000/year',
@@ -3145,6 +3170,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'jet2',
     logo: '/images/airline-logos/europe/united-kingdom/regional-operators/jet2.svg',
+    heroImage: '/images/airline-logos/europe/united-kingdom/regional-operators/jet2-aircraft.jpg',
     name: 'Jet2.com',
     location: 'United Kingdom',
     salaryRange: '$45,000 - $90,000/year',
@@ -3160,6 +3186,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'tui',
     logo: '/images/airline-logos/europe/united-kingdom/regional-operators/tui-airways.svg',
+    heroImage:
+      '/images/airline-logos/europe/united-kingdom/regional-operators/tui-airways-aircraft.jpg',
     name: 'TUI Airways',
     location: 'United Kingdom',
     salaryRange: '$45,000 - $90,000/year',
@@ -3175,6 +3203,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'aeroflot',
     logo: '/images/airline-logos/europe/russia/international-operators/aeroflot.svg',
+    heroImage: '/images/airline-logos/europe/russia/international-operators/aeroflot-aircraft.jpg',
     name: 'Aeroflot',
     location: 'Russia',
     salaryRange: '$45,000 - $95,000/year',
@@ -3190,6 +3219,7 @@ const AIRLINES: Airline[] = [
   {
     id: 'airbaltic',
     logo: '/images/airline-logos/europe/latvia/international-operators/airbaltic.svg',
+    heroImage: '/images/airline-logos/europe/latvia/international-operators/airbaltic-aircraft.jpg',
     name: 'airBaltic',
     location: 'Latvia',
     salaryRange: '$40,000 - $80,000/year',
@@ -3204,6 +3234,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'flydubai',
+    logo: '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/flydubai.svg',
     heroImage:
       '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/flydubai-aircraft.jpg',
     name: 'flydubai',
@@ -3220,6 +3251,7 @@ const AIRLINES: Airline[] = [
   },
   {
     id: 'flynas',
+    logo: '/images/airline-logos/middle-east/saudi-arabia/regional-operators/flynas.svg',
     heroImage:
       '/images/airline-logos/middle-east/saudi-arabia/regional-operators/flynas-aircraft.jpg',
     name: 'flynas',
@@ -3237,6 +3269,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'gulfair',
     logo: '/images/airline-logos/middle-east/bahrain/international-operators/gulf-air.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/bahrain/international-operators/gulf-air-aircraft.jpg',
     name: 'Gulf Air',
     location: 'Bahrain',
     salaryRange: '$60,000 - $120,000/year',
@@ -3252,6 +3286,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'kuwaitairways',
     logo: '/images/airline-logos/middle-east/kuwait/international-operators/kuwait-airways.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/kuwait/international-operators/kuwait-airways-aircraft.jpg',
     name: 'Kuwait Airways',
     location: 'Kuwait',
     salaryRange: '$55,000 - $110,000/year',
@@ -3267,6 +3303,8 @@ const AIRLINES: Airline[] = [
   {
     id: 'airarabia',
     logo: '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/air-arabia.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/air-arabia-aircraft.jpg',
     name: 'Air Arabia',
     location: 'United Arab Emirates',
     salaryRange: '$45,000 - $90,000/year',
@@ -3277,6 +3315,670 @@ const AIRLINES: Airline[] = [
     description:
       'Air Arabia is the first and largest low-cost carrier in the Middle East, operating from Sharjah across the region.',
     fleet: 'Airbus A320, A320neo, A321',
+    region: 'Middle East',
+  },
+  {
+    id: 'iranair',
+    logo: '/images/airline-logos/middle-east/iran/international-operators/iran-air.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/international-operators/iran-air-aircraft.jpg',
+    name: 'Iran Air',
+    location: 'Iran',
+    salaryRange: '$40,000 - $85,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Flag Carrier', 'Persian Gulf'],
+    image: '',
+    cardImage: '',
+    description:
+      'Iran Air is the flag carrier of Iran, operating from Tehran to domestic and international destinations across Asia and Europe.',
+    fleet: 'Airbus A300, A310, A320, A321, A330, Boeing 747',
+    region: 'Middle East',
+  },
+  {
+    id: 'mahanair',
+    logo: '/images/airline-logos/middle-east/iran/international-operators/mahan-air.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/international-operators/mahan-air-aircraft.jpg',
+    name: 'Mahan Air',
+    location: 'Iran',
+    salaryRange: '$40,000 - $80,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Private Carrier', 'Wide-Body Fleet'],
+    image: '',
+    cardImage: '',
+    description:
+      'Mahan Air is a private Iranian airline operating from Tehran with a wide-body fleet serving domestic and international routes.',
+    fleet: 'Airbus A300, A310, A320, A321, A340, Boeing 747',
+    region: 'Middle East',
+  },
+  {
+    id: 'iraqiairways',
+    logo: '/images/airline-logos/middle-east/iraq/international-operators/iraqi-airways.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/iraq/international-operators/iraqi-airways-aircraft.jpg',
+    name: 'Iraqi Airways',
+    location: 'Iraq',
+    salaryRange: '$40,000 - $85,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Baghdad Hub', 'Flag Carrier', 'Rebuilding Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Iraqi Airways is the flag carrier of Iraq, operating from Baghdad to domestic and regional destinations with a modernizing fleet.',
+    fleet: 'Boeing 737, 777, Airbus A320, A220, Bombardier CRJ',
+    region: 'Middle East',
+  },
+  {
+    id: 'mea',
+    logo: '/images/airline-logos/middle-east/lebanon/international-operators/mea.svg',
+    heroImage: '/images/airline-logos/middle-east/lebanon/international-operators/mea-aircraft.jpg',
+    name: 'Middle East Airlines',
+    location: 'Lebanon',
+    salaryRange: '$50,000 - $100,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Beirut Hub', 'Flag Carrier', 'SkyTeam'],
+    image: '',
+    cardImage: '',
+    description:
+      'Middle East Airlines (MEA) is the flag carrier of Lebanon, operating from Beirut to destinations across the Middle East, Europe, and West Africa.',
+    fleet: 'Airbus A320, A321, A321neo, A330',
+    region: 'Middle East',
+  },
+  {
+    id: 'yemenia',
+    logo: '/images/airline-logos/middle-east/yemen/international-operators/yemenia.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/yemen/international-operators/yemenia-aircraft.jpg',
+    name: 'Yemenia',
+    location: 'Yemen',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Sanaa Hub', 'Flag Carrier', 'Regional Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Yemenia is the flag carrier of Yemen, operating from Sanaa to regional destinations in the Middle East and Africa.',
+    fleet: 'Airbus A310, A320, A330',
+    region: 'Middle East',
+  },
+  {
+    id: 'syrianair',
+    logo: '/images/airline-logos/middle-east/syria/international-operators/syrian-air.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/syria/international-operators/syrian-air-aircraft.jpg',
+    name: 'Syrian Air',
+    location: 'Syria',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Damascus Hub', 'Flag Carrier', 'Regional Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Syrian Air is the flag carrier of Syria, operating from Damascus to regional destinations in the Middle East.',
+    fleet: 'Airbus A320, A340, Boeing 727',
+    region: 'Middle East',
+  },
+  {
+    id: 'jazeera',
+    logo: '/images/airline-logos/middle-east/kuwait/regional-operators/jazeera-airways.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/kuwait/regional-operators/jazeera-airways-aircraft.jpg',
+    name: 'Jazeera Airways',
+    location: 'Kuwait',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Kuwait Hub', 'Low-Cost Carrier', 'Middle East Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Jazeera Airways is a Kuwaiti low-cost carrier operating from Kuwait to destinations across the Middle East and South Asia.',
+    fleet: 'Airbus A320, A320neo, A321neo',
+    region: 'Middle East',
+  },
+  {
+    id: 'wizzairabudhabi',
+    logo: '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/wizz-air-abu-dhabi.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/wizz-air-abu-dhabi-aircraft.jpg',
+    name: 'Wizz Air Abu Dhabi',
+    location: 'United Arab Emirates',
+    salaryRange: '$50,000 - $100,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Abu Dhabi Hub', 'Low-Cost Carrier', 'Joint Venture'],
+    image: '',
+    cardImage: '',
+    description:
+      'Wizz Air Abu Dhabi is a joint venture low-cost carrier operating from Abu Dhabi to destinations across the Middle East, Europe, and Asia.',
+    fleet: 'Airbus A321neo, A321XLR',
+    region: 'Middle East',
+  },
+  {
+    id: 'airarabiaabudhabi',
+    logo: '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/air-arabia-abu-dhabi.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/air-arabia-abu-dhabi-aircraft.jpg',
+    name: 'Air Arabia Abu Dhabi',
+    location: 'United Arab Emirates',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Abu Dhabi Hub', 'Low-Cost Carrier', 'Joint Venture'],
+    image: '',
+    cardImage: '',
+    description:
+      'Air Arabia Abu Dhabi is a joint venture low-cost carrier operating from Abu Dhabi to destinations across the Middle East and beyond.',
+    fleet: 'Airbus A320, A320neo',
+    region: 'Middle East',
+  },
+  {
+    id: 'flyadeal',
+    logo: '/images/airline-logos/middle-east/saudi-arabia/regional-operators/flyadeal.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/saudi-arabia/regional-operators/flyadeal-aircraft.jpg',
+    name: 'flyadeal',
+    location: 'Saudi Arabia',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Jeddah Hub', 'Low-Cost Carrier', 'Saudia Subsidiary'],
+    image: '',
+    cardImage: '',
+    description:
+      'flyadeal is a Saudi low-cost carrier and subsidiary of Saudia, operating domestic and regional routes with an all-Airbus fleet.',
+    fleet: 'Airbus A320, A320neo, A321neo',
+    region: 'Middle East',
+  },
+  {
+    id: 'salamair',
+    logo: '/images/airline-logos/middle-east/oman/regional-operators/salamair.svg',
+    heroImage: '/images/airline-logos/middle-east/oman/regional-operators/salamair-aircraft.jpg',
+    name: 'SalamAir',
+    location: 'Oman',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Muscat Hub', 'Low-Cost Carrier', 'Oman Regional'],
+    image: '',
+    cardImage: '',
+    description:
+      'SalamAir is Oman`s first low-cost carrier, operating from Muscat to destinations across the Middle East and South Asia.',
+    fleet: 'Airbus A320, A320neo, A321neo',
+    region: 'Middle East',
+  },
+  {
+    id: 'arkia',
+    logo: '/images/airline-logos/middle-east/israel/regional-operators/arkia.svg',
+    heroImage: '/images/airline-logos/middle-east/israel/regional-operators/arkia-aircraft.jpg',
+    name: 'Arkia Israeli Airlines',
+    location: 'Israel',
+    salaryRange: '$50,000 - $100,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tel Aviv Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Arkia is Israel`s largest domestic airline, operating from Tel Aviv to domestic destinations and regional international routes.',
+    fleet: 'Airbus A321neo, A330, ATR 72, Dash 8',
+    region: 'Middle East',
+  },
+  {
+    id: 'israir',
+    logo: '/images/airline-logos/middle-east/israel/regional-operators/israir.svg',
+    heroImage: '/images/airline-logos/middle-east/israel/regional-operators/israir-aircraft.jpg',
+    name: 'Israir Airlines',
+    location: 'Israel',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tel Aviv Hub', 'Low-Cost Carrier', 'Leisure Routes'],
+    image: '',
+    cardImage: '',
+    description:
+      'Israir is an Israeli low-cost carrier operating domestic and international leisure routes from Tel Aviv.',
+    fleet: 'Airbus A320, ATR 72',
+    region: 'Middle East',
+  },
+  {
+    id: 'iranaseman',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/iran-aseman.png',
+    heroImage: '/images/airline-logos/middle-east/iran/regional-operators/iran-aseman-aircraft.jpg',
+    name: 'Iran Aseman Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Iran Aseman Airlines is a regional Iranian carrier operating domestic and regional routes with a fleet of ATR and Airbus aircraft.',
+    fleet: 'ATR 72, Airbus A320, A340, Fokker 100',
+    region: 'Middle East',
+  },
+  {
+    id: 'flybaghdad',
+    logo: '/images/airline-logos/middle-east/iraq/regional-operators/flybaghdad.svg',
+    heroImage: '/images/airline-logos/middle-east/iraq/regional-operators/flybaghdad-aircraft.jpg',
+    name: 'FlyBaghdad',
+    location: 'Iraq',
+    salaryRange: '$40,000 - $80,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Baghdad Hub', 'Regional Carrier', 'Growing Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'FlyBaghdad is an Iraqi regional carrier operating from Baghdad to domestic and regional destinations in the Middle East.',
+    fleet: 'Boeing 737, Airbus A320, CRJ',
+    region: 'Middle East',
+  },
+  {
+    id: 'kishair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/kish-air.png',
+    heroImage: '/images/airline-logos/middle-east/iran/regional-operators/kish-air-aircraft.jpg',
+    name: 'Kish Air',
+    location: 'Iran',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Kish Air is an Iranian regional carrier operating domestic and regional routes from Tehran and Kish Island.',
+    fleet: 'Airbus A320, A321, Fokker 50, Fokker 100',
+    region: 'Middle East',
+  },
+  {
+    id: 'zagrosair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/zagros-airlines.png',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/zagros-airlines-aircraft.jpg',
+    name: 'Zagros Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Abadan Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Zagros Airlines is an Iranian regional carrier operating domestic and regional routes with an Airbus fleet.',
+    fleet: 'Airbus A320, A321, A340',
+    region: 'Middle East',
+  },
+  {
+    id: 'qeshmair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/qeshm-air.png',
+    heroImage: '/images/airline-logos/middle-east/iran/regional-operators/qeshm-air-aircraft.jpg',
+    name: 'Qeshm Air',
+    location: 'Iran',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Persian Gulf'],
+    image: '',
+    cardImage: '',
+    description:
+      'Qeshm Air is an Iranian regional carrier operating from Tehran to domestic and regional destinations with a wide-body fleet.',
+    fleet: 'Airbus A300, A310, A320, A321',
+    region: 'Middle East',
+  },
+  {
+    id: 'chamwings',
+    logo: '/images/airline-logos/middle-east/syria/regional-operators/cham-wings.svg',
+    heroImage: '/images/airline-logos/middle-east/syria/regional-operators/cham-wings-aircraft.jpg',
+    name: 'Cham Wings Airlines',
+    location: 'Syria',
+    salaryRange: '$35,000 - $70,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Damascus Hub', 'Private Carrier', 'Regional Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Cham Wings Airlines is a private Syrian carrier operating from Damascus to regional destinations in the Middle East.',
+    fleet: 'Airbus A320, A321',
+    region: 'Middle East',
+  },
+  {
+    id: 'urairlines',
+    heroImage: '/images/airline-logos/middle-east/iraq/regional-operators/ur-airlines-aircraft.jpg',
+    name: 'UR Airlines',
+    location: 'Iraq',
+    salaryRange: '$40,000 - $80,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Baghdad Hub', 'Regional Carrier', 'Growing Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'UR Airlines is an Iraqi regional carrier operating from Baghdad to domestic and regional destinations.',
+    fleet: 'Boeing 737, Airbus A320',
+    region: 'Middle East',
+  },
+  {
+    id: 'saudigulf',
+    logo: '/images/airline-logos/middle-east/saudi-arabia/regional-operators/saudigulf.png',
+    heroImage:
+      '/images/airline-logos/middle-east/saudi-arabia/regional-operators/saudigulf-aircraft.jpg',
+    name: 'SaudiGulf Airlines',
+    location: 'Saudi Arabia',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Dammam Hub', 'Regional Carrier', 'All-Airbus Fleet'],
+    image: '',
+    cardImage: '',
+    description:
+      'SaudiGulf Airlines is a Saudi regional carrier operating from Dammam to domestic destinations with an all-Airbus fleet.',
+    fleet: 'Airbus A320, A320neo, A321neo',
+    region: 'Middle East',
+  },
+  {
+    id: 'petraairlines',
+    logo: '/images/airline-logos/middle-east/jordan/regional-operators/petra-airlines.png',
+    heroImage:
+      '/images/airline-logos/middle-east/jordan/regional-operators/petra-airlines-aircraft.jpg',
+    name: 'Petra Airlines',
+    location: 'Jordan',
+    salaryRange: '$40,000 - $80,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Amman Hub', 'Regional Carrier', 'Charter Operations'],
+    image: '',
+    cardImage: '',
+    description:
+      'Petra Airlines is a Jordanian regional carrier operating charter and scheduled services from Amman.',
+    fleet: 'Airbus A320',
+    region: 'Middle East',
+  },
+  {
+    id: 'cyprusairways',
+    logo: '/images/airline-logos/middle-east/cyprus/international-operators/cyprus-airways.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/cyprus/international-operators/cyprus-airways-aircraft.jpg',
+    name: 'Cyprus Airways',
+    location: 'Cyprus',
+    salaryRange: '$50,000 - $100,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Larnaca Hub', 'Flag Carrier', 'Mediterranean Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Cyprus Airways is the flag carrier of Cyprus, operating from Larnaca to destinations across Europe and the Middle East.',
+    fleet: 'Airbus A319, A320',
+    region: 'Middle East',
+  },
+  {
+    id: 'arianaafghan',
+    logo: '/images/airline-logos/middle-east/afghanistan/international-operators/ariana-afghan.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/afghanistan/international-operators/ariana-afghan-aircraft.jpg',
+    name: 'Ariana Afghan Airlines',
+    location: 'Afghanistan',
+    salaryRange: '$30,000 - $60,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Kabul Hub', 'Flag Carrier', 'Central Asia'],
+    image: '',
+    cardImage: '',
+    description:
+      'Ariana Afghan Airlines is the flag carrier of Afghanistan, operating from Kabul to domestic and regional destinations.',
+    fleet: 'Boeing 737-400, 737-800, Airbus A310',
+    region: 'Middle East',
+  },
+  {
+    id: 'kamair',
+    logo: '/images/airline-logos/middle-east/afghanistan/international-operators/kam-air.png',
+    heroImage:
+      '/images/airline-logos/middle-east/afghanistan/international-operators/kam-air-aircraft.jpg',
+    name: 'Kam Air',
+    location: 'Afghanistan',
+    salaryRange: '$30,000 - $60,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Kabul Hub', 'Private Carrier', 'Regional Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Kam Air is the largest private airline in Afghanistan, operating from Kabul to domestic and international destinations.',
+    fleet: 'Airbus A340, Boeing 737, MD-80',
+    region: 'Middle East',
+  },
+  {
+    id: 'caspianair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/caspian-airlines.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/caspian-airlines-aircraft.jpg',
+    name: 'Caspian Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Caspian Airlines is an Iranian regional carrier operating domestic and regional routes from Tehran.',
+    fleet: 'Boeing 737-500, MD-80, Fokker 100',
+    region: 'Middle East',
+  },
+  {
+    id: 'tabanair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/taban-air.png',
+    heroImage: '/images/airline-logos/middle-east/iran/regional-operators/taban-air-aircraft.jpg',
+    name: 'Taban Air',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Mashhad Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Taban Air is an Iranian regional carrier operating from Mashhad to domestic and regional destinations.',
+    fleet: 'McDonnell Douglas MD-80, MD-88, Fokker 100',
+    region: 'Middle East',
+  },
+  {
+    id: 'sepehranair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/sepehran-airlines.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/sepehran-airlines-aircraft.jpg',
+    name: 'Sepehran Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Sepehran Airlines is an Iranian regional carrier operating domestic routes with a Boeing fleet.',
+    fleet: 'Boeing 737-300, 737-500, MD-80',
+    region: 'Middle East',
+  },
+  {
+    id: 'vareshair',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/varesh-airlines-aircraft.jpg',
+    name: 'Varesh Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Varesh Airlines is an Iranian regional carrier operating domestic routes from Tehran with a Boeing fleet.',
+    fleet: 'Boeing 737-300, 737-500',
+    region: 'Middle East',
+  },
+  {
+    id: 'gulftraveller',
+    logo: '/images/airline-logos/middle-east/bahrain/regional-operators/gulf-traveller.png',
+    heroImage:
+      '/images/airline-logos/middle-east/bahrain/regional-operators/gulf-traveller-aircraft.jpg',
+    name: 'Gulf Traveller',
+    location: 'Bahrain',
+    salaryRange: '$45,000 - $90,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Manama Hub', 'Regional Carrier', 'Gulf Air Subsidiary'],
+    image: '',
+    cardImage: '',
+    description:
+      'Gulf Traveller is a Bahraini regional carrier and subsidiary of Gulf Air, operating leisure and regional routes.',
+    fleet: 'Airbus A320, A321',
+    region: 'Middle East',
+  },
+  {
+    id: 'sawanair',
+    heroImage:
+      '/images/airline-logos/middle-east/iraq/regional-operators/sawan-airlines-aircraft.jpg',
+    name: 'Sawan Airlines',
+    location: 'Iraq',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Baghdad Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Sawan Airlines is an Iraqi regional carrier operating domestic routes from Baghdad.',
+    fleet: 'Boeing 737, CRJ',
+    region: 'Middle East',
+  },
+  {
+    id: 'merajair',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/meraj-airlines-aircraft.jpg',
+    name: 'Meraj Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Meraj Airlines is an Iranian regional carrier operating domestic and regional routes with an Airbus fleet.',
+    fleet: 'Airbus A319, A320, A321',
+    region: 'Middle East',
+  },
+  {
+    id: 'ataair',
+    logo: '/images/airline-logos/middle-east/iran/regional-operators/ata-airlines.png',
+    heroImage:
+      '/images/airline-logos/middle-east/iran/regional-operators/ata-airlines-aircraft.jpg',
+    name: 'ATA Airlines',
+    location: 'Iran',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Tehran Hub', 'Low-Cost Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'ATA Airlines is an Iranian low-cost carrier operating domestic routes from Tehran with an Airbus fleet.',
+    fleet: 'Airbus A320, A321, MD-80',
+    region: 'Middle East',
+  },
+  {
+    id: 'pamirairways',
+    logo: '/images/airline-logos/middle-east/afghanistan/international-operators/pamir-airways.png',
+    heroImage:
+      '/images/airline-logos/middle-east/afghanistan/international-operators/pamir-airways-aircraft.jpg',
+    name: 'Pamir Airways',
+    location: 'Afghanistan',
+    salaryRange: '$30,000 - $55,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Kabul Hub', 'Regional Carrier', 'Domestic Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Pamir Airways was an Afghan regional carrier operating domestic routes from Kabul to major Afghan cities.',
+    fleet: 'Boeing 737-400, Antonov An-24',
+    region: 'Middle East',
+  },
+  {
+    id: 'alnaserair',
+    heroImage:
+      '/images/airline-logos/middle-east/iraq/regional-operators/al-naser-airlines-aircraft.jpg',
+    name: 'Al-Naser Airlines',
+    location: 'Iraq',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Baghdad Hub', 'Regional Carrier', 'Charter Operations'],
+    image: '',
+    cardImage: '',
+    description:
+      'Al-Naser Airlines is an Iraqi regional carrier operating charter and scheduled services from Baghdad.',
+    fleet: 'Boeing 737-200, 737-800',
+    region: 'Middle East',
+  },
+  {
+    id: 'saudiacargo',
+    logo: '/images/airline-logos/middle-east/saudi-arabia/regional-operators/saudia-cargo.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/saudi-arabia/regional-operators/saudia-cargo-aircraft.jpg',
+    name: 'Saudia Cargo',
+    location: 'Saudi Arabia',
+    salaryRange: '$80,000 - $180,000/year',
+    flightHours: '2,000+ hrs TT',
+    tags: ['Jeddah Hub', 'Cargo Carrier', 'Global Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Saudia Cargo is the freight division of Saudia, operating a global cargo network with a fleet of Boeing 777 freighters.',
+    fleet: 'Boeing 777F, 747-400F',
+    region: 'Middle East',
+  },
+  {
+    id: 'qatarcargo',
+    logo: '/images/airline-logos/middle-east/qatar/regional-operators/qatar-cargo.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/qatar/regional-operators/qatar-cargo-aircraft.jpg',
+    name: 'Qatar Airways Cargo',
+    location: 'Qatar',
+    salaryRange: '$90,000 - $200,000/year',
+    flightHours: '2,000+ hrs TT',
+    tags: ['Doha Hub', 'Cargo Carrier', 'World\u2019s Largest Cargo Fleet'],
+    image: '',
+    cardImage: '',
+    description:
+      'Qatar Airways Cargo is one of the world\u2019s largest cargo carriers, operating a global network from Doha with Boeing 777 freighters.',
+    fleet: 'Boeing 777F, 747-8F, Airbus A330F',
+    region: 'Middle East',
+  },
+  {
+    id: 'emiratesskycargo',
+    logo: '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/emirates-skycargo.svg',
+    heroImage:
+      '/images/airline-logos/middle-east/united-arab-emirates/regional-operators/emirates-skycargo-aircraft.jpg',
+    name: 'Emirates SkyCargo',
+    location: 'United Arab Emirates',
+    salaryRange: '$90,000 - $200,000/year',
+    flightHours: '2,000+ hrs TT',
+    tags: ['Dubai Hub', 'Cargo Carrier', 'Global Network'],
+    image: '',
+    cardImage: '',
+    description:
+      'Emirates SkyCargo is the freight division of Emirates, operating a global cargo network from Dubai with Boeing 777 freighters.',
+    fleet: 'Boeing 777F, 747-400F',
+    region: 'Middle East',
+  },
+  {
+    id: 'royalwings',
+    logo: '/images/airline-logos/middle-east/jordan/regional-operators/royal-wings.jpg',
+    heroImage:
+      '/images/airline-logos/middle-east/jordan/regional-operators/royal-wings-aircraft.jpg',
+    name: 'Royal Wings',
+    location: 'Jordan',
+    salaryRange: '$40,000 - $80,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Amman Hub', 'Regional Carrier', 'Royal Jordanian Subsidiary'],
+    image: '',
+    cardImage: '',
+    description:
+      'Royal Wings is a regional subsidiary of Royal Jordanian, operating domestic and short-haul routes from Amman.',
+    fleet: 'Airbus A320, ATR 72',
+    region: 'Middle East',
+  },
+  {
+    id: 'lebaneseairtransport',
+    logo: '/images/airline-logos/middle-east/lebanon/regional-operators/lebanese-air-transport.png',
+    heroImage:
+      '/images/airline-logos/middle-east/lebanon/regional-operators/lebanese-air-transport-aircraft.jpg',
+    name: 'Lebanese Air Transport',
+    location: 'Lebanon',
+    salaryRange: '$35,000 - $65,000/year',
+    flightHours: '1,500+ hrs TT',
+    tags: ['Beirut Hub', 'Charter Carrier', 'Regional Operations'],
+    image: '',
+    cardImage: '',
+    description:
+      'Lebanese Air Transport is a Lebanese charter carrier operating regional services from Beirut.',
+    fleet: 'Antonov An-24, Antonov An-26',
     region: 'Middle East',
   },
   {

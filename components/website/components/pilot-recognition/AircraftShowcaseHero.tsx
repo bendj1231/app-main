@@ -97,7 +97,7 @@ const getManufacturerLogoPath = (manufacturerId: string, category: string) => {
     survey: 'survey-utility',
   };
   const folder = folderMap[category] || 'general-aviation';
-  return `/images/manufacturer-logos/${folder}/${manufacturerId}-logo.png`;
+  return `/images/manufacturer-logos/${folder}/${manufacturerId}-logo.svg`;
 };
 
 const getManufacturerLogoSrc = (
